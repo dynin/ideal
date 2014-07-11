@@ -64,7 +64,7 @@ the Coach app.
 To create the thirdparty directory and fetch all the dependencies, run
 bin/fetch-thirdparty.sh from the top-level directory.  In addition, you'll
 need to create a symlink from thirdparty/jdk to the JDK home directory (such as
-/Library/Java/JavaVirtualMachines/jdk1.8.0_05.jdk/Contents/Home on Mac OS X.)
+/Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home on Mac OS X.)
 It should be possible to invoke the Java compiler via thirdparty/jdk/bin/javac.
 
 Make is currently used to build and run ideal.  Default target builds

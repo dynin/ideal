@@ -17,11 +17,13 @@ The directory structure
   \_development - main metaprogramming framework code
   \_showcase    - AppEngine-hosted demo app
   bootstrapped  - library and runtime, translated into Java
-  LICENSE       - new BSD license
   thirdparty    - software needed to build and run ideal
   testdata      - input and ouput for regression tests
   bin           - helper scripts
   build         - directory for files created during the build process
+  AUTHORS       - list of authors for copyright purposes
+  CONTRIBUTORS  - list of developers
+  LICENSE       - new BSD license
   documentation, Makefile, README - documentation, makefile, readme.
 
   * * *

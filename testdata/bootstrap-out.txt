@@ -1,0 +1,160 @@
+procedure_kind procedure[entity ret, entity arg1, entity arg2] {
+               ^^^^^^^^^
+testdata/bootstrap.i:198: Primary type already defined
+  procedure_kind procedure[entity ret, entity arg1] {
+                 ^^^^^^^^^
+  testdata/bootstrap.i:194: This is the primary
+procedure_kind function[entity ret, entity arg1, entity arg2] {
+               ^^^^^^^^
+testdata/bootstrap.i:208: Primary type already defined
+  procedure_kind function[entity ret, entity arg1] {
+                 ^^^^^^^^
+  testdata/bootstrap.i:203: This is the primary
+interface collection[data element] {
+          ^^^^^^^^^^
+testdata/bootstrap.i:255: Primary type already defined
+  interface collection[value element] {
+            ^^^^^^^^^^
+  testdata/bootstrap.i:227: This is the primary
+concept entity { }
+concept value {
+  refines entity;
+}
+reference_kind reference[any value value_type] {
+  refines entity;
+  value_type get() readonly;
+  void set(value_type new_value) writeonly;
+}
+concept data {
+  refines value;
+  not_yet_implemented data copy() readonly;
+  not_yet_implemented data deep_copy() readonly;
+  not_yet_implemented immutable data frozen_copy() readonly;
+  not_yet_implemented deeply_immutable data deep_frozen_copy() readonly;
+}
+concept convertible_to_string {
+  refines readonly value;
+  string to_string() readonly;
+}
+singleton void {
+  extends deeply_immutable data;
+}
+singleton nothing {
+  extends void;
+}
+concept equality_comparable {
+  refines value;
+  static equivalence_relation[equality_comparable] equivalence;
+}
+enum boolean {
+  implements deeply_immutable data;
+  implements equality_comparable;
+  implements convertible_to_string;
+  true;
+  false;
+}
+class integer {
+  implements deeply_immutable data;
+  implements equality_comparable;
+  implements convertible_to_string;
+}
+class nonnegative {
+  refines integer;
+}
+class positive {
+  refines nonnegative;
+}
+concept null {
+  refines deeply_immutable data;
+  implements convertible_to_string;
+}
+procedure_kind procedure[entity ret, entity arg1] {
+  refines value;
+}
+procedure_kind procedure[entity ret, entity arg1, entity arg2] {
+  refines value;
+}
+procedure_kind function[entity ret, entity arg1] {
+  refines procedure[ret, arg1];
+  implements deeply_immutable data;
+}
+procedure_kind function[entity ret, entity arg1, entity arg2] {
+  refines procedure[ret, arg1, arg2];
+  implements deeply_immutable data;
+}
+concept predicate[value element] {
+  refines function[boolean, element];
+}
+concept relation[value element] {
+  refines function[boolean, element, element];
+}
+concept equivalence_relation[value element] {
+  refines relation[element];
+}
+interface collection[value element] {
+  refines value;
+  readonly nonnegative size;
+  readonly boolean is_empty;
+  immutable list[element] elements() readonly;
+  boolean has(predicate[element] p) readonly;
+  boolean all(predicate[element] p) readonly;
+  readonly collection[element] filter(predicate[element] p) readonly;
+  immutable collection[element] filter(predicate[element] p) immutable;
+  void remove(predicate[element] p);
+  void clear() writeonly;
+}
+interface collection_with_equivalence[value element] {
+  refines collection[element];
+  equivalence_relation[element] element_equivalence;
+  boolean contains(element e) readonly;
+  boolean contains_all(collection[element] c) readonly;
+  void remove_one(element e);
+  void remove_all(collection[element] c);
+  void retain_all(collection[element] c);
+}
+interface collection[data element] {
+  implements data;
+}
+interface list[value element] {
+  implements collection[element];
+  implicit reference[element] get(nonnegative index) readonly;
+  void append(element e);
+  void prepend(element e);
+  void insert(nonnegative index, element e);
+  void append_all(readonly list[element] c);
+  void prepend_all(readonly list[element] c);
+  void insert_all(nonnegative index, readonly list[element] c);
+  element remove_at(nonnegative index);
+}
+interface list_with_equivalence[value element] {
+  implements collection_with_equivalence[element];
+  implements list[element];
+  list_with_equivalence(equivalence_relation[element] element_equivalence);
+}
+class character {
+  implements deeply_immutable data;
+  implements equality_comparable;
+  implements convertible_to_string;
+}
+class string {
+  implements deeply_immutable list[character];
+}
+interface closeable {
+  readonly boolean is_closed;
+  void close();
+}
+interface syncable {
+  void sync();
+}
+interface input[value element] {
+  extends closeable;
+  readonly boolean is_available;
+  readonly nonnegative available;
+  immutable list[element] read(positive max);
+}
+concept output[value element] {
+  extends closeable, syncable;
+  readonly boolean is_available;
+  readonly nonnegative available;
+  void write(readonly list[element] c);
+}

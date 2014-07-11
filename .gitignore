@@ -1,0 +1,4 @@
+build
+thirdparty
+*.swp
+.DS_Store

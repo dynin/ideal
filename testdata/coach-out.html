@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <title>
+     test
+    </title>
+   <link href='ideal-style.css' rel='stylesheet' style='text/css' />
+  </head>
+  <body>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+    <div class='type-declaration'>
+     datatype <span class='type-declaration-name'>exercise type</span>
+      <div class='indent'>
+        <div>
+         <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>name</span>
+        </div>
+        <div>
+         <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>description link</span>
+        </div>
+        <div>
+         <a href='exercise-category.html'>exercise category</a> <span class='var-declaration-name'>category</span>
+        </div>
+        <div>
+         <a href='exercise-parameter.html'>exercise parameter</a> <span class='var-declaration-name'>parameter</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     enum <span class='type-declaration-name'>exercise category</span>
+      <div class='indent'>
+        <div>
+         <span class='var-declaration-name'>UPPER BODY</span>
+        </div>
+        <div>
+         <span class='var-declaration-name'>LOWER BODY</span>
+        </div>
+        <div>
+         <span class='var-declaration-name'>CORE</span>
+        </div>
+        <div>
+         <span class='var-declaration-name'>CARDIO</span>
+        </div>
+        <div>
+         <span class='var-declaration-name'>BALANCE</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     enum <span class='type-declaration-name'>exercise parameter</span>
+      <div class='indent'>
+        <div>
+         <span class='var-declaration-name'>REPETITION COUNT</span>
+        </div>
+        <div>
+         <span class='var-declaration-name'>DISTANCE</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     datatype <span class='type-declaration-name'>exercise</span>
+      <div class='indent'>
+        <div>
+         <a href='exercise-type.html'>exercise type</a> <span class='var-declaration-name'>type</span>
+        </div>
+        <div>
+         <a href='ideal/library/elements/nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>repetition count</span>
+        </div>
+        <div>
+         <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>distance</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     datatype <span class='type-declaration-name'>exercise set</span>
+      <div class='indent'>
+        <div>
+         <a href='ideal/library/elements/list.html'>list</a>[<a href='exercise.html'>exercise</a>] <span class='var-declaration-name'>exercises</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     datatype <span class='type-declaration-name'>workout</span>
+      <div class='indent'>
+        <div>
+         <a href='exercise-set.html'>exercise set</a> <span class='var-declaration-name'>set</span>
+        </div>
+        <div>
+         <a href='ideal/library/elements/nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>repetition count</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     datatype <span class='type-declaration-name'>exercise program</span>
+      <div class='indent'>
+        <div>
+         <a href='ideal/library/elements/list.html'>list</a>[<a href='workout.html'>workout</a>] <span class='var-declaration-name'>workouts</span>
+        </div>
+      </div>
+    </div>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+  </body>
+</html>

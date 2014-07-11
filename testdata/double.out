@@ -1,0 +1,326 @@
+============ INIT
+============ PARSE
+============ BOOTSTRAP
+============ DISPLAY
+[
+  variable_construct {
+    annotations: [ ]
+    type: <null>
+    name: one
+    post_annotations: [ ]
+    init: literal_construct {
+      the_literal: integer_literal {
+        the_value: 1
+        image: "1"
+      }
+    }
+  }
+  variable_construct {
+    annotations: [ ]
+    type: <null>
+    name: two
+    post_annotations: [ ]
+    init: literal_construct {
+      the_literal: integer_literal {
+        the_value: 2
+        image: "2"
+      }
+    }
+  }
+  variable_construct {
+    annotations: [ ]
+    type: name_construct {
+      the_name: integer
+    }
+    name: three
+    post_annotations: [ ]
+    init: parameter_construct {
+      main: name_construct {
+        the_name: plus
+      }
+      parameters: list_construct {
+        elements: [
+          name_construct {
+            the_name: one
+          }
+          name_construct {
+            the_name: two
+          }
+        ]
+        grouping: parens
+      }
+    }
+  }
+  procedure_construct {
+    annotations: [ ]
+    ret: name_construct {
+      the_name: integer
+    }
+    name: double
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: integer
+          }
+          name: x
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: parens
+    }
+    post_annotations: [ ]
+    body: [
+      return_construct {
+        the_expression: parameter_construct {
+          main: name_construct {
+            the_name: plus
+          }
+          parameters: list_construct {
+            elements: [
+              name_construct {
+                the_name: x
+              }
+              name_construct {
+                the_name: x
+              }
+            ]
+            grouping: parens
+          }
+        }
+      }
+    ]
+  }
+  procedure_construct {
+    annotations: [ ]
+    ret: name_construct {
+      the_name: integer
+    }
+    name: add5
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: integer
+          }
+          name: y
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: parens
+    }
+    post_annotations: [ ]
+    body: [
+      return_construct {
+        the_expression: parameter_construct {
+          main: name_construct {
+            the_name: plus
+          }
+          parameters: list_construct {
+            elements: [
+              name_construct {
+                the_name: y
+              }
+              literal_construct {
+                the_literal: integer_literal {
+                  the_value: 5
+                  image: "5"
+                }
+              }
+            ]
+            grouping: parens
+          }
+        }
+      }
+    ]
+  }
+  parameter_construct {
+    main: name_construct {
+      the_name: println
+    }
+    parameters: list_construct {
+      elements: [
+        parameter_construct {
+          main: name_construct {
+            the_name: double
+          }
+          parameters: list_construct {
+            elements: [
+              parameter_construct {
+                main: name_construct {
+                  the_name: double
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: three
+                    }
+                  ]
+                  grouping: parens
+                }
+              }
+            ]
+            grouping: parens
+          }
+        }
+      ]
+      grouping: parens
+    }
+  }
+  parameter_construct {
+    main: name_construct {
+      the_name: println
+    }
+    parameters: list_construct {
+      elements: [
+        parameter_construct {
+          main: name_construct {
+            the_name: plus
+          }
+          parameters: list_construct {
+            elements: [
+              parameter_construct {
+                main: name_construct {
+                  the_name: add5
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: three
+                    }
+                  ]
+                  grouping: parens
+                }
+              }
+              name_construct {
+                the_name: two
+              }
+            ]
+            grouping: parens
+          }
+        }
+      ]
+      grouping: parens
+    }
+  }
+  parameter_construct {
+    main: name_construct {
+      the_name: println
+    }
+    parameters: list_construct {
+      elements: [
+        literal_construct {
+          the_literal: integer_literal {
+            the_value: 7
+            image: "7"
+          }
+        }
+        literal_construct {
+          the_literal: quoted_literal {
+            value: " "
+            with_escapes: " "
+            quote: "
+          }
+        }
+        parameter_construct {
+          main: name_construct {
+            the_name: add5
+          }
+          parameters: list_construct {
+            elements: [
+              literal_construct {
+                the_literal: integer_literal {
+                  the_value: 63
+                  image: "63"
+                }
+              }
+            ]
+            grouping: parens
+          }
+        }
+      ]
+      grouping: parens
+    }
+  }
+  block_construct {
+    annotations: [ ]
+    body: [
+      parameter_construct {
+        main: name_construct {
+          the_name: println
+        }
+        parameters: list_construct {
+          elements: [
+            name_construct {
+              the_name: one
+            }
+            literal_construct {
+              the_literal: quoted_literal {
+                value: " "
+                with_escapes: " "
+                quote: "
+              }
+            }
+            parameter_construct {
+              main: name_construct {
+                the_name: plus
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: one
+                  }
+                  name_construct {
+                    the_name: one
+                  }
+                ]
+                grouping: parens
+              }
+            }
+            literal_construct {
+              the_literal: quoted_literal {
+                value: " "
+                with_escapes: " "
+                quote: "
+              }
+            }
+            name_construct {
+              the_name: one
+            }
+          ]
+          grouping: parens
+        }
+      }
+    ]
+  }
+]
+============ BEFORE_EVALUATION
+============ TYPE_DECL
+============ IMPORT_AND_TYPE_VAR_DECL
+============ SUPERTYPE_DECL
+============ METHOD_AND_VARIABLE_DECL
+============ BODY_CHECK
+============ EXECUTE
+12
+10
+7 68
+1 2 1
+one : 1;
+two : 2;
+integer three : plus(one, two);
+integer double(integer x) {
+  return plus(x, x);
+}
+integer add5(integer y) {
+  return plus(y, 5);
+}
+println(double(double(three)));
+println(plus(add5(three), two));
+println(7, " ", add5(63));
+{
+  println(one, " ", plus(one, one), " ", one);
+}

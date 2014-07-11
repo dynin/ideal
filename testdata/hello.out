@@ -1,0 +1,49 @@
+============ INIT
+============ PARSE
+============ BOOTSTRAP
+============ DISPLAY
+[
+  procedure_construct {
+    annotations: [ ]
+    ret: name_construct {
+      the_name: void
+    }
+    name: main
+    parameters: list_construct {
+      elements: [ ]
+      grouping: parens
+    }
+    post_annotations: [ ]
+    body: [
+      parameter_construct {
+        main: name_construct {
+          the_name: inform
+        }
+        parameters: list_construct {
+          elements: [
+            literal_construct {
+              the_literal: quoted_literal {
+                value: "Hello, world!"
+                with_escapes: "Hello, world!"
+                quote: "
+              }
+            }
+          ]
+          grouping: parens
+        }
+      }
+    ]
+  }
+]
+============ BEFORE_EVALUATION
+============ TYPE_DECL
+============ IMPORT_AND_TYPE_VAR_DECL
+============ SUPERTYPE_DECL
+============ METHOD_AND_VARIABLE_DECL
+============ BODY_CHECK
+  inform("Hello, world!");
+  ^^^^^^
+testdata/hello.i:8: Lookup failed: no inform in main, target parameters (deeply_immutable string)
+void main() {
+  inform("Hello, world!");
+}

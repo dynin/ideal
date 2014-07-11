@@ -1,0 +1,63 @@
+{
+  "world_type": "coach",
+  "source_version": "05.17",
+  "version_id": "05.17/1403043495339/13",
+  "data": [
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:0",
+      "name": "Dips",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:1",
+      "name": "Pull Ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:2",
+      "name": "Run",
+      "description_link": "",
+      "category": "CARDIO",
+      "parameter": "DISTANCE"
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:3",
+      "type": "id:0",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:4",
+      "type": "id:1",
+      "repetition_count": "30",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:5",
+      "type": "id:2",
+      "repetition_count": "",
+      "distance": "1mi"
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:6",
+      "name": "Workout of the Day",
+      "rounds": "3",
+      "exercises": [
+        "id:3",
+        "id:4",
+        "id:5"
+      ]
+    }
+  ]
+}

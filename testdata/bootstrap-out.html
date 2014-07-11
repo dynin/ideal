@@ -1,0 +1,723 @@
+procedure_kind procedure[entity ret, entity arg1, entity arg2] {
+               ^^^^^^^^^
+testdata/bootstrap.i:198: Primary type already defined
+  procedure_kind procedure[entity ret, entity arg1] {
+                 ^^^^^^^^^
+  testdata/bootstrap.i:194: This is the primary
+procedure_kind function[entity ret, entity arg1, entity arg2] {
+               ^^^^^^^^
+testdata/bootstrap.i:208: Primary type already defined
+  procedure_kind function[entity ret, entity arg1] {
+                 ^^^^^^^^
+  testdata/bootstrap.i:203: This is the primary
+interface collection[data element] {
+          ^^^^^^^^^^
+testdata/bootstrap.i:255: Primary type already defined
+  interface collection[value element] {
+            ^^^^^^^^^^
+  testdata/bootstrap.i:227: This is the primary
+<html>
+  <head>
+    <title>
+     test
+    </title>
+   <link href='ideal-style.css' rel='stylesheet' style='text/css' />
+  </head>
+  <body>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+    <div>
+      <div class='documentation'>
+        Root type in the ideal type system.
+        It is the supertype of <span class='code'>value</span> and <span class='code'>reference</span>.
+        There should be no need to subtype <span class='code'>entity</span> directly; in fact,
+        it&apos;s unlikely that you&apos;ll use this type in your code at all.
+       
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'>entity</span>
+        <div class='indent'>
+         pass
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         Root type for regular values (as opposed to <span class='code'>reference</span>s).
+        </div>
+       
+       
+        
+        <div>
+         Before using this type as a direct supertype, consider
+          whether your objects satisfy the contract for the <span class='code'>data</span> type.
+          Subtypes of <span class='code'>data</span> have library support for a lot of useful functionality.
+          
+        </div>
+       
+       
+        
+        <div class='documentation-note'>
+         Corresponds to &quot;rvalue&quot; in C.
+        </div>
+       
+        
+        <div class='documentation-note'>
+         Roughly corresponds to <span class='code'>Object</span> in Java.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'>value</span>
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='entity.html'>entity</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         An entity that supports read and write access to a value.
+          Implementations include local variables, fields, and elements
+          of a list.
+        </div>
+       
+       
+        
+        <div>
+         You can use this type to implement pass-by-reference semantics,
+          such as the assignment operation.
+        </div>
+       
+       
+        
+        <div class='documentation-note'>
+         Corresponds to &quot;lvalue&quot; in C.
+        </div>
+       
+        
+        <div class='documentation-note'>
+         C++ supports pass-by-reference, but not the creation of
+          fully customizable reference objects.
+        </div>
+       
+        
+        <div class='documentation-note'>
+         There is no Java equivalent of this type, except for builtin
+          operators such as assignment and getter/setter convention for fields.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       reference kind <span class='type-declaration-name'>reference</span>[any <a href='value.html'>value</a> <span class='var-declaration-name'>value type</span>]
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='entity.html'>entity</a></span>
+          </div>
+          <div class='procedure-declaration'>
+           value type <span class='procedure-declaration-name'>get</span>() readonly
+          </div>
+          <div class='procedure-declaration'>
+           <a href='void.html'>void</a> <span class='procedure-declaration-name'>set</span>(value type <span class='var-declaration-name'>new value</span>) writeonly
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         Data is a value that can be fully represented by bits.
+          It can be serialized for persistent storage or transfer
+          over the network.  The fields of the data object must
+          also be data.  Most entities in a typical program--such
+          as integers and strings--are data.
+        </div>
+       
+       
+        
+        <div>
+         The library provides a lot of functionality for subtypes of <span class='code'>data</span>,
+          such as equivalence predicates, hash functions, and serializers.
+        </div>
+       
+       
+        
+        <div>
+         Examples of values that are <em>not</em> data are a clock or a file
+          descriptor--since they refer to entities that cannot be packaged and
+          sent over the network.
+        </div>
+       
+       
+        
+        <div class='documentation-note'>
+         Related concepts in Java are <span class='code'>Serializable</span> and <span class='code'>Cloneable</span>.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'>data</span>
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='value.html'>value</a></span>
+          </div>
+          <div class='procedure-declaration'>
+           not yet implemented <a href='data.html'>data</a> <span class='procedure-declaration-name'>copy</span>() readonly
+          </div>
+          <div class='procedure-declaration'>
+           not yet implemented <a href='data.html'>data</a> <span class='procedure-declaration-name'>deep copy</span>() readonly
+          </div>
+          <div class='procedure-declaration'>
+           not yet implemented immutable <a href='data.html'>data</a> <span class='procedure-declaration-name'>frozen copy</span>() readonly
+          </div>
+          <div class='procedure-declaration'>
+           not yet implemented deeply immutable <a href='data.html'>data</a> <span class='procedure-declaration-name'>deep frozen copy</span>() readonly
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         A type whose values can be converted to a canonical
+          string representation.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'>convertible to string</span>
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'>readonly <a href='value.html'>value</a></span>
+          </div>
+          <div class='procedure-declaration'>
+           <a href='string.html'>string</a> <span class='procedure-declaration-name'>to string</span>() readonly
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         A type that represents computation the result of which doesn&apos;t matter.
+          It has only one value that means nothing, and is also known as
+          the unit type.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       singleton <span class='type-declaration-name'>void</span>
+        <div class='indent'>
+          <div>
+           extends <span class='supertype-declaration-name'>deeply immutable <a href='data.html'>data</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         This type means that no observable computation has taken place,
+          and that program state is unaffected.  Empty statement is of
+          type <span class='code'>nothing</span>.
+        </div>
+       
+       
+        
+        <div>
+         This is a stronger contract than <span class='code'>void</span>, which allows
+          procedures that don&apos;t return any value yet have side effects.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       singleton <span class='type-declaration-name'>nothing</span>
+        <div class='indent'>
+          <div>
+           extends <span class='supertype-declaration-name'><a href='void.html'>void</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         Describes types that have a natural equivalence relation,
+          such as an integer.  There are types for which multiple good
+          equivalence relationships exist--consider a modifiable sequence, that
+          can be compared either element-by-element or by reference.
+          On the other hand, for an immutable sequence
+          element-by-element comparison makes more sense.
+        </div>
+       
+       
+        
+        <div>
+         When obviously best choice doesn&apos;t exist, it is preferrable to
+          force the programmer to make decision which equivalence relation
+          to use explicitly.  Data structures have been designed to
+          allow the relation to be selected.
+        </div>
+       
+       
+        
+        <div>
+         For operators == and != to work on values of a type, the type
+          must implement this interface.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'>equality comparable</span>
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='value.html'>value</a></span>
+          </div>
+          <div>
+           static <a href='equivalence-relation.html'>equivalence relation</a>[<a href='equality-comparable.html'>equality comparable</a>] <span class='var-declaration-name'>equivalence</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         A type that has two values: <span class='code'>true</span> and <span class='code'>false</span>.
+          Logical operators <span class='code'>and</span>, <span class='code'>or</span>, <span class='code'>not</span>, <span class='code'>xor</span> are defined
+          on the type.  Note that <span class='code'>and</span> and <span class='code'>or</span> operators
+          are short-circuiting: if the second operand
+          can&apos;t affect the value of the result, it&apos;s not
+          evaluated, as is the case when the first operand to <span class='code'>and</span> is <span class='code'>false</span>.
+        </div>
+       
+        
+        <div class='documentation-note'>
+         Equivalent to `Java&apos;s boolean type.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       enum <span class='type-declaration-name'>boolean</span>
+        <div class='indent'>
+          <div>
+           implements <span class='supertype-declaration-name'>deeply immutable <a href='data.html'>data</a></span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'><a href='equality-comparable.html'>equality comparable</a></span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'><a href='convertible-to-string.html'>convertible to string</a></span>
+          </div>
+          <div>
+           <span class='var-declaration-name'>true</span>
+          </div>
+          <div>
+           <span class='var-declaration-name'>false</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         An integer value with an unlimited range.  The runtime
+          should hide the distinction between integers that can be
+          represented as one machine word and arbitrary-precision integers
+          (<em>bigint</em>s).
+        </div>
+       
+       
+        
+        <div>
+         When integers with a specific representation are needed,
+          types such <span class='code'>int32</span> from <span class='code'>ideal.library.interop</span> should be used.
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       class <span class='type-declaration-name'>integer</span>
+        <div class='indent'>
+          <div>
+           implements <span class='supertype-declaration-name'>deeply immutable <a href='data.html'>data</a></span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'><a href='equality-comparable.html'>equality comparable</a></span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'><a href='convertible-to-string.html'>convertible to string</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        A type that encapsulates integer values from 0 (inclusive) to
+        positive infinity (exclusive).
+      </div>
+      <div class='type-declaration'>
+       class <span class='type-declaration-name'>nonnegative</span>
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='integer.html'>integer</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        A type that encapsulates integer values from 1 (inclusive) to
+        positive infinity (exclusive).
+      </div>
+      <div class='type-declaration'>
+       class <span class='type-declaration-name'>positive</span>
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='nonnegative.html'>nonnegative</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        
+        <div>
+         A type whose values are distinct from valid values of other types.
+          Unlike many languages in which <span class='code'>null</span> is a value, in ideal
+          <span class='code'>null</span> is type, and values are specific--<span class='code'>missing</span>, <span class='code'>not_applicable</span>
+          <span class='code'>not_a_number</span> and so on.  The motivation behind this is to allow
+          the programmer to specify the nature of the exceptional value.
+          Developers can subtype <span class='code'>null</span> if necessary, though the
+          need for this should be quite rare.
+        </div>
+       
+       
+        
+        <div>
+         The check for null should be of the form <span class='code'>if (x is null)</span>.
+          The program shouldn&apos;t depend on what type of null value is being returned.
+          
+        </div>
+       
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'>null</span>
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'>deeply immutable <a href='data.html'>data</a></span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'><a href='convertible-to-string.html'>convertible to string</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        A subroutine that given values as arguments, returns a value
+        that is a result of computation.  The arguments of the type
+        are interpreted as follows: the first argument is the type of
+        return value, the second through last argument types correspond
+        to first through last arguent type of procedure.  For example,
+        <span class='code'>procedure[boolean, integer]</span> is a procedure that takes an integer
+        argument and returns boolean.
+      </div>
+      <div class='type-declaration'>
+       procedure kind <span class='type-declaration-name'>procedure</span>[<a href='entity.html'>entity</a> <span class='var-declaration-name'>ret</span>, <a href='entity.html'>entity</a> <span class='var-declaration-name'>arg1</span>]
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='value.html'>value</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     procedure kind <span class='type-declaration-name'>procedure</span>[entity <span class='var-declaration-name'>ret</span>, entity <span class='var-declaration-name'>arg1</span>, entity <span class='var-declaration-name'>arg2</span>]
+      <div class='indent'>
+        <div>
+         refines <span class='supertype-declaration-name'>value</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        A procedure that has no visible side effects.
+      </div>
+      <div class='type-declaration'>
+       procedure kind <span class='type-declaration-name'>function</span>[<a href='entity.html'>entity</a> <span class='var-declaration-name'>ret</span>, <a href='entity.html'>entity</a> <span class='var-declaration-name'>arg1</span>]
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='procedure.html'>procedure</a>[ret, arg1]</span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'>deeply immutable <a href='data.html'>data</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     procedure kind <span class='type-declaration-name'>function</span>[entity <span class='var-declaration-name'>ret</span>, entity <span class='var-declaration-name'>arg1</span>, entity <span class='var-declaration-name'>arg2</span>]
+      <div class='indent'>
+        <div>
+         refines <span class='supertype-declaration-name'>procedure[ret, arg1, arg2]</span>
+        </div>
+        <div>
+         implements <span class='supertype-declaration-name'>deeply immutable data</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     concept <span class='type-declaration-name'>predicate</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         refines <span class='supertype-declaration-name'><a href='function.html'>function</a>[<a href='boolean.html'>boolean</a>, element]</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     concept <span class='type-declaration-name'>relation</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         refines <span class='supertype-declaration-name'><a href='function.html'>function</a>[<a href='boolean.html'>boolean</a>, element, element]</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        Equivalence relation is reflexive, symmetric, and transitive.
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'>equivalence relation</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='relation.html'>relation</a>[element]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        A finite collection of element values, such as a sequence or a set.
+      </div>
+      <div class='type-declaration'>
+       interface <span class='type-declaration-name'>collection</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><a href='value.html'>value</a></span>
+          </div>
+          <div>
+           readonly <a href='nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>size</span>
+          </div>
+          <div>
+           readonly <a href='boolean.html'>boolean</a> <span class='var-declaration-name'>is empty</span>
+          </div>
+          <div class='procedure-declaration'>
+           immutable <a href='list.html'>list</a>[element] <span class='procedure-declaration-name'>elements</span>() readonly
+          </div>
+          <div class='procedure-declaration'>
+           <a href='boolean.html'>boolean</a> <span class='procedure-declaration-name'>has</span>(<a href='predicate.html'>predicate</a>[element] <span class='var-declaration-name'>p</span>) readonly
+          </div>
+          <div class='procedure-declaration'>
+           <a href='boolean.html'>boolean</a> <span class='procedure-declaration-name'>all</span>(<a href='predicate.html'>predicate</a>[element] <span class='var-declaration-name'>p</span>) readonly
+          </div>
+          <div class='procedure-declaration'>
+           readonly <a href='collection.html'>collection</a>[element] <span class='procedure-declaration-name'>filter</span>(<a href='predicate.html'>predicate</a>[element] <span class='var-declaration-name'>p</span>) readonly
+          </div>
+          <div class='procedure-declaration'>
+           immutable <a href='collection.html'>collection</a>[element] <span class='procedure-declaration-name'>filter</span>(<a href='predicate.html'>predicate</a>[element] <span class='var-declaration-name'>p</span>) immutable
+          </div>
+          <div class='procedure-declaration'>
+           <a href='void.html'>void</a> <span class='procedure-declaration-name'>remove</span>(<a href='predicate.html'>predicate</a>[element] <span class='var-declaration-name'>p</span>)
+          </div>
+          <div class='procedure-declaration'>
+           <a href='void.html'>void</a> <span class='procedure-declaration-name'>clear</span>() writeonly
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     interface <span class='type-declaration-name'>collection with equivalence</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         refines <span class='supertype-declaration-name'><a href='collection.html'>collection</a>[element]</span>
+        </div>
+        <div>
+         <a href='equivalence-relation.html'>equivalence relation</a>[element] <span class='var-declaration-name'>element equivalence</span>
+        </div>
+        <div class='procedure-declaration'>
+         <a href='boolean.html'>boolean</a> <span class='procedure-declaration-name'>contains</span>(element <span class='var-declaration-name'>e</span>) readonly
+        </div>
+        <div class='procedure-declaration'>
+         <a href='boolean.html'>boolean</a> <span class='procedure-declaration-name'>contains all</span>(<a href='collection.html'>collection</a>[element] <span class='var-declaration-name'>c</span>) readonly
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>remove one</span>(element <span class='var-declaration-name'>e</span>)
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>remove all</span>(<a href='collection.html'>collection</a>[element] <span class='var-declaration-name'>c</span>)
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>retain all</span>(<a href='collection.html'>collection</a>[element] <span class='var-declaration-name'>c</span>)
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     interface <span class='type-declaration-name'>collection</span>[data <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         implements <span class='supertype-declaration-name'>data</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     interface <span class='type-declaration-name'>list</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         implements <span class='supertype-declaration-name'><a href='collection.html'>collection</a>[element]</span>
+        </div>
+        <div class='procedure-declaration'>
+         implicit <a href='reference.html'>reference</a>[element] <span class='procedure-declaration-name'>get</span>(<a href='nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>index</span>) readonly
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>append</span>(element <span class='var-declaration-name'>e</span>)
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>prepend</span>(element <span class='var-declaration-name'>e</span>)
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>insert</span>(<a href='nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>index</span>, element <span class='var-declaration-name'>e</span>)
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>append all</span>(readonly <a href='list.html'>list</a>[element] <span class='var-declaration-name'>c</span>)
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>prepend all</span>(readonly <a href='list.html'>list</a>[element] <span class='var-declaration-name'>c</span>)
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>insert all</span>(<a href='nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>index</span>, readonly <a href='list.html'>list</a>[element] <span class='var-declaration-name'>c</span>)
+        </div>
+        <div class='procedure-declaration'>
+         element <span class='procedure-declaration-name'>remove at</span>(<a href='nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>index</span>)
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     interface <span class='type-declaration-name'>list with equivalence</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         implements <span class='supertype-declaration-name'><a href='collection-with-equivalence.html'>collection with equivalence</a>[element]</span>
+        </div>
+        <div>
+         implements <span class='supertype-declaration-name'><a href='list.html'>list</a>[element]</span>
+        </div>
+        <div class='procedure-declaration'>
+         <span class='procedure-declaration-name'>list with equivalence</span>(<a href='equivalence-relation.html'>equivalence relation</a>[element] <span class='var-declaration-name'>element equivalence</span>)
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class='documentation'>
+        A type that encapsulates an atom of text.  Lists of chracaters
+        make up <span class='code'>string</span>s.
+      </div>
+      <div class='type-declaration'>
+       class <span class='type-declaration-name'>character</span>
+        <div class='indent'>
+          <div>
+           implements <span class='supertype-declaration-name'>deeply immutable <a href='data.html'>data</a></span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'><a href='equality-comparable.html'>equality comparable</a></span>
+          </div>
+          <div>
+           implements <span class='supertype-declaration-name'><a href='convertible-to-string.html'>convertible to string</a></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     class <span class='type-declaration-name'>string</span>
+      <div class='indent'>
+        <div>
+         implements <span class='supertype-declaration-name'>deeply immutable <a href='list.html'>list</a>[<a href='character.html'>character</a>]</span>
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     interface <span class='type-declaration-name'>closeable</span>
+      <div class='indent'>
+        <div>
+         readonly <a href='boolean.html'>boolean</a> <span class='var-declaration-name'>is closed</span>
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>close</span>()
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     interface <span class='type-declaration-name'>syncable</span>
+      <div class='indent'>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>sync</span>()
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     interface <span class='type-declaration-name'>input</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         extends <span class='supertype-declaration-name'><a href='closeable.html'>closeable</a></span>
+        </div>
+        <div>
+         readonly <a href='boolean.html'>boolean</a> <span class='var-declaration-name'>is available</span>
+        </div>
+        <div>
+         readonly <a href='nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>available</span>
+        </div>
+        <div class='procedure-declaration'>
+         immutable <a href='list.html'>list</a>[element] <span class='procedure-declaration-name'>read</span>(<a href='positive.html'>positive</a> <span class='var-declaration-name'>max</span>)
+        </div>
+      </div>
+    </div>
+    <div class='type-declaration'>
+     concept <span class='type-declaration-name'>output</span>[<a href='value.html'>value</a> <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         extends <span class='supertype-declaration-name'><a href='closeable.html'>closeable</a></span>, <span class='supertype-declaration-name'><a href='syncable.html'>syncable</a></span>
+        </div>
+        <div>
+         readonly <a href='boolean.html'>boolean</a> <span class='var-declaration-name'>is available</span>
+        </div>
+        <div>
+         readonly <a href='nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>available</span>
+        </div>
+        <div class='procedure-declaration'>
+         <a href='void.html'>void</a> <span class='procedure-declaration-name'>write</span>(readonly <a href='list.html'>list</a>[element] <span class='var-declaration-name'>c</span>)
+        </div>
+      </div>
+    </div>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+  </body>
+</html>

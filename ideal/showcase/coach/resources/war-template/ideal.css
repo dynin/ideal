@@ -1,0 +1,50 @@
+body {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.error-message {
+  font-family: sans-serif;
+  color: red;
+  padding: 4px;
+}
+
+u {
+  background-color: red;
+  color: white;
+  text-decoration: none;
+}
+
+.messages {
+  font-family: sans-serif;
+  background-color: #ddd;
+  padding: 4px;
+}
+
+.message {
+  font-family: serif;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+#status {
+  border: 5px;
+  padding: 0px 7px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.green {
+  background-color: green;
+  color: white;
+}
+
+.yellow {
+  background-color: yellow;
+  color: black;
+}
+
+.red {
+  background-color: red;
+  color: white;
+}

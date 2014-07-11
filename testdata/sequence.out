@@ -1,0 +1,1924 @@
+============ INIT
+============ PARSE
+============ BOOTSTRAP
+============ DISPLAY
+[
+  import_construct {
+    annotations: [ ]
+    type: resolve_construct {
+      qualifier: resolve_construct {
+        qualifier: name_construct {
+          the_name: java
+        }
+        name: name_construct {
+          the_name: util
+        }
+      }
+      name: name_construct {
+        the_name: List
+      }
+    }
+  }
+  import_construct {
+    annotations: [ ]
+    type: resolve_construct {
+      qualifier: resolve_construct {
+        qualifier: name_construct {
+          the_name: java
+        }
+        name: name_construct {
+          the_name: util
+        }
+      }
+      name: name_construct {
+        the_name: ArrayList
+      }
+    }
+  }
+  import_construct {
+    annotations: [
+      modifier_construct {
+        the_kind: <implicit>
+      }
+    ]
+    type: resolve_construct {
+      qualifier: name_construct {
+        the_name: ideal
+      }
+      name: name_construct {
+        the_name: library
+      }
+    }
+  }
+  import_construct {
+    annotations: [
+      modifier_construct {
+        the_kind: <implicit>
+      }
+    ]
+    type: resolve_construct {
+      qualifier: name_construct {
+        the_name: ideal
+      }
+      name: name_construct {
+        the_name: concepts
+      }
+    }
+  }
+  import_construct {
+    annotations: [
+      modifier_construct {
+        the_kind: <implicit>
+      }
+    ]
+    type: resolve_construct {
+      qualifier: name_construct {
+        the_name: ideal
+      }
+      name: name_construct {
+        the_name: constructs
+      }
+    }
+  }
+  import_construct {
+    annotations: [ ]
+    type: resolve_construct {
+      qualifier: resolve_construct {
+        qualifier: name_construct {
+          the_name: ideal
+        }
+        name: name_construct {
+          the_name: concepts
+        }
+      }
+      name: name_construct {
+        the_name: type
+      }
+    }
+  }
+  import_construct {
+    annotations: [ ]
+    type: resolve_construct {
+      qualifier: resolve_construct {
+        qualifier: name_construct {
+          the_name: ideal
+        }
+        name: name_construct {
+          the_name: scanners
+        }
+      }
+      name: name_construct {
+        the_name: scanner_element
+      }
+    }
+  }
+  import_construct {
+    annotations: [ ]
+    type: resolve_construct {
+      qualifier: resolve_construct {
+        qualifier: name_construct {
+          the_name: ideal
+        }
+        name: name_construct {
+          the_name: semantics
+        }
+      }
+      name: name_construct {
+        the_name: lookup_row
+      }
+    }
+  }
+  type_declaration_construct {
+    annotations: [
+      modifier_construct {
+        the_kind: <public>
+      }
+    ]
+    kind: class
+    name: sequence
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: readonly_data
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: readonly_data
+          }
+        ]
+      }
+      variable_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <private>
+          }
+        ]
+        type: name_construct {
+          the_name: List
+        }
+        name: list
+        post_annotations: [ ]
+        init: <null>
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          variable_construct {
+            annotations: [ ]
+            type: <null>
+            name: list
+            post_annotations: [ ]
+            init: parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: ArrayList
+                }
+                name: name_construct {
+                  the_name: special_name {
+                    name: "new"
+                  }
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
+              }
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n1
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          block_construct {
+            annotations: [ ]
+            body: [
+              parameter_construct {
+                main: name_construct {
+                  the_name: append
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: n1
+                    }
+                  ]
+                  grouping: parens
+                }
+              }
+            ]
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n1
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n2
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: sequence
+              }
+              name: ns1
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n2
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append_all
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: ns1
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n1
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: sequence
+              }
+              name: ns2
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append_all
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: ns2
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n1
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n2
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n3
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n1
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n2
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n3
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n4
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n4
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n1
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n2
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n3
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n4
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n5
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n4
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n5
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: <null>
+        name: sequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n1
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n2
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n3
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n4
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n5
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: n6
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: name_construct {
+              the_name: special_name {
+                name: "this"
+              }
+            }
+            parameters: list_construct {
+              elements: [ ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n4
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n5
+                }
+              ]
+              grouping: parens
+            }
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n6
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: int
+        }
+        name: size
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          return_construct {
+            the_expression: parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: list
+                }
+                name: name_construct {
+                  the_name: size
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
+              }
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: empty
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          return_construct {
+            the_expression: parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: list
+                }
+                name: name_construct {
+                  the_name: isEmpty
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
+              }
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: element
+        }
+        name: get
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: int
+              }
+              name: index
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          return_construct {
+            the_expression: operator_construct {
+              the_operator: operator {
+                type: infix
+                name: as
+                alpha_name: as_operator
+              }
+              arguments: [
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: list
+                    }
+                    name: name_construct {
+                      the_name: get
+                    }
+                  }
+                  parameters: list_construct {
+                    elements: [
+                      name_construct {
+                        the_name: index
+                      }
+                    ]
+                    grouping: parens
+                  }
+                }
+                name_construct {
+                  the_name: element
+                }
+              ]
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: append
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: t
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: resolve_construct {
+              qualifier: name_construct {
+                the_name: list
+              }
+              name: name_construct {
+                the_name: add
+              }
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: t
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: append_all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: sequence
+              }
+              name: s
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          parameter_construct {
+            main: resolve_construct {
+              qualifier: name_construct {
+                the_name: list
+              }
+              name: name_construct {
+                the_name: addAll
+              }
+            }
+            parameters: list_construct {
+              elements: [
+                resolve_construct {
+                  qualifier: name_construct {
+                    the_name: s
+                  }
+                  name: name_construct {
+                    the_name: list
+                  }
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: sequence
+        }
+        name: subsequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: int
+              }
+              name: begin
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: int
+              }
+              name: end
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          constraint_construct {
+            expr: operator_construct {
+              the_operator: operator {
+                type: infix
+                name: &&
+                alpha_name: logical_and
+              }
+              arguments: [
+                operator_construct {
+                  the_operator: operator {
+                    type: infix
+                    name: >=
+                    alpha_name: greater_equal
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: begin
+                    }
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 0
+                        image: "0"
+                      }
+                    }
+                  ]
+                }
+                operator_construct {
+                  the_operator: operator {
+                    type: infix
+                    name: <=
+                    alpha_name: less_equal
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: end
+                    }
+                    parameter_construct {
+                      main: name_construct {
+                        the_name: size
+                      }
+                      parameters: list_construct {
+                        elements: [ ]
+                        grouping: parens
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: sequence
+            }
+            name: result
+            post_annotations: [ ]
+            init: parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: sequence
+                }
+                name: name_construct {
+                  the_name: special_name {
+                    name: "new"
+                  }
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
+              }
+            }
+          }
+          for_construct {
+            init: variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: int
+              }
+              name: i
+              post_annotations: [ ]
+              init: name_construct {
+                the_name: begin
+              }
+            }
+            condition: operator_construct {
+              the_operator: operator {
+                type: infix
+                name: <
+                alpha_name: less
+              }
+              arguments: [
+                name_construct {
+                  the_name: i
+                }
+                name_construct {
+                  the_name: end
+                }
+              ]
+            }
+            update: operator_construct {
+              the_operator: operator {
+                type: assignment
+                name: +=
+                alpha_name: add_assign
+              }
+              arguments: [
+                name_construct {
+                  the_name: i
+                }
+                literal_construct {
+                  the_literal: integer_literal {
+                    the_value: 1
+                    image: "1"
+                  }
+                }
+              ]
+            }
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: result
+                    }
+                    name: name_construct {
+                      the_name: append
+                    }
+                  }
+                  parameters: list_construct {
+                    elements: [
+                      parameter_construct {
+                        main: name_construct {
+                          the_name: get
+                        }
+                        parameters: list_construct {
+                          elements: [
+                            name_construct {
+                              the_name: i
+                            }
+                          ]
+                          grouping: parens
+                        }
+                      }
+                    ]
+                    grouping: parens
+                  }
+                }
+              ]
+            }
+          }
+          return_construct {
+            the_expression: name_construct {
+              the_name: result
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: sequence
+        }
+        name: subsequence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: int
+              }
+              name: begin
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          return_construct {
+            the_expression: parameter_construct {
+              main: name_construct {
+                the_name: subsequence
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: begin
+                  }
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: size
+                    }
+                    parameters: list_construct {
+                      elements: [ ]
+                      grouping: parens
+                    }
+                  }
+                ]
+                grouping: parens
+              }
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: test
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          conditional_construct {
+            cond_expr: name_construct {
+              the_name: true
+            }
+            then_expr: block_construct {
+              annotations: [ ]
+              body: [
+                parameter_construct {
+                  main: name_construct {
+                    the_name: test
+                  }
+                  parameters: list_construct {
+                    elements: [ ]
+                    grouping: parens
+                  }
+                }
+              ]
+            }
+            else_expr: block_construct {
+              annotations: [ ]
+              body: [
+                parameter_construct {
+                  main: name_construct {
+                    the_name: test
+                  }
+                  parameters: list_construct {
+                    elements: [ ]
+                    grouping: parens
+                  }
+                }
+              ]
+            }
+            is_statement: true
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: _display
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: display_writer
+              }
+              name: writer
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: display_context
+              }
+              name: options
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: identifier
+            }
+            name: id
+            post_annotations: [ ]
+            init: parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: display_function
+                }
+                name: name_construct {
+                  the_name: name
+                }
+              }
+              parameters: list_construct {
+                elements: [
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: getClass
+                    }
+                    parameters: list_construct {
+                      elements: [ ]
+                      grouping: parens
+                    }
+                  }
+                ]
+                grouping: parens
+              }
+            }
+          }
+          parameter_construct {
+            main: resolve_construct {
+              qualifier: name_construct {
+                the_name: writer
+              }
+              name: name_construct {
+                the_name: start_list
+              }
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: id
+                }
+              ]
+              grouping: parens
+            }
+          }
+          for_construct {
+            init: variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: int
+              }
+              name: i
+              post_annotations: [ ]
+              init: literal_construct {
+                the_literal: integer_literal {
+                  the_value: 0
+                  image: "0"
+                }
+              }
+            }
+            condition: operator_construct {
+              the_operator: operator {
+                type: infix
+                name: <
+                alpha_name: less
+              }
+              arguments: [
+                name_construct {
+                  the_name: i
+                }
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: list
+                    }
+                    name: name_construct {
+                      the_name: size
+                    }
+                  }
+                  parameters: list_construct {
+                    elements: [ ]
+                    grouping: parens
+                  }
+                }
+              ]
+            }
+            update: operator_construct {
+              the_operator: operator {
+                type: assignment
+                name: +=
+                alpha_name: add_assign
+              }
+              arguments: [
+                name_construct {
+                  the_name: i
+                }
+                literal_construct {
+                  the_literal: integer_literal {
+                    the_value: 1
+                    image: "1"
+                  }
+                }
+              ]
+            }
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: function
+                    }
+                    name: name_construct {
+                      the_name: display
+                    }
+                  }
+                  parameters: list_construct {
+                    elements: [
+                      name_construct {
+                        the_name: writer
+                      }
+                      operator_construct {
+                        the_operator: operator {
+                          type: infix
+                          name: as
+                          alpha_name: as_operator
+                        }
+                        arguments: [
+                          parameter_construct {
+                            main: resolve_construct {
+                              qualifier: name_construct {
+                                the_name: list
+                              }
+                              name: name_construct {
+                                the_name: get
+                              }
+                            }
+                            parameters: list_construct {
+                              elements: [
+                                name_construct {
+                                  the_name: i
+                                }
+                              ]
+                              grouping: parens
+                            }
+                          }
+                          name_construct {
+                            the_name: element
+                          }
+                        ]
+                      }
+                      name_construct {
+                        the_name: options
+                      }
+                    ]
+                    grouping: parens
+                  }
+                }
+              ]
+            }
+          }
+          parameter_construct {
+            main: resolve_construct {
+              qualifier: name_construct {
+                the_name: writer
+              }
+              name: name_construct {
+                the_name: end_list
+              }
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: id
+                }
+              ]
+              grouping: parens
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
+============ BEFORE_EVALUATION
+============ TYPE_DECL
+============ IMPORT_AND_TYPE_VAR_DECL
+import java.util.List;
+       ^^^^
+testdata/sequence.i:7: Lookup failed: no java in <root>
+import java.util.ArrayList;
+       ^^^^
+testdata/sequence.i:8: Lookup failed: no java in <root>
+implicit import ideal.concepts;
+                -----^--------
+testdata/sequence.i:11: Lookup failed: no concepts in ideal
+implicit import ideal.constructs;
+                -----^----------
+testdata/sequence.i:12: Lookup failed: no constructs in ideal
+import ideal.concepts.type;
+       -----^--------
+testdata/sequence.i:13: Lookup failed: no concepts in ideal
+import ideal.scanners.scanner_element;
+       -----^--------
+testdata/sequence.i:14: Lookup failed: no scanners in ideal
+import ideal.semantics.lookup_row;
+       -----^---------
+testdata/sequence.i:15: Lookup failed: no semantics in ideal
+public class sequence[readonly_data element] {
+                      ^^^^^^^^^^^^^
+testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
+  implements readonly_data;
+             ^^^^^^^^^^^^^
+testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
+============ SUPERTYPE_DECL
+============ METHOD_AND_VARIABLE_DECL
+  public int size() {
+         ^^^
+testdata/sequence.i:79: Lookup failed: no int in sequence.size
+  public element get(int index) {
+                     ^^^
+testdata/sequence.i:85: Lookup failed: no int in sequence.get
+  public sequence subsequence(int begin, int end) {
+                              ^^^
+testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+  public sequence subsequence(int begin, int end) {
+                                         ^^^
+testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+  public sequence subsequence(int begin) {
+                              ^^^
+testdata/sequence.i:103: Lookup failed: no int in sequence.subsequence
+  public void _display(display_writer writer, display_context options) {
+                       ^^^^^^^^^^^^^^
+testdata/sequence.i:115: Lookup failed: no display_writer in sequence._display
+  public void _display(display_writer writer, display_context options) {
+                                              ^^^^^^^^^^^^^^^
+testdata/sequence.i:115: Lookup failed: no display_context in sequence._display
+============ BODY_CHECK
+    list.addAll(s.list);
+                -^----
+testdata/sequence.i:92: Lookup failed: no list in immutable reference[mutable sequence]
+    assert begin >= 0 && end <= size();
+                                ^^^^
+testdata/sequence.i:95: Lookup failed: no size in sequence.subsequence, target parameters ()
+    sequence result : sequence.new();
+                      --------^---
+testdata/sequence.i:96: Can't find declarations with matching arity
+  public class sequence[readonly_data element] {
+               ^^^^^^^^
+  testdata/sequence.i:17: (declaration #0: raw sequence)
+    for (int i : begin; i < end; i += 1) {
+         ^^^
+testdata/sequence.i:98: Lookup failed: no int in sequence.subsequence
+    return subsequence(begin, size());
+                              ^^^^
+testdata/sequence.i:104: Lookup failed: no size in sequence.subsequence, target parameters ()
+    identifier id : display_function.name(getClass());
+                                          ^^^^^^^^
+testdata/sequence.i:116: Lookup failed: no getClass in sequence._display, target parameters ()
+    for (int i : 0; i < list.size(); i += 1) {
+         ^^^
+testdata/sequence.i:118: Lookup failed: no int in sequence._display
+import java.util.List;
+import java.util.ArrayList;
+implicit import ideal.library;
+implicit import ideal.concepts;
+implicit import ideal.constructs;
+import ideal.concepts.type;
+import ideal.scanners.scanner_element;
+import ideal.semantics.lookup_row;
+public class sequence[readonly_data element] {
+  implements readonly_data;
+  private List list;
+  public sequence() {
+    list : ArrayList.new();
+  }
+  public sequence(element n1) {
+    this();
+    {
+      append(n1);
+    }
+  }
+  public sequence(element n1, element n2) {
+    this();
+    append(n1);
+    append(n2);
+  }
+  public sequence(sequence ns1, element n2) {
+    this();
+    append_all(ns1);
+    append(n2);
+  }
+  public sequence(element n1, sequence ns2) {
+    this();
+    append(n1);
+    append_all(ns2);
+  }
+  public sequence(element n1, element n2, element n3) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+  }
+  public sequence(element n1, element n2, element n3, element n4) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+  }
+  public sequence(element n1, element n2, element n3, element n4, element n5) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+    append(n5);
+  }
+  public sequence(element n1, element n2, element n3, element n4, element n5, element n6) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+    append(n5);
+    append(n6);
+  }
+  public int size() {
+    return list.size();
+  }
+  public boolean empty() {
+    return list.isEmpty();
+  }
+  public element get(int index) {
+    return list.get(index) as element;
+  }
+  public void append(element t) {
+    list.add(t);
+  }
+  public void append_all(sequence s) {
+    list.addAll(s.list);
+  }
+  public sequence subsequence(int begin, int end) {
+    assert begin >= 0 && end <= size();
+    sequence result : sequence.new();
+    for (int i : begin; i < end; i += 1) {
+      result.append(get(i));
+    }
+    return result;
+  }
+  public sequence subsequence(int begin) {
+    return subsequence(begin, size());
+  }
+  public void test() {
+    if (true) {
+      test();
+    } else {
+      test();
+    }
+  }
+  public void _display(display_writer writer, display_context options) {
+    identifier id : display_function.name(getClass());
+    writer.start_list(id);
+    for (int i : 0; i < list.size(); i += 1) {
+      function.display(writer, list.get(i) as element, options);
+    }
+    writer.end_list(id);
+  }
+}

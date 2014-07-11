@@ -1,0 +1,385 @@
+import java.util.List;
+       ^^^^
+testdata/sequence.i:7: Lookup failed: no java in <root>
+import java.util.ArrayList;
+       ^^^^
+testdata/sequence.i:8: Lookup failed: no java in <root>
+implicit import ideal.concepts;
+                -----^--------
+testdata/sequence.i:11: Lookup failed: no concepts in ideal
+implicit import ideal.constructs;
+                -----^----------
+testdata/sequence.i:12: Lookup failed: no constructs in ideal
+import ideal.concepts.type;
+       -----^--------
+testdata/sequence.i:13: Lookup failed: no concepts in ideal
+import ideal.scanners.scanner_element;
+       -----^--------
+testdata/sequence.i:14: Lookup failed: no scanners in ideal
+import ideal.semantics.lookup_row;
+       -----^---------
+testdata/sequence.i:15: Lookup failed: no semantics in ideal
+public class sequence[readonly_data element] {
+                      ^^^^^^^^^^^^^
+testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
+  implements readonly_data;
+             ^^^^^^^^^^^^^
+testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
+  public int size() {
+         ^^^
+testdata/sequence.i:79: Lookup failed: no int in sequence.size
+  public element get(int index) {
+                     ^^^
+testdata/sequence.i:85: Lookup failed: no int in sequence.get
+  public sequence subsequence(int begin, int end) {
+                              ^^^
+testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+  public sequence subsequence(int begin, int end) {
+                                         ^^^
+testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+  public sequence subsequence(int begin) {
+                              ^^^
+testdata/sequence.i:103: Lookup failed: no int in sequence.subsequence
+  public void _display(display_writer writer, display_context options) {
+                       ^^^^^^^^^^^^^^
+testdata/sequence.i:115: Lookup failed: no display_writer in sequence._display
+  public void _display(display_writer writer, display_context options) {
+                                              ^^^^^^^^^^^^^^^
+testdata/sequence.i:115: Lookup failed: no display_context in sequence._display
+    list.addAll(s.list);
+                -^----
+testdata/sequence.i:92: Lookup failed: no list in immutable reference[mutable sequence]
+    assert begin >= 0 && end <= size();
+                                ^^^^
+testdata/sequence.i:95: Lookup failed: no size in sequence.subsequence, target parameters ()
+    sequence result : sequence.new();
+                      --------^---
+testdata/sequence.i:96: Can't find declarations with matching arity
+  public class sequence[readonly_data element] {
+               ^^^^^^^^
+  testdata/sequence.i:17: (declaration #0: raw sequence)
+    for (int i : begin; i < end; i += 1) {
+         ^^^
+testdata/sequence.i:98: Lookup failed: no int in sequence.subsequence
+    return subsequence(begin, size());
+                              ^^^^
+testdata/sequence.i:104: Lookup failed: no size in sequence.subsequence, target parameters ()
+    identifier id : display_function.name(getClass());
+                                          ^^^^^^^^
+testdata/sequence.i:116: Lookup failed: no getClass in sequence._display, target parameters ()
+    for (int i : 0; i < list.size(); i += 1) {
+         ^^^
+testdata/sequence.i:118: Lookup failed: no int in sequence._display
+<html>
+  <head>
+    <title>
+     test
+    </title>
+   <link href='ideal-style.css' rel='stylesheet' style='text/css' />
+  </head>
+  <body>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+    <div>
+     import java&thinsp;<b>&middot;</b>&thinsp;util&thinsp;<b>&middot;</b>&thinsp;List
+    </div>
+    <div>
+     import java&thinsp;<b>&middot;</b>&thinsp;util&thinsp;<b>&middot;</b>&thinsp;ArrayList
+    </div>
+    <div>
+     implicit import ideal&thinsp;<b>&middot;</b>&thinsp;library
+    </div>
+    <div>
+     implicit import ideal&thinsp;<b>&middot;</b>&thinsp;concepts
+    </div>
+    <div>
+     implicit import ideal&thinsp;<b>&middot;</b>&thinsp;constructs
+    </div>
+    <div>
+     import ideal&thinsp;<b>&middot;</b>&thinsp;concepts&thinsp;<b>&middot;</b>&thinsp;type
+    </div>
+    <div>
+     import ideal&thinsp;<b>&middot;</b>&thinsp;scanners&thinsp;<b>&middot;</b>&thinsp;scanner element
+    </div>
+    <div>
+     import ideal&thinsp;<b>&middot;</b>&thinsp;semantics&thinsp;<b>&middot;</b>&thinsp;lookup row
+    </div>
+    <div class='type-declaration'>
+     public class <span class='type-declaration-name'>sequence</span>[readonly data <span class='var-declaration-name'>element</span>]
+      <div class='indent'>
+        <div>
+         implements <span class='supertype-declaration-name'>readonly data</span>
+        </div>
+        <div>
+         private List <span class='var-declaration-name'>list</span>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>()
+        </div>
+        <div class='indent'>
+          <div>
+           <span class='var-declaration-name'>list</span> : ArrayList&thinsp;<b>&middot;</b>&thinsp;new()
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div class='indent'>
+            <div>
+             append(n1)
+            </div>
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div>
+           append(n1)
+          </div>
+          <div>
+           append(n2)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(<a href='sequence.html'>sequence</a> <span class='var-declaration-name'>ns1</span>, element <span class='var-declaration-name'>n2</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div>
+           append all(ns1)
+          </div>
+          <div>
+           append(n2)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, <a href='sequence.html'>sequence</a> <span class='var-declaration-name'>ns2</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div>
+           append(n1)
+          </div>
+          <div>
+           append all(ns2)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div>
+           append(n1)
+          </div>
+          <div>
+           append(n2)
+          </div>
+          <div>
+           append(n3)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div>
+           append(n1)
+          </div>
+          <div>
+           append(n2)
+          </div>
+          <div>
+           append(n3)
+          </div>
+          <div>
+           append(n4)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div>
+           append(n1)
+          </div>
+          <div>
+           append(n2)
+          </div>
+          <div>
+           append(n3)
+          </div>
+          <div>
+           append(n4)
+          </div>
+          <div>
+           append(n5)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>, element <span class='var-declaration-name'>n6</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           this()
+          </div>
+          <div>
+           append(n1)
+          </div>
+          <div>
+           append(n2)
+          </div>
+          <div>
+           append(n3)
+          </div>
+          <div>
+           append(n4)
+          </div>
+          <div>
+           append(n5)
+          </div>
+          <div>
+           append(n6)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public int <span class='procedure-declaration-name'>size</span>()
+        </div>
+        <div class='indent'>
+          <div>
+           return list&thinsp;<b>&middot;</b>&thinsp;size()
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>empty</span>()
+        </div>
+        <div class='indent'>
+          <div>
+           return list&thinsp;<b>&middot;</b>&thinsp;isEmpty()
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public element <span class='procedure-declaration-name'>get</span>(int <span class='var-declaration-name'>index</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           return list&thinsp;<b>&middot;</b>&thinsp;get(index) as element
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>append</span>(element <span class='var-declaration-name'>t</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           list&thinsp;<b>&middot;</b>&thinsp;add(t)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>append all</span>(<a href='sequence.html'>sequence</a> <span class='var-declaration-name'>s</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           list&thinsp;<b>&middot;</b>&thinsp;addAll(s&thinsp;<b>&middot;</b>&thinsp;list)
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>, int <span class='var-declaration-name'>end</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           assert begin &gt;= 0 &amp;&amp; end &lt;= size()
+          </div>
+          <div>
+           <a href='sequence.html'>sequence</a> <span class='var-declaration-name'>result</span> : <a href='sequence.html'>sequence</a>&thinsp;<b>&middot;</b>&thinsp;new()
+          </div>
+         for int <span class='var-declaration-name'>i</span> : begin; i &lt; end; i += 1
+          <div class='indent'>
+            <div>
+             result&thinsp;<b>&middot;</b>&thinsp;append(get(i))
+            </div>
+          </div>
+          <div>
+           return result
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           return subsequence(begin, size())
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>test</span>()
+        </div>
+        <div class='indent'>
+         if true
+          <div class='indent'>
+            <div>
+             test()
+            </div>
+          </div>
+          else
+          <div class='indent'>
+            <div>
+             test()
+            </div>
+          </div>
+        </div>
+        <div class='procedure-declaration'>
+         public void <span class='procedure-declaration-name'> display</span>(display writer <span class='var-declaration-name'>writer</span>, display context <span class='var-declaration-name'>options</span>)
+        </div>
+        <div class='indent'>
+          <div>
+           <a href='ideal/library/elements/identifier.html'>identifier</a> <span class='var-declaration-name'>id</span> : display function&thinsp;<b>&middot;</b>&thinsp;name(getClass())
+          </div>
+          <div>
+           writer&thinsp;<b>&middot;</b>&thinsp;start list(id)
+          </div>
+         for int <span class='var-declaration-name'>i</span> : 0; i &lt; list&thinsp;<b>&middot;</b>&thinsp;size(); i += 1
+          <div class='indent'>
+            <div>
+             function&thinsp;<b>&middot;</b>&thinsp;display(writer, list&thinsp;<b>&middot;</b>&thinsp;get(i) as element, options)
+            </div>
+          </div>
+          <div>
+           writer&thinsp;<b>&middot;</b>&thinsp;end list(id)
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+  </body>
+</html>

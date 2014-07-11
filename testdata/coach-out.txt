@@ -1,0 +1,32 @@
+datatype exercise_type {
+  string name;
+  string description_link;
+  exercise_category category;
+  exercise_parameter parameter;
+}
+enum exercise_category {
+  UPPER_BODY;
+  LOWER_BODY;
+  CORE;
+  CARDIO;
+  BALANCE;
+}
+enum exercise_parameter {
+  REPETITION_COUNT;
+  DISTANCE;
+}
+datatype exercise {
+  exercise_type type;
+  nonnegative repetition_count;
+  string distance;
+}
+datatype exercise_set {
+  list[exercise] exercises;
+}
+datatype workout {
+  exercise_set set;
+  nonnegative repetition_count;
+}
+datatype exercise_program {
+  list[workout] workouts;
+}

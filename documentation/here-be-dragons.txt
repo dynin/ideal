@@ -1,0 +1,85 @@
+Here Be Dragons.
+
+The ideal metaprogramming framework reads in code in one of several
+input notations, analyzes it, and generates output in one of several
+output notations.  The input notations supported are the curly-brace-style
+and the LISP-parens-style.  The analysis handles plain types, parametrized
+types, and flavored types (described in type-flavors.txt).  The output
+notations include Java, JavaScript, pretty-printer and an interpreter.
+
+The directory structure
+  isource       - source code in the ideal notation
+  \_library     - core library interfaces
+  \_runtime     - implementation of the library
+  \_showcase    - simple ideal programs
+  ideal         - source code in Java
+  \_machine     - JVM-specific runtime code
+  \_development - main metaprogramming framework code
+  \_showcase    - AppEngine-hosted demo app
+  bootstrapped  - library and runtime, translated into Java
+  LICENSE       - new BSD license
+  thirdparty    - software needed to build and run ideal
+  testdata      - input and ouput for regression tests
+  bin           - helper scripts
+  build         - directory for files created during the build process
+  documentation, Makefile, README - documentation, makefile, readme.
+
+  * * *
+
+To read the ideal source code: browse isource.  The best place to start is
+isource/library/elements.i; the "library" describes the core interfaces,
+the "runtime" includes implementations.
+
+The ideal notation was designed to be easily readable by a programmer who
+is familiar with Java or C#.  Here's quick overview of the ideal-specific
+features:
+
+  * Comments can be prefixed with "--"
+  * Type declarations are introduced with a "kind".  In addition to "class",
+    "interface" and "enum", there are "concepts", "datatypes" and other kinds.
+    They are similar to "interfaces".
+  * Supertypes are part of type body declaration and can be prefixed with
+    "extends", "implements" and "refines".
+  * For declaring parametrized types, square brackets are used instead of
+    angle brackets.
+  * For declaring variables, a colon is used to distinguish declaration from
+    assignment. Type can be inferred, and by default the variable is
+    immutable (final).  "foo : 68" is equivalent to "final int foo = 68";
+    an error is reported if "foo" is already defined in scope. To declare
+    a mutable variable, prefix with "var"; assignment is done with "=".
+  * For an overview of type flavors (introduced with keywords "readonly",
+    "writeonly", "mutable", "immutable", "deeply_immutable", "mutable", "any",
+    "pure") see documentation/type-flavors.txt
+
+The LALR(1) grammar for the ideal notation can be found in
+ideal/development/parsers/base_parser.cup
+
+  * * *
+
+Building and running ideal is easy on a Unix-like system (tested on Linux
+and Mac OS X.)  The dependencies are: JDK, JSR 305 annotations, JUnit4,
+Google Gson, JavaCUP.  AppEngine SDK is needed if you want to build and run
+the Coach app.
+
+To create the thirdparty directory and fetch all the dependencies, run
+bin/fetch-thirdparty.sh from the top-level directory.  In addition, you'll
+need to create a symlink from thirdparty/jdk to the JDK home directory (such as
+/Library/Java/JavaVirtualMachines/jdk1.8.0_05.jdk/Contents/Home on Mac OS X.)
+It should be possible to invoke the Java compiler via thirdparty/jdk/bin/javac.
+
+Make is currently used to build and run ideal.  Default target builds
+the "create" tool, bootstraps library.elements, analyzes it and prints it out.
+Targets "hello" and "circle" execute respective code from isource/showcase.
+"12" executes isource/testdata/12.i. The targets "library" and "runtime"
+generate Java source code from isource/library and isource/runtime,
+respectively.  The targets "libraryt" and "runtimet" test that the code
+compiles.  The targets "libraryb" and "runtimeb" bootstrap the code by
+overwriting the files in bootstrapped directory.
+
+  * * *
+
+The announcements mailing list (very low-volume, moderated announcements only):
+  http://groups.google.com/group/ideal-announce
+
+The developers forum:
+  http://groups.google.com/group/ideal-developers

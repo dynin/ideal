@@ -1,0 +1,179 @@
+import java.util.List;
+       ^^^^
+testdata/sequence.i:7: Lookup failed: no java in <root>
+import java.util.ArrayList;
+       ^^^^
+testdata/sequence.i:8: Lookup failed: no java in <root>
+implicit import ideal.concepts;
+                -----^--------
+testdata/sequence.i:11: Lookup failed: no concepts in ideal
+implicit import ideal.constructs;
+                -----^----------
+testdata/sequence.i:12: Lookup failed: no constructs in ideal
+import ideal.concepts.type;
+       -----^--------
+testdata/sequence.i:13: Lookup failed: no concepts in ideal
+import ideal.scanners.scanner_element;
+       -----^--------
+testdata/sequence.i:14: Lookup failed: no scanners in ideal
+import ideal.semantics.lookup_row;
+       -----^---------
+testdata/sequence.i:15: Lookup failed: no semantics in ideal
+public class sequence[readonly_data element] {
+                      ^^^^^^^^^^^^^
+testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
+  implements readonly_data;
+             ^^^^^^^^^^^^^
+testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
+  public int size() {
+         ^^^
+testdata/sequence.i:79: Lookup failed: no int in sequence.size
+  public element get(int index) {
+                     ^^^
+testdata/sequence.i:85: Lookup failed: no int in sequence.get
+  public sequence subsequence(int begin, int end) {
+                              ^^^
+testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+  public sequence subsequence(int begin, int end) {
+                                         ^^^
+testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+  public sequence subsequence(int begin) {
+                              ^^^
+testdata/sequence.i:103: Lookup failed: no int in sequence.subsequence
+  public void _display(display_writer writer, display_context options) {
+                       ^^^^^^^^^^^^^^
+testdata/sequence.i:115: Lookup failed: no display_writer in sequence._display
+  public void _display(display_writer writer, display_context options) {
+                                              ^^^^^^^^^^^^^^^
+testdata/sequence.i:115: Lookup failed: no display_context in sequence._display
+    list.addAll(s.list);
+                -^----
+testdata/sequence.i:92: Lookup failed: no list in immutable reference[mutable sequence]
+    assert begin >= 0 && end <= size();
+                                ^^^^
+testdata/sequence.i:95: Lookup failed: no size in sequence.subsequence, target parameters ()
+    sequence result : sequence.new();
+                      --------^---
+testdata/sequence.i:96: Can't find declarations with matching arity
+  public class sequence[readonly_data element] {
+               ^^^^^^^^
+  testdata/sequence.i:17: (declaration #0: raw sequence)
+    for (int i : begin; i < end; i += 1) {
+         ^^^
+testdata/sequence.i:98: Lookup failed: no int in sequence.subsequence
+    return subsequence(begin, size());
+                              ^^^^
+testdata/sequence.i:104: Lookup failed: no size in sequence.subsequence, target parameters ()
+    identifier id : display_function.name(getClass());
+                                          ^^^^^^^^
+testdata/sequence.i:116: Lookup failed: no getClass in sequence._display, target parameters ()
+    for (int i : 0; i < list.size(); i += 1) {
+         ^^^
+testdata/sequence.i:118: Lookup failed: no int in sequence._display
+import java.util.List;
+import java.util.ArrayList;
+implicit import ideal.library;
+implicit import ideal.concepts;
+implicit import ideal.constructs;
+import ideal.concepts.type;
+import ideal.scanners.scanner_element;
+import ideal.semantics.lookup_row;
+public class sequence[readonly_data element] {
+  implements readonly_data;
+  private List list;
+  public sequence() {
+    list : ArrayList.new();
+  }
+  public sequence(element n1) {
+    this();
+    {
+      append(n1);
+    }
+  }
+  public sequence(element n1, element n2) {
+    this();
+    append(n1);
+    append(n2);
+  }
+  public sequence(sequence ns1, element n2) {
+    this();
+    append_all(ns1);
+    append(n2);
+  }
+  public sequence(element n1, sequence ns2) {
+    this();
+    append(n1);
+    append_all(ns2);
+  }
+  public sequence(element n1, element n2, element n3) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+  }
+  public sequence(element n1, element n2, element n3, element n4) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+  }
+  public sequence(element n1, element n2, element n3, element n4, element n5) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+    append(n5);
+  }
+  public sequence(element n1, element n2, element n3, element n4, element n5, element n6) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+    append(n5);
+    append(n6);
+  }
+  public int size() {
+    return list.size();
+  }
+  public boolean empty() {
+    return list.isEmpty();
+  }
+  public element get(int index) {
+    return list.get(index) as element;
+  }
+  public void append(element t) {
+    list.add(t);
+  }
+  public void append_all(sequence s) {
+    list.addAll(s.list);
+  }
+  public sequence subsequence(int begin, int end) {
+    assert begin >= 0 && end <= size();
+    sequence result : sequence.new();
+    for (int i : begin; i < end; i += 1) {
+      result.append(get(i));
+    }
+    return result;
+  }
+  public sequence subsequence(int begin) {
+    return subsequence(begin, size());
+  }
+  public void test() {
+    if (true) {
+      test();
+    } else {
+      test();
+    }
+  }
+  public void _display(display_writer writer, display_context options) {
+    identifier id : display_function.name(getClass());
+    writer.start_list(id);
+    for (int i : 0; i < list.size(); i += 1) {
+      function.display(writer, list.get(i) as element, options);
+    }
+    writer.end_list(id);
+  }
+}

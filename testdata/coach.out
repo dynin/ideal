@@ -1,0 +1,241 @@
+============ INIT
+============ PARSE
+============ BOOTSTRAP
+============ DISPLAY
+[
+  type_declaration_construct {
+    annotations: [ ]
+    kind: datatype
+    name: exercise_type
+    parameters: <null>
+    body: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: string
+        }
+        name: name
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: string
+        }
+        name: description_link
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: exercise_category
+        }
+        name: category
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: exercise_parameter
+        }
+        name: parameter
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: enum
+    name: exercise_category
+    parameters: <null>
+    body: [
+      name_construct {
+        the_name: UPPER_BODY
+      }
+      name_construct {
+        the_name: LOWER_BODY
+      }
+      name_construct {
+        the_name: CORE
+      }
+      name_construct {
+        the_name: CARDIO
+      }
+      name_construct {
+        the_name: BALANCE
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: enum
+    name: exercise_parameter
+    parameters: <null>
+    body: [
+      name_construct {
+        the_name: REPETITION_COUNT
+      }
+      name_construct {
+        the_name: DISTANCE
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: datatype
+    name: exercise
+    parameters: <null>
+    body: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: exercise_type
+        }
+        name: type
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: nonnegative
+        }
+        name: repetition_count
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: string
+        }
+        name: distance
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: datatype
+    name: exercise_set
+    parameters: <null>
+    body: [
+      variable_construct {
+        annotations: [ ]
+        type: parameter_construct {
+          main: name_construct {
+            the_name: list
+          }
+          parameters: list_construct {
+            elements: [
+              name_construct {
+                the_name: exercise
+              }
+            ]
+            grouping: brackets
+          }
+        }
+        name: exercises
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: datatype
+    name: workout
+    parameters: <null>
+    body: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: exercise_set
+        }
+        name: set
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: nonnegative
+        }
+        name: repetition_count
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: datatype
+    name: exercise_program
+    parameters: <null>
+    body: [
+      variable_construct {
+        annotations: [ ]
+        type: parameter_construct {
+          main: name_construct {
+            the_name: list
+          }
+          parameters: list_construct {
+            elements: [
+              name_construct {
+                the_name: workout
+              }
+            ]
+            grouping: brackets
+          }
+        }
+        name: workouts
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+  }
+]
+============ BEFORE_EVALUATION
+============ TYPE_DECL
+============ IMPORT_AND_TYPE_VAR_DECL
+============ SUPERTYPE_DECL
+============ METHOD_AND_VARIABLE_DECL
+============ BODY_CHECK
+============ EXECUTE
+datatype exercise_type {
+  string name;
+  string description_link;
+  exercise_category category;
+  exercise_parameter parameter;
+}
+enum exercise_category {
+  UPPER_BODY;
+  LOWER_BODY;
+  CORE;
+  CARDIO;
+  BALANCE;
+}
+enum exercise_parameter {
+  REPETITION_COUNT;
+  DISTANCE;
+}
+datatype exercise {
+  exercise_type type;
+  nonnegative repetition_count;
+  string distance;
+}
+datatype exercise_set {
+  list[exercise] exercises;
+}
+datatype workout {
+  exercise_set set;
+  nonnegative repetition_count;
+}
+datatype exercise_program {
+  list[workout] workouts;
+}

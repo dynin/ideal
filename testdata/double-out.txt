@@ -1,0 +1,15 @@
+one : 1;
+two : 2;
+integer three : plus(one, two);
+integer double(integer x) {
+  return plus(x, x);
+}
+integer add5(integer y) {
+  return plus(y, 5);
+}
+println(double(double(three)));
+println(plus(add5(three), two));
+println(7, " ", add5(63));
+{
+  println(one, " ", plus(one, one), " ", one);
+}

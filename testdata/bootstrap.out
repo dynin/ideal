@@ -1,0 +1,2647 @@
+============ INIT
+============ PARSE
+============ BOOTSTRAP
+============ DISPLAY
+[
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " Root type in the ideal type system.
+           It is the supertype of |value| and |reference|.
+           There should be no need to subtype |entity| directly; in fact,
+           it's unlikely that you'll use this type in your code at all.
+          
+          "
+          image: " Root type in the ideal type system.
+           It is the supertype of |value| and |reference|.
+           There should be no need to subtype |entity| directly; in fact,
+           it's unlikely that you'll use this type in your code at all.
+          
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: concept
+    name: entity
+    parameters: <null>
+    body: [ ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>Root type for regular values (as opposed to |reference|s).</div>
+          
+           <div>Before using this type as a direct supertype, consider
+           whether your objects satisfy the contract for the |data| type.
+           Subtypes of |data| have library support for a lot of useful functionality.
+           </div>
+          
+           <c>Corresponds to "rvalue" in C.</c>
+           <j>Roughly corresponds to |Object| in Java.</j>
+          "
+          image: " <div>Root type for regular values (as opposed to |reference|s).</div>
+          
+           <div>Before using this type as a direct supertype, consider
+           whether your objects satisfy the contract for the |data| type.
+           Subtypes of |data| have library support for a lot of useful functionality.
+           </div>
+          
+           <c>Corresponds to "rvalue" in C.</c>
+           <j>Roughly corresponds to |Object| in Java.</j>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: concept
+    name: value
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: entity
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>An entity that supports read and write access to a value.
+           Implementations include local variables, fields, and elements
+           of a list.</div>
+          
+           <div>You can use this type to implement pass-by-reference semantics,
+           such as the assignment operation.</div>
+          
+           <c>Corresponds to "lvalue" in C.</c>
+           <cpp>C++ supports pass-by-reference, but not the creation of
+           fully customizable reference objects.</cpp>
+           <j>There is no Java equivalent of this type, except for builtin
+           operators such as assignment and getter/setter convention for fields.</j>
+          "
+          image: " <div>An entity that supports read and write access to a value.
+           Implementations include local variables, fields, and elements
+           of a list.</div>
+          
+           <div>You can use this type to implement pass-by-reference semantics,
+           such as the assignment operation.</div>
+          
+           <c>Corresponds to "lvalue" in C.</c>
+           <cpp>C++ supports pass-by-reference, but not the creation of
+           fully customizable reference objects.</cpp>
+           <j>There is no Java equivalent of this type, except for builtin
+           operators such as assignment and getter/setter convention for fields.</j>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: reference_kind
+    name: reference
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: flavor_construct {
+            flavor: any
+            expr: name_construct {
+              the_name: value
+            }
+          }
+          name: value_type
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: entity
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: value_type
+        }
+        name: get
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: set
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: value_type
+              }
+              name: new_value
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: writeonly
+          }
+        ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>Data is a value that can be fully represented by bits.
+           It can be serialized for persistent storage or transfer
+           over the network.  The fields of the data object must
+           also be data.  Most entities in a typical program--such
+           as integers and strings--are data.</div>
+          
+           <div>The library provides a lot of functionality for subtypes of |data|,
+           such as equivalence predicates, hash functions, and serializers.</div>
+          
+           <div>Examples of values that are <em>not</em> data are a clock or a file
+           descriptor--since they refer to entities that cannot be packaged and
+           sent over the network.</div>
+          
+           <j>Related concepts in Java are |Serializable| and |Cloneable|.</j>
+          "
+          image: " <div>Data is a value that can be fully represented by bits.
+           It can be serialized for persistent storage or transfer
+           over the network.  The fields of the data object must
+           also be data.  Most entities in a typical program--such
+           as integers and strings--are data.</div>
+          
+           <div>The library provides a lot of functionality for subtypes of |data|,
+           such as equivalence predicates, hash functions, and serializers.</div>
+          
+           <div>Examples of values that are <em>not</em> data are a clock or a file
+           descriptor--since they refer to entities that cannot be packaged and
+           sent over the network.</div>
+          
+           <j>Related concepts in Java are |Serializable| and |Cloneable|.</j>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: concept
+    name: data
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: value
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <not_yet_implemented>
+          }
+        ]
+        ret: name_construct {
+          the_name: data
+        }
+        name: copy
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <not_yet_implemented>
+          }
+        ]
+        ret: name_construct {
+          the_name: data
+        }
+        name: deep_copy
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <not_yet_implemented>
+          }
+        ]
+        ret: flavor_construct {
+          flavor: immutable
+          expr: name_construct {
+            the_name: data
+          }
+        }
+        name: frozen_copy
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <not_yet_implemented>
+          }
+        ]
+        ret: flavor_construct {
+          flavor: deeply_immutable
+          expr: name_construct {
+            the_name: data
+          }
+        }
+        name: deep_frozen_copy
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>A type whose values can be converted to a canonical
+           string representation.</div>
+          "
+          image: " <div>A type whose values can be converted to a canonical
+           string representation.</div>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: concept
+    name: convertible_to_string
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          flavor_construct {
+            flavor: readonly
+            expr: name_construct {
+              the_name: value
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: string
+        }
+        name: to_string
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>A type that represents computation the result of which doesn't matter.
+           It has only one value that means nothing, and is also known as
+           the unit type.</div>
+          "
+          image: " <div>A type that represents computation the result of which doesn't matter.
+           It has only one value that means nothing, and is also known as
+           the unit type.</div>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: singleton
+    name: void
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <extends>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: name_construct {
+              the_name: data
+            }
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>This type means that no observable computation has taken place,
+           and that program state is unaffected.  Empty statement is of
+           type |nothing|.</div>
+          
+           <div>This is a stronger contract than |void|, which allows
+           procedures that don't return any value yet have side effects.</div>
+          "
+          image: " <div>This type means that no observable computation has taken place,
+           and that program state is unaffected.  Empty statement is of
+           type |nothing|.</div>
+          
+           <div>This is a stronger contract than |void|, which allows
+           procedures that don't return any value yet have side effects.</div>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: singleton
+    name: nothing
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <extends>
+        types: [
+          name_construct {
+            the_name: void
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>Describes types that have a natural equivalence relation,
+           such as an integer.  There are types for which multiple good
+           equivalence relationships exist--consider a modifiable sequence, that
+           can be compared either element-by-element or by reference.
+           On the other hand, for an immutable sequence
+           element-by-element comparison makes more sense.</div>
+          
+           <div>When obviously best choice doesn't exist, it is preferrable to
+           force the programmer to make decision which equivalence relation
+           to use explicitly.  Data structures have been designed to
+           allow the relation to be selected.</div>
+          
+           <div>For operators == and != to work on values of a type, the type
+           must implement this interface.</div>
+          "
+          image: " <div>Describes types that have a natural equivalence relation,
+           such as an integer.  There are types for which multiple good
+           equivalence relationships exist--consider a modifiable sequence, that
+           can be compared either element-by-element or by reference.
+           On the other hand, for an immutable sequence
+           element-by-element comparison makes more sense.</div>
+          
+           <div>When obviously best choice doesn't exist, it is preferrable to
+           force the programmer to make decision which equivalence relation
+           to use explicitly.  Data structures have been designed to
+           allow the relation to be selected.</div>
+          
+           <div>For operators == and != to work on values of a type, the type
+           must implement this interface.</div>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: concept
+    name: equality_comparable
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: value
+          }
+        ]
+      }
+      variable_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <static>
+          }
+        ]
+        type: parameter_construct {
+          main: name_construct {
+            the_name: equivalence_relation
+          }
+          parameters: list_construct {
+            elements: [
+              name_construct {
+                the_name: equality_comparable
+              }
+            ]
+            grouping: brackets
+          }
+        }
+        name: equivalence
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>A type that has two values: |true| and |false|.
+           Logical operators |and|, |or|, |not|, |xor| are defined
+           on the type.  Note that |and| and |or| operators
+           are short-circuiting: if the second operand
+           can't affect the value of the result, it's not
+           evaluated, as is the case when the first operand to |and| is |false|.</div>
+           <j>Equivalent to `Java's boolean type.</j>
+          "
+          image: " <div>A type that has two values: |true| and |false|.
+           Logical operators |and|, |or|, |not|, |xor| are defined
+           on the type.  Note that |and| and |or| operators
+           are short-circuiting: if the second operand
+           can't affect the value of the result, it's not
+           evaluated, as is the case when the first operand to |and| is |false|.</div>
+           <j>Equivalent to `Java's boolean type.</j>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: enum
+    name: boolean
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: name_construct {
+              the_name: data
+            }
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: equality_comparable
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: convertible_to_string
+          }
+        ]
+      }
+      name_construct {
+        the_name: true
+      }
+      name_construct {
+        the_name: false
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>An integer value with an unlimited range.  The runtime
+           should hide the distinction between integers that can be
+           represented as one machine word and arbitrary-precision integers
+           (<em>bigint</em>s).</div>
+          
+           <div>When integers with a specific representation are needed,
+           types such |int32| from |ideal.library.interop| should be used.</div>
+          "
+          image: " <div>An integer value with an unlimited range.  The runtime
+           should hide the distinction between integers that can be
+           represented as one machine word and arbitrary-precision integers
+           (<em>bigint</em>s).</div>
+          
+           <div>When integers with a specific representation are needed,
+           types such |int32| from |ideal.library.interop| should be used.</div>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: class
+    name: integer
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: name_construct {
+              the_name: data
+            }
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: equality_comparable
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: convertible_to_string
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " A type that encapsulates integer values from 0 (inclusive) to
+           positive infinity (exclusive).
+          "
+          image: " A type that encapsulates integer values from 0 (inclusive) to
+           positive infinity (exclusive).
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: class
+    name: nonnegative
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: integer
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " A type that encapsulates integer values from 1 (inclusive) to
+           positive infinity (exclusive).
+          "
+          image: " A type that encapsulates integer values from 1 (inclusive) to
+           positive infinity (exclusive).
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: class
+    name: positive
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: nonnegative
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " <div>A type whose values are distinct from valid values of other types.
+           Unlike many languages in which |null| is a value, in ideal
+           |null| is type, and values are specific--|missing|, |not_applicable|
+           |not_a_number| and so on.  The motivation behind this is to allow
+           the programmer to specify the nature of the exceptional value.
+           Developers can subtype |null| if necessary, though the
+           need for this should be quite rare.</div>
+          
+           <div>The check for null should be of the form |if (x is null)|.
+           The program shouldn't depend on what type of null value is being returned.
+           </div>
+          "
+          image: " <div>A type whose values are distinct from valid values of other types.
+           Unlike many languages in which |null| is a value, in ideal
+           |null| is type, and values are specific--|missing|, |not_applicable|
+           |not_a_number| and so on.  The motivation behind this is to allow
+           the programmer to specify the nature of the exceptional value.
+           Developers can subtype |null| if necessary, though the
+           need for this should be quite rare.</div>
+          
+           <div>The check for null should be of the form |if (x is null)|.
+           The program shouldn't depend on what type of null value is being returned.
+           </div>
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: concept
+    name: null
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: name_construct {
+              the_name: data
+            }
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: convertible_to_string
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " A subroutine that given values as arguments, returns a value
+           that is a result of computation.  The arguments of the type
+           are interpreted as follows: the first argument is the type of
+           return value, the second through last argument types correspond
+           to first through last arguent type of procedure.  For example,
+           |procedure[boolean, integer]| is a procedure that takes an integer
+           argument and returns boolean.
+          "
+          image: " A subroutine that given values as arguments, returns a value
+           that is a result of computation.  The arguments of the type
+           are interpreted as follows: the first argument is the type of
+           return value, the second through last argument types correspond
+           to first through last arguent type of procedure.  For example,
+           |procedure[boolean, integer]| is a procedure that takes an integer
+           argument and returns boolean.
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: procedure_kind
+    name: procedure
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: ret
+          post_annotations: [ ]
+          init: <null>
+        }
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: arg1
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: value
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: procedure_kind
+    name: procedure
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: ret
+          post_annotations: [ ]
+          init: <null>
+        }
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: arg1
+          post_annotations: [ ]
+          init: <null>
+        }
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: arg2
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: value
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " A procedure that has no visible side effects.
+          "
+          image: " A procedure that has no visible side effects.
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: procedure_kind
+    name: function
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: ret
+          post_annotations: [ ]
+          init: <null>
+        }
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: arg1
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: procedure
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: ret
+                }
+                name_construct {
+                  the_name: arg1
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: name_construct {
+              the_name: data
+            }
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: procedure_kind
+    name: function
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: ret
+          post_annotations: [ ]
+          init: <null>
+        }
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: arg1
+          post_annotations: [ ]
+          init: <null>
+        }
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: entity
+          }
+          name: arg2
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: procedure
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: ret
+                }
+                name_construct {
+                  the_name: arg1
+                }
+                name_construct {
+                  the_name: arg2
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: name_construct {
+              the_name: data
+            }
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: concept
+    name: predicate
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: function
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: boolean
+                }
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: concept
+    name: relation
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: function
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: boolean
+                }
+                name_construct {
+                  the_name: element
+                }
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " Equivalence relation is reflexive, symmetric, and transitive.
+          "
+          image: " Equivalence relation is reflexive, symmetric, and transitive.
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: concept
+    name: equivalence_relation
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: relation
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " A finite collection of element values, such as a sequence or a set.
+          "
+          image: " A finite collection of element values, such as a sequence or a set.
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: interface
+    name: collection
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          name_construct {
+            the_name: value
+          }
+        ]
+      }
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: readonly
+          expr: name_construct {
+            the_name: nonnegative
+          }
+        }
+        name: size
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: readonly
+          expr: name_construct {
+            the_name: boolean
+          }
+        }
+        name: is_empty
+        post_annotations: [ ]
+        init: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: flavor_construct {
+          flavor: immutable
+          expr: parameter_construct {
+            main: name_construct {
+              the_name: list
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        }
+        name: elements
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: has
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: predicate
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: p
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: predicate
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: p
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: flavor_construct {
+          flavor: readonly
+          expr: parameter_construct {
+            main: name_construct {
+              the_name: collection
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        }
+        name: filter
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: predicate
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: p
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: flavor_construct {
+          flavor: immutable
+          expr: parameter_construct {
+            main: name_construct {
+              the_name: collection
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        }
+        name: filter
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: predicate
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: p
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: immutable
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: remove
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: predicate
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: p
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: clear
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: writeonly
+          }
+        ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: interface
+    name: collection_with_equivalence
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <refines>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: collection
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+      variable_construct {
+        annotations: [ ]
+        type: parameter_construct {
+          main: name_construct {
+            the_name: equivalence_relation
+          }
+          parameters: list_construct {
+            elements: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
+          }
+        }
+        name: element_equivalence
+        post_annotations: [ ]
+        init: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: contains
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: e
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: contains_all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: collection
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: c
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: remove_one
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: e
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: remove_all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: collection
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: c
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: retain_all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: collection
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: c
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: interface
+    name: collection
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: data
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: data
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: interface
+    name: list
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: collection
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <implicit>
+          }
+        ]
+        ret: parameter_construct {
+          main: name_construct {
+            the_name: reference
+          }
+          parameters: list_construct {
+            elements: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
+          }
+        }
+        name: get
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: nonnegative
+              }
+              name: index
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [
+          modifier_construct {
+            the_kind: readonly
+          }
+        ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: append
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: e
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: prepend
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: e
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: insert
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: nonnegative
+              }
+              name: index
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: element
+              }
+              name: e
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: append_all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: flavor_construct {
+                flavor: readonly
+                expr: parameter_construct {
+                  main: name_construct {
+                    the_name: list
+                  }
+                  parameters: list_construct {
+                    elements: [
+                      name_construct {
+                        the_name: element
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                }
+              }
+              name: c
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: prepend_all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: flavor_construct {
+                flavor: readonly
+                expr: parameter_construct {
+                  main: name_construct {
+                    the_name: list
+                  }
+                  parameters: list_construct {
+                    elements: [
+                      name_construct {
+                        the_name: element
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                }
+              }
+              name: c
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: insert_all
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: nonnegative
+              }
+              name: index
+              post_annotations: [ ]
+              init: <null>
+            }
+            variable_construct {
+              annotations: [ ]
+              type: flavor_construct {
+                flavor: readonly
+                expr: parameter_construct {
+                  main: name_construct {
+                    the_name: list
+                  }
+                  parameters: list_construct {
+                    elements: [
+                      name_construct {
+                        the_name: element
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                }
+              }
+              name: c
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: element
+        }
+        name: remove_at
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: nonnegative
+              }
+              name: index
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: interface
+    name: list_with_equivalence
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: collection_with_equivalence
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: list
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        ]
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: <null>
+        name: list_with_equivalence
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: parameter_construct {
+                main: name_construct {
+                  the_name: equivalence_relation
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                }
+              }
+              name: element_equivalence
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " A type that encapsulates an atom of text.  Lists of chracaters
+           make up |string|s.
+          "
+          image: " A type that encapsulates an atom of text.  Lists of chracaters
+           make up |string|s.
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: class
+    name: character
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: name_construct {
+              the_name: data
+            }
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: equality_comparable
+          }
+        ]
+      }
+      supertype_construct {
+        kind: <implements>
+        types: [
+          name_construct {
+            the_name: convertible_to_string
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: class
+    name: string
+    parameters: <null>
+    body: [
+      supertype_construct {
+        kind: <implements>
+        types: [
+          flavor_construct {
+            flavor: deeply_immutable
+            expr: parameter_construct {
+              main: name_construct {
+                the_name: list
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: character
+                  }
+                ]
+                grouping: brackets
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: interface
+    name: closeable
+    parameters: <null>
+    body: [
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: readonly
+          expr: name_construct {
+            the_name: boolean
+          }
+        }
+        name: is_closed
+        post_annotations: [ ]
+        init: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: close
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: interface
+    name: syncable
+    parameters: <null>
+    body: [
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: sync
+        parameters: list_construct {
+          elements: [ ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: interface
+    name: input
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <extends>
+        types: [
+          name_construct {
+            the_name: closeable
+          }
+        ]
+      }
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: readonly
+          expr: name_construct {
+            the_name: boolean
+          }
+        }
+        name: is_available
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: readonly
+          expr: name_construct {
+            the_name: nonnegative
+          }
+        }
+        name: available
+        post_annotations: [ ]
+        init: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: flavor_construct {
+          flavor: immutable
+          expr: parameter_construct {
+            main: name_construct {
+              the_name: list
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
+            }
+          }
+        }
+        name: read
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: positive
+              }
+              name: max
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: concept
+    name: output
+    parameters: list_construct {
+      elements: [
+        variable_construct {
+          annotations: [ ]
+          type: name_construct {
+            the_name: value
+          }
+          name: element
+          post_annotations: [ ]
+          init: <null>
+        }
+      ]
+      grouping: brackets
+    }
+    body: [
+      supertype_construct {
+        kind: <extends>
+        types: [
+          name_construct {
+            the_name: closeable
+          }
+          name_construct {
+            the_name: syncable
+          }
+        ]
+      }
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: readonly
+          expr: name_construct {
+            the_name: boolean
+          }
+        }
+        name: is_available
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: readonly
+          expr: name_construct {
+            the_name: nonnegative
+          }
+        }
+        name: available
+        post_annotations: [ ]
+        init: <null>
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: void
+        }
+        name: write
+        parameters: list_construct {
+          elements: [
+            variable_construct {
+              annotations: [ ]
+              type: flavor_construct {
+                flavor: readonly
+                expr: parameter_construct {
+                  main: name_construct {
+                    the_name: list
+                  }
+                  parameters: list_construct {
+                    elements: [
+                      name_construct {
+                        the_name: element
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                }
+              }
+              name: c
+              post_annotations: [ ]
+              init: <null>
+            }
+          ]
+          grouping: parens
+        }
+        post_annotations: [ ]
+        body: <null>
+      }
+    ]
+  }
+]
+============ BEFORE_EVALUATION
+============ TYPE_DECL
+procedure_kind procedure[entity ret, entity arg1, entity arg2] {
+               ^^^^^^^^^
+testdata/bootstrap.i:198: Primary type already defined
+  procedure_kind procedure[entity ret, entity arg1] {
+                 ^^^^^^^^^
+  testdata/bootstrap.i:194: This is the primary
+procedure_kind function[entity ret, entity arg1, entity arg2] {
+               ^^^^^^^^
+testdata/bootstrap.i:208: Primary type already defined
+  procedure_kind function[entity ret, entity arg1] {
+                 ^^^^^^^^
+  testdata/bootstrap.i:203: This is the primary
+interface collection[data element] {
+          ^^^^^^^^^^
+testdata/bootstrap.i:255: Primary type already defined
+  interface collection[value element] {
+            ^^^^^^^^^^
+  testdata/bootstrap.i:227: This is the primary
+============ IMPORT_AND_TYPE_VAR_DECL
+============ SUPERTYPE_DECL
+============ METHOD_AND_VARIABLE_DECL
+============ BODY_CHECK
+concept entity { }
+concept value {
+  refines entity;
+}
+reference_kind reference[any value value_type] {
+  refines entity;
+  value_type get() readonly;
+  void set(value_type new_value) writeonly;
+}
+concept data {
+  refines value;
+  not_yet_implemented data copy() readonly;
+  not_yet_implemented data deep_copy() readonly;
+  not_yet_implemented immutable data frozen_copy() readonly;
+  not_yet_implemented deeply_immutable data deep_frozen_copy() readonly;
+}
+concept convertible_to_string {
+  refines readonly value;
+  string to_string() readonly;
+}
+singleton void {
+  extends deeply_immutable data;
+}
+singleton nothing {
+  extends void;
+}
+concept equality_comparable {
+  refines value;
+  static equivalence_relation[equality_comparable] equivalence;
+}
+enum boolean {
+  implements deeply_immutable data;
+  implements equality_comparable;
+  implements convertible_to_string;
+  true;
+  false;
+}
+class integer {
+  implements deeply_immutable data;
+  implements equality_comparable;
+  implements convertible_to_string;
+}
+class nonnegative {
+  refines integer;
+}
+class positive {
+  refines nonnegative;
+}
+concept null {
+  refines deeply_immutable data;
+  implements convertible_to_string;
+}
+procedure_kind procedure[entity ret, entity arg1] {
+  refines value;
+}
+procedure_kind procedure[entity ret, entity arg1, entity arg2] {
+  refines value;
+}
+procedure_kind function[entity ret, entity arg1] {
+  refines procedure[ret, arg1];
+  implements deeply_immutable data;
+}
+procedure_kind function[entity ret, entity arg1, entity arg2] {
+  refines procedure[ret, arg1, arg2];
+  implements deeply_immutable data;
+}
+concept predicate[value element] {
+  refines function[boolean, element];
+}
+concept relation[value element] {
+  refines function[boolean, element, element];
+}
+concept equivalence_relation[value element] {
+  refines relation[element];
+}
+interface collection[value element] {
+  refines value;
+  readonly nonnegative size;
+  readonly boolean is_empty;
+  immutable list[element] elements() readonly;
+  boolean has(predicate[element] p) readonly;
+  boolean all(predicate[element] p) readonly;
+  readonly collection[element] filter(predicate[element] p) readonly;
+  immutable collection[element] filter(predicate[element] p) immutable;
+  void remove(predicate[element] p);
+  void clear() writeonly;
+}
+interface collection_with_equivalence[value element] {
+  refines collection[element];
+  equivalence_relation[element] element_equivalence;
+  boolean contains(element e) readonly;
+  boolean contains_all(collection[element] c) readonly;
+  void remove_one(element e);
+  void remove_all(collection[element] c);
+  void retain_all(collection[element] c);
+}
+interface collection[data element] {
+  implements data;
+}
+interface list[value element] {
+  implements collection[element];
+  implicit reference[element] get(nonnegative index) readonly;
+  void append(element e);
+  void prepend(element e);
+  void insert(nonnegative index, element e);
+  void append_all(readonly list[element] c);
+  void prepend_all(readonly list[element] c);
+  void insert_all(nonnegative index, readonly list[element] c);
+  element remove_at(nonnegative index);
+}
+interface list_with_equivalence[value element] {
+  implements collection_with_equivalence[element];
+  implements list[element];
+  list_with_equivalence(equivalence_relation[element] element_equivalence);
+}
+class character {
+  implements deeply_immutable data;
+  implements equality_comparable;
+  implements convertible_to_string;
+}
+class string {
+  implements deeply_immutable list[character];
+}
+interface closeable {
+  readonly boolean is_closed;
+  void close();
+}
+interface syncable {
+  void sync();
+}
+interface input[value element] {
+  extends closeable;
+  readonly boolean is_available;
+  readonly nonnegative available;
+  immutable list[element] read(positive max);
+}
+concept output[value element] {
+  extends closeable, syncable;
+  readonly boolean is_available;
+  readonly nonnegative available;
+  void write(readonly list[element] c);
+}

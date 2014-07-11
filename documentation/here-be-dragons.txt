@@ -50,8 +50,8 @@ features:
     an error is reported if "foo" is already defined in scope. To declare
     a mutable variable, prefix with "var"; assignment is done with "=".
   * For an overview of type flavors (introduced with keywords "readonly",
-    "writeonly", "mutable", "immutable", "deeply_immutable", "mutable", "any",
-    "pure") see documentation/type-flavors.txt
+    "writeonly", "mutable", "immutable", "deeply_immutable", "any", "pure")
+    see documentation/type-flavors.txt
 
 The LALR(1) grammar for the ideal notation can be found in
 ideal/development/parsers/base_parser.cup

@@ -6,6 +6,8 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
+package ideal.experiment.mini;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -13,15 +15,25 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class create {
 
-  public static class source_text {
+  public interface source {
+    @Nullable source deeper();
+  }
+
+  public static class source_text implements source {
     public final String name;
     public final String content;
 
     public source_text(String name, String content) {
       this.name = name;
       this.content = content;
+    }
+
+    public @Nullable source deeper() {
+      return null;
     }
   }
 
@@ -30,6 +42,41 @@ public class create {
     OPEN,
     CLOSE,
     IDENTIFIER;
+  }
+
+  public static enum notification_type {
+    UNKNOWN_CHARACTER("Unknown character");
+
+    public final String message;
+
+    notification_type(String message) {
+      this.message = message;
+    }
+  }
+
+  public static class notification {
+    public final notification_type type;
+    public final source the_source;
+
+    public notification(notification_type type, source the_source) {
+      this.type = type;
+      this.the_source = the_source;
+    }
+
+    public void report() {
+      String message = type.message;
+
+      @Nullable source deep_source = the_source;
+      while(deep_source != null) {
+        if (deep_source instanceof source_text) {
+          message = ((source_text) deep_source).name + ": " + message;
+          break;
+        }
+        deep_source = the_source.deeper();
+      }
+
+      System.err.println(message);
+    }
   }
 
   public static class token {
@@ -62,6 +109,8 @@ public class create {
         result.add(new token(token_type.OPEN));
       } else if (prefix == ')') {
         result.add(new token(token_type.CLOSE));
+      } else {
+        new notification(notification_type.UNKNOWN_CHARACTER, source).report();
       }
     }
     return result;

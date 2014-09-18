@@ -356,3 +356,10 @@ update: $(COACH_WAR_TARGET)
 
 rollback: $(COACH_WAR_TARGET)
 	$(APPENGINE_DIR)/bin/appcfg.sh rollback $(COACH_WAR_DIR)
+
+mini: ideal/experiment/mini/create.java
+	@echo Compiling $^
+	@$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -d $(CLASSES_DIR) $^
+	@echo Running $^
+	@$(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea ideal.experiment.mini.create \
+            ideal/experiment/mini/test.i

@@ -37,15 +37,22 @@ public class create {
     }
   }
 
-  public static enum token_type {
-    WHITESPACE,
-    OPEN,
-    CLOSE,
-    IDENTIFIER;
+  public static class text_position implements source {
+    public final source_text the_source_text;
+    public final int character_index;
+
+    public text_position(source_text the_source_text, int character_index) {
+      this.the_source_text = the_source_text;
+      this.character_index = character_index;
+    }
+
+    public source deeper() {
+      return the_source_text;
+    }
   }
 
   public static enum notification_type {
-    UNKNOWN_CHARACTER("Unknown character");
+    UNRECOGNIZED_CHARACTER("Unrecognized character");
 
     public final String message;
 
@@ -68,6 +75,46 @@ public class create {
 
       @Nullable source deep_source = the_source;
       while(deep_source != null) {
+        if (deep_source instanceof text_position) {
+          text_position position = (text_position) deep_source;
+          String content = position.the_source_text.content;
+          int index = position.character_index;
+          int line_number = 1;
+          for (int i = index - 1; i >= 0; --i) {
+            if (content.charAt(i) == '\n') {
+              line_number += 1;
+            }
+          }
+          StringBuilder detailed = new StringBuilder();
+          detailed.append(position.the_source_text.name).append(":");
+          detailed.append(line_number).append(": ");
+          detailed.append(message).append('\n');
+
+          int start_of_line = index;
+          while (start_of_line > 0 && content.charAt(start_of_line - 1) != '\n') {
+            start_of_line -= 1;
+          }
+          int spaces;
+          if (index >= content.length() || content.charAt(index) == '\n') {
+            detailed.append(content.substring(start_of_line, index));
+            detailed.append('\n');
+          } else {
+            int end_of_line = index;
+            // TODO(dynin): handle newline.
+            while (end_of_line < (content.length() - 1) && content.charAt(end_of_line + 1) != '\n') {
+              end_of_line += 1;
+            }
+            detailed.append(content.substring(start_of_line, end_of_line + 1));
+            detailed.append('\n');
+          }
+          for (int i = 0; i < (index - start_of_line); ++i) {
+            detailed.append(' ');
+          }
+          detailed.append('^');
+          // Last newline is added by println().
+          message = detailed.toString();
+          break;
+        }
         if (deep_source instanceof source_text) {
           message = ((source_text) deep_source).name + ": " + message;
           break;
@@ -79,38 +126,62 @@ public class create {
     }
   }
 
-  public static class token {
-    public final token_type type;
+  public static enum token_type {
+    WHITESPACE,
+    OPEN,
+    CLOSE,
+    IDENTIFIER;
+  }
 
-    public token(token_type type) {
+  public static class token implements source {
+    public final token_type type;
+    public final source the_source;
+
+    public token(token_type type, source the_source) {
       this.type = type;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
     }
   }
 
-  public static List<token> tokenize(source_text source) {
-    String content = source.content;
+  public static class identifier_token extends token {
+    public final String name;
+
+    public identifier_token(String name, source the_source) {
+      super(token_type.IDENTIFIER, the_source);
+      this.name = name;
+    }
+  }
+
+  public static List<token> tokenize(source_text the_source_text) {
+    String content = the_source_text.content;
     int index = 0;
     List<token> result = new ArrayList<token>();
     while (index < content.length()) {
       int start = index;
       char prefix = content.charAt(index);
       index += 1;
+      source position = new text_position(the_source_text, start);
       if (fn_is_letter(prefix)) {
         while (index < content.length() && fn_is_letter(content.charAt(index))) {
           index += 1;
         }
-        result.add(new token(token_type.IDENTIFIER));
+        result.add(new token(token_type.IDENTIFIER, position));
       } else if (fn_is_whitespace(prefix)) {
         while (index < content.length() && fn_is_whitespace(content.charAt(index))) {
           index += 1;
         }
-        result.add(new token(token_type.WHITESPACE));
+        result.add(new token(token_type.WHITESPACE, position));
       } else if (prefix == '(') {
-        result.add(new token(token_type.OPEN));
+        result.add(new token(token_type.OPEN, position));
       } else if (prefix == ')') {
-        result.add(new token(token_type.CLOSE));
+        result.add(new token(token_type.CLOSE, position));
       } else {
-        new notification(notification_type.UNKNOWN_CHARACTER, source).report();
+        new notification(notification_type.UNRECOGNIZED_CHARACTER, position).report();
       }
     }
     return result;

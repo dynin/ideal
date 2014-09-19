@@ -52,7 +52,9 @@ public class create {
   }
 
   public static enum notification_type {
-    UNRECOGNIZED_CHARACTER("Unrecognized character");
+    UNRECOGNIZED_CHARACTER("Unrecognized character"),
+    EOF_IN_STRING_LITERAL("End of file in string literal"),
+    NEWLINE_IN_STRING_LITERAL("Newline in string literal");
 
     public final String message;
 
@@ -69,67 +71,14 @@ public class create {
       this.type = type;
       this.the_source = the_source;
     }
-
-    public void report() {
-      String message = type.message;
-
-      @Nullable source deep_source = the_source;
-      while(deep_source != null) {
-        if (deep_source instanceof text_position) {
-          text_position position = (text_position) deep_source;
-          String content = position.the_source_text.content;
-          int index = position.character_index;
-          int line_number = 1;
-          for (int i = index - 1; i >= 0; --i) {
-            if (content.charAt(i) == '\n') {
-              line_number += 1;
-            }
-          }
-          StringBuilder detailed = new StringBuilder();
-          detailed.append(position.the_source_text.name).append(":");
-          detailed.append(line_number).append(": ");
-          detailed.append(message).append('\n');
-
-          int start_of_line = index;
-          while (start_of_line > 0 && content.charAt(start_of_line - 1) != '\n') {
-            start_of_line -= 1;
-          }
-          int spaces;
-          if (index >= content.length() || content.charAt(index) == '\n') {
-            detailed.append(content.substring(start_of_line, index));
-            detailed.append('\n');
-          } else {
-            int end_of_line = index;
-            while (end_of_line < (content.length() - 1) && content.charAt(end_of_line + 1) != '\n') {
-              end_of_line += 1;
-            }
-            detailed.append(content.substring(start_of_line, end_of_line + 1));
-            detailed.append('\n');
-          }
-          for (int i = 0; i < (index - start_of_line); ++i) {
-            detailed.append(' ');
-          }
-          detailed.append('^');
-          // Last newline is added by println().
-          message = detailed.toString();
-          break;
-        }
-        if (deep_source instanceof source_text) {
-          message = ((source_text) deep_source).name + ": " + message;
-          break;
-        }
-        deep_source = the_source.deeper();
-      }
-
-      System.err.println(message);
-    }
   }
 
   public static enum token_type {
     WHITESPACE,
     OPEN,
     CLOSE,
-    IDENTIFIER;
+    IDENTIFIER,
+    LITERAL;
   }
 
   public static interface token extends source {
@@ -186,6 +135,31 @@ public class create {
     }
   }
 
+  public static class string_literal_token implements token {
+    public final String value;
+    public final source the_source;
+
+    public string_literal_token(String value, source the_source) {
+      this.value = value;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public token_type type() {
+      return token_type.LITERAL;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      return "<" + type().toString() + ":" + value + ">";
+    }
+  }
+
   public static List<token> tokenize(source_text the_source_text) {
     String content = the_source_text.content;
     int index = 0;
@@ -209,8 +183,26 @@ public class create {
         result.add(new simple_token(token_type.OPEN, position));
       } else if (prefix == ')') {
         result.add(new simple_token(token_type.CLOSE, position));
+      } else if (prefix == '"') {
+        char quote = prefix;
+        while (index < content.length() &&
+               content.charAt(index) != quote &&
+               content.charAt(index) != '\n') {
+          index += 1;
+        }
+        if (index == content.length()) {
+          report(new notification(notification_type.EOF_IN_STRING_LITERAL, position));
+        } else if (content.charAt(index) == '\n') {
+          index += 1;
+          report(new notification(notification_type.NEWLINE_IN_STRING_LITERAL, position));
+        } else {
+          assert content.charAt(index) == quote;
+          String value = content.substring(start + 1, index);
+          index += 1;
+          result.add(new string_literal_token(value, position));
+        }
       } else {
-        new notification(notification_type.UNRECOGNIZED_CHARACTER, position).report();
+        report(new notification(notification_type.UNRECOGNIZED_CHARACTER, position));
       }
     }
     return result;
@@ -222,6 +214,60 @@ public class create {
 
   public static boolean fn_is_whitespace(char c) {
     return Character.isWhitespace(c);
+  }
+
+  public static void report(notification the_notification) {
+    String message = the_notification.type.message;
+
+    @Nullable source deep_source = the_notification.the_source;
+    while(deep_source != null) {
+      if (deep_source instanceof text_position) {
+        text_position position = (text_position) deep_source;
+        String content = position.the_source_text.content;
+        int index = position.character_index;
+        int line_number = 1;
+        for (int i = index - 1; i >= 0; --i) {
+          if (content.charAt(i) == '\n') {
+            line_number += 1;
+          }
+        }
+        StringBuilder detailed = new StringBuilder();
+        detailed.append(position.the_source_text.name).append(":");
+        detailed.append(line_number).append(": ");
+        detailed.append(message).append('\n');
+
+        int start_of_line = index;
+        while (start_of_line > 0 && content.charAt(start_of_line - 1) != '\n') {
+          start_of_line -= 1;
+        }
+        int spaces;
+        if (index >= content.length() || content.charAt(index) == '\n') {
+          detailed.append(content.substring(start_of_line, index));
+          detailed.append('\n');
+        } else {
+          int end_of_line = index;
+          while (end_of_line < (content.length() - 1) && content.charAt(end_of_line + 1) != '\n') {
+            end_of_line += 1;
+          }
+          detailed.append(content.substring(start_of_line, end_of_line + 1));
+          detailed.append('\n');
+        }
+        for (int i = 0; i < (index - start_of_line); ++i) {
+          detailed.append(' ');
+        }
+        detailed.append('^');
+        // Last newline is added by println().
+        message = detailed.toString();
+        break;
+      }
+      if (deep_source instanceof source_text) {
+        message = ((source_text) deep_source).name + ": " + message;
+        break;
+      }
+      deep_source = deep_source.deeper();
+    }
+
+    System.err.println(message);
   }
 
   public static void main(String[] args) {

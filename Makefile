@@ -360,6 +360,6 @@ rollback: $(COACH_WAR_TARGET)
 mini: ideal/experiment/mini/create.java
 	@echo Compiling $^
 	@$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -d $(CLASSES_DIR) $^
-	@echo Running $^
+	@echo Running ideal.experiment.mini.create
 	@$(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea ideal.experiment.mini.create \
             ideal/experiment/mini/test.i

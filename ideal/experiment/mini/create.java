@@ -181,15 +181,80 @@ public class create {
 
     @Override
     public String toString() {
-      StringBuilder result = new StringBuilder("(");
-      for (int i = 0; i < parameters.size(); ++i) {
-        if (i > 0) {
-          result.append(' ');
-        }
-        result.append(parameters.get(i).toString());
-      }
-      result.append(')');
+      return "s-expr:" + fn_display_list(parameters);
+    }
+  }
+
+  // TODO(dynin): implement annotations.
+  public interface annotation extends construct {
+  }
+
+  public static class variable_construct implements construct {
+    public final List<annotation> annotations;
+    public final @Nullable construct type;
+    public final String name;
+    public final @Nullable construct initializer;
+    public final source the_source;
+
+    public variable_construct(
+        List<annotation> annotations,
+        @Nullable construct type,
+        String name,
+        @Nullable construct initializer,
+        source the_source) {
+      this.annotations = annotations;
+      this.type = type;
+      this.name = name;
+      this.initializer = initializer;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder result = new StringBuilder("variable:<")
+          .append(fn_display_list(annotations))
+          .append(" type:").append(type)
+          .append(" name:").append(name)
+          .append(" init:").append(initializer)
+          .append(" source:").append(the_source)
+          .append(">");
       return result.toString();
+    }
+  }
+
+  public static enum kind {
+    DATATYPE,
+    INTERFACE;
+  }
+
+  public static class type_declaration_construct implements construct {
+    public final List<annotation> annotations;
+    public final kind the_kind;
+    public final String name;
+    public final List<construct> body;
+    public final source the_source;
+
+    public type_declaration_construct(
+        List<annotation> annotations,
+        kind the_kind,
+        String name,
+        List<construct> body,
+        source the_source) {
+      this.annotations = annotations;
+      this.the_kind = the_kind;
+      this.name = name;
+      this.body = body;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
     }
   }
 
@@ -247,6 +312,19 @@ public class create {
 
   public static boolean fn_is_whitespace(char c) {
     return Character.isWhitespace(c);
+  }
+
+  public static String fn_display_list(List the_list) {
+    StringBuilder result = new StringBuilder("[");
+    for (int i = 0; i < the_list.size(); ++i) {
+      if (i > 0) {
+        result.append(' ');
+      }
+      result.append(the_list.get(i).toString());
+    }
+    result.append(']');
+
+    return result.toString();
   }
 
   public static void report(notification the_notification) {
@@ -333,7 +411,13 @@ public class create {
           end += 1;
         }
         index = end;
-        result.add(new s_expression(parameters, the_token));
+        if (parameters.size() > 0 &&
+            parameters.get(0) instanceof identifier &&
+            ((identifier) parameters.get(0)).name.equals("variable")) {
+          result.add(parse_variable(parameters.subList(1, parameters.size())));
+        } else {
+          result.add(new s_expression(parameters, the_token));
+        }
       } else if (the_token.type() == token_type.CLOSE) {
         return index - 1;
       } else {
@@ -342,6 +426,19 @@ public class create {
     }
 
     return index;
+  }
+
+  private static construct parse_variable(List<construct> parameters) {
+    assert parameters.size() == 3;
+    assert parameters.get(2) instanceof identifier;
+
+    List<annotation> annotations = new ArrayList<annotation>();
+    construct type = parameters.get(1);
+    String name = ((identifier) parameters.get(2)).name;
+    @Nullable construct initializer = null;
+    source the_source = parameters.get(2);
+
+    return new variable_construct(annotations, type, name, initializer, the_source);
   }
 
   public static List<construct> parse(List<token> tokens) {

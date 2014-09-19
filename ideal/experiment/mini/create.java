@@ -54,7 +54,9 @@ public class create {
   public static enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),
-    NEWLINE_IN_STRING_LITERAL("Newline in string literal");
+    NEWLINE_IN_STRING_LITERAL("Newline in string literal"),
+    PARSE_ERROR("Parse error"),
+    CLOSE_PAREN_NOT_FOUND("Close parenthesis not found");
 
     public final String message;
 
@@ -71,6 +73,9 @@ public class create {
       this.type = type;
       this.the_source = the_source;
     }
+  }
+
+  public interface construct extends source {
   }
 
   public static enum token_type {
@@ -110,11 +115,11 @@ public class create {
     }
   }
 
-  public static class identifier_token implements token {
+  public static class identifier implements construct, token {
     public final String name;
     public final source the_source;
 
-    public identifier_token(String name, source the_source) {
+    public identifier(String name, source the_source) {
       this.name = name;
       this.the_source = the_source;
     }
@@ -131,15 +136,15 @@ public class create {
 
     @Override
     public String toString() {
-      return "<" + type().toString() + ":" + name + ">";
+      return "<identifier:" + name + ">";
     }
   }
 
-  public static class string_literal_token implements token {
+  public static class string_literal implements construct, token {
     public final String value;
     public final source the_source;
 
-    public string_literal_token(String value, source the_source) {
+    public string_literal(String value, source the_source) {
       this.value = value;
       this.the_source = the_source;
     }
@@ -156,7 +161,35 @@ public class create {
 
     @Override
     public String toString() {
-      return "<" + type().toString() + ":" + value + ">";
+      return "<string_literal:" + value + ">";
+    }
+  }
+
+  public static class s_expression implements construct {
+    public final List<construct> parameters;
+    public final source the_source;
+
+    public s_expression(List<construct> parameters, source the_source) {
+      this.parameters = parameters;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder result = new StringBuilder("(");
+      for (int i = 0; i < parameters.size(); ++i) {
+        if (i > 0) {
+          result.append(' ');
+        }
+        result.append(parameters.get(i).toString());
+      }
+      result.append(')');
+      return result.toString();
     }
   }
 
@@ -173,7 +206,7 @@ public class create {
         while (index < content.length() && fn_is_letter(content.charAt(index))) {
           index += 1;
         }
-        result.add(new identifier_token(content.substring(start, index), position));
+        result.add(new identifier(content.substring(start, index), position));
       } else if (fn_is_whitespace(prefix)) {
         while (index < content.length() && fn_is_whitespace(content.charAt(index))) {
           index += 1;
@@ -199,7 +232,7 @@ public class create {
           assert content.charAt(index) == quote;
           String value = content.substring(start + 1, index);
           index += 1;
-          result.add(new string_literal_token(value, position));
+          result.add(new string_literal(value, position));
         }
       } else {
         report(new notification(notification_type.UNRECOGNIZED_CHARACTER, position));
@@ -270,6 +303,60 @@ public class create {
     System.err.println(message);
   }
 
+  public static List<token> filter_whitespace(List<token> tokens) {
+    List<token> result = new ArrayList<token>();
+
+    for (token the_token : tokens) {
+      if (the_token.type() != token_type.WHITESPACE) {
+        result.add(the_token);
+      }
+    }
+
+    return result;
+  }
+
+  private static int parse_sublist(List<token> tokens, int start, List<construct> result) {
+    int index = start;
+    while (index < tokens.size()) {
+      token the_token = tokens.get(index);
+      index += 1;
+      if (the_token instanceof construct) {
+        result.add((construct) the_token);
+      } else if (the_token.type() == token_type.OPEN) {
+        List<construct> parameters = new ArrayList<construct>();
+        int end = parse_sublist(tokens, index, parameters);
+        if (end >= tokens.size()) {
+          report(new notification(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
+        } else if (tokens.get(end).type() != token_type.CLOSE) {
+          report(new notification(notification_type.CLOSE_PAREN_NOT_FOUND, tokens.get(end)));
+        } else {
+          end += 1;
+        }
+        index = end;
+        result.add(new s_expression(parameters, the_token));
+      } else if (the_token.type() == token_type.CLOSE) {
+        return index - 1;
+      } else {
+        report(new notification(notification_type.PARSE_ERROR, the_token));
+      }
+    }
+
+    return index;
+  }
+
+  public static List<construct> parse(List<token> tokens) {
+    List<construct> result = new ArrayList<construct>();
+    int consumed = parse_sublist(tokens, 0, result);
+    if (consumed < tokens.size()) {
+      report(new notification(notification_type.PARSE_ERROR, tokens.get(consumed)));
+    }
+    return result;
+  }
+
+  private static final boolean DEBUG_TOKENIZER = false;
+
+  private static final boolean DEBUG_PARSER = true;
+
   public static void main(String[] args) {
     String file_name = args[0];
     String file_content = "";
@@ -282,9 +369,18 @@ public class create {
     }
 
     source_text the_source = new source_text(file_name, file_content);
-    List<token> tokens = tokenize(the_source);
-    for (token the_token : tokens) {
-      System.out.println(the_token.toString());
+    List<token> tokens = filter_whitespace(tokenize(the_source));
+    if (DEBUG_TOKENIZER) {
+      for (token the_token : tokens) {
+        System.out.println(the_token.toString());
+      }
+    }
+
+    List<construct> constructs = parse(tokens);
+    if (DEBUG_PARSER) {
+      for (construct the_construct : constructs) {
+        System.out.println(the_construct.toString());
+      }
     }
   }
 

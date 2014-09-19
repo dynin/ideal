@@ -100,7 +100,6 @@ public class create {
             detailed.append('\n');
           } else {
             int end_of_line = index;
-            // TODO(dynin): handle newline.
             while (end_of_line < (content.length() - 1) && content.charAt(end_of_line + 1) != '\n') {
               end_of_line += 1;
             }
@@ -133,27 +132,57 @@ public class create {
     IDENTIFIER;
   }
 
-  public static class token implements source {
+  public static interface token extends source {
+    token_type type();
+  }
+
+  public static class simple_token implements token {
     public final token_type type;
     public final source the_source;
 
-    public token(token_type type, source the_source) {
+    public simple_token(token_type type, source the_source) {
       this.type = type;
       this.the_source = the_source;
+    }
+
+    @Override
+    public token_type type() {
+      return type;
     }
 
     @Override
     public source deeper() {
       return the_source;
     }
+
+    @Override
+    public String toString() {
+      return "<" + type.toString() + ">";
+    }
   }
 
-  public static class identifier_token extends token {
+  public static class identifier_token implements token {
     public final String name;
+    public final source the_source;
 
     public identifier_token(String name, source the_source) {
-      super(token_type.IDENTIFIER, the_source);
       this.name = name;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public token_type type() {
+      return token_type.IDENTIFIER;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      return "<" + type().toString() + ":" + name + ">";
     }
   }
 
@@ -170,16 +199,16 @@ public class create {
         while (index < content.length() && fn_is_letter(content.charAt(index))) {
           index += 1;
         }
-        result.add(new token(token_type.IDENTIFIER, position));
+        result.add(new identifier_token(content.substring(start, index), position));
       } else if (fn_is_whitespace(prefix)) {
         while (index < content.length() && fn_is_whitespace(content.charAt(index))) {
           index += 1;
         }
-        result.add(new token(token_type.WHITESPACE, position));
+        result.add(new simple_token(token_type.WHITESPACE, position));
       } else if (prefix == '(') {
-        result.add(new token(token_type.OPEN, position));
+        result.add(new simple_token(token_type.OPEN, position));
       } else if (prefix == ')') {
-        result.add(new token(token_type.CLOSE, position));
+        result.add(new simple_token(token_type.CLOSE, position));
       } else {
         new notification(notification_type.UNRECOGNIZED_CHARACTER, position).report();
       }
@@ -209,7 +238,7 @@ public class create {
     source_text the_source = new source_text(file_name, file_content);
     List<token> tokens = tokenize(the_source);
     for (token the_token : tokens) {
-      System.out.println(the_token.type);
+      System.out.println(the_token.toString());
     }
   }
 

@@ -1,5 +1,5 @@
 (hello + world "!")
 (hi (hello world))
-(datatype source
+(datatype () source (
   (variable () (nullable source) deeper)
-)
+))

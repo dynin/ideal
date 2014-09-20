@@ -256,6 +256,18 @@ public class create {
     public source deeper() {
       return the_source;
     }
+
+    @Override
+    public String toString() {
+      StringBuilder result = new StringBuilder("type_declaration:<")
+          .append(fn_display_list(annotations))
+          .append(" kind:").append(the_kind)
+          .append(" name:").append(name)
+          .append(" body:").append(fn_display_list(body))
+          .append(" source:").append(the_source)
+          .append(">");
+      return result.toString();
+    }
   }
 
   public static List<token> tokenize(source_text the_source_text) {
@@ -393,7 +405,8 @@ public class create {
     return result;
   }
 
-  private static int parse_sublist(List<token> tokens, int start, List<construct> result) {
+  private static int parse_sublist(List<token> tokens, int start, List<construct> result,
+      parser_context context) {
     int index = start;
     while (index < tokens.size()) {
       token the_token = tokens.get(index);
@@ -402,7 +415,7 @@ public class create {
         result.add((construct) the_token);
       } else if (the_token.type() == token_type.OPEN) {
         List<construct> parameters = new ArrayList<construct>();
-        int end = parse_sublist(tokens, index, parameters);
+        int end = parse_sublist(tokens, index, parameters, context);
         if (end >= tokens.size()) {
           report(new notification(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
         } else if (tokens.get(end).type() != token_type.CLOSE) {
@@ -412,12 +425,18 @@ public class create {
         }
         index = end;
         if (parameters.size() > 0 &&
-            parameters.get(0) instanceof identifier &&
-            ((identifier) parameters.get(0)).name.equals("variable")) {
-          result.add(parse_variable(parameters.subList(1, parameters.size())));
-        } else {
-          result.add(new s_expression(parameters, the_token));
+            parameters.get(0) instanceof identifier) {
+          String name = ((identifier) parameters.get(0)).name;
+          @Nullable special_parser the_parser = context.get_parser(name);
+          if (the_parser != null) {
+            @Nullable construct parsed = the_parser.parse(parameters.subList(1, parameters.size()));
+            if (parsed != null) {
+              result.add(parsed);
+            }
+            continue;
+          }
         }
+        result.add(new s_expression(parameters, the_token));
       } else if (the_token.type() == token_type.CLOSE) {
         return index - 1;
       } else {
@@ -428,22 +447,83 @@ public class create {
     return index;
   }
 
-  private static construct parse_variable(List<construct> parameters) {
-    assert parameters.size() == 3;
-    assert parameters.get(2) instanceof identifier;
-
-    List<annotation> annotations = new ArrayList<annotation>();
-    construct type = parameters.get(1);
-    String name = ((identifier) parameters.get(2)).name;
-    @Nullable construct initializer = null;
-    source the_source = parameters.get(2);
-
-    return new variable_construct(annotations, type, name, initializer, the_source);
+  public interface special_parser {
+    @Nullable construct parse(List<construct> parameters);
   }
 
-  public static List<construct> parse(List<token> tokens) {
+  public interface parser_context {
+    @Nullable special_parser get_parser(String name);
+  }
+
+  public static final special_parser VARIABLE_PARSER = new special_parser() {
+    @Override
+    public @Nullable construct parse(List<construct> parameters) {
+      if (parameters.size() != 3) {
+        return null;
+      }
+      if (!(parameters.get(2) instanceof identifier)) {
+        return null;
+      }
+
+      List<annotation> annotations = parse_annotations(parameters.get(0));
+      construct type = parameters.get(1);
+      String name = ((identifier) parameters.get(2)).name;
+      @Nullable construct initializer = null;
+      source the_source = parameters.get(2);
+
+      return new variable_construct(annotations, type, name, initializer, the_source);
+    }
+  };
+
+  public static final special_parser DATATYPE_PARSER = new special_parser() {
+    @Override
+    public @Nullable construct parse(List<construct> parameters) {
+      if (parameters.size() != 3) {
+        return null;
+      }
+      if (!(parameters.get(1) instanceof identifier)) {
+        return null;
+      }
+      if (!(parameters.get(2) instanceof s_expression)) {
+        return null;
+      }
+
+      List<annotation> annotations = parse_annotations(parameters.get(0));
+      kind the_kind = kind.DATATYPE;
+      String name = ((identifier) parameters.get(1)).name;
+      List<construct> body = ((s_expression) parameters.get(2)).parameters;
+      source the_source = parameters.get(1);
+
+      return new type_declaration_construct(annotations, the_kind, name, body, the_source);
+    }
+  };
+
+
+  private static List<annotation> parse_annotations(construct the_construct) {
+    // TODO(dynin): implement actual annotation parsing.
+    if (!(the_construct instanceof s_expression) ||
+        !((s_expression) the_construct).parameters.isEmpty()) {
+      report(new notification(notification_type.PARSE_ERROR, the_construct));
+    }
+    return new ArrayList<annotation>();
+  }
+
+  public static class common_context implements parser_context {
+    @Override
+    public @Nullable special_parser get_parser(String name) {
+      if (name.equals("variable")) {
+        return VARIABLE_PARSER;
+      } else if (name.equals("datatype")) {
+        return DATATYPE_PARSER;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  public static List<construct> parse(List<token> tokens, parser_context context) {
     List<construct> result = new ArrayList<construct>();
-    int consumed = parse_sublist(tokens, 0, result);
+    int consumed = parse_sublist(tokens, 0, result, context);
     if (consumed < tokens.size()) {
       report(new notification(notification_type.PARSE_ERROR, tokens.get(consumed)));
     }
@@ -473,7 +553,7 @@ public class create {
       }
     }
 
-    List<construct> constructs = parse(tokens);
+    List<construct> constructs = parse(tokens, new common_context());
     if (DEBUG_PARSER) {
       for (construct the_construct : constructs) {
         System.out.println(the_construct.toString());

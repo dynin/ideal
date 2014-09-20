@@ -76,6 +76,18 @@ public class create {
   }
 
   public interface construct extends source {
+    <result, parameter> result accept(
+        construct_visitor<result, parameter> visitor, parameter the_parameter);
+  }
+
+  public interface construct_visitor<result, parameter> {
+    result accept_identifier(identifier the_identifier, parameter the_parameter);
+    result accept_string_literal(string_literal the_string_literal, parameter the_parameter);
+    result accept_s_expression(s_expression the_s_expression, parameter the_parameter);
+    result accept_variable_construct(variable_construct the_variable_construct,
+        parameter the_parameter);
+    result accept_type_declaration_construct(
+        type_declaration_construct the_type_declaration_construct, parameter the_parameter);
   }
 
   public static enum token_type {
@@ -135,6 +147,12 @@ public class create {
     }
 
     @Override
+    public <result, parameter> result accept(
+        construct_visitor<result, parameter> visitor, parameter the_parameter) {
+      return visitor.accept_identifier(this, the_parameter);
+    }
+
+    @Override
     public String toString() {
       return "<identifier:" + name + ">";
     }
@@ -142,10 +160,12 @@ public class create {
 
   public static class string_literal implements construct, token {
     public final String value;
+    public final String with_quotes;
     public final source the_source;
 
-    public string_literal(String value, source the_source) {
+    public string_literal(String value, String with_quotes, source the_source) {
       this.value = value;
+      this.with_quotes = with_quotes;
       this.the_source = the_source;
     }
 
@@ -157,6 +177,12 @@ public class create {
     @Override
     public source deeper() {
       return the_source;
+    }
+
+    @Override
+    public <result, parameter> result accept(
+        construct_visitor<result, parameter> visitor, parameter the_parameter) {
+      return visitor.accept_string_literal(this, the_parameter);
     }
 
     @Override
@@ -177,6 +203,12 @@ public class create {
     @Override
     public source deeper() {
       return the_source;
+    }
+
+    @Override
+    public <result, parameter> result accept(
+        construct_visitor<result, parameter> visitor, parameter the_parameter) {
+      return visitor.accept_s_expression(this, the_parameter);
     }
 
     @Override
@@ -212,6 +244,12 @@ public class create {
     @Override
     public source deeper() {
       return the_source;
+    }
+
+    @Override
+    public <result, parameter> result accept(
+        construct_visitor<result, parameter> visitor, parameter the_parameter) {
+      return visitor.accept_variable_construct(this, the_parameter);
     }
 
     @Override
@@ -255,6 +293,12 @@ public class create {
     @Override
     public source deeper() {
       return the_source;
+    }
+
+    @Override
+    public <result, parameter> result accept(
+        construct_visitor<result, parameter> visitor, parameter the_parameter) {
+      return visitor.accept_type_declaration_construct(this, the_parameter);
     }
 
     @Override
@@ -308,8 +352,9 @@ public class create {
         } else {
           assert content.charAt(index) == quote;
           String value = content.substring(start + 1, index);
+          String with_quotes = content.substring(start, index + 1);
           index += 1;
-          result.add(new string_literal(value, position));
+          result.add(new string_literal(value, with_quotes, position));
         }
       } else {
         report(new notification(notification_type.UNRECOGNIZED_CHARACTER, position));
@@ -530,6 +575,200 @@ public class create {
     return result;
   }
 
+  public static final text OPEN_PAREN = new text_string("(");
+  public static final text CLOSE_PAREN = new text_string(")");
+  public static final text OPEN_BRACE = new text_string("{");
+  public static final text CLOSE_BRACE = new text_string("}");
+  public static final text NEWLINE = new text_string("\n");
+  public static final text SEMICOLON = new text_string(";");
+
+  public static class base_printer implements function<text, construct>,
+      construct_visitor<text, Void> {
+    @Override
+    public text call(construct the_construct) {
+      return the_construct.accept(this, null);
+    }
+
+    public text print(List<construct> constructs) {
+      return join_text(map(constructs, this));
+    }
+
+    @Override
+    public text accept_identifier(identifier the_identifier, Void nothing) {
+      return new text_string(the_identifier.name);
+    }
+
+    @Override
+    public text accept_string_literal(string_literal the_string_literal, Void nothing) {
+      return new text_string(the_string_literal.with_quotes);
+    }
+
+    @Override
+    public text accept_s_expression(s_expression the_s_expression, Void nothing) {
+      return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters, this), SPACE),
+          CLOSE_PAREN);
+
+    }
+
+    @Override
+    public text accept_variable_construct(variable_construct the_variable_construct,
+        Void nothing) {
+      List<text> result = new ArrayList<text>();
+      result.add(call(the_variable_construct.type));
+      result.add(SPACE);
+      result.add(new text_string(the_variable_construct.name));
+      result.add(SEMICOLON);
+      result.add(NEWLINE);
+      return new text_list(result);
+    }
+
+    @Override
+    public text accept_type_declaration_construct(
+        type_declaration_construct the_type_declaration_construct, Void nothing) {
+      List<text> result = new ArrayList<text>();
+      result.add(new text_string(the_type_declaration_construct.the_kind.toString().toLowerCase()));
+      result.add(SPACE);
+      result.add(new text_string(the_type_declaration_construct.name));
+      result.add(SPACE);
+      result.add(OPEN_BRACE);
+      result.add(NEWLINE);
+      result.add(new indented_text(print(the_type_declaration_construct.body)));
+      result.add(CLOSE_BRACE);
+      result.add(NEWLINE);
+      return new text_list(result);
+    }
+  }
+
+  public interface function<result, parameter> {
+    result call(parameter the_parameter);
+  }
+
+  public static <source_type, target_type> List<target_type> map(List<source_type> source_list,
+      function<target_type, source_type> transform) {
+    List<target_type> result = new ArrayList<target_type>();
+    for (source_type source_element : source_list) {
+      result.add(transform.call(source_element));
+    }
+    return result;
+  }
+
+  public interface text {
+  }
+
+  public static class text_string implements text {
+    public final String value;
+
+    public text_string(String value) {
+      this.value = value;
+    }
+
+    @Override
+    public String toString() {
+      return value;
+    }
+  }
+
+  public static final text SPACE = new text_string(" ");
+
+  public static class indented_text implements text {
+    public final text inside;
+
+    public indented_text(text inside) {
+      this.inside = inside;
+    }
+
+    @Override
+    public String toString() {
+      return ">>" + inside.toString();
+    }
+  }
+
+  public static class text_list implements text {
+    public final List<text> texts;
+
+    public text_list(List<text> texts) {
+      this.texts = texts;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder result = new StringBuilder();
+      for (text the_text : texts) {
+        result.append(the_text.toString());
+      }
+      return result.toString();
+    }
+  }
+
+  public static text join_text(text first, text second) {
+    List<text> result = new ArrayList<text>();
+    result.add(first);
+    result.add(second);
+    return new text_list(result);
+  }
+
+  public static text join_text(text first, text second, text third) {
+    List<text> result = new ArrayList<text>();
+    result.add(first);
+    result.add(second);
+    result.add(third);
+    return new text_list(result);
+  }
+
+  public static text join_text(List<text> texts) {
+    return new text_list(texts);
+  }
+
+  private static final String INDENT_STRING = "  ";
+
+  private static boolean do_render_text(text the_text, boolean first, int indent,
+      StringBuilder result) {
+    if (the_text instanceof text_string) {
+      String value = ((text_string) the_text).value;
+      for (int i = 0; i < value.length(); ++i) {
+        char c = value.charAt(i);
+        if (c != '\n') {
+          if (first) {
+            for (int j = 0; j < indent; ++j) {
+              result.append(INDENT_STRING);
+            }
+          }
+          result.append(c);
+          first = false;
+        } else {
+          result.append('\n');
+          first = true;
+        }
+      }
+    } else if (the_text instanceof indented_text) {
+      first = do_render_text(((indented_text) the_text).inside, first, indent + 1, result);
+    } else {
+      assert the_text instanceof text_list;
+      for (text sub_text : ((text_list)the_text).texts) {
+        first = do_render_text(sub_text, first, indent, result);
+      }
+    }
+
+    return first;
+  }
+
+  public static String render_text(text the_text) {
+    StringBuilder result = new StringBuilder();
+    do_render_text(the_text, true, 0, result);
+    return result.toString();
+  }
+
+  public static text join_text(List<text> texts, text separator) {
+    List<text> result = new ArrayList<text>();
+    for (int i = 0; i < texts.size(); ++i) {
+      if (i > 0) {
+        result.add(separator);
+      }
+      result.add(texts.get(i));
+    }
+    return new text_list(result);
+  }
+
   private static final boolean DEBUG_TOKENIZER = false;
 
   private static final boolean DEBUG_PARSER = true;
@@ -559,6 +798,8 @@ public class create {
         System.out.println(the_construct.toString());
       }
     }
+
+    System.out.print(render_text(new base_printer().print(constructs)));
   }
 
   private static String read_file(String file_name) throws IOException {

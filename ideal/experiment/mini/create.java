@@ -78,6 +78,10 @@ public class create {
   public interface construct extends source {
   }
 
+  public interface function<result, parameter> {
+    result call(parameter the_parameter);
+  }
+
   public static abstract class construct_dispatch<result> implements function<result, construct> {
 
     @Override
@@ -98,6 +102,10 @@ public class create {
         return call_variable_construct((variable_construct) the_construct);
       }
 
+      if (the_construct instanceof procedure_construct) {
+        return call_procedure_construct((procedure_construct) the_construct);
+      }
+
       if (the_construct instanceof type_declaration_construct) {
         return call_type_declaration_construct((type_declaration_construct) the_construct);
       }
@@ -113,6 +121,7 @@ public class create {
     public abstract result call_string_literal(string_literal the_string_literal);
     public abstract result call_s_expression(s_expression the_s_expression);
     public abstract result call_variable_construct(variable_construct the_variable_construct);
+    public abstract result call_procedure_construct(procedure_construct the_procedure_construct);
     public abstract result call_type_declaration_construct(
         type_declaration_construct the_declaration);
   }
@@ -226,24 +235,24 @@ public class create {
     }
   }
 
-  // TODO(dynin): implement annotations.
-  public interface annotation extends construct {
+  // TODO(dynin): implement modifiers.
+  public interface modifier extends construct {
   }
 
   public static class variable_construct implements construct {
-    public final List<annotation> annotations;
+    public final List<modifier> modifiers;
     public final @Nullable construct type;
     public final String name;
     public final @Nullable construct initializer;
     public final source the_source;
 
     public variable_construct(
-        List<annotation> annotations,
+        List<modifier> modifiers,
         @Nullable construct type,
         String name,
         @Nullable construct initializer,
         source the_source) {
-      this.annotations = annotations;
+      this.modifiers = modifiers;
       this.type = type;
       this.name = name;
       this.initializer = initializer;
@@ -258,10 +267,52 @@ public class create {
     @Override
     public String toString() {
       StringBuilder result = new StringBuilder("variable:<")
-          .append(fn_display_list(annotations))
+          .append(fn_display_list(modifiers))
           .append(" type:").append(type)
           .append(" name:").append(name)
           .append(" init:").append(initializer)
+          .append(" source:").append(the_source)
+          .append(">");
+      return result.toString();
+    }
+  }
+
+  public static class procedure_construct implements construct {
+    public final List<modifier> modifiers;
+    public final construct return_type;
+    public final String name;
+    public final List<variable_construct> parameters;
+    public final construct body;
+    public final source the_source;
+
+    public procedure_construct(
+        List<modifier> modifiers,
+        construct return_type,
+        String name,
+        List<variable_construct> parameters,
+        construct body,
+        source the_source) {
+      this.modifiers = modifiers;
+      this.return_type = return_type;
+      this.name = name;
+      this.parameters = parameters;
+      this.body = body;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder result = new StringBuilder("procedure:<")
+          .append(fn_display_list(modifiers))
+          .append(" return_type:").append(return_type)
+          .append(" name:").append(name)
+          .append(" parameters:").append(parameters)
+          .append(" body:").append(body)
           .append(" source:").append(the_source)
           .append(">");
       return result.toString();
@@ -274,19 +325,19 @@ public class create {
   }
 
   public static class type_declaration_construct implements construct {
-    public final List<annotation> annotations;
+    public final List<modifier> modifiers;
     public final kind the_kind;
     public final String name;
     public final List<construct> body;
     public final source the_source;
 
     public type_declaration_construct(
-        List<annotation> annotations,
+        List<modifier> modifiers,
         kind the_kind,
         String name,
         List<construct> body,
         source the_source) {
-      this.annotations = annotations;
+      this.modifiers = modifiers;
       this.the_kind = the_kind;
       this.name = name;
       this.body = body;
@@ -301,7 +352,7 @@ public class create {
     @Override
     public String toString() {
       StringBuilder result = new StringBuilder("type_declaration:<")
-          .append(fn_display_list(annotations))
+          .append(fn_display_list(modifiers))
           .append(" kind:").append(the_kind)
           .append(" name:").append(name)
           .append(" body:").append(fn_display_list(body))
@@ -507,13 +558,13 @@ public class create {
         return null;
       }
 
-      List<annotation> annotations = parse_annotations(parameters.get(0));
+      List<modifier> modifiers = parse_modifiers(parameters.get(0));
       construct type = parameters.get(1);
       String name = ((identifier) parameters.get(2)).name;
       @Nullable construct initializer = null;
       source the_source = parameters.get(2);
 
-      return new variable_construct(annotations, type, name, initializer, the_source);
+      return new variable_construct(modifiers, type, name, initializer, the_source);
     }
   };
 
@@ -530,24 +581,24 @@ public class create {
         return null;
       }
 
-      List<annotation> annotations = parse_annotations(parameters.get(0));
+      List<modifier> modifiers = parse_modifiers(parameters.get(0));
       kind the_kind = kind.DATATYPE;
       String name = ((identifier) parameters.get(1)).name;
       List<construct> body = ((s_expression) parameters.get(2)).parameters;
       source the_source = parameters.get(1);
 
-      return new type_declaration_construct(annotations, the_kind, name, body, the_source);
+      return new type_declaration_construct(modifiers, the_kind, name, body, the_source);
     }
   };
 
 
-  private static List<annotation> parse_annotations(construct the_construct) {
-    // TODO(dynin): implement actual annotation parsing.
+  private static List<modifier> parse_modifiers(construct the_construct) {
+    // TODO(dynin): implement actual modifier parsing.
     if (!(the_construct instanceof s_expression) ||
         !((s_expression) the_construct).parameters.isEmpty()) {
       report(new notification(notification_type.PARSE_ERROR, the_construct));
     }
-    return new ArrayList<annotation>();
+    return new ArrayList<modifier>();
   }
 
   public static class common_context implements parser_context {
@@ -582,7 +633,11 @@ public class create {
   public static class base_printer extends construct_dispatch<text>
       implements function<text, construct> {
 
-    public text print(List<construct> constructs) {
+    public text print(construct the_construct) {
+      return call(the_construct);
+    }
+
+    public text print_all(List<? extends construct> constructs) {
       return join_text(map(constructs, this));
     }
 
@@ -606,10 +661,29 @@ public class create {
     @Override
     public text call_variable_construct(variable_construct the_variable_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(call(the_variable_construct.type));
+      result.add(print(the_variable_construct.type));
       result.add(SPACE);
       result.add(new text_string(the_variable_construct.name));
       result.add(SEMICOLON);
+      result.add(NEWLINE);
+      return new text_list(result);
+    }
+
+    @Override
+    public text call_procedure_construct(procedure_construct the_procedure_construct) {
+      List<text> result = new ArrayList<text>();
+      result.add(print(the_procedure_construct.return_type));
+      result.add(SPACE);
+      result.add(new text_string(the_procedure_construct.name));
+      result.add(OPEN_PAREN);
+      // TODO(dynin): separate with commas.
+      result.add(new indented_text(print_all(the_procedure_construct.parameters)));
+      result.add(CLOSE_PAREN);
+      result.add(SPACE);
+      result.add(OPEN_BRACE);
+      result.add(NEWLINE);
+      result.add(new indented_text(print(the_procedure_construct.body)));
+      result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);
     }
@@ -623,18 +697,15 @@ public class create {
       result.add(SPACE);
       result.add(OPEN_BRACE);
       result.add(NEWLINE);
-      result.add(new indented_text(print(the_declaration.body)));
+      result.add(new indented_text(print_all(the_declaration.body)));
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);
     }
   }
 
-  public interface function<result, parameter> {
-    result call(parameter the_parameter);
-  }
-
-  public static <source_type, target_type> List<target_type> map(List<source_type> source_list,
+  public static <source_type, target_type> List<target_type> map(
+      List<? extends source_type> source_list,
       function<target_type, source_type> transform) {
     List<target_type> result = new ArrayList<target_type>();
     for (source_type source_element : source_list) {
@@ -790,7 +861,7 @@ public class create {
       }
     }
 
-    System.out.print(render_text(new base_printer().print(constructs)));
+    System.out.print(render_text(new base_printer().print_all(constructs)));
   }
 
   private static String read_file(String file_name) throws IOException {

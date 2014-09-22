@@ -94,6 +94,10 @@ public class create {
         return call_string_literal((string_literal) the_construct);
       }
 
+      if (the_construct instanceof parameter_construct) {
+        return call_parameter_construct((parameter_construct) the_construct);
+      }
+
       if (the_construct instanceof s_expression) {
         return call_s_expression((s_expression) the_construct);
       }
@@ -114,7 +118,7 @@ public class create {
     }
 
     public result call_construct(construct the_construct) {
-      throw new Error("Unknown  construct type");
+      throw new Error("Unknown construct type for " + the_construct);
     }
 
     public result call_identifier(identifier the_identifier) {
@@ -123,6 +127,10 @@ public class create {
 
     public result call_string_literal(string_literal the_string_literal) {
       return call_construct(the_string_literal);
+    }
+
+    public result call_parameter_construct(parameter_construct the_parameter_construct) {
+      return call_construct(the_parameter_construct);
     }
 
     public result call_s_expression(s_expression the_s_expression) {
@@ -228,6 +236,32 @@ public class create {
     @Override
     public String toString() {
       return "<string_literal:" + value + ">";
+    }
+  }
+
+  public static class parameter_construct implements construct {
+    public final construct main;
+    public final List<construct> parameters;
+    public final source the_source;
+
+    public parameter_construct(construct main, List<construct> parameters, source the_source) {
+      this.main = main;
+      this.parameters = parameters;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder result = new StringBuilder("parameters:<")
+          .append("main:").append(main)
+          .append(" parameters:").append(fn_display_list(parameters))
+          .append(">");
+      return result.toString();
     }
   }
 
@@ -514,6 +548,8 @@ public class create {
     return result;
   }
 
+  private static final String NULLABLE_NAME = "nullable";
+
   private static int parse_sublist(List<token> tokens, int start, List<construct> result,
       parser_context context) {
     int index = start;
@@ -535,13 +571,19 @@ public class create {
         index = end;
         if (parameters.size() > 0 &&
             parameters.get(0) instanceof identifier) {
-          String name = ((identifier) parameters.get(0)).name;
+          identifier name_identifier = (identifier) parameters.get(0);
+          String name = name_identifier.name;
+          List<construct> rest = parameters.subList(1, parameters.size());
           @Nullable special_parser the_parser = context.get_parser(name);
           if (the_parser != null) {
-            @Nullable construct parsed = the_parser.parse(parameters.subList(1, parameters.size()));
+            @Nullable construct parsed = the_parser.parse(rest);
             if (parsed != null) {
               result.add(parsed);
             }
+            continue;
+          }
+          if (name.equals(NULLABLE_NAME)) {
+            result.add(new parameter_construct(name_identifier, rest, the_token));
             continue;
           }
         }
@@ -639,6 +681,8 @@ public class create {
     return result;
   }
 
+  public static final text EMPTY_TEXT = new text_string("");
+  public static final text COMMA = new text_string(",");
   public static final text OPEN_PAREN = new text_string("(");
   public static final text CLOSE_PAREN = new text_string(")");
   public static final text OPEN_BRACE = new text_string("{");
@@ -664,6 +708,14 @@ public class create {
     @Override
     public text call_string_literal(string_literal the_string_literal) {
       return new text_string(the_string_literal.with_quotes);
+    }
+
+    @Override
+    public text call_parameter_construct(parameter_construct the_parameter_construct) {
+      return join_text(print(the_parameter_construct.main),
+          OPEN_PAREN,
+          fold_with_comma(the_parameter_construct.parameters),
+          CLOSE_PAREN);
     }
 
     @Override
@@ -720,6 +772,25 @@ public class create {
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);
+    }
+
+    // TODO(dynin): make generic.
+    private text fold_with_comma(List<construct> constructs) {
+      if (constructs.size() == 0) {
+        return EMPTY_TEXT;
+      } else if (constructs.size() == 1) {
+        return print(constructs.get(0));
+      } else {
+        List<text> result = new ArrayList<text>();
+        for (int i = 0; i < constructs.size(); ++i) {
+          if (i > 0) {
+            result.add(COMMA);
+            result.add(SPACE);
+          }
+          result.add(print(constructs.get(i)));
+        }
+        return new text_list(result);
+      }
     }
   }
 
@@ -829,6 +900,15 @@ public class create {
     result.add(first);
     result.add(second);
     result.add(third);
+    return new text_list(result);
+  }
+
+  public static text join_text(text first, text second, text third, text fourth) {
+    List<text> result = new ArrayList<text>();
+    result.add(first);
+    result.add(second);
+    result.add(third);
+    result.add(fourth);
     return new text_list(result);
   }
 

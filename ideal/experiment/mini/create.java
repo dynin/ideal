@@ -76,18 +76,45 @@ public class create {
   }
 
   public interface construct extends source {
-    <result, parameter> result accept(
-        construct_visitor<result, parameter> visitor, parameter the_parameter);
   }
 
-  public interface construct_visitor<result, parameter> {
-    result accept_identifier(identifier the_identifier, parameter the_parameter);
-    result accept_string_literal(string_literal the_string_literal, parameter the_parameter);
-    result accept_s_expression(s_expression the_s_expression, parameter the_parameter);
-    result accept_variable_construct(variable_construct the_variable_construct,
-        parameter the_parameter);
-    result accept_type_declaration_construct(
-        type_declaration_construct the_type_declaration_construct, parameter the_parameter);
+  public static abstract class construct_dispatch<result> implements function<result, construct> {
+
+    @Override
+    public result call(construct the_construct) {
+      if (the_construct instanceof identifier) {
+        return call_identifier((identifier) the_construct);
+      }
+
+      if (the_construct instanceof string_literal) {
+        return call_string_literal((string_literal) the_construct);
+      }
+
+      if (the_construct instanceof s_expression) {
+        return call_s_expression((s_expression) the_construct);
+      }
+
+      if (the_construct instanceof variable_construct) {
+        return call_variable_construct((variable_construct) the_construct);
+      }
+
+      if (the_construct instanceof type_declaration_construct) {
+        return call_type_declaration_construct((type_declaration_construct) the_construct);
+      }
+
+      return call_construct(the_construct);
+    }
+
+    public result call_construct(construct the_construct) {
+      throw new Error("Unknown  construct type");
+    }
+
+    public abstract result call_identifier(identifier the_identifier);
+    public abstract result call_string_literal(string_literal the_string_literal);
+    public abstract result call_s_expression(s_expression the_s_expression);
+    public abstract result call_variable_construct(variable_construct the_variable_construct);
+    public abstract result call_type_declaration_construct(
+        type_declaration_construct the_declaration);
   }
 
   public static enum token_type {
@@ -147,12 +174,6 @@ public class create {
     }
 
     @Override
-    public <result, parameter> result accept(
-        construct_visitor<result, parameter> visitor, parameter the_parameter) {
-      return visitor.accept_identifier(this, the_parameter);
-    }
-
-    @Override
     public String toString() {
       return "<identifier:" + name + ">";
     }
@@ -180,12 +201,6 @@ public class create {
     }
 
     @Override
-    public <result, parameter> result accept(
-        construct_visitor<result, parameter> visitor, parameter the_parameter) {
-      return visitor.accept_string_literal(this, the_parameter);
-    }
-
-    @Override
     public String toString() {
       return "<string_literal:" + value + ">";
     }
@@ -203,12 +218,6 @@ public class create {
     @Override
     public source deeper() {
       return the_source;
-    }
-
-    @Override
-    public <result, parameter> result accept(
-        construct_visitor<result, parameter> visitor, parameter the_parameter) {
-      return visitor.accept_s_expression(this, the_parameter);
     }
 
     @Override
@@ -244,12 +253,6 @@ public class create {
     @Override
     public source deeper() {
       return the_source;
-    }
-
-    @Override
-    public <result, parameter> result accept(
-        construct_visitor<result, parameter> visitor, parameter the_parameter) {
-      return visitor.accept_variable_construct(this, the_parameter);
     }
 
     @Override
@@ -293,12 +296,6 @@ public class create {
     @Override
     public source deeper() {
       return the_source;
-    }
-
-    @Override
-    public <result, parameter> result accept(
-        construct_visitor<result, parameter> visitor, parameter the_parameter) {
-      return visitor.accept_type_declaration_construct(this, the_parameter);
     }
 
     @Override
@@ -582,37 +579,32 @@ public class create {
   public static final text NEWLINE = new text_string("\n");
   public static final text SEMICOLON = new text_string(";");
 
-  public static class base_printer implements function<text, construct>,
-      construct_visitor<text, Void> {
-    @Override
-    public text call(construct the_construct) {
-      return the_construct.accept(this, null);
-    }
+  public static class base_printer extends construct_dispatch<text>
+      implements function<text, construct> {
 
     public text print(List<construct> constructs) {
       return join_text(map(constructs, this));
     }
 
     @Override
-    public text accept_identifier(identifier the_identifier, Void nothing) {
+    public text call_identifier(identifier the_identifier) {
       return new text_string(the_identifier.name);
     }
 
     @Override
-    public text accept_string_literal(string_literal the_string_literal, Void nothing) {
+    public text call_string_literal(string_literal the_string_literal) {
       return new text_string(the_string_literal.with_quotes);
     }
 
     @Override
-    public text accept_s_expression(s_expression the_s_expression, Void nothing) {
+    public text call_s_expression(s_expression the_s_expression) {
       return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters, this), SPACE),
           CLOSE_PAREN);
 
     }
 
     @Override
-    public text accept_variable_construct(variable_construct the_variable_construct,
-        Void nothing) {
+    public text call_variable_construct(variable_construct the_variable_construct) {
       List<text> result = new ArrayList<text>();
       result.add(call(the_variable_construct.type));
       result.add(SPACE);
@@ -623,16 +615,15 @@ public class create {
     }
 
     @Override
-    public text accept_type_declaration_construct(
-        type_declaration_construct the_type_declaration_construct, Void nothing) {
+    public text call_type_declaration_construct(type_declaration_construct the_declaration) {
       List<text> result = new ArrayList<text>();
-      result.add(new text_string(the_type_declaration_construct.the_kind.toString().toLowerCase()));
+      result.add(new text_string(the_declaration.the_kind.toString().toLowerCase()));
       result.add(SPACE);
-      result.add(new text_string(the_type_declaration_construct.name));
+      result.add(new text_string(the_declaration.name));
       result.add(SPACE);
       result.add(OPEN_BRACE);
       result.add(NEWLINE);
-      result.add(new indented_text(print(the_type_declaration_construct.body)));
+      result.add(new indented_text(print(the_declaration.body)));
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);

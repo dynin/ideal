@@ -106,8 +106,8 @@ public class create {
         return call_procedure_construct((procedure_construct) the_construct);
       }
 
-      if (the_construct instanceof type_declaration_construct) {
-        return call_type_declaration_construct((type_declaration_construct) the_construct);
+      if (the_construct instanceof type_construct) {
+        return call_type_construct((type_construct) the_construct);
       }
 
       return call_construct(the_construct);
@@ -117,13 +117,29 @@ public class create {
       throw new Error("Unknown  construct type");
     }
 
-    public abstract result call_identifier(identifier the_identifier);
-    public abstract result call_string_literal(string_literal the_string_literal);
-    public abstract result call_s_expression(s_expression the_s_expression);
-    public abstract result call_variable_construct(variable_construct the_variable_construct);
-    public abstract result call_procedure_construct(procedure_construct the_procedure_construct);
-    public abstract result call_type_declaration_construct(
-        type_declaration_construct the_declaration);
+    public result call_identifier(identifier the_identifier) {
+      return call_construct(the_identifier);
+    }
+
+    public result call_string_literal(string_literal the_string_literal) {
+      return call_construct(the_string_literal);
+    }
+
+    public result call_s_expression(s_expression the_s_expression) {
+      return call_construct(the_s_expression);
+    }
+
+    public result call_variable_construct(variable_construct the_variable_construct) {
+      return call_construct(the_variable_construct);
+    }
+
+    public result call_procedure_construct(procedure_construct the_procedure_construct) {
+      return call_construct(the_procedure_construct);
+    }
+
+    public result call_type_construct(type_construct the_type_construct) {
+      return call_construct(the_type_construct);
+    }
   }
 
   public static enum token_type {
@@ -282,7 +298,7 @@ public class create {
     public final construct return_type;
     public final String name;
     public final List<variable_construct> parameters;
-    public final construct body;
+    public final @Nullable construct body;
     public final source the_source;
 
     public procedure_construct(
@@ -290,7 +306,7 @@ public class create {
         construct return_type,
         String name,
         List<variable_construct> parameters,
-        construct body,
+        @Nullable construct body,
         source the_source) {
       this.modifiers = modifiers;
       this.return_type = return_type;
@@ -324,14 +340,14 @@ public class create {
     INTERFACE;
   }
 
-  public static class type_declaration_construct implements construct {
+  public static class type_construct implements construct {
     public final List<modifier> modifiers;
     public final kind the_kind;
     public final String name;
     public final List<construct> body;
     public final source the_source;
 
-    public type_declaration_construct(
+    public type_construct(
         List<modifier> modifiers,
         kind the_kind,
         String name,
@@ -587,7 +603,7 @@ public class create {
       List<construct> body = ((s_expression) parameters.get(2)).parameters;
       source the_source = parameters.get(1);
 
-      return new type_declaration_construct(modifiers, the_kind, name, body, the_source);
+      return new type_construct(modifiers, the_kind, name, body, the_source);
     }
   };
 
@@ -630,8 +646,7 @@ public class create {
   public static final text NEWLINE = new text_string("\n");
   public static final text SEMICOLON = new text_string(";");
 
-  public static class base_printer extends construct_dispatch<text>
-      implements function<text, construct> {
+  public static class base_printer extends construct_dispatch<text> {
 
     public text print(construct the_construct) {
       return call(the_construct);
@@ -679,28 +694,68 @@ public class create {
       // TODO(dynin): separate with commas.
       result.add(new indented_text(print_all(the_procedure_construct.parameters)));
       result.add(CLOSE_PAREN);
-      result.add(SPACE);
-      result.add(OPEN_BRACE);
-      result.add(NEWLINE);
-      result.add(new indented_text(print(the_procedure_construct.body)));
-      result.add(CLOSE_BRACE);
+      if (the_procedure_construct.body == null) {
+        result.add(SEMICOLON);
+      } else {
+        result.add(SPACE);
+        result.add(OPEN_BRACE);
+        result.add(NEWLINE);
+        result.add(new indented_text(print(the_procedure_construct.body)));
+        result.add(CLOSE_BRACE);
+      }
       result.add(NEWLINE);
       return new text_list(result);
     }
 
     @Override
-    public text call_type_declaration_construct(type_declaration_construct the_declaration) {
+    public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(new text_string(the_declaration.the_kind.toString().toLowerCase()));
+      result.add(new text_string(the_type_construct.the_kind.toString().toLowerCase()));
       result.add(SPACE);
-      result.add(new text_string(the_declaration.name));
+      result.add(new text_string(the_type_construct.name));
       result.add(SPACE);
       result.add(OPEN_BRACE);
       result.add(NEWLINE);
-      result.add(new indented_text(print_all(the_declaration.body)));
+      result.add(new indented_text(print_all(the_type_construct.body)));
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);
+    }
+  }
+
+  public static class to_java_transform extends construct_dispatch<construct> {
+
+    public construct transform(construct the_construct) {
+      return call(the_construct);
+    }
+
+    public List<construct> transform_all(List<construct> constructs) {
+      return map(constructs, this);
+    }
+
+    @Override
+    public construct call_construct(construct the_construct) {
+      return the_construct;
+    }
+
+    @Override
+    public construct call_variable_construct(variable_construct the_variable_construct) {
+      assert the_variable_construct.type != null;
+      return new procedure_construct(the_variable_construct.modifiers,
+          the_variable_construct.type,
+          the_variable_construct.name,
+          new ArrayList<variable_construct>(),
+          null,
+          the_variable_construct);
+    }
+
+    @Override
+    public construct call_type_construct(type_construct the_type_construct) {
+      return new type_construct(the_type_construct.modifiers,
+          the_type_construct.the_kind,
+          the_type_construct.name,
+          map(the_type_construct.body, this),
+          the_type_construct);
     }
   }
 
@@ -860,6 +915,8 @@ public class create {
         System.out.println(the_construct.toString());
       }
     }
+
+    constructs = new to_java_transform().transform_all(constructs);
 
     System.out.print(render_text(new base_printer().print_all(constructs)));
   }

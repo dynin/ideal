@@ -114,6 +114,10 @@ public class create {
         return call_procedure_construct((procedure_construct) the_construct);
       }
 
+      if (the_construct instanceof supertype_construct) {
+        return call_supertype_construct((supertype_construct) the_construct);
+      }
+
       if (the_construct instanceof type_construct) {
         return call_type_construct((type_construct) the_construct);
       }
@@ -151,6 +155,10 @@ public class create {
 
     public result call_procedure_construct(procedure_construct the_procedure_construct) {
       return call_construct(the_procedure_construct);
+    }
+
+    public result call_supertype_construct(supertype_construct the_supertype_construct) {
+      return call_construct(the_supertype_construct);
     }
 
     public result call_type_construct(type_construct the_type_construct) {
@@ -273,17 +281,17 @@ public class create {
     }
   }
 
-  public enum modifier {
+  public enum modifier_kind {
     PUBLIC,
     NULLABLE;
   }
 
   public static class modifier_construct implements construct {
-    public final modifier the_modifier;
+    public final modifier_kind the_modifier_kind;
     public final source the_source;
 
-    public modifier_construct(modifier the_modifier, source the_source) {
-      this.the_modifier = the_modifier;
+    public modifier_construct(modifier_kind the_modifier_kind, source the_source) {
+      this.the_modifier_kind = the_modifier_kind;
       this.the_source = the_source;
     }
 
@@ -295,7 +303,7 @@ public class create {
     @Override
     public String toString() {
       StringBuilder result = new StringBuilder("modifier_construct:<")
-          .append("modifier:").append(the_modifier)
+          .append("modifier:").append(the_modifier_kind)
           .append(" source:").append(the_source)
           .append(">");
       return result.toString();
@@ -402,6 +410,31 @@ public class create {
     }
   }
 
+  public static enum supertype_kind {
+    EXTENDS,
+    IMPLEMENTS;
+  }
+
+  public static class supertype_construct implements construct {
+    public final supertype_kind the_supertype_kind;
+    public final List<construct> supertypes;
+    public final source the_source;
+
+    public supertype_construct(
+        supertype_kind the_supertype_kind,
+        List<construct> supertypes,
+        source the_source) {
+      this.the_supertype_kind = the_supertype_kind;
+      this.supertypes = supertypes;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+  }
+
   public static enum kind {
     DATATYPE,
     INTERFACE;
@@ -454,8 +487,8 @@ public class create {
       char prefix = content.charAt(index);
       index += 1;
       source position = new text_position(the_source_text, start);
-      if (fn_is_letter(prefix)) {
-        while (index < content.length() && fn_is_letter(content.charAt(index))) {
+      if (fn_is_identifier_letter(prefix)) {
+        while (index < content.length() && fn_is_identifier_letter(content.charAt(index))) {
           index += 1;
         }
         result.add(new identifier(content.substring(start, index), position));
@@ -494,8 +527,8 @@ public class create {
     return result;
   }
 
-  public static boolean fn_is_letter(char c) {
-    return Character.isLetter(c);
+  public static boolean fn_is_identifier_letter(char c) {
+    return Character.isLetter(c) || c == '_';
   }
 
   public static boolean fn_is_whitespace(char c) {
@@ -646,7 +679,7 @@ public class create {
   public static final special_parser VARIABLE_PARSER = new special_parser() {
     @Override
     public @Nullable construct parse(List<construct> parameters) {
-      if (parameters.size() != 3) {
+      if (parameters.size() != 3 && parameters.size() != 4) {
         return null;
       }
       if (!(parameters.get(2) instanceof identifier)) {
@@ -656,7 +689,7 @@ public class create {
       List<modifier_construct> modifiers = parse_modifiers(parameters.get(0));
       construct type = parameters.get(1);
       String name = ((identifier) parameters.get(2)).name;
-      @Nullable construct initializer = null;
+      @Nullable construct initializer = parameters.size() == 4 ? parameters.get(3) : null;
       source the_source = parameters.get(2);
 
       return new variable_construct(modifiers, type, name, initializer, the_source);
@@ -692,6 +725,25 @@ public class create {
     }
   };
 
+  public static class supertype_parser implements special_parser {
+    public final supertype_kind the_supertype_kind;
+
+    public supertype_parser(supertype_kind the_supertype_kind) {
+      this.the_supertype_kind = the_supertype_kind;
+    }
+
+    @Override
+    public @Nullable construct parse(List<construct> parameters) {
+      if (parameters.isEmpty()) {
+        return null;
+      }
+
+      // TODO: should this be a parameter to parse()?
+      source the_source = parameters.get(0);
+      return new supertype_construct(the_supertype_kind, parameters, the_source);
+    }
+  };
+
   private static List<modifier_construct> parse_modifiers(construct the_construct) {
     // TODO(dynin): implement actual modifier parsing.
     if (!(the_construct instanceof s_expression) ||
@@ -709,6 +761,8 @@ public class create {
       parsers.put("variable", VARIABLE_PARSER);
       parsers.put("datatype", new type_parser(kind.DATATYPE));
       parsers.put("interface", new type_parser(kind.INTERFACE));
+      parsers.put("extends", new supertype_parser(supertype_kind.EXTENDS));
+      parsers.put("implements", new supertype_parser(supertype_kind.IMPLEMENTS));
     }
 
     @Override
@@ -765,7 +819,7 @@ public class create {
 
     @Override
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
-      return new text_string(fn_to_lowercase(the_modifier_construct.the_modifier.toString()));
+      return new text_string(fn_to_lowercase(the_modifier_construct.the_modifier_kind.toString()));
     }
 
     @Override
@@ -806,6 +860,18 @@ public class create {
         result.add(new indented_text(print(the_procedure_construct.body)));
         result.add(CLOSE_BRACE);
       }
+      result.add(NEWLINE);
+      return new text_list(result);
+    }
+
+    @Override
+    public text call_supertype_construct(supertype_construct the_supertype_construct) {
+      List<text> result = new ArrayList<text>();
+      result.add(new text_string(fn_to_lowercase(
+          the_supertype_construct.the_supertype_kind.toString())));
+      result.add(SPACE);
+      result.add(fold_with_comma(the_supertype_construct.supertypes));
+      result.add(SEMICOLON);
       result.add(NEWLINE);
       return new text_list(result);
     }
@@ -860,7 +926,7 @@ public class create {
 
     @Override
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
-      if (the_modifier_construct.the_modifier == modifier.NULLABLE) {
+      if (the_modifier_construct.the_modifier_kind == modifier_kind.NULLABLE) {
         return new text_string("@Nullable");
       } else {
         return super.call_modifier_construct(the_modifier_construct);
@@ -892,7 +958,7 @@ public class create {
       construct type = the_variable_construct.type;
       if (is_nullable(type)) {
         type = strip_nullable(type);
-        modifiers.add(new modifier_construct(modifier.NULLABLE, the_source));
+        modifiers.add(new modifier_construct(modifier_kind.NULLABLE, the_source));
       }
       return new procedure_construct(modifiers,
           type,
@@ -906,7 +972,7 @@ public class create {
     public construct call_type_construct(type_construct the_type_construct) {
       source the_source = the_type_construct;
       List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
-      modifiers.add(new modifier_construct(modifier.PUBLIC, the_source));
+      modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
       modifiers.addAll(the_type_construct.modifiers);
       return new type_construct(modifiers,
           the_type_construct.the_kind,

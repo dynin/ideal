@@ -98,6 +98,10 @@ public class create {
         return call_parameter_construct((parameter_construct) the_construct);
       }
 
+      if (the_construct instanceof modifier_construct) {
+        return call_modifier_construct((modifier_construct) the_construct);
+      }
+
       if (the_construct instanceof s_expression) {
         return call_s_expression((s_expression) the_construct);
       }
@@ -131,6 +135,10 @@ public class create {
 
     public result call_parameter_construct(parameter_construct the_parameter_construct) {
       return call_construct(the_parameter_construct);
+    }
+
+    public result call_modifier_construct(modifier_construct the_modifier_construct) {
+      return call_construct(the_modifier_construct);
     }
 
     public result call_s_expression(s_expression the_s_expression) {
@@ -265,6 +273,35 @@ public class create {
     }
   }
 
+  public enum modifier {
+    PUBLIC,
+    NULLABLE;
+  }
+
+  public static class modifier_construct implements construct {
+    public final modifier the_modifier;
+    public final source the_source;
+
+    public modifier_construct(modifier the_modifier, source the_source) {
+      this.the_modifier = the_modifier;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source deeper() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder result = new StringBuilder("modifier_construct:<")
+          .append("modifier:").append(the_modifier)
+          .append(" source:").append(the_source)
+          .append(">");
+      return result.toString();
+    }
+  }
+
   public static class s_expression implements construct {
     public final List<construct> parameters;
     public final source the_source;
@@ -285,19 +322,15 @@ public class create {
     }
   }
 
-  // TODO(dynin): implement modifiers.
-  public interface modifier extends construct {
-  }
-
   public static class variable_construct implements construct {
-    public final List<modifier> modifiers;
+    public final List<modifier_construct> modifiers;
     public final @Nullable construct type;
     public final String name;
     public final @Nullable construct initializer;
     public final source the_source;
 
     public variable_construct(
-        List<modifier> modifiers,
+        List<modifier_construct> modifiers,
         @Nullable construct type,
         String name,
         @Nullable construct initializer,
@@ -328,7 +361,7 @@ public class create {
   }
 
   public static class procedure_construct implements construct {
-    public final List<modifier> modifiers;
+    public final List<modifier_construct> modifiers;
     public final construct return_type;
     public final String name;
     public final List<variable_construct> parameters;
@@ -336,7 +369,7 @@ public class create {
     public final source the_source;
 
     public procedure_construct(
-        List<modifier> modifiers,
+        List<modifier_construct> modifiers,
         construct return_type,
         String name,
         List<variable_construct> parameters,
@@ -375,14 +408,14 @@ public class create {
   }
 
   public static class type_construct implements construct {
-    public final List<modifier> modifiers;
+    public final List<modifier_construct> modifiers;
     public final kind the_kind;
     public final String name;
     public final List<construct> body;
     public final source the_source;
 
     public type_construct(
-        List<modifier> modifiers,
+        List<modifier_construct> modifiers,
         kind the_kind,
         String name,
         List<construct> body,
@@ -467,6 +500,10 @@ public class create {
 
   public static boolean fn_is_whitespace(char c) {
     return Character.isWhitespace(c);
+  }
+
+  public static String fn_to_lowercase(String s) {
+    return s.toLowerCase();
   }
 
   public static String fn_display_list(List the_list) {
@@ -616,7 +653,7 @@ public class create {
         return null;
       }
 
-      List<modifier> modifiers = parse_modifiers(parameters.get(0));
+      List<modifier_construct> modifiers = parse_modifiers(parameters.get(0));
       construct type = parameters.get(1);
       String name = ((identifier) parameters.get(2)).name;
       @Nullable construct initializer = null;
@@ -639,7 +676,7 @@ public class create {
         return null;
       }
 
-      List<modifier> modifiers = parse_modifiers(parameters.get(0));
+      List<modifier_construct> modifiers = parse_modifiers(parameters.get(0));
       kind the_kind = kind.DATATYPE;
       String name = ((identifier) parameters.get(1)).name;
       List<construct> body = ((s_expression) parameters.get(2)).parameters;
@@ -650,13 +687,13 @@ public class create {
   };
 
 
-  private static List<modifier> parse_modifiers(construct the_construct) {
+  private static List<modifier_construct> parse_modifiers(construct the_construct) {
     // TODO(dynin): implement actual modifier parsing.
     if (!(the_construct instanceof s_expression) ||
         !((s_expression) the_construct).parameters.isEmpty()) {
       report(new notification(notification_type.PARSE_ERROR, the_construct));
     }
-    return new ArrayList<modifier>();
+    return new ArrayList<modifier_construct>();
   }
 
   public static class common_context implements parser_context {
@@ -719,6 +756,11 @@ public class create {
     }
 
     @Override
+    public text call_modifier_construct(modifier_construct the_modifier_construct) {
+      return new text_string(fn_to_lowercase(the_modifier_construct.the_modifier.toString()));
+    }
+
+    @Override
     public text call_s_expression(s_expression the_s_expression) {
       return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters, this), SPACE),
           CLOSE_PAREN);
@@ -728,6 +770,7 @@ public class create {
     @Override
     public text call_variable_construct(variable_construct the_variable_construct) {
       List<text> result = new ArrayList<text>();
+      result.add(print_modifiers(the_variable_construct.modifiers));
       result.add(print(the_variable_construct.type));
       result.add(SPACE);
       result.add(new text_string(the_variable_construct.name));
@@ -739,6 +782,7 @@ public class create {
     @Override
     public text call_procedure_construct(procedure_construct the_procedure_construct) {
       List<text> result = new ArrayList<text>();
+      result.add(print_modifiers(the_procedure_construct.modifiers));
       result.add(print(the_procedure_construct.return_type));
       result.add(SPACE);
       result.add(new text_string(the_procedure_construct.name));
@@ -762,7 +806,8 @@ public class create {
     @Override
     public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(new text_string(the_type_construct.the_kind.toString().toLowerCase()));
+      result.add(print_modifiers(the_type_construct.modifiers));
+      result.add(new text_string(fn_to_lowercase(the_type_construct.the_kind.toString())));
       result.add(SPACE);
       result.add(new text_string(the_type_construct.name));
       result.add(SPACE);
@@ -771,6 +816,16 @@ public class create {
       result.add(new indented_text(print_all(the_type_construct.body)));
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
+      return new text_list(result);
+    }
+
+    // TODO(dynin): use map().
+    private text print_modifiers(List<modifier_construct> modifiers) {
+      List<text> result = new ArrayList<text>();
+      for (modifier_construct modifier : modifiers) {
+        result.add(print(modifier));
+        result.add(SPACE);
+      }
       return new text_list(result);
     }
 
@@ -822,11 +877,15 @@ public class create {
 
     @Override
     public construct call_type_construct(type_construct the_type_construct) {
-      return new type_construct(the_type_construct.modifiers,
+      source the_source = the_type_construct;
+      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
+      modifiers.add(new modifier_construct(modifier.PUBLIC, the_source));
+      modifiers.addAll(the_type_construct.modifiers);
+      return new type_construct(modifiers,
           the_type_construct.the_kind,
           the_type_construct.name,
           map(the_type_construct.body, this),
-          the_type_construct);
+          the_source);
     }
   }
 

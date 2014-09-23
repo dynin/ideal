@@ -764,7 +764,6 @@ public class create {
     public text call_s_expression(s_expression the_s_expression) {
       return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters, this), SPACE),
           CLOSE_PAREN);
-
     }
 
     @Override
@@ -849,6 +848,18 @@ public class create {
     }
   }
 
+  public static class java_printer extends base_printer {
+
+    @Override
+    public text call_modifier_construct(modifier_construct the_modifier_construct) {
+      if (the_modifier_construct.the_modifier == modifier.NULLABLE) {
+        return new text_string("@Nullable");
+      } else {
+        return super.call_modifier_construct(the_modifier_construct);
+      }
+    }
+  }
+
   public static class to_java_transform extends construct_dispatch<construct> {
 
     public construct transform(construct the_construct) {
@@ -867,12 +878,20 @@ public class create {
     @Override
     public construct call_variable_construct(variable_construct the_variable_construct) {
       assert the_variable_construct.type != null;
-      return new procedure_construct(the_variable_construct.modifiers,
-          the_variable_construct.type,
+      source the_source = the_variable_construct;
+      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
+      modifiers.addAll(the_variable_construct.modifiers);
+      construct type = the_variable_construct.type;
+      if (is_nullable(type)) {
+        type = strip_nullable(type);
+        modifiers.add(new modifier_construct(modifier.NULLABLE, the_source));
+      }
+      return new procedure_construct(modifiers,
+          type,
           the_variable_construct.name,
           new ArrayList<variable_construct>(),
           null,
-          the_variable_construct);
+          the_source);
     }
 
     @Override
@@ -886,6 +905,23 @@ public class create {
           the_type_construct.name,
           map(the_type_construct.body, this),
           the_source);
+    }
+
+    private boolean is_nullable(construct the_construct) {
+      if (the_construct instanceof parameter_construct) {
+        construct main = ((parameter_construct) the_construct).main;
+        return main instanceof identifier &&
+               ((identifier) main).name.equals(NULLABLE_NAME);
+      }
+      return false;
+    }
+
+    private construct strip_nullable(construct the_construct) {
+      assert is_nullable(the_construct);
+      List<construct> parameters = ((parameter_construct) the_construct).parameters;
+      // TODO: validate number of parameters in is_nullable()?
+      assert parameters.size() == 1;
+      return parameters.get(0);
     }
   }
 
@@ -1057,7 +1093,7 @@ public class create {
 
     constructs = new to_java_transform().transform_all(constructs);
 
-    System.out.print(render_text(new base_printer().print_all(constructs)));
+    System.out.print(render_text(new java_printer().print_all(constructs)));
   }
 
   private static String read_file(String file_name) throws IOException {

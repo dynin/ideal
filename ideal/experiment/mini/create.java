@@ -8,20 +8,20 @@
 
 package ideal.experiment.mini;
 
+import static ideal.experiment.mini.bootstrapped.source;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 public class create {
-
-  public interface source {
-    @Nullable source deeper();
-  }
 
   public static class source_text implements source {
     public final String name;
@@ -663,7 +663,13 @@ public class create {
     }
   };
 
-  public static final special_parser DATATYPE_PARSER = new special_parser() {
+  public static class type_parser implements special_parser {
+    public final kind the_kind;
+
+    public type_parser(kind the_kind) {
+      this.the_kind = the_kind;
+    }
+
     @Override
     public @Nullable construct parse(List<construct> parameters) {
       if (parameters.size() != 3) {
@@ -677,7 +683,7 @@ public class create {
       }
 
       List<modifier_construct> modifiers = parse_modifiers(parameters.get(0));
-      kind the_kind = kind.DATATYPE;
+      kind the_kind = this.the_kind;
       String name = ((identifier) parameters.get(1)).name;
       List<construct> body = ((s_expression) parameters.get(2)).parameters;
       source the_source = parameters.get(1);
@@ -685,7 +691,6 @@ public class create {
       return new type_construct(modifiers, the_kind, name, body, the_source);
     }
   };
-
 
   private static List<modifier_construct> parse_modifiers(construct the_construct) {
     // TODO(dynin): implement actual modifier parsing.
@@ -697,15 +702,18 @@ public class create {
   }
 
   public static class common_context implements parser_context {
+    private Map<String, special_parser> parsers;
+
+    public common_context() {
+      parsers = new HashMap<String, special_parser>();
+      parsers.put("variable", VARIABLE_PARSER);
+      parsers.put("datatype", new type_parser(kind.DATATYPE));
+      parsers.put("interface", new type_parser(kind.INTERFACE));
+    }
+
     @Override
     public @Nullable special_parser get_parser(String name) {
-      if (name.equals("variable")) {
-        return VARIABLE_PARSER;
-      } else if (name.equals("datatype")) {
-        return DATATYPE_PARSER;
-      } else {
-        return null;
-      }
+      return parsers.get(name);
     }
   }
 
@@ -1063,7 +1071,7 @@ public class create {
 
   private static final boolean DEBUG_TOKENIZER = false;
 
-  private static final boolean DEBUG_PARSER = true;
+  private static final boolean DEBUG_PARSER = false;
 
   public static void main(String[] args) {
     String file_name = args[0];

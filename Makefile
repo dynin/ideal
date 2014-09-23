@@ -357,9 +357,25 @@ update: $(COACH_WAR_TARGET)
 rollback: $(COACH_WAR_TARGET)
 	$(APPENGINE_DIR)/bin/appcfg.sh rollback $(COACH_WAR_DIR)
 
-mini: ideal/experiment/mini/create.java
-	@echo Compiling $^
-	@$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -d $(CLASSES_DIR) $^
-	@echo Running ideal.experiment.mini.create
-	@$(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea ideal.experiment.mini.create \
-            ideal/experiment/mini/test.i
+MINI_DIR = ideal/experiment/mini
+MINI_SOURCE = $(MINI_DIR)/*.java
+MINI_BOOTSTRAPPED = $(MINI_DIR)/bootstrapped.java
+MINI_CREATE = ideal.experiment.mini.create
+MINITARGET = $(TARGETS_DIR)/mini
+
+$(MINITARGET): $(MINI_SOURCE)
+	$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -d $(CLASSES_DIR) $^
+	@touch $@
+
+mini: $(MINITARGET)
+	@$(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea $(MINI_CREATE) $(MINI_DIR)/test.i
+
+minib: $(MINITARGET)
+	@cat $(MINI_DIR)/header.txt
+	@$(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea $(MINI_CREATE) $(MINI_DIR)/bootstrapped.i | \
+            sed s'/^/  /'
+	@echo }
+
+miniboot: $(MINITARGET)
+	@echo Bootstrapping $(MINI_BOOTSTRAPPED)
+	@make -s minib > $(MINI_BOOTSTRAPPED)

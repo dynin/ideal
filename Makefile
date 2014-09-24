@@ -359,23 +359,25 @@ rollback: $(COACH_WAR_TARGET)
 
 MINI_DIR = ideal/experiment/mini
 MINI_SOURCE = $(MINI_DIR)/*.java
-MINI_BOOTSTRAPPED = $(MINI_DIR)/bootstrapped.java
 MINI_CREATE = ideal.experiment.mini.create
+JAVA_MINI_CREATE = $(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea $(MINI_CREATE)
 MINITARGET = $(TARGETS_DIR)/mini
+MINI_BOOTSTRAPPED = $(MINI_DIR)/bootstrapped.java
+MINI_BOOTSTRAPPED_TMP = $(MINI_BOOTSTRAPPED).tmp
 
 $(MINITARGET): $(MINI_SOURCE)
 	$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -d $(CLASSES_DIR) $^
 	@touch $@
 
 mini: $(MINITARGET)
-	@$(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea $(MINI_CREATE) $(MINI_DIR)/test.i
+	@$(JAVA_MINI_CREATE) $(MINI_DIR)/test.i
 
 minib: $(MINITARGET)
 	@cat $(MINI_DIR)/header.txt
-	@$(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea $(MINI_CREATE) $(MINI_DIR)/bootstrapped.i | \
-            sed s'/^/  /'
+	@$(JAVA_MINI_CREATE) $(MINI_DIR)/bootstrapped.i | sed s'/^/  /'
 	@echo }
 
 miniboot: $(MINITARGET)
 	@echo Bootstrapping $(MINI_BOOTSTRAPPED)
-	@make -s minib > $(MINI_BOOTSTRAPPED)
+	@make -s minib > $(MINI_BOOTSTRAPPED_TMP)
+	@mv $(MINI_BOOTSTRAPPED_TMP)  $(MINI_BOOTSTRAPPED)

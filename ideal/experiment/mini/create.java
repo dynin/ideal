@@ -56,7 +56,8 @@ public class create {
     EOF_IN_STRING_LITERAL("End of file in string literal"),
     NEWLINE_IN_STRING_LITERAL("Newline in string literal"),
     PARSE_ERROR("Parse error"),
-    CLOSE_PAREN_NOT_FOUND("Close parenthesis not found");
+    CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
+    MODIFIER_EXPECTED("Modifier expected");
 
     public final String message;
 
@@ -171,7 +172,8 @@ public class create {
     OPEN,
     CLOSE,
     IDENTIFIER,
-    LITERAL;
+    LITERAL,
+    MODIFIER;
   }
 
   public static interface token extends source {
@@ -283,16 +285,22 @@ public class create {
 
   public enum modifier_kind {
     PUBLIC,
+    OVERRIDE,
     NULLABLE;
   }
 
-  public static class modifier_construct implements construct {
+  public static class modifier_construct implements construct, token {
     public final modifier_kind the_modifier_kind;
     public final source the_source;
 
     public modifier_construct(modifier_kind the_modifier_kind, source the_source) {
       this.the_modifier_kind = the_modifier_kind;
       this.the_source = the_source;
+    }
+
+    @Override
+    public token_type type() {
+      return token_type.MODIFIER;
     }
 
     @Override
@@ -606,13 +614,61 @@ public class create {
     System.err.println(message);
   }
 
-  public static List<token> filter_whitespace(List<token> tokens) {
+  public interface identifier_processor {
+    token process(identifier the_identifier);
+  }
+
+  public interface postprocessor {
+    @Nullable identifier_processor get_processor(String name);
+  }
+
+  public static class modifier_processor implements identifier_processor {
+    private final modifier_kind the_modifier_kind;
+
+    public modifier_processor(modifier_kind the_modifier_kind) {
+      this.the_modifier_kind = the_modifier_kind;
+    }
+
+    @Override
+    public token process(identifier the_identifier) {
+      return new modifier_construct(the_modifier_kind, the_identifier);
+    }
+  }
+
+  public static class common_postprocessor implements postprocessor {
+    private Map<String, identifier_processor> processors;
+
+    public common_postprocessor() {
+      processors = new HashMap<String, identifier_processor>();
+    }
+
+    public void add(modifier_kind the_modifier_kind) {
+      processors.put(fn_to_lowercase(the_modifier_kind.name()),
+          new modifier_processor(the_modifier_kind));
+    }
+
+    public @Nullable identifier_processor get_processor(String name) {
+      return processors.get(name);
+    }
+  }
+
+  public static List<token> postprocess(List<token> tokens, postprocessor the_postprocessor) {
     List<token> result = new ArrayList<token>();
 
     for (token the_token : tokens) {
-      if (the_token.type() != token_type.WHITESPACE) {
-        result.add(the_token);
+      if (the_token.type() == token_type.WHITESPACE) {
+        continue;
       }
+      if (the_token instanceof identifier) {
+        identifier the_identifier = (identifier) the_token;
+        @Nullable identifier_processor the_identifier_processor =
+            the_postprocessor.get_processor(the_identifier.name);
+        if (the_identifier_processor != null) {
+          result.add(the_identifier_processor.process(the_identifier));
+          continue;
+        }
+      }
+      result.add(the_token);
     }
 
     return result;
@@ -746,11 +802,20 @@ public class create {
 
   private static List<modifier_construct> parse_modifiers(construct the_construct) {
     // TODO(dynin): implement actual modifier parsing.
-    if (!(the_construct instanceof s_expression) ||
-        !((s_expression) the_construct).parameters.isEmpty()) {
+    if (!(the_construct instanceof s_expression)) {
       report(new notification(notification_type.PARSE_ERROR, the_construct));
     }
-    return new ArrayList<modifier_construct>();
+
+    List<construct> parameters = ((s_expression) the_construct).parameters;
+    List<modifier_construct> result = new ArrayList<modifier_construct>();
+    for (construct parameter : parameters) {
+      if (parameter instanceof modifier_construct) {
+        result.add((modifier_construct) parameter);
+      } else {
+        report(new notification(notification_type.MODIFIER_EXPECTED, parameter));
+      }
+    }
+    return result;
   }
 
   public static class common_context implements parser_context {
@@ -926,11 +991,18 @@ public class create {
 
     @Override
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
-      if (the_modifier_construct.the_modifier_kind == modifier_kind.NULLABLE) {
-        return new text_string("@Nullable");
+      if (is_java_annotation(the_modifier_construct.the_modifier_kind)) {
+        String name = the_modifier_construct.the_modifier_kind.name();
+        String annotation_name = "@" + name.charAt(0) + fn_to_lowercase(name.substring(1));
+        return new text_string(annotation_name);
       } else {
         return super.call_modifier_construct(the_modifier_construct);
       }
+    }
+
+    public boolean is_java_annotation(modifier_kind the_modifier_kind) {
+      return the_modifier_kind == modifier_kind.OVERRIDE ||
+             the_modifier_kind == modifier_kind.NULLABLE;
     }
   }
 
@@ -1139,6 +1211,13 @@ public class create {
 
   private static final boolean DEBUG_PARSER = false;
 
+  public static postprocessor init_postprocessor() {
+    common_postprocessor result = new common_postprocessor();
+    result.add(modifier_kind.PUBLIC);
+    result.add(modifier_kind.OVERRIDE);
+    return result;
+  }
+
   public static void main(String[] args) {
     String file_name = args[0];
     String file_content = "";
@@ -1151,7 +1230,7 @@ public class create {
     }
 
     source_text the_source = new source_text(file_name, file_content);
-    List<token> tokens = filter_whitespace(tokenize(the_source));
+    List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
     if (DEBUG_TOKENIZER) {
       for (token the_token : tokens) {
         System.out.println(the_token.toString());

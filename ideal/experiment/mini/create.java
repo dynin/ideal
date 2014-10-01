@@ -79,8 +79,12 @@ public class create {
   public interface construct extends source {
   }
 
-  public interface function<result, parameter> {
-    result call(parameter the_parameter);
+  public interface function<result, argument> {
+    result call(argument the_argument);
+  }
+
+  public interface predicate<argument> {
+    boolean call(argument the_argument);
   }
 
   public static abstract class construct_dispatch<result> implements function<result, construct> {
@@ -896,7 +900,7 @@ public class create {
     @Override
     public text call_variable_construct(variable_construct the_variable_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(print_modifiers(the_variable_construct.modifiers));
+      result.add(print_with_space(the_variable_construct.modifiers));
       result.add(print(the_variable_construct.type));
       result.add(SPACE);
       result.add(new text_string(the_variable_construct.name));
@@ -908,7 +912,7 @@ public class create {
     @Override
     public text call_procedure_construct(procedure_construct the_procedure_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(print_modifiers(the_procedure_construct.modifiers));
+      result.add(print_with_space(the_procedure_construct.modifiers));
       result.add(print(the_procedure_construct.return_type));
       result.add(SPACE);
       result.add(new text_string(the_procedure_construct.name));
@@ -944,7 +948,7 @@ public class create {
     @Override
     public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(print_modifiers(the_type_construct.modifiers));
+      result.add(print_with_space(the_type_construct.modifiers));
       result.add(new text_string(fn_to_lowercase(the_type_construct.the_kind.toString())));
       result.add(SPACE);
       result.add(new text_string(the_type_construct.name));
@@ -958,17 +962,17 @@ public class create {
     }
 
     // TODO(dynin): use map().
-    private text print_modifiers(List<modifier_construct> modifiers) {
+    protected text print_with_space(List<? extends construct> constructs) {
       List<text> result = new ArrayList<text>();
-      for (modifier_construct modifier : modifiers) {
-        result.add(print(modifier));
+      for (construct the_construct : constructs) {
+        result.add(print(the_construct));
         result.add(SPACE);
       }
       return new text_list(result);
     }
 
     // TODO(dynin): make generic.
-    private text fold_with_comma(List<construct> constructs) {
+    protected text fold_with_comma(List<construct> constructs) {
       if (constructs.size() == 0) {
         return EMPTY_TEXT;
       } else if (constructs.size() == 1) {
@@ -987,6 +991,14 @@ public class create {
     }
   }
 
+  public static predicate<construct> is_supertype = new predicate<construct>() {
+    @Override
+    public boolean call(construct the_construct) {
+      return the_construct instanceof supertype_construct;
+    }
+  };
+  public static predicate<construct> is_not_supertype = negate_predicate(is_supertype);
+
   public static class java_printer extends base_printer {
 
     @Override
@@ -998,6 +1010,36 @@ public class create {
       } else {
         return super.call_modifier_construct(the_modifier_construct);
       }
+    }
+
+    @Override
+    public text call_supertype_construct(supertype_construct the_supertype_construct) {
+      List<text> result = new ArrayList<text>();
+      result.add(new text_string(fn_to_lowercase(
+          the_supertype_construct.the_supertype_kind.toString())));
+      result.add(SPACE);
+      result.add(fold_with_comma(the_supertype_construct.supertypes));
+      // No trailing semicolon or newline.
+      return new text_list(result);
+    }
+
+    @Override
+    public text call_type_construct(type_construct the_type_construct) {
+      List<text> result = new ArrayList<text>();
+      result.add(print_with_space(the_type_construct.modifiers));
+      result.add(new text_string(fn_to_lowercase(the_type_construct.the_kind.toString())));
+      result.add(SPACE);
+      result.add(new text_string(the_type_construct.name));
+      result.add(SPACE);
+      List<construct> supertypes = filter(the_type_construct.body, is_supertype);
+      result.add(print_with_space(supertypes));
+      result.add(OPEN_BRACE);
+      result.add(NEWLINE);
+      List<construct> filtered_body = filter(the_type_construct.body, is_not_supertype);
+      result.add(new indented_text(print_all(filtered_body)));
+      result.add(CLOSE_BRACE);
+      result.add(NEWLINE);
+      return new text_list(result);
     }
 
     public boolean is_java_annotation(modifier_kind the_modifier_kind) {
@@ -1079,6 +1121,27 @@ public class create {
       result.add(transform.call(source_element));
     }
     return result;
+  }
+
+  public static <element_type> List<element_type> filter(List<? extends element_type> source_list,
+      predicate<element_type> the_predicate) {
+    List<element_type> result = new ArrayList<element_type>();
+    for (element_type source_element : source_list) {
+      if (the_predicate.call(source_element)) {
+        result.add(source_element);
+      }
+    }
+    return result;
+  }
+
+  public static <argument> predicate<argument> negate_predicate(
+      final predicate<argument> the_predicate) {
+    return new predicate<argument>() {
+      @Override
+      public boolean call(argument the_argument) {
+        return !the_predicate.call(the_argument);
+      }
+    };
   }
 
   public interface text {

@@ -17,4 +17,8 @@ public class bootstrapped {
   public interface source {
     @Nullable source the_source();
   }
+  public interface source_text extends source {
+    String name();
+    String content();
+  }
 }

@@ -9,6 +9,7 @@
 package ideal.experiment.mini;
 
 import static ideal.experiment.mini.bootstrapped.source;
+import static ideal.experiment.mini.bootstrapped.source_text;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -23,15 +24,26 @@ import javax.annotation.Nullable;
 
 public class create {
 
-  public static class source_text implements source {
-    public final String name;
-    public final String content;
+  public static class source_text_class implements source_text {
+    private final String name;
+    private final String content;
 
-    public source_text(String name, String content) {
+    public source_text_class(String name, String content) {
       this.name = name;
       this.content = content;
     }
 
+    @Override
+    public String name() {
+      return name;
+    }
+
+    @Override
+    public String content() {
+      return content;
+    }
+
+    @Override
     public @Nullable source the_source() {
       return null;
     }
@@ -448,26 +460,26 @@ public class create {
     }
   }
 
-  public static enum kind {
+  public static enum type_kind {
     DATATYPE,
     INTERFACE;
   }
 
   public static class type_construct implements construct {
     public final List<modifier_construct> modifiers;
-    public final kind the_kind;
+    public final type_kind the_type_kind;
     public final String name;
     public final List<construct> body;
     public final source the_source;
 
     public type_construct(
         List<modifier_construct> modifiers,
-        kind the_kind,
+        type_kind the_type_kind,
         String name,
         List<construct> body,
         source the_source) {
       this.modifiers = modifiers;
-      this.the_kind = the_kind;
+      this.the_type_kind = the_type_kind;
       this.name = name;
       this.body = body;
       this.the_source = the_source;
@@ -482,7 +494,7 @@ public class create {
     public String toString() {
       StringBuilder result = new StringBuilder("type_declaration:<")
           .append(fn_display_list(modifiers))
-          .append(" kind:").append(the_kind)
+          .append(" type_kind:").append(the_type_kind)
           .append(" name:").append(name)
           .append(" body:").append(fn_display_list(body))
           .append(" source:").append(the_source)
@@ -492,7 +504,7 @@ public class create {
   }
 
   public static List<token> tokenize(source_text the_source_text) {
-    String content = the_source_text.content;
+    String content = the_source_text.content();
     int index = 0;
     List<token> result = new ArrayList<token>();
     while (index < content.length()) {
@@ -577,7 +589,7 @@ public class create {
     while(deep_source != null) {
       if (deep_source instanceof text_position) {
         text_position position = (text_position) deep_source;
-        String content = position.the_source_text.content;
+        String content = position.the_source_text.content();
         int index = position.character_index;
         int line_number = 1;
         for (int i = index - 1; i >= 0; --i) {
@@ -586,7 +598,7 @@ public class create {
           }
         }
         StringBuilder detailed = new StringBuilder();
-        detailed.append(position.the_source_text.name).append(":");
+        detailed.append(position.the_source_text.name()).append(":");
         detailed.append(line_number).append(": ");
         detailed.append(message).append('\n');
 
@@ -615,7 +627,7 @@ public class create {
         break;
       }
       if (deep_source instanceof source_text) {
-        message = ((source_text) deep_source).name + ": " + message;
+        message = ((source_text) deep_source).name() + ": " + message;
         break;
       }
       deep_source = deep_source.the_source();
@@ -764,10 +776,10 @@ public class create {
   };
 
   public static class type_parser implements special_parser {
-    public final kind the_kind;
+    public final type_kind the_type_kind;
 
-    public type_parser(kind the_kind) {
-      this.the_kind = the_kind;
+    public type_parser(type_kind the_type_kind) {
+      this.the_type_kind = the_type_kind;
     }
 
     @Override
@@ -783,12 +795,11 @@ public class create {
       }
 
       List<modifier_construct> modifiers = parse_modifiers(parameters.get(0));
-      kind the_kind = this.the_kind;
       String name = ((identifier) parameters.get(1)).name;
       List<construct> body = ((s_expression) parameters.get(2)).parameters;
       source the_source = parameters.get(1);
 
-      return new type_construct(modifiers, the_kind, name, body, the_source);
+      return new type_construct(modifiers, the_type_kind, name, body, the_source);
     }
   };
 
@@ -835,8 +846,8 @@ public class create {
     public common_context() {
       parsers = new HashMap<String, special_parser>();
       parsers.put("variable", VARIABLE_PARSER);
-      parsers.put("datatype", new type_parser(kind.DATATYPE));
-      parsers.put("interface", new type_parser(kind.INTERFACE));
+      parsers.put("datatype", new type_parser(type_kind.DATATYPE));
+      parsers.put("interface", new type_parser(type_kind.INTERFACE));
       parsers.put("extends", new supertype_parser(supertype_kind.EXTENDS));
       parsers.put("implements", new supertype_parser(supertype_kind.IMPLEMENTS));
     }
@@ -956,7 +967,7 @@ public class create {
     public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
       result.add(print_with_space(the_type_construct.modifiers));
-      result.add(new text_string(fn_to_lowercase(the_type_construct.the_kind.toString())));
+      result.add(new text_string(fn_to_lowercase(the_type_construct.the_type_kind.toString())));
       result.add(SPACE);
       result.add(new text_string(the_type_construct.name));
       result.add(SPACE);
@@ -1034,7 +1045,7 @@ public class create {
     public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
       result.add(print_with_space(the_type_construct.modifiers));
-      result.add(new text_string(fn_to_lowercase(the_type_construct.the_kind.toString())));
+      result.add(new text_string(fn_to_lowercase(the_type_construct.the_type_kind.toString())));
       result.add(SPACE);
       result.add(new text_string(the_type_construct.name));
       result.add(SPACE);
@@ -1076,7 +1087,7 @@ public class create {
       source the_source = the_variable_construct;
       List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
       modifiers.addAll(the_variable_construct.modifiers);
-      construct type = the_variable_construct.type;
+      construct type = transform(the_variable_construct.type);
       if (is_nullable(type)) {
         type = strip_nullable(type);
         modifiers.add(new modifier_construct(modifier_kind.NULLABLE, the_source));
@@ -1092,14 +1103,28 @@ public class create {
     @Override
     public construct call_type_construct(type_construct the_type_construct) {
       source the_source = the_type_construct;
+
       List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
       modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
       modifiers.addAll(the_type_construct.modifiers);
+      type_kind the_type_kind = the_type_construct.the_type_kind;
+      if (the_type_kind == type_kind.DATATYPE) {
+        the_type_kind = type_kind.INTERFACE;
+      }
+
       return new type_construct(modifiers,
-          the_type_construct.the_kind,
+          the_type_kind,
           the_type_construct.name,
           map(the_type_construct.body, this),
           the_source);
+    }
+
+    public construct call_identifier(identifier the_identifier) {
+      if (the_identifier.name.equals("string")) {
+        return new identifier("String", the_identifier);
+      } else {
+        return the_identifier;
+      }
     }
 
     private boolean is_nullable(construct the_construct) {
@@ -1299,7 +1324,7 @@ public class create {
       System.exit(1);
     }
 
-    source_text the_source = new source_text(file_name, file_content);
+    source_text the_source = new source_text_class(file_name, file_content);
     List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
     if (DEBUG_TOKENIZER) {
       for (token the_token : tokens) {

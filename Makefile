@@ -366,7 +366,7 @@ MINI_BOOTSTRAPPED = $(MINI_DIR)/bootstrapped.java
 MINI_BOOTSTRAPPED_TMP = $(MINI_BOOTSTRAPPED).tmp
 
 $(MINITARGET): $(MINI_SOURCE)
-	$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -d $(CLASSES_DIR) $^
+	$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -Xlint:unchecked -d $(CLASSES_DIR) $^
 	@touch $@
 
 mini: $(MINITARGET)

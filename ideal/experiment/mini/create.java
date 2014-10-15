@@ -302,6 +302,9 @@ public class create {
 
   public enum modifier_kind {
     PUBLIC,
+    PRIVATE,
+    FINAL,
+    STATIC,
     OVERRIDE,
     NULLABLE;
   }
@@ -461,8 +464,9 @@ public class create {
   }
 
   public static enum type_kind {
+    INTERFACE,
     DATATYPE,
-    INTERFACE;
+    CLASS;
   }
 
   public static class type_construct implements construct {
@@ -1066,57 +1070,167 @@ public class create {
     }
   }
 
-  public static class to_java_transform extends construct_dispatch<construct> {
+  public static class base_transform extends construct_dispatch<Object> {
 
     public construct transform(construct the_construct) {
-      return call(the_construct);
+      return (construct) call(the_construct);
     }
 
     public List<construct> transform_all(List<construct> constructs) {
-      return map(constructs, this);
+      // TODO: rewrite using map()
+      List<construct> result = new ArrayList<construct>();
+      for (construct the_construct : constructs) {
+        Object transformed = call(the_construct);
+        if (transformed instanceof List) {
+          @SuppressWarnings("unchecked")
+          List<construct> transformedList = (List<construct>) transformed;
+          result.addAll(transformedList);
+        } else {
+          result.add((construct) transformed);
+        }
+      }
+      return result;
     }
 
     @Override
     public construct call_construct(construct the_construct) {
       return the_construct;
     }
+  }
+
+  public static class to_java_transform extends base_transform {
 
     @Override
     public construct call_variable_construct(variable_construct the_variable_construct) {
+      return variable_to_procedure(transform_variable(the_variable_construct));
+    }
+
+    private variable_construct transform_variable(variable_construct the_variable_construct) {
       assert the_variable_construct.type != null;
       source the_source = the_variable_construct;
-      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
-      modifiers.addAll(the_variable_construct.modifiers);
+      List<modifier_construct> modifiers = the_variable_construct.modifiers;
       construct type = transform(the_variable_construct.type);
       if (is_nullable(type)) {
         type = strip_nullable(type);
-        modifiers.add(new modifier_construct(modifier_kind.NULLABLE, the_source));
+        modifiers = prepend_modifier(modifiers, modifier_kind.NULLABLE, the_source);
       }
-      return new procedure_construct(modifiers,
+      return new variable_construct(modifiers,
           type,
           the_variable_construct.name,
-          new ArrayList<variable_construct>(),
           null,
           the_source);
     }
 
+    private procedure_construct variable_to_procedure(variable_construct the_variable_construct) {
+      return new procedure_construct(the_variable_construct.modifiers,
+          the_variable_construct.type,
+          the_variable_construct.name,
+          new ArrayList<variable_construct>(),
+          null,
+          the_variable_construct);
+    }
+
     @Override
-    public construct call_type_construct(type_construct the_type_construct) {
+    public Object call_type_construct(type_construct the_type_construct) {
+      if (the_type_construct.the_type_kind == type_kind.DATATYPE) {
+        return transform_datatype(the_type_construct);
+      } else {
+        source the_source = the_type_construct;
+
+        List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
+        modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+        modifiers.addAll(the_type_construct.modifiers);
+
+        return new type_construct(prepend_public(the_type_construct.modifiers, the_source),
+            the_type_construct.the_type_kind,
+            the_type_construct.name,
+            transform_all(the_type_construct.body),
+            the_source);
+      }
+    }
+
+    private static List<modifier_construct> prepend_modifier(List<modifier_construct> modifiers,
+        modifier_kind the_modifier_kind, source the_source) {
+      List<modifier_construct> result = new ArrayList<modifier_construct>();
+      result.add(new modifier_construct(the_modifier_kind, the_source));
+      result.addAll(modifiers);
+      return result;
+    }
+
+    private static List<modifier_construct> prepend_public(List<modifier_construct> modifiers,
+        source the_source) {
+      // TODO: verify that there are no access modifiers specified
+      return prepend_modifier(modifiers, modifier_kind.PUBLIC, the_source);
+    }
+
+    private static String join_identifier(String first, String second) {
+      return first + '_' + second;
+    }
+
+    private List<construct> transform_datatype(type_construct the_type_construct) {
       source the_source = the_type_construct;
 
-      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
-      modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
-      modifiers.addAll(the_type_construct.modifiers);
-      type_kind the_type_kind = the_type_construct.the_type_kind;
-      if (the_type_kind == type_kind.DATATYPE) {
-        the_type_kind = type_kind.INTERFACE;
+      String interface_name = the_type_construct.name;
+      String class_name = join_identifier(interface_name, "class");
+
+      List<modifier_construct> interface_modifiers =
+          prepend_public(the_type_construct.modifiers, the_source);
+
+      List<modifier_construct> class_modifiers =
+          prepend_public(
+              prepend_modifier(the_type_construct.modifiers, modifier_kind.STATIC, the_source),
+              the_source);
+
+      List<construct> interface_body = new ArrayList<construct>();
+      List<construct> class_body = new ArrayList<construct>();
+
+      List<construct> super_interface = new ArrayList<construct>();
+      super_interface.add(new identifier(interface_name, the_source));
+      class_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
+          the_source));
+
+      for (construct the_construct : the_type_construct.body) {
+        if (the_construct instanceof supertype_construct) {
+          interface_body.add(transform(the_construct));
+        } else if (the_construct instanceof variable_construct) {
+          variable_construct the_variable_construct =
+              transform_variable((variable_construct) the_construct);
+          interface_body.add(variable_to_procedure(the_variable_construct));
+          List<modifier_construct> instance_variable_modifiers =
+              prepend_modifier(
+                  prepend_modifier(the_variable_construct.modifiers, modifier_kind.FINAL,
+                      the_source),
+                  modifier_kind.PRIVATE,
+                  the_source);
+          class_body.add(new variable_construct(instance_variable_modifiers,
+              the_variable_construct.type,
+              the_variable_construct.name,
+              null,
+              the_source));
+        } else {
+          // TODO: handle other constructs.
+          assert false;
+        }
       }
 
-      return new type_construct(modifiers,
-          the_type_kind,
-          the_type_construct.name,
-          map(the_type_construct.body, this),
-          the_source);
+      type_construct interface_type =
+          new type_construct(interface_modifiers,
+              type_kind.INTERFACE,
+              interface_name,
+              interface_body,
+              the_source);
+
+      type_construct class_type =
+          new type_construct(class_modifiers,
+              type_kind.CLASS,
+              class_name,
+              class_body,
+              the_source);
+
+      List<construct> result = new ArrayList<construct>();
+      result.add(interface_type);
+      result.add(class_type);
+      return result;
     }
 
     public construct call_identifier(identifier the_identifier) {

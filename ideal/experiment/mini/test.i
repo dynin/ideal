@@ -1,6 +1,6 @@
 (hello + world "!")
 (hi (hello world))
-(datatype () source (
+(interface () source (
   (variable () (nullable source) deeper)
 ))
 ; comment...

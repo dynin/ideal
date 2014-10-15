@@ -32,7 +32,7 @@ public class create {
       this.content = content;
     }
 
-    public @Nullable source deeper() {
+    public @Nullable source the_source() {
       return null;
     }
   }
@@ -46,7 +46,7 @@ public class create {
       this.character_index = character_index;
     }
 
-    public source deeper() {
+    public source the_source() {
       return the_source_text;
     }
   }
@@ -173,6 +173,7 @@ public class create {
 
   public static enum token_type {
     WHITESPACE,
+    COMMENT,
     OPEN,
     CLOSE,
     IDENTIFIER,
@@ -199,7 +200,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -224,7 +225,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -251,7 +252,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -273,7 +274,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -308,7 +309,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -332,7 +333,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -363,7 +364,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -404,7 +405,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -442,7 +443,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
   }
@@ -473,7 +474,7 @@ public class create {
     }
 
     @Override
-    public source deeper() {
+    public source the_source() {
       return the_source;
     }
 
@@ -532,6 +533,11 @@ public class create {
           index += 1;
           result.add(new string_literal(value, with_quotes, position));
         }
+      } else if (prefix == ';') {
+        while (index < content.length() && content.charAt(index) != '\n') {
+          index += 1;
+        }
+        result.add(new simple_token(token_type.COMMENT, position));
       } else {
         report(new notification(notification_type.UNRECOGNIZED_CHARACTER, position));
       }
@@ -612,7 +618,7 @@ public class create {
         message = ((source_text) deep_source).name + ": " + message;
         break;
       }
-      deep_source = deep_source.deeper();
+      deep_source = deep_source.the_source();
     }
 
     System.err.println(message);
@@ -660,7 +666,8 @@ public class create {
     List<token> result = new ArrayList<token>();
 
     for (token the_token : tokens) {
-      if (the_token.type() == token_type.WHITESPACE) {
+      if (the_token.type() == token_type.WHITESPACE ||
+          the_token.type() == token_type.COMMENT) {
         continue;
       }
       if (the_token instanceof identifier) {

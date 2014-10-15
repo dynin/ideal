@@ -15,6 +15,6 @@ import javax.annotation.Nullable;
  */
 public class bootstrapped {
   public interface source {
-    @Nullable source deeper();
+    @Nullable source the_source();
   }
 }

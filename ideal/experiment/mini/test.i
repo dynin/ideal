@@ -9,5 +9,6 @@
   (extends source)
   (variable () string name)
   (variable () string content)
-  (variable (override) (nullable source) the_source null)
+  (variable () (nullable string) optional)
+;  (variable (override) (nullable source) the_source null)
 ))

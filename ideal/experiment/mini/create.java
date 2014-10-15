@@ -398,7 +398,7 @@ public class create {
 
   public static class procedure_construct implements construct {
     public final List<modifier_construct> modifiers;
-    public final construct return_type;
+    public final @Nullable construct return_type;
     public final String name;
     public final List<variable_construct> parameters;
     public final @Nullable construct body;
@@ -406,7 +406,7 @@ public class create {
 
     public procedure_construct(
         List<modifier_construct> modifiers,
-        construct return_type,
+        @Nullable construct return_type,
         String name,
         List<variable_construct> parameters,
         @Nullable construct body,
@@ -935,8 +935,10 @@ public class create {
     public text call_procedure_construct(procedure_construct the_procedure_construct) {
       List<text> result = new ArrayList<text>();
       result.add(print_with_space(the_procedure_construct.modifiers));
-      result.add(print(the_procedure_construct.return_type));
-      result.add(SPACE);
+      if (the_procedure_construct.return_type != null) {
+        result.add(print(the_procedure_construct.return_type));
+        result.add(SPACE);
+      }
       result.add(new text_string(the_procedure_construct.name));
       result.add(OPEN_PAREN);
       // TODO(dynin): separate with commas.
@@ -1101,6 +1103,24 @@ public class create {
   public static class to_java_transform extends base_transform {
 
     @Override
+    public construct call_parameter_construct(parameter_construct the_parameter_construct) {
+      source the_source = the_parameter_construct;
+
+      construct transformed_main = transform(the_parameter_construct.main);
+
+      List<construct> parameters = new ArrayList<construct>();
+      for (construct the_parameter : the_parameter_construct.parameters) {
+        Object transformed = call(the_parameter);
+        if (transformed instanceof construct) {
+          parameters.add((construct) transformed);
+        } else {
+          unexpected("Parameter transform error: " + the_parameter);
+        }
+      }
+      return new parameter_construct(transformed_main, parameters, the_source);
+    }
+
+    @Override
     public construct call_variable_construct(variable_construct the_variable_construct) {
       return variable_to_procedure(transform_variable(the_variable_construct));
     }
@@ -1209,7 +1229,7 @@ public class create {
               the_source));
         } else {
           // TODO: handle other constructs.
-          assert false;
+          unexpected("In type declaration: " + the_construct);
         }
       }
 
@@ -1414,6 +1434,11 @@ public class create {
       result.add(texts.get(i));
     }
     return new text_list(result);
+  }
+
+  private static void unexpected(String message) {
+    System.err.println("Unexpected: " + message);
+    System.exit(1);
   }
 
   private static final boolean DEBUG_TOKENIZER = false;

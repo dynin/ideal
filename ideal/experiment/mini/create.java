@@ -123,6 +123,10 @@ public class create {
         return call_s_expression((s_expression) the_construct);
       }
 
+      if (the_construct instanceof block_construct) {
+        return call_block_construct((block_construct) the_construct);
+      }
+
       if (the_construct instanceof variable_construct) {
         return call_variable_construct((variable_construct) the_construct);
       }
@@ -164,6 +168,10 @@ public class create {
 
     public result call_s_expression(s_expression the_s_expression) {
       return call_construct(the_s_expression);
+    }
+
+    public result call_block_construct(block_construct the_block_construct) {
+      return call_construct(the_block_construct);
     }
 
     public result call_variable_construct(variable_construct the_variable_construct) {
@@ -355,6 +363,26 @@ public class create {
     @Override
     public String toString() {
       return "s-expr:" + fn_display_list(parameters);
+    }
+  }
+
+  public static class block_construct implements construct {
+    public final List<construct> statements;
+    public final source the_source;
+
+    public block_construct(List<construct> statements, source the_source) {
+      this.statements = statements;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source the_source() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      return "block:" + fn_display_list(statements);
     }
   }
 
@@ -919,6 +947,13 @@ public class create {
           CLOSE_PAREN);
     }
 
+    @Override
+    public text call_block_construct(block_construct the_block_construct) {
+      return join_text(OPEN_BRACE, NEWLINE,
+          join_text(map(the_block_construct.statements, this)),
+          CLOSE_BRACE);
+    }
+
     protected text print_variable(variable_construct the_variable_construct) {
       List<text> result = new ArrayList<text>();
       result.add(print_with_space(the_variable_construct.modifiers));
@@ -960,11 +995,10 @@ public class create {
       if (the_procedure_construct.body == null) {
         result.add(SEMICOLON);
       } else {
+        // TODO: relax this constraint.
+        assert the_procedure_construct.body instanceof block_construct;
         result.add(SPACE);
-        result.add(OPEN_BRACE);
-        result.add(NEWLINE);
-        result.add(new indented_text(print(the_procedure_construct.body)));
-        result.add(CLOSE_BRACE);
+        result.add(print(the_procedure_construct.body));
       }
       result.add(NEWLINE);
       return new text_list(result);
@@ -1222,6 +1256,7 @@ public class create {
       class_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
           the_source));
       List<variable_construct> ctor_parameters = new ArrayList<variable_construct>();
+      List<construct> ctor_statements = new ArrayList<construct>();
 
       for (construct the_construct : the_type_construct.body) {
         if (the_construct instanceof supertype_construct) {
@@ -1250,13 +1285,14 @@ public class create {
 
       List<modifier_construct> ctor_modifiers = new ArrayList<modifier_construct>();
       ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+      block_construct ctor_body = new block_construct(ctor_statements, the_source);
       procedure_construct ctor_procedure =
           new procedure_construct(
               ctor_modifiers,
               null,
               class_name,
               ctor_parameters,
-              null,
+              ctor_body,
               the_source);
       class_body.add(ctor_procedure);
 

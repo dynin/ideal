@@ -11,6 +11,8 @@ package ideal.experiment.mini;
 import static ideal.experiment.mini.bootstrapped.source;
 import static ideal.experiment.mini.bootstrapped.source_text;
 import static ideal.experiment.mini.bootstrapped.source_text_class;
+import static ideal.experiment.mini.bootstrapped.text_position;
+import static ideal.experiment.mini.bootstrapped.text_position_class;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,20 +26,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 public class create {
-
-  public static class text_position implements source {
-    public final source_text the_source_text;
-    public final int character_index;
-
-    public text_position(source_text the_source_text, int character_index) {
-      this.the_source_text = the_source_text;
-      this.character_index = character_index;
-    }
-
-    public source the_source() {
-      return the_source_text;
-    }
-  }
 
   public static enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
@@ -585,7 +573,7 @@ public class create {
       int start = index;
       char prefix = content.charAt(index);
       index += 1;
-      source position = new text_position(the_source_text, start);
+      source position = new text_position_class(the_source_text, start);
       if (fn_is_identifier_letter(prefix)) {
         while (index < content.length() && fn_is_identifier_letter(content.charAt(index))) {
           index += 1;
@@ -663,8 +651,8 @@ public class create {
     while(deep_source != null) {
       if (deep_source instanceof text_position) {
         text_position position = (text_position) deep_source;
-        String content = position.the_source_text.content();
-        int index = position.character_index;
+        String content = position.the_source().content();
+        int index = position.character_index();
         int line_number = 1;
         for (int i = index - 1; i >= 0; --i) {
           if (content.charAt(i) == '\n') {
@@ -672,7 +660,7 @@ public class create {
           }
         }
         StringBuilder detailed = new StringBuilder();
-        detailed.append(position.the_source_text.name()).append(":");
+        detailed.append(position.the_source().name()).append(":");
         detailed.append(line_number).append(": ");
         detailed.append(message).append('\n');
 

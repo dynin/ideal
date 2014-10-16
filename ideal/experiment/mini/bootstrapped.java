@@ -39,4 +39,22 @@ public class bootstrapped {
       return null;
     }
   }
+  public interface text_position extends source {
+    source_text the_source();
+    int character_index();
+  }
+  public static class text_position_class implements text_position {
+    private final source_text the_source;
+    private final int character_index;
+    public text_position_class(source_text the_source, int character_index) {
+      this.the_source = the_source;
+      this.character_index = character_index;
+    }
+    @Override public source_text the_source() {
+      return the_source;
+    }
+    @Override public int character_index() {
+      return character_index;
+    }
+  }
 }

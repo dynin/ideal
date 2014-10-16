@@ -15,3 +15,9 @@
   (variable string content)
   (variable () (nullable source) the_source null)
 ))
+
+(datatype () text_position (
+  (extends source)
+  (variable source_text the_source)
+  (variable int character_index)
+))

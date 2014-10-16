@@ -1241,7 +1241,7 @@ public class create {
       construct type = transform(the_variable_construct.type);
       if (is_nullable(type)) {
         type = strip_nullable(type);
-        modifiers = prepend_modifier(modifiers, modifier_kind.NULLABLE, the_source);
+        modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_source);
       }
       return new variable_construct(modifiers,
           type,
@@ -1278,8 +1278,8 @@ public class create {
       }
     }
 
-    private static List<modifier_construct> prepend_modifier(List<modifier_construct> modifiers,
-        modifier_kind the_modifier_kind, source the_source) {
+    private static List<modifier_construct> prepend_modifier(modifier_kind the_modifier_kind,
+        List<modifier_construct> modifiers, source the_source) {
       List<modifier_construct> result = new ArrayList<modifier_construct>();
       result.add(new modifier_construct(the_modifier_kind, the_source));
       result.addAll(modifiers);
@@ -1289,7 +1289,7 @@ public class create {
     private static List<modifier_construct> prepend_public(List<modifier_construct> modifiers,
         source the_source) {
       // TODO: verify that there are no access modifiers specified
-      return prepend_modifier(modifiers, modifier_kind.PUBLIC, the_source);
+      return prepend_modifier(modifier_kind.PUBLIC, modifiers, the_source);
     }
 
     private static String join_identifier(String first, String second) {
@@ -1316,7 +1316,7 @@ public class create {
 
       List<modifier_construct> class_modifiers =
           prepend_public(
-              prepend_modifier(the_type_construct.modifiers, modifier_kind.STATIC, the_source),
+              prepend_modifier(modifier_kind.STATIC, the_type_construct.modifiers, the_source),
               the_source);
 
       List<construct> interface_body = new ArrayList<construct>();
@@ -1328,6 +1328,7 @@ public class create {
           the_source));
       List<variable_construct> ctor_parameters = new ArrayList<variable_construct>();
       List<construct> ctor_statements = new ArrayList<construct>();
+      List<construct> accessor_procedures = new ArrayList<construct>();
 
       for (construct the_construct : the_type_construct.body) {
         if (the_construct instanceof supertype_construct) {
@@ -1335,26 +1336,38 @@ public class create {
         } else if (the_construct instanceof variable_construct) {
           variable_construct the_variable_construct =
               transform_variable((variable_construct) the_construct);
+          construct type = the_variable_construct.type;
+          String name = the_variable_construct.name;
+
+          // Add accessor declaration to the interface
           interface_body.add(variable_to_procedure(the_variable_construct));
+
+          // Add instance variable
           List<modifier_construct> instance_variable_modifiers =
-              prepend_modifier(
-                  prepend_modifier(the_variable_construct.modifiers, modifier_kind.FINAL,
-                      the_source),
-                  modifier_kind.PRIVATE,
-                  the_source);
-          class_body.add(new variable_construct(instance_variable_modifiers,
-              the_variable_construct.type,
-              the_variable_construct.name,
-              null,
+              prepend_modifier(modifier_kind.PRIVATE,
+                  prepend_modifier(modifier_kind.FINAL, the_variable_construct.modifiers,
+                      the_source), the_source);
+          class_body.add(new variable_construct(instance_variable_modifiers, type, name, null,
               the_source));
+
+          // Add constructor parameter
           ctor_parameters.add(the_variable_construct);
-          identifier variable_name = new identifier(the_variable_construct.name, the_source);
-          identifier this_name = new identifier("this", the_source);
-          construct this_access = make_operator(operator_type.DOT, this_name, variable_name,
-              the_source);
-          construct assignment = make_operator(operator_type.ASSIGN, this_access, variable_name,
-              the_source);
+          identifier variable_identifier = new identifier(name, the_source);
+          identifier this_identifier = new identifier("this", the_source);
+          construct this_access = make_operator(operator_type.DOT, this_identifier,
+              variable_identifier, the_source);
+          construct assignment = make_operator(operator_type.ASSIGN, this_access,
+              variable_identifier, the_source);
           ctor_statements.add(assignment);
+
+          // Add accessor function
+          List<modifier_construct> accessor_modifiers =
+              prepend_modifier(modifier_kind.OVERRIDE,
+                  prepend_modifier(modifier_kind.PUBLIC, the_variable_construct.modifiers,
+                      the_source), the_source);
+          procedure_construct accessor = new procedure_construct(accessor_modifiers,
+              type, name, new ArrayList<variable_construct>(), null, the_source);
+          accessor_procedures.add(accessor);
         } else {
           // TODO: handle other constructs.
           unexpected("In type declaration: " + the_construct);
@@ -1373,6 +1386,7 @@ public class create {
               ctor_body,
               the_source);
       class_body.add(ctor_procedure);
+      class_body.addAll(accessor_procedures);
 
       type_construct interface_type =
           new type_construct(interface_modifiers,

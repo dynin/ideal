@@ -131,6 +131,10 @@ public class create {
         return call_block_construct((block_construct) the_construct);
       }
 
+      if (the_construct instanceof return_construct) {
+        return call_return_construct((return_construct) the_construct);
+      }
+
       if (the_construct instanceof variable_construct) {
         return call_variable_construct((variable_construct) the_construct);
       }
@@ -180,6 +184,10 @@ public class create {
 
     public result call_block_construct(block_construct the_block_construct) {
       return call_construct(the_block_construct);
+    }
+
+    public result call_return_construct(return_construct the_return_construct) {
+      return call_construct(the_return_construct);
     }
 
     public result call_variable_construct(variable_construct the_variable_construct) {
@@ -421,6 +429,26 @@ public class create {
     @Override
     public String toString() {
       return "block:" + fn_display_list(statements);
+    }
+  }
+
+  public static class return_construct implements construct {
+    public final @Nullable construct expression;
+    public final source the_source;
+
+    public return_construct(@Nullable construct expression, source the_source) {
+      this.expression = expression;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source the_source() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      return "return: " + expression;
     }
   }
 
@@ -945,6 +973,7 @@ public class create {
   public static final text CLOSE_BRACE = new text_string("}");
   public static final text NEWLINE = new text_string("\n");
   public static final text SEMICOLON = new text_string(";");
+  public static final text RETURN_KEYWORD = new text_string("return");
 
   public static class base_printer extends construct_dispatch<text> {
 
@@ -1021,6 +1050,15 @@ public class create {
       return join_text(OPEN_BRACE, NEWLINE,
           new indented_text(join_text(map(the_block_construct.statements, statement_printer))),
           CLOSE_BRACE);
+    }
+
+    @Override
+    public text call_return_construct(return_construct the_return_construct) {
+      if (the_return_construct.expression == null) {
+        return RETURN_KEYWORD;
+      } else {
+        return join_text(RETURN_KEYWORD, SPACE, print(the_return_construct.expression));
+      }
     }
 
     protected text print_variable(variable_construct the_variable_construct) {
@@ -1328,7 +1366,7 @@ public class create {
           the_source));
       List<variable_construct> ctor_parameters = new ArrayList<variable_construct>();
       List<construct> ctor_statements = new ArrayList<construct>();
-      List<construct> accessor_procedures = new ArrayList<construct>();
+      List<construct> accessor_functions = new ArrayList<construct>();
 
       for (construct the_construct : the_type_construct.body) {
         if (the_construct instanceof supertype_construct) {
@@ -1365,9 +1403,13 @@ public class create {
               prepend_modifier(modifier_kind.OVERRIDE,
                   prepend_modifier(modifier_kind.PUBLIC, the_variable_construct.modifiers,
                       the_source), the_source);
+          construct accessor_return = new return_construct(variable_identifier, the_source);
+          List<construct> accessor_statements = new ArrayList<construct>();
+          accessor_statements.add(accessor_return);
+          construct accessor_body = new block_construct(accessor_statements, the_source);
           procedure_construct accessor = new procedure_construct(accessor_modifiers,
-              type, name, new ArrayList<variable_construct>(), null, the_source);
-          accessor_procedures.add(accessor);
+              type, name, new ArrayList<variable_construct>(), accessor_body, the_source);
+          accessor_functions.add(accessor);
         } else {
           // TODO: handle other constructs.
           unexpected("In type declaration: " + the_construct);
@@ -1386,7 +1428,7 @@ public class create {
               ctor_body,
               the_source);
       class_body.add(ctor_procedure);
-      class_body.addAll(accessor_procedures);
+      class_body.addAll(accessor_functions);
 
       type_construct interface_type =
           new type_construct(interface_modifiers,

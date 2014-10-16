@@ -14,6 +14,8 @@ import static ideal.experiment.mini.bootstrapped.source_text_class;
 import static ideal.experiment.mini.bootstrapped.text_position;
 import static ideal.experiment.mini.bootstrapped.text_position_class;
 import static ideal.experiment.mini.bootstrapped.token_type;
+import static ideal.experiment.mini.bootstrapped.token;
+import static ideal.experiment.mini.bootstrapped.simple_token_class;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -169,35 +171,6 @@ public class create {
 
     public result call_type_construct(type_construct the_type_construct) {
       return call_construct(the_type_construct);
-    }
-  }
-
-  public static interface token extends source {
-    token_type type();
-  }
-
-  public static class simple_token implements token {
-    public final token_type type;
-    public final source the_source;
-
-    public simple_token(token_type type, source the_source) {
-      this.type = type;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public token_type type() {
-      return type;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      return "<" + type.toString() + ">";
     }
   }
 
@@ -575,11 +548,11 @@ public class create {
         while (index < content.length() && fn_is_whitespace(content.charAt(index))) {
           index += 1;
         }
-        result.add(new simple_token(token_type.WHITESPACE, position));
+        result.add(new simple_token_class(token_type.WHITESPACE, position));
       } else if (prefix == '(') {
-        result.add(new simple_token(token_type.OPEN, position));
+        result.add(new simple_token_class(token_type.OPEN, position));
       } else if (prefix == ')') {
-        result.add(new simple_token(token_type.CLOSE, position));
+        result.add(new simple_token_class(token_type.CLOSE, position));
       } else if (prefix == '"') {
         char quote = prefix;
         while (index < content.length() &&
@@ -603,7 +576,7 @@ public class create {
         while (index < content.length() && content.charAt(index) != '\n') {
           index += 1;
         }
-        result.add(new simple_token(token_type.COMMENT, position));
+        result.add(new simple_token_class(token_type.COMMENT, position));
       } else {
         report(new notification(notification_type.UNRECOGNIZED_CHARACTER, position));
       }

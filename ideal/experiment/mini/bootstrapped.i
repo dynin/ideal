@@ -31,3 +31,17 @@
   LITERAL
   MODIFIER
 ))
+
+(interface () token (
+  (extends source)
+  (variable token_type type);
+))
+
+(datatype () simple_token (
+  (extends token)
+  (variable token_type type);
+  (variable source the_source)
+; public String toString() {
+;   return "<" + type.toString() + ">";
+; }
+))

@@ -66,4 +66,25 @@ public class bootstrapped {
     LITERAL,
     MODIFIER;
   }
+  public interface token extends source {
+    token_type type();
+  }
+  public interface simple_token extends token {
+    token_type type();
+    source the_source();
+  }
+  public static class simple_token_class implements simple_token {
+    private final token_type type;
+    private final source the_source;
+    public simple_token_class(token_type type, source the_source) {
+      this.type = type;
+      this.the_source = the_source;
+    }
+    @Override public token_type type() {
+      return type;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+  }
 }

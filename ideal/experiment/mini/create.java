@@ -832,20 +832,33 @@ public class create {
   public static final special_parser VARIABLE_PARSER = new special_parser() {
     @Override
     public @Nullable construct parse(List<construct> parameters) {
-      if (parameters.size() != 3 && parameters.size() != 4) {
-        return null;
-      }
-      if (!(parameters.get(2) instanceof identifier)) {
+      if (parameters.size() < 2 || parameters.size() > 4) {
         return null;
       }
 
-      List<modifier_construct> modifiers = parse_modifiers(parameters.get(0));
-      construct type = parameters.get(1);
-      String name = ((identifier) parameters.get(2)).name;
-      @Nullable construct initializer = parameters.size() == 4 ? parameters.get(3) : null;
-      source the_source = parameters.get(2);
 
-      return new variable_construct(modifiers, type, name, initializer, the_source);
+      List<modifier_construct> modifiers;
+      int type_index;
+      if (parameters.size() == 2) {
+        modifiers = new ArrayList<modifier_construct>();
+        type_index = 0;
+      } else {
+        modifiers = parse_modifiers(parameters.get(0));
+        type_index = 1;
+      }
+
+      construct type = parameters.get(type_index);
+
+      construct name_construct = parameters.get(type_index + 1);
+      if (!(name_construct instanceof identifier)) {
+        return null;
+      }
+      String name = ((identifier) name_construct).name;
+
+      @Nullable construct initializer = (parameters.size() == type_index + 3) ?
+          parameters.get(type_index + 2) : null;
+
+      return new variable_construct(modifiers, type, name, initializer, name_construct);
     }
   };
 

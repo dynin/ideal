@@ -107,6 +107,10 @@ public class create {
         return call_identifier((identifier) the_construct);
       }
 
+      if (the_construct instanceof operator) {
+        return call_operator((operator) the_construct);
+      }
+
       if (the_construct instanceof string_literal) {
         return call_string_literal((string_literal) the_construct);
       }
@@ -152,6 +156,10 @@ public class create {
 
     public result call_identifier(identifier the_identifier) {
       return call_construct(the_identifier);
+    }
+
+    public result call_operator(operator the_operator) {
+      return call_construct(the_operator);
     }
 
     public result call_string_literal(string_literal the_string_literal) {
@@ -230,6 +238,16 @@ public class create {
     }
   }
 
+  public enum operator_type {
+    DOT("."),
+    ASSIGN("=");
+
+    private final String symbol;
+    operator_type(String symbol) {
+      this.symbol = symbol;
+    }
+  }
+
   public static class identifier implements construct, token {
     public final String name;
     public final source the_source;
@@ -252,6 +270,26 @@ public class create {
     @Override
     public String toString() {
       return "<identifier:" + name + ">";
+    }
+  }
+
+  public static class operator implements construct {
+    public final operator_type the_operator_type;
+    public final source the_source;
+
+    public operator(operator_type the_operator_type, source the_source) {
+      this.the_operator_type = the_operator_type;
+      this.the_source = the_source;
+    }
+
+    @Override
+    public source the_source() {
+      return the_source;
+    }
+
+    @Override
+    public String toString() {
+      return "<operator:" + the_operator_type + ">";
     }
   }
 
@@ -910,6 +948,20 @@ public class create {
 
   public static class base_printer extends construct_dispatch<text> {
 
+    function<text, variable_construct> param_printer = new function<text, variable_construct>() {
+      @Override
+      public text call(variable_construct the_variable_construct) {
+        return print_variable(the_variable_construct);
+      }
+    };
+
+    function<text, construct> statement_printer = new function<text, construct>() {
+      @Override
+      public text call(construct the_construct) {
+        return join_text(print(the_construct), SEMICOLON, NEWLINE);
+      }
+    };
+
     public text print(construct the_construct) {
       return call(the_construct);
     }
@@ -930,10 +982,27 @@ public class create {
 
     @Override
     public text call_parameter_construct(parameter_construct the_parameter_construct) {
-      return join_text(print(the_parameter_construct.main),
-          OPEN_PAREN,
-          fold_with_comma(the_parameter_construct.parameters, this),
-          CLOSE_PAREN);
+      if (the_parameter_construct.main instanceof operator) {
+        return print_operator((operator) the_parameter_construct.main,
+            the_parameter_construct.parameters);
+      } else {
+        return join_text(print(the_parameter_construct.main),
+            OPEN_PAREN,
+            fold_with_comma(the_parameter_construct.parameters, this),
+            CLOSE_PAREN);
+      }
+    }
+
+    public text print_operator(operator the_operator, List<construct> arguments) {
+      assert arguments.size() == 2;
+      operator_type the_operator_type = the_operator.the_operator_type;
+      text operator_text;
+      if (the_operator_type == operator_type.DOT) {
+        operator_text = new text_string(the_operator_type.symbol);
+      } else {
+        operator_text = join_text(SPACE, new text_string(the_operator_type.symbol), SPACE);
+      }
+      return join_text(print(arguments.get(0)), operator_text, print(arguments.get(1)));
     }
 
     @Override
@@ -950,7 +1019,7 @@ public class create {
     @Override
     public text call_block_construct(block_construct the_block_construct) {
       return join_text(OPEN_BRACE, NEWLINE,
-          join_text(map(the_block_construct.statements, this)),
+          new indented_text(join_text(map(the_block_construct.statements, statement_printer))),
           CLOSE_BRACE);
     }
 
@@ -983,13 +1052,6 @@ public class create {
       result.add(new text_string(the_procedure_construct.name));
       result.add(OPEN_PAREN);
 
-      // TODO: factor out
-      function<text, variable_construct> param_printer = new function<text, variable_construct>() {
-        @Override
-        public text call(variable_construct the_variable_construct) {
-          return print_variable(the_variable_construct);
-        }
-      };
       result.add(fold_with_comma(the_procedure_construct.parameters, param_printer));
       result.add(CLOSE_PAREN);
       if (the_procedure_construct.body == null) {
@@ -1234,6 +1296,15 @@ public class create {
       return first + '_' + second;
     }
 
+    private static parameter_construct make_operator(operator_type the_operator_type,
+        construct first_argument, construct second_argument, source the_source) {
+      List<construct> arguments = new ArrayList<construct>();
+      arguments.add(first_argument);
+      arguments.add(second_argument);
+      return new parameter_construct(new operator(the_operator_type, the_source), arguments,
+          the_source);
+    }
+
     private List<construct> transform_datatype(type_construct the_type_construct) {
       source the_source = the_type_construct;
 
@@ -1277,6 +1348,13 @@ public class create {
               null,
               the_source));
           ctor_parameters.add(the_variable_construct);
+          identifier variable_name = new identifier(the_variable_construct.name, the_source);
+          identifier this_name = new identifier("this", the_source);
+          construct this_access = make_operator(operator_type.DOT, this_name, variable_name,
+              the_source);
+          construct assignment = make_operator(operator_type.ASSIGN, this_access, variable_name,
+              the_source);
+          ctor_statements.add(assignment);
         } else {
           // TODO: handle other constructs.
           unexpected("In type declaration: " + the_construct);

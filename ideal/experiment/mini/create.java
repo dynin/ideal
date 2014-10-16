@@ -904,7 +904,7 @@ public class create {
     public text call_parameter_construct(parameter_construct the_parameter_construct) {
       return join_text(print(the_parameter_construct.main),
           OPEN_PAREN,
-          fold_with_comma(the_parameter_construct.parameters),
+          fold_with_comma(the_parameter_construct.parameters, this),
           CLOSE_PAREN);
     }
 
@@ -919,13 +919,19 @@ public class create {
           CLOSE_PAREN);
     }
 
-    @Override
-    public text call_variable_construct(variable_construct the_variable_construct) {
+    protected text print_variable(variable_construct the_variable_construct) {
       List<text> result = new ArrayList<text>();
       result.add(print_with_space(the_variable_construct.modifiers));
       result.add(print(the_variable_construct.type));
       result.add(SPACE);
       result.add(new text_string(the_variable_construct.name));
+      return new text_list(result);
+    }
+
+    @Override
+    public text call_variable_construct(variable_construct the_variable_construct) {
+      List<text> result = new ArrayList<text>();
+      result.add(print_variable(the_variable_construct));
       result.add(SEMICOLON);
       result.add(NEWLINE);
       return new text_list(result);
@@ -941,8 +947,15 @@ public class create {
       }
       result.add(new text_string(the_procedure_construct.name));
       result.add(OPEN_PAREN);
-      // TODO(dynin): separate with commas.
-      result.add(new indented_text(print_all(the_procedure_construct.parameters)));
+
+      // TODO: factor out
+      function<text, variable_construct> param_printer = new function<text, variable_construct>() {
+        @Override
+        public text call(variable_construct the_variable_construct) {
+          return print_variable(the_variable_construct);
+        }
+      };
+      result.add(fold_with_comma(the_procedure_construct.parameters, param_printer));
       result.add(CLOSE_PAREN);
       if (the_procedure_construct.body == null) {
         result.add(SEMICOLON);
@@ -963,7 +976,7 @@ public class create {
       result.add(new text_string(fn_to_lowercase(
           the_supertype_construct.the_supertype_kind.toString())));
       result.add(SPACE);
-      result.add(fold_with_comma(the_supertype_construct.supertypes));
+      result.add(fold_with_comma(the_supertype_construct.supertypes, this));
       result.add(SEMICOLON);
       result.add(NEWLINE);
       return new text_list(result);
@@ -996,11 +1009,11 @@ public class create {
     }
 
     // TODO(dynin): make generic.
-    protected text fold_with_comma(List<construct> constructs) {
+    protected <C> text fold_with_comma(List<C> constructs, function<text, C> printer) {
       if (constructs.size() == 0) {
         return EMPTY_TEXT;
       } else if (constructs.size() == 1) {
-        return print(constructs.get(0));
+        return printer.call(constructs.get(0));
       } else {
         List<text> result = new ArrayList<text>();
         for (int i = 0; i < constructs.size(); ++i) {
@@ -1008,7 +1021,7 @@ public class create {
             result.add(COMMA);
             result.add(SPACE);
           }
-          result.add(print(constructs.get(i)));
+          result.add(printer.call(constructs.get(i)));
         }
         return new text_list(result);
       }
@@ -1042,7 +1055,7 @@ public class create {
       result.add(new text_string(fn_to_lowercase(
           the_supertype_construct.the_supertype_kind.toString())));
       result.add(SPACE);
-      result.add(fold_with_comma(the_supertype_construct.supertypes));
+      result.add(fold_with_comma(the_supertype_construct.supertypes, this));
       // No trailing semicolon or newline.
       return new text_list(result);
     }
@@ -1208,6 +1221,7 @@ public class create {
       super_interface.add(new identifier(interface_name, the_source));
       class_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
           the_source));
+      List<variable_construct> ctor_parameters = new ArrayList<variable_construct>();
 
       for (construct the_construct : the_type_construct.body) {
         if (the_construct instanceof supertype_construct) {
@@ -1227,11 +1241,24 @@ public class create {
               the_variable_construct.name,
               null,
               the_source));
+          ctor_parameters.add(the_variable_construct);
         } else {
           // TODO: handle other constructs.
           unexpected("In type declaration: " + the_construct);
         }
       }
+
+      List<modifier_construct> ctor_modifiers = new ArrayList<modifier_construct>();
+      ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+      procedure_construct ctor_procedure =
+          new procedure_construct(
+              ctor_modifiers,
+              null,
+              class_name,
+              ctor_parameters,
+              null,
+              the_source);
+      class_body.add(ctor_procedure);
 
       type_construct interface_type =
           new type_construct(interface_modifiers,

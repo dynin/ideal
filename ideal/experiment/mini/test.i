@@ -12,3 +12,8 @@
   (variable (nullable string) optional)
   (variable (override) (nullable source) the_source null)
 ))
+
+(enum () test_enum (
+  foo
+  bar
+)

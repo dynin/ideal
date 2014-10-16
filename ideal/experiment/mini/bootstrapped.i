@@ -21,3 +21,13 @@
   (variable source_text the_source)
   (variable int character_index)
 ))
+
+(enum () token_type (
+  WHITESPACE
+  COMMENT
+  OPEN
+  CLOSE
+  IDENTIFIER
+  LITERAL
+  MODIFIER
+))

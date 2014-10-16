@@ -13,6 +13,7 @@ import static ideal.experiment.mini.bootstrapped.source_text;
 import static ideal.experiment.mini.bootstrapped.source_text_class;
 import static ideal.experiment.mini.bootstrapped.text_position;
 import static ideal.experiment.mini.bootstrapped.text_position_class;
+import static ideal.experiment.mini.bootstrapped.token_type;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -169,16 +170,6 @@ public class create {
     public result call_type_construct(type_construct the_type_construct) {
       return call_construct(the_type_construct);
     }
-  }
-
-  public static enum token_type {
-    WHITESPACE,
-    COMMENT,
-    OPEN,
-    CLOSE,
-    IDENTIFIER,
-    LITERAL,
-    MODIFIER;
   }
 
   public static interface token extends source {
@@ -524,6 +515,7 @@ public class create {
   public static enum type_kind {
     INTERFACE,
     DATATYPE,
+    ENUM,
     CLASS;
   }
 
@@ -923,6 +915,7 @@ public class create {
       parsers.put("variable", VARIABLE_PARSER);
       parsers.put("datatype", new type_parser(type_kind.DATATYPE));
       parsers.put("interface", new type_parser(type_kind.INTERFACE));
+      parsers.put("enum", new type_parser(type_kind.ENUM));
       parsers.put("extends", new supertype_parser(supertype_kind.EXTENDS));
       parsers.put("implements", new supertype_parser(supertype_kind.IMPLEMENTS));
     }
@@ -1147,6 +1140,16 @@ public class create {
   };
   public static predicate<construct> is_not_supertype = negate_predicate(is_supertype);
 
+  public static predicate<construct> is_enum_declaration = new predicate<construct>() {
+    @Override
+    public boolean call(construct the_construct) {
+      return the_construct instanceof identifier;
+    }
+  };
+
+  public static predicate<construct> is_not_enum_declaration =
+      negate_predicate(is_enum_declaration);
+
   public static class java_printer extends base_printer {
 
     @Override
@@ -1184,7 +1187,21 @@ public class create {
       result.add(OPEN_BRACE);
       result.add(NEWLINE);
       List<construct> filtered_body = filter(the_type_construct.body, is_not_supertype);
-      result.add(new indented_text(print_all(filtered_body)));
+
+      List<text> body = new ArrayList<text>();
+      if (the_type_construct.the_type_kind == type_kind.ENUM) {
+        List<construct> enum_declarations = filter(filtered_body, is_enum_declaration);
+        assert !enum_declarations.isEmpty();
+        for (int i = 0; i < enum_declarations.size(); ++i) {
+          body.add(print(enum_declarations.get(i)));
+          body.add(i < enum_declarations.size() - 1 ? COMMA : SEMICOLON);
+          body.add(NEWLINE);
+        }
+        filtered_body = filter(filtered_body, is_not_enum_declaration);
+      }
+      body.add(print_all(filtered_body));
+
+      result.add(new indented_text(new text_list(body)));
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);

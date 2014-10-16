@@ -57,4 +57,13 @@ public class bootstrapped {
       return character_index;
     }
   }
+  public enum token_type {
+    WHITESPACE,
+    COMMENT,
+    OPEN,
+    CLOSE,
+    IDENTIFIER,
+    LITERAL,
+    MODIFIER;
+  }
 }

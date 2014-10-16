@@ -7,4 +7,5 @@
   (extends source)
   (variable () string name)
   (variable () string content)
+  (variable () (nullable source) the_source null)
 ))

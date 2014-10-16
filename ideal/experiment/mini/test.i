@@ -10,5 +10,5 @@
   (variable () string name)
   (variable () string content)
   (variable () (nullable string) optional)
-;  (variable (override) (nullable source) the_source null)
+  (variable () (nullable source) the_source null)
 ))

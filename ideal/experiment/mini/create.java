@@ -10,6 +10,7 @@ package ideal.experiment.mini;
 
 import static ideal.experiment.mini.bootstrapped.source;
 import static ideal.experiment.mini.bootstrapped.source_text;
+import static ideal.experiment.mini.bootstrapped.source_text_class;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -23,31 +24,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 public class create {
-
-  public static class source_text_class implements source_text {
-    private final String name;
-    private final String content;
-
-    public source_text_class(String name, String content) {
-      this.name = name;
-      this.content = content;
-    }
-
-    @Override
-    public String name() {
-      return name;
-    }
-
-    @Override
-    public String content() {
-      return content;
-    }
-
-    @Override
-    public @Nullable source the_source() {
-      return null;
-    }
-  }
 
   public static class text_position implements source {
     public final source_text the_source_text;
@@ -1281,10 +1257,12 @@ public class create {
         type = strip_nullable(type);
         modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_source);
       }
-      return new variable_construct(modifiers,
-          type,
-          the_variable_construct.name,
-          null,
+      // TODO: add variable_construct.has_initializer
+      @Nullable construct initializer = the_variable_construct.initializer;
+      if (initializer != null) {
+        initializer = transform(initializer);
+      }
+      return new variable_construct(modifiers, type, the_variable_construct.name, initializer,
           the_source);
     }
 
@@ -1380,30 +1358,36 @@ public class create {
           // Add accessor declaration to the interface
           interface_body.add(variable_to_procedure(the_variable_construct));
 
-          // Add instance variable
-          List<modifier_construct> instance_variable_modifiers =
-              prepend_modifier(modifier_kind.PRIVATE,
-                  prepend_modifier(modifier_kind.FINAL, the_variable_construct.modifiers,
-                      the_source), the_source);
-          class_body.add(new variable_construct(instance_variable_modifiers, type, name, null,
-              the_source));
+          boolean has_initializer = the_variable_construct.initializer != null;
 
-          // Add constructor parameter
-          ctor_parameters.add(the_variable_construct);
-          identifier variable_identifier = new identifier(name, the_source);
-          identifier this_identifier = new identifier("this", the_source);
-          construct this_access = make_operator(operator_type.DOT, this_identifier,
-              variable_identifier, the_source);
-          construct assignment = make_operator(operator_type.ASSIGN, this_access,
-              variable_identifier, the_source);
-          ctor_statements.add(assignment);
+          if (!has_initializer) {
+            // Add instance variable
+            List<modifier_construct> instance_variable_modifiers =
+                prepend_modifier(modifier_kind.PRIVATE,
+                    prepend_modifier(modifier_kind.FINAL, the_variable_construct.modifiers,
+                        the_source), the_source);
+            class_body.add(new variable_construct(instance_variable_modifiers, type, name, null,
+                the_source));
+
+            // Add constructor parameter
+            ctor_parameters.add(the_variable_construct);
+            identifier variable_identifier = new identifier(name, the_source);
+            identifier this_identifier = new identifier("this", the_source);
+            construct this_access = make_operator(operator_type.DOT, this_identifier,
+                variable_identifier, the_source);
+            construct assignment = make_operator(operator_type.ASSIGN, this_access,
+                variable_identifier, the_source);
+            ctor_statements.add(assignment);
+          }
 
           // Add accessor function
           List<modifier_construct> accessor_modifiers =
               prepend_modifier(modifier_kind.OVERRIDE,
                   prepend_modifier(modifier_kind.PUBLIC, the_variable_construct.modifiers,
                       the_source), the_source);
-          construct accessor_return = new return_construct(variable_identifier, the_source);
+          construct return_expression = has_initializer ?  the_variable_construct.initializer :
+              new identifier(name, the_source);
+          construct accessor_return = new return_construct(return_expression, the_source);
           List<construct> accessor_statements = new ArrayList<construct>();
           accessor_statements.add(accessor_return);
           construct accessor_body = new block_construct(accessor_statements, the_source);

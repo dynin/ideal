@@ -20,5 +20,23 @@ public class bootstrapped {
   public interface source_text extends source {
     String name();
     String content();
+    @Nullable source the_source();
+  }
+  public static class source_text_class implements source_text {
+    private final String name;
+    private final String content;
+    public source_text_class(String name, String content) {
+      this.name = name;
+      this.content = content;
+    }
+    @Override public String name() {
+      return name;
+    }
+    @Override public String content() {
+      return content;
+    }
+    @Override public @Nullable source the_source() {
+      return null;
+    }
   }
 }

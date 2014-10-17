@@ -1273,11 +1273,7 @@ public class create {
     }
 
     @Override
-    public construct call_variable_construct(variable_construct the_variable_construct) {
-      return variable_to_procedure(transform_variable(the_variable_construct));
-    }
-
-    private variable_construct transform_variable(variable_construct the_variable_construct) {
+    public variable_construct call_variable_construct(variable_construct the_variable_construct) {
       assert the_variable_construct.type != null;
       source the_source = the_variable_construct;
       List<modifier_construct> modifiers = the_variable_construct.modifiers;
@@ -1293,26 +1289,6 @@ public class create {
       }
       return new variable_construct(modifiers, type, the_variable_construct.name, initializer,
           the_source);
-    }
-
-    private procedure_construct variable_to_procedure(variable_construct the_variable_construct) {
-      return new procedure_construct(the_variable_construct.modifiers,
-          the_variable_construct.type,
-          the_variable_construct.name,
-          new ArrayList<variable_construct>(),
-          null,
-          the_variable_construct);
-    }
-
-    @Override
-    public Object call_type_construct(type_construct the_type_construct) {
-      if (the_type_construct.the_type_kind == type_kind.DATATYPE) {
-        return transform_datatype(the_type_construct, true);
-      } else if (the_type_construct.the_type_kind == type_kind.CLASS) {
-        return transform_datatype(the_type_construct, false);
-      } else {
-        return super.call_type_construct(the_type_construct);
-      }
     }
 
     private static List<modifier_construct> prepend_modifier(modifier_kind the_modifier_kind,
@@ -1346,21 +1322,35 @@ public class create {
           grouping_type.OPERATOR, the_source);
     }
 
-    private List<construct> transform_datatype(type_construct the_type_construct,
-        boolean declare_interface) {
+    @Override
+    public Object call_type_construct(type_construct the_type_construct) {
+
+      type_kind the_type_kind = the_type_construct.the_type_kind;
+
+      boolean declare_interface =
+          the_type_kind == type_kind.INTERFACE ||
+          the_type_kind == type_kind.DATATYPE;
+
+      boolean declare_implementation =
+          the_type_kind == type_kind.DATATYPE ||
+          the_type_kind == type_kind.ENUM ||
+          the_type_kind == type_kind.CLASS;
+
+      boolean declare_enum = the_type_kind == type_kind.ENUM;
+
       source the_source = the_type_construct;
 
       String interface_name = the_type_construct.name;
-      String class_name = declare_interface ? join_identifier(interface_name, "class") :
+      String implementation_name = declare_interface ? join_identifier(interface_name, "class") :
           interface_name;
 
       List<construct> interface_body = new ArrayList<construct>();
-      List<construct> class_body = new ArrayList<construct>();
+      List<construct> implementation_body = new ArrayList<construct>();
 
-      List<construct> super_interface = new ArrayList<construct>();
-      super_interface.add(new identifier(interface_name, the_source));
-      if (declare_interface) {
-        class_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
+      if (declare_interface && declare_implementation) {
+        List<construct> super_interface = new ArrayList<construct>();
+        super_interface.add(new identifier(interface_name, the_source));
+        implementation_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
             the_source));
       }
       List<variable_construct> ctor_parameters = new ArrayList<variable_construct>();
@@ -1373,11 +1363,11 @@ public class create {
           if (declare_interface) {
             interface_body.add(the_supertype_construct);
           } else {
-            class_body.add(the_supertype_construct);
+            implementation_body.add(the_supertype_construct);
           }
         } else if (the_construct instanceof variable_construct) {
           variable_construct the_variable_construct =
-              transform_variable((variable_construct) the_construct);
+              call_variable_construct((variable_construct) the_construct);
           List<modifier_construct> modifiers = the_variable_construct.modifiers;
           boolean has_override = has_modifier(the_variable_construct.modifiers,
               modifier_kind.OVERRIDE);
@@ -1393,63 +1383,53 @@ public class create {
                 type, name, new ArrayList<variable_construct>(), null, the_source));
           }
 
-          boolean has_initializer = the_variable_construct.initializer != null;
+          if (declare_implementation) {
+            boolean has_initializer = the_variable_construct.initializer != null;
 
-          if (!has_initializer) {
-            // Add instance variable
-            List<modifier_construct> instance_variable_modifiers =
-                prepend_modifier(modifier_kind.PRIVATE,
-                    prepend_modifier(modifier_kind.FINAL, modifiers, the_source), the_source);
-            class_body.add(new variable_construct(instance_variable_modifiers, type, name, null,
-                the_source));
+            if (!has_initializer) {
+              // Add instance variable
+              List<modifier_construct> instance_variable_modifiers =
+                  prepend_modifier(modifier_kind.PRIVATE,
+                      prepend_modifier(modifier_kind.FINAL, modifiers, the_source), the_source);
+              implementation_body.add(new variable_construct(instance_variable_modifiers, type, name, null,
+                  the_source));
 
-            // Add constructor parameter
-            ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_source));
-            identifier variable_identifier = new identifier(name, the_source);
-            identifier this_identifier = new identifier("this", the_source);
-            construct this_access = make_operator(operator_type.DOT, this_identifier,
-                variable_identifier, the_source);
-            construct assignment = make_operator(operator_type.ASSIGN, this_access,
-                variable_identifier, the_source);
-            ctor_statements.add(assignment);
+              // Add constructor parameter
+              ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_source));
+              identifier variable_identifier = new identifier(name, the_source);
+              identifier this_identifier = new identifier("this", the_source);
+              construct this_access = make_operator(operator_type.DOT, this_identifier,
+                  variable_identifier, the_source);
+              construct assignment = make_operator(operator_type.ASSIGN, this_access,
+                  variable_identifier, the_source);
+              ctor_statements.add(assignment);
+            }
+
+            // Add accessor function
+            List<modifier_construct> accessor_modifiers =
+                prepend_modifier(modifier_kind.PUBLIC, modifiers, the_source);
+            if (declare_interface || has_override) {
+                accessor_modifiers = prepend_modifier(modifier_kind.OVERRIDE, accessor_modifiers,
+                    the_source);
+            }
+
+            construct return_expression = has_initializer ?  the_variable_construct.initializer :
+                new identifier(name, the_source);
+            construct accessor_return = new return_construct(return_expression, the_source);
+            List<construct> accessor_statements = new ArrayList<construct>();
+            accessor_statements.add(accessor_return);
+            construct accessor_body = new block_construct(accessor_statements, the_source);
+            procedure_construct accessor = new procedure_construct(accessor_modifiers,
+                type, name, new ArrayList<variable_construct>(), accessor_body, the_source);
+            accessor_functions.add(accessor);
           }
-
-          // Add accessor function
-          List<modifier_construct> accessor_modifiers =
-              prepend_modifier(modifier_kind.PUBLIC, modifiers, the_source);
-          if (declare_interface || has_override) {
-              accessor_modifiers = prepend_modifier(modifier_kind.OVERRIDE, accessor_modifiers,
-                  the_source);
-          }
-
-          construct return_expression = has_initializer ?  the_variable_construct.initializer :
-              new identifier(name, the_source);
-          construct accessor_return = new return_construct(return_expression, the_source);
-          List<construct> accessor_statements = new ArrayList<construct>();
-          accessor_statements.add(accessor_return);
-          construct accessor_body = new block_construct(accessor_statements, the_source);
-          procedure_construct accessor = new procedure_construct(accessor_modifiers,
-              type, name, new ArrayList<variable_construct>(), accessor_body, the_source);
-          accessor_functions.add(accessor);
+        } else if (declare_enum && is_enum_declaration.call(the_construct)) {
+          implementation_body.add(the_construct);
         } else {
           // TODO: handle other constructs.
           unexpected("In type declaration: " + the_construct);
         }
       }
-
-      List<modifier_construct> ctor_modifiers = new ArrayList<modifier_construct>();
-      ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
-      block_construct ctor_body = new block_construct(ctor_statements, the_source);
-      procedure_construct ctor_procedure =
-          new procedure_construct(
-              ctor_modifiers,
-              null,
-              class_name,
-              ctor_parameters,
-              ctor_body,
-              the_source);
-      class_body.add(ctor_procedure);
-      class_body.addAll(accessor_functions);
 
       List<construct> result = new ArrayList<construct>();
 
@@ -1463,14 +1443,33 @@ public class create {
         result.add(interface_type);
       }
 
-      type_construct class_type =
-          new type_construct(the_type_construct.modifiers,
-              type_kind.CLASS,
-              class_name,
-              class_body,
-              the_source);
+      if (declare_implementation) {
+        if (!ctor_parameters.isEmpty()) {
+          List<modifier_construct> ctor_modifiers = new ArrayList<modifier_construct>();
+          ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+          block_construct ctor_body = new block_construct(ctor_statements, the_source);
+          procedure_construct ctor_procedure =
+              new procedure_construct(
+                  ctor_modifiers,
+                  null,
+                  implementation_name,
+                  ctor_parameters,
+                  ctor_body,
+                  the_source);
+          implementation_body.add(ctor_procedure);
+        }
 
-      result.add(class_type);
+        implementation_body.addAll(accessor_functions);
+
+        type_construct implementation_type =
+            new type_construct(the_type_construct.modifiers,
+                declare_enum ? type_kind.ENUM : type_kind.CLASS,
+                implementation_name,
+                implementation_body,
+                the_source);
+        result.add(implementation_type);
+      }
+
       return result;
     }
 

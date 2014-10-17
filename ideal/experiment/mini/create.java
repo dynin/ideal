@@ -960,7 +960,7 @@ public class create {
     }
 
     public text print_all(List<? extends construct> constructs) {
-      return join_text(map(constructs, this));
+      return new text_list(map(constructs, this));
     }
 
     @Override
@@ -1016,7 +1016,7 @@ public class create {
     @Override
     public text call_block_construct(block_construct the_block_construct) {
       return join_text(OPEN_BRACE, NEWLINE,
-          new indented_text(join_text(map(the_block_construct.statements, statement_printer))),
+          new indented_text(new text_list(map(the_block_construct.statements, statement_printer))),
           CLOSE_BRACE);
     }
 
@@ -1237,6 +1237,15 @@ public class create {
     public construct call_construct(construct the_construct) {
       return the_construct;
     }
+
+    @Override
+    public Object call_type_construct(type_construct the_type_construct) {
+      return new type_construct(the_type_construct.modifiers,
+          the_type_construct.the_type_kind,
+          the_type_construct.name,
+          transform_all(the_type_construct.body),
+          the_type_construct);
+    }
   }
 
   public static class to_java_transform extends base_transform {
@@ -1299,25 +1308,8 @@ public class create {
       } else if (the_type_construct.the_type_kind == type_kind.CLASS) {
         return transform_datatype(the_type_construct, false);
       } else {
-        source the_source = the_type_construct;
-
-        List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
-        modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
-        modifiers.addAll(the_type_construct.modifiers);
-
-        return new type_construct(prepend_public(the_type_construct.modifiers, the_source),
-            the_type_construct.the_type_kind,
-            the_type_construct.name,
-            transform_all(the_type_construct.body),
-            the_source);
+        return super.call_type_construct(the_type_construct);
       }
-    }
-
-    private static List<modifier_construct> make_modifier_list(modifier_kind the_modifier_kind,
-        source the_source) {
-      List<modifier_construct> result = new ArrayList<modifier_construct>();
-      result.add(new modifier_construct(the_modifier_kind, the_source));
-      return result;
     }
 
     private static List<modifier_construct> prepend_modifier(modifier_kind the_modifier_kind,
@@ -1326,12 +1318,6 @@ public class create {
       result.add(new modifier_construct(the_modifier_kind, the_source));
       result.addAll(modifiers);
       return result;
-    }
-
-    private static List<modifier_construct> prepend_public(List<modifier_construct> modifiers,
-        source the_source) {
-      // TODO: verify that there are no access modifiers specified
-      return prepend_modifier(modifier_kind.PUBLIC, modifiers, the_source);
     }
 
     private static List<modifier_construct> filter_modifier(final modifier_kind the_modifier_kind,
@@ -1364,11 +1350,6 @@ public class create {
       String interface_name = the_type_construct.name;
       String class_name = declare_interface ? join_identifier(interface_name, "class") :
           interface_name;
-
-      List<modifier_construct> class_modifiers =
-          prepend_public(
-              prepend_modifier(modifier_kind.STATIC, the_type_construct.modifiers, the_source),
-              the_source);
 
       List<construct> interface_body = new ArrayList<construct>();
       List<construct> class_body = new ArrayList<construct>();
@@ -1405,7 +1386,8 @@ public class create {
 
           // Add accessor declaration to the interface
           if (declare_interface) {
-            interface_body.add(variable_to_procedure(the_variable_construct));
+            interface_body.add(new procedure_construct(modifiers,
+                type, name, new ArrayList<variable_construct>(), null, the_source));
           }
 
           boolean has_initializer = the_variable_construct.initializer != null;
@@ -1469,11 +1451,8 @@ public class create {
       List<construct> result = new ArrayList<construct>();
 
       if (declare_interface) {
-        List<modifier_construct> interface_modifiers =
-            prepend_public(the_type_construct.modifiers, the_source);
-
         type_construct interface_type =
-            new type_construct(interface_modifiers,
+            new type_construct(the_type_construct.modifiers,
                 type_kind.INTERFACE,
                 interface_name,
                 interface_body,
@@ -1482,7 +1461,7 @@ public class create {
       }
 
       type_construct class_type =
-          new type_construct(class_modifiers,
+          new type_construct(the_type_construct.modifiers,
               type_kind.CLASS,
               class_name,
               class_body,
@@ -1566,10 +1545,6 @@ public class create {
 
   public static text join_text(text... texts) {
     return new text_list(Arrays.asList(texts));
-  }
-
-  public static text join_text(List<text> texts) {
-    return new text_list(texts);
   }
 
   private static final String INDENT_STRING = "  ";

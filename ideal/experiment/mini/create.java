@@ -15,7 +15,7 @@ import static ideal.experiment.mini.bootstrapped.text_position;
 import static ideal.experiment.mini.bootstrapped.text_position_class;
 import static ideal.experiment.mini.bootstrapped.token_type;
 import static ideal.experiment.mini.bootstrapped.token;
-import static ideal.experiment.mini.bootstrapped.simple_token_class;
+import static ideal.experiment.mini.bootstrapped.simple_token;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -548,11 +548,11 @@ public class create {
         while (index < content.length() && fn_is_whitespace(content.charAt(index))) {
           index += 1;
         }
-        result.add(new simple_token_class(token_type.WHITESPACE, position));
+        result.add(new simple_token(token_type.WHITESPACE, position));
       } else if (prefix == '(') {
-        result.add(new simple_token_class(token_type.OPEN, position));
+        result.add(new simple_token(token_type.OPEN, position));
       } else if (prefix == ')') {
-        result.add(new simple_token_class(token_type.CLOSE, position));
+        result.add(new simple_token(token_type.CLOSE, position));
       } else if (prefix == '"') {
         char quote = prefix;
         while (index < content.length() &&
@@ -576,7 +576,7 @@ public class create {
         while (index < content.length() && content.charAt(index) != '\n') {
           index += 1;
         }
-        result.add(new simple_token_class(token_type.COMMENT, position));
+        result.add(new simple_token(token_type.COMMENT, position));
       } else {
         report(new notification(notification_type.UNRECOGNIZED_CHARACTER, position));
       }
@@ -889,6 +889,7 @@ public class create {
       parsers.put("datatype", new type_parser(type_kind.DATATYPE));
       parsers.put("interface", new type_parser(type_kind.INTERFACE));
       parsers.put("enum", new type_parser(type_kind.ENUM));
+      parsers.put("class", new type_parser(type_kind.CLASS));
       parsers.put("extends", new supertype_parser(supertype_kind.EXTENDS));
       parsers.put("implements", new supertype_parser(supertype_kind.IMPLEMENTS));
     }
@@ -1269,7 +1270,9 @@ public class create {
     @Override
     public Object call_type_construct(type_construct the_type_construct) {
       if (the_type_construct.the_type_kind == type_kind.DATATYPE) {
-        return transform_datatype(the_type_construct);
+        return transform_datatype(the_type_construct, true);
+      } else if (the_type_construct.the_type_kind == type_kind.CLASS) {
+        return transform_datatype(the_type_construct, false);
       } else {
         source the_source = the_type_construct;
 
@@ -1312,14 +1315,13 @@ public class create {
           the_source);
     }
 
-    private List<construct> transform_datatype(type_construct the_type_construct) {
+    private List<construct> transform_datatype(type_construct the_type_construct,
+        boolean declare_interface) {
       source the_source = the_type_construct;
 
       String interface_name = the_type_construct.name;
-      String class_name = join_identifier(interface_name, "class");
-
-      List<modifier_construct> interface_modifiers =
-          prepend_public(the_type_construct.modifiers, the_source);
+      String class_name = declare_interface ? join_identifier(interface_name, "class") :
+          interface_name;
 
       List<modifier_construct> class_modifiers =
           prepend_public(
@@ -1331,15 +1333,22 @@ public class create {
 
       List<construct> super_interface = new ArrayList<construct>();
       super_interface.add(new identifier(interface_name, the_source));
-      class_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
-          the_source));
+      if (declare_interface) {
+        class_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
+            the_source));
+      }
       List<variable_construct> ctor_parameters = new ArrayList<variable_construct>();
       List<construct> ctor_statements = new ArrayList<construct>();
       List<construct> accessor_functions = new ArrayList<construct>();
 
       for (construct the_construct : the_type_construct.body) {
         if (the_construct instanceof supertype_construct) {
-          interface_body.add(transform(the_construct));
+          construct the_supertype_construct = transform(the_construct);
+          if (declare_interface) {
+            interface_body.add(the_supertype_construct);
+          } else {
+            class_body.add(the_supertype_construct);
+          }
         } else if (the_construct instanceof variable_construct) {
           variable_construct the_variable_construct =
               transform_variable((variable_construct) the_construct);
@@ -1347,7 +1356,9 @@ public class create {
           String name = the_variable_construct.name;
 
           // Add accessor declaration to the interface
-          interface_body.add(variable_to_procedure(the_variable_construct));
+          if (declare_interface) {
+            interface_body.add(variable_to_procedure(the_variable_construct));
+          }
 
           boolean has_initializer = the_variable_construct.initializer != null;
 
@@ -1405,12 +1416,20 @@ public class create {
       class_body.add(ctor_procedure);
       class_body.addAll(accessor_functions);
 
-      type_construct interface_type =
-          new type_construct(interface_modifiers,
-              type_kind.INTERFACE,
-              interface_name,
-              interface_body,
-              the_source);
+      List<construct> result = new ArrayList<construct>();
+
+      if (declare_interface) {
+        List<modifier_construct> interface_modifiers =
+            prepend_public(the_type_construct.modifiers, the_source);
+
+        type_construct interface_type =
+            new type_construct(interface_modifiers,
+                type_kind.INTERFACE,
+                interface_name,
+                interface_body,
+                the_source);
+        result.add(interface_type);
+      }
 
       type_construct class_type =
           new type_construct(class_modifiers,
@@ -1419,8 +1438,6 @@ public class create {
               class_body,
               the_source);
 
-      List<construct> result = new ArrayList<construct>();
-      result.add(interface_type);
       result.add(class_type);
       return result;
     }

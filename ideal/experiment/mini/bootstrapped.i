@@ -37,8 +37,8 @@
   (variable token_type type);
 ))
 
-(datatype () simple_token (
-  (extends token)
+(class () simple_token (
+  (implements token)
   (variable token_type type);
   (variable source the_source)
 ; public String toString() {

@@ -69,14 +69,10 @@ public class bootstrapped {
   public interface token extends source {
     token_type type();
   }
-  public interface simple_token extends token {
-    token_type type();
-    source the_source();
-  }
-  public static class simple_token_class implements simple_token {
+  public static class simple_token implements token {
     private final token_type type;
     private final source the_source;
-    public simple_token_class(token_type type, source the_source) {
+    public simple_token(token_type type, source the_source) {
       this.type = type;
       this.the_source = the_source;
     }

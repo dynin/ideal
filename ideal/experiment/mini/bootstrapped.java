@@ -45,6 +45,9 @@ public interface bootstrapped {
       return texts;
     }
   }
+  interface describable {
+    text description();
+  }
   interface source {
     @Nullable source the_source();
   }

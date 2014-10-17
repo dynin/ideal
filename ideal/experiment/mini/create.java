@@ -66,14 +66,6 @@ public class create {
   public interface construct extends source {
   }
 
-  public interface function<result, argument> {
-    result call(argument the_argument);
-  }
-
-  public interface predicate<argument> {
-    boolean call(argument the_argument);
-  }
-
   public static abstract class construct_dispatch<result> implements function<result, construct> {
 
     @Override
@@ -929,8 +921,6 @@ public class create {
     return result;
   }
 
-  public static final text EMPTY_TEXT = new text_string("");
-  public static final text SPACE = new text_string(" ");
   public static final text COMMA = new text_string(",");
   public static final text OPEN_PAREN = new text_string("(");
   public static final text CLOSE_PAREN = new text_string(")");
@@ -938,7 +928,6 @@ public class create {
   public static final text GREATER_THAN = new text_string(">");
   public static final text OPEN_BRACE = new text_string("{");
   public static final text CLOSE_BRACE = new text_string("}");
-  public static final text NEWLINE = new text_string("\n");
   public static final text SEMICOLON = new text_string(";");
   public static final text RETURN_KEYWORD = new text_string("return");
 
@@ -1510,37 +1499,6 @@ public class create {
       }
       return false;
     }
-  }
-
-  public static <source_type, target_type> List<target_type> map(
-      List<? extends source_type> source_list,
-      function<target_type, source_type> transform) {
-    List<target_type> result = new ArrayList<target_type>();
-    for (source_type source_element : source_list) {
-      result.add(transform.call(source_element));
-    }
-    return result;
-  }
-
-  public static <element_type> List<element_type> filter(List<? extends element_type> source_list,
-      predicate<element_type> the_predicate) {
-    List<element_type> result = new ArrayList<element_type>();
-    for (element_type source_element : source_list) {
-      if (the_predicate.call(source_element)) {
-        result.add(source_element);
-      }
-    }
-    return result;
-  }
-
-  public static <argument> predicate<argument> negate_predicate(
-      final predicate<argument> the_predicate) {
-    return new predicate<argument>() {
-      @Override
-      public boolean call(argument the_argument) {
-        return !the_predicate.call(the_argument);
-      }
-    };
   }
 
   private static void unexpected(String message) {

@@ -22,6 +22,8 @@ import static ideal.experiment.mini.bootstrapped.token_type;
 import static ideal.experiment.mini.bootstrapped.token;
 import static ideal.experiment.mini.bootstrapped.simple_token;
 
+import static ideal.experiment.mini.library.*;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -928,6 +930,7 @@ public class create {
   }
 
   public static final text EMPTY_TEXT = new text_string("");
+  public static final text SPACE = new text_string(" ");
   public static final text COMMA = new text_string(",");
   public static final text OPEN_PAREN = new text_string("(");
   public static final text CLOSE_PAREN = new text_string(")");
@@ -1539,62 +1542,6 @@ public class create {
         return !the_predicate.call(the_argument);
       }
     };
-  }
-
-  public static final text SPACE = new text_string(" ");
-
-  public static text join_text(text... texts) {
-    return new text_list(Arrays.asList(texts));
-  }
-
-  private static final String INDENT_STRING = "  ";
-
-  private static boolean do_render_text(text the_text, boolean first, int indent,
-      StringBuilder result) {
-    if (the_text instanceof text_string) {
-      String value = ((text_string) the_text).value();
-      for (int i = 0; i < value.length(); ++i) {
-        char c = value.charAt(i);
-        if (c != '\n') {
-          if (first) {
-            for (int j = 0; j < indent; ++j) {
-              result.append(INDENT_STRING);
-            }
-          }
-          result.append(c);
-          first = false;
-        } else {
-          result.append('\n');
-          first = true;
-        }
-      }
-    } else if (the_text instanceof indented_text) {
-      first = do_render_text(((indented_text) the_text).inside(), first, indent + 1, result);
-    } else {
-      assert the_text instanceof text_list;
-      for (text sub_text : ((text_list)the_text).texts()) {
-        first = do_render_text(sub_text, first, indent, result);
-      }
-    }
-
-    return first;
-  }
-
-  public static String render_text(text the_text) {
-    StringBuilder result = new StringBuilder();
-    do_render_text(the_text, true, 0, result);
-    return result.toString();
-  }
-
-  public static text join_text(List<text> texts, text separator) {
-    List<text> result = new ArrayList<text>();
-    for (int i = 0; i < texts.size(); ++i) {
-      if (i > 0) {
-        result.add(separator);
-      }
-      result.add(texts.get(i));
-    }
-    return new text_list(result);
   }
 
   private static void unexpected(String message) {

@@ -4,6 +4,23 @@
 ; license that can be found in the LICENSE file or at
 ; https://developers.google.com/open-source/licenses/bsd
 
+(interface () text ())
+
+(class () text_string (
+  (implements text)
+  (variable string value)
+))
+
+(class () indented_text (
+  (implements text)
+  (variable text inside)
+))
+
+(class () text_list (
+  (implements text)
+  (variable (list text) texts)
+))
+
 (interface () source (
   ; The source of the source: we must go deeper...
   (variable (nullable source) the_source)
@@ -39,8 +56,8 @@
 
 (class () simple_token (
   (implements token)
-  (variable token_type type);
-  (variable source the_source)
+  (variable (override) token_type type);
+  (variable (override) source the_source)
 ; public String toString() {
 ;   return "<" + type.toString() + ">";
 ; }

@@ -11,9 +11,10 @@
   (variable string content)
   (variable (nullable string) optional)
   (variable (override) (nullable source) the_source null)
+  (variable (list string) list_test)
 ))
 
 (enum () test_enum (
   foo
   bar
-)
+))

@@ -8,6 +8,11 @@
 
 package ideal.experiment.mini;
 
+import static ideal.experiment.mini.bootstrapped.text;
+import static ideal.experiment.mini.bootstrapped.text_string;
+import static ideal.experiment.mini.bootstrapped.indented_text;
+import static ideal.experiment.mini.bootstrapped.text_list;
+
 import static ideal.experiment.mini.bootstrapped.source;
 import static ideal.experiment.mini.bootstrapped.source_text;
 import static ideal.experiment.mini.bootstrapped.source_text_class;
@@ -21,6 +26,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -256,14 +262,23 @@ public class create {
     }
   }
 
+  public enum grouping_type {
+    PARENS,
+    ANGLE_BRACKETS,
+    OPERATOR;
+  }
+
   public static class parameter_construct implements construct {
     public final construct main;
     public final List<construct> parameters;
+    public final @Nullable grouping_type grouping;
     public final source the_source;
 
-    public parameter_construct(construct main, List<construct> parameters, source the_source) {
+    public parameter_construct(construct main, List<construct> parameters,
+         @Nullable grouping_type grouping, source the_source) {
       this.main = main;
       this.parameters = parameters;
+      this.grouping = grouping;
       this.the_source = the_source;
     }
 
@@ -726,6 +741,8 @@ public class create {
 
   private static final String NULLABLE_NAME = "nullable";
 
+  private static final String LIST_NAME = "list";
+
   private static int parse_sublist(List<token> tokens, int start, List<construct> result,
       parser_context context) {
     int index = start;
@@ -758,8 +775,9 @@ public class create {
             }
             continue;
           }
-          if (name.equals(NULLABLE_NAME)) {
-            result.add(new parameter_construct(name_identifier, rest, the_token));
+          if (name.equals(NULLABLE_NAME) || name.equals(LIST_NAME)) {
+            result.add(new parameter_construct(name_identifier, rest, grouping_type.ANGLE_BRACKETS,
+                the_token));
             continue;
           }
         }
@@ -913,6 +931,8 @@ public class create {
   public static final text COMMA = new text_string(",");
   public static final text OPEN_PAREN = new text_string("(");
   public static final text CLOSE_PAREN = new text_string(")");
+  public static final text LESS_THAN = new text_string("<");
+  public static final text GREATER_THAN = new text_string(">");
   public static final text OPEN_BRACE = new text_string("{");
   public static final text CLOSE_BRACE = new text_string("}");
   public static final text NEWLINE = new text_string("\n");
@@ -958,11 +978,15 @@ public class create {
       if (the_parameter_construct.main instanceof operator) {
         return print_operator((operator) the_parameter_construct.main,
             the_parameter_construct.parameters);
+      }
+
+      text main = print(the_parameter_construct.main);
+      text parameters = fold_with_comma(the_parameter_construct.parameters, this);
+
+      if (the_parameter_construct.grouping == grouping_type.ANGLE_BRACKETS) {
+        return join_text(main, LESS_THAN, parameters, GREATER_THAN);
       } else {
-        return join_text(print(the_parameter_construct.main),
-            OPEN_PAREN,
-            fold_with_comma(the_parameter_construct.parameters, this),
-            CLOSE_PAREN);
+        return join_text(main, OPEN_PAREN, parameters, CLOSE_PAREN);
       }
     }
 
@@ -986,7 +1010,7 @@ public class create {
     @Override
     public text call_s_expression(s_expression the_s_expression) {
       return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters, this), SPACE),
-          CLOSE_PAREN);
+        CLOSE_PAREN);
     }
 
     @Override
@@ -1232,7 +1256,8 @@ public class create {
           unexpected("Parameter transform error: " + the_parameter);
         }
       }
-      return new parameter_construct(transformed_main, parameters, the_source);
+      return new parameter_construct(transformed_main, parameters, the_parameter_construct.grouping,
+          the_source);
     }
 
     @Override
@@ -1288,6 +1313,13 @@ public class create {
       }
     }
 
+    private static List<modifier_construct> make_modifier_list(modifier_kind the_modifier_kind,
+        source the_source) {
+      List<modifier_construct> result = new ArrayList<modifier_construct>();
+      result.add(new modifier_construct(the_modifier_kind, the_source));
+      return result;
+    }
+
     private static List<modifier_construct> prepend_modifier(modifier_kind the_modifier_kind,
         List<modifier_construct> modifiers, source the_source) {
       List<modifier_construct> result = new ArrayList<modifier_construct>();
@@ -1302,6 +1334,16 @@ public class create {
       return prepend_modifier(modifier_kind.PUBLIC, modifiers, the_source);
     }
 
+    private static List<modifier_construct> filter_modifier(final modifier_kind the_modifier_kind,
+        List<modifier_construct> modifiers) {
+      return filter(modifiers, new predicate<modifier_construct>() {
+        @Override
+        public boolean call(modifier_construct the_modifier_construct) {
+          return the_modifier_construct.the_modifier_kind != the_modifier_kind;
+        }
+      });
+    }
+
     private static String join_identifier(String first, String second) {
       return first + '_' + second;
     }
@@ -1312,7 +1354,7 @@ public class create {
       arguments.add(first_argument);
       arguments.add(second_argument);
       return new parameter_construct(new operator(the_operator_type, the_source), arguments,
-          the_source);
+          grouping_type.OPERATOR, the_source);
     }
 
     private List<construct> transform_datatype(type_construct the_type_construct,
@@ -1352,6 +1394,12 @@ public class create {
         } else if (the_construct instanceof variable_construct) {
           variable_construct the_variable_construct =
               transform_variable((variable_construct) the_construct);
+          List<modifier_construct> modifiers = the_variable_construct.modifiers;
+          boolean has_override = has_modifier(the_variable_construct.modifiers,
+              modifier_kind.OVERRIDE);
+          if (has_override) {
+            modifiers = filter_modifier(modifier_kind.OVERRIDE, modifiers);
+          }
           construct type = the_variable_construct.type;
           String name = the_variable_construct.name;
 
@@ -1366,13 +1414,12 @@ public class create {
             // Add instance variable
             List<modifier_construct> instance_variable_modifiers =
                 prepend_modifier(modifier_kind.PRIVATE,
-                    prepend_modifier(modifier_kind.FINAL, the_variable_construct.modifiers,
-                        the_source), the_source);
+                    prepend_modifier(modifier_kind.FINAL, modifiers, the_source), the_source);
             class_body.add(new variable_construct(instance_variable_modifiers, type, name, null,
                 the_source));
 
             // Add constructor parameter
-            ctor_parameters.add(the_variable_construct);
+            ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_source));
             identifier variable_identifier = new identifier(name, the_source);
             identifier this_identifier = new identifier("this", the_source);
             construct this_access = make_operator(operator_type.DOT, this_identifier,
@@ -1384,9 +1431,12 @@ public class create {
 
           // Add accessor function
           List<modifier_construct> accessor_modifiers =
-              prepend_modifier(modifier_kind.OVERRIDE,
-                  prepend_modifier(modifier_kind.PUBLIC, the_variable_construct.modifiers,
-                      the_source), the_source);
+              prepend_modifier(modifier_kind.PUBLIC, modifiers, the_source);
+          if (declare_interface || has_override) {
+              accessor_modifiers = prepend_modifier(modifier_kind.OVERRIDE, accessor_modifiers,
+                  the_source);
+          }
+
           construct return_expression = has_initializer ?  the_variable_construct.initializer :
               new identifier(name, the_source);
           construct accessor_return = new return_construct(return_expression, the_source);
@@ -1445,6 +1495,8 @@ public class create {
     public construct call_identifier(identifier the_identifier) {
       if (the_identifier.name.equals("string")) {
         return new identifier("String", the_identifier);
+      } else if (the_identifier.name.equals(LIST_NAME)) {
+        return new identifier("List", the_identifier);
       } else {
         return the_identifier;
       }
@@ -1465,6 +1517,17 @@ public class create {
       // TODO: validate number of parameters in is_nullable()?
       assert parameters.size() == 1;
       return parameters.get(0);
+    }
+
+    // TODO: needs to be rewritte using has() and pushed to the library
+    private boolean has_modifier(List<modifier_construct> modifiers,
+        modifier_kind the_modifier_kind) {
+      for (modifier_construct modifier : modifiers) {
+        if (modifier.the_modifier_kind == the_modifier_kind) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 
@@ -1499,76 +1562,10 @@ public class create {
     };
   }
 
-  public interface text {
-  }
-
-  public static class text_string implements text {
-    public final String value;
-
-    public text_string(String value) {
-      this.value = value;
-    }
-
-    @Override
-    public String toString() {
-      return value;
-    }
-  }
-
   public static final text SPACE = new text_string(" ");
 
-  public static class indented_text implements text {
-    public final text inside;
-
-    public indented_text(text inside) {
-      this.inside = inside;
-    }
-
-    @Override
-    public String toString() {
-      return ">>" + inside.toString();
-    }
-  }
-
-  public static class text_list implements text {
-    public final List<text> texts;
-
-    public text_list(List<text> texts) {
-      this.texts = texts;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder result = new StringBuilder();
-      for (text the_text : texts) {
-        result.append(the_text.toString());
-      }
-      return result.toString();
-    }
-  }
-
-  public static text join_text(text first, text second) {
-    List<text> result = new ArrayList<text>();
-    result.add(first);
-    result.add(second);
-    return new text_list(result);
-  }
-
-  public static text join_text(text first, text second, text third) {
-    List<text> result = new ArrayList<text>();
-    result.add(first);
-    result.add(second);
-    result.add(third);
-    return new text_list(result);
-  }
-
-  public static text join_text(text first, text second, text third, text fourth) {
-    List<text> result = new ArrayList<text>();
-    result.add(first);
-    result.add(second);
-    result.add(third);
-    result.add(fourth);
-    return new text_list(result);
+  public static text join_text(text... texts) {
+    return new text_list(Arrays.asList(texts));
   }
 
   public static text join_text(List<text> texts) {
@@ -1580,7 +1577,7 @@ public class create {
   private static boolean do_render_text(text the_text, boolean first, int indent,
       StringBuilder result) {
     if (the_text instanceof text_string) {
-      String value = ((text_string) the_text).value;
+      String value = ((text_string) the_text).value();
       for (int i = 0; i < value.length(); ++i) {
         char c = value.charAt(i);
         if (c != '\n') {
@@ -1597,10 +1594,10 @@ public class create {
         }
       }
     } else if (the_text instanceof indented_text) {
-      first = do_render_text(((indented_text) the_text).inside, first, indent + 1, result);
+      first = do_render_text(((indented_text) the_text).inside(), first, indent + 1, result);
     } else {
       assert the_text instanceof text_list;
-      for (text sub_text : ((text_list)the_text).texts) {
+      for (text sub_text : ((text_list)the_text).texts()) {
         first = do_render_text(sub_text, first, indent, result);
       }
     }

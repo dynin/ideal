@@ -150,4 +150,15 @@ public interface bootstrapped {
       return join_fragments("identifier", START_OBJECT, SPACE, describe(name), SPACE, END_OBJECT);
     }
   }
+  enum operator_type {
+    DOT("."),
+    ASSIGN("=");
+    private final String symbol;
+    operator_type(String symbol) {
+      this.symbol = symbol;
+    }
+    public String symbol() {
+      return symbol;
+    }
+  }
 }

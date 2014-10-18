@@ -24,6 +24,7 @@ import static ideal.experiment.mini.bootstrapped.token;
 import static ideal.experiment.mini.bootstrapped.simple_token;
 import static ideal.experiment.mini.bootstrapped.construct;
 import static ideal.experiment.mini.bootstrapped.identifier;
+import static ideal.experiment.mini.bootstrapped.operator_type;
 
 import static ideal.experiment.mini.library.*;
 
@@ -171,16 +172,6 @@ public class create {
 
     public result call_type_construct(type_construct the_type_construct) {
       return call_construct(the_type_construct);
-    }
-  }
-
-  public enum operator_type {
-    DOT("."),
-    ASSIGN("=");
-
-    private final String symbol;
-    operator_type(String symbol) {
-      this.symbol = symbol;
     }
   }
 
@@ -743,16 +734,16 @@ public class create {
             @Nullable construct parsed = the_parser.parse(rest);
             if (parsed != null) {
               result.add(parsed);
+            } else {
+              report(new notification(notification_type.PARSE_ERROR, name_identifier));
             }
             continue;
           }
-          if (name.equals(NULLABLE_NAME) || name.equals(LIST_NAME)) {
-            result.add(new parameter_construct(name_identifier, rest, grouping_type.ANGLE_BRACKETS,
-                the_token));
-            continue;
-          }
+          result.add(new parameter_construct(name_identifier, rest, grouping_type.PARENS,
+              the_token));
+        } else {
+          result.add(new s_expression(parameters, the_token));
         }
-        result.add(new s_expression(parameters, the_token));
       } else if (the_token.type() == token_type.CLOSE) {
         return index - 1;
       } else {
@@ -813,18 +804,15 @@ public class create {
 
     @Override
     public @Nullable construct parse(List<construct> parameters) {
-      if (parameters.size() != 2) {
+      if (parameters.size() < 1) {
         return null;
       }
       if (!(parameters.get(0) instanceof identifier)) {
         return null;
       }
-      if (!(parameters.get(1) instanceof s_expression)) {
-        return null;
-      }
 
       String name = ((identifier) parameters.get(0)).name();
-      List<construct> body = ((s_expression) parameters.get(1)).parameters;
+      List<construct> body = parameters.subList(1, parameters.size());
       source the_source = parameters.get(0);
 
       return new type_construct(new ArrayList<modifier_construct>(), the_type_kind, name, body,
@@ -962,11 +950,9 @@ public class create {
     public text print_operator(operator the_operator, List<construct> arguments) {
       assert arguments.size() == 2;
       operator_type the_operator_type = the_operator.the_operator_type;
-      text operator_text;
-      if (the_operator_type == operator_type.DOT) {
-        operator_text = new text_string(the_operator_type.symbol);
-      } else {
-        operator_text = join_text(SPACE, new text_string(the_operator_type.symbol), SPACE);
+      text operator_text = new text_string(the_operator_type.symbol());
+      if (the_operator_type != operator_type.DOT) {
+        operator_text = join_text(SPACE, operator_text, SPACE);
       }
       return join_text(print(arguments.get(0)), operator_text, print(arguments.get(1)));
     }
@@ -1110,7 +1096,8 @@ public class create {
   public static predicate<construct> is_enum_declaration = new predicate<construct>() {
     @Override
     public boolean call(construct the_construct) {
-      return the_construct instanceof identifier;
+      return the_construct instanceof identifier ||
+             the_construct instanceof parameter_construct;
     }
   };
 
@@ -1223,7 +1210,8 @@ public class create {
     public construct call_parameter_construct(parameter_construct the_parameter_construct) {
       source the_source = the_parameter_construct;
 
-      construct transformed_main = transform(the_parameter_construct.main);
+      construct main = the_parameter_construct.main;
+      construct transformed_main = transform(main);
 
       List<construct> parameters = new ArrayList<construct>();
       for (construct the_parameter : the_parameter_construct.parameters) {
@@ -1234,8 +1222,14 @@ public class create {
           unexpected("Parameter transform error: " + the_parameter);
         }
       }
-      return new parameter_construct(transformed_main, parameters, the_parameter_construct.grouping,
-          the_source);
+
+      grouping_type grouping = the_parameter_construct.grouping;
+      if (main instanceof identifier &&
+          ((identifier) main).name().equals(LIST_NAME)) {
+        grouping = grouping_type.ANGLE_BRACKETS;
+      }
+
+      return new parameter_construct(transformed_main, parameters, grouping, the_source);
     }
 
     @Override
@@ -1432,7 +1426,9 @@ public class create {
       if (declare_implementation) {
         if (!ctor_parameters.isEmpty()) {
           List<modifier_construct> ctor_modifiers = new ArrayList<modifier_construct>();
-          ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+          if (!declare_enum) {
+            ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+          }
           block_construct ctor_body = new block_construct(ctor_statements, the_source);
           procedure_construct ctor_procedure =
               new procedure_construct(

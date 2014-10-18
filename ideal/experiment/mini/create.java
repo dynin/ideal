@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1425,7 +1424,7 @@ public class create {
       join_arguments.add(make_literal(type_name, the_source));
       join_arguments.add(new identifier("START_OBJECT", the_source));
 
-      if (fields.size() == 1) {
+      if (fields.size() != 1) {
         List<construct> field_calls = map(fields, new function<construct, String>() {
           @Override
           public construct call(String name) {

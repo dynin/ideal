@@ -55,12 +55,12 @@
 
 (interface token
   (extends source)
-  (variable token_type type);
+  (variable token_type type)
 )
 
 (class simple_token
   (implements token describable)
-  (variable (override) token_type type);
+  (variable (override) token_type type)
   (variable (override) source the_source)
 )
 
@@ -92,6 +92,7 @@
 )
 
 (class notification
+  (implements describable)
   (variable notification_type type)
   (variable source the_source)
 )

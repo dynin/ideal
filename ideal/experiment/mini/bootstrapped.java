@@ -75,7 +75,7 @@ public interface bootstrapped {
       return null;
     }
     @Override public text description() {
-      return join_fragments("source_text_class", START_OBJECT, NEWLINE, indent(field_is("name", name)), END_OBJECT);
+      return join_fragments("source_text_class", START_OBJECT, SPACE, describe(name), SPACE, END_OBJECT);
     }
   }
   interface text_position extends source, describable {
@@ -96,7 +96,7 @@ public interface bootstrapped {
       return character_index;
     }
     @Override public text description() {
-      return join_fragments("text_position_class", START_OBJECT, SPACE, describe(the_source), SPACE, END_OBJECT);
+      return join_fragments("text_position_class", START_OBJECT, NEWLINE, indent(field_is("the_source", the_source), field_is("character_index", character_index)), END_OBJECT);
     }
   }
   enum token_type {
@@ -125,7 +125,7 @@ public interface bootstrapped {
       return the_source;
     }
     @Override public text description() {
-      return join_fragments("simple_token", START_OBJECT, SPACE, describe(type), SPACE, END_OBJECT);
+      return join_fragments("simple_token", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   interface construct extends source {
@@ -147,7 +147,7 @@ public interface bootstrapped {
       return the_source;
     }
     @Override public text description() {
-      return join_fragments("identifier", START_OBJECT, SPACE, describe(name), SPACE, END_OBJECT);
+      return join_fragments("identifier", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   enum operator_type {
@@ -176,7 +176,7 @@ public interface bootstrapped {
       return message;
     }
   }
-  class notification {
+  class notification implements describable {
     private final notification_type type;
     private final source the_source;
     public notification(notification_type type, source the_source) {
@@ -188,6 +188,9 @@ public interface bootstrapped {
     }
     public source the_source() {
       return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("notification", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
 }

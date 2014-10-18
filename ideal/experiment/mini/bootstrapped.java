@@ -8,6 +8,8 @@
 
 package ideal.experiment.mini;
 
+import static ideal.experiment.mini.library.*;
+
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -103,7 +105,7 @@ public interface bootstrapped {
   interface token extends source {
     token_type type();
   }
-  class simple_token implements token {
+  class simple_token implements token, describable {
     private final token_type type;
     private final source the_source;
     public simple_token(token_type type, source the_source) {
@@ -115,6 +117,9 @@ public interface bootstrapped {
     }
     @Override public source the_source() {
       return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("simple_token", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
 }

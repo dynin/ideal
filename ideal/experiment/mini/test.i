@@ -6,7 +6,7 @@
 ; comment...
 
 (datatype () source_text (
-  (extends source)
+  (extends source describable)
   (variable string name)
   (variable string content)
   (variable (nullable string) optional)

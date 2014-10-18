@@ -59,7 +59,7 @@
 ))
 
 (class () simple_token (
-  (implements token)
+  (implements token describable)
   (variable (override) token_type type);
   (variable (override) source the_source)
 ; public String toString() {

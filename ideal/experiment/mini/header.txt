@@ -8,6 +8,8 @@
 
 package ideal.experiment.mini;
 
+import static ideal.experiment.mini.library.*;
+
 import java.util.List;
 
 import javax.annotation.Nullable;

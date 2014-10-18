@@ -10,8 +10,9 @@ package ideal.experiment.mini;
 
 import static ideal.experiment.mini.bootstrapped.text;
 import static ideal.experiment.mini.bootstrapped.text_string;
-import static ideal.experiment.mini.bootstrapped.indented_text;
 import static ideal.experiment.mini.bootstrapped.text_list;
+
+import static ideal.experiment.mini.bootstrapped.describable;
 
 import static ideal.experiment.mini.bootstrapped.source;
 import static ideal.experiment.mini.bootstrapped.source_text;
@@ -184,7 +185,7 @@ public class create {
     }
   }
 
-  public static class identifier implements construct, token {
+  public static class identifier implements construct, token, describable {
     public final String name;
     public final source the_source;
 
@@ -201,6 +202,12 @@ public class create {
     @Override
     public source the_source() {
       return the_source;
+    }
+
+    @Override
+    public text description() {
+      return join_fragments("identifier", START_OBJECT, NEWLINE,
+          indent(field_is("name", name), field_is("name2", name)), END_OBJECT);
     }
 
     @Override
@@ -1008,7 +1015,7 @@ public class create {
     @Override
     public text call_block_construct(block_construct the_block_construct) {
       return join_text(OPEN_BRACE, NEWLINE,
-          new indented_text(new text_list(map(the_block_construct.statements, statement_printer))),
+          indent(new text_list(map(the_block_construct.statements, statement_printer))),
           CLOSE_BRACE);
     }
 
@@ -1086,7 +1093,7 @@ public class create {
       result.add(SPACE);
       result.add(OPEN_BRACE);
       result.add(NEWLINE);
-      result.add(new indented_text(print_all(the_type_construct.body)));
+      result.add(indent(print_all(the_type_construct.body)));
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);
@@ -1191,7 +1198,7 @@ public class create {
       }
       body.add(print_all(filtered_body));
 
-      result.add(new indented_text(new text_list(body)));
+      result.add(indent(new text_list(body)));
       result.add(CLOSE_BRACE);
       result.add(NEWLINE);
       return new text_list(result);
@@ -1346,13 +1353,21 @@ public class create {
       List<construct> ctor_statements = new ArrayList<construct>();
       List<construct> accessor_functions = new ArrayList<construct>();
 
+      boolean generate_description = false;
+      List<String> describe_fields = new ArrayList<String>();
+
       for (construct the_construct : the_type_construct.body) {
         if (the_construct instanceof supertype_construct) {
-          construct the_supertype_construct = transform(the_construct);
+          // TODO: implement supertype transformation.
+          supertype_construct the_supertype_construct =
+              (supertype_construct) transform(the_construct);
           if (declare_interface) {
             interface_body.add(the_supertype_construct);
           } else {
             implementation_body.add(the_supertype_construct);
+          }
+          if (has_describable(the_supertype_construct.supertypes)) {
+            generate_description = true;
           }
         } else if (the_construct instanceof variable_construct) {
           variable_construct the_variable_construct =
@@ -1392,6 +1407,9 @@ public class create {
               construct assignment = make_operator(operator_type.ASSIGN, this_access,
                   variable_identifier, the_source);
               ctor_statements.add(assignment);
+
+              // Add field description
+              describe_fields.add(name);
             }
 
             // Add accessor function
@@ -1450,6 +1468,11 @@ public class create {
 
         implementation_body.addAll(accessor_functions);
 
+        if (generate_description && !declare_enum && !describe_fields.isEmpty()) {
+          implementation_body.add(generate_description(implementation_name, describe_fields,
+              the_source));
+        }
+
         type_construct implementation_type =
             new type_construct(the_type_construct.modifiers,
                 declare_enum ? type_kind.ENUM : type_kind.CLASS,
@@ -1460,6 +1483,70 @@ public class create {
       }
 
       return result;
+    }
+
+    private procedure_construct generate_description(String type_name, List<String> fields,
+        final source the_source) {
+
+      List<construct> field_calls = map(fields, new function<construct, String>() {
+        @Override
+        public construct call(String name) {
+          construct name_literal = make_literal(name, the_source);
+          construct name_identifier = new identifier(name, the_source);
+          return call_function("field_is", name_literal, name_identifier, the_source);
+        }
+      });
+      construct indent_call = new parameter_construct(new identifier("indent", the_source),
+          field_calls, grouping_type.PARENS, the_source);
+
+      List<construct> join_arguments = new ArrayList<construct>();
+      join_arguments.add(make_literal(type_name, the_source));
+      join_arguments.add(new identifier("START_OBJECT", the_source));
+      join_arguments.add(new identifier("NEWLINE", the_source));
+      join_arguments.add(indent_call);
+      join_arguments.add(new identifier("END_OBJECT", the_source));
+      construct join_call = new parameter_construct(new identifier("join_fragments", the_source),
+          join_arguments, grouping_type.PARENS, the_source);
+
+      construct description_return = new return_construct(join_call, the_source);
+      List<construct> description_statements = new ArrayList<construct>();
+      description_statements.add(description_return);
+      block_construct description_body = new block_construct(description_statements, the_source);
+
+      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
+      modifiers.add(new modifier_construct(modifier_kind.OVERRIDE, the_source));
+      modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+      return new procedure_construct(
+          modifiers,
+          new identifier("text", the_source),
+          "description",
+          new ArrayList<variable_construct>(),
+          description_body,
+          the_source);
+    }
+
+    public static construct make_literal(String value, source the_source) {
+      // TODO: escape properly.
+      return new string_literal(value, "\"" + value + "\"", the_source);
+    }
+
+    private boolean has_describable(List<construct> constructs) {
+      for (construct the_construct : constructs) {
+        if (the_construct instanceof identifier &&
+            ((identifier) the_construct).name.equals("describable")) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    public static construct call_function(String name, construct argument0, construct argument1,
+        source the_source) {
+      List<construct> arguments = new ArrayList<construct>();
+      arguments.add(argument0);
+      arguments.add(argument1);
+      return new parameter_construct(new identifier(name, the_source),
+          arguments, grouping_type.PARENS, the_source);
     }
 
     public construct call_identifier(identifier the_identifier) {
@@ -1531,9 +1618,7 @@ public class create {
     source_text the_source = new source_text_class(file_name, file_content);
     List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
     if (DEBUG_TOKENIZER) {
-      for (token the_token : tokens) {
-        System.out.println(the_token.toString());
-      }
+      System.out.println(render_text(describe(tokens)));
     }
 
     List<construct> constructs = parse(tokens, new common_context());

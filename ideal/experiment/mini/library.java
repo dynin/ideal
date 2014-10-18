@@ -63,6 +63,24 @@ public class library {
     return new text_list(Arrays.asList(texts));
   }
 
+  public static text indent(text... texts) {
+    // TODO: optimize.
+    return new indented_text(new text_list(Arrays.asList(texts)));
+  }
+
+  // Parameters must be either text ot strings
+  public static text join_fragments(Object... fragments) {
+    List<text> result = new ArrayList<text>();
+    for (Object the_fragment : fragments) {
+      if (the_fragment instanceof String) {
+        result.add(new text_string((String) the_fragment));
+      } else {
+        result.add((text) the_fragment);
+      }
+    }
+    return new text_list(result);
+  }
+
   public static text join_text(List<text> texts, text separator) {
     List<text> result = new ArrayList<text>();
     for (int i = 0; i < texts.size(); ++i) {
@@ -110,9 +128,17 @@ public class library {
       }
       text elements = new indented_text(join_with_terminator(map(objects, describe_fn), NEWLINE));
       return join_text(START_LIST, NEWLINE, elements, END_LIST);
+    } else if (object instanceof String) {
+      return join_fragments(STRING_QUOTE, (String) object, STRING_QUOTE);
+    } else if (object instanceof Character) {
+      return join_fragments(CHARACTER_QUOTE, ((Character) object).toString(), CHARACTER_QUOTE);
     } else {
       return new text_string(object.toString());
     }
+  }
+
+  public static text field_is(String name, Object value) {
+    return join_fragments(name, FIELD_IS, describe(value), NEWLINE);
   }
 
   public static final text EMPTY_TEXT = new text_string("");
@@ -120,11 +146,13 @@ public class library {
   public static final text NEWLINE = new text_string("\n");
 
   public static final text NULL_NAME = new text_string("<null>");
-  public static final text START_OBJECT = new text_string("{");
+  public static final text START_OBJECT = new text_string(" {");
   public static final text END_OBJECT = new text_string("}");
   public static final text START_LIST = new text_string("[");
   public static final text END_LIST = new text_string("]");
   public static final text FIELD_IS = new text_string(": ");
+  public static final text STRING_QUOTE = new text_string("\"");
+  public static final text CHARACTER_QUOTE = new text_string("'");
 
   private static final String INDENT_STRING = "  ";
 

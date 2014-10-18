@@ -63,3 +63,14 @@
   (variable (override) token_type type);
   (variable (override) source the_source)
 ))
+
+(interface construct (
+  (extends source)
+))
+
+(class identifier (
+  (implements token construct describable)
+  (variable string name)
+  (variable (override) token_type type token_type.IDENTIFIER)
+  (variable (override) source the_source)
+))

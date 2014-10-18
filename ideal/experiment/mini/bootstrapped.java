@@ -128,4 +128,26 @@ public interface bootstrapped {
       return join_fragments("simple_token", START_OBJECT, SPACE, describe(type), SPACE, END_OBJECT);
     }
   }
+  interface construct extends source {
+  }
+  class identifier implements token, construct, describable {
+    private final String name;
+    private final source the_source;
+    public identifier(String name, source the_source) {
+      this.name = name;
+      this.the_source = the_source;
+    }
+    public String name() {
+      return name;
+    }
+    @Override public token_type type() {
+      return token_type.IDENTIFIER;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("identifier", START_OBJECT, SPACE, describe(name), SPACE, END_OBJECT);
+    }
+  }
 }

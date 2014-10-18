@@ -22,6 +22,8 @@ import static ideal.experiment.mini.bootstrapped.text_position_class;
 import static ideal.experiment.mini.bootstrapped.token_type;
 import static ideal.experiment.mini.bootstrapped.token;
 import static ideal.experiment.mini.bootstrapped.simple_token;
+import static ideal.experiment.mini.bootstrapped.construct;
+import static ideal.experiment.mini.bootstrapped.identifier;
 
 import static ideal.experiment.mini.library.*;
 
@@ -62,9 +64,6 @@ public class create {
       this.type = type;
       this.the_source = the_source;
     }
-  }
-
-  public interface construct extends source {
   }
 
   public static abstract class construct_dispatch<result> implements function<result, construct> {
@@ -182,37 +181,6 @@ public class create {
     private final String symbol;
     operator_type(String symbol) {
       this.symbol = symbol;
-    }
-  }
-
-  public static class identifier implements construct, token, describable {
-    public final String name;
-    public final source the_source;
-
-    public identifier(String name, source the_source) {
-      this.name = name;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public token_type type() {
-      return token_type.IDENTIFIER;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public text description() {
-      return join_fragments("identifier", START_OBJECT, NEWLINE,
-          indent(field_is("name", name), field_is("name2", name)), END_OBJECT);
-    }
-
-    @Override
-    public String toString() {
-      return "<identifier:" + name + ">";
     }
   }
 
@@ -601,8 +569,9 @@ public class create {
     return result;
   }
 
+  // TODO: separate is_letter() and move to the library
   public static boolean fn_is_identifier_letter(char c) {
-    return Character.isLetter(c) || c == '_';
+    return Character.isLetter(c) || c == '_' || c == '.';
   }
 
   public static boolean fn_is_whitespace(char c) {
@@ -729,7 +698,7 @@ public class create {
       if (the_token instanceof identifier) {
         identifier the_identifier = (identifier) the_token;
         @Nullable identifier_processor the_identifier_processor =
-            the_postprocessor.get_processor(the_identifier.name);
+            the_postprocessor.get_processor(the_identifier.name());
         if (the_identifier_processor != null) {
           result.add(the_identifier_processor.process(the_identifier));
           continue;
@@ -767,7 +736,7 @@ public class create {
         if (parameters.size() > 0 &&
             parameters.get(0) instanceof identifier) {
           identifier name_identifier = (identifier) parameters.get(0);
-          String name = name_identifier.name;
+          String name = name_identifier.name();
           List<construct> rest = parameters.subList(1, parameters.size());
           @Nullable special_parser the_parser = context.get_parser(name);
           if (the_parser != null) {
@@ -826,7 +795,7 @@ public class create {
       if (!(name_construct instanceof identifier)) {
         return null;
       }
-      String name = ((identifier) name_construct).name;
+      String name = ((identifier) name_construct).name();
 
       @Nullable construct initializer = (parameters.size() == type_index + 3) ?
           parameters.get(type_index + 2) : null;
@@ -854,7 +823,7 @@ public class create {
         return null;
       }
 
-      String name = ((identifier) parameters.get(0)).name;
+      String name = ((identifier) parameters.get(0)).name();
       List<construct> body = ((s_expression) parameters.get(1)).parameters;
       source the_source = parameters.get(0);
 
@@ -965,7 +934,7 @@ public class create {
 
     @Override
     public text call_identifier(identifier the_identifier) {
-      return new text_string(the_identifier.name);
+      return new text_string(the_identifier.name());
     }
 
     @Override
@@ -1553,7 +1522,7 @@ public class create {
     private boolean has_describable(List<construct> constructs) {
       for (construct the_construct : constructs) {
         if (the_construct instanceof identifier &&
-            ((identifier) the_construct).name.equals("describable")) {
+            ((identifier) the_construct).name().equals("describable")) {
           return true;
         }
       }
@@ -1577,9 +1546,10 @@ public class create {
     }
 
     public construct call_identifier(identifier the_identifier) {
-      if (the_identifier.name.equals("string")) {
+      String name = the_identifier.name();
+      if (name.equals("string")) {
         return new identifier("String", the_identifier);
-      } else if (the_identifier.name.equals(LIST_NAME)) {
+      } else if (name.equals(LIST_NAME)) {
         return new identifier("List", the_identifier);
       } else {
         return the_identifier;
@@ -1590,7 +1560,7 @@ public class create {
       if (the_construct instanceof parameter_construct) {
         construct main = ((parameter_construct) the_construct).main;
         return main instanceof identifier &&
-               ((identifier) main).name.equals(NULLABLE_NAME);
+               ((identifier) main).name().equals(NULLABLE_NAME);
       }
       return false;
     }

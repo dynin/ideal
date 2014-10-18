@@ -31,14 +31,14 @@
 ))
 
 (datatype () source_text (
-  (extends source)
+  (extends source describable)
   (variable string name)
-  (variable string content)
+  (variable (indescribable) string content)
   (variable () (nullable source) the_source null)
 ))
 
 (datatype () text_position (
-  (extends source)
+  (extends source describable)
   (variable source_text the_source)
   (variable int character_index)
 ))

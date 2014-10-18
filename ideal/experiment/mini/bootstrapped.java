@@ -53,7 +53,7 @@ public interface bootstrapped {
   interface source {
     @Nullable source the_source();
   }
-  interface source_text extends source {
+  interface source_text extends source, describable {
     String name();
     String content();
     @Nullable source the_source();
@@ -74,8 +74,11 @@ public interface bootstrapped {
     @Override public @Nullable source the_source() {
       return null;
     }
+    @Override public text description() {
+      return join_fragments("source_text_class", START_OBJECT, NEWLINE, indent(field_is("name", name)), END_OBJECT);
+    }
   }
-  interface text_position extends source {
+  interface text_position extends source, describable {
     source_text the_source();
     int character_index();
   }
@@ -91,6 +94,9 @@ public interface bootstrapped {
     }
     @Override public int character_index() {
       return character_index;
+    }
+    @Override public text description() {
+      return join_fragments("text_position_class", START_OBJECT, NEWLINE, indent(field_is("the_source", the_source), field_is("character_index", character_index)), END_OBJECT);
     }
   }
   enum token_type {

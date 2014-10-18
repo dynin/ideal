@@ -304,6 +304,7 @@ public class create {
     FINAL,
     STATIC,
     OVERRIDE,
+    INDESCRIBABLE,
     NULLABLE;
   }
 
@@ -1373,11 +1374,18 @@ public class create {
           variable_construct the_variable_construct =
               call_variable_construct((variable_construct) the_construct);
           List<modifier_construct> modifiers = the_variable_construct.modifiers;
+
           boolean has_override = has_modifier(the_variable_construct.modifiers,
               modifier_kind.OVERRIDE);
           if (has_override) {
             modifiers = filter_modifier(modifier_kind.OVERRIDE, modifiers);
           }
+          boolean has_indescribable = has_modifier(the_variable_construct.modifiers,
+              modifier_kind.INDESCRIBABLE);
+          if (has_indescribable) {
+            modifiers = filter_modifier(modifier_kind.INDESCRIBABLE, modifiers);
+          }
+
           construct type = the_variable_construct.type;
           String name = the_variable_construct.name;
 
@@ -1409,7 +1417,9 @@ public class create {
               ctor_statements.add(assignment);
 
               // Add field description
-              describe_fields.add(name);
+              if (!has_indescribable) {
+                describe_fields.add(name);
+              }
             }
 
             // Add accessor function
@@ -1601,6 +1611,7 @@ public class create {
     common_postprocessor result = new common_postprocessor();
     result.add(modifier_kind.PUBLIC);
     result.add(modifier_kind.OVERRIDE);
+    result.add(modifier_kind.INDESCRIBABLE);
     return result;
   }
 

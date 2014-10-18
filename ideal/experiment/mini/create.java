@@ -844,22 +844,22 @@ public class create {
 
     @Override
     public @Nullable construct parse(List<construct> parameters) {
-      if (parameters.size() != 3) {
+      if (parameters.size() != 2) {
         return null;
       }
-      if (!(parameters.get(1) instanceof identifier)) {
+      if (!(parameters.get(0) instanceof identifier)) {
         return null;
       }
-      if (!(parameters.get(2) instanceof s_expression)) {
+      if (!(parameters.get(1) instanceof s_expression)) {
         return null;
       }
 
-      List<modifier_construct> modifiers = parse_modifiers(parameters.get(0));
-      String name = ((identifier) parameters.get(1)).name;
-      List<construct> body = ((s_expression) parameters.get(2)).parameters;
-      source the_source = parameters.get(1);
+      String name = ((identifier) parameters.get(0)).name;
+      List<construct> body = ((s_expression) parameters.get(1)).parameters;
+      source the_source = parameters.get(0);
 
-      return new type_construct(modifiers, the_type_kind, name, body, the_source);
+      return new type_construct(new ArrayList<modifier_construct>(), the_type_kind, name, body,
+          the_source);
     }
   };
 

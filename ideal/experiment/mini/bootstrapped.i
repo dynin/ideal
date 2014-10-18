@@ -33,7 +33,7 @@
 (datatype () source_text (
   (extends source describable)
   (variable string name)
-  (variable (indescribable) string content)
+  (variable (dont_describe) string content)
   (variable () (nullable source) the_source null)
 ))
 

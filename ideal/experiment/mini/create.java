@@ -304,7 +304,7 @@ public class create {
     FINAL,
     STATIC,
     OVERRIDE,
-    INDESCRIBABLE,
+    DONT_DESCRIBE,
     NULLABLE;
   }
 
@@ -1380,10 +1380,10 @@ public class create {
           if (has_override) {
             modifiers = filter_modifier(modifier_kind.OVERRIDE, modifiers);
           }
-          boolean has_indescribable = has_modifier(the_variable_construct.modifiers,
-              modifier_kind.INDESCRIBABLE);
-          if (has_indescribable) {
-            modifiers = filter_modifier(modifier_kind.INDESCRIBABLE, modifiers);
+          boolean has_dont_describe = has_modifier(the_variable_construct.modifiers,
+              modifier_kind.DONT_DESCRIBE);
+          if (has_dont_describe) {
+            modifiers = filter_modifier(modifier_kind.DONT_DESCRIBE, modifiers);
           }
 
           construct type = the_variable_construct.type;
@@ -1417,7 +1417,7 @@ public class create {
               ctor_statements.add(assignment);
 
               // Add field description
-              if (!has_indescribable) {
+              if (!has_dont_describe) {
                 describe_fields.add(name);
               }
             }
@@ -1498,22 +1498,32 @@ public class create {
     private procedure_construct generate_description(String type_name, List<String> fields,
         final source the_source) {
 
-      List<construct> field_calls = map(fields, new function<construct, String>() {
-        @Override
-        public construct call(String name) {
-          construct name_literal = make_literal(name, the_source);
-          construct name_identifier = new identifier(name, the_source);
-          return call_function("field_is", name_literal, name_identifier, the_source);
-        }
-      });
-      construct indent_call = new parameter_construct(new identifier("indent", the_source),
-          field_calls, grouping_type.PARENS, the_source);
-
       List<construct> join_arguments = new ArrayList<construct>();
       join_arguments.add(make_literal(type_name, the_source));
       join_arguments.add(new identifier("START_OBJECT", the_source));
-      join_arguments.add(new identifier("NEWLINE", the_source));
-      join_arguments.add(indent_call);
+
+      if (fields.size() == 1) {
+        List<construct> field_calls = map(fields, new function<construct, String>() {
+          @Override
+          public construct call(String name) {
+            construct name_literal = make_literal(name, the_source);
+            construct name_identifier = new identifier(name, the_source);
+            return call_function2("field_is", name_literal, name_identifier, the_source);
+          }
+        });
+        construct indent_call = new parameter_construct(new identifier("indent", the_source),
+            field_calls, grouping_type.PARENS, the_source);
+
+        join_arguments.add(new identifier("NEWLINE", the_source));
+        join_arguments.add(indent_call);
+      } else {
+        construct name_identifier = new identifier(fields.get(0), the_source);
+
+        join_arguments.add(new identifier("SPACE", the_source));
+        join_arguments.add(call_function1("describe", name_identifier, the_source));
+        join_arguments.add(new identifier("SPACE", the_source));
+      }
+
       join_arguments.add(new identifier("END_OBJECT", the_source));
       construct join_call = new parameter_construct(new identifier("join_fragments", the_source),
           join_arguments, grouping_type.PARENS, the_source);
@@ -1550,7 +1560,14 @@ public class create {
       return false;
     }
 
-    public static construct call_function(String name, construct argument0, construct argument1,
+    public static construct call_function1(String name, construct argument0, source the_source) {
+      List<construct> arguments = new ArrayList<construct>();
+      arguments.add(argument0);
+      return new parameter_construct(new identifier(name, the_source),
+          arguments, grouping_type.PARENS, the_source);
+    }
+
+    public static construct call_function2(String name, construct argument0, construct argument1,
         source the_source) {
       List<construct> arguments = new ArrayList<construct>();
       arguments.add(argument0);
@@ -1611,7 +1628,7 @@ public class create {
     common_postprocessor result = new common_postprocessor();
     result.add(modifier_kind.PUBLIC);
     result.add(modifier_kind.OVERRIDE);
-    result.add(modifier_kind.INDESCRIBABLE);
+    result.add(modifier_kind.DONT_DESCRIBE);
     return result;
   }
 

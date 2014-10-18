@@ -96,7 +96,7 @@ public interface bootstrapped {
       return character_index;
     }
     @Override public text description() {
-      return join_fragments("text_position_class", START_OBJECT, NEWLINE, indent(field_is("the_source", the_source), field_is("character_index", character_index)), END_OBJECT);
+      return join_fragments("text_position_class", START_OBJECT, SPACE, describe(the_source), SPACE, END_OBJECT);
     }
   }
   enum token_type {
@@ -125,7 +125,7 @@ public interface bootstrapped {
       return the_source;
     }
     @Override public text description() {
-      return join_fragments("simple_token", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("simple_token", START_OBJECT, SPACE, describe(type), SPACE, END_OBJECT);
     }
   }
 }

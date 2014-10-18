@@ -76,7 +76,22 @@
 )
 
 (enum operator_type
+  (variable string symbol)
   (DOT ".")
   (ASSIGN "=")
-  (variable string symbol)
+)
+
+(enum notification_type
+  (variable string message)
+  (UNRECOGNIZED_CHARACTER "Unrecognized character")
+  (EOF_IN_STRING_LITERAL "End of file in string literal")
+  (NEWLINE_IN_STRING_LITERAL "Newline in string literal")
+  (PARSE_ERROR "Parse error")
+  (CLOSE_PAREN_NOT_FOUND "Close parenthesis not found")
+  (MODIFIER_EXPECTED "Modifier expected")
+)
+
+(class notification
+  (variable notification_type type)
+  (variable source the_source)
 )

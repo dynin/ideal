@@ -161,4 +161,33 @@ public interface bootstrapped {
       return symbol;
     }
   }
+  enum notification_type {
+    UNRECOGNIZED_CHARACTER("Unrecognized character"),
+    EOF_IN_STRING_LITERAL("End of file in string literal"),
+    NEWLINE_IN_STRING_LITERAL("Newline in string literal"),
+    PARSE_ERROR("Parse error"),
+    CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
+    MODIFIER_EXPECTED("Modifier expected");
+    private final String message;
+    notification_type(String message) {
+      this.message = message;
+    }
+    public String message() {
+      return message;
+    }
+  }
+  class notification {
+    private final notification_type type;
+    private final source the_source;
+    public notification(notification_type type, source the_source) {
+      this.type = type;
+      this.the_source = the_source;
+    }
+    public notification_type type() {
+      return type;
+    }
+    public source the_source() {
+      return the_source;
+    }
+  }
 }

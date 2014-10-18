@@ -8,24 +8,7 @@
 
 package ideal.experiment.mini;
 
-import static ideal.experiment.mini.bootstrapped.text;
-import static ideal.experiment.mini.bootstrapped.text_string;
-import static ideal.experiment.mini.bootstrapped.text_list;
-
-import static ideal.experiment.mini.bootstrapped.describable;
-
-import static ideal.experiment.mini.bootstrapped.source;
-import static ideal.experiment.mini.bootstrapped.source_text;
-import static ideal.experiment.mini.bootstrapped.source_text_class;
-import static ideal.experiment.mini.bootstrapped.text_position;
-import static ideal.experiment.mini.bootstrapped.text_position_class;
-import static ideal.experiment.mini.bootstrapped.token_type;
-import static ideal.experiment.mini.bootstrapped.token;
-import static ideal.experiment.mini.bootstrapped.simple_token;
-import static ideal.experiment.mini.bootstrapped.construct;
-import static ideal.experiment.mini.bootstrapped.identifier;
-import static ideal.experiment.mini.bootstrapped.operator_type;
-
+import static ideal.experiment.mini.bootstrapped.*;
 import static ideal.experiment.mini.library.*;
 
 import java.io.IOException;
@@ -41,31 +24,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 public class create {
-
-  public static enum notification_type {
-    UNRECOGNIZED_CHARACTER("Unrecognized character"),
-    EOF_IN_STRING_LITERAL("End of file in string literal"),
-    NEWLINE_IN_STRING_LITERAL("Newline in string literal"),
-    PARSE_ERROR("Parse error"),
-    CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
-    MODIFIER_EXPECTED("Modifier expected");
-
-    public final String message;
-
-    notification_type(String message) {
-      this.message = message;
-    }
-  }
-
-  public static class notification {
-    public final notification_type type;
-    public final source the_source;
-
-    public notification(notification_type type, source the_source) {
-      this.type = type;
-      this.the_source = the_source;
-    }
-  }
 
   public static abstract class construct_dispatch<result> implements function<result, construct> {
 
@@ -587,9 +545,9 @@ public class create {
   }
 
   public static void report(notification the_notification) {
-    String message = the_notification.type.message;
+    String message = the_notification.type().message();
 
-    @Nullable source deep_source = the_notification.the_source;
+    @Nullable source deep_source = the_notification.the_source();
     while(deep_source != null) {
       if (deep_source instanceof text_position) {
         text_position position = (text_position) deep_source;

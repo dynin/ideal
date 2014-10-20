@@ -264,6 +264,57 @@ public interface bootstrapped {
       return join_fragments("modifier_construct", START_OBJECT, NEWLINE, indent(field_is("the_modifier_kind", the_modifier_kind), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  class s_expression implements construct, describable {
+    private final List<construct> parameters;
+    private final source the_source;
+    public s_expression(List<construct> parameters, source the_source) {
+      this.parameters = parameters;
+      this.the_source = the_source;
+    }
+    public List<construct> parameters() {
+      return parameters;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("s_expression", START_OBJECT, NEWLINE, indent(field_is("parameters", parameters), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  class block_construct implements construct, describable {
+    private final List<construct> statements;
+    private final source the_source;
+    public block_construct(List<construct> statements, source the_source) {
+      this.statements = statements;
+      this.the_source = the_source;
+    }
+    public List<construct> statements() {
+      return statements;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("block_construct", START_OBJECT, NEWLINE, indent(field_is("statements", statements), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  class return_construct implements construct, describable {
+    private final @Nullable construct expression;
+    private final source the_source;
+    public return_construct(@Nullable construct expression, source the_source) {
+      this.expression = expression;
+      this.the_source = the_source;
+    }
+    public @Nullable construct expression() {
+      return expression;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("return_construct", START_OBJECT, NEWLINE, indent(field_is("expression", expression), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

@@ -132,66 +132,6 @@ public class create {
     }
   }
 
-  public static class s_expression implements construct {
-    public final List<construct> parameters;
-    public final source the_source;
-
-    public s_expression(List<construct> parameters, source the_source) {
-      this.parameters = parameters;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      return "s-expr:" + fn_display_list(parameters);
-    }
-  }
-
-  public static class block_construct implements construct {
-    public final List<construct> statements;
-    public final source the_source;
-
-    public block_construct(List<construct> statements, source the_source) {
-      this.statements = statements;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      return "block:" + fn_display_list(statements);
-    }
-  }
-
-  public static class return_construct implements construct {
-    public final @Nullable construct expression;
-    public final source the_source;
-
-    public return_construct(@Nullable construct expression, source the_source) {
-      this.expression = expression;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      return "return: " + expression;
-    }
-  }
-
   public static class variable_construct implements construct {
     public final List<modifier_construct> modifiers;
     public final @Nullable construct type;
@@ -681,7 +621,7 @@ public class create {
       report(new notification(notification_type.PARSE_ERROR, the_construct));
     }
 
-    List<construct> parameters = ((s_expression) the_construct).parameters;
+    List<construct> parameters = ((s_expression) the_construct).parameters();
     List<modifier_construct> result = new ArrayList<modifier_construct>();
     for (construct parameter : parameters) {
       if (parameter instanceof modifier_construct) {
@@ -801,23 +741,23 @@ public class create {
 
     @Override
     public text call_s_expression(s_expression the_s_expression) {
-      return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters, this), SPACE),
+      return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters(), this), SPACE),
         CLOSE_PAREN);
     }
 
     @Override
     public text call_block_construct(block_construct the_block_construct) {
       return join_text(OPEN_BRACE, NEWLINE,
-          indent(new text_list(map(the_block_construct.statements, statement_printer))),
+          indent(new text_list(map(the_block_construct.statements(), statement_printer))),
           CLOSE_BRACE);
     }
 
     @Override
     public text call_return_construct(return_construct the_return_construct) {
-      if (the_return_construct.expression == null) {
+      if (the_return_construct.expression() == null) {
         return RETURN_KEYWORD;
       } else {
-        return join_text(RETURN_KEYWORD, SPACE, print(the_return_construct.expression));
+        return join_text(RETURN_KEYWORD, SPACE, print(the_return_construct.expression()));
       }
     }
 

@@ -134,6 +134,24 @@
   (variable (override) source the_source)
 )
 
+(class s_expression
+  (implements construct describable)
+  (variable (list construct) parameters)
+  (variable (override) source the_source)
+)
+
+(class block_construct
+  (implements construct describable)
+  (variable (list construct) statements)
+  (variable (override) source the_source)
+)
+
+(class return_construct
+  (implements construct describable)
+  (variable (nullable construct) expression)
+  (variable (override) source the_source)
+)
+
 ; Notifications
 
 (enum notification_type

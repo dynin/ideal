@@ -315,6 +315,75 @@ public interface bootstrapped {
       return join_fragments("return_construct", START_OBJECT, NEWLINE, indent(field_is("expression", expression), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  class variable_construct implements construct, describable {
+    private final List<modifier_construct> modifiers;
+    private final @Nullable construct type;
+    private final String name;
+    private final @Nullable construct initializer;
+    private final source the_source;
+    public variable_construct(List<modifier_construct> modifiers, @Nullable construct type, String name, @Nullable construct initializer, source the_source) {
+      this.modifiers = modifiers;
+      this.type = type;
+      this.name = name;
+      this.initializer = initializer;
+      this.the_source = the_source;
+    }
+    public List<modifier_construct> modifiers() {
+      return modifiers;
+    }
+    public @Nullable construct type() {
+      return type;
+    }
+    public String name() {
+      return name;
+    }
+    public @Nullable construct initializer() {
+      return initializer;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("variable_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("type", type), field_is("name", name), field_is("initializer", initializer), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  class procedure_construct implements construct, describable {
+    private final List<modifier_construct> modifiers;
+    private final @Nullable construct return_type;
+    private final String name;
+    private final List<variable_construct> parameters;
+    private final @Nullable construct body;
+    private final source the_source;
+    public procedure_construct(List<modifier_construct> modifiers, @Nullable construct return_type, String name, List<variable_construct> parameters, @Nullable construct body, source the_source) {
+      this.modifiers = modifiers;
+      this.return_type = return_type;
+      this.name = name;
+      this.parameters = parameters;
+      this.body = body;
+      this.the_source = the_source;
+    }
+    public List<modifier_construct> modifiers() {
+      return modifiers;
+    }
+    public @Nullable construct return_type() {
+      return return_type;
+    }
+    public String name() {
+      return name;
+    }
+    public List<variable_construct> parameters() {
+      return parameters;
+    }
+    public @Nullable construct body() {
+      return body;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("procedure_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

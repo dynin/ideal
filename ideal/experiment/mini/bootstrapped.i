@@ -152,6 +152,25 @@
   (variable (override) source the_source)
 )
 
+(class variable_construct
+  (implements construct describable)
+  (variable (list modifier_construct) modifiers)
+  (variable (nullable construct) type)
+  (variable string name)
+  (variable (nullable construct) initializer)
+  (variable (override) source the_source)
+)
+
+(class procedure_construct
+  (implements construct describable)
+  (variable (list modifier_construct) modifiers)
+  (variable (nullable construct) return_type)
+  (variable string name)
+  (variable (list variable_construct) parameters)
+  (variable (nullable construct) body)
+  (variable (override) source the_source)
+)
+
 ; Notifications
 
 (enum notification_type

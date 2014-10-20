@@ -132,86 +132,6 @@ public class create {
     }
   }
 
-  public static class variable_construct implements construct {
-    public final List<modifier_construct> modifiers;
-    public final @Nullable construct type;
-    public final String name;
-    public final @Nullable construct initializer;
-    public final source the_source;
-
-    public variable_construct(
-        List<modifier_construct> modifiers,
-        @Nullable construct type,
-        String name,
-        @Nullable construct initializer,
-        source the_source) {
-      this.modifiers = modifiers;
-      this.type = type;
-      this.name = name;
-      this.initializer = initializer;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder result = new StringBuilder("variable:<")
-          .append(fn_display_list(modifiers))
-          .append(" type:").append(type)
-          .append(" name:").append(name)
-          .append(" init:").append(initializer)
-          .append(" source:").append(the_source)
-          .append(">");
-      return result.toString();
-    }
-  }
-
-  public static class procedure_construct implements construct {
-    public final List<modifier_construct> modifiers;
-    public final @Nullable construct return_type;
-    public final String name;
-    public final List<variable_construct> parameters;
-    public final @Nullable construct body;
-    public final source the_source;
-
-    public procedure_construct(
-        List<modifier_construct> modifiers,
-        @Nullable construct return_type,
-        String name,
-        List<variable_construct> parameters,
-        @Nullable construct body,
-        source the_source) {
-      this.modifiers = modifiers;
-      this.return_type = return_type;
-      this.name = name;
-      this.parameters = parameters;
-      this.body = body;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder result = new StringBuilder("procedure:<")
-          .append(fn_display_list(modifiers))
-          .append(" return_type:").append(return_type)
-          .append(" name:").append(name)
-          .append(" parameters:").append(parameters)
-          .append(" body:").append(body)
-          .append(" source:").append(the_source)
-          .append(">");
-      return result.toString();
-    }
-  }
-
   public static enum supertype_kind {
     EXTENDS,
     IMPLEMENTS;
@@ -762,12 +682,11 @@ public class create {
     }
 
     protected text print_variable(variable_construct the_variable_construct) {
-      List<text> result = new ArrayList<text>();
-      result.add(print_with_space(the_variable_construct.modifiers));
-      result.add(print(the_variable_construct.type));
-      result.add(SPACE);
-      result.add(new text_string(the_variable_construct.name));
-      return new text_list(result);
+      return join_text(
+        print_with_space(the_variable_construct.modifiers()),
+        print(the_variable_construct.type()),
+        SPACE,
+        new text_string(the_variable_construct.name()));
     }
 
     @Override
@@ -782,23 +701,23 @@ public class create {
     @Override
     public text call_procedure_construct(procedure_construct the_procedure_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(print_with_space(the_procedure_construct.modifiers));
-      if (the_procedure_construct.return_type != null) {
-        result.add(print(the_procedure_construct.return_type));
+      result.add(print_with_space(the_procedure_construct.modifiers()));
+      if (the_procedure_construct.return_type() != null) {
+        result.add(print(the_procedure_construct.return_type()));
         result.add(SPACE);
       }
-      result.add(new text_string(the_procedure_construct.name));
+      result.add(new text_string(the_procedure_construct.name()));
       result.add(OPEN_PAREN);
 
-      result.add(fold_with_comma(the_procedure_construct.parameters, param_printer));
+      result.add(fold_with_comma(the_procedure_construct.parameters(), param_printer));
       result.add(CLOSE_PAREN);
-      if (the_procedure_construct.body == null) {
+      if (the_procedure_construct.body() == null) {
         result.add(SEMICOLON);
       } else {
         // TODO: relax this constraint.
-        assert the_procedure_construct.body instanceof block_construct;
+        assert the_procedure_construct.body() instanceof block_construct;
         result.add(SPACE);
-        result.add(print(the_procedure_construct.body));
+        result.add(print(the_procedure_construct.body()));
       }
       result.add(NEWLINE);
       return new text_list(result);
@@ -1011,20 +930,20 @@ public class create {
 
     @Override
     public variable_construct call_variable_construct(variable_construct the_variable_construct) {
-      assert the_variable_construct.type != null;
+      assert the_variable_construct.type() != null;
       source the_source = the_variable_construct;
-      List<modifier_construct> modifiers = the_variable_construct.modifiers;
-      construct type = transform(the_variable_construct.type);
+      List<modifier_construct> modifiers = the_variable_construct.modifiers();
+      construct type = transform(the_variable_construct.type());
       if (is_nullable(type)) {
         type = strip_nullable(type);
         modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_source);
       }
       // TODO: add variable_construct.has_initializer
-      @Nullable construct initializer = the_variable_construct.initializer;
+      @Nullable construct initializer = the_variable_construct.initializer();
       if (initializer != null) {
         initializer = transform(initializer);
       }
-      return new variable_construct(modifiers, type, the_variable_construct.name, initializer,
+      return new variable_construct(modifiers, type, the_variable_construct.name(), initializer,
           the_source);
     }
 
@@ -1113,21 +1032,19 @@ public class create {
         } else if (the_construct instanceof variable_construct) {
           variable_construct the_variable_construct =
               call_variable_construct((variable_construct) the_construct);
-          List<modifier_construct> modifiers = the_variable_construct.modifiers;
+          List<modifier_construct> modifiers = the_variable_construct.modifiers();
 
-          boolean has_override = has_modifier(the_variable_construct.modifiers,
-              modifier_kind.OVERRIDE);
+          boolean has_override = has_modifier(modifiers, modifier_kind.OVERRIDE);
           if (has_override) {
             modifiers = filter_modifier(modifier_kind.OVERRIDE, modifiers);
           }
-          boolean has_dont_describe = has_modifier(the_variable_construct.modifiers,
-              modifier_kind.DONT_DESCRIBE);
+          boolean has_dont_describe = has_modifier(modifiers, modifier_kind.DONT_DESCRIBE);
           if (has_dont_describe) {
             modifiers = filter_modifier(modifier_kind.DONT_DESCRIBE, modifiers);
           }
 
-          construct type = the_variable_construct.type;
-          String name = the_variable_construct.name;
+          construct type = the_variable_construct.type();
+          String name = the_variable_construct.name();
 
           // Add accessor declaration to the interface
           if (declare_interface) {
@@ -1136,15 +1053,15 @@ public class create {
           }
 
           if (declare_implementation) {
-            boolean has_initializer = the_variable_construct.initializer != null;
+            boolean has_initializer = the_variable_construct.initializer() != null;
 
             if (!has_initializer) {
               // Add instance variable
               List<modifier_construct> instance_variable_modifiers =
                   prepend_modifier(modifier_kind.PRIVATE,
                       prepend_modifier(modifier_kind.FINAL, modifiers, the_source), the_source);
-              implementation_body.add(new variable_construct(instance_variable_modifiers, type, name, null,
-                  the_source));
+              implementation_body.add(new variable_construct(instance_variable_modifiers, type,
+                  name, null, the_source));
 
               // Add constructor parameter
               ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_source));
@@ -1170,7 +1087,7 @@ public class create {
                     the_source);
             }
 
-            construct return_expression = has_initializer ?  the_variable_construct.initializer :
+            construct return_expression = has_initializer ? the_variable_construct.initializer() :
                 new identifier(name, the_source);
             construct accessor_return = new return_construct(return_expression, the_source);
             List<construct> accessor_statements = new ArrayList<construct>();

@@ -81,6 +81,20 @@
   (ASSIGN "=")
 )
 
+(class operator
+  (implements construct describable)
+  (variable operator_type the_operator_type)
+  (variable (override) source the_source)
+)
+
+(class string_literal
+  (implements token construct describable)
+  (variable string value)
+  (variable (nullable string) with_quotes)
+  (variable (override) token_type type token_type.LITERAL)
+  (variable (override) source the_source)
+)
+
 (enum notification_type
   (variable string message)
   (UNRECOGNIZED_CHARACTER "Unrecognized character")

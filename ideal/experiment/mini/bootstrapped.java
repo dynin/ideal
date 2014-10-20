@@ -161,6 +161,48 @@ public interface bootstrapped {
       return symbol;
     }
   }
+  class operator implements construct, describable {
+    private final operator_type the_operator_type;
+    private final source the_source;
+    public operator(operator_type the_operator_type, source the_source) {
+      this.the_operator_type = the_operator_type;
+      this.the_source = the_source;
+    }
+    public operator_type the_operator_type() {
+      return the_operator_type;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("operator", START_OBJECT, NEWLINE, indent(field_is("the_operator_type", the_operator_type), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  class string_literal implements token, construct, describable {
+    private final String value;
+    private final @Nullable String with_quotes;
+    private final source the_source;
+    public string_literal(String value, @Nullable String with_quotes, source the_source) {
+      this.value = value;
+      this.with_quotes = with_quotes;
+      this.the_source = the_source;
+    }
+    public String value() {
+      return value;
+    }
+    public @Nullable String with_quotes() {
+      return with_quotes;
+    }
+    @Override public token_type type() {
+      return token_type.LITERAL;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("string_literal", START_OBJECT, NEWLINE, indent(field_is("value", value), field_is("with_quotes", with_quotes), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

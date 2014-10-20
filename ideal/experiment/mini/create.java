@@ -132,53 +132,6 @@ public class create {
     }
   }
 
-  public static class operator implements construct {
-    public final operator_type the_operator_type;
-    public final source the_source;
-
-    public operator(operator_type the_operator_type, source the_source) {
-      this.the_operator_type = the_operator_type;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      return "<operator:" + the_operator_type + ">";
-    }
-  }
-
-  public static class string_literal implements construct, token {
-    public final String value;
-    public final String with_quotes;
-    public final source the_source;
-
-    public string_literal(String value, String with_quotes, source the_source) {
-      this.value = value;
-      this.with_quotes = with_quotes;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public token_type type() {
-      return token_type.LITERAL;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      return "<string_literal:" + value + ">";
-    }
-  }
-
   public enum grouping_type {
     PARENS,
     ANGLE_BRACKETS,
@@ -884,7 +837,7 @@ public class create {
 
     @Override
     public text call_string_literal(string_literal the_string_literal) {
-      return new text_string(the_string_literal.with_quotes);
+      return new text_string(the_string_literal.with_quotes());
     }
 
     @Override
@@ -906,7 +859,7 @@ public class create {
 
     public text print_operator(operator the_operator, List<construct> arguments) {
       assert arguments.size() == 2;
-      operator_type the_operator_type = the_operator.the_operator_type;
+      operator_type the_operator_type = the_operator.the_operator_type();
       text operator_text = new text_string(the_operator_type.symbol());
       if (the_operator_type != operator_type.DOT) {
         operator_text = join_text(SPACE, operator_text, SPACE);

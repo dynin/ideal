@@ -203,6 +203,67 @@ public interface bootstrapped {
       return join_fragments("string_literal", START_OBJECT, NEWLINE, indent(field_is("value", value), field_is("with_quotes", with_quotes), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  enum grouping_type {
+    PARENS,
+    ANGLE_BRACKETS,
+    OPERATOR;
+  }
+  class parameter_construct implements construct, describable {
+    private final construct main;
+    private final List<construct> parameters;
+    private final @Nullable grouping_type grouping;
+    private final source the_source;
+    public parameter_construct(construct main, List<construct> parameters, @Nullable grouping_type grouping, source the_source) {
+      this.main = main;
+      this.parameters = parameters;
+      this.grouping = grouping;
+      this.the_source = the_source;
+    }
+    public construct main() {
+      return main;
+    }
+    public List<construct> parameters() {
+      return parameters;
+    }
+    public @Nullable grouping_type grouping() {
+      return grouping;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("parameter_construct", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters), field_is("grouping", grouping), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  enum modifier_kind {
+    PUBLIC,
+    PRIVATE,
+    FINAL,
+    STATIC,
+    OVERRIDE,
+    DONT_DESCRIBE,
+    NULLABLE;
+  }
+  class modifier_construct implements token, construct, describable {
+    private final modifier_kind the_modifier_kind;
+    private final source the_source;
+    public modifier_construct(modifier_kind the_modifier_kind, source the_source) {
+      this.the_modifier_kind = the_modifier_kind;
+      this.the_source = the_source;
+    }
+    public modifier_kind the_modifier_kind() {
+      return the_modifier_kind;
+    }
+    @Override public token_type type() {
+      return token_type.MODIFIER;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("modifier_construct", START_OBJECT, NEWLINE, indent(field_is("the_modifier_kind", the_modifier_kind), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

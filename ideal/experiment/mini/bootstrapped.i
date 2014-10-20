@@ -4,6 +4,8 @@
 ; license that can be found in the LICENSE file or at
 ; https://developers.google.com/open-source/licenses/bsd
 
+; Texts
+
 (interface text)
 
 (class text_string
@@ -25,6 +27,8 @@
   (variable text description)
 )
 
+; Sources
+
 (interface source
   ; The source of the source: we must go deeper...
   (variable (nullable source) the_source)
@@ -42,6 +46,8 @@
   (variable source_text the_source)
   (variable int character_index)
 )
+
+; Tokens
 
 (enum token_type
   WHITESPACE
@@ -63,6 +69,8 @@
   (variable (override) token_type type)
   (variable (override) source the_source)
 )
+
+; Constructs
 
 (interface construct
   (extends source)
@@ -94,6 +102,39 @@
   (variable (override) token_type type token_type.LITERAL)
   (variable (override) source the_source)
 )
+
+(enum grouping_type
+  PARENS
+  ANGLE_BRACKETS
+  OPERATOR
+)
+
+(class parameter_construct
+  (implements construct describable)
+  (variable construct main)
+  (variable (list construct) parameters)
+  (variable (nullable grouping_type) grouping)
+  (variable (override) source the_source)
+)
+
+(enum modifier_kind
+  PUBLIC
+  PRIVATE
+  FINAL
+  STATIC
+  OVERRIDE
+  DONT_DESCRIBE
+  NULLABLE
+)
+
+(class modifier_construct
+  (implements token construct describable)
+  (variable modifier_kind the_modifier_kind)
+  (variable (override) token_type type token_type.MODIFIER)
+  (variable (override) source the_source)
+)
+
+; Notifications
 
 (enum notification_type
   (variable string message)

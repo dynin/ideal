@@ -132,80 +132,6 @@ public class create {
     }
   }
 
-  public enum grouping_type {
-    PARENS,
-    ANGLE_BRACKETS,
-    OPERATOR;
-  }
-
-  public static class parameter_construct implements construct {
-    public final construct main;
-    public final List<construct> parameters;
-    public final @Nullable grouping_type grouping;
-    public final source the_source;
-
-    public parameter_construct(construct main, List<construct> parameters,
-         @Nullable grouping_type grouping, source the_source) {
-      this.main = main;
-      this.parameters = parameters;
-      this.grouping = grouping;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder result = new StringBuilder("parameters:<")
-          .append("main:").append(main)
-          .append(" parameters:").append(fn_display_list(parameters))
-          .append(">");
-      return result.toString();
-    }
-  }
-
-  public enum modifier_kind {
-    PUBLIC,
-    PRIVATE,
-    FINAL,
-    STATIC,
-    OVERRIDE,
-    DONT_DESCRIBE,
-    NULLABLE;
-  }
-
-  public static class modifier_construct implements construct, token {
-    public final modifier_kind the_modifier_kind;
-    public final source the_source;
-
-    public modifier_construct(modifier_kind the_modifier_kind, source the_source) {
-      this.the_modifier_kind = the_modifier_kind;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public token_type type() {
-      return token_type.MODIFIER;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder result = new StringBuilder("modifier_construct:<")
-          .append("modifier:").append(the_modifier_kind)
-          .append(" source:").append(the_source)
-          .append(">");
-      return result.toString();
-    }
-  }
-
   public static class s_expression implements construct {
     public final List<construct> parameters;
     public final source the_source;
@@ -842,15 +768,15 @@ public class create {
 
     @Override
     public text call_parameter_construct(parameter_construct the_parameter_construct) {
-      if (the_parameter_construct.main instanceof operator) {
-        return print_operator((operator) the_parameter_construct.main,
-            the_parameter_construct.parameters);
+      if (the_parameter_construct.main() instanceof operator) {
+        return print_operator((operator) the_parameter_construct.main(),
+            the_parameter_construct.parameters());
       }
 
-      text main = print(the_parameter_construct.main);
-      text parameters = fold_with_comma(the_parameter_construct.parameters, this);
+      text main = print(the_parameter_construct.main());
+      text parameters = fold_with_comma(the_parameter_construct.parameters(), this);
 
-      if (the_parameter_construct.grouping == grouping_type.ANGLE_BRACKETS) {
+      if (the_parameter_construct.grouping() == grouping_type.ANGLE_BRACKETS) {
         return join_text(main, LESS_THAN, parameters, GREATER_THAN);
       } else {
         return join_text(main, OPEN_PAREN, parameters, CLOSE_PAREN);
@@ -869,7 +795,8 @@ public class create {
 
     @Override
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
-      return new text_string(fn_to_lowercase(the_modifier_construct.the_modifier_kind.toString()));
+      return new text_string(fn_to_lowercase(
+          the_modifier_construct.the_modifier_kind().toString()));
     }
 
     @Override
@@ -1018,8 +945,8 @@ public class create {
 
     @Override
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
-      if (is_java_annotation(the_modifier_construct.the_modifier_kind)) {
-        String name = the_modifier_construct.the_modifier_kind.name();
+      if (is_java_annotation(the_modifier_construct.the_modifier_kind())) {
+        String name = the_modifier_construct.the_modifier_kind().name();
         String annotation_name = "@" + name.charAt(0) + fn_to_lowercase(name.substring(1));
         return new text_string(annotation_name);
       } else {
@@ -1120,11 +1047,11 @@ public class create {
     public construct call_parameter_construct(parameter_construct the_parameter_construct) {
       source the_source = the_parameter_construct;
 
-      construct main = the_parameter_construct.main;
+      construct main = the_parameter_construct.main();
       construct transformed_main = transform(main);
 
       List<construct> parameters = new ArrayList<construct>();
-      for (construct the_parameter : the_parameter_construct.parameters) {
+      for (construct the_parameter : the_parameter_construct.parameters()) {
         Object transformed = call(the_parameter);
         if (transformed instanceof construct) {
           parameters.add((construct) transformed);
@@ -1133,7 +1060,7 @@ public class create {
         }
       }
 
-      grouping_type grouping = the_parameter_construct.grouping;
+      grouping_type grouping = the_parameter_construct.grouping();
       if (main instanceof identifier &&
           ((identifier) main).name().equals(LIST_NAME)) {
         grouping = grouping_type.ANGLE_BRACKETS;
@@ -1174,7 +1101,7 @@ public class create {
       return filter(modifiers, new predicate<modifier_construct>() {
         @Override
         public boolean call(modifier_construct the_modifier_construct) {
-          return the_modifier_construct.the_modifier_kind != the_modifier_kind;
+          return the_modifier_construct.the_modifier_kind() != the_modifier_kind;
         }
       });
     }
@@ -1464,7 +1391,7 @@ public class create {
 
     private boolean is_nullable(construct the_construct) {
       if (the_construct instanceof parameter_construct) {
-        construct main = ((parameter_construct) the_construct).main;
+        construct main = ((parameter_construct) the_construct).main();
         return main instanceof identifier &&
                ((identifier) main).name().equals(NULLABLE_NAME);
       }
@@ -1473,7 +1400,7 @@ public class create {
 
     private construct strip_nullable(construct the_construct) {
       assert is_nullable(the_construct);
-      List<construct> parameters = ((parameter_construct) the_construct).parameters;
+      List<construct> parameters = ((parameter_construct) the_construct).parameters();
       // TODO: validate number of parameters in is_nullable()?
       assert parameters.size() == 1;
       return parameters.get(0);
@@ -1483,7 +1410,7 @@ public class create {
     private boolean has_modifier(List<modifier_construct> modifiers,
         modifier_kind the_modifier_kind) {
       for (modifier_construct modifier : modifiers) {
-        if (modifier.the_modifier_kind == the_modifier_kind) {
+        if (modifier.the_modifier_kind() == the_modifier_kind) {
           return true;
         }
       }

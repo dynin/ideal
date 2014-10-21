@@ -448,6 +448,53 @@ public interface bootstrapped {
       return join_fragments("type_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("the_type_kind", the_type_kind), field_is("name", name), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  interface type {
+    String name();
+  }
+  interface action extends source {
+    type result();
+  }
+  enum core_type implements type {
+    VOID,
+    INTEGER,
+    STRING,
+    LIST,
+    NULLABLE,
+    UNREACHABLE;
+  }
+  interface type_action extends action {
+    type result();
+    @Nullable source the_source();
+  }
+  class type_action_class implements type_action {
+    private final type result;
+    private final @Nullable source the_source;
+    public type_action_class(type result, @Nullable source the_source) {
+      this.result = result;
+      this.the_source = the_source;
+    }
+    @Override public type result() {
+      return result;
+    }
+    @Override public @Nullable source the_source() {
+      return the_source;
+    }
+  }
+  class error implements type, action {
+    private final source the_source;
+    public error(source the_source) {
+      this.the_source = the_source;
+    }
+    @Override public String name() {
+      return "*ERROR*";
+    }
+    @Override public type result() {
+      return this;
+    }
+    public source the_source() {
+      return the_source;
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

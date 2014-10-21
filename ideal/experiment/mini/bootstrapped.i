@@ -199,6 +199,41 @@
   (variable (override) source the_source)
 )
 
+; Actions and analysis
+
+(interface type
+  (variable string name)
+)
+
+(interface action
+  (extends source)
+  (variable type result)
+)
+
+(enum core_type
+  (implements type)
+  VOID
+  INTEGER
+  STRING
+  LIST
+  NULLABLE
+  UNREACHABLE
+)
+
+(datatype type_action
+  (extends action)
+  (variable type result)
+  ; TODO: make non-nullable
+  (variable (nullable source) the_source)
+)
+
+(class error
+  (implements type action)
+  (variable (override) string name "*ERROR*")
+  (variable (override) type result this)
+  (variable source the_source)
+)
+
 ; Notifications
 
 (enum notification_type

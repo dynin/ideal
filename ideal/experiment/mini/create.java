@@ -24,114 +24,6 @@ import javax.annotation.Nullable;
 
 public class create {
 
-  public static abstract class construct_dispatch<result> implements function<result, construct> {
-
-    @Override
-    public result call(construct the_construct) {
-      if (the_construct instanceof identifier) {
-        return call_identifier((identifier) the_construct);
-      }
-
-      if (the_construct instanceof operator) {
-        return call_operator((operator) the_construct);
-      }
-
-      if (the_construct instanceof string_literal) {
-        return call_string_literal((string_literal) the_construct);
-      }
-
-      if (the_construct instanceof parameter_construct) {
-        return call_parameter_construct((parameter_construct) the_construct);
-      }
-
-      if (the_construct instanceof modifier_construct) {
-        return call_modifier_construct((modifier_construct) the_construct);
-      }
-
-      if (the_construct instanceof s_expression) {
-        return call_s_expression((s_expression) the_construct);
-      }
-
-      if (the_construct instanceof block_construct) {
-        return call_block_construct((block_construct) the_construct);
-      }
-
-      if (the_construct instanceof return_construct) {
-        return call_return_construct((return_construct) the_construct);
-      }
-
-      if (the_construct instanceof variable_construct) {
-        return call_variable_construct((variable_construct) the_construct);
-      }
-
-      if (the_construct instanceof procedure_construct) {
-        return call_procedure_construct((procedure_construct) the_construct);
-      }
-
-      if (the_construct instanceof supertype_construct) {
-        return call_supertype_construct((supertype_construct) the_construct);
-      }
-
-      if (the_construct instanceof type_construct) {
-        return call_type_construct((type_construct) the_construct);
-      }
-
-      return call_construct(the_construct);
-    }
-
-    public result call_construct(construct the_construct) {
-      throw new Error("Unknown construct type for " + the_construct);
-    }
-
-    public result call_identifier(identifier the_identifier) {
-      return call_construct(the_identifier);
-    }
-
-    public result call_operator(operator the_operator) {
-      return call_construct(the_operator);
-    }
-
-    public result call_string_literal(string_literal the_string_literal) {
-      return call_construct(the_string_literal);
-    }
-
-    public result call_parameter_construct(parameter_construct the_parameter_construct) {
-      return call_construct(the_parameter_construct);
-    }
-
-    public result call_modifier_construct(modifier_construct the_modifier_construct) {
-      return call_construct(the_modifier_construct);
-    }
-
-    public result call_s_expression(s_expression the_s_expression) {
-      return call_construct(the_s_expression);
-    }
-
-    public result call_block_construct(block_construct the_block_construct) {
-      return call_construct(the_block_construct);
-    }
-
-    public result call_return_construct(return_construct the_return_construct) {
-      return call_construct(the_return_construct);
-    }
-
-    public result call_variable_construct(variable_construct the_variable_construct) {
-      return call_construct(the_variable_construct);
-    }
-
-    public result call_procedure_construct(procedure_construct the_procedure_construct) {
-      return call_construct(the_procedure_construct);
-    }
-
-    public result call_supertype_construct(supertype_construct the_supertype_construct) {
-      return call_construct(the_supertype_construct);
-    }
-
-    public result call_type_construct(type_construct the_type_construct) {
-      return call_construct(the_type_construct);
-    }
-  }
-
   public static List<token> tokenize(source_text the_source_text) {
     String content = the_source_text.content();
     int index = 0;
@@ -141,13 +33,13 @@ public class create {
       char prefix = content.charAt(index);
       index += 1;
       source position = new text_position_class(the_source_text, start);
-      if (fn_is_identifier_letter(prefix)) {
-        while (index < content.length() && fn_is_identifier_letter(content.charAt(index))) {
+      if (is_identifier_letter(prefix)) {
+        while (index < content.length() && is_identifier_letter(content.charAt(index))) {
           index += 1;
         }
         result.add(new identifier(content.substring(start, index), position));
-      } else if (fn_is_whitespace(prefix)) {
-        while (index < content.length() && fn_is_whitespace(content.charAt(index))) {
+      } else if (is_whitespace(prefix)) {
+        while (index < content.length() && is_whitespace(content.charAt(index))) {
           index += 1;
         }
         result.add(new simple_token(token_type.WHITESPACE, position));
@@ -186,17 +78,8 @@ public class create {
     return result;
   }
 
-  // TODO: separate is_letter() and move to the library
-  public static boolean fn_is_identifier_letter(char c) {
-    return Character.isLetter(c) || c == '_' || c == '.';
-  }
-
-  public static boolean fn_is_whitespace(char c) {
-    return Character.isWhitespace(c);
-  }
-
-  public static String fn_to_lowercase(String s) {
-    return s.toLowerCase();
+  public static boolean is_identifier_letter(char c) {
+    return is_letter(c) || c == '_' || c == '.';
   }
 
   public static void report(notification the_notification) {
@@ -282,7 +165,7 @@ public class create {
     }
 
     public void add(modifier_kind the_modifier_kind) {
-      processors.put(fn_to_lowercase(the_modifier_kind.name()),
+      processors.put(to_lower_case(the_modifier_kind.name()),
           new modifier_processor(the_modifier_kind));
     }
 
@@ -572,7 +455,7 @@ public class create {
 
     @Override
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
-      return new text_string(fn_to_lowercase(
+      return new text_string(to_lower_case(
           the_modifier_construct.the_modifier_kind().toString()));
     }
 
@@ -643,7 +526,7 @@ public class create {
     @Override
     public text call_supertype_construct(supertype_construct the_supertype_construct) {
       return join_text(
-        new text_string(fn_to_lowercase(
+        new text_string(to_lower_case(
             the_supertype_construct.the_supertype_kind().toString())),
         SPACE,
         fold_with_comma(the_supertype_construct.supertypes(), this),
@@ -655,7 +538,7 @@ public class create {
     public text call_type_construct(type_construct the_type_construct) {
       return join_text(
         print_with_space(the_type_construct.modifiers()),
-        new text_string(fn_to_lowercase(the_type_construct.the_type_kind().toString())),
+        new text_string(to_lower_case(the_type_construct.the_type_kind().toString())),
         SPACE,
         new text_string(the_type_construct.name()),
         SPACE,
@@ -721,7 +604,7 @@ public class create {
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
       if (is_java_annotation(the_modifier_construct.the_modifier_kind())) {
         String name = the_modifier_construct.the_modifier_kind().name();
-        String annotation_name = "@" + name.charAt(0) + fn_to_lowercase(name.substring(1));
+        String annotation_name = "@" + name.charAt(0) + to_lower_case(name.substring(1));
         return new text_string(annotation_name);
       } else {
         return super.call_modifier_construct(the_modifier_construct);
@@ -732,7 +615,7 @@ public class create {
     public text call_supertype_construct(supertype_construct the_supertype_construct) {
       // No trailing semicolon or newline.
       return join_text(
-        new text_string(fn_to_lowercase(the_supertype_construct.the_supertype_kind().toString())),
+        new text_string(to_lower_case(the_supertype_construct.the_supertype_kind().toString())),
         SPACE,
         fold_with_comma(the_supertype_construct.supertypes(), this));
     }
@@ -741,7 +624,7 @@ public class create {
     public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
       result.add(print_with_space(the_type_construct.modifiers()));
-      result.add(new text_string(fn_to_lowercase(the_type_construct.the_type_kind().toString())));
+      result.add(new text_string(to_lower_case(the_type_construct.the_type_kind().toString())));
       result.add(SPACE);
       result.add(new text_string(the_type_construct.name()));
       result.add(SPACE);

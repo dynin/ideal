@@ -59,6 +59,18 @@ public class library {
     };
   }
 
+  public static boolean is_letter(char c) {
+    return Character.isLetter(c);
+  }
+
+  public static boolean is_whitespace(char c) {
+    return Character.isWhitespace(c);
+  }
+
+  public static String to_lower_case(String s) {
+    return s.toLowerCase();
+  }
+
   public static text join_text(text... texts) {
     return new text_list(Arrays.asList(texts));
   }

@@ -384,6 +384,70 @@ public interface bootstrapped {
       return join_fragments("procedure_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  enum supertype_kind {
+    EXTENDS,
+    IMPLEMENTS;
+  }
+  class supertype_construct implements construct, describable {
+    private final supertype_kind the_supertype_kind;
+    private final List<construct> supertypes;
+    private final source the_source;
+    public supertype_construct(supertype_kind the_supertype_kind, List<construct> supertypes, source the_source) {
+      this.the_supertype_kind = the_supertype_kind;
+      this.supertypes = supertypes;
+      this.the_source = the_source;
+    }
+    public supertype_kind the_supertype_kind() {
+      return the_supertype_kind;
+    }
+    public List<construct> supertypes() {
+      return supertypes;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("supertype_construct", START_OBJECT, NEWLINE, indent(field_is("the_supertype_kind", the_supertype_kind), field_is("supertypes", supertypes), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  enum type_kind {
+    INTERFACE,
+    DATATYPE,
+    ENUM,
+    CLASS;
+  }
+  class type_construct implements construct, describable {
+    private final List<modifier_construct> modifiers;
+    private final type_kind the_type_kind;
+    private final String name;
+    private final List<construct> body;
+    private final source the_source;
+    public type_construct(List<modifier_construct> modifiers, type_kind the_type_kind, String name, List<construct> body, source the_source) {
+      this.modifiers = modifiers;
+      this.the_type_kind = the_type_kind;
+      this.name = name;
+      this.body = body;
+      this.the_source = the_source;
+    }
+    public List<modifier_construct> modifiers() {
+      return modifiers;
+    }
+    public type_kind the_type_kind() {
+      return the_type_kind;
+    }
+    public String name() {
+      return name;
+    }
+    public List<construct> body() {
+      return body;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("type_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("the_type_kind", the_type_kind), field_is("name", name), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

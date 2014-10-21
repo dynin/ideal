@@ -171,6 +171,34 @@
   (variable (override) source the_source)
 )
 
+(enum supertype_kind
+  EXTENDS
+  IMPLEMENTS
+)
+
+(class supertype_construct
+  (implements construct describable)
+  (variable supertype_kind the_supertype_kind)
+  (variable (list construct) supertypes)
+  (variable (override) source the_source)
+)
+
+(enum type_kind
+  INTERFACE
+  DATATYPE
+  ENUM
+  CLASS
+)
+
+(class type_construct
+  (implements construct describable)
+  (variable (list modifier_construct) modifiers)
+  (variable type_kind the_type_kind)
+  (variable string name)
+  (variable (list construct) body)
+  (variable (override) source the_source)
+)
+
 ; Notifications
 
 (enum notification_type

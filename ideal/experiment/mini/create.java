@@ -132,76 +132,6 @@ public class create {
     }
   }
 
-  public static enum supertype_kind {
-    EXTENDS,
-    IMPLEMENTS;
-  }
-
-  public static class supertype_construct implements construct {
-    public final supertype_kind the_supertype_kind;
-    public final List<construct> supertypes;
-    public final source the_source;
-
-    public supertype_construct(
-        supertype_kind the_supertype_kind,
-        List<construct> supertypes,
-        source the_source) {
-      this.the_supertype_kind = the_supertype_kind;
-      this.supertypes = supertypes;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-  }
-
-  public static enum type_kind {
-    INTERFACE,
-    DATATYPE,
-    ENUM,
-    CLASS;
-  }
-
-  public static class type_construct implements construct {
-    public final List<modifier_construct> modifiers;
-    public final type_kind the_type_kind;
-    public final String name;
-    public final List<construct> body;
-    public final source the_source;
-
-    public type_construct(
-        List<modifier_construct> modifiers,
-        type_kind the_type_kind,
-        String name,
-        List<construct> body,
-        source the_source) {
-      this.modifiers = modifiers;
-      this.the_type_kind = the_type_kind;
-      this.name = name;
-      this.body = body;
-      this.the_source = the_source;
-    }
-
-    @Override
-    public source the_source() {
-      return the_source;
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder result = new StringBuilder("type_declaration:<")
-          .append(fn_display_list(modifiers))
-          .append(" type_kind:").append(the_type_kind)
-          .append(" name:").append(name)
-          .append(" body:").append(fn_display_list(body))
-          .append(" source:").append(the_source)
-          .append(">");
-      return result.toString();
-    }
-  }
-
   public static List<token> tokenize(source_text the_source_text) {
     String content = the_source_text.content();
     int index = 0;
@@ -267,19 +197,6 @@ public class create {
 
   public static String fn_to_lowercase(String s) {
     return s.toLowerCase();
-  }
-
-  public static String fn_display_list(List the_list) {
-    StringBuilder result = new StringBuilder("[");
-    for (int i = 0; i < the_list.size(); ++i) {
-      if (i > 0) {
-        result.append(' ');
-      }
-      result.append(the_list.get(i).toString());
-    }
-    result.append(']');
-
-    return result.toString();
   }
 
   public static void report(notification the_notification) {
@@ -725,30 +642,28 @@ public class create {
 
     @Override
     public text call_supertype_construct(supertype_construct the_supertype_construct) {
-      List<text> result = new ArrayList<text>();
-      result.add(new text_string(fn_to_lowercase(
-          the_supertype_construct.the_supertype_kind.toString())));
-      result.add(SPACE);
-      result.add(fold_with_comma(the_supertype_construct.supertypes, this));
-      result.add(SEMICOLON);
-      result.add(NEWLINE);
-      return new text_list(result);
+      return join_text(
+        new text_string(fn_to_lowercase(
+            the_supertype_construct.the_supertype_kind().toString())),
+        SPACE,
+        fold_with_comma(the_supertype_construct.supertypes(), this),
+        SEMICOLON,
+        NEWLINE);
     }
 
     @Override
     public text call_type_construct(type_construct the_type_construct) {
-      List<text> result = new ArrayList<text>();
-      result.add(print_with_space(the_type_construct.modifiers));
-      result.add(new text_string(fn_to_lowercase(the_type_construct.the_type_kind.toString())));
-      result.add(SPACE);
-      result.add(new text_string(the_type_construct.name));
-      result.add(SPACE);
-      result.add(OPEN_BRACE);
-      result.add(NEWLINE);
-      result.add(indent(print_all(the_type_construct.body)));
-      result.add(CLOSE_BRACE);
-      result.add(NEWLINE);
-      return new text_list(result);
+      return join_text(
+        print_with_space(the_type_construct.modifiers()),
+        new text_string(fn_to_lowercase(the_type_construct.the_type_kind().toString())),
+        SPACE,
+        new text_string(the_type_construct.name()),
+        SPACE,
+        OPEN_BRACE,
+        NEWLINE,
+        indent(print_all(the_type_construct.body())),
+        CLOSE_BRACE,
+        NEWLINE);
     }
 
     // TODO(dynin): use map().
@@ -815,31 +730,29 @@ public class create {
 
     @Override
     public text call_supertype_construct(supertype_construct the_supertype_construct) {
-      List<text> result = new ArrayList<text>();
-      result.add(new text_string(fn_to_lowercase(
-          the_supertype_construct.the_supertype_kind.toString())));
-      result.add(SPACE);
-      result.add(fold_with_comma(the_supertype_construct.supertypes, this));
       // No trailing semicolon or newline.
-      return new text_list(result);
+      return join_text(
+        new text_string(fn_to_lowercase(the_supertype_construct.the_supertype_kind().toString())),
+        SPACE,
+        fold_with_comma(the_supertype_construct.supertypes(), this));
     }
 
     @Override
     public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
-      result.add(print_with_space(the_type_construct.modifiers));
-      result.add(new text_string(fn_to_lowercase(the_type_construct.the_type_kind.toString())));
+      result.add(print_with_space(the_type_construct.modifiers()));
+      result.add(new text_string(fn_to_lowercase(the_type_construct.the_type_kind().toString())));
       result.add(SPACE);
-      result.add(new text_string(the_type_construct.name));
+      result.add(new text_string(the_type_construct.name()));
       result.add(SPACE);
-      List<construct> supertypes = filter(the_type_construct.body, is_supertype);
+      List<construct> supertypes = filter(the_type_construct.body(), is_supertype);
       result.add(print_with_space(supertypes));
       result.add(OPEN_BRACE);
       result.add(NEWLINE);
-      List<construct> filtered_body = filter(the_type_construct.body, is_not_supertype);
+      List<construct> filtered_body = filter(the_type_construct.body(), is_not_supertype);
 
       List<text> body = new ArrayList<text>();
-      if (the_type_construct.the_type_kind == type_kind.ENUM) {
+      if (the_type_construct.the_type_kind() == type_kind.ENUM) {
         List<construct> enum_declarations = filter(filtered_body, is_enum_declaration);
         assert !enum_declarations.isEmpty();
         for (int i = 0; i < enum_declarations.size(); ++i) {
@@ -892,10 +805,10 @@ public class create {
 
     @Override
     public Object call_type_construct(type_construct the_type_construct) {
-      return new type_construct(the_type_construct.modifiers,
-          the_type_construct.the_type_kind,
-          the_type_construct.name,
-          transform_all(the_type_construct.body),
+      return new type_construct(the_type_construct.modifiers(),
+          the_type_construct.the_type_kind(),
+          the_type_construct.name(),
+          transform_all(the_type_construct.body()),
           the_type_construct);
     }
   }
@@ -981,7 +894,7 @@ public class create {
     @Override
     public Object call_type_construct(type_construct the_type_construct) {
 
-      type_kind the_type_kind = the_type_construct.the_type_kind;
+      type_kind the_type_kind = the_type_construct.the_type_kind();
 
       boolean declare_interface =
           the_type_kind == type_kind.INTERFACE ||
@@ -996,7 +909,7 @@ public class create {
 
       source the_source = the_type_construct;
 
-      String interface_name = the_type_construct.name;
+      String interface_name = the_type_construct.name();
       String implementation_name = declare_interface ? join_identifier(interface_name, "class") :
           interface_name;
 
@@ -1016,7 +929,7 @@ public class create {
       boolean generate_description = false;
       List<String> describe_fields = new ArrayList<String>();
 
-      for (construct the_construct : the_type_construct.body) {
+      for (construct the_construct : the_type_construct.body()) {
         if (the_construct instanceof supertype_construct) {
           // TODO: implement supertype transformation.
           supertype_construct the_supertype_construct =
@@ -1026,7 +939,7 @@ public class create {
           } else {
             implementation_body.add(the_supertype_construct);
           }
-          if (has_describable(the_supertype_construct.supertypes)) {
+          if (has_describable(the_supertype_construct.supertypes())) {
             generate_description = true;
           }
         } else if (the_construct instanceof variable_construct) {
@@ -1109,7 +1022,7 @@ public class create {
 
       if (declare_interface) {
         type_construct interface_type =
-            new type_construct(the_type_construct.modifiers,
+            new type_construct(the_type_construct.modifiers(),
                 type_kind.INTERFACE,
                 interface_name,
                 interface_body,
@@ -1143,7 +1056,7 @@ public class create {
         }
 
         type_construct implementation_type =
-            new type_construct(the_type_construct.modifiers,
+            new type_construct(the_type_construct.modifiers(),
                 declare_enum ? type_kind.ENUM : type_kind.CLASS,
                 implementation_name,
                 implementation_body,
@@ -1311,9 +1224,7 @@ public class create {
 
     List<construct> constructs = parse(tokens, new common_context());
     if (DEBUG_PARSER) {
-      for (construct the_construct : constructs) {
-        System.out.println(the_construct.toString());
-      }
+      System.out.println(render_text(describe(constructs)));
     }
 
     constructs = new to_java_transform().transform_all(constructs);

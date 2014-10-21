@@ -659,23 +659,20 @@ public class create {
     }
   }
 
-  public static class base_transform extends construct_dispatch<Object> {
+  public static abstract class base_transform extends construct_dispatch<construct> {
 
     public construct transform(construct the_construct) {
-      return (construct) call(the_construct);
+      return call(the_construct);
     }
 
     public List<construct> transform_all(List<construct> constructs) {
       // TODO: rewrite using map()
       List<construct> result = new ArrayList<construct>();
       for (construct the_construct : constructs) {
-        Object transformed = call(the_construct);
-        if (transformed instanceof List) {
-          @SuppressWarnings("unchecked")
-          List<construct> transformedList = (List<construct>) transformed;
-          result.addAll(transformedList);
+        if (the_construct instanceof type_construct) {
+          result.addAll(transform_type((type_construct) the_construct));
         } else {
-          result.add((construct) transformed);
+          result.add(transform(the_construct));
         }
       }
       return result;
@@ -686,14 +683,7 @@ public class create {
       return the_construct;
     }
 
-    @Override
-    public Object call_type_construct(type_construct the_type_construct) {
-      return new type_construct(the_type_construct.modifiers(),
-          the_type_construct.the_type_kind(),
-          the_type_construct.name(),
-          transform_all(the_type_construct.body()),
-          the_type_construct);
-    }
+    public abstract List<construct> transform_type(type_construct the_type_construct);
   }
 
   public static class to_java_transform extends base_transform {
@@ -775,7 +765,18 @@ public class create {
     }
 
     @Override
-    public Object call_type_construct(type_construct the_type_construct) {
+    public construct call_type_construct(type_construct the_type_construct) {
+      List<construct> transformed = transform_type(the_type_construct);
+
+      if (transformed.size() != 1) {
+        unexpected("One transformed type expected");
+      }
+
+      return transformed.get(0);
+    }
+
+    @Override
+    public List<construct> transform_type(type_construct the_type_construct) {
 
       type_kind the_type_kind = the_type_construct.the_type_kind();
 

@@ -504,13 +504,35 @@ public interface bootstrapped {
       return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  interface frame extends type, describable {
+    String name();
+    @Nullable frame parent();
+  }
+  class frame_class implements frame {
+    private final String name;
+    private final @Nullable frame parent;
+    public frame_class(String name, @Nullable frame parent) {
+      this.name = name;
+      this.parent = parent;
+    }
+    @Override public String name() {
+      return name;
+    }
+    @Override public @Nullable frame parent() {
+      return parent;
+    }
+    @Override public text description() {
+      return join_fragments("frame_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),
     NEWLINE_IN_STRING_LITERAL("Newline in string literal"),
     PARSE_ERROR("Parse error"),
     CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
-    MODIFIER_EXPECTED("Modifier expected");
+    MODIFIER_EXPECTED("Modifier expected"),
+    ANALYSIS_ERROR("Analysis error");
     private final String message;
     notification_type(String message) {
       this.message = message;

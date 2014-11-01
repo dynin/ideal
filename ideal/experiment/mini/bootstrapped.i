@@ -235,6 +235,12 @@
   (variable (override) type result core_type.ERROR)
 )
 
+(datatype frame
+  (extends type describable)
+  (variable string name)
+  (variable (nullable frame) parent)
+)
+
 ; Notifications
 
 (enum notification_type
@@ -245,4 +251,5 @@
   (PARSE_ERROR "Parse error")
   (CLOSE_PAREN_NOT_FOUND "Close parenthesis not found")
   (MODIFIER_EXPECTED "Modifier expected")
+  (ANALYSIS_ERROR "Analysis error")
 )

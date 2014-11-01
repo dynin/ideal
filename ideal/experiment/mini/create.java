@@ -24,6 +24,146 @@ import javax.annotation.Nullable;
 
 public class create {
 
+  public enum analysis_pass {
+    TYPE_PASS,
+    METHOD_PASS,
+    BODY_PASS;
+  }
+
+  public static frame top_frame = new frame_class("<top>", null);
+
+  public static class analysis_context {
+    private final Map<frame, frame_context> frame_contexts;
+    private final Map<construct, action> bindings;
+
+    public analysis_context() {
+      frame_contexts = new HashMap<frame, frame_context>();
+      bindings = new HashMap<construct, action>();
+    }
+
+    public void add_action(frame the_frame, String name, action the_action) {
+      @Nullable frame_context the_frame_context = frame_contexts.get(the_frame);
+      if (the_frame_context == null) {
+        the_frame_context = new frame_context();
+        frame_contexts.put(the_frame, the_frame_context);
+      }
+
+      @Nullable action old_action = the_frame_context.action_table.put(name, the_action);
+      // actions can't be overriden.
+      assert old_action == null;
+    }
+
+    public @Nullable action get_action(frame the_frame, String name) {
+      do {
+        @Nullable frame_context the_frame_context = frame_contexts.get(the_frame);
+        if (the_frame_context != null) {
+          @Nullable action result = the_frame_context.action_table.get(name);
+          if (result != null) {
+            return result;
+          }
+        }
+        the_frame = the_frame.parent();
+      } while (the_frame != null);
+
+      return null;
+    }
+
+    public void add_binding(construct the_construct, action the_action) {
+      action old_action = bindings.put(the_construct, the_action);
+      assert old_action == null;
+    }
+
+    public @Nullable action get_binding(construct the_construct) {
+      return bindings.get(the_construct);
+    }
+
+    // Implementation detail of analysis_context.
+    private static class frame_context {
+      final Map<String, action> action_table;
+
+      public frame_context() {
+        action_table = new HashMap<String, action>();
+      }
+    }
+  }
+
+  public class analyzer extends construct_dispatch<action> {
+
+    private final analysis_context the_analysis_context;
+    private frame parent;
+    private analysis_pass pass;
+
+    public analyzer(analysis_context the_analysis_context) {
+      this.the_analysis_context = the_analysis_context;
+    }
+
+    public action analyze(construct the_construct, frame parent, analysis_pass pass) {
+      frame old_parent = this.parent;
+      analysis_pass old_pass = this.pass;
+
+      this.parent = parent;
+      this.pass = pass;
+
+      action result = call(the_construct);
+
+      this.parent = old_parent;
+      this.pass = old_pass;
+
+      return result;
+    }
+
+    public action call_construct(construct the_construct) {
+      return new error_signal(notification_type.ANALYSIS_ERROR, the_construct);
+    }
+
+    public action call_identifier(identifier the_identifier) {
+      return call_construct(the_identifier);
+    }
+
+    public action call_operator(operator the_operator) {
+      return call_construct(the_operator);
+    }
+
+    public action call_string_literal(string_literal the_string_literal) {
+      return call_construct(the_string_literal);
+    }
+
+    public action call_parameter_construct(parameter_construct the_parameter_construct) {
+      return call_construct(the_parameter_construct);
+    }
+
+    public action call_modifier_construct(modifier_construct the_modifier_construct) {
+      return call_construct(the_modifier_construct);
+    }
+
+    public action call_s_expression(s_expression the_s_expression) {
+      return call_construct(the_s_expression);
+    }
+
+    public action call_block_construct(block_construct the_block_construct) {
+      return call_construct(the_block_construct);
+    }
+
+    public action call_return_construct(return_construct the_return_construct) {
+      return call_construct(the_return_construct);
+    }
+
+    public action call_variable_construct(variable_construct the_variable_construct) {
+      return call_construct(the_variable_construct);
+    }
+
+    public action call_procedure_construct(procedure_construct the_procedure_construct) {
+      return call_construct(the_procedure_construct);
+    }
+
+    public action call_supertype_construct(supertype_construct the_supertype_construct) {
+      return call_construct(the_supertype_construct);
+    }
+
+    public action call_type_construct(type_construct the_type_construct) {
+      return call_construct(the_type_construct);
+    }
+  }
   public static List<token> tokenize(source_text the_source_text) {
     String content = the_source_text.content();
     int index = 0;

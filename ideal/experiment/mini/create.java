@@ -55,10 +55,10 @@ public class create {
           index += 1;
         }
         if (index == content.length()) {
-          report(new notification(notification_type.EOF_IN_STRING_LITERAL, position));
+          report(new error_signal(notification_type.EOF_IN_STRING_LITERAL, position));
         } else if (content.charAt(index) == '\n') {
           index += 1;
-          report(new notification(notification_type.NEWLINE_IN_STRING_LITERAL, position));
+          report(new error_signal(notification_type.NEWLINE_IN_STRING_LITERAL, position));
         } else {
           assert content.charAt(index) == quote;
           String value = content.substring(start + 1, index);
@@ -72,7 +72,7 @@ public class create {
         }
         result.add(new simple_token(token_type.COMMENT, position));
       } else {
-        report(new notification(notification_type.UNRECOGNIZED_CHARACTER, position));
+        report(new error_signal(notification_type.UNRECOGNIZED_CHARACTER, position));
       }
     }
     return result;
@@ -82,10 +82,10 @@ public class create {
     return is_letter(c) || c == '_' || c == '.';
   }
 
-  public static void report(notification the_notification) {
-    String message = the_notification.type().message();
+  public static void report(error_signal the_error_signal) {
+    String message = the_error_signal.type().message();
 
-    @Nullable source deep_source = the_notification.the_source();
+    @Nullable source deep_source = the_error_signal.the_source();
     while(deep_source != null) {
       if (deep_source instanceof text_position) {
         text_position position = (text_position) deep_source;
@@ -213,9 +213,9 @@ public class create {
         List<construct> parameters = new ArrayList<construct>();
         int end = parse_sublist(tokens, index, parameters, context);
         if (end >= tokens.size()) {
-          report(new notification(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
+          report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
         } else if (tokens.get(end).type() != token_type.CLOSE) {
-          report(new notification(notification_type.CLOSE_PAREN_NOT_FOUND, tokens.get(end)));
+          report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, tokens.get(end)));
         } else {
           end += 1;
         }
@@ -231,7 +231,7 @@ public class create {
             if (parsed != null) {
               result.add(parsed);
             } else {
-              report(new notification(notification_type.PARSE_ERROR, name_identifier));
+              report(new error_signal(notification_type.PARSE_ERROR, name_identifier));
             }
             continue;
           }
@@ -243,7 +243,7 @@ public class create {
       } else if (the_token.type() == token_type.CLOSE) {
         return index - 1;
       } else {
-        report(new notification(notification_type.PARSE_ERROR, the_token));
+        report(new error_signal(notification_type.PARSE_ERROR, the_token));
       }
     }
 
@@ -338,7 +338,7 @@ public class create {
   private static List<modifier_construct> parse_modifiers(construct the_construct) {
     // TODO(dynin): implement actual modifier parsing.
     if (!(the_construct instanceof s_expression)) {
-      report(new notification(notification_type.PARSE_ERROR, the_construct));
+      report(new error_signal(notification_type.PARSE_ERROR, the_construct));
     }
 
     List<construct> parameters = ((s_expression) the_construct).parameters();
@@ -347,7 +347,7 @@ public class create {
       if (parameter instanceof modifier_construct) {
         result.add((modifier_construct) parameter);
       } else {
-        report(new notification(notification_type.MODIFIER_EXPECTED, parameter));
+        report(new error_signal(notification_type.MODIFIER_EXPECTED, parameter));
       }
     }
     return result;
@@ -377,7 +377,7 @@ public class create {
     List<construct> result = new ArrayList<construct>();
     int consumed = parse_sublist(tokens, 0, result, context);
     if (consumed < tokens.size()) {
-      report(new notification(notification_type.PARSE_ERROR, tokens.get(consumed)));
+      report(new error_signal(notification_type.PARSE_ERROR, tokens.get(consumed)));
     }
     return result;
   }

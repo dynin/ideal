@@ -460,9 +460,10 @@ public interface bootstrapped {
     STRING,
     LIST,
     NULLABLE,
-    UNREACHABLE;
+    UNREACHABLE,
+    ERROR;
   }
-  interface type_action extends action {
+  interface type_action extends action, describable {
     type result();
     @Nullable source the_source();
   }
@@ -479,20 +480,28 @@ public interface bootstrapped {
     @Override public @Nullable source the_source() {
       return the_source;
     }
+    @Override public text description() {
+      return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+    }
   }
-  class error implements type, action {
+  class error_signal implements action, describable {
+    private final notification_type type;
     private final source the_source;
-    public error(source the_source) {
+    public error_signal(notification_type type, source the_source) {
+      this.type = type;
       this.the_source = the_source;
     }
-    @Override public String name() {
-      return "*ERROR*";
-    }
-    @Override public type result() {
-      return this;
+    public notification_type type() {
+      return type;
     }
     public source the_source() {
       return the_source;
+    }
+    @Override public type result() {
+      return core_type.ERROR;
+    }
+    @Override public text description() {
+      return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   enum notification_type {
@@ -508,23 +517,6 @@ public interface bootstrapped {
     }
     public String message() {
       return message;
-    }
-  }
-  class notification implements describable {
-    private final notification_type type;
-    private final source the_source;
-    public notification(notification_type type, source the_source) {
-      this.type = type;
-      this.the_source = the_source;
-    }
-    public notification_type type() {
-      return type;
-    }
-    public source the_source() {
-      return the_source;
-    }
-    @Override public text description() {
-      return join_fragments("notification", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
 }

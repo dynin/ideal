@@ -218,20 +218,21 @@
   LIST
   NULLABLE
   UNREACHABLE
+  ERROR
 )
 
 (datatype type_action
-  (extends action)
+  (extends action describable)
   (variable type result)
   ; TODO: make non-nullable
   (variable (nullable source) the_source)
 )
 
-(class error
-  (implements type action)
-  (variable (override) string name "*ERROR*")
-  (variable (override) type result this)
+(class error_signal
+  (implements action describable)
+  (variable notification_type type)
   (variable source the_source)
+  (variable (override) type result core_type.ERROR)
 )
 
 ; Notifications
@@ -244,10 +245,4 @@
   (PARSE_ERROR "Parse error")
   (CLOSE_PAREN_NOT_FOUND "Close parenthesis not found")
   (MODIFIER_EXPECTED "Modifier expected")
-)
-
-(class notification
-  (implements describable)
-  (variable notification_type type)
-  (variable source the_source)
 )

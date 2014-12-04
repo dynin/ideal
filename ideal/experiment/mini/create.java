@@ -109,6 +109,10 @@ public class create {
       this.parent = old_parent;
       this.pass = old_pass;
 
+      if (result instanceof error_signal) {
+        report((error_signal) result);
+      }
+
       return result;
     }
 
@@ -222,7 +226,11 @@ public class create {
     return is_letter(c) || c == '_' || c == '.';
   }
 
+  private static boolean has_errors;
+
   public static void report(error_signal the_error_signal) {
+    has_errors = true;
+
     String message = the_error_signal.type().message();
 
     @Nullable source deep_source = the_error_signal.the_source();
@@ -1229,6 +1237,26 @@ public class create {
     return result;
   }
 
+  public static void create(source_text the_source) {
+    List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
+    if (DEBUG_TOKENIZER) {
+      System.out.println(render_text(describe(tokens)));
+    }
+
+    List<construct> constructs = parse(tokens, new common_context());
+    if (DEBUG_PARSER) {
+      System.out.println(render_text(describe(constructs)));
+    }
+
+    if (has_errors) {
+      return;
+    }
+
+    constructs = new to_java_transform().transform_all(constructs);
+
+    System.out.print(render_text(new java_printer().print_all(constructs)));
+  }
+
   public static void main(String[] args) {
     String file_name = args[0];
     String file_content = "";
@@ -1240,20 +1268,7 @@ public class create {
       System.exit(1);
     }
 
-    source_text the_source = new source_text_class(file_name, file_content);
-    List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
-    if (DEBUG_TOKENIZER) {
-      System.out.println(render_text(describe(tokens)));
-    }
-
-    List<construct> constructs = parse(tokens, new common_context());
-    if (DEBUG_PARSER) {
-      System.out.println(render_text(describe(constructs)));
-    }
-
-    constructs = new to_java_transform().transform_all(constructs);
-
-    System.out.print(render_text(new java_printer().print_all(constructs)));
+    create(new source_text_class(file_name, file_content));
   }
 
   private static String read_file(String file_name) throws IOException {

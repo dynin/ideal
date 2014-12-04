@@ -484,15 +484,33 @@ public interface bootstrapped {
       return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class error_signal implements action, describable {
+  interface notification_message {
+    notification_type type();
+    String text();
+  }
+  class notification_message_class implements notification_message {
     private final notification_type type;
-    private final source the_source;
-    public error_signal(notification_type type, source the_source) {
+    private final String text;
+    public notification_message_class(notification_type type, String text) {
       this.type = type;
+      this.text = text;
+    }
+    @Override public notification_type type() {
+      return type;
+    }
+    @Override public String text() {
+      return text;
+    }
+  }
+  class error_signal implements action, describable {
+    private final notification_message message;
+    private final source the_source;
+    public error_signal(notification_message message, source the_source) {
+      this.message = message;
       this.the_source = the_source;
     }
-    public notification_type type() {
-      return type;
+    public notification_message message() {
+      return message;
     }
     public source the_source() {
       return the_source;
@@ -501,7 +519,7 @@ public interface bootstrapped {
       return core_type.ERROR;
     }
     @Override public text description() {
-      return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("message", message), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   interface frame extends type, describable {
@@ -566,7 +584,7 @@ public interface bootstrapped {
       return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  enum notification_type {
+  enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),
     NEWLINE_IN_STRING_LITERAL("Newline in string literal"),
@@ -574,12 +592,15 @@ public interface bootstrapped {
     CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
     MODIFIER_EXPECTED("Modifier expected"),
     ANALYSIS_ERROR("Analysis error");
-    private final String message;
-    notification_type(String message) {
-      this.message = message;
+    private final String text;
+    notification_type(String text) {
+      this.text = text;
     }
-    public String message() {
-      return message;
+    public String text() {
+      return text;
+    }
+    @Override public notification_type type() {
+      return this;
     }
   }
 }

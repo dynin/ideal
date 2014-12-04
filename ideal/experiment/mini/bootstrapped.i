@@ -228,9 +228,14 @@
   (variable (nullable source) the_source)
 )
 
+(datatype notification_message
+  (variable notification_type type)
+  (variable string text)
+)
+
 (class error_signal
   (implements action describable)
-  (variable notification_type type)
+  (variable notification_message message)
   (variable source the_source)
   (variable (override) type result core_type.ERROR)
 )
@@ -257,7 +262,9 @@
 ; Notifications
 
 (enum notification_type
-  (variable string message)
+  (implements notification_message)
+  (variable string text)
+  (variable (override) notification_type type this)
   (UNRECOGNIZED_CHARACTER "Unrecognized character")
   (EOF_IN_STRING_LITERAL "End of file in string literal")
   (NEWLINE_IN_STRING_LITERAL "Newline in string literal")

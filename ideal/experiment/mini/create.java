@@ -124,7 +124,10 @@ public class create {
     }
 
     public action call_construct(construct the_construct) {
-      return new error_signal(notification_type.ANALYSIS_ERROR, the_construct);
+      return new error_signal(
+          new notification_message_class(notification_type.ANALYSIS_ERROR,
+              "Can't handle " + describe_type(the_construct)),
+          the_construct);
     }
 
     public action call_identifier(identifier the_identifier) {
@@ -178,14 +181,28 @@ public class create {
         master_type declared_type = new master_type_class(the_type_construct.name(), parent);
         the_type_declaration = new type_declaration(declared_type, the_type_construct);
         the_analysis_context.add_binding(the_type_construct, the_type_declaration);
+        the_analysis_context.add_action(parent, the_type_construct.name(), the_type_declaration);
       } else {
         the_type_declaration = (type_declaration)
             the_analysis_context.get_binding(the_type_construct);
         assert the_type_declaration != null;
       }
 
+      if (pass == analysis_pass.TYPE_PASS) {
+        analyze_all(the_type_construct.body(), parent, pass);
+      }
+
       return the_type_declaration;
     }
+  }
+
+  private static String describe_type(Object the_object) {
+    String name = the_object.getClass().getName();
+    int dollar_index = name.lastIndexOf('$');
+    if (dollar_index >= 0) {
+      name = name.substring(dollar_index + 1);
+    }
+    return name;
   }
 
   public static List<token> tokenize(source_text the_source_text) {
@@ -247,9 +264,7 @@ public class create {
   }
 
   public static void report(error_signal the_error_signal) {
-    has_errors = true;
-
-    String message = the_error_signal.type().message();
+    String message = the_error_signal.message().text();
 
     @Nullable source deep_source = the_error_signal.the_source();
     while(deep_source != null) {
@@ -300,6 +315,7 @@ public class create {
     }
 
     System.err.println(message);
+    has_errors = true;
   }
 
   public interface identifier_processor {

@@ -272,4 +272,5 @@
   (CLOSE_PAREN_NOT_FOUND "Close parenthesis not found")
   (MODIFIER_EXPECTED "Modifier expected")
   (ANALYSIS_ERROR "Analysis error")
+  (SYMBOL_LOOKUP_FAILED "Symbol lookup failed")
 )

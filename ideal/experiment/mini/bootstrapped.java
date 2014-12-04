@@ -591,7 +591,8 @@ public interface bootstrapped {
     PARSE_ERROR("Parse error"),
     CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
     MODIFIER_EXPECTED("Modifier expected"),
-    ANALYSIS_ERROR("Analysis error");
+    ANALYSIS_ERROR("Analysis error"),
+    SYMBOL_LOOKUP_FAILED("Symbol lookup failed");
     private final String text;
     notification_type(String text) {
       this.text = text;

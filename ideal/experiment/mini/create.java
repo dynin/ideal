@@ -131,7 +131,16 @@ public class create {
     }
 
     public action call_identifier(identifier the_identifier) {
-      return call_construct(the_identifier);
+      String name = the_identifier.name();
+      @Nullable action the_action = the_analysis_context.get_action(parent, name);
+      if (the_action != null) {
+        return the_action;
+      } else {
+        return new error_signal(
+            new notification_message_class(notification_type.SYMBOL_LOOKUP_FAILED,
+                "Symbol lookup failed for '" + name  + "'"),
+            the_identifier);
+      }
     }
 
     public action call_operator(operator the_operator) {
@@ -167,7 +176,15 @@ public class create {
         return null;
       }
 
-      return call_construct(the_variable_construct);
+      @Nullable construct type_construct = the_variable_construct.type();
+
+      if (type_construct != null) {
+        analyze(type_construct, parent, pass);
+      } else {
+        return call_construct(the_variable_construct);
+      }
+
+      return null;
     }
 
     public action call_procedure_construct(procedure_construct the_procedure_construct) {
@@ -179,7 +196,12 @@ public class create {
         return null;
       }
 
-      return call_construct(the_supertype_construct);
+      for (construct supertype : the_supertype_construct.supertypes()) {
+        // TODO: register as supertype
+        analyze(supertype, parent, pass);
+      }
+
+      return null;
     }
 
     public action call_type_construct(type_construct the_type_construct) {
@@ -207,15 +229,6 @@ public class create {
 
       return the_type_declaration;
     }
-  }
-
-  private static String describe_type(Object the_object) {
-    String name = the_object.getClass().getName();
-    int dollar_index = name.lastIndexOf('$');
-    if (dollar_index >= 0) {
-      name = name.substring(dollar_index + 1);
-    }
-    return name;
   }
 
   public static List<token> tokenize(source_text the_source_text) {
@@ -1284,6 +1297,13 @@ public class create {
     return result;
   }
 
+  public static analysis_context init_analysis_context() {
+    analysis_context the_context = new analysis_context();
+    // TODO: source
+    the_context.add_action(top_frame, "string", new type_action_class(core_type.STRING, null));
+    return the_context;
+  }
+
   public static void create(source_text the_source, boolean analyze) {
     List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
     if (DEBUG_TOKENIZER) {
@@ -1300,7 +1320,7 @@ public class create {
     }
 
     if (analyze) {
-      analysis_context the_context = new analysis_context();
+      analysis_context the_context = init_analysis_context();
       analyzer the_analyzer = new analyzer(the_context);
 
       for (analysis_pass pass : analysis_pass.values()) {

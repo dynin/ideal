@@ -1,5 +1,11 @@
 ; (hello world "!")
 ; (hi (hello world))
+(interface text)
+
+(interface describable
+  (variable text description)
+)
+
 (interface source
   (variable (nullable source) deeper)
 )

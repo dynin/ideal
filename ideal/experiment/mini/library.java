@@ -71,6 +71,15 @@ public class library {
     return s.toLowerCase();
   }
 
+  public static String describe_type(Object the_object) {
+    String name = the_object.getClass().getName();
+    int dollar_index = name.lastIndexOf('$');
+    if (dollar_index >= 0) {
+      name = name.substring(dollar_index + 1);
+    }
+    return name;
+  }
+
   public static text join_text(text... texts) {
     return new text_list(Arrays.asList(texts));
   }

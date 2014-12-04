@@ -26,7 +26,7 @@ public class create {
 
   public enum analysis_pass {
     TYPE_PASS,
-    METHOD_PASS,
+    MEMBER_PASS,
     BODY_PASS;
   }
 
@@ -126,7 +126,7 @@ public class create {
     public action call_construct(construct the_construct) {
       return new error_signal(
           new notification_message_class(notification_type.ANALYSIS_ERROR,
-              "Can't handle " + describe_type(the_construct)),
+              "Can't handle " + describe_type(the_construct) + " in " + pass),
           the_construct);
     }
 
@@ -163,6 +163,10 @@ public class create {
     }
 
     public action call_variable_construct(variable_construct the_variable_construct) {
+      if (pass != analysis_pass.MEMBER_PASS) {
+        return null;
+      }
+
       return call_construct(the_variable_construct);
     }
 
@@ -171,6 +175,10 @@ public class create {
     }
 
     public action call_supertype_construct(supertype_construct the_supertype_construct) {
+      if (pass != analysis_pass.MEMBER_PASS) {
+        return null;
+      }
+
       return call_construct(the_supertype_construct);
     }
 
@@ -188,8 +196,13 @@ public class create {
         assert the_type_declaration != null;
       }
 
-      if (pass == analysis_pass.TYPE_PASS) {
-        analyze_all(the_type_construct.body(), parent, pass);
+      boolean is_enum = the_type_construct.the_type_kind() == type_kind.ENUM;
+      for (construct the_construct : the_type_construct.body()) {
+        if (is_enum && is_enum_declaration.call(the_construct)) {
+          // TODO: handle enum declarations.
+        } else {
+          analyze(the_construct, parent, pass);
+        }
       }
 
       return the_type_declaration;
@@ -1286,8 +1299,6 @@ public class create {
       return;
     }
 
-    constructs = new to_java_transform().transform_all(constructs);
-
     if (analyze) {
       analysis_context the_context = new analysis_context();
       analyzer the_analyzer = new analyzer(the_context);
@@ -1300,6 +1311,8 @@ public class create {
         return;
       }
     }
+
+    constructs = new to_java_transform().transform_all(constructs);
 
     System.out.print(render_text(new java_printer().print_all(constructs)));
   }

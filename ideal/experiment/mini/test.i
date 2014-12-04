@@ -1,5 +1,5 @@
-(hello world "!")
-(hi (hello world))
+; (hello world "!")
+; (hi (hello world))
 (interface source
   (variable (nullable source) deeper)
 )

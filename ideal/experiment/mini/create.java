@@ -32,6 +32,8 @@ public class create {
 
   public static frame top_frame = new frame_class("<top>", null);
 
+  public static boolean has_errors = false;
+
   public static class analysis_context {
     private final Map<frame, frame_context> frame_contexts;
     private final Map<construct, action> bindings;
@@ -87,8 +89,7 @@ public class create {
     }
   }
 
-  public class analyzer extends construct_dispatch<action> {
-
+  public static class analyzer extends construct_dispatch<action> {
     private final analysis_context the_analysis_context;
     private frame parent;
     private analysis_pass pass;
@@ -114,6 +115,12 @@ public class create {
       }
 
       return result;
+    }
+
+    public void analyze_all(List<construct> constructs, frame parent, analysis_pass pass) {
+      for (construct the_construct : constructs) {
+        analyze(the_construct, parent, pass);
+      }
     }
 
     public action call_construct(construct the_construct) {
@@ -168,6 +175,7 @@ public class create {
       return call_construct(the_type_construct);
     }
   }
+
   public static List<token> tokenize(source_text the_source_text) {
     String content = the_source_text.content();
     int index = 0;
@@ -225,8 +233,6 @@ public class create {
   public static boolean is_identifier_letter(char c) {
     return is_letter(c) || c == '_' || c == '.';
   }
-
-  private static boolean has_errors;
 
   public static void report(error_signal the_error_signal) {
     has_errors = true;
@@ -1253,6 +1259,15 @@ public class create {
     }
 
     constructs = new to_java_transform().transform_all(constructs);
+
+    analysis_context the_context = new analysis_context();
+    analyzer the_analyzer = new analyzer(the_context);
+
+    the_analyzer.analyze_all(constructs, top_frame, analysis_pass.TYPE_PASS);
+
+    if (has_errors) {
+      return;
+    }
 
     System.out.print(render_text(new java_printer().print_all(constructs)));
   }

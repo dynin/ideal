@@ -241,6 +241,19 @@
   (variable (nullable frame) parent)
 )
 
+(datatype master_type
+  (extends frame describable)
+  (variable string name)
+  (variable frame parent)
+)
+
+(class type_declaration
+  (implements type_action describable)
+  (variable master_type declared_type)
+  (variable source the_source)
+  (variable (override) type result declared_type)
+)
+
 ; Notifications
 
 (enum notification_type

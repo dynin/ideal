@@ -370,7 +370,7 @@ $(MINITARGET): $(MINI_SOURCE)
 	@touch $@
 
 mini: $(MINITARGET)
-	@$(JAVA_MINI_CREATE) $(MINI_DIR)/test.i
+	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/test.i
 
 minib: $(MINITARGET)
 	@cat $(MINI_DIR)/header.txt

@@ -172,7 +172,19 @@ public class create {
     }
 
     public action call_type_construct(type_construct the_type_construct) {
-      return call_construct(the_type_construct);
+      type_declaration the_type_declaration;
+
+      if (pass == analysis_pass.TYPE_PASS) {
+        master_type declared_type = new master_type_class(the_type_construct.name(), parent);
+        the_type_declaration = new type_declaration(declared_type, the_type_construct);
+        the_analysis_context.add_binding(the_type_construct, the_type_declaration);
+      } else {
+        the_type_declaration = (type_declaration)
+            the_analysis_context.get_binding(the_type_construct);
+        assert the_type_declaration != null;
+      }
+
+      return the_type_declaration;
     }
   }
 
@@ -1243,7 +1255,7 @@ public class create {
     return result;
   }
 
-  public static void create(source_text the_source) {
+  public static void create(source_text the_source, boolean analyze) {
     List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
     if (DEBUG_TOKENIZER) {
       System.out.println(render_text(describe(tokens)));
@@ -1260,20 +1272,26 @@ public class create {
 
     constructs = new to_java_transform().transform_all(constructs);
 
-    analysis_context the_context = new analysis_context();
-    analyzer the_analyzer = new analyzer(the_context);
+    if (analyze) {
+      analysis_context the_context = new analysis_context();
+      analyzer the_analyzer = new analyzer(the_context);
 
-    the_analyzer.analyze_all(constructs, top_frame, analysis_pass.TYPE_PASS);
+      for (analysis_pass pass : analysis_pass.values()) {
+        the_analyzer.analyze_all(constructs, top_frame, pass);
+      }
 
-    if (has_errors) {
-      return;
+      if (has_errors) {
+        return;
+      }
     }
 
     System.out.print(render_text(new java_printer().print_all(constructs)));
   }
 
   public static void main(String[] args) {
-    String file_name = args[0];
+    assert args.length > 0 && args.length <= 2;
+    boolean analyze = args.length == 2;
+    String file_name = args[analyze ? 1 : 0];
     String file_content = "";
 
     try {
@@ -1283,7 +1301,7 @@ public class create {
       System.exit(1);
     }
 
-    create(new source_text_class(file_name, file_content));
+    create(new source_text_class(file_name, file_content), analyze);
   }
 
   private static String read_file(String file_name) throws IOException {

@@ -525,6 +525,47 @@ public interface bootstrapped {
       return join_fragments("frame_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
     }
   }
+  interface master_type extends frame, describable {
+    String name();
+    frame parent();
+  }
+  class master_type_class implements master_type {
+    private final String name;
+    private final frame parent;
+    public master_type_class(String name, frame parent) {
+      this.name = name;
+      this.parent = parent;
+    }
+    @Override public String name() {
+      return name;
+    }
+    @Override public frame parent() {
+      return parent;
+    }
+    @Override public text description() {
+      return join_fragments("master_type_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
+    }
+  }
+  class type_declaration implements type_action, describable {
+    private final master_type declared_type;
+    private final source the_source;
+    public type_declaration(master_type declared_type, source the_source) {
+      this.declared_type = declared_type;
+      this.the_source = the_source;
+    }
+    public master_type declared_type() {
+      return declared_type;
+    }
+    public source the_source() {
+      return the_source;
+    }
+    @Override public type result() {
+      return declared_type;
+    }
+    @Override public text description() {
+      return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum notification_type {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

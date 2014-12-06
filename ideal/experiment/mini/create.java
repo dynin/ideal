@@ -108,10 +108,6 @@ public class create {
       this.parent = old_parent;
       this.pass = old_pass;
 
-      if (result instanceof error_signal) {
-        report((error_signal) result);
-      }
-
       return result;
     }
 
@@ -122,23 +118,37 @@ public class create {
     }
 
     public action call_construct(construct the_construct) {
-      return new error_signal(
+      error_signal error_result =
+        new error_signal(
           new notification_message_class(notification_type.ANALYSIS_ERROR,
               "Can't handle " + describe_type(the_construct) + " in " + pass),
           the_construct);
+
+      report(error_result);
+
+      return error_result;
     }
 
     public action call_identifier(identifier the_identifier) {
+      @Nullable action result = the_analysis_context.get_binding(the_identifier);
+      if (result != null) {
+        return result;
+      }
+
       String name = the_identifier.name();
-      @Nullable action the_action = the_analysis_context.get_action(parent, name);
-      if (the_action != null) {
-        return the_action;
-      } else {
-        return new error_signal(
+      result = the_analysis_context.get_action(parent, name);
+      if (result == null) {
+        error_signal error_result = new error_signal(
             new notification_message_class(notification_type.SYMBOL_LOOKUP_FAILED,
                 "Symbol lookup failed for '" + name  + "'"),
             the_identifier);
+        report(error_result);
+        result = error_result;
       }
+
+      the_analysis_context.add_binding(the_identifier, result);
+
+      return result;
     }
 
     public action call_operator(operator the_operator) {
@@ -150,7 +160,8 @@ public class create {
     }
 
     public action call_parameter_construct(parameter_construct the_parameter_construct) {
-      return call_construct(the_parameter_construct);
+      action main_action = analyze(the_parameter_construct.main(), parent, pass);
+      return main_action;
     }
 
     public action call_modifier_construct(modifier_construct the_modifier_construct) {
@@ -1378,11 +1389,18 @@ public class create {
     return result;
   }
 
+  private static void add_core_type(analysis_context the_context, core_type the_type) {
+    the_context.add_action(top_type.instance, to_lower_case(the_type.name()),
+        new type_action_class(the_type, builtin_source.instance));
+  }
+
   public static analysis_context init_analysis_context() {
     analysis_context the_context = new analysis_context();
-    principal_type top = top_type.instance;
-    source the_source = builtin_source.instance;
-    the_context.add_action(top, "string", new type_action_class(core_type.STRING, the_source));
+
+    add_core_type(the_context, core_type.STRING);
+    add_core_type(the_context, core_type.LIST);
+    add_core_type(the_context, core_type.NULLABLE);
+
     return the_context;
   }
 

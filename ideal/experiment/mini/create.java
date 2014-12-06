@@ -291,7 +291,7 @@ public class create {
     String message = the_error_signal.message().text();
 
     @Nullable source deep_source = the_error_signal.the_source();
-    while(deep_source != null) {
+    while (deep_source != null) {
       if (deep_source instanceof text_position) {
         text_position position = (text_position) deep_source;
         String content = position.the_source().content();
@@ -333,6 +333,10 @@ public class create {
       }
       if (deep_source instanceof source_text) {
         message = ((source_text) deep_source).name() + ": " + message;
+        break;
+      }
+      if (deep_source instanceof builtin_source) {
+        message = "<builtin>: " + message;
         break;
       }
       deep_source = deep_source.the_source();
@@ -1377,8 +1381,8 @@ public class create {
   public static analysis_context init_analysis_context() {
     analysis_context the_context = new analysis_context();
     principal_type top = top_type.instance;
-    // TODO: source
-    the_context.add_action(top, "string", new type_action_class(core_type.STRING, null));
+    source the_source = builtin_source.instance;
+    the_context.add_action(top, "string", new type_action_class(core_type.STRING, the_source));
     return the_context;
   }
 

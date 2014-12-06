@@ -99,6 +99,15 @@ public interface bootstrapped {
       return join_fragments("text_position_class", START_OBJECT, NEWLINE, indent(field_is("the_source", the_source), field_is("character_index", character_index)), END_OBJECT);
     }
   }
+  class builtin_source implements source, describable {
+    public static final builtin_source instance = new builtin_source();
+    @Override public @Nullable source the_source() {
+      return null;
+    }
+    @Override public text description() {
+      return new text_string("builtin_source");
+    }
+  }
   enum token_type {
     WHITESPACE,
     COMMENT,

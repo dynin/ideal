@@ -38,13 +38,18 @@
   (extends source describable)
   (variable string name)
   (variable (dont_describe) string content)
-  (variable () (nullable source) the_source null)
+  (variable (override) (nullable source) the_source null)
 )
 
 (datatype text_position
   (extends source describable)
   (variable source_text the_source)
   (variable int character_index)
+)
+
+(singleton builtin_source
+  (implements source describable)
+  (variable (override) (nullable source) the_source null)
 )
 
 ; Tokens

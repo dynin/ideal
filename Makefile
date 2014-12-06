@@ -369,6 +369,9 @@ $(MINITARGET): $(MINI_SOURCE)
 	$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -Xlint:unchecked -d $(CLASSES_DIR) $^
 	@touch $@
 
+m0: $(MINITARGET)
+	@$(JAVA_MINI_CREATE) $(MINI_DIR)/test.i
+
 mini: $(MINITARGET)
 	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/test.i
 

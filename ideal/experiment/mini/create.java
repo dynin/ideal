@@ -30,8 +30,6 @@ public class create {
     BODY_PASS;
   }
 
-  public static principal_type TOP = new principal_type_class("<top>", null);
-
   public static boolean has_errors = false;
 
   public static class analysis_context {
@@ -567,10 +565,13 @@ public class create {
     public common_context() {
       parsers = new HashMap<String, special_parser>();
       parsers.put("variable", VARIABLE_PARSER);
+
       parsers.put("datatype", new type_parser(type_kind.DATATYPE));
       parsers.put("interface", new type_parser(type_kind.INTERFACE));
       parsers.put("enum", new type_parser(type_kind.ENUM));
       parsers.put("class", new type_parser(type_kind.CLASS));
+      parsers.put("singleton", new type_parser(type_kind.SINGLETON));
+
       parsers.put("extends", new supertype_parser(supertype_kind.EXTENDS));
       parsers.put("implements", new supertype_parser(supertype_kind.IMPLEMENTS));
     }
@@ -597,6 +598,7 @@ public class create {
   public static final text GREATER_THAN = new text_string(">");
   public static final text OPEN_BRACE = new text_string("{");
   public static final text CLOSE_BRACE = new text_string("}");
+  public static final text EQUALS = new text_string("=");
   public static final text SEMICOLON = new text_string(";");
   public static final text RETURN_KEYWORD = new text_string("return");
 
@@ -652,6 +654,15 @@ public class create {
     }
 
     public text print_operator(operator the_operator, List<construct> arguments) {
+      // TODO: add operator kind (prefix/postfix/prefix)
+      if (arguments.size() == 2) {
+        return print_infix(the_operator, arguments);
+      } else {
+        return print_prefix(the_operator, arguments);
+      }
+    }
+
+    public text print_infix(operator the_operator, List<construct> arguments) {
       assert arguments.size() == 2;
       operator_type the_operator_type = the_operator.the_operator_type();
       text operator_text = new text_string(the_operator_type.symbol());
@@ -659,6 +670,14 @@ public class create {
         operator_text = join_text(SPACE, operator_text, SPACE);
       }
       return join_text(print(arguments.get(0)), operator_text, print(arguments.get(1)));
+    }
+
+    public text print_prefix(operator the_operator, List<construct> arguments) {
+      assert arguments.size() == 1;
+      operator_type the_operator_type = the_operator.the_operator_type();
+      text operator_text = new text_string(the_operator_type.symbol());
+      // TODO: no need for space for !NEW
+      return join_text(operator_text, SPACE, print(arguments.get(0)));
     }
 
     @Override
@@ -690,11 +709,18 @@ public class create {
     }
 
     protected text print_variable(variable_construct the_variable_construct) {
-      return join_text(
+      text declaration = join_text(
         print_with_space(the_variable_construct.modifiers()),
         print(the_variable_construct.type()),
         SPACE,
         new text_string(the_variable_construct.name()));
+
+      if (the_variable_construct.initializer() != null) {
+        return join_text(declaration, SPACE, EQUALS, SPACE,
+            print(the_variable_construct.initializer()));
+      } else {
+        return declaration;
+      }
     }
 
     @Override
@@ -995,9 +1021,12 @@ public class create {
       boolean declare_implementation =
           the_type_kind == type_kind.DATATYPE ||
           the_type_kind == type_kind.ENUM ||
-          the_type_kind == type_kind.CLASS;
+          the_type_kind == type_kind.CLASS ||
+          the_type_kind == type_kind.SINGLETON;
 
       boolean declare_enum = the_type_kind == type_kind.ENUM;
+
+      boolean declare_singleton = the_type_kind == type_kind.SINGLETON;
 
       source the_source = the_type_construct;
 
@@ -1123,6 +1152,31 @@ public class create {
       }
 
       if (declare_implementation) {
+        if (declare_singleton) {
+          // TODO: signal an error
+          assert ctor_parameters.isEmpty();
+
+          List<modifier_construct> instance_modifiers = new ArrayList<modifier_construct>();
+          instance_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+          instance_modifiers.add(new modifier_construct(modifier_kind.STATIC, the_source));
+          instance_modifiers.add(new modifier_construct(modifier_kind.FINAL, the_source));
+
+          construct instance_ctor = new parameter_construct(
+              make_new(implementation_name, the_source),
+              new ArrayList<construct>(),
+              grouping_type.PARENS,
+              the_source);
+
+          variable_construct instance_variable =
+              new variable_construct(
+                  instance_modifiers,
+                  new identifier(implementation_name, the_source),
+                  "instance",
+                  instance_ctor,
+                  the_source);
+          implementation_body.add(instance_variable);
+        }
+
         if (!ctor_parameters.isEmpty()) {
           List<modifier_construct> ctor_modifiers = new ArrayList<modifier_construct>();
           if (!declare_enum) {
@@ -1142,7 +1196,7 @@ public class create {
 
         implementation_body.addAll(accessor_functions);
 
-        if (generate_description && !declare_enum && !describe_fields.isEmpty()) {
+        if (generate_description && !declare_enum) {
           implementation_body.add(generate_description(implementation_name, describe_fields,
               the_source));
         }
@@ -1162,37 +1216,50 @@ public class create {
     private procedure_construct generate_description(String type_name, List<String> fields,
         final source the_source) {
 
-      List<construct> join_arguments = new ArrayList<construct>();
-      join_arguments.add(make_literal(type_name, the_source));
-      join_arguments.add(new identifier("START_OBJECT", the_source));
+      construct name_literal = make_literal(type_name, the_source);
+      construct return_expression;
 
-      if (fields.size() != 1) {
-        List<construct> field_calls = map(fields, new function<construct, String>() {
-          @Override
-          public construct call(String name) {
-            construct name_literal = make_literal(name, the_source);
-            construct name_identifier = new identifier(name, the_source);
-            return call_function2("field_is", name_literal, name_identifier, the_source);
-          }
-        });
-        construct indent_call = new parameter_construct(new identifier("indent", the_source),
-            field_calls, grouping_type.PARENS, the_source);
-
-        join_arguments.add(new identifier("NEWLINE", the_source));
-        join_arguments.add(indent_call);
+      if (fields.isEmpty()) {
+        List<construct> ctor_parameters = new ArrayList<construct>();
+        ctor_parameters.add(name_literal);
+        return_expression = new parameter_construct(
+            make_new("text_string", the_source),
+            ctor_parameters,
+            grouping_type.OPERATOR,
+            the_source);
       } else {
-        construct name_identifier = new identifier(fields.get(0), the_source);
+        List<construct> join_arguments = new ArrayList<construct>();
+        join_arguments.add(name_literal);
+        join_arguments.add(new identifier("START_OBJECT", the_source));
 
-        join_arguments.add(new identifier("SPACE", the_source));
-        join_arguments.add(call_function1("describe", name_identifier, the_source));
-        join_arguments.add(new identifier("SPACE", the_source));
+        if (fields.size() != 1) {
+          List<construct> field_calls = map(fields, new function<construct, String>() {
+            @Override
+            public construct call(String name) {
+              construct name_literal = make_literal(name, the_source);
+              construct name_identifier = new identifier(name, the_source);
+              return call_function2("field_is", name_literal, name_identifier, the_source);
+            }
+          });
+          construct indent_call = new parameter_construct(new identifier("indent", the_source),
+              field_calls, grouping_type.PARENS, the_source);
+
+          join_arguments.add(new identifier("NEWLINE", the_source));
+          join_arguments.add(indent_call);
+        } else {
+          construct name_identifier = new identifier(fields.get(0), the_source);
+
+          join_arguments.add(new identifier("SPACE", the_source));
+          join_arguments.add(call_function1("describe", name_identifier, the_source));
+          join_arguments.add(new identifier("SPACE", the_source));
+        }
+
+        join_arguments.add(new identifier("END_OBJECT", the_source));
+        return_expression = new parameter_construct(new identifier("join_fragments",
+            the_source), join_arguments, grouping_type.PARENS, the_source);
       }
 
-      join_arguments.add(new identifier("END_OBJECT", the_source));
-      construct join_call = new parameter_construct(new identifier("join_fragments", the_source),
-          join_arguments, grouping_type.PARENS, the_source);
-
-      construct description_return = new return_construct(join_call, the_source);
+      construct description_return = new return_construct(return_expression, the_source);
       List<construct> description_statements = new ArrayList<construct>();
       description_statements.add(description_return);
       block_construct description_body = new block_construct(description_statements, the_source);
@@ -1212,6 +1279,16 @@ public class create {
     public static construct make_literal(String value, source the_source) {
       // TODO: escape properly.
       return new string_literal(value, "\"" + value + "\"", the_source);
+    }
+
+    public static construct make_new(String type_name, source the_source) {
+      List<construct> new_parameters = new ArrayList<construct>();
+      new_parameters.add(new identifier(type_name, the_source));
+      return new parameter_construct(
+          new operator(operator_type.NEW, the_source),
+          new_parameters,
+          grouping_type.OPERATOR,
+          the_source);
     }
 
     private boolean has_describable(List<construct> constructs) {
@@ -1299,8 +1376,9 @@ public class create {
 
   public static analysis_context init_analysis_context() {
     analysis_context the_context = new analysis_context();
+    principal_type top = top_type.instance;
     // TODO: source
-    the_context.add_action(TOP, "string", new type_action_class(core_type.STRING, null));
+    the_context.add_action(top, "string", new type_action_class(core_type.STRING, null));
     return the_context;
   }
 
@@ -1324,7 +1402,7 @@ public class create {
       analyzer the_analyzer = new analyzer(the_context);
 
       for (analysis_pass pass : analysis_pass.values()) {
-        the_analyzer.analyze_all(constructs, TOP, pass);
+        the_analyzer.analyze_all(constructs, top_type.instance, pass);
       }
 
       if (has_errors) {

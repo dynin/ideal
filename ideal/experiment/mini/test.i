@@ -25,6 +25,10 @@
   bar
 )
 
+(singleton empty
+  (implements text)
+)
+
 (enum operator_type
   (DOT ".")
   (ASSIGN "=")

@@ -87,6 +87,7 @@
   (variable string symbol)
   (DOT ".")
   (ASSIGN "=")
+  (NEW "new")
 )
 
 (class operator
@@ -188,6 +189,7 @@
   DATATYPE
   ENUM
   CLASS
+  SINGLETON
 )
 
 (class type_construct
@@ -244,6 +246,12 @@
   (extends type describable)
   (variable string name)
   (variable (nullable principal_type) parent)
+)
+
+(singleton top_type
+  (implements principal_type describable)
+  (variable (override) string name "<top>")
+  (variable (override) (nullable principal_type) parent null)
 )
 
 (datatype master_type

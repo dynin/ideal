@@ -152,7 +152,8 @@ public interface bootstrapped {
   }
   enum operator_type {
     DOT("."),
-    ASSIGN("=");
+    ASSIGN("="),
+    NEW("new");
     private final String symbol;
     operator_type(String symbol) {
       this.symbol = symbol;
@@ -414,7 +415,8 @@ public interface bootstrapped {
     INTERFACE,
     DATATYPE,
     ENUM,
-    CLASS;
+    CLASS,
+    SINGLETON;
   }
   class type_construct implements construct, describable {
     private final List<modifier_construct> modifiers;
@@ -541,6 +543,18 @@ public interface bootstrapped {
     }
     @Override public text description() {
       return join_fragments("principal_type_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
+    }
+  }
+  class top_type implements principal_type, describable {
+    public static final top_type instance = new top_type();
+    @Override public String name() {
+      return "<top>";
+    }
+    @Override public @Nullable principal_type parent() {
+      return null;
+    }
+    @Override public text description() {
+      return new text_string("top_type");
     }
   }
   interface master_type extends principal_type, describable {

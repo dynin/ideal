@@ -240,16 +240,16 @@
   (variable (override) type result core_type.ERROR)
 )
 
-(datatype frame
+(datatype principal_type
   (extends type describable)
   (variable string name)
-  (variable (nullable frame) parent)
+  (variable (nullable principal_type) parent)
 )
 
 (datatype master_type
-  (extends frame describable)
+  (extends principal_type describable)
   (variable string name)
-  (variable frame parent)
+  (variable principal_type parent)
 )
 
 (class type_declaration

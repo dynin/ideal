@@ -522,42 +522,42 @@ public interface bootstrapped {
       return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("message", message), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  interface frame extends type, describable {
+  interface principal_type extends type, describable {
     String name();
-    @Nullable frame parent();
+    @Nullable principal_type parent();
   }
-  class frame_class implements frame {
+  class principal_type_class implements principal_type {
     private final String name;
-    private final @Nullable frame parent;
-    public frame_class(String name, @Nullable frame parent) {
+    private final @Nullable principal_type parent;
+    public principal_type_class(String name, @Nullable principal_type parent) {
       this.name = name;
       this.parent = parent;
     }
     @Override public String name() {
       return name;
     }
-    @Override public @Nullable frame parent() {
+    @Override public @Nullable principal_type parent() {
       return parent;
     }
     @Override public text description() {
-      return join_fragments("frame_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
+      return join_fragments("principal_type_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
     }
   }
-  interface master_type extends frame, describable {
+  interface master_type extends principal_type, describable {
     String name();
-    frame parent();
+    principal_type parent();
   }
   class master_type_class implements master_type {
     private final String name;
-    private final frame parent;
-    public master_type_class(String name, frame parent) {
+    private final principal_type parent;
+    public master_type_class(String name, principal_type parent) {
       this.name = name;
       this.parent = parent;
     }
     @Override public String name() {
       return name;
     }
-    @Override public frame parent() {
+    @Override public principal_type parent() {
       return parent;
     }
     @Override public text description() {

@@ -30,42 +30,42 @@ public class create {
     BODY_PASS;
   }
 
-  public static frame top_frame = new frame_class("<top>", null);
+  public static principal_type TOP = new principal_type_class("<top>", null);
 
   public static boolean has_errors = false;
 
   public static class analysis_context {
-    private final Map<frame, frame_context> frame_contexts;
+    private final Map<principal_type, type_context> type_contexts;
     private final Map<construct, action> bindings;
 
     public analysis_context() {
-      frame_contexts = new HashMap<frame, frame_context>();
+      type_contexts = new HashMap<principal_type, type_context>();
       bindings = new HashMap<construct, action>();
     }
 
-    public void add_action(frame the_frame, String name, action the_action) {
-      @Nullable frame_context the_frame_context = frame_contexts.get(the_frame);
-      if (the_frame_context == null) {
-        the_frame_context = new frame_context();
-        frame_contexts.put(the_frame, the_frame_context);
+    public void add_action(principal_type the_type, String name, action the_action) {
+      @Nullable type_context the_type_context = type_contexts.get(the_type);
+      if (the_type_context == null) {
+        the_type_context = new type_context();
+        type_contexts.put(the_type, the_type_context);
       }
 
-      @Nullable action old_action = the_frame_context.action_table.put(name, the_action);
+      @Nullable action old_action = the_type_context.action_table.put(name, the_action);
       // actions can't be overriden.
       assert old_action == null;
     }
 
-    public @Nullable action get_action(frame the_frame, String name) {
+    public @Nullable action get_action(principal_type the_type, String name) {
       do {
-        @Nullable frame_context the_frame_context = frame_contexts.get(the_frame);
-        if (the_frame_context != null) {
-          @Nullable action result = the_frame_context.action_table.get(name);
+        @Nullable type_context the_type_context = type_contexts.get(the_type);
+        if (the_type_context != null) {
+          @Nullable action result = the_type_context.action_table.get(name);
           if (result != null) {
             return result;
           }
         }
-        the_frame = the_frame.parent();
-      } while (the_frame != null);
+        the_type = the_type.parent();
+      } while (the_type != null);
 
       return null;
     }
@@ -80,10 +80,10 @@ public class create {
     }
 
     // Implementation detail of analysis_context.
-    private static class frame_context {
+    private static class type_context {
       final Map<String, action> action_table;
 
-      public frame_context() {
+      public type_context() {
         action_table = new HashMap<String, action>();
       }
     }
@@ -91,15 +91,15 @@ public class create {
 
   public static class analyzer extends construct_dispatch<action> {
     private final analysis_context the_analysis_context;
-    private frame parent;
+    private principal_type parent;
     private analysis_pass pass;
 
     public analyzer(analysis_context the_analysis_context) {
       this.the_analysis_context = the_analysis_context;
     }
 
-    public action analyze(construct the_construct, frame parent, analysis_pass pass) {
-      frame old_parent = this.parent;
+    public action analyze(construct the_construct, principal_type parent, analysis_pass pass) {
+      principal_type old_parent = this.parent;
       analysis_pass old_pass = this.pass;
 
       this.parent = parent;
@@ -117,7 +117,7 @@ public class create {
       return result;
     }
 
-    public void analyze_all(List<construct> constructs, frame parent, analysis_pass pass) {
+    public void analyze_all(List<construct> constructs, principal_type parent, analysis_pass pass) {
       for (construct the_construct : constructs) {
         analyze(the_construct, parent, pass);
       }
@@ -1300,7 +1300,7 @@ public class create {
   public static analysis_context init_analysis_context() {
     analysis_context the_context = new analysis_context();
     // TODO: source
-    the_context.add_action(top_frame, "string", new type_action_class(core_type.STRING, null));
+    the_context.add_action(TOP, "string", new type_action_class(core_type.STRING, null));
     return the_context;
   }
 
@@ -1324,7 +1324,7 @@ public class create {
       analyzer the_analyzer = new analyzer(the_context);
 
       for (analysis_pass pass : analysis_pass.values()) {
-        the_analyzer.analyze_all(constructs, top_frame, pass);
+        the_analyzer.analyze_all(constructs, TOP, pass);
       }
 
       if (has_errors) {

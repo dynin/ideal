@@ -1235,28 +1235,23 @@ public class create {
       construct return_expression;
 
       if (fields.isEmpty()) {
+        construct argument;
         if (declare_enum) {
-          construct name_call = new parameter_construct(
+          argument = new parameter_construct(
               new identifier("name", the_source),
               new ArrayList<construct>(),
               grouping_type.PARENS,
               the_source);
-          List<construct> ctor_parameters = new ArrayList<construct>();
-          ctor_parameters.add(name_call);
-          return_expression = new parameter_construct(
-              make_new("text_string", the_source),
-              ctor_parameters,
-              grouping_type.OPERATOR,
-              the_source);
         } else {
-          List<construct> ctor_parameters = new ArrayList<construct>();
-          ctor_parameters.add(name_literal);
-          return_expression = new parameter_construct(
-              make_new("text_string", the_source),
-              ctor_parameters,
-              grouping_type.OPERATOR,
-              the_source);
+          argument = name_literal;
         }
+        List<construct> ctor_parameters = new ArrayList<construct>();
+        ctor_parameters.add(argument);
+        return_expression = new parameter_construct(
+            make_new("text_string", the_source),
+            ctor_parameters,
+            grouping_type.OPERATOR,
+            the_source);
       } else {
         List<construct> join_arguments = new ArrayList<construct>();
         join_arguments.add(name_literal);

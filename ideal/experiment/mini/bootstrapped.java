@@ -465,15 +465,6 @@ public interface bootstrapped {
   interface action extends source {
     type result();
   }
-  enum core_type implements type {
-    VOID,
-    INTEGER,
-    STRING,
-    LIST,
-    NULLABLE,
-    UNREACHABLE,
-    ERROR;
-  }
   interface type_action extends action, describable {
     type result();
     @Nullable source the_source();
@@ -566,35 +557,29 @@ public interface bootstrapped {
       return new text_string("top_type");
     }
   }
-  interface master_type extends principal_type, describable {
-    String name();
-    principal_type parent();
-  }
-  class master_type_class implements master_type {
-    private final String name;
-    private final principal_type parent;
-    public master_type_class(String name, principal_type parent) {
-      this.name = name;
-      this.parent = parent;
-    }
-    @Override public String name() {
-      return name;
-    }
+  enum core_type implements principal_type, describable {
+    VOID,
+    INTEGER,
+    STRING,
+    LIST,
+    NULLABLE,
+    UNREACHABLE,
+    ERROR;
     @Override public principal_type parent() {
-      return parent;
+      return top_type.instance;
     }
     @Override public text description() {
-      return join_fragments("master_type_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
+      return new text_string(name());
     }
   }
   class type_declaration implements type_action, describable {
-    private final master_type declared_type;
+    private final principal_type declared_type;
     private final source the_source;
-    public type_declaration(master_type declared_type, source the_source) {
+    public type_declaration(principal_type declared_type, source the_source) {
       this.declared_type = declared_type;
       this.the_source = the_source;
     }
-    public master_type declared_type() {
+    public principal_type declared_type() {
       return declared_type;
     }
     public source the_source() {

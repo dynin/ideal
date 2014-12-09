@@ -217,7 +217,7 @@ public class create {
       type_declaration the_type_declaration;
 
       if (pass == analysis_pass.TYPE_PASS) {
-        master_type declared_type = new master_type_class(the_type_construct.name(), parent);
+        principal_type declared_type = new principal_type_class(the_type_construct.name(), parent);
         the_type_declaration = new type_declaration(declared_type, the_type_construct);
         the_analysis_context.add_binding(the_type_construct, the_type_declaration);
         the_analysis_context.add_action(parent, the_type_construct.name(), the_type_declaration);
@@ -1211,9 +1211,9 @@ public class create {
 
         implementation_body.addAll(accessor_functions);
 
-        if (generate_description && !declare_enum) {
+        if (generate_description) {
           implementation_body.add(generate_description(implementation_name, describe_fields,
-              the_source));
+              declare_enum, the_source));
         }
 
         type_construct implementation_type =
@@ -1229,19 +1229,34 @@ public class create {
     }
 
     private procedure_construct generate_description(String type_name, List<String> fields,
-        final source the_source) {
+        boolean declare_enum, final source the_source) {
 
       construct name_literal = make_literal(type_name, the_source);
       construct return_expression;
 
       if (fields.isEmpty()) {
-        List<construct> ctor_parameters = new ArrayList<construct>();
-        ctor_parameters.add(name_literal);
-        return_expression = new parameter_construct(
-            make_new("text_string", the_source),
-            ctor_parameters,
-            grouping_type.OPERATOR,
-            the_source);
+        if (declare_enum) {
+          construct name_call = new parameter_construct(
+              new identifier("name", the_source),
+              new ArrayList<construct>(),
+              grouping_type.PARENS,
+              the_source);
+          List<construct> ctor_parameters = new ArrayList<construct>();
+          ctor_parameters.add(name_call);
+          return_expression = new parameter_construct(
+              make_new("text_string", the_source),
+              ctor_parameters,
+              grouping_type.OPERATOR,
+              the_source);
+        } else {
+          List<construct> ctor_parameters = new ArrayList<construct>();
+          ctor_parameters.add(name_literal);
+          return_expression = new parameter_construct(
+              make_new("text_string", the_source),
+              ctor_parameters,
+              grouping_type.OPERATOR,
+              the_source);
+        }
       } else {
         List<construct> join_arguments = new ArrayList<construct>();
         join_arguments.add(name_literal);

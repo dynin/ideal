@@ -217,17 +217,6 @@
   (variable type result)
 )
 
-(enum core_type
-  (implements type)
-  VOID
-  INTEGER
-  STRING
-  LIST
-  NULLABLE
-  UNREACHABLE
-  ERROR
-)
-
 (datatype type_action
   (extends action describable)
   (variable type result)
@@ -259,15 +248,21 @@
   (variable (override) (nullable principal_type) parent null)
 )
 
-(datatype master_type
-  (extends principal_type describable)
-  (variable string name)
-  (variable principal_type parent)
+(enum core_type
+  (implements principal_type describable)
+  (variable (override) principal_type parent top_type.instance)
+  VOID
+  INTEGER
+  STRING
+  LIST
+  NULLABLE
+  UNREACHABLE
+  ERROR
 )
 
 (class type_declaration
   (implements type_action describable)
-  (variable master_type declared_type)
+  (variable principal_type declared_type)
   (variable source the_source)
   (variable (override) type result declared_type)
 )

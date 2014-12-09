@@ -21,6 +21,7 @@
 )
 
 (enum test_enum
+  (implements describable)
   foo
   bar
 )

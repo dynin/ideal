@@ -225,18 +225,23 @@ public class create {
     }
 
     public action call_variable_construct(variable_construct the_variable_construct) {
-      if (pass != analysis_pass.MEMBER_PASS) {
+      if (pass == analysis_pass.TYPE_PASS) {
         return null;
       }
 
-      @Nullable construct type_construct = the_variable_construct.type();
-
-      if (type_construct != null) {
+      if (pass == analysis_pass.MEMBER_PASS) {
+        @Nullable construct type_construct = the_variable_construct.type();
+        // TODO: signal error
+        assert type_construct != null;
         analyze(type_construct, parent, pass);
-      } else {
-        return call_construct(the_variable_construct);
+        return null;
       }
 
+      assert pass == analysis_pass.BODY_PASS;
+      @Nullable construct initializer = the_variable_construct.initializer();
+      if (initializer != null) {
+        analyze(initializer, parent, pass);
+      }
       return null;
     }
 
@@ -1454,6 +1459,9 @@ public class create {
     add_core_type(the_context, core_type.STRING);
     add_core_type(the_context, core_type.LIST);
     add_core_type(the_context, core_type.NULLABLE);
+
+    the_context.add_action(top_type.instance, "null",
+        new value_action_class(core_type.NULL, builtin_source.instance));
 
     return the_context;
   }

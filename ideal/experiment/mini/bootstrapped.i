@@ -220,8 +220,13 @@
 (datatype type_action
   (extends action describable)
   (variable type result)
-  ; TODO: make non-nullable
-  (variable (nullable source) the_source)
+  (variable source the_source)
+)
+
+(datatype value_action
+  (extends action describable)
+  (variable type result)
+  (variable source the_source)
 )
 
 (datatype notification_message
@@ -255,6 +260,7 @@
   INTEGER
   STRING
   LIST
+  NULL
   NULLABLE
   UNREACHABLE
   ERROR

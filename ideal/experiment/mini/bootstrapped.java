@@ -467,23 +467,44 @@ public interface bootstrapped {
   }
   interface type_action extends action, describable {
     type result();
-    @Nullable source the_source();
+    source the_source();
   }
   class type_action_class implements type_action {
     private final type result;
-    private final @Nullable source the_source;
-    public type_action_class(type result, @Nullable source the_source) {
+    private final source the_source;
+    public type_action_class(type result, source the_source) {
       this.result = result;
       this.the_source = the_source;
     }
     @Override public type result() {
       return result;
     }
-    @Override public @Nullable source the_source() {
+    @Override public source the_source() {
       return the_source;
     }
     @Override public text description() {
       return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  interface value_action extends action, describable {
+    type result();
+    source the_source();
+  }
+  class value_action_class implements value_action {
+    private final type result;
+    private final source the_source;
+    public value_action_class(type result, source the_source) {
+      this.result = result;
+      this.the_source = the_source;
+    }
+    @Override public type result() {
+      return result;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("value_action_class", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   interface notification_message {
@@ -562,6 +583,7 @@ public interface bootstrapped {
     INTEGER,
     STRING,
     LIST,
+    NULL,
     NULLABLE,
     UNREACHABLE,
     ERROR;

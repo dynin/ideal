@@ -160,8 +160,52 @@ public class create {
     }
 
     public action call_parameter_construct(parameter_construct the_parameter_construct) {
+      // TODO: add binding
+
       action main_action = analyze(the_parameter_construct.main(), parent, pass);
-      return main_action;
+      // TODO: handle multiple parameters
+      assert the_parameter_construct.parameters().size() == 1;
+      action parameter_action = analyze(the_parameter_construct.parameters().get(0), parent, pass);
+
+      if (main_action instanceof error_signal) {
+        return main_action;
+      }
+
+      if (parameter_action instanceof error_signal) {
+        return parameter_action;
+      }
+
+      if (! (main_action instanceof type_action)) {
+        error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
+            the_parameter_construct.main());
+        report(result);
+        return result;
+      }
+
+      type main_type = ((type_action) main_action).result();
+
+      if (main_type != core_type.NULLABLE && main_type != core_type.LIST) {
+        error_signal result = new error_signal(notification_type.NOT_PARAMETRIZABLE,
+            the_parameter_construct.main());
+        report(result);
+        return result;
+      }
+
+      principal_type main_principle = (principal_type) main_type;
+
+      if (! (parameter_action instanceof type_action)) {
+        error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
+            the_parameter_construct.main());
+        report(result);
+        return result;
+      }
+
+      type parameter_type = ((type_action) parameter_action).result();
+      List<type> parameters = new ArrayList<type>();
+      parameters.add(parameter_type);
+      parametrized_type result_type = new parametrized_type(main_principle, parameters);
+
+      return new type_action_class(result_type, the_parameter_construct);
     }
 
     public action call_modifier_construct(modifier_construct the_modifier_construct) {

@@ -572,6 +572,29 @@ public interface bootstrapped {
       return new text_string(name());
     }
   }
+  class parametrized_type implements principal_type, describable {
+    private final principal_type main;
+    private final List<type> parameters;
+    public parametrized_type(principal_type main, List<type> parameters) {
+      this.main = main;
+      this.parameters = parameters;
+    }
+    public principal_type main() {
+      return main;
+    }
+    public List<type> parameters() {
+      return parameters;
+    }
+    @Override public String name() {
+      return main.name();
+    }
+    @Override public principal_type parent() {
+      return main.parent();
+    }
+    @Override public text description() {
+      return join_fragments("parametrized_type", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters)), END_OBJECT);
+    }
+  }
   class type_declaration implements type_action, describable {
     private final principal_type declared_type;
     private final source the_source;
@@ -600,7 +623,9 @@ public interface bootstrapped {
     CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
     MODIFIER_EXPECTED("Modifier expected"),
     ANALYSIS_ERROR("Analysis error"),
-    SYMBOL_LOOKUP_FAILED("Symbol lookup failed");
+    SYMBOL_LOOKUP_FAILED("Symbol lookup failed"),
+    TYPE_EXPECTED("Type expected"),
+    NOT_PARAMETRIZABLE("Not parametrizable");
     private final String text;
     notification_type(String text) {
       this.text = text;

@@ -44,7 +44,7 @@
 (datatype text_position
   (extends source describable)
   (variable source_text the_source)
-  (variable int character_index)
+  (variable integer character_index)
 )
 
 (singleton builtin_source

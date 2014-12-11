@@ -1405,7 +1405,9 @@ public class create {
 
     public construct call_identifier(identifier the_identifier) {
       String name = the_identifier.name();
-      if (name.equals("string")) {
+      if (name.equals("integer")) {
+        return new identifier("int", the_identifier);
+      } else if (name.equals("string")) {
         return new identifier("String", the_identifier);
       } else if (name.equals(LIST_NAME)) {
         return new identifier("List", the_identifier);
@@ -1468,6 +1470,7 @@ public class create {
   public static analysis_context init_analysis_context() {
     analysis_context the_context = new analysis_context();
 
+    add_core_type(the_context, core_type.INTEGER);
     add_core_type(the_context, core_type.STRING);
     add_core_type(the_context, core_type.LIST);
     add_core_type(the_context, core_type.NULLABLE);

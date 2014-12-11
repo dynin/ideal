@@ -156,7 +156,7 @@ public class create {
     }
 
     public action call_string_literal(string_literal the_string_literal) {
-      return call_construct(the_string_literal);
+      return the_string_literal;
     }
 
     public action call_parameter_construct(parameter_construct the_parameter_construct) {

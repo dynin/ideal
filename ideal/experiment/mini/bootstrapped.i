@@ -102,10 +102,11 @@
 )
 
 (class string_literal
-  (implements token construct describable)
+  (implements token construct value_action describable)
   (variable string value)
   (variable (nullable string) with_quotes)
   (variable (override) token_type type token_type.LITERAL)
+  (variable (override) type result core_type.STRING)
   (variable (override) source the_source)
 )
 

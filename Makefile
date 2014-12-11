@@ -375,6 +375,9 @@ m0: $(MINITARGET)
 mini: $(MINITARGET)
 	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/test.i
 
+minia: $(MINITARGET)
+	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/bootstrapped.i
+
 minib: $(MINITARGET)
 	@cat $(MINI_DIR)/header.txt
 	@$(JAVA_MINI_CREATE) $(MINI_DIR)/bootstrapped.i | sed s'/^/  /'

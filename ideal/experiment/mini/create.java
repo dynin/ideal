@@ -163,36 +163,39 @@ public class create {
       // TODO: add binding
 
       action main_action = analyze(the_parameter_construct.main(), parent, pass);
-      // TODO: handle multiple parameters
-      assert the_parameter_construct.parameters().size() == 1;
-      action parameter_action = analyze(the_parameter_construct.parameters().get(0), parent, pass);
-
       if (main_action instanceof error_signal) {
         return main_action;
       }
 
-      if (parameter_action instanceof error_signal) {
-        return parameter_action;
+      List<construct> parameters = the_parameter_construct.parameters();
+      List<action> parameter_actions = new ArrayList<action>();
+
+      for (int i = 0; i < parameters.size(); ++i) {
+        action parameter_action = analyze(parameters.get(i), parent, pass);
+        // TODO: process more parameters
+        if (parameter_action instanceof error_signal) {
+          return parameter_action;
+        }
+        parameter_actions.add(parameter_action);
       }
 
-      if (! (main_action instanceof type_action)) {
-        error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
-            the_parameter_construct.main());
-        report(result);
-        return result;
-      }
-
-      type main_type = ((type_action) main_action).result();
-
-      if (main_type != core_type.NULLABLE && main_type != core_type.LIST) {
+      if (!is_parametrizable(main_action)) {
         error_signal result = new error_signal(notification_type.NOT_PARAMETRIZABLE,
             the_parameter_construct.main());
         report(result);
         return result;
       }
 
-      principal_type main_principle = (principal_type) main_type;
+      principal_type main_principal = (principal_type) ((type_action) main_action).result();
 
+      if (parameter_actions.size() != 1) {
+        error_signal result = new error_signal(notification_type.WRONG_ARITY,
+            the_parameter_construct);
+        report(result);
+        return result;
+      }
+
+      action parameter_action = parameter_actions.get(0);
       if (! (parameter_action instanceof type_action)) {
         error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
             the_parameter_construct.main());
@@ -201,11 +204,20 @@ public class create {
       }
 
       type parameter_type = ((type_action) parameter_action).result();
-      List<type> parameters = new ArrayList<type>();
-      parameters.add(parameter_type);
-      parametrized_type result_type = new parametrized_type(main_principle, parameters);
+      List<type> parameter_types = new ArrayList<type>();
+      parameter_types.add(parameter_type);
+      parametrized_type result_type = new parametrized_type(main_principal, parameter_types);
 
       return new type_action_class(result_type, the_parameter_construct);
+    }
+
+    private static boolean is_parametrizable(action main_action) {
+      if (main_action instanceof type_action) {
+        type main_type = ((type_action) main_action).result();
+        return main_type == core_type.NULLABLE || main_type == core_type.LIST;
+      } else {
+        return false;
+      }
     }
 
     public action call_modifier_construct(modifier_construct the_modifier_construct) {

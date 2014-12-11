@@ -647,7 +647,8 @@ public interface bootstrapped {
     ANALYSIS_ERROR("Analysis error"),
     SYMBOL_LOOKUP_FAILED("Symbol lookup failed"),
     TYPE_EXPECTED("Type expected"),
-    NOT_PARAMETRIZABLE("Not parametrizable");
+    NOT_PARAMETRIZABLE("Not parametrizable"),
+    WRONG_ARITY("Wrong arity");
     private final String text;
     notification_type(String text) {
       this.text = text;

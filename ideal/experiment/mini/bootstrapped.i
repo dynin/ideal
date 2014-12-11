@@ -298,4 +298,5 @@
   (SYMBOL_LOOKUP_FAILED "Symbol lookup failed")
   (TYPE_EXPECTED "Type expected")
   (NOT_PARAMETRIZABLE "Not parametrizable")
+  (WRONG_ARITY "Wrong arity")
 )

@@ -50,7 +50,7 @@ public class create {
 
       @Nullable action old_action = the_type_context.action_table.put(name, the_action);
       // actions can't be overriden.
-      assert old_action == null;
+      assert old_action == null : "Duplicate action for " + name + " in " + the_type;
     }
 
     public @Nullable action get_action(principal_type the_type, String name) {
@@ -243,10 +243,20 @@ public class create {
 
       if (pass == analysis_pass.MEMBER_PASS) {
         @Nullable construct type_construct = the_variable_construct.type();
-        // TODO: signal error
-        assert type_construct != null;
-        analyze(type_construct, parent, pass);
-        return null;
+        assert type_construct != null; // TODO: signal error otherwise
+        action the_type_action = analyze(type_construct, parent, pass);
+        if (!(the_type_action instanceof type_action)) {
+          error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
+              the_type_action);
+          report(result);
+          return result;
+        }
+        type result_type = ((type_action) the_type_action).result();
+        variable_declaration the_declaration = new variable_declaration(result_type,
+            type_construct);
+        // TODO: create a correct action
+        //the_analysis_context.add_action(parent, the_variable_construct.name(), the_declaration);
+        return the_declaration;
       }
 
       assert pass == analysis_pass.BODY_PASS;
@@ -275,17 +285,20 @@ public class create {
     }
 
     public action call_type_construct(type_construct the_type_construct) {
+      principal_type declared_type;
       type_declaration the_type_declaration;
 
       if (pass == analysis_pass.TYPE_PASS) {
-        principal_type declared_type = new principal_type_class(the_type_construct.name(), parent);
+        declared_type = new principal_type_class(the_type_construct.name(), parent);
         the_type_declaration = new type_declaration(declared_type, the_type_construct);
         the_analysis_context.add_binding(the_type_construct, the_type_declaration);
-        the_analysis_context.add_action(parent, the_type_construct.name(), the_type_declaration);
+        the_analysis_context.add_action(parent, the_type_construct.name(),
+            new type_action_class(declared_type, the_type_declaration));
       } else {
         the_type_declaration = (type_declaration)
             the_analysis_context.get_binding(the_type_construct);
         assert the_type_declaration != null;
+        declared_type = the_type_declaration.declared_type();
       }
 
       boolean is_enum = the_type_construct.the_type_kind() == type_kind.ENUM;
@@ -293,7 +306,7 @@ public class create {
         if (is_enum && is_enum_declaration.call(the_construct)) {
           // TODO: handle enum declarations.
         } else {
-          analyze(the_construct, parent, pass);
+          analyze(the_construct, declared_type, pass);
         }
       }
 

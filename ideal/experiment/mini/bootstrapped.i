@@ -283,6 +283,13 @@
   (variable (override) type result declared_type)
 )
 
+(class variable_declaration
+  (implements action describable)
+  (variable type value_type)
+  (variable source the_source)
+  (variable (override) type result value_type)
+)
+
 ; Notifications
 
 (enum notification_type

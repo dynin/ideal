@@ -640,6 +640,26 @@ public interface bootstrapped {
       return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  class variable_declaration implements action, describable {
+    private final type value_type;
+    private final source the_source;
+    public variable_declaration(type value_type, source the_source) {
+      this.value_type = value_type;
+      this.the_source = the_source;
+    }
+    public type value_type() {
+      return value_type;
+    }
+    public source the_source() {
+      return the_source;
+    }
+    @Override public type result() {
+      return value_type;
+    }
+    @Override public text description() {
+      return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

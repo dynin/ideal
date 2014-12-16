@@ -118,23 +118,23 @@ public interface bootstrapped {
     MODIFIER;
   }
   interface token extends source {
-    token_type type();
+    token_type the_token_type();
   }
   class simple_token implements token, describable {
-    private final token_type type;
+    private final token_type the_token_type;
     private final source the_source;
-    public simple_token(token_type type, source the_source) {
-      this.type = type;
+    public simple_token(token_type the_token_type, source the_source) {
+      this.the_token_type = the_token_type;
       this.the_source = the_source;
     }
-    @Override public token_type type() {
-      return type;
+    @Override public token_type the_token_type() {
+      return the_token_type;
     }
     @Override public source the_source() {
       return the_source;
     }
     @Override public text description() {
-      return join_fragments("simple_token", START_OBJECT, NEWLINE, indent(field_is("type", type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("simple_token", START_OBJECT, NEWLINE, indent(field_is("the_token_type", the_token_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   interface construct extends source {
@@ -149,7 +149,7 @@ public interface bootstrapped {
     public String name() {
       return name;
     }
-    @Override public token_type type() {
+    @Override public token_type the_token_type() {
       return token_type.IDENTIFIER;
     }
     @Override public source the_source() {
@@ -203,7 +203,7 @@ public interface bootstrapped {
     public @Nullable String with_quotes() {
       return with_quotes;
     }
-    @Override public token_type type() {
+    @Override public token_type the_token_type() {
       return token_type.LITERAL;
     }
     @Override public type result() {
@@ -267,7 +267,7 @@ public interface bootstrapped {
     public modifier_kind the_modifier_kind() {
       return the_modifier_kind;
     }
-    @Override public token_type type() {
+    @Override public token_type the_token_type() {
       return token_type.MODIFIER;
     }
     @Override public source the_source() {

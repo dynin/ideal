@@ -475,8 +475,8 @@ public class create {
     List<token> result = new ArrayList<token>();
 
     for (token the_token : tokens) {
-      if (the_token.type() == token_type.WHITESPACE ||
-          the_token.type() == token_type.COMMENT) {
+      if (the_token.the_token_type() == token_type.WHITESPACE ||
+          the_token.the_token_type() == token_type.COMMENT) {
         continue;
       }
       if (the_token instanceof identifier) {
@@ -506,12 +506,12 @@ public class create {
       index += 1;
       if (the_token instanceof construct) {
         result.add((construct) the_token);
-      } else if (the_token.type() == token_type.OPEN) {
+      } else if (the_token.the_token_type() == token_type.OPEN) {
         List<construct> parameters = new ArrayList<construct>();
         int end = parse_sublist(tokens, index, parameters, context);
         if (end >= tokens.size()) {
           report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
-        } else if (tokens.get(end).type() != token_type.CLOSE) {
+        } else if (tokens.get(end).the_token_type() != token_type.CLOSE) {
           report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, tokens.get(end)));
         } else {
           end += 1;
@@ -537,7 +537,7 @@ public class create {
         } else {
           result.add(new s_expression(parameters, the_token));
         }
-      } else if (the_token.type() == token_type.CLOSE) {
+      } else if (the_token.the_token_type() == token_type.CLOSE) {
         return index - 1;
       } else {
         report(new error_signal(notification_type.PARSE_ERROR, the_token));

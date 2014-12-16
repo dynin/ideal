@@ -67,12 +67,12 @@
 
 (interface token
   (extends source)
-  (variable token_type type)
+  (variable token_type the_token_type)
 )
 
 (class simple_token
   (implements token describable)
-  (variable (override) token_type type)
+  (variable (override) token_type the_token_type)
   (variable (override) source the_source)
 )
 
@@ -85,7 +85,7 @@
 (class identifier
   (implements token construct describable)
   (variable string name)
-  (variable (override) token_type type token_type.IDENTIFIER)
+  (variable (override) token_type the_token_type token_type.IDENTIFIER)
   (variable (override) source the_source)
 )
 
@@ -106,7 +106,7 @@
   (implements token construct value_action describable)
   (variable string value)
   (variable (nullable string) with_quotes)
-  (variable (override) token_type type token_type.LITERAL)
+  (variable (override) token_type the_token_type token_type.LITERAL)
   (variable (override) type result core_type.STRING)
   (variable (override) source the_source)
 )
@@ -138,7 +138,7 @@
 (class modifier_construct
   (implements token construct describable)
   (variable modifier_kind the_modifier_kind)
-  (variable (override) token_type type token_type.MODIFIER)
+  (variable (override) token_type the_token_type token_type.MODIFIER)
   (variable (override) source the_source)
 )
 

@@ -50,6 +50,7 @@ public class create {
 
       @Nullable action old_action = the_type_context.action_table.put(name, the_action);
       // actions can't be overriden.
+      // TODO: signal error during analysis
       assert old_action == null : "Duplicate action for " + name + " in " + the_type;
     }
 
@@ -247,15 +248,16 @@ public class create {
         action the_type_action = analyze(type_construct, parent, pass);
         if (!(the_type_action instanceof type_action)) {
           error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
-              the_type_action);
+              type_construct);
           report(result);
           return result;
         }
         type result_type = ((type_action) the_type_action).result();
-        variable_declaration the_declaration = new variable_declaration(result_type,
+        String name = the_variable_construct.name();
+        variable_declaration the_declaration = new variable_declaration(result_type, name, parent,
             type_construct);
-        // TODO: create a correct action
-        //the_analysis_context.add_action(parent, the_variable_construct.name(), the_declaration);
+        // TODO: handle readonly flavor.
+        the_analysis_context.add_action(parent, name, the_declaration);
         return the_declaration;
       }
 
@@ -1492,6 +1494,10 @@ public class create {
         new value_action_class(core_type.NULL, builtin_source.instance));
 
     return the_context;
+  }
+
+  public static void debug_describe(String info, describable the_describable) {
+    System.err.println(info + ": " + render_text(describe(the_describable)));
   }
 
   public static void create(source_text the_source, boolean analyze) {

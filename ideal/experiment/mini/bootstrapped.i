@@ -30,6 +30,7 @@
 ; Sources
 
 (interface source
+  (extends describable)
   ; The source of the source: we must go deeper...
   (variable (nullable source) the_source)
 )
@@ -286,6 +287,8 @@
 (class variable_declaration
   (implements action describable)
   (variable type value_type)
+  (variable string name)
+  (variable principal_type declared_in_type)
   (variable source the_source)
   (variable (override) type result value_type)
 )

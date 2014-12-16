@@ -50,7 +50,7 @@ public interface bootstrapped {
   interface describable {
     text description();
   }
-  interface source {
+  interface source extends describable {
     @Nullable source the_source();
   }
   interface source_text extends source, describable {
@@ -642,13 +642,23 @@ public interface bootstrapped {
   }
   class variable_declaration implements action, describable {
     private final type value_type;
+    private final String name;
+    private final principal_type declared_in_type;
     private final source the_source;
-    public variable_declaration(type value_type, source the_source) {
+    public variable_declaration(type value_type, String name, principal_type declared_in_type, source the_source) {
       this.value_type = value_type;
+      this.name = name;
+      this.declared_in_type = declared_in_type;
       this.the_source = the_source;
     }
     public type value_type() {
       return value_type;
+    }
+    public String name() {
+      return name;
+    }
+    public principal_type declared_in_type() {
+      return declared_in_type;
     }
     public source the_source() {
       return the_source;
@@ -657,7 +667,7 @@ public interface bootstrapped {
       return value_type;
     }
     @Override public text description() {
-      return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("name", name), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   enum notification_type implements notification_message {

@@ -111,8 +111,9 @@ public interface bootstrapped {
   enum token_type {
     WHITESPACE,
     COMMENT,
-    OPEN,
-    CLOSE,
+    OPEN_PARENTHESIS,
+    CLOSE_PARENTHESIS,
+    DOT,
     IDENTIFIER,
     LITERAL,
     MODIFIER;

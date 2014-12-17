@@ -18,6 +18,7 @@
   (variable (nullable string) optional)
   (variable (override) (nullable source) the_source null)
   (variable (list string) list_test)
+;  (variable (override) string foo operator_type.DOT)
 )
 
 (enum test_enum

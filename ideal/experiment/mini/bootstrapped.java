@@ -108,15 +108,32 @@ public interface bootstrapped {
       return new text_string("builtin_source");
     }
   }
-  enum token_type {
-    WHITESPACE,
-    COMMENT,
-    OPEN_PARENTHESIS,
-    CLOSE_PARENTHESIS,
-    DOT,
+  interface token_type extends describable {
+  }
+  enum core_token_type implements token_type, describable {
     IDENTIFIER,
     LITERAL,
-    MODIFIER;
+    MODIFIER,
+    WHITESPACE,
+    COMMENT;
+    @Override public text description() {
+      return new text_string(name());
+    }
+  }
+  enum punctuation implements token_type, describable {
+    OPEN_PARENTHESIS("("),
+    CLOSE_PARENTHESIS(")"),
+    DOT(".");
+    private final String symbol;
+    punctuation(String symbol) {
+      this.symbol = symbol;
+    }
+    public String symbol() {
+      return symbol;
+    }
+    @Override public text description() {
+      return join_fragments("punctuation", START_OBJECT, SPACE, describe(symbol), SPACE, END_OBJECT);
+    }
   }
   interface token extends source {
     token_type the_token_type();
@@ -151,7 +168,7 @@ public interface bootstrapped {
       return name;
     }
     @Override public token_type the_token_type() {
-      return token_type.IDENTIFIER;
+      return core_token_type.IDENTIFIER;
     }
     @Override public source the_source() {
       return the_source;
@@ -205,7 +222,7 @@ public interface bootstrapped {
       return with_quotes;
     }
     @Override public token_type the_token_type() {
-      return token_type.LITERAL;
+      return core_token_type.LITERAL;
     }
     @Override public type result() {
       return core_type.STRING;
@@ -269,7 +286,7 @@ public interface bootstrapped {
       return the_modifier_kind;
     }
     @Override public token_type the_token_type() {
-      return token_type.MODIFIER;
+      return core_token_type.MODIFIER;
     }
     @Override public source the_source() {
       return the_source;

@@ -334,11 +334,13 @@ public class create {
         while (index < content.length() && is_whitespace(content.charAt(index))) {
           index += 1;
         }
-        result.add(new simple_token(token_type.WHITESPACE, position));
+        result.add(new simple_token(core_token_type.WHITESPACE, position));
       } else if (prefix == '(') {
-        result.add(new simple_token(token_type.OPEN_PARENTHESIS, position));
+        result.add(new simple_token(punctuation.OPEN_PARENTHESIS, position));
       } else if (prefix == ')') {
-        result.add(new simple_token(token_type.CLOSE_PARENTHESIS, position));
+        result.add(new simple_token(punctuation.CLOSE_PARENTHESIS, position));
+      } else if (prefix == '.') {
+        //result.add(new operator(operator_type.DOT, position));
       } else if (prefix == '"') {
         char quote = prefix;
         while (index < content.length() &&
@@ -362,7 +364,7 @@ public class create {
         while (index < content.length() && content.charAt(index) != '\n') {
           index += 1;
         }
-        result.add(new simple_token(token_type.COMMENT, position));
+        result.add(new simple_token(core_token_type.COMMENT, position));
       } else {
         report(new error_signal(notification_type.UNRECOGNIZED_CHARACTER, position));
       }
@@ -475,8 +477,8 @@ public class create {
     List<token> result = new ArrayList<token>();
 
     for (token the_token : tokens) {
-      if (the_token.the_token_type() == token_type.WHITESPACE ||
-          the_token.the_token_type() == token_type.COMMENT) {
+      if (the_token.the_token_type() == core_token_type.WHITESPACE ||
+          the_token.the_token_type() == core_token_type.COMMENT) {
         continue;
       }
       if (the_token instanceof identifier) {
@@ -506,12 +508,12 @@ public class create {
       index += 1;
       if (the_token instanceof construct) {
         result.add((construct) the_token);
-      } else if (the_token.the_token_type() == token_type.OPEN_PARENTHESIS) {
+      } else if (the_token.the_token_type() == punctuation.OPEN_PARENTHESIS) {
         List<construct> parameters = new ArrayList<construct>();
         int end = parse_sublist(tokens, index, parameters, context);
         if (end >= tokens.size()) {
           report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
-        } else if (tokens.get(end).the_token_type() != token_type.CLOSE_PARENTHESIS) {
+        } else if (tokens.get(end).the_token_type() != punctuation.CLOSE_PARENTHESIS) {
           report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, tokens.get(end)));
         } else {
           end += 1;
@@ -537,7 +539,7 @@ public class create {
         } else {
           result.add(new s_expression(parameters, the_token));
         }
-      } else if (the_token.the_token_type() == token_type.CLOSE_PARENTHESIS) {
+      } else if (the_token.the_token_type() == punctuation.CLOSE_PARENTHESIS) {
         return index - 1;
       } else {
         report(new error_signal(notification_type.PARSE_ERROR, the_token));
@@ -683,8 +685,6 @@ public class create {
   }
 
   public static final text COMMA = new text_string(",");
-  public static final text OPEN_PAREN = new text_string("(");
-  public static final text CLOSE_PAREN = new text_string(")");
   public static final text LESS_THAN = new text_string("<");
   public static final text GREATER_THAN = new text_string(">");
   public static final text OPEN_BRACE = new text_string("{");
@@ -708,6 +708,10 @@ public class create {
         return join_text(print(the_construct), SEMICOLON, NEWLINE);
       }
     };
+
+    public text to_text(punctuation the_punctuation) {
+      return new text_string(the_punctuation.symbol());
+    }
 
     public text print(construct the_construct) {
       return call(the_construct);
@@ -740,7 +744,8 @@ public class create {
       if (the_parameter_construct.grouping() == grouping_type.ANGLE_BRACKETS) {
         return join_text(main, LESS_THAN, parameters, GREATER_THAN);
       } else {
-        return join_text(main, OPEN_PAREN, parameters, CLOSE_PAREN);
+        return join_text(main, to_text(punctuation.OPEN_PARENTHESIS), parameters,
+            to_text(punctuation.CLOSE_PARENTHESIS));
       }
     }
 
@@ -779,8 +784,9 @@ public class create {
 
     @Override
     public text call_s_expression(s_expression the_s_expression) {
-      return join_text(OPEN_PAREN, join_text(map(the_s_expression.parameters(), this), SPACE),
-        CLOSE_PAREN);
+      return join_text(to_text(punctuation.OPEN_PARENTHESIS),
+        join_text(map(the_s_expression.parameters(), this), SPACE),
+        to_text(punctuation.CLOSE_PARENTHESIS));
     }
 
     @Override
@@ -832,10 +838,10 @@ public class create {
         result.add(SPACE);
       }
       result.add(new text_string(the_procedure_construct.name()));
-      result.add(OPEN_PAREN);
+      result.add(to_text(punctuation.OPEN_PARENTHESIS));
 
       result.add(fold_with_comma(the_procedure_construct.parameters(), param_printer));
-      result.add(CLOSE_PAREN);
+      result.add(to_text(punctuation.CLOSE_PARENTHESIS));
       if (the_procedure_construct.body() == null) {
         result.add(SEMICOLON);
       } else {

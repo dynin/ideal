@@ -55,15 +55,25 @@
 
 ; Tokens
 
-(enum token_type
-  WHITESPACE
-  COMMENT
-  OPEN_PARENTHESIS
-  CLOSE_PARENTHESIS
-  DOT
+(interface token_type
+  (extends describable)
+)
+
+(enum core_token_type
+  (implements token_type describable)
   IDENTIFIER
   LITERAL
   MODIFIER
+  WHITESPACE
+  COMMENT
+)
+
+(enum punctuation
+  (implements token_type describable)
+  (variable string symbol)
+  (OPEN_PARENTHESIS "(")
+  (CLOSE_PARENTHESIS ")")
+  (DOT ".")
 )
 
 (interface token
@@ -86,7 +96,7 @@
 (class identifier
   (implements token construct describable)
   (variable string name)
-  (variable (override) token_type the_token_type token_type.IDENTIFIER)
+  (variable (override) token_type the_token_type core_token_type.IDENTIFIER)
   (variable (override) source the_source)
 )
 
@@ -107,7 +117,7 @@
   (implements token construct value_action describable)
   (variable string value)
   (variable (nullable string) with_quotes)
-  (variable (override) token_type the_token_type token_type.LITERAL)
+  (variable (override) token_type the_token_type core_token_type.LITERAL)
   (variable (override) type result core_type.STRING)
   (variable (override) source the_source)
 )
@@ -139,7 +149,7 @@
 (class modifier_construct
   (implements token construct describable)
   (variable modifier_kind the_modifier_kind)
-  (variable (override) token_type the_token_type token_type.MODIFIER)
+  (variable (override) token_type the_token_type core_token_type.MODIFIER)
   (variable (override) source the_source)
 )
 

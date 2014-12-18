@@ -114,6 +114,7 @@ public interface bootstrapped {
     IDENTIFIER,
     LITERAL,
     MODIFIER,
+    OPERATOR,
     WHITESPACE,
     COMMENT;
     @Override public text description() {
@@ -189,7 +190,7 @@ public interface bootstrapped {
       return symbol;
     }
   }
-  class operator implements construct, describable {
+  class operator implements token, construct, describable {
     private final operator_type the_operator_type;
     private final source the_source;
     public operator(operator_type the_operator_type, source the_source) {
@@ -198,6 +199,9 @@ public interface bootstrapped {
     }
     public operator_type the_operator_type() {
       return the_operator_type;
+    }
+    @Override public token_type the_token_type() {
+      return core_token_type.OPERATOR;
     }
     @Override public source the_source() {
       return the_source;

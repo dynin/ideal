@@ -340,7 +340,7 @@ public class create {
       } else if (prefix == ')') {
         result.add(new simple_token(punctuation.CLOSE_PARENTHESIS, position));
       } else if (prefix == '.') {
-        //result.add(new operator(operator_type.DOT, position));
+        result.add(new operator(operator_type.DOT, position));
       } else if (prefix == '"') {
         char quote = prefix;
         while (index < content.length() &&
@@ -373,7 +373,7 @@ public class create {
   }
 
   public static boolean is_identifier_letter(char c) {
-    return is_letter(c) || c == '_' || c == '.';
+    return is_letter(c) || c == '_';
   }
 
   public static void report(error_signal the_error_signal) {
@@ -519,26 +519,32 @@ public class create {
           end += 1;
         }
         index = end;
-        if (parameters.size() > 0 &&
-            parameters.get(0) instanceof identifier) {
-          identifier name_identifier = (identifier) parameters.get(0);
-          String name = name_identifier.name();
+        if (!parameters.isEmpty()) {
+          construct first = parameters.get(0);
           List<construct> rest = parameters.subList(1, parameters.size());
-          @Nullable special_parser the_parser = context.get_parser(name);
-          if (the_parser != null) {
-            @Nullable construct parsed = the_parser.parse(rest);
-            if (parsed != null) {
-              result.add(parsed);
+          if (first instanceof identifier) {
+            String name = ((identifier) first).name();
+            @Nullable special_parser the_parser = context.get_parser(name);
+            if (the_parser != null) {
+              @Nullable construct parsed = the_parser.parse(rest);
+              if (parsed != null) {
+                result.add(parsed);
+              } else {
+                report(new error_signal(notification_type.PARSE_ERROR, first));
+              }
             } else {
-              report(new error_signal(notification_type.PARSE_ERROR, name_identifier));
+              result.add(new parameter_construct(first, rest, grouping_type.PARENS, the_token));
             }
             continue;
+          } else if (first instanceof operator) {
+            result.add(new parameter_construct(first, rest, grouping_type.OPERATOR, the_token));
+            continue;
+          } else if (first instanceof parameter_construct) {
+            result.add(new parameter_construct(first, rest, grouping_type.PARENS, the_token));
+            continue;
           }
-          result.add(new parameter_construct(name_identifier, rest, grouping_type.PARENS,
-              the_token));
-        } else {
-          result.add(new s_expression(parameters, the_token));
         }
+        result.add(new s_expression(parameters, the_token));
       } else if (the_token.the_token_type() == punctuation.CLOSE_PARENTHESIS) {
         return index - 1;
       } else {

@@ -64,6 +64,7 @@
   IDENTIFIER
   LITERAL
   MODIFIER
+  OPERATOR
   WHITESPACE
   COMMENT
 )
@@ -96,7 +97,7 @@
 (class identifier
   (implements token construct describable)
   (variable string name)
-  (variable (override) token_type the_token_type core_token_type.IDENTIFIER)
+  (variable (override) token_type the_token_type (. core_token_type IDENTIFIER))
   (variable (override) source the_source)
 )
 
@@ -108,8 +109,9 @@
 )
 
 (class operator
-  (implements construct describable)
+  (implements token construct describable)
   (variable operator_type the_operator_type)
+  (variable (override) token_type the_token_type (. core_token_type OPERATOR))
   (variable (override) source the_source)
 )
 
@@ -117,8 +119,8 @@
   (implements token construct value_action describable)
   (variable string value)
   (variable (nullable string) with_quotes)
-  (variable (override) token_type the_token_type core_token_type.LITERAL)
-  (variable (override) type result core_type.STRING)
+  (variable (override) token_type the_token_type (. core_token_type LITERAL))
+  (variable (override) type result (. core_type STRING))
   (variable (override) source the_source)
 )
 
@@ -149,7 +151,7 @@
 (class modifier_construct
   (implements token construct describable)
   (variable modifier_kind the_modifier_kind)
-  (variable (override) token_type the_token_type core_token_type.MODIFIER)
+  (variable (override) token_type the_token_type (. core_token_type MODIFIER))
   (variable (override) source the_source)
 )
 
@@ -251,7 +253,7 @@
   (implements action describable)
   (variable notification_message message)
   (variable source the_source)
-  (variable (override) type result core_type.ERROR)
+  (variable (override) type result (. core_type ERROR))
 )
 
 (datatype principal_type
@@ -268,7 +270,7 @@
 
 (enum core_type
   (implements principal_type describable)
-  (variable (override) principal_type parent top_type.instance)
+  (variable (override) principal_type parent (. top_type instance))
   VOID
   INTEGER
   STRING
@@ -284,8 +286,8 @@
   (variable principal_type main)
   (variable (list type) parameters)
   ; TODO: use DOT operator
-  (variable (override) string name (main.name))
-  (variable (override) principal_type parent (main.parent))
+  (variable (override) string name ((. main name)))
+  (variable (override) principal_type parent ((. main parent)))
 )
 
 (class type_declaration

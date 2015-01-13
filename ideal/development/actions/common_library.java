@@ -57,7 +57,7 @@ public class common_library implements value {
   private master_type REFERENCE_TYPE;
   private master_type PROCEDURE_TYPE;
   private master_type FUNCTION_TYPE;
-  private master_type CONVERTIBLE_TO_STRING_TYPE;
+  private master_type STRINGABLE_TYPE;
   private master_type EQUALITY_COMPARABLE_TYPE;
   private master_type REFERENCE_EQUALITY_TYPE;
   private master_type LIST_TYPE;
@@ -92,8 +92,7 @@ public class common_library implements value {
     REFERENCE_TYPE = get_type("reference", reference_kind, mutable_profile);
     PROCEDURE_TYPE = get_type(procedure_name, procedure_kind, immutable_profile);
     FUNCTION_TYPE = get_type(function_name, procedure_kind, deeply_immutable_profile);
-    CONVERTIBLE_TO_STRING_TYPE =
-        get_type("convertible_to_string", interface_kind, mutable_profile);
+    STRINGABLE_TYPE = get_type("stringable", interface_kind, mutable_profile);
     EQUALITY_COMPARABLE_TYPE = get_type("equality_comparable", concept_kind, mutable_profile);
     REFERENCE_EQUALITY_TYPE = get_type("reference_equality", interface_kind, mutable_profile);
     LIST_TYPE = get_type("list", interface_kind, mutable_profile);
@@ -187,8 +186,8 @@ public class common_library implements value {
     return string_type().get_flavored(flavors.deeply_immutable_flavor);
   }
 
-  public master_type convertible_to_string_type() {
-    return CONVERTIBLE_TO_STRING_TYPE;
+  public master_type stringable_type() {
+    return STRINGABLE_TYPE;
   }
 
   public principal_type equality_comparable_type() {

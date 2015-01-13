@@ -11,7 +11,7 @@ package ideal.development.analyzers;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
-public class constraint extends debuggable implements readonly_data, convertible_to_string {
+public class constraint extends debuggable implements readonly_data, stringable {
 
   public final declaration the_declaration;
   public final abstract_value the_value;

@@ -12,7 +12,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
 public interface supertype_kind extends deeply_immutable_data, reference_equality,
-    convertible_to_string {
+    stringable {
 
   simple_name name();
 }

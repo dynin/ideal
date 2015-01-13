@@ -4,4 +4,4 @@ package ideal.library.texts;
 
 import ideal.library.elements.*;
 
-public interface text_fragment extends deeply_immutable_data, deeply_immutable_convertible_to_string { }
+public interface text_fragment extends deeply_immutable_data, deeply_immutable_stringable { }

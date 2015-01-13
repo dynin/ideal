@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 
 public interface token<P extends deeply_immutable_data>
-    extends deeply_immutable_data, position, convertible_to_string {
+    extends deeply_immutable_data, position, stringable {
   token_type type();
   P payload();
 }

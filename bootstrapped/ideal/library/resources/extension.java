@@ -5,6 +5,6 @@ package ideal.library.resources;
 import ideal.library.elements.*;
 import ideal.library.channels.*;
 
-public interface extension extends deeply_immutable_data, deeply_immutable_convertible_to_string {
+public interface extension extends deeply_immutable_data, deeply_immutable_stringable {
   string dot_name();
 }

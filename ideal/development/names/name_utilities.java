@@ -21,7 +21,7 @@ public class name_utilities {
   private static simple_name SECOND = simple_name.make("second");
   private static simple_name THIRD = simple_name.make("third");
 
-  public static string in_brackets(readonly_convertible_to_string name) {
+  public static string in_brackets(readonly_stringable name) {
     return new base_string("<", name.to_string(), ">");
   }
 

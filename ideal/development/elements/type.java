@@ -13,7 +13,7 @@ import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.reflections.*;
 
-public interface type extends abstract_value, data, type_id, convertible_to_string,
+public interface type extends abstract_value, data, type_id, stringable,
     reference_equality {
   boolean is_subtype_of(type the_supertype);
   principal_type principal();

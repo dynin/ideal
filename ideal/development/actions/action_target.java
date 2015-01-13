@@ -11,6 +11,6 @@ package ideal.development.actions;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
-public interface action_target extends readonly_convertible_to_string {
+public interface action_target extends readonly_stringable {
   boolean matches(abstract_value the_abstract_value);
 }

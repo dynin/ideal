@@ -124,7 +124,7 @@ package elements {
   enum boolean {
     implements deeply_immutable data;
     implements equality_comparable;
-    implements convertible_to_string;
+    implements stringable;
 
     true;
     false;
@@ -134,7 +134,7 @@ package elements {
   enum sign {
     implements deeply_immutable data;
     implements comparable;
-    -- TODO: implements convertible_to_string;
+    -- TODO: implements stringable;
 
     less;
     equal;
@@ -162,7 +162,7 @@ package elements {
     implements deeply_immutable data;
     --TODO: this should be implemented by deeply_immutable data...
     implements comparable;
-    implements convertible_to_string;
+    implements stringable;
 
     -- TODO: add signum method
   }
@@ -189,7 +189,7 @@ package elements {
   -- performance-optimized mode.
   interface null {
     extends deeply_immutable data;
-    implements convertible_to_string;
+    implements stringable;
     -- TODO: this is a hack to make equal_to work, remove.
     implements equality_comparable;
   }
@@ -362,13 +362,13 @@ package elements {
     implements deeply_immutable data;
     --TODO: this should be implemented by deeply_immutable data...
     implements equality_comparable;
-    implements convertible_to_string;
+    implements stringable;
   }
 
   --- A list of characters.
   datatype string {
     implements deeply_immutable list[character];
-    implements convertible_to_string;
+    implements stringable;
     -- TODO: this won't be needed when list[data] implements data.
     implements deeply_immutable data;
     --TODO: this should be implemented by deeply_immutable data...
@@ -381,7 +381,7 @@ package elements {
 
   --- <div>A type whose values can be converted to a canonical
   --- string representation.</div>
-  interface convertible_to_string {
+  interface stringable {
     refines readonly value;
 
     string to_string readonly;
@@ -425,7 +425,7 @@ package elements {
   --- An identifier such as a URI.
   interface identifier {
     extends deeply_immutable data;
-    extends convertible_to_string;
+    extends stringable;
     extends equality_comparable;
   }
 

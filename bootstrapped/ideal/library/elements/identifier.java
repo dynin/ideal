@@ -2,4 +2,4 @@
 
 package ideal.library.elements;
 
-public interface identifier extends deeply_immutable_data, deeply_immutable_convertible_to_string, deeply_immutable_equality_comparable { }
+public interface identifier extends deeply_immutable_data, deeply_immutable_stringable, deeply_immutable_equality_comparable { }

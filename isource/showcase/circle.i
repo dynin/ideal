@@ -9,7 +9,7 @@
 --- @see http://en.wikipedia.org/wiki/Circle-ellipse_problem
 
 datatype ellipse {
-  implements convertible_to_string;
+  implements stringable;
 
   integer width;
   integer height;

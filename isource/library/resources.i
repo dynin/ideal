@@ -31,7 +31,7 @@ package resources {
   }
 
   interface access_option {
-    extends deeply_immutable data, convertible_to_string;
+    extends deeply_immutable data, stringable;
   }
 
   interface resource_catalog {
@@ -43,7 +43,7 @@ package resources {
   }
 
   interface extension {
-    extends deeply_immutable data, convertible_to_string;
+    extends deeply_immutable data, stringable;
 
     string dot_name deeply_immutable;
   }

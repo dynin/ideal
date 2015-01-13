@@ -10,7 +10,7 @@ package messages {
 
   interface message {
     implements deeply_immutable data;
-    implements convertible_to_string;
+    implements stringable;
 
     text_fragment to_text();
   }

@@ -32,8 +32,8 @@ public class resolve_construct extends base_construct {
 
   @Override
   public string to_string() {
-    if (name instanceof convertible_to_string) {
-      return utilities.describe(this, (convertible_to_string) name);
+    if (name instanceof stringable) {
+      return utilities.describe(this, (stringable) name);
     } else {
       return super.to_string();
     }

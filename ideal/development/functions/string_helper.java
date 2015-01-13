@@ -30,15 +30,15 @@ public class string_helper {
 
   private string_helper() { }
 
-  public static type readonly_convertible_to_string() {
+  public static type readonly_stringable() {
     return common_library.get_instance().
-        convertible_to_string_type().get_flavored(flavors.readonly_flavor);
+        stringable_type().get_flavored(flavors.readonly_flavor);
   }
 
   public static string to_string(entity_wrapper the_entity, execution_context the_context) {
     assert the_entity instanceof value_wrapper;
     value_wrapper the_value = (value_wrapper) the_entity;
-    assert action_utilities.is_of(the_value, readonly_convertible_to_string());
+    assert action_utilities.is_of(the_value, readonly_stringable());
 
     if (the_value instanceof base_constant_value) {
       return ((base_constant_value) the_value).constant_to_string();

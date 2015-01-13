@@ -42,7 +42,7 @@ class utilities {
     return base_string.new(open_bracket, runtime_util.value_identifier(the_value), close_bracket);
   }
 
-  static string describe(readonly value the_value, readonly convertible_to_string details) {
+  static string describe(readonly value the_value, readonly stringable details) {
     if (details is null) {
       return describe(the_value);
     } else {

@@ -12,7 +12,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 
-public enum declaration_pass implements deeply_immutable_data, convertible_to_string,
+public enum declaration_pass implements deeply_immutable_data, stringable,
     readonly_displayable {
 
   NONE,

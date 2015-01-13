@@ -12,6 +12,6 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 
-public interface position extends readonly_data, reference_equality, convertible_to_string {
+public interface position extends readonly_data, reference_equality, stringable {
   @Nullable position source_position();
 }

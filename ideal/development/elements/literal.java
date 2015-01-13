@@ -11,6 +11,6 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface literal<V> extends convertible_to_string, deeply_immutable_data {
+public interface literal<V> extends stringable, deeply_immutable_data {
   V the_value();
 }

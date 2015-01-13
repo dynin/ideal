@@ -14,7 +14,7 @@ import ideal.development.annotations.dont_display;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
-public class text_position implements deeply_immutable_data, position, convertible_to_string {
+public class text_position implements deeply_immutable_data, position, stringable {
   @dont_display
   public final source_content source;
   @dont_display

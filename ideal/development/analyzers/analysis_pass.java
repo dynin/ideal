@@ -13,7 +13,7 @@ import ideal.runtime.elements.*;
 
 // TODO(m): make identifier
 // TODO(m): has strong ordering
-public enum analysis_pass implements deeply_immutable_data, convertible_to_string {
+public enum analysis_pass implements deeply_immutable_data, stringable {
 
   BEFORE_EVALUATION,
   TYPE_DECL,

@@ -80,7 +80,7 @@ concept data {
 
 --- <div>A type whose values can be converted to a canonical
 --- string representation.</div>
-concept convertible_to_string {
+concept stringable {
   refines readonly value;
 
   string to_string() readonly;
@@ -134,7 +134,7 @@ concept equality_comparable {
 enum boolean {
   implements deeply_immutable data;
   implements equality_comparable;
-  implements convertible_to_string;
+  implements stringable;
 
   true;
   false;
@@ -150,7 +150,7 @@ enum boolean {
 class integer {
   implements deeply_immutable data;
   implements equality_comparable;
-  implements convertible_to_string;
+  implements stringable;
 }
 
 --- A type that encapsulates integer values from 0 (inclusive) to
@@ -181,7 +181,7 @@ class positive {
 -- performance-optimized mode.
 concept null {
   refines deeply_immutable data;
-  implements convertible_to_string;
+  implements stringable;
 }
 
 --- A subroutine that given values as arguments, returns a value
@@ -297,7 +297,7 @@ interface list_with_equivalence[value element] {
 class character {
   implements deeply_immutable data;
   implements equality_comparable;
-  implements convertible_to_string;
+  implements stringable;
 }
 
 class string {

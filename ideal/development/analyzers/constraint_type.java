@@ -11,7 +11,7 @@ package ideal.development.analyzers;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
-public enum constraint_type implements immutable_data, convertible_to_string {
+public enum constraint_type implements immutable_data, stringable {
   ON_TRUE,
   ON_FALSE,
   ALWAYS;

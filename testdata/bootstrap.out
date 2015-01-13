@@ -360,7 +360,7 @@
       }
     ]
     kind: concept
-    name: convertible_to_string
+    name: stringable
     parameters: <null>
     body: [
       supertype_construct {
@@ -608,7 +608,7 @@
         kind: <implements>
         types: [
           name_construct {
-            the_name: convertible_to_string
+            the_name: stringable
           }
         ]
       }
@@ -676,7 +676,7 @@
         kind: <implements>
         types: [
           name_construct {
-            the_name: convertible_to_string
+            the_name: stringable
           }
         ]
       }
@@ -804,7 +804,7 @@
         kind: <implements>
         types: [
           name_construct {
-            the_name: convertible_to_string
+            the_name: stringable
           }
         ]
       }
@@ -2208,7 +2208,7 @@
         kind: <implements>
         types: [
           name_construct {
-            the_name: convertible_to_string
+            the_name: stringable
           }
         ]
       }
@@ -2519,7 +2519,7 @@ concept data {
   not_yet_implemented immutable data frozen_copy() readonly;
   not_yet_implemented deeply_immutable data deep_frozen_copy() readonly;
 }
-concept convertible_to_string {
+concept stringable {
   refines readonly value;
   string to_string() readonly;
 }
@@ -2536,14 +2536,14 @@ concept equality_comparable {
 enum boolean {
   implements deeply_immutable data;
   implements equality_comparable;
-  implements convertible_to_string;
+  implements stringable;
   true;
   false;
 }
 class integer {
   implements deeply_immutable data;
   implements equality_comparable;
-  implements convertible_to_string;
+  implements stringable;
 }
 class nonnegative {
   refines integer;
@@ -2553,7 +2553,7 @@ class positive {
 }
 concept null {
   refines deeply_immutable data;
-  implements convertible_to_string;
+  implements stringable;
 }
 procedure_kind procedure[entity ret, entity arg1] {
   refines value;
@@ -2621,7 +2621,7 @@ interface list_with_equivalence[value element] {
 class character {
   implements deeply_immutable data;
   implements equality_comparable;
-  implements convertible_to_string;
+  implements stringable;
 }
 class string {
   implements deeply_immutable list[character];

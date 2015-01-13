@@ -11,7 +11,7 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface kind extends deeply_immutable_data, reference_equality, convertible_to_string {
+public interface kind extends deeply_immutable_data, reference_equality, stringable {
   simple_name name();
   flavor_profile default_profile();
   boolean is_namespace();

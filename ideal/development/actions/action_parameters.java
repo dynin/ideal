@@ -13,7 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.types.*;
 public class action_parameters extends debuggable
-    implements deeply_immutable_data, convertible_to_string {
+    implements deeply_immutable_data, stringable {
 
   private immutable_list<action> params;
   // private immutable_dictionary<variable_declaration, action> named_params;

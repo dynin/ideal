@@ -29,8 +29,8 @@ public class concatenate_op extends binary_procedure {
   public concatenate_op() {
     super(operator.CONCATENATE, true,
         library().immutable_string_type(),
-        string_helper.readonly_convertible_to_string(),
-        string_helper.readonly_convertible_to_string());
+        string_helper.readonly_stringable(),
+        string_helper.readonly_stringable());
   }
 
   @Override

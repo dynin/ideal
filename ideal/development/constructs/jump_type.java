@@ -12,7 +12,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
-public enum jump_type implements deeply_immutable_data, convertible_to_string {
+public enum jump_type implements deeply_immutable_data, stringable {
   BREAK_JUMP("break"),
   CONTINUE_JUMP("continue");
   // TODO: GOTO_JUMP etc...

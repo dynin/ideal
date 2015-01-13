@@ -4,4 +4,4 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_entity_wrapper extends deeply_immutable_convertible_to_string, immutable_entity_wrapper { }
+public interface deeply_immutable_entity_wrapper extends deeply_immutable_stringable, immutable_entity_wrapper { }

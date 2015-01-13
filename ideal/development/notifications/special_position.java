@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import ideal.development.elements.*;
 
 public class special_position extends debuggable implements position, deeply_immutable_data,
-    convertible_to_string {
+    stringable {
 
   public final string description;
 

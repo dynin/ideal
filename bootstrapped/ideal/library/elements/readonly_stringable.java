@@ -2,6 +2,6 @@
 
 package ideal.library.elements;
 
-public interface readonly_convertible_to_string extends readonly_value, any_convertible_to_string {
+public interface readonly_stringable extends readonly_value, any_stringable {
   string to_string();
 }

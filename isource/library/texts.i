@@ -11,7 +11,7 @@ package texts {
   --- The text fragment is always balanced.
   interface text_fragment {
     extends deeply_immutable data;
-    extends convertible_to_string;
+    extends stringable;
   }
 
   --- A text node can be a text element, string, or a special text.

@@ -10,7 +10,7 @@ import java.lang.Object;
 --- Bridges string conversion between ideal and and Objects.
 class debuggable {
   extends Object;
-  implements convertible_to_string;
+  implements stringable;
 
   -- TODO: autogenerate trivial constructor.
   protected debuggable() { }

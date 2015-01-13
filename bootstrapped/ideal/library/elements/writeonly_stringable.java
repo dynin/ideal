@@ -2,4 +2,4 @@
 
 package ideal.library.elements;
 
-public interface any_convertible_to_string extends any_value { }
+public interface writeonly_stringable extends writeonly_value, any_stringable { }

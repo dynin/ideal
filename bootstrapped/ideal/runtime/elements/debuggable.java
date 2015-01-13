@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import java.lang.String;
 import java.lang.Object;
 
-public class debuggable extends Object implements convertible_to_string {
+public class debuggable extends Object implements stringable {
   protected debuggable() { }
   public @Override string to_string() {
     return utilities.describe(this);

@@ -15,5 +15,5 @@ import ideal.library.elements.*;
  * |start_element| and |end_element|.
  */
 public interface text_event extends deeply_immutable_data,
-    convertible_to_string {
+    stringable {
 }

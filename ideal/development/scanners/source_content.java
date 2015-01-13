@@ -16,7 +16,7 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 
 public class source_content extends debuggable
-    implements deeply_immutable_data, position, convertible_to_string {
+    implements deeply_immutable_data, position, stringable {
 
   public final identifier name;
   public final string content;

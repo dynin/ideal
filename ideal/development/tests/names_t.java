@@ -18,7 +18,7 @@ import junit.framework.TestCase;
 
 public class names_t extends TestCase {
 
-  private static String to_s(convertible_to_string val) {
+  private static String to_s(stringable val) {
     return utilities.s(val.to_string());
   }
 

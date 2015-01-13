@@ -13,6 +13,6 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public interface specialization_context extends deeply_immutable_data, convertible_to_string {
+public interface specialization_context extends deeply_immutable_data, stringable {
   @Nullable abstract_value lookup(principal_type key);
 }

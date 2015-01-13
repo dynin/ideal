@@ -30,7 +30,7 @@ public class info_fn extends base_procedure {
 
   public info_fn(action_name the_name) {
     super(the_name, procedure_util.make_varags_procedure_type(false,
-        library().immutable_void_type(), string_helper.readonly_convertible_to_string()));
+        library().immutable_void_type(), string_helper.readonly_stringable()));
   }
 
   @Override

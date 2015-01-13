@@ -31,7 +31,7 @@ public class utilities {
   public static string describe(final readonly_value the_value) {
     return new base_string(open_bracket, runtime_util.value_identifier(the_value), close_bracket);
   }
-  public static string describe(final readonly_value the_value, final readonly_convertible_to_string details) {
+  public static string describe(final readonly_value the_value, final readonly_stringable details) {
     if (details == null) {
       return describe(the_value);
     } else {

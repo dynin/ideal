@@ -18,7 +18,7 @@ import ideal.development.values.panic_value;
 import javax.annotation.Nullable;
 
 public class error_signal extends debuggable implements analysis_result, analyzable,
-    deeply_immutable_data, convertible_to_string {
+    deeply_immutable_data, stringable {
 
   public final notification cause;
   public final boolean is_cascading;

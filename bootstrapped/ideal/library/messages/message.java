@@ -5,6 +5,6 @@ package ideal.library.messages;
 import ideal.library.elements.*;
 import ideal.library.texts.*;
 
-public interface message extends deeply_immutable_data, deeply_immutable_convertible_to_string {
+public interface message extends deeply_immutable_data, deeply_immutable_stringable {
   text_fragment to_text();
 }

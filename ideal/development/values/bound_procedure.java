@@ -20,7 +20,7 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.values.*;
 
-public class bound_procedure extends base_action implements convertible_to_string {
+public class bound_procedure extends base_action implements stringable {
   public final action the_procedure_action;
   public final action_parameters parameters;
   public final abstract_value return_value;

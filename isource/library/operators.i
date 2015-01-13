@@ -38,8 +38,8 @@ package operators {
   boolean logical_or(boolean first, boolean second) pure;
   boolean logical_not(boolean argument) pure;
 
-  string concatenate(readonly convertible_to_string first,
-      readonly convertible_to_string second) pure;
+  string concatenate(readonly stringable first,
+      readonly stringable second) pure;
 
   integer add_assign(integer lvalue mutable, integer rvalue);
   nonnegative add_assign(nonnegative lvalue mutable, nonnegative rvalue);

@@ -12,7 +12,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
-public class name_construct extends base_construct implements convertible_to_string {
+public class name_construct extends base_construct implements stringable {
   public action_name the_name;
   public name_construct(action_name the_name, position pos) {
     super(pos);

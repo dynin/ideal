@@ -19,7 +19,7 @@ import ideal.development.names.*;
 import javax.annotation.Nullable;
 
 public class base_data_value<T> extends debuggable
-    implements abstract_value, value_wrapper<T>, convertible_to_string {
+    implements abstract_value, value_wrapper<T>, stringable {
 
   private type bound;
 

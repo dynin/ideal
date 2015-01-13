@@ -16,7 +16,7 @@ import ideal.runtime.elements.*;
  * It can either be a value (e.g. 42) or a type (e.g. integer).
  * There is ordering defined on a type.
  */
-public interface abstract_value extends readonly_data, convertible_to_string {
+public interface abstract_value extends readonly_data, stringable {
   type type_bound();
   action to_action(position pos);
 }

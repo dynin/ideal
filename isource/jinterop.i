@@ -42,7 +42,7 @@ package java {
 
     class String {
       extends Object;
-      implements deeply_immutable data, convertible_to_string;
+      implements deeply_immutable data, stringable;
 
       public integer length();
       public String substring(integer begin);

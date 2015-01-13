@@ -16,5 +16,5 @@ import ideal.development.elements.*;
 import ideal.development.actions.*;
 
 public interface composite_wrapper extends value_wrapper<any_composite_value>, variable_context,
-    convertible_to_string {
+    stringable {
 }

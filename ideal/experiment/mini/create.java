@@ -32,6 +32,8 @@ public class create {
 
   public static boolean has_errors = false;
 
+  public static final String THIS_NAME = "this";
+
   public static final String INSTANCE_NAME = "instance";
 
   public static class analysis_context {
@@ -218,6 +220,10 @@ public class create {
       }
 
       if (!is_parametrizable(main_action)) {
+        // TODO: remove this hack.
+        if (main_action instanceof variable_declaration) {
+          return null;
+        }
         error_signal result = new error_signal(notification_type.NOT_PARAMETRIZABLE,
             the_parameter_construct.main());
         report(result);
@@ -301,9 +307,18 @@ public class create {
       assert pass == analysis_pass.BODY_PASS;
       @Nullable construct initializer = the_variable_construct.initializer();
       if (initializer != null) {
-        analyze(initializer, parent, pass);
+        principal_type init_frame = new principal_type_class(the_variable_construct.name(), parent);
+        add_this_variable(parent, init_frame, the_variable_construct);
+        analyze(initializer, init_frame, pass);
       }
       return null;
+    }
+
+    private void add_this_variable(principal_type declared_type, principal_type inner_frame,
+        source the_source) {
+      variable_declaration this_declaration = new variable_declaration(declared_type, THIS_NAME,
+          inner_frame, the_source);
+      the_analysis_context.add_action(inner_frame, THIS_NAME, this_declaration);
     }
 
     public action call_procedure_construct(procedure_construct the_procedure_construct) {
@@ -1272,7 +1287,7 @@ public class create {
               // Add constructor parameter
               ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_source));
               identifier variable_identifier = new identifier(name, the_source);
-              identifier this_identifier = new identifier("this", the_source);
+              identifier this_identifier = new identifier(THIS_NAME, the_source);
               construct this_access = make_operator(operator_type.DOT, this_identifier,
                   variable_identifier, the_source);
               construct assignment = make_operator(operator_type.ASSIGN, this_access,

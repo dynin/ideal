@@ -249,6 +249,14 @@
   (variable string text)
 )
 
+(class enum_literal
+  (implements value_action describable)
+  (variable string name)
+  (variable integer ordinal)
+  (variable (override) principal_type result)
+  (variable (override) source the_source)
+)
+
 (class error_signal
   (implements action describable)
   (variable notification_message message)

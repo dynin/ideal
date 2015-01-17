@@ -338,12 +338,37 @@ public class create {
         declared_type = the_type_declaration.declared_type();
       }
 
-      boolean is_enum = the_type_construct.the_type_kind() == type_kind.ENUM;
-      for (construct the_construct : the_type_construct.body()) {
-        if (is_enum && is_enum_declaration.call(the_construct)) {
-          // TODO: handle enum declarations.
-        } else {
-          analyze(the_construct, declared_type, pass);
+      if (the_type_construct.the_type_kind() != type_kind.ENUM) {
+        analyze_all(the_type_construct.body(), declared_type, pass);
+      } else {
+        int enum_ordinal = 0;
+        for (construct the_construct : the_type_construct.body()) {
+          if (is_enum_declaration.call(the_construct)) {
+            if (pass != analysis_pass.MEMBER_PASS) {
+              continue;
+            }
+
+            identifier the_identifier;
+            if (the_construct instanceof identifier) {
+              the_identifier = (identifier) the_construct;
+            } else {
+              parameter_construct the_parameter_construct = (parameter_construct) the_construct;
+              construct main = the_parameter_construct.main();
+              if (main instanceof identifier) {
+                the_identifier = (identifier) main;
+              } else {
+                report(new error_signal(notification_type.IDENTIFIER_EXPECTED, main));
+                continue;
+              }
+            }
+            String name = the_identifier.name();
+            enum_literal the_literal = new enum_literal(name, enum_ordinal, declared_type,
+                the_construct);
+            the_analysis_context.add_action(declared_type, name, the_literal);
+            enum_ordinal += 1;
+          } else {
+            analyze(the_construct, declared_type, pass);
+          }
         }
       }
 

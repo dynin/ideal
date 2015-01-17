@@ -550,6 +550,33 @@ public interface bootstrapped {
       return text;
     }
   }
+  class enum_literal implements value_action, describable {
+    private final String name;
+    private final int ordinal;
+    private final principal_type result;
+    private final source the_source;
+    public enum_literal(String name, int ordinal, principal_type result, source the_source) {
+      this.name = name;
+      this.ordinal = ordinal;
+      this.result = result;
+      this.the_source = the_source;
+    }
+    public String name() {
+      return name;
+    }
+    public int ordinal() {
+      return ordinal;
+    }
+    @Override public principal_type result() {
+      return result;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("enum_literal", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("ordinal", ordinal), field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   class error_signal implements action, describable {
     private final notification_message message;
     private final source the_source;

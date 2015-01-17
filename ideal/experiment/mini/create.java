@@ -307,7 +307,8 @@ public class create {
       assert pass == analysis_pass.BODY_PASS;
       @Nullable construct initializer = the_variable_construct.initializer();
       if (initializer != null) {
-        principal_type init_frame = new principal_type_class(the_variable_construct.name(), parent);
+        principal_type init_frame = new principal_type_class(the_variable_construct.name(),
+            type_kind.BLOCK, parent);
         add_this_variable(parent, init_frame, the_variable_construct);
         analyze(initializer, init_frame, pass);
       }
@@ -344,7 +345,7 @@ public class create {
       type_kind the_type_kind = the_type_construct.the_type_kind();
 
       if (pass == analysis_pass.TYPE_PASS) {
-        declared_type = new principal_type_class(the_type_construct.name(), parent);
+        declared_type = new principal_type_class(the_type_construct.name(), the_type_kind, parent);
         the_type_declaration = new type_declaration(declared_type, the_type_kind,
             the_type_construct);
         the_analysis_context.add_binding(the_type_construct, the_type_declaration);

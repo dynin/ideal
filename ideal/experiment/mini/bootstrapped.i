@@ -205,6 +205,8 @@
 )
 
 (enum type_kind
+  NAMESPACE
+  BLOCK
   INTERFACE
   DATATYPE
   ENUM
@@ -273,17 +275,20 @@
 (datatype principal_type
   (extends type describable)
   (variable string name)
+  (variable type_kind the_type_kind)
   (variable (nullable principal_type) parent)
 )
 
 (singleton top_type
   (implements principal_type describable)
   (variable (override) string name "<top>")
+  (variable (override) type_kind the_type_kind (. type_kind NAMESPACE))
   (variable (override) (nullable principal_type) parent null)
 )
 
 (enum core_type
   (implements principal_type describable)
+  (variable (override) type_kind the_type_kind (. type_kind CLASS))
   (variable (override) principal_type parent (. top_type instance))
   VOID
   INTEGER
@@ -301,6 +306,7 @@
   (variable (list type) parameters)
   ; TODO: use DOT operator
   (variable (override) string name ((. main name)))
+  (variable (override) type_kind the_type_kind ((. main the_type_kind)))
   (variable (override) principal_type parent ((. main parent)))
 )
 

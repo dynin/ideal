@@ -446,6 +446,8 @@ public interface bootstrapped {
     }
   }
   enum type_kind {
+    NAMESPACE,
+    BLOCK,
     INTERFACE,
     DATATYPE,
     ENUM,
@@ -616,29 +618,38 @@ public interface bootstrapped {
   }
   interface principal_type extends type, describable {
     String name();
+    type_kind the_type_kind();
     @Nullable principal_type parent();
   }
   class principal_type_class implements principal_type {
     private final String name;
+    private final type_kind the_type_kind;
     private final @Nullable principal_type parent;
-    public principal_type_class(String name, @Nullable principal_type parent) {
+    public principal_type_class(String name, type_kind the_type_kind, @Nullable principal_type parent) {
       this.name = name;
+      this.the_type_kind = the_type_kind;
       this.parent = parent;
     }
     @Override public String name() {
       return name;
     }
+    @Override public type_kind the_type_kind() {
+      return the_type_kind;
+    }
     @Override public @Nullable principal_type parent() {
       return parent;
     }
     @Override public text description() {
-      return join_fragments("principal_type_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("parent", parent)), END_OBJECT);
+      return join_fragments("principal_type_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_type_kind", the_type_kind), field_is("parent", parent)), END_OBJECT);
     }
   }
   class top_type implements principal_type, describable {
     public static final top_type instance = new top_type();
     @Override public String name() {
       return "<top>";
+    }
+    @Override public type_kind the_type_kind() {
+      return type_kind.NAMESPACE;
     }
     @Override public @Nullable principal_type parent() {
       return null;
@@ -656,6 +667,9 @@ public interface bootstrapped {
     NULLABLE,
     UNREACHABLE,
     ERROR;
+    @Override public type_kind the_type_kind() {
+      return type_kind.CLASS;
+    }
     @Override public principal_type parent() {
       return top_type.instance;
     }
@@ -678,6 +692,9 @@ public interface bootstrapped {
     }
     @Override public String name() {
       return main.name();
+    }
+    @Override public type_kind the_type_kind() {
+      return main.the_type_kind();
     }
     @Override public principal_type parent() {
       return main.parent();

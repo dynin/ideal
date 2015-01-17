@@ -32,6 +32,8 @@ public class create {
 
   public static boolean has_errors = false;
 
+  public static final String INSTANCE_NAME = "instance";
+
   public static class analysis_context {
     private final Map<type, type_context> type_contexts;
     private final Map<construct, action> bindings;
@@ -324,10 +326,12 @@ public class create {
     public action call_type_construct(type_construct the_type_construct) {
       principal_type declared_type;
       type_declaration the_type_declaration;
+      type_kind the_type_kind = the_type_construct.the_type_kind();
 
       if (pass == analysis_pass.TYPE_PASS) {
         declared_type = new principal_type_class(the_type_construct.name(), parent);
-        the_type_declaration = new type_declaration(declared_type, the_type_construct);
+        the_type_declaration = new type_declaration(declared_type, the_type_kind,
+            the_type_construct);
         the_analysis_context.add_binding(the_type_construct, the_type_declaration);
         the_analysis_context.add_action(parent, the_type_construct.name(),
             new type_action_class(declared_type, the_type_declaration));
@@ -338,8 +342,13 @@ public class create {
         declared_type = the_type_declaration.declared_type();
       }
 
-      if (the_type_construct.the_type_kind() != type_kind.ENUM) {
+      if (the_type_kind != type_kind.ENUM) {
         analyze_all(the_type_construct.body(), declared_type, pass);
+        if (the_type_kind == type_kind.SINGLETON && pass == analysis_pass.MEMBER_PASS) {
+          singleton_literal the_literal = new singleton_literal(declared_type,
+              the_type_declaration);
+          the_analysis_context.add_action(declared_type, INSTANCE_NAME, the_literal);
+        }
       } else {
         int enum_ordinal = 0;
         for (construct the_construct : the_type_construct.body()) {
@@ -1334,7 +1343,7 @@ public class create {
               new variable_construct(
                   instance_modifiers,
                   new identifier(implementation_name, the_source),
-                  "instance",
+                  INSTANCE_NAME,
                   instance_ctor,
                   the_source);
           implementation_body.add(instance_variable);

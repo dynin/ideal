@@ -577,6 +577,23 @@ public interface bootstrapped {
       return join_fragments("enum_literal", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("ordinal", ordinal), field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  class singleton_literal implements value_action, describable {
+    private final principal_type result;
+    private final source the_source;
+    public singleton_literal(principal_type result, source the_source) {
+      this.result = result;
+      this.the_source = the_source;
+    }
+    @Override public principal_type result() {
+      return result;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("singleton_literal", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   class error_signal implements action, describable {
     private final notification_message message;
     private final source the_source;
@@ -671,13 +688,18 @@ public interface bootstrapped {
   }
   class type_declaration implements type_action, describable {
     private final principal_type declared_type;
+    private final type_kind the_type_kind;
     private final source the_source;
-    public type_declaration(principal_type declared_type, source the_source) {
+    public type_declaration(principal_type declared_type, type_kind the_type_kind, source the_source) {
       this.declared_type = declared_type;
+      this.the_type_kind = the_type_kind;
       this.the_source = the_source;
     }
     public principal_type declared_type() {
       return declared_type;
+    }
+    public type_kind the_type_kind() {
+      return the_type_kind;
     }
     public source the_source() {
       return the_source;
@@ -686,7 +708,7 @@ public interface bootstrapped {
       return declared_type;
     }
     @Override public text description() {
-      return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_type_kind", the_type_kind), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   class variable_declaration implements action, describable {

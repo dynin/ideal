@@ -257,6 +257,12 @@
   (variable (override) source the_source)
 )
 
+(class singleton_literal
+  (implements value_action describable)
+  (variable (override) principal_type result)
+  (variable (override) source the_source)
+)
+
 (class error_signal
   (implements action describable)
   (variable notification_message message)
@@ -301,6 +307,7 @@
 (class type_declaration
   (implements type_action describable)
   (variable principal_type declared_type)
+  (variable type_kind the_type_kind)
   (variable source the_source)
   (variable (override) type result declared_type)
 )

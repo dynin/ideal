@@ -33,15 +33,15 @@ public class create {
   public static boolean has_errors = false;
 
   public static class analysis_context {
-    private final Map<principal_type, type_context> type_contexts;
+    private final Map<type, type_context> type_contexts;
     private final Map<construct, action> bindings;
 
     public analysis_context() {
-      type_contexts = new HashMap<principal_type, type_context>();
+      type_contexts = new HashMap<type, type_context>();
       bindings = new HashMap<construct, action>();
     }
 
-    public void add_action(principal_type the_type, String name, action the_action) {
+    public void add_action(type the_type, String name, action the_action) {
       @Nullable type_context the_type_context = type_contexts.get(the_type);
       if (the_type_context == null) {
         the_type_context = new type_context();
@@ -54,7 +54,7 @@ public class create {
       assert old_action == null : "Duplicate action for " + name + " in " + the_type;
     }
 
-    public @Nullable action get_action(principal_type the_type, String name) {
+    public @Nullable action get_action(type the_type, String name) {
       do {
         @Nullable type_context the_type_context = type_contexts.get(the_type);
         if (the_type_context != null) {
@@ -63,7 +63,11 @@ public class create {
             return result;
           }
         }
-        the_type = the_type.parent();
+        if (the_type instanceof principal_type) {
+          the_type = ((principal_type) the_type).parent();
+        } else {
+          break;
+        }
       } while (the_type != null);
 
       return null;
@@ -136,19 +140,9 @@ public class create {
         return result;
       }
 
-      String name = the_identifier.name();
-      result = the_analysis_context.get_action(parent, name);
-      if (result == null) {
-        error_signal error_result = new error_signal(
-            new notification_message_class(notification_type.SYMBOL_LOOKUP_FAILED,
-                "Symbol lookup failed for '" + name  + "'"),
-            the_identifier);
-        report(error_result);
-        result = error_result;
-      }
+      result = resolve(parent, the_identifier);
 
       the_analysis_context.add_binding(the_identifier, result);
-
       return result;
     }
 
@@ -160,7 +154,48 @@ public class create {
       return the_string_literal;
     }
 
+    public action resolve(type the_type, identifier the_identifier) {
+      String name = the_identifier.name();
+      @Nullable action result = the_analysis_context.get_action(the_type, name);
+
+      if (result != null) {
+        return result;
+      } else {
+        error_signal error_result = new error_signal(
+            new notification_message_class(notification_type.SYMBOL_LOOKUP_FAILED,
+                "Symbol lookup failed for '" + name  + "'"),
+            the_identifier);
+        report(error_result);
+        return error_result;
+      }
+    }
+
+    public action analyze_resolve(construct qualifier, construct name) {
+      action qualifier_action = analyze(qualifier, parent, pass);
+      if (qualifier_action instanceof error_signal) {
+        return qualifier_action;
+      }
+
+      if (!(name instanceof identifier)) {
+        error_signal result = new error_signal(notification_type.IDENTIFIER_EXPECTED, name);
+        report(result);
+        return result;
+      }
+
+      identifier the_identifier = (identifier) name;
+      return resolve(qualifier_action.result(), the_identifier);
+    }
+
     public action call_parameter_construct(parameter_construct the_parameter_construct) {
+      if (the_parameter_construct.main() instanceof operator) {
+        operator_type the_operator_type = ((operator) the_parameter_construct.main()).
+            the_operator_type();
+        if (the_operator_type == operator_type.DOT) {
+          List<construct> parameters = the_parameter_construct.parameters();
+          assert parameters.size() == 2;
+          return analyze_resolve(parameters.get(0), parameters.get(1));
+        }
+      }
       // TODO: add binding
 
       action main_action = analyze(the_parameter_construct.main(), parent, pass);

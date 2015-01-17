@@ -703,7 +703,8 @@ public interface bootstrapped {
     SYMBOL_LOOKUP_FAILED("Symbol lookup failed"),
     TYPE_EXPECTED("Type expected"),
     NOT_PARAMETRIZABLE("Not parametrizable"),
-    WRONG_ARITY("Wrong arity");
+    WRONG_ARITY("Wrong arity"),
+    IDENTIFIER_EXPECTED("Identifier expected");
     private final String text;
     notification_type(String text) {
       this.text = text;

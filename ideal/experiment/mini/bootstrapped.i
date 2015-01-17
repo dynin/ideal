@@ -323,4 +323,5 @@
   (TYPE_EXPECTED "Type expected")
   (NOT_PARAMETRIZABLE "Not parametrizable")
   (WRONG_ARITY "Wrong arity")
+  (IDENTIFIER_EXPECTED "Identifier expected")
 )

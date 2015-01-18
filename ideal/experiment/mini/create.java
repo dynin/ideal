@@ -191,6 +191,22 @@ public class create {
     }
 
     public action call_parameter_construct(parameter_construct the_parameter_construct) {
+      @Nullable action result = the_analysis_context.get_binding(the_parameter_construct);
+      if (result != null) {
+        return result;
+      }
+
+      result = do_call_parameter_construct(the_parameter_construct);
+
+      // TODO: this shouldn't be necessary
+      if (result != null) {
+        the_analysis_context.add_binding(the_parameter_construct, result);
+      }
+
+      return result;
+    }
+
+    private action do_call_parameter_construct(parameter_construct the_parameter_construct) {
       if (the_parameter_construct.main() instanceof operator) {
         operator_type the_operator_type = ((operator) the_parameter_construct.main()).
             the_operator_type();
@@ -580,10 +596,6 @@ public class create {
 
     return result;
   }
-
-  private static final String NULLABLE_NAME = "nullable";
-
-  private static final String LIST_NAME = "list";
 
   private static int parse_sublist(List<token> tokens, int start, List<construct> result,
       parser_context context) {
@@ -1110,6 +1122,21 @@ public class create {
 
   public static class to_java_transform extends base_transform {
 
+    private final analysis_context the_analysis_context;
+    private final Map<principal_type, String> type_mapping;
+
+    public to_java_transform(analysis_context the_analysis_context) {
+      this.the_analysis_context = the_analysis_context;
+      this.type_mapping = new HashMap<principal_type, String>();
+      type_mapping.put(core_type.INTEGER, "int");
+      type_mapping.put(core_type.STRING, "String");
+      type_mapping.put(core_type.LIST, "List");
+    }
+
+    protected @Nullable action get_binding(construct the_construct) {
+      return the_analysis_context.get_binding(the_construct);
+    }
+
     @Override
     public construct call_parameter_construct(parameter_construct the_parameter_construct) {
       source the_source = the_parameter_construct;
@@ -1128,8 +1155,9 @@ public class create {
       }
 
       grouping_type grouping = the_parameter_construct.grouping();
-      if (main instanceof identifier &&
-          ((identifier) main).name().equals(LIST_NAME)) {
+      @Nullable action main_action = get_binding(main);
+      if (main_action instanceof type_action &&
+          main_action.result() == core_type.LIST) {
         grouping = grouping_type.ANGLE_BRACKETS;
       }
 
@@ -1516,23 +1544,24 @@ public class create {
     }
 
     public construct call_identifier(identifier the_identifier) {
-      String name = the_identifier.name();
-      if (name.equals("integer")) {
-        return new identifier("int", the_identifier);
-      } else if (name.equals("string")) {
-        return new identifier("String", the_identifier);
-      } else if (name.equals(LIST_NAME)) {
-        return new identifier("List", the_identifier);
-      } else {
-        return the_identifier;
+      @Nullable action the_action = get_binding(the_identifier);
+      if (the_action instanceof type_action) {
+        type result = the_action.result();
+        if (result instanceof principal_type) {
+          @Nullable String mapping = type_mapping.get((principal_type) result);
+          if (mapping != null) {
+            return new identifier(mapping, the_identifier);
+          }
+        }
       }
+      return the_identifier;
     }
 
     private boolean is_nullable(construct the_construct) {
       if (the_construct instanceof parameter_construct) {
         construct main = ((parameter_construct) the_construct).main();
-        return main instanceof identifier &&
-               ((identifier) main).name().equals(NULLABLE_NAME);
+        @Nullable action main_action = get_binding(main);
+        return main_action instanceof type_action && main_action.result() == core_type.NULLABLE;
       }
       return false;
     }
@@ -1612,20 +1641,18 @@ public class create {
       return;
     }
 
-    if (analyze) {
-      analysis_context the_context = init_analysis_context();
-      analyzer the_analyzer = new analyzer(the_context);
+    analysis_context the_context = init_analysis_context();
+    analyzer the_analyzer = new analyzer(the_context);
 
-      for (analysis_pass pass : analysis_pass.values()) {
-        the_analyzer.analyze_all(constructs, top_type.instance, pass);
-      }
-
-      if (has_errors) {
-        return;
-      }
+    for (analysis_pass pass : analysis_pass.values()) {
+      the_analyzer.analyze_all(constructs, top_type.instance, pass);
     }
 
-    constructs = new to_java_transform().transform_all(constructs);
+    if (has_errors) {
+      return;
+    }
+
+    constructs = new to_java_transform(the_context).transform_all(constructs);
 
     System.out.print(render_text(new java_printer().print_all(constructs)));
   }

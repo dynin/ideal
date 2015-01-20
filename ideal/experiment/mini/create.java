@@ -198,10 +198,8 @@ public class create {
 
       result = do_call_parameter_construct(the_parameter_construct);
 
-      // TODO: this shouldn't be necessary
-      if (result != null) {
-        the_analysis_context.add_binding(the_parameter_construct, result);
-      }
+      assert result != null;
+      the_analysis_context.add_binding(the_parameter_construct, result);
 
       return result;
     }
@@ -216,7 +214,6 @@ public class create {
           return analyze_resolve(parameters.get(0), parameters.get(1));
         }
       }
-      // TODO: add binding
 
       action main_action = analyze(the_parameter_construct.main(), parent, pass);
       if (main_action instanceof error_signal) {
@@ -236,10 +233,6 @@ public class create {
       }
 
       if (!is_parametrizable(main_action)) {
-        // TODO: remove this hack.
-        if (main_action instanceof variable_declaration) {
-          return null;
-        }
         error_signal result = new error_signal(notification_type.NOT_PARAMETRIZABLE,
             the_parameter_construct.main());
         report(result);
@@ -1161,7 +1154,16 @@ public class create {
         grouping = grouping_type.ANGLE_BRACKETS;
       }
 
-      return new parameter_construct(transformed_main, parameters, grouping, the_source);
+      construct result = new parameter_construct(transformed_main, parameters, grouping,
+          the_source);
+
+      @Nullable action the_action = get_binding(the_parameter_construct);
+      if (the_action instanceof variable_declaration) {
+        result = new parameter_construct(result, new ArrayList<construct>(), grouping_type.PARENS,
+            the_source);
+      }
+
+      return result;
     }
 
     @Override

@@ -21,6 +21,12 @@
   (variable (override) string foo (. operator_type DOT))
 )
 
+(datatype source_text_too
+  (extends source describable)
+  (variable source the_source)
+  (variable (override) (nullable source) deeper (. the_source deeper))
+)
+
 (enum test_enum
   (implements describable)
   foo

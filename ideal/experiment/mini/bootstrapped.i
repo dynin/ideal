@@ -305,9 +305,9 @@
   (variable principal_type main)
   (variable (list type) parameters)
   ; TODO: use DOT operator
-  (variable (override) string name ((. main name)))
-  (variable (override) type_kind the_type_kind ((. main the_type_kind)))
-  (variable (override) principal_type parent ((. main parent)))
+  (variable (override) string name (. main name))
+  (variable (override) type_kind the_type_kind (. main the_type_kind))
+  (variable (override) principal_type parent (. main parent))
 )
 
 (class type_declaration

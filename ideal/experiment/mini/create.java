@@ -17,8 +17,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -46,12 +48,7 @@ public class create {
     }
 
     public void add_action(type the_type, String name, action the_action) {
-      @Nullable type_context the_type_context = type_contexts.get(the_type);
-      if (the_type_context == null) {
-        the_type_context = new type_context();
-        type_contexts.put(the_type, the_type_context);
-      }
-
+      type_context the_type_context = get_or_create_context(the_type);
       @Nullable action old_action = the_type_context.action_table.put(name, the_action);
       // actions can't be overriden.
       // TODO: signal error during analysis
@@ -77,6 +74,13 @@ public class create {
       return null;
     }
 
+    public void add_supertype(type subtype, type supertype) {
+      type_context the_type_context = get_or_create_context(subtype);
+      boolean new_element = the_type_context.supertypes.add(supertype);
+      // TODO: signal error during analysis
+      assert new_element : "Duplicate: subtype " + subtype + ", supertype " + supertype;
+    }
+
     public void add_binding(construct the_construct, action the_action) {
       action old_action = bindings.put(the_construct, the_action);
       assert old_action == null;
@@ -86,12 +90,23 @@ public class create {
       return bindings.get(the_construct);
     }
 
+    private type_context get_or_create_context(type the_type) {
+      @Nullable type_context the_type_context = type_contexts.get(the_type);
+      if (the_type_context == null) {
+        the_type_context = new type_context();
+        type_contexts.put(the_type, the_type_context);
+      }
+      return the_type_context;
+    }
+
     // Implementation detail of analysis_context.
     private static class type_context {
       final Map<String, action> action_table;
+      final Set<type> supertypes;
 
       public type_context() {
         action_table = new HashMap<String, action>();
+        supertypes = new HashSet<type>();
       }
     }
   }
@@ -239,7 +254,7 @@ public class create {
         return result;
       }
 
-      principal_type main_principal = (principal_type) ((type_action) main_action).result();
+      principal_type main_principal = (principal_type) ((type_action) main_action).the_type();
 
       if (parameter_actions.size() != 1) {
         error_signal result = new error_signal(notification_type.WRONG_ARITY,
@@ -256,7 +271,7 @@ public class create {
         return result;
       }
 
-      type parameter_type = ((type_action) parameter_action).result();
+      type parameter_type = ((type_action) parameter_action).the_type();
       List<type> parameter_types = new ArrayList<type>();
       parameter_types.add(parameter_type);
       parametrized_type result_type = new parametrized_type(main_principal, parameter_types);
@@ -266,7 +281,7 @@ public class create {
 
     private static boolean is_parametrizable(action main_action) {
       if (main_action instanceof type_action) {
-        type main_type = ((type_action) main_action).result();
+        type main_type = ((type_action) main_action).the_type();
         return main_type == core_type.NULLABLE || main_type == core_type.LIST;
       } else {
         return false;
@@ -304,7 +319,7 @@ public class create {
           report(result);
           return result;
         }
-        type result_type = ((type_action) the_type_action).result();
+        type result_type = ((type_action) the_type_action).the_type();
         String name = the_variable_construct.name();
         variable_declaration the_declaration = new variable_declaration(result_type, name, parent,
             type_construct);
@@ -341,8 +356,14 @@ public class create {
       }
 
       for (construct supertype : the_supertype_construct.supertypes()) {
-        // TODO: register as supertype
-        analyze(supertype, parent, pass);
+        action supertype_action = analyze(supertype, parent, pass);
+        if (!(supertype_action instanceof type_action)) {
+          error_signal result = new error_signal(notification_type.TYPE_EXPECTED, supertype);
+          report(result);
+          continue;
+        }
+        type the_supertype = ((type_action) supertype_action).the_type();
+        the_analysis_context.add_supertype(parent, the_supertype);
       }
 
       return null;
@@ -1150,7 +1171,7 @@ public class create {
       grouping_type grouping = the_parameter_construct.grouping();
       @Nullable action main_action = get_binding(main);
       if (main_action instanceof type_action &&
-          main_action.result() == core_type.LIST) {
+          ((type_action) main_action).the_type() == core_type.LIST) {
         grouping = grouping_type.ANGLE_BRACKETS;
       }
 
@@ -1548,7 +1569,7 @@ public class create {
     public construct call_identifier(identifier the_identifier) {
       @Nullable action the_action = get_binding(the_identifier);
       if (the_action instanceof type_action) {
-        type result = the_action.result();
+        type result = ((type_action) the_action).the_type();
         if (result instanceof principal_type) {
           @Nullable String mapping = type_mapping.get((principal_type) result);
           if (mapping != null) {
@@ -1563,7 +1584,8 @@ public class create {
       if (the_construct instanceof parameter_construct) {
         construct main = ((parameter_construct) the_construct).main();
         @Nullable action main_action = get_binding(main);
-        return main_action instanceof type_action && main_action.result() == core_type.NULLABLE;
+        return main_action instanceof type_action &&
+            ((type_action) main_action).the_type() == core_type.NULLABLE;
       }
       return false;
     }

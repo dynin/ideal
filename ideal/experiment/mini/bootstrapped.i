@@ -236,8 +236,9 @@
 
 (datatype type_action
   (extends action describable)
-  (variable type result)
+  (variable type the_type)
   (variable source the_source)
+  (variable (override) type result the_type)
 )
 
 (datatype value_action
@@ -311,7 +312,7 @@
 )
 
 (class type_declaration
-  (implements type_action describable)
+  (implements action describable)
   (variable principal_type declared_type)
   (variable type_kind the_type_kind)
   (variable source the_source)

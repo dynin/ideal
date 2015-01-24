@@ -493,24 +493,28 @@ public interface bootstrapped {
     type result();
   }
   interface type_action extends action, describable {
-    type result();
+    type the_type();
     source the_source();
+    type result();
   }
   class type_action_class implements type_action {
-    private final type result;
+    private final type the_type;
     private final source the_source;
-    public type_action_class(type result, source the_source) {
-      this.result = result;
+    public type_action_class(type the_type, source the_source) {
+      this.the_type = the_type;
       this.the_source = the_source;
     }
-    @Override public type result() {
-      return result;
+    @Override public type the_type() {
+      return the_type;
     }
     @Override public source the_source() {
       return the_source;
     }
+    @Override public type result() {
+      return the_type;
+    }
     @Override public text description() {
-      return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("the_type", the_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   interface value_action extends action, describable {
@@ -703,7 +707,7 @@ public interface bootstrapped {
       return join_fragments("parametrized_type", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters)), END_OBJECT);
     }
   }
-  class type_declaration implements type_action, describable {
+  class type_declaration implements action, describable {
     private final principal_type declared_type;
     private final type_kind the_type_kind;
     private final source the_source;

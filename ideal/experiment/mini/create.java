@@ -38,6 +38,8 @@ public class create {
 
   public static final String INSTANCE_NAME = "instance";
 
+  public static final String DESCRIBABLE_NAME = "describable";
+
   public static class analysis_context {
     private final Map<type, type_context> type_contexts;
     private final Map<construct, action> bindings;
@@ -1138,6 +1140,7 @@ public class create {
 
     private final analysis_context the_analysis_context;
     private final Map<principal_type, String> type_mapping;
+    private final @Nullable type describable_type;
 
     public to_java_transform(analysis_context the_analysis_context) {
       this.the_analysis_context = the_analysis_context;
@@ -1145,6 +1148,15 @@ public class create {
       type_mapping.put(core_type.INTEGER, "int");
       type_mapping.put(core_type.STRING, "String");
       type_mapping.put(core_type.LIST, "List");
+
+      action describable_action = the_analysis_context.get_action(top_type.instance,
+          DESCRIBABLE_NAME);
+      if (describable_action instanceof type_action) {
+        describable_type = ((type_action) describable_action).the_type();
+      } else {
+        assert describable_action != null;
+        describable_type = null;
+      }
     }
 
     protected @Nullable action get_binding(construct the_construct) {
@@ -1542,8 +1554,9 @@ public class create {
 
     private boolean has_describable(List<construct> constructs) {
       for (construct the_construct : constructs) {
-        if (the_construct instanceof identifier &&
-            ((identifier) the_construct).name().equals("describable")) {
+        action the_action = get_binding(the_construct);
+        if (the_action instanceof type_action &&
+            ((type_action) the_action).the_type() == describable_type) {
           return true;
         }
       }

@@ -53,7 +53,7 @@ public interface bootstrapped {
   interface source extends describable {
     @Nullable source the_source();
   }
-  interface source_text extends source, describable {
+  interface source_text extends source {
     String name();
     String content();
     @Nullable source the_source();
@@ -78,7 +78,7 @@ public interface bootstrapped {
       return join_fragments("source_text_class", START_OBJECT, SPACE, describe(name), SPACE, END_OBJECT);
     }
   }
-  interface text_position extends source, describable {
+  interface text_position extends source {
     source_text the_source();
     int character_index();
   }
@@ -99,7 +99,7 @@ public interface bootstrapped {
       return join_fragments("text_position_class", START_OBJECT, NEWLINE, indent(field_is("the_source", the_source), field_is("character_index", character_index)), END_OBJECT);
     }
   }
-  class builtin_source implements source, describable {
+  class builtin_source implements source {
     public static final builtin_source instance = new builtin_source();
     @Override public @Nullable source the_source() {
       return null;
@@ -110,7 +110,7 @@ public interface bootstrapped {
   }
   interface token_type extends describable {
   }
-  enum core_token_type implements token_type, describable {
+  enum core_token_type implements token_type {
     IDENTIFIER,
     LITERAL,
     MODIFIER,
@@ -121,7 +121,7 @@ public interface bootstrapped {
       return new text_string(name());
     }
   }
-  enum punctuation implements token_type, describable {
+  enum punctuation implements token_type {
     OPEN_PARENTHESIS("("),
     CLOSE_PARENTHESIS(")"),
     DOT(".");
@@ -139,7 +139,7 @@ public interface bootstrapped {
   interface token extends source {
     token_type the_token_type();
   }
-  class simple_token implements token, describable {
+  class simple_token implements token {
     private final token_type the_token_type;
     private final source the_source;
     public simple_token(token_type the_token_type, source the_source) {
@@ -158,7 +158,7 @@ public interface bootstrapped {
   }
   interface construct extends source {
   }
-  class identifier implements token, construct, describable {
+  class identifier implements token, construct {
     private final String name;
     private final source the_source;
     public identifier(String name, source the_source) {
@@ -190,7 +190,7 @@ public interface bootstrapped {
       return symbol;
     }
   }
-  class operator implements token, construct, describable {
+  class operator implements token, construct {
     private final operator_type the_operator_type;
     private final source the_source;
     public operator(operator_type the_operator_type, source the_source) {
@@ -210,7 +210,7 @@ public interface bootstrapped {
       return join_fragments("operator", START_OBJECT, NEWLINE, indent(field_is("the_operator_type", the_operator_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class string_literal implements token, construct, value_action, describable {
+  class string_literal implements token, construct, value_action {
     private final String value;
     private final @Nullable String with_quotes;
     private final source the_source;
@@ -243,7 +243,7 @@ public interface bootstrapped {
     ANGLE_BRACKETS,
     OPERATOR;
   }
-  class parameter_construct implements construct, describable {
+  class parameter_construct implements construct {
     private final construct main;
     private final List<construct> parameters;
     private final @Nullable grouping_type grouping;
@@ -279,7 +279,7 @@ public interface bootstrapped {
     DONT_DESCRIBE,
     NULLABLE;
   }
-  class modifier_construct implements token, construct, describable {
+  class modifier_construct implements token, construct {
     private final modifier_kind the_modifier_kind;
     private final source the_source;
     public modifier_construct(modifier_kind the_modifier_kind, source the_source) {
@@ -299,7 +299,7 @@ public interface bootstrapped {
       return join_fragments("modifier_construct", START_OBJECT, NEWLINE, indent(field_is("the_modifier_kind", the_modifier_kind), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class s_expression implements construct, describable {
+  class s_expression implements construct {
     private final List<construct> parameters;
     private final source the_source;
     public s_expression(List<construct> parameters, source the_source) {
@@ -316,7 +316,7 @@ public interface bootstrapped {
       return join_fragments("s_expression", START_OBJECT, NEWLINE, indent(field_is("parameters", parameters), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class block_construct implements construct, describable {
+  class block_construct implements construct {
     private final List<construct> statements;
     private final source the_source;
     public block_construct(List<construct> statements, source the_source) {
@@ -333,7 +333,7 @@ public interface bootstrapped {
       return join_fragments("block_construct", START_OBJECT, NEWLINE, indent(field_is("statements", statements), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class return_construct implements construct, describable {
+  class return_construct implements construct {
     private final @Nullable construct expression;
     private final source the_source;
     public return_construct(@Nullable construct expression, source the_source) {
@@ -350,7 +350,7 @@ public interface bootstrapped {
       return join_fragments("return_construct", START_OBJECT, NEWLINE, indent(field_is("expression", expression), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class variable_construct implements construct, describable {
+  class variable_construct implements construct {
     private final List<modifier_construct> modifiers;
     private final @Nullable construct type;
     private final String name;
@@ -382,7 +382,7 @@ public interface bootstrapped {
       return join_fragments("variable_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("type", type), field_is("name", name), field_is("initializer", initializer), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class procedure_construct implements construct, describable {
+  class procedure_construct implements construct {
     private final List<modifier_construct> modifiers;
     private final @Nullable construct return_type;
     private final String name;
@@ -423,7 +423,7 @@ public interface bootstrapped {
     EXTENDS,
     IMPLEMENTS;
   }
-  class supertype_construct implements construct, describable {
+  class supertype_construct implements construct {
     private final supertype_kind the_supertype_kind;
     private final List<construct> supertypes;
     private final source the_source;
@@ -454,7 +454,7 @@ public interface bootstrapped {
     CLASS,
     SINGLETON;
   }
-  class type_construct implements construct, describable {
+  class type_construct implements construct {
     private final List<modifier_construct> modifiers;
     private final type_kind the_type_kind;
     private final String name;
@@ -486,13 +486,13 @@ public interface bootstrapped {
       return join_fragments("type_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("the_type_kind", the_type_kind), field_is("name", name), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  interface type {
+  interface type extends describable {
     String name();
   }
   interface action extends source {
     type result();
   }
-  interface type_action extends action, describable {
+  interface type_action extends action {
     type the_type();
     source the_source();
     type result();
@@ -517,7 +517,7 @@ public interface bootstrapped {
       return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("the_type", the_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  interface value_action extends action, describable {
+  interface value_action extends action {
     type result();
     source the_source();
   }
@@ -556,7 +556,7 @@ public interface bootstrapped {
       return text;
     }
   }
-  class enum_literal implements value_action, describable {
+  class enum_literal implements value_action {
     private final String name;
     private final int ordinal;
     private final principal_type result;
@@ -583,7 +583,7 @@ public interface bootstrapped {
       return join_fragments("enum_literal", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("ordinal", ordinal), field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class singleton_literal implements value_action, describable {
+  class singleton_literal implements value_action {
     private final principal_type result;
     private final source the_source;
     public singleton_literal(principal_type result, source the_source) {
@@ -600,7 +600,7 @@ public interface bootstrapped {
       return join_fragments("singleton_literal", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class error_signal implements action, describable {
+  class error_signal implements action {
     private final notification_message message;
     private final source the_source;
     public error_signal(notification_message message, source the_source) {
@@ -620,7 +620,7 @@ public interface bootstrapped {
       return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("message", message), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  interface principal_type extends type, describable {
+  interface principal_type extends type {
     String name();
     type_kind the_type_kind();
     @Nullable principal_type parent();
@@ -647,7 +647,7 @@ public interface bootstrapped {
       return join_fragments("principal_type_class", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_type_kind", the_type_kind), field_is("parent", parent)), END_OBJECT);
     }
   }
-  class top_type implements principal_type, describable {
+  class top_type implements principal_type {
     public static final top_type instance = new top_type();
     @Override public String name() {
       return "<top>";
@@ -662,7 +662,7 @@ public interface bootstrapped {
       return new text_string("top_type");
     }
   }
-  enum core_type implements principal_type, describable {
+  enum core_type implements principal_type {
     VOID,
     INTEGER,
     STRING,
@@ -681,7 +681,7 @@ public interface bootstrapped {
       return new text_string(name());
     }
   }
-  class parametrized_type implements principal_type, describable {
+  class parametrized_type implements principal_type {
     private final principal_type main;
     private final List<type> parameters;
     public parametrized_type(principal_type main, List<type> parameters) {
@@ -707,7 +707,7 @@ public interface bootstrapped {
       return join_fragments("parametrized_type", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters)), END_OBJECT);
     }
   }
-  class type_declaration implements action, describable {
+  class type_declaration implements action {
     private final principal_type declared_type;
     private final type_kind the_type_kind;
     private final source the_source;
@@ -732,7 +732,7 @@ public interface bootstrapped {
       return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_type_kind", the_type_kind), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class variable_declaration implements action, describable {
+  class variable_declaration implements action {
     private final type value_type;
     private final String name;
     private final principal_type declared_in_type;

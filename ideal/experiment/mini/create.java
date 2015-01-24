@@ -83,6 +83,25 @@ public class create {
       assert new_element : "Duplicate: subtype " + subtype + ", supertype " + supertype;
     }
 
+    public Set<type> get_all_supertypes(type the_type) {
+      Set<type> result = new HashSet<type>();
+      add_supertypes_helper(the_type, result);
+      return result;
+    }
+
+    // TODO: the recursion can take up a lot of stack space.
+    public void add_supertypes_helper(type the_type, Set<type> result) {
+      @Nullable type_context the_type_context = type_contexts.get(the_type);
+      if (the_type_context != null) {
+        for (type candidate : the_type_context.supertypes) {
+          if (!result.contains(candidate)) {
+            result.add(candidate);
+            add_supertypes_helper(candidate, result);
+          }
+        }
+      }
+    }
+
     public void add_binding(construct the_construct, action the_action) {
       action old_action = bindings.put(the_construct, the_action);
       assert old_action == null;
@@ -1154,7 +1173,6 @@ public class create {
       if (describable_action instanceof type_action) {
         describable_type = ((type_action) describable_action).the_type();
       } else {
-        assert describable_action != null;
         describable_type = null;
       }
     }
@@ -1262,6 +1280,8 @@ public class create {
 
     @Override
     public List<construct> transform_type(type_construct the_type_construct) {
+      type_declaration the_declaration = (type_declaration) get_binding(the_type_construct);
+      assert the_declaration != null;
 
       type_kind the_type_kind = the_type_construct.the_type_kind();
 
@@ -1298,7 +1318,6 @@ public class create {
       List<construct> ctor_statements = new ArrayList<construct>();
       List<construct> accessor_functions = new ArrayList<construct>();
 
-      boolean generate_description = false;
       List<String> describe_fields = new ArrayList<String>();
 
       for (construct the_construct : the_type_construct.body()) {
@@ -1310,9 +1329,6 @@ public class create {
             interface_body.add(the_supertype_construct);
           } else {
             implementation_body.add(the_supertype_construct);
-          }
-          if (has_describable(the_supertype_construct.supertypes())) {
-            generate_description = true;
           }
         } else if (the_construct instanceof variable_construct) {
           variable_construct the_variable_construct =
@@ -1447,7 +1463,7 @@ public class create {
 
         implementation_body.addAll(accessor_functions);
 
-        if (generate_description) {
+        if (is_describable(the_declaration)) {
           implementation_body.add(generate_description(implementation_name, describe_fields,
               declare_enum, the_source));
         }
@@ -1462,6 +1478,12 @@ public class create {
       }
 
       return result;
+    }
+
+    private boolean is_describable(type_declaration the_declaration) {
+      return describable_type != null &&
+          the_analysis_context.get_all_supertypes(the_declaration.declared_type()).
+              contains(describable_type);
     }
 
     private procedure_construct generate_description(String type_name, List<String> fields,
@@ -1550,17 +1572,6 @@ public class create {
           new_parameters,
           grouping_type.OPERATOR,
           the_source);
-    }
-
-    private boolean has_describable(List<construct> constructs) {
-      for (construct the_construct : constructs) {
-        action the_action = get_binding(the_construct);
-        if (the_action instanceof type_action &&
-            ((type_action) the_action).the_type() == describable_type) {
-          return true;
-        }
-      }
-      return false;
     }
 
     public static construct call_function1(String name, construct argument0, source the_source) {

@@ -36,20 +36,20 @@
 )
 
 (datatype source_text
-  (extends source describable)
+  (extends source)
   (variable string name)
   (variable (dont_describe) string content)
   (variable (override) (nullable source) the_source null)
 )
 
 (datatype text_position
-  (extends source describable)
+  (extends source)
   (variable source_text the_source)
   (variable integer character_index)
 )
 
 (singleton builtin_source
-  (implements source describable)
+  (implements source)
   (variable (override) (nullable source) the_source null)
 )
 
@@ -60,7 +60,7 @@
 )
 
 (enum core_token_type
-  (implements token_type describable)
+  (implements token_type)
   IDENTIFIER
   LITERAL
   MODIFIER
@@ -70,7 +70,7 @@
 )
 
 (enum punctuation
-  (implements token_type describable)
+  (implements token_type)
   (variable string symbol)
   (OPEN_PARENTHESIS "(")
   (CLOSE_PARENTHESIS ")")
@@ -83,7 +83,7 @@
 )
 
 (class simple_token
-  (implements token describable)
+  (implements token)
   (variable (override) token_type the_token_type)
   (variable (override) source the_source)
 )
@@ -95,7 +95,7 @@
 )
 
 (class identifier
-  (implements token construct describable)
+  (implements token construct)
   (variable string name)
   (variable (override) token_type the_token_type (. core_token_type IDENTIFIER))
   (variable (override) source the_source)
@@ -109,14 +109,14 @@
 )
 
 (class operator
-  (implements token construct describable)
+  (implements token construct)
   (variable operator_type the_operator_type)
   (variable (override) token_type the_token_type (. core_token_type OPERATOR))
   (variable (override) source the_source)
 )
 
 (class string_literal
-  (implements token construct value_action describable)
+  (implements token construct value_action)
   (variable string value)
   (variable (nullable string) with_quotes)
   (variable (override) token_type the_token_type (. core_token_type LITERAL))
@@ -131,7 +131,7 @@
 )
 
 (class parameter_construct
-  (implements construct describable)
+  (implements construct)
   (variable construct main)
   (variable (list construct) parameters)
   (variable (nullable grouping_type) grouping)
@@ -149,32 +149,32 @@
 )
 
 (class modifier_construct
-  (implements token construct describable)
+  (implements token construct)
   (variable modifier_kind the_modifier_kind)
   (variable (override) token_type the_token_type (. core_token_type MODIFIER))
   (variable (override) source the_source)
 )
 
 (class s_expression
-  (implements construct describable)
+  (implements construct)
   (variable (list construct) parameters)
   (variable (override) source the_source)
 )
 
 (class block_construct
-  (implements construct describable)
+  (implements construct)
   (variable (list construct) statements)
   (variable (override) source the_source)
 )
 
 (class return_construct
-  (implements construct describable)
+  (implements construct)
   (variable (nullable construct) expression)
   (variable (override) source the_source)
 )
 
 (class variable_construct
-  (implements construct describable)
+  (implements construct)
   (variable (list modifier_construct) modifiers)
   (variable (nullable construct) type)
   (variable string name)
@@ -183,7 +183,7 @@
 )
 
 (class procedure_construct
-  (implements construct describable)
+  (implements construct)
   (variable (list modifier_construct) modifiers)
   (variable (nullable construct) return_type)
   (variable string name)
@@ -198,7 +198,7 @@
 )
 
 (class supertype_construct
-  (implements construct describable)
+  (implements construct)
   (variable supertype_kind the_supertype_kind)
   (variable (list construct) supertypes)
   (variable (override) source the_source)
@@ -215,7 +215,7 @@
 )
 
 (class type_construct
-  (implements construct describable)
+  (implements construct)
   (variable (list modifier_construct) modifiers)
   (variable type_kind the_type_kind)
   (variable string name)
@@ -226,6 +226,7 @@
 ; Actions and analysis
 
 (interface type
+  (extends describable)
   (variable string name)
 )
 
@@ -235,14 +236,14 @@
 )
 
 (datatype type_action
-  (extends action describable)
+  (extends action)
   (variable type the_type)
   (variable source the_source)
   (variable (override) type result the_type)
 )
 
 (datatype value_action
-  (extends action describable)
+  (extends action)
   (variable type result)
   (variable source the_source)
 )
@@ -253,7 +254,7 @@
 )
 
 (class enum_literal
-  (implements value_action describable)
+  (implements value_action)
   (variable string name)
   (variable integer ordinal)
   (variable (override) principal_type result)
@@ -261,34 +262,34 @@
 )
 
 (class singleton_literal
-  (implements value_action describable)
+  (implements value_action)
   (variable (override) principal_type result)
   (variable (override) source the_source)
 )
 
 (class error_signal
-  (implements action describable)
+  (implements action)
   (variable notification_message message)
   (variable source the_source)
   (variable (override) type result (. core_type ERROR))
 )
 
 (datatype principal_type
-  (extends type describable)
+  (extends type)
   (variable string name)
   (variable type_kind the_type_kind)
   (variable (nullable principal_type) parent)
 )
 
 (singleton top_type
-  (implements principal_type describable)
+  (implements principal_type)
   (variable (override) string name "<top>")
   (variable (override) type_kind the_type_kind (. type_kind NAMESPACE))
   (variable (override) (nullable principal_type) parent null)
 )
 
 (enum core_type
-  (implements principal_type describable)
+  (implements principal_type)
   (variable (override) type_kind the_type_kind (. type_kind CLASS))
   (variable (override) principal_type parent (. top_type instance))
   VOID
@@ -302,7 +303,7 @@
 )
 
 (class parametrized_type
-  (implements principal_type describable)
+  (implements principal_type)
   (variable principal_type main)
   (variable (list type) parameters)
   ; TODO: use DOT operator
@@ -312,7 +313,7 @@
 )
 
 (class type_declaration
-  (implements action describable)
+  (implements action)
   (variable principal_type declared_type)
   (variable type_kind the_type_kind)
   (variable source the_source)
@@ -320,7 +321,7 @@
 )
 
 (class variable_declaration
-  (implements action describable)
+  (implements action)
   (variable type value_type)
   (variable string name)
   (variable principal_type declared_in_type)

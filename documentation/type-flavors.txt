@@ -16,7 +16,7 @@ although some other code may change the list. The “immutable” flavor is a
 stronger contract: it specifies that the state of the entity is guaranteed to
 never change.  In the list case, the state of the list is frozen, but you can
 modify the elements of the list.  The “deeply_immutable” is a stronger contract
-still: it’s specifies that the state of the entity is transitively immutable.
+still: it specifies that the state of the entity is transitively immutable.
 The deeply_immutable list is used to specify that neither the list nor any of
 the entities that it references, directly and indirectly, will change its
 state.
@@ -102,3 +102,6 @@ the “combivariant” modifier to the type parameter (as in
 among different flavors are setup.  It is also possible to use “covariant”
 and “contravariant” modifiers, similar to “in” and “out” modifiers in C#.
 (In the current implementation, variance annotations are not yet supported.)
+
+TODO: motivation for "any" flavor; "raw" flavor;
+      equivalence relations and mutability.

@@ -68,6 +68,7 @@ IDEAL_SOURCE = $(ISOURCE_DIR)/ideal.i
 LIBRARY_ELEMENTS = $(ISOURCE_DIR)/library/elements.i
 ONETWO = $(ISOURCE_DIR)/tests/12.i
 ONE = $(ISOURCE_DIR)/tests/1.i
+DIRECTORY = $(ISOURCE_DIR)/tests/directory.i
 CIRCLE = $(ISOURCE_DIR)/showcase/circle.i
 HELLO = $(ISOURCE_DIR)/showcase/hello.i
 IDEAL_RUNTIME = $(ISOURCE_DIR)/idealruntime.i
@@ -173,6 +174,9 @@ libraryt: $(IDEAL_TARGET) $(IDEAL_SOURCE) rm-scratch
 
 12p: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE_PROF) $(FLAGS_RUN) -input=$(ONETWO)
+
+dir: $(IDEAL_TARGET) $(ONETWO)
+	$(CREATE) $(FLAGS_RUN) -input=$(DIRECTORY)
 
 circle: $(IDEAL_TARGET) $(CIRCLE)
 	$(CREATE) $(FLAGS_RUN) -input=$(CIRCLE)

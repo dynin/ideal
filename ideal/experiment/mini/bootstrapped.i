@@ -192,6 +192,13 @@
   (variable (override) source the_source)
 )
 
+(class dispatch_construct
+  (implements construct)
+  (variable string name)
+  (variable construct the_type)
+  (variable (override) source the_source)
+)
+
 (enum supertype_kind
   EXTENDS
   IMPLEMENTS

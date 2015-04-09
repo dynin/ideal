@@ -419,6 +419,28 @@ public interface bootstrapped {
       return join_fragments("procedure_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  class dispatch_construct implements construct {
+    private final String name;
+    private final construct the_type;
+    private final source the_source;
+    public dispatch_construct(String name, construct the_type, source the_source) {
+      this.name = name;
+      this.the_type = the_type;
+      this.the_source = the_source;
+    }
+    public String name() {
+      return name;
+    }
+    public construct the_type() {
+      return the_type;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("dispatch_construct", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_type", the_type), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum supertype_kind {
     EXTENDS,
     IMPLEMENTS;

@@ -124,10 +124,12 @@ public class create {
     private static class type_context {
       final Map<String, action> action_table;
       final Set<type> supertypes;
+      final Set<type> subtypes;
 
       public type_context() {
         action_table = new HashMap<String, action>();
         supertypes = new HashSet<type>();
+        subtypes = new HashSet<type>();
       }
     }
   }
@@ -369,6 +371,21 @@ public class create {
 
     public action call_procedure_construct(procedure_construct the_procedure_construct) {
       return call_construct(the_procedure_construct);
+    }
+
+    public action call_dispatch_construct(dispatch_construct the_dispatch_construct) {
+      if (pass != analysis_pass.MEMBER_PASS) {
+        return null;
+      }
+
+      action the_type_action = analyze(the_dispatch_construct.the_type(), parent, pass);
+      if (!(the_type_action instanceof type_action)) {
+        error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
+            the_dispatch_construct.the_type());
+        report(result);
+      }
+
+      return null;
     }
 
     public action call_supertype_construct(supertype_construct the_supertype_construct) {
@@ -728,6 +745,26 @@ public class create {
     }
   };
 
+  public static final special_parser DISPATCH_PARSER = new special_parser() {
+    @Override
+    public @Nullable construct parse(List<construct> parameters) {
+      if (parameters.size() != 2) {
+        return null;
+      }
+
+
+      construct name_construct = parameters.get(0);
+      if (!(name_construct instanceof identifier)) {
+        return null;
+      }
+      String name = ((identifier) name_construct).name();
+
+      construct type = parameters.get(1);
+
+      return new dispatch_construct(name, type, name_construct);
+    }
+  };
+
   public static class type_parser implements special_parser {
     public final type_kind the_type_kind;
 
@@ -796,6 +833,7 @@ public class create {
     public common_context() {
       parsers = new HashMap<String, special_parser>();
       parsers.put("variable", VARIABLE_PARSER);
+      parsers.put("dispatch", DISPATCH_PARSER);
 
       parsers.put("datatype", new type_parser(type_kind.DATATYPE));
       parsers.put("interface", new type_parser(type_kind.INTERFACE));
@@ -990,6 +1028,15 @@ public class create {
       }
       result.add(NEWLINE);
       return new text_list(result);
+    }
+
+    @Override
+    public text call_dispatch_construct(dispatch_construct the_dispatch_construct) {
+      return join_text(to_text(punctuation.OPEN_PARENTHESIS),
+        new text_string("dispatch"), SPACE,
+        new text_string(the_dispatch_construct.name()), SPACE,
+        print(the_dispatch_construct.the_type()),
+        to_text(punctuation.CLOSE_PARENTHESIS), NEWLINE);
     }
 
     @Override

@@ -55,6 +55,10 @@ public abstract class construct_dispatch<result> implements function<result, con
       return call_procedure_construct((procedure_construct) the_construct);
     }
 
+    if (the_construct instanceof dispatch_construct) {
+      return call_dispatch_construct((dispatch_construct) the_construct);
+    }
+
     if (the_construct instanceof supertype_construct) {
       return call_supertype_construct((supertype_construct) the_construct);
     }
@@ -108,6 +112,10 @@ public abstract class construct_dispatch<result> implements function<result, con
 
   public result call_procedure_construct(procedure_construct the_procedure_construct) {
     return call_construct(the_procedure_construct);
+  }
+
+  public result call_dispatch_construct(dispatch_construct the_dispatch_construct) {
+    return call_construct(the_dispatch_construct);
   }
 
   public result call_supertype_construct(supertype_construct the_supertype_construct) {

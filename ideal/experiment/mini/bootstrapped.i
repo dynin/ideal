@@ -143,6 +143,7 @@
   PRIVATE
   FINAL
   STATIC
+  ABSTRACT
   OVERRIDE
   DONT_DESCRIBE
   NULLABLE
@@ -226,6 +227,7 @@
   (variable (list modifier_construct) modifiers)
   (variable type_kind the_type_kind)
   (variable string name)
+  (variable (nullable (list construct)) parameters)
   (variable (list construct) body)
   (variable (override) source the_source)
 )

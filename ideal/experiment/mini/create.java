@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +40,10 @@ public class create {
   public static final String INSTANCE_NAME = "instance";
 
   public static final String DESCRIBABLE_NAME = "describable";
+
+  public static final String RESULT_NAME = "result";
+
+  public static final String FUNCTION_NAME = "function";
 
   public static class analysis_context {
     private final Map<type, type_context> type_contexts;
@@ -782,11 +787,12 @@ public class create {
       }
 
       String name = ((identifier) parameters.get(0)).name();
+      // TODO: handle parameters
       List<construct> body = parameters.subList(1, parameters.size());
       source the_source = parameters.get(0);
 
-      return new type_construct(new ArrayList<modifier_construct>(), the_type_kind, name, body,
-          the_source);
+      return new type_construct(new ArrayList<modifier_construct>(), the_type_kind, name, null,
+          body, the_source);
     }
   };
 
@@ -1052,6 +1058,7 @@ public class create {
 
     @Override
     public text call_type_construct(type_construct the_type_construct) {
+      // TODO: print parameters
       return join_text(
         print_with_space(the_type_construct.modifiers()),
         new text_string(to_lower_case(the_type_construct.the_type_kind().toString())),
@@ -1136,6 +1143,11 @@ public class create {
         fold_with_comma(the_supertype_construct.supertypes(), this));
     }
 
+    protected text print_type_parameters(List<construct> parameters) {
+      text parameter_text = fold_with_comma(parameters, this);
+      return join_text(LESS_THAN, parameter_text, GREATER_THAN);
+    }
+
     @Override
     public text call_type_construct(type_construct the_type_construct) {
       List<text> result = new ArrayList<text>();
@@ -1143,6 +1155,11 @@ public class create {
       result.add(new text_string(to_lower_case(the_type_construct.the_type_kind().toString())));
       result.add(SPACE);
       result.add(new text_string(the_type_construct.name()));
+
+      if (the_type_construct.parameters() != null) {
+        result.add(print_type_parameters(the_type_construct.parameters()));
+      }
+
       result.add(SPACE);
       List<construct> supertypes = filter(the_type_construct.body(), is_supertype);
       result.add(print_with_space(supertypes));
@@ -1460,6 +1477,7 @@ public class create {
             new type_construct(the_type_construct.modifiers(),
                 type_kind.INTERFACE,
                 interface_name,
+                null,
                 interface_body,
                 the_source);
         result.add(interface_type);
@@ -1519,6 +1537,7 @@ public class create {
             new type_construct(the_type_construct.modifiers(),
                 declare_enum ? type_kind.ENUM : type_kind.CLASS,
                 implementation_name,
+                null,
                 implementation_body,
                 the_source);
         result.add(implementation_type);
@@ -1637,6 +1656,7 @@ public class create {
           arguments, grouping_type.PARENS, the_source);
     }
 
+    @Override
     public construct call_identifier(identifier the_identifier) {
       @Nullable action the_action = get_binding(the_identifier);
       if (the_action instanceof type_action) {
@@ -1678,6 +1698,40 @@ public class create {
         }
       }
       return false;
+    }
+
+    @Override
+    public construct call_dispatch_construct(dispatch_construct the_dispatch_construct) {
+      source the_source = the_dispatch_construct;
+
+      construct dispatch_type = the_dispatch_construct.the_type();
+
+
+      List<modifier_construct> type_modifiers = new ArrayList<modifier_construct>();
+      type_modifiers.add(new modifier_construct(modifier_kind.ABSTRACT, the_source));
+
+
+      List<construct> type_body = new ArrayList<construct>();
+
+      identifier result_name = new identifier(RESULT_NAME, the_source);
+      List<construct> function_parameters = new ArrayList<construct>();
+      function_parameters.add(result_name);
+      function_parameters.add(dispatch_type);
+      construct function_type = new parameter_construct(
+          new identifier(FUNCTION_NAME, the_source), function_parameters,
+          grouping_type.ANGLE_BRACKETS, the_source);
+
+      type_body.add(new supertype_construct(supertype_kind.IMPLEMENTS,
+          Collections.singletonList(function_type), the_source));
+
+      type_action the_type_action = (type_action) get_binding(dispatch_type);
+      assert the_type_action != null;
+
+      type_construct result = new type_construct(type_modifiers, type_kind.CLASS,
+          the_dispatch_construct.name(), Collections.singletonList(result_name), type_body,
+          the_source);
+
+      return result;
     }
   }
 

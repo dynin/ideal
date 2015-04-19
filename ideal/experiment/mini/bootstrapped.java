@@ -275,6 +275,7 @@ public interface bootstrapped {
     PRIVATE,
     FINAL,
     STATIC,
+    ABSTRACT,
     OVERRIDE,
     DONT_DESCRIBE,
     NULLABLE;
@@ -480,12 +481,14 @@ public interface bootstrapped {
     private final List<modifier_construct> modifiers;
     private final type_kind the_type_kind;
     private final String name;
+    private final @Nullable List<construct> parameters;
     private final List<construct> body;
     private final source the_source;
-    public type_construct(List<modifier_construct> modifiers, type_kind the_type_kind, String name, List<construct> body, source the_source) {
+    public type_construct(List<modifier_construct> modifiers, type_kind the_type_kind, String name, @Nullable List<construct> parameters, List<construct> body, source the_source) {
       this.modifiers = modifiers;
       this.the_type_kind = the_type_kind;
       this.name = name;
+      this.parameters = parameters;
       this.body = body;
       this.the_source = the_source;
     }
@@ -498,6 +501,9 @@ public interface bootstrapped {
     public String name() {
       return name;
     }
+    public @Nullable List<construct> parameters() {
+      return parameters;
+    }
     public List<construct> body() {
       return body;
     }
@@ -505,7 +511,7 @@ public interface bootstrapped {
       return the_source;
     }
     @Override public text description() {
-      return join_fragments("type_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("the_type_kind", the_type_kind), field_is("name", name), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("type_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("the_type_kind", the_type_kind), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   interface type extends describable {

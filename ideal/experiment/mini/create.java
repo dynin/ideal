@@ -45,6 +45,10 @@ public class create {
 
   public static final String FUNCTION_NAME = "function";
 
+  public static final String CALL_NAME = "call";
+
+  public static final String THE_NAME = "the";
+
   public static class analysis_context {
     private final Map<type, type_context> type_contexts;
     private final Map<construct, action> bindings;
@@ -1613,16 +1617,22 @@ public class create {
       description_statements.add(description_return);
       block_construct description_body = new block_construct(description_statements, the_source);
 
-      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
-      modifiers.add(new modifier_construct(modifier_kind.OVERRIDE, the_source));
-      modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
       return new procedure_construct(
-          modifiers,
+          make_override_public(the_source),
           new identifier("text", the_source),
           "description",
           new ArrayList<variable_construct>(),
           description_body,
           the_source);
+    }
+
+    public static List<modifier_construct> make_override_public(source the_source) {
+      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
+
+      modifiers.add(new modifier_construct(modifier_kind.OVERRIDE, the_source));
+      modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+
+      return modifiers;
     }
 
     public static construct make_literal(String value, source the_source) {
@@ -1706,10 +1716,8 @@ public class create {
 
       construct dispatch_type = the_dispatch_construct.the_type();
 
-
       List<modifier_construct> type_modifiers = new ArrayList<modifier_construct>();
       type_modifiers.add(new modifier_construct(modifier_kind.ABSTRACT, the_source));
-
 
       List<construct> type_body = new ArrayList<construct>();
 
@@ -1726,6 +1734,24 @@ public class create {
 
       type_action the_type_action = (type_action) get_binding(dispatch_type);
       assert the_type_action != null;
+      String dispatch_type_name = the_type_action.the_type().name();
+
+      List<construct> call_body = new ArrayList<construct>();
+      variable_construct call_parameter = new variable_construct(
+          Collections.emptyList(),
+          dispatch_type,
+          join_identifier(THE_NAME, dispatch_type_name),
+          null,
+          the_source);
+
+      procedure_construct call_procedure = new procedure_construct(
+          make_override_public(the_source),
+          result_name,
+          CALL_NAME,
+          Collections.singletonList(call_parameter),
+          new block_construct(call_body, the_source),
+          the_source);
+      type_body.add(call_procedure);
 
       type_construct result = new type_construct(type_modifiers, type_kind.CLASS,
           the_dispatch_construct.name(), Collections.singletonList(result_name), type_body,

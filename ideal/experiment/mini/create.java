@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -86,10 +87,13 @@ public class create {
     }
 
     public void add_supertype(type subtype, type supertype) {
-      type_context the_type_context = get_or_create_context(subtype);
-      boolean new_element = the_type_context.supertypes.add(supertype);
+      type_context the_subtype_context = get_or_create_context(subtype);
+      boolean duplicate_super = the_subtype_context.supertypes.add(supertype);
+      type_context the_supertype_context = get_or_create_context(supertype);
+      boolean duplicate_sub = the_supertype_context.subtypes.add(subtype);
       // TODO: signal error during analysis
-      assert new_element : "Duplicate: subtype " + subtype + ", supertype " + supertype;
+      assert duplicate_super || duplicate_sub :
+          "Duplicate: subtype " + subtype + ", supertype " + supertype;
     }
 
     public Set<type> get_all_supertypes(type the_type) {
@@ -108,6 +112,15 @@ public class create {
             add_supertypes_helper(candidate, result);
           }
         }
+      }
+    }
+
+    public Set<type> get_direct_subtypes(type the_type) {
+      @Nullable type_context the_type_context = type_contexts.get(the_type);
+      if (the_type_context != null) {
+        return the_type_context.subtypes;
+      } else {
+        return Collections.emptySet();
       }
     }
 
@@ -138,7 +151,7 @@ public class create {
       public type_context() {
         action_table = new HashMap<String, action>();
         supertypes = new HashSet<type>();
-        subtypes = new HashSet<type>();
+        subtypes = new LinkedHashSet<type>();
       }
     }
   }
@@ -877,6 +890,7 @@ public class create {
   public static final text CLOSE_BRACE = new text_string("}");
   public static final text EQUALS = new text_string("=");
   public static final text SEMICOLON = new text_string(";");
+  public static final text IF_KEYWORD = new text_string("if");
   public static final text RETURN_KEYWORD = new text_string("return");
 
   public static class base_printer extends construct_dispatch<text> {
@@ -891,7 +905,13 @@ public class create {
     function<text, construct> statement_printer = new function<text, construct>() {
       @Override
       public text call(construct the_construct) {
-        return join_text(print(the_construct), SEMICOLON, NEWLINE);
+        text printed_construct = print(the_construct);
+        // TODO: generalize
+        if (the_construct instanceof conditional_construct) {
+          return printed_construct;
+        } else {
+          return join_text(printed_construct, SEMICOLON, NEWLINE);
+        }
       }
     };
 
@@ -980,6 +1000,15 @@ public class create {
       return join_text(OPEN_BRACE, NEWLINE,
           indent(new text_list(map(the_block_construct.statements(), statement_printer))),
           CLOSE_BRACE);
+    }
+
+    @Override
+    public text call_conditional_construct(conditional_construct the_conditional_construct) {
+      // TODO: handle else.
+      assert the_conditional_construct.else_branch() == null;
+      return join_text(IF_KEYWORD, SPACE, to_text(punctuation.OPEN_PARENTHESIS),
+          print(the_conditional_construct.conditional()), to_text(punctuation.CLOSE_PARENTHESIS),
+          SPACE, print(the_conditional_construct.then_branch()), NEWLINE);
     }
 
     @Override
@@ -1714,7 +1743,7 @@ public class create {
     public construct call_dispatch_construct(dispatch_construct the_dispatch_construct) {
       source the_source = the_dispatch_construct;
 
-      construct dispatch_type = the_dispatch_construct.the_type();
+      construct dispatch_type_construct = the_dispatch_construct.the_type();
 
       List<modifier_construct> type_modifiers = new ArrayList<modifier_construct>();
       type_modifiers.add(new modifier_construct(modifier_kind.ABSTRACT, the_source));
@@ -1724,7 +1753,7 @@ public class create {
       identifier result_name = new identifier(RESULT_NAME, the_source);
       List<construct> function_parameters = new ArrayList<construct>();
       function_parameters.add(result_name);
-      function_parameters.add(dispatch_type);
+      function_parameters.add(dispatch_type_construct);
       construct function_type = new parameter_construct(
           new identifier(FUNCTION_NAME, the_source), function_parameters,
           grouping_type.ANGLE_BRACKETS, the_source);
@@ -1732,15 +1761,38 @@ public class create {
       type_body.add(new supertype_construct(supertype_kind.IMPLEMENTS,
           Collections.singletonList(function_type), the_source));
 
-      type_action the_type_action = (type_action) get_binding(dispatch_type);
+      type_action the_type_action = (type_action) get_binding(dispatch_type_construct);
       assert the_type_action != null;
-      String dispatch_type_name = the_type_action.the_type().name();
+      type disptach_type = the_type_action.the_type();
+      String dispatch_type_name = disptach_type.name();
 
+      String parameter_name = join_identifier(THE_NAME, dispatch_type_name);
+      construct parameter_identifier = new identifier(parameter_name, the_source);
       List<construct> call_body = new ArrayList<construct>();
+
+      Set<type> subtypes = the_analysis_context.get_direct_subtypes(disptach_type);
+      for (type subtype : subtypes) {
+        String subtype_name = subtype.name();
+        identifier subtype_identifier = new identifier(subtype_name, the_source);
+        construct subcall_construct = new parameter_construct(
+            new identifier(join_identifier(CALL_NAME, subtype_name), the_source),
+            Collections.singletonList(
+                make_operator(operator_type.AS, parameter_identifier, subtype_identifier,
+                    the_source)),
+            grouping_type.PARENS,
+            the_source);
+        construct if_construct = new conditional_construct(
+            make_operator(operator_type.IS, parameter_identifier, subtype_identifier, the_source),
+            new block_construct(Collections.singletonList(subcall_construct), the_source),
+            null,
+            the_source);
+        call_body.add(if_construct);
+      }
+
       variable_construct call_parameter = new variable_construct(
           Collections.emptyList(),
-          dispatch_type,
-          join_identifier(THE_NAME, dispatch_type_name),
+          dispatch_type_construct,
+          parameter_name,
           null,
           the_source);
 

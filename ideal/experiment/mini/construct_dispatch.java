@@ -43,6 +43,10 @@ public abstract class construct_dispatch<result> implements function<result, con
       return call_block_construct((block_construct) the_construct);
     }
 
+    if (the_construct instanceof conditional_construct) {
+      return call_conditional_construct((conditional_construct) the_construct);
+    }
+
     if (the_construct instanceof return_construct) {
       return call_return_construct((return_construct) the_construct);
     }
@@ -100,6 +104,10 @@ public abstract class construct_dispatch<result> implements function<result, con
 
   public result call_block_construct(block_construct the_block_construct) {
     return call_construct(the_block_construct);
+  }
+
+  public result call_conditional_construct(conditional_construct the_conditional_construct) {
+    return call_construct(the_conditional_construct);
   }
 
   public result call_return_construct(return_construct the_return_construct) {

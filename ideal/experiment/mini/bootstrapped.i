@@ -106,6 +106,8 @@
   (DOT ".")
   (ASSIGN "=")
   (NEW "new")
+  (IS "is")
+  (AS "as")
 )
 
 (class operator
@@ -165,6 +167,14 @@
 (class block_construct
   (implements construct)
   (variable (list construct) statements)
+  (variable (override) source the_source)
+)
+
+(class conditional_construct
+  (implements construct)
+  (variable construct conditional)
+  (variable construct then_branch)
+  (variable (nullable construct) else_branch)
   (variable (override) source the_source)
 )
 

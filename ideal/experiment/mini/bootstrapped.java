@@ -181,7 +181,9 @@ public interface bootstrapped {
   enum operator_type {
     DOT("."),
     ASSIGN("="),
-    NEW("new");
+    NEW("new"),
+    IS("is"),
+    AS("as");
     private final String symbol;
     operator_type(String symbol) {
       this.symbol = symbol;
@@ -332,6 +334,33 @@ public interface bootstrapped {
     }
     @Override public text description() {
       return join_fragments("block_construct", START_OBJECT, NEWLINE, indent(field_is("statements", statements), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
+  class conditional_construct implements construct {
+    private final construct conditional;
+    private final construct then_branch;
+    private final @Nullable construct else_branch;
+    private final source the_source;
+    public conditional_construct(construct conditional, construct then_branch, @Nullable construct else_branch, source the_source) {
+      this.conditional = conditional;
+      this.then_branch = then_branch;
+      this.else_branch = else_branch;
+      this.the_source = the_source;
+    }
+    public construct conditional() {
+      return conditional;
+    }
+    public construct then_branch() {
+      return then_branch;
+    }
+    public @Nullable construct else_branch() {
+      return else_branch;
+    }
+    @Override public source the_source() {
+      return the_source;
+    }
+    @Override public text description() {
+      return join_fragments("conditional_construct", START_OBJECT, NEWLINE, indent(field_is("conditional", conditional), field_is("then_branch", then_branch), field_is("else_branch", else_branch), field_is("the_source", the_source)), END_OBJECT);
     }
   }
   class return_construct implements construct {

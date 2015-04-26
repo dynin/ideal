@@ -964,10 +964,14 @@ public class create {
       }
     }
 
+    protected text print_operator_type(operator_type the_operator_type) {
+      return new text_string(the_operator_type.symbol());
+    }
+
     public text print_infix(operator the_operator, List<construct> arguments) {
       assert arguments.size() == 2;
       operator_type the_operator_type = the_operator.the_operator_type();
-      text operator_text = new text_string(the_operator_type.symbol());
+      text operator_text = print_operator_type(the_operator_type);
       if (the_operator_type != operator_type.DOT) {
         operator_text = join_text(SPACE, operator_text, SPACE);
       }
@@ -977,7 +981,7 @@ public class create {
     public text print_prefix(operator the_operator, List<construct> arguments) {
       assert arguments.size() == 1;
       operator_type the_operator_type = the_operator.the_operator_type();
-      text operator_text = new text_string(the_operator_type.symbol());
+      text operator_text = print_operator_type(the_operator_type);
       // TODO: no need for space for !NEW
       return join_text(operator_text, SPACE, print(arguments.get(0)));
     }
@@ -1155,6 +1159,27 @@ public class create {
       negate_predicate(is_enum_declaration);
 
   public static class java_printer extends base_printer {
+
+    private static final text INSTANCEOF_KEYWORD = new text_string("instanceof");
+
+    @Override
+    protected text print_operator_type(operator_type the_operator_type) {
+      if (the_operator_type != operator_type.IS) {
+        return super.print_operator_type(the_operator_type);
+      } else {
+        return INSTANCEOF_KEYWORD;
+      }
+    }
+
+    public text print_infix(operator the_operator, List<construct> arguments) {
+      assert arguments.size() == 2;
+      if (the_operator.the_operator_type() != operator_type.AS) {
+        return super.print_infix(the_operator, arguments);
+      } else {
+        return join_text(to_text(punctuation.OPEN_PARENTHESIS), print(arguments.get(1)),
+            to_text(punctuation.CLOSE_PARENTHESIS), SPACE, print(arguments.get(0)));
+      }
+    }
 
     @Override
     public text call_modifier_construct(modifier_construct the_modifier_construct) {
@@ -1655,13 +1680,18 @@ public class create {
           the_source);
     }
 
-    public static List<modifier_construct> make_override_public(source the_source) {
+    public static List<modifier_construct> make_modifiers(modifier_kind modifier1,
+        modifier_kind modifier2, source the_source) {
       List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
 
-      modifiers.add(new modifier_construct(modifier_kind.OVERRIDE, the_source));
-      modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+      modifiers.add(new modifier_construct(modifier1, the_source));
+      modifiers.add(new modifier_construct(modifier2, the_source));
 
       return modifiers;
+    }
+
+    public static List<modifier_construct> make_override_public(source the_source) {
+      return make_modifiers(modifier_kind.OVERRIDE, modifier_kind.PUBLIC, the_source);
     }
 
     public static construct make_literal(String value, source the_source) {
@@ -1750,9 +1780,9 @@ public class create {
 
       List<construct> type_body = new ArrayList<construct>();
 
-      identifier result_name = new identifier(RESULT_NAME, the_source);
+      identifier result_identifier = new identifier(RESULT_NAME, the_source);
       List<construct> function_parameters = new ArrayList<construct>();
-      function_parameters.add(result_name);
+      function_parameters.add(result_identifier);
       function_parameters.add(dispatch_type_construct);
       construct function_type = new parameter_construct(
           new identifier(FUNCTION_NAME, the_source), function_parameters,
@@ -1767,27 +1797,9 @@ public class create {
       String dispatch_type_name = disptach_type.name();
 
       String parameter_name = join_identifier(THE_NAME, dispatch_type_name);
+      String call_type_name = join_identifier(CALL_NAME, dispatch_type_name);
       construct parameter_identifier = new identifier(parameter_name, the_source);
       List<construct> call_body = new ArrayList<construct>();
-
-      Set<type> subtypes = the_analysis_context.get_direct_subtypes(disptach_type);
-      for (type subtype : subtypes) {
-        String subtype_name = subtype.name();
-        identifier subtype_identifier = new identifier(subtype_name, the_source);
-        construct subcall_construct = new parameter_construct(
-            new identifier(join_identifier(CALL_NAME, subtype_name), the_source),
-            Collections.singletonList(
-                make_operator(operator_type.AS, parameter_identifier, subtype_identifier,
-                    the_source)),
-            grouping_type.PARENS,
-            the_source);
-        construct if_construct = new conditional_construct(
-            make_operator(operator_type.IS, parameter_identifier, subtype_identifier, the_source),
-            new block_construct(Collections.singletonList(subcall_construct), the_source),
-            null,
-            the_source);
-        call_body.add(if_construct);
-      }
 
       variable_construct call_parameter = new variable_construct(
           Collections.emptyList(),
@@ -1795,18 +1807,78 @@ public class create {
           parameter_name,
           null,
           the_source);
+      procedure_construct abstract_call_procedure = new procedure_construct(
+          make_modifiers(modifier_kind.PUBLIC, modifier_kind.ABSTRACT, the_source),
+          result_identifier,
+          call_type_name,
+          Collections.singletonList(call_parameter),
+          null,
+          the_source);
+      type_body.add(abstract_call_procedure);
+
+      Set<type> subtypes = the_analysis_context.get_direct_subtypes(disptach_type);
+      for (type subtype : subtypes) {
+        String subtype_name = subtype.name();
+        String call_subtype_name = join_identifier(CALL_NAME, subtype_name);
+        identifier subtype_identifier = new identifier(subtype_name, the_source);
+
+        construct subcall_construct = new parameter_construct(
+            new identifier(call_subtype_name, the_source),
+            Collections.singletonList(
+                make_operator(operator_type.AS, parameter_identifier, subtype_identifier,
+                    the_source)),
+            grouping_type.PARENS,
+            the_source);
+        construct subcall_return = new return_construct(subcall_construct, the_source);
+        construct if_construct = new conditional_construct(
+            make_operator(operator_type.IS, parameter_identifier, subtype_identifier, the_source),
+            new block_construct(Collections.singletonList(subcall_return), the_source),
+            null,
+            the_source);
+        call_body.add(if_construct);
+
+        String subtype_name_with_the = join_identifier(THE_NAME, subtype_name);
+        construct supercall_construct = new parameter_construct(
+            new identifier(call_type_name, the_source),
+            Collections.singletonList(new identifier(subtype_name_with_the, the_source)),
+            grouping_type.PARENS,
+            the_source);
+        construct supercall_return = new return_construct(supercall_construct, the_source);
+        variable_construct subtype_call_parameter = new variable_construct(
+            Collections.emptyList(),
+            subtype_identifier,
+            subtype_name_with_the,
+            null,
+            the_source);
+        procedure_construct subcall_procedure = new procedure_construct(
+            Collections.singletonList(new modifier_construct(modifier_kind.PUBLIC, the_source)),
+            result_identifier,
+            call_subtype_name,
+            Collections.singletonList(subtype_call_parameter),
+            new block_construct(Collections.singletonList(supercall_return), the_source),
+            the_source);
+        type_body.add(subcall_procedure);
+      }
+
+      construct subcall_construct = new parameter_construct(
+          new identifier(call_type_name, the_source),
+          Collections.singletonList(new identifier(parameter_name, the_source)),
+          grouping_type.PARENS,
+          the_source);
+      construct subcall_return = new return_construct(subcall_construct, the_source);
+      call_body.add(subcall_return);
 
       procedure_construct call_procedure = new procedure_construct(
           make_override_public(the_source),
-          result_name,
+          result_identifier,
           CALL_NAME,
           Collections.singletonList(call_parameter),
           new block_construct(call_body, the_source),
           the_source);
-      type_body.add(call_procedure);
+      type_body.add(0, call_procedure);
 
       type_construct result = new type_construct(type_modifiers, type_kind.CLASS,
-          the_dispatch_construct.name(), Collections.singletonList(result_name), type_body,
+          the_dispatch_construct.name(), Collections.singletonList(result_identifier), type_body,
           the_source);
 
       return result;

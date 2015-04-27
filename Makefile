@@ -362,44 +362,63 @@ rollback: $(COACH_WAR_TARGET)
 	$(APPENGINE_DIR)/bin/appcfg.sh rollback $(COACH_WAR_DIR)
 
 MINI_DIR = ideal/experiment/mini
-MINI_SOURCE = $(MINI_DIR)/*.java
+
+JAVA_MINI = $(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea
+JAVAC_MINI = $(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -Xlint:unchecked -d $(CLASSES_DIR)
+
+MINI_CREATE_SOURCE = \
+    $(MINI_DIR)/library.java \
+    $(MINI_DIR)/bootstrapped.java \
+    $(MINI_DIR)/create.java
+MINI_CREATE_TARGET = $(TARGETS_DIR)/mini-create
+MINI_CREATE_MAIN = ideal.experiment.mini.create
+JAVA_MINI_CREATE = $(JAVA_MINI) $(MINI_CREATE_MAIN)
+
+MINI_HI_SOURCE = \
+    $(MINI_DIR)/hi.java
+MINI_HI_TARGET = $(TARGETS_DIR)/mini-hi
+MINI_HI_MAIN = ideal.experiment.mini.hi
+JAVA_MINI_HI = $(JAVA_MINI) $(MINI_HI_MAIN)
+
 MINI_IDEAL_SOURCE = $(MINI_DIR)/bootstrapped.i
-
-MINI_CREATE = ideal.experiment.mini.create
-JAVA_MINI_CREATE = $(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea $(MINI_CREATE)
-
-MINITARGET = $(TARGETS_DIR)/mini
 MINI_BOOTSTRAPPED = $(MINI_DIR)/bootstrapped.java
 MINI_BOOTSTRAPPED_TMP = $(MINI_BOOTSTRAPPED).tmp
 MINI_BOOTSTRAPPED_SAVE = $(MINI_BOOTSTRAPPED).save
 
-$(MINITARGET): $(MINI_SOURCE)
-	$(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -Xlint:unchecked -d $(CLASSES_DIR) $^
+$(MINI_CREATE_TARGET): $(MINI_CREATE_SOURCE)
+	$(JAVAC_MINI) $^
 	@touch $@
 
-m0: $(MINITARGET)
+$(MINI_HI_TARGET): $(MINI_HI_SOURCE)
+	$(JAVAC_MINI) $^
+	@touch $@
+
+m0: $(MINI_CREATE_TARGET)
 	@$(JAVA_MINI_CREATE) $(MINI_DIR)/test.i
 
-mini: $(MINITARGET)
+mini: $(MINI_CREATE_TARGET)
 	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/test.i
 
-minia: $(MINITARGET)
+minia: $(MINI_CREATE_TARGET)
 	@$(JAVA_MINI_CREATE) -analyze $(MINI_IDEAL_SOURCE)
 
-minib: $(MINITARGET)
+minib: $(MINI_CREATE_TARGET)
 	@cat $(MINI_DIR)/header.txt
 	@$(JAVA_MINI_CREATE) $(MINI_IDEAL_SOURCE) | sed s'/^/  /'
 	@echo }
 
-minip: $(MINITARGET)
+minip: $(MINI_CREATE_TARGET)
 	@echo Testing bootstrapping
 	@cp $(MINI_BOOTSTRAPPED) $(MINI_BOOTSTRAPPED_SAVE)
 	@make -s minib > $(MINI_BOOTSTRAPPED_TMP)
 	@-mv $(MINI_BOOTSTRAPPED_TMP) $(MINI_BOOTSTRAPPED)
-	@-make $(MINITARGET)
+	@-make $(MINI_CREATE_TARGET)
 	@-mv $(MINI_BOOTSTRAPPED_SAVE) $(MINI_BOOTSTRAPPED)
 
-miniboot: $(MINITARGET)
+miniboot: $(MINI_CREATE_TARGET)
 	@echo Bootstrapping $(MINI_BOOTSTRAPPED)
 	@make -s minib > $(MINI_BOOTSTRAPPED_TMP)
 	@mv $(MINI_BOOTSTRAPPED_TMP) $(MINI_BOOTSTRAPPED)
+
+hi: $(MINI_HI_TARGET)
+	@$(JAVA_MINI_HI)

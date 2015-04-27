@@ -28,6 +28,10 @@ public class library {
     boolean call(argument the_argument);
   }
 
+  public static void panic(String message) {
+    throw new Error(message);
+  }
+
   public static <source_type, target_type> List<target_type> map(
       List<? extends source_type> source_list,
       function<target_type, source_type> transform) {
@@ -156,6 +160,10 @@ public class library {
     } else {
       return new text_string(object.toString());
     }
+  }
+
+  public static String describe_s(Object object) {
+    return render_text(describe(object));
   }
 
   public static text field_is(String name, Object value) {

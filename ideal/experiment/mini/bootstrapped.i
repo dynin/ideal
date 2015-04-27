@@ -242,6 +242,8 @@
   (variable (override) source the_source)
 )
 
+(dispatch construct_dispatch construct)
+
 ; Actions and analysis
 
 (interface type

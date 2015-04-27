@@ -88,12 +88,13 @@ public class create {
 
     public void add_supertype(type subtype, type supertype) {
       type_context the_subtype_context = get_or_create_context(subtype);
-      boolean duplicate_super = the_subtype_context.supertypes.add(supertype);
+      boolean unique_super = the_subtype_context.supertypes.add(supertype);
       type_context the_supertype_context = get_or_create_context(supertype);
-      boolean duplicate_sub = the_supertype_context.subtypes.add(subtype);
+      boolean unique_sub = the_supertype_context.subtypes.add(subtype);
       // TODO: signal error during analysis
-      assert duplicate_super || duplicate_sub :
-          "Duplicate: subtype " + subtype + ", supertype " + supertype;
+      if (!unique_super || !unique_sub) {
+        panic("Duplicate: subtype " + describe_s(subtype) + ", supertype " + describe_s(supertype));
+      }
     }
 
     public Set<type> get_all_supertypes(type the_type) {
@@ -186,6 +187,7 @@ public class create {
       }
     }
 
+    @Override
     public action call_construct(construct the_construct) {
       error_signal error_result =
         new error_signal(
@@ -198,6 +200,7 @@ public class create {
       return error_result;
     }
 
+    @Override
     public action call_identifier(identifier the_identifier) {
       @Nullable action result = the_analysis_context.get_binding(the_identifier);
       if (result != null) {
@@ -210,10 +213,12 @@ public class create {
       return result;
     }
 
+    @Override
     public action call_operator(operator the_operator) {
       return call_construct(the_operator);
     }
 
+    @Override
     public action call_string_literal(string_literal the_string_literal) {
       return the_string_literal;
     }
@@ -250,6 +255,7 @@ public class create {
       return resolve(qualifier_action.result(), the_identifier);
     }
 
+    @Override
     public action call_parameter_construct(parameter_construct the_parameter_construct) {
       @Nullable action result = the_analysis_context.get_binding(the_parameter_construct);
       if (result != null) {
@@ -333,22 +339,27 @@ public class create {
       }
     }
 
+    @Override
     public action call_modifier_construct(modifier_construct the_modifier_construct) {
       return call_construct(the_modifier_construct);
     }
 
+    @Override
     public action call_s_expression(s_expression the_s_expression) {
       return call_construct(the_s_expression);
     }
 
+    @Override
     public action call_block_construct(block_construct the_block_construct) {
       return call_construct(the_block_construct);
     }
 
+    @Override
     public action call_return_construct(return_construct the_return_construct) {
       return call_construct(the_return_construct);
     }
 
+    @Override
     public action call_variable_construct(variable_construct the_variable_construct) {
       if (pass == analysis_pass.TYPE_PASS) {
         return null;
@@ -391,10 +402,12 @@ public class create {
       the_analysis_context.add_action(inner_frame, THIS_NAME, this_declaration);
     }
 
+    @Override
     public action call_procedure_construct(procedure_construct the_procedure_construct) {
       return call_construct(the_procedure_construct);
     }
 
+    @Override
     public action call_dispatch_construct(dispatch_construct the_dispatch_construct) {
       if (pass != analysis_pass.MEMBER_PASS) {
         return null;
@@ -410,6 +423,7 @@ public class create {
       return null;
     }
 
+    @Override
     public action call_supertype_construct(supertype_construct the_supertype_construct) {
       if (pass != analysis_pass.MEMBER_PASS) {
         return null;
@@ -429,6 +443,7 @@ public class create {
       return null;
     }
 
+    @Override
     public action call_type_construct(type_construct the_type_construct) {
       principal_type declared_type;
       type_declaration the_type_declaration;
@@ -925,6 +940,12 @@ public class create {
 
     public text print_all(List<? extends construct> constructs) {
       return new text_list(map(constructs, this));
+    }
+
+    @Override
+    public text call_construct(construct the_construct) {
+      panic("Printing unknown construct: " + the_construct);
+      return null;
     }
 
     @Override

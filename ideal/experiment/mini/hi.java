@@ -9,6 +9,7 @@
 package ideal.experiment.mini;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -21,11 +22,15 @@ public class hi {
 
   private static final int STATUS_RIGHT_BORDER_PX = 8;
 
+  private static final int VIEW_PANE_SEPARATOR_PX = 1;
+  private static final int LEFT_PANE_MAX_SIZE_PX = 240;
+  private static final Color VIEW_PANE_SEPARATOR_COLOR = new Color(202, 202, 202);
+
   private static final String[] TAB_NAMES = {
     "Module", "Schema", "Library", "View", "Style", "Datastore"
   };
 
-  public static void show_frame() {
+  public void show_frame() {
     JFrame frame = new JFrame();
     frame.setTitle(FRAME_TITLE);
     frame.setSize(FRAME_WIDTH_PX, FRAME_HEIGHT_PX);
@@ -40,22 +45,45 @@ public class hi {
     frame.setVisible(true);
   }
 
-  public static JTabbedPane make_tabbed_pane() {
+  public JComponent make_tabbed_pane() {
     JTabbedPane tab_pane = new JTabbedPane();
     for (String tab_name : TAB_NAMES) {
-      JLabel label = new JLabel("Hello, " + tab_name + "!");
-      label.setHorizontalAlignment(SwingConstants.CENTER);
-
-      tab_pane.addTab(tab_name, label);
+      tab_pane.addTab(tab_name, make_view_pane(tab_name));
     }
     return tab_pane;
   }
 
-  public static Container make_status_bar() {
-    JPanel bar = new JPanel();
-    bar.setLayout(new BorderLayout());
+  public JComponent make_view_pane(String tab_name) {
+    final JPanel panel = new JPanel(null);  // Manual layout
+    final JComponent left = make_view_pane_placeholder("Left");
+    left.setBorder(new MatteBorder(0, 0, 0, VIEW_PANE_SEPARATOR_PX, VIEW_PANE_SEPARATOR_COLOR));
+    panel.add(left);
+    final JComponent right = make_view_pane_placeholder(tab_name);
+    panel.add(right);
+    panel.addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentResized(ComponentEvent e) {
+        int width = panel.getWidth();
+        int height = panel.getHeight();
+        int leftWidth = Math.min((int) (width / 3.0), LEFT_PANE_MAX_SIZE_PX);
+        left.setBounds(0, 0, leftWidth, height);
+        right.setBounds(leftWidth, 0, width - leftWidth, height);
+      }
+    });
+    return panel;
+  }
+
+  public JComponent make_view_pane_placeholder(String tab_name) {
+    JLabel label = new JLabel("Hello, " + tab_name + "!");
+    label.setHorizontalAlignment(SwingConstants.CENTER);
+    return label;
+  }
+
+  public JComponent make_status_bar() {
+    JPanel bar = new JPanel(new BorderLayout());
 
     bar.add(new JButton("Edit"), BorderLayout.LINE_START);
+    bar.add(make_sync_widget(), BorderLayout.CENTER);
 
     JLabel status_label = new JLabel("Ok.");
     status_label.setBorder(new EmptyBorder(0, 0, 0, STATUS_RIGHT_BORDER_PX));
@@ -64,11 +92,24 @@ public class hi {
     return bar;
   }
 
+  public JComponent make_sync_widget() {
+    JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+
+    JButton sync_now = new JButton("Sync Now");
+    sync_now.setEnabled(false);
+    panel.add(sync_now);
+
+    JButton smart_sync = new JButton("Enable Smart Sync");
+    panel.add(smart_sync);
+
+    return panel;
+  }
+
   public static void main(String[] args) {
     SwingUtilities.invokeLater(new Runnable() {
       @Override
       public void run() {
-        show_frame();
+        new hi().show_frame();
       }
     });
   }

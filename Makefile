@@ -422,3 +422,6 @@ miniboot: $(MINI_CREATE_TARGET)
 
 hi: $(MINI_HI_TARGET)
 	@$(JAVA_MINI_HI)
+
+hiswing: $(MINI_HI_TARGET)
+	@$(JAVA_MINI) -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel $(MINI_HI_MAIN)

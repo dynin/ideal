@@ -24,7 +24,12 @@ public class hi {
 
   private static final int VIEW_PANE_SEPARATOR_PX = 1;
   private static final int LEFT_PANE_MAX_SIZE_PX = 240;
+
+  // List.selectionInactiveBackground
   private static final Color VIEW_PANE_SEPARATOR_COLOR = new Color(202, 202, 202);
+
+  // textHighlight
+  private static final Color LIST_HIGHLIGHT_COLOR = new Color(164, 205, 255);
 
   private static final String[] TAB_NAMES = {
     "Module", "Schema", "Library", "View", "Style", "Datastore"
@@ -55,7 +60,7 @@ public class hi {
 
   public JComponent make_view_pane(String tab_name) {
     final JPanel panel = new JPanel(null);  // Manual layout
-    final JComponent left = make_view_pane_placeholder("Left");
+    final JComponent left = make_list();
     left.setBorder(new MatteBorder(0, 0, 0, VIEW_PANE_SEPARATOR_PX, VIEW_PANE_SEPARATOR_COLOR));
     panel.add(left);
     final JComponent right = make_view_pane_placeholder(tab_name);
@@ -71,6 +76,49 @@ public class hi {
       }
     });
     return panel;
+  }
+
+  public JComponent make_list() {
+    JPanel panel = new JPanel();
+    panel.setLayout(null);  // Manual layout
+    boolean highlight = false;
+    for (String name : TAB_NAMES) {
+      JLabel label = new JLabel(name.toLowerCase());
+      label.setBackground(LIST_HIGHLIGHT_COLOR);
+      if (highlight) {
+        label.setOpaque(true);
+      }
+      highlight = !highlight;
+      label.setBorder(new EmptyBorder(3, 3, 3, 3));
+      label.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          label.setOpaque(!label.isOpaque());
+          label.repaint();
+        }
+      });
+      panel.add(label);
+    }
+    panel.addComponentListener(new ComponentAdapter() {
+      @Override
+      public void componentResized(ComponentEvent e) {
+        int width = panel.getWidth();
+        int height = panel.getHeight();
+        int y = 0;
+        for (int i = 0; i < panel.getComponentCount(); ++i) {
+          Component component = panel.getComponent(i);
+          int componentHeight = component.getMinimumSize().height;
+          component.setBounds(0, y, width, componentHeight);
+          y += componentHeight;
+        }
+        Dimension panelSize = new Dimension(width, y);
+        panel.setSize(panelSize);
+        panel.setMinimumSize(panelSize);
+        panel.setPreferredSize(panelSize);
+      }
+    });
+    return new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
   }
 
   public JComponent make_view_pane_placeholder(String tab_name) {

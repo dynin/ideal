@@ -1823,7 +1823,7 @@ public class create {
       List<construct> call_body = new ArrayList<construct>();
 
       variable_construct call_parameter = new variable_construct(
-          Collections.emptyList(),
+          Collections.<modifier_construct>emptyList(),
           dispatch_type_construct,
           parameter_name,
           null,
@@ -1845,7 +1845,7 @@ public class create {
 
         construct subcall_construct = new parameter_construct(
             new identifier(call_subtype_name, the_source),
-            Collections.singletonList(
+            Collections.<construct>singletonList(
                 make_operator(operator_type.AS, parameter_identifier, subtype_identifier,
                     the_source)),
             grouping_type.PARENS,
@@ -1861,12 +1861,12 @@ public class create {
         String subtype_name_with_the = join_identifier(THE_NAME, subtype_name);
         construct supercall_construct = new parameter_construct(
             new identifier(call_type_name, the_source),
-            Collections.singletonList(new identifier(subtype_name_with_the, the_source)),
+            Collections.<construct>singletonList(new identifier(subtype_name_with_the, the_source)),
             grouping_type.PARENS,
             the_source);
         construct supercall_return = new return_construct(supercall_construct, the_source);
         variable_construct subtype_call_parameter = new variable_construct(
-            Collections.emptyList(),
+            Collections.<modifier_construct>emptyList(),
             subtype_identifier,
             subtype_name_with_the,
             null,
@@ -1883,7 +1883,7 @@ public class create {
 
       construct subcall_construct = new parameter_construct(
           new identifier(call_type_name, the_source),
-          Collections.singletonList(new identifier(parameter_name, the_source)),
+          Collections.<construct>singletonList(new identifier(parameter_name, the_source)),
           grouping_type.PARENS,
           the_source);
       construct subcall_return = new return_construct(subcall_construct, the_source);
@@ -1899,8 +1899,8 @@ public class create {
       type_body.add(0, call_procedure);
 
       type_construct result = new type_construct(type_modifiers, type_kind.CLASS,
-          the_dispatch_construct.name(), Collections.singletonList(result_identifier), type_body,
-          the_source);
+          the_dispatch_construct.name(), Collections.<construct>singletonList(result_identifier),
+          type_body, the_source);
 
       return result;
     }

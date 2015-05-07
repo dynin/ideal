@@ -79,11 +79,11 @@ public class hi {
   }
 
   public JComponent make_list() {
-    JPanel panel = new JPanel();
+    final JPanel panel = new JPanel();
     panel.setLayout(null);  // Manual layout
     boolean highlight = false;
     for (String name : TAB_NAMES) {
-      JLabel label = new JLabel(name.toLowerCase());
+      final JLabel label = new JLabel(name.toLowerCase());
       label.setBackground(LIST_HIGHLIGHT_COLOR);
       if (highlight) {
         label.setOpaque(true);

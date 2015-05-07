@@ -364,7 +364,8 @@ rollback: $(COACH_WAR_TARGET)
 MINI_DIR = ideal/experiment/mini
 
 JAVA_MINI = $(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea
-JAVAC_MINI = $(JDK_DIR)/bin/javac -classpath $(JSR305_JAR) -Xlint:unchecked -d $(CLASSES_DIR)
+JAVAC_MINI = $(JDK_DIR)/bin/javac $(JAVAC_SOURCE_OPTS) -Xlint:unchecked \
+    -classpath $(JSR305_JAR) -d $(CLASSES_DIR)
 
 MINI_CREATE_SOURCE = \
     $(MINI_DIR)/library.java \

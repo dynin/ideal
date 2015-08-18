@@ -24,7 +24,7 @@ The directory structure
   AUTHORS       - list of authors for copyright purposes
   CONTRIBUTORS  - list of developers
   LICENSE       - new BSD license
-  documentation, Makefile, README - documentation, makefile, readme.
+  documentation, Makefile, README.md - documentation, makefile, readme.
 
   * * *
 
@@ -81,7 +81,7 @@ overwriting the files in bootstrapped directory.
   * * *
 
 The announcements mailing list (very low-volume, moderated announcements only):
-  http://groups.google.com/group/ideal-announce
+  https://groups.google.com/group/ideal-announce
 
 The developers forum:
-  http://groups.google.com/group/ideal-developers
+  https://groups.google.com/group/ideal-developers

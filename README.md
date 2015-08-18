@@ -6,10 +6,9 @@ to speak of.
 The code is in half-bootstrapped form: the library and the runtime are
 written in a custom notation, while translator is written in Java.
 
-You can't do anything useful with it, yet.  To track the developments
+You can't do anything useful with it, yet.&nbsp; To track the developments
 and be notified when the project will reach a more mature state, subscribe to
+[the announcements mailing list] (https://groups.google.com/group/ideal-announce).
 
-  http://groups.google.com/group/ideal-announce
-
-If you want to dive into the code anyway, start with
-documentation/here-be-dragons.txt
+If you want to dive into the code anyway, start [here]
+(https://raw.githubusercontent.com/mishadynin/ideal/master/documentation/here-be-dragons.txt).

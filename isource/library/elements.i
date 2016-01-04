@@ -120,7 +120,7 @@ package elements {
   --- are short-circuiting: if the second operand
   --- can't affect the value of the result, it's not
   --- evaluated, as is the case when the first operand to |and| is |false|.</div>
-  --- <j>Equivalent to `Java's boolean type.</j>
+  --- <j>Equivalent to Java's boolean type.</j>
   enum boolean {
     implements deeply_immutable data;
     implements equality_comparable;

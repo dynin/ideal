@@ -63,7 +63,7 @@ public class base_semantics implements semantics {
           return new base_list<action>(result);
         }
 
-	candidates.append(new type_and_action(implicit_from, result));
+        candidates.append(new type_and_action(implicit_from, result));
       }
     }
 
@@ -137,13 +137,13 @@ public class base_semantics implements semantics {
       boolean best = true;
       for (int j = 0; j < candidates.size(); ++j) {
         if (i == j) {
-	  continue;
+          continue;
         }
-	type_and_action challenger = candidates.get(j);
+        type_and_action challenger = candidates.get(j);
         if (!is_better(actions, candidate, challenger)) {
           best = false;
           break;
-	}
+        }
       }
       if (best) {
         return new base_list<action>(the_action);

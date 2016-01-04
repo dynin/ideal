@@ -144,12 +144,12 @@ public class to_javascript_transformer {
 
     if (name instanceof special_name) {
       if (name == special_name.THIS) {
-	name = THIS_DATA;
+        name = THIS_DATA;
       } else {
-	// TODO: handle other special names...
-	simple_name new_name = generate_unique_name(((special_name) name).name);
-	var_names.put(variable, new_name);
-	name = new_name;
+        // TODO: handle other special names...
+        simple_name new_name = generate_unique_name(((special_name) name).name);
+        var_names.put(variable, new_name);
+        name = new_name;
       }
     }
 
@@ -348,11 +348,11 @@ public class to_javascript_transformer {
     action_name name = decl.short_name();
     if (name instanceof special_name) {
       if (name == special_name.THIS) {
-	return THIS_DATA;
+        return THIS_DATA;
       }
       name = var_names.get(decl);
       if (name == null) {
-	utilities.panic("Unknown special name in " + decl);
+        utilities.panic("Unknown special name in " + decl);
       }
     }
     return name;

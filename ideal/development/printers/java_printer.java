@@ -110,11 +110,11 @@ public class java_printer extends base_printer {
 
     if (c.body != null) {
       for (int i = 0; i < c.body.size(); ++i) {
-	construct maybe_super = c.body.get(i);
-	if (maybe_super instanceof supertype_construct) {
+        construct maybe_super = c.body.get(i);
+        if (maybe_super instanceof supertype_construct) {
           fragments.append(print_space());
           fragments.append(print(maybe_super));
-	}
+        }
       }
     }
 

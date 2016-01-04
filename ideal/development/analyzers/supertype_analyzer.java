@@ -53,12 +53,12 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
       // TODO: detect loops in inheritance hierarchy; move to semantics
       error_signal error = find_error(the_analyzable);
       if (error != null) {
-	return new error_signal(messages.error_in_supertype, error, source);
+        return new error_signal(messages.error_in_supertype, error, source);
       }
 
       action supertype_action = action_not_error(the_analyzable);
       if (! (supertype_action instanceof type_action)) {
-	return new error_signal(messages.type_expected, the_analyzable);
+        return new error_signal(messages.type_expected, the_analyzable);
       }
 
       the_supertype = ((type_action) supertype_action).get_type();
@@ -67,7 +67,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
       // Note that promotion is from parent, not declared_in_type.
       // The reason for this is to allow accessing static symbols from the subtype.
       get_context().add(parent(), special_name.PROMOTION,
-	  the_supertype.principal().to_action(this));
+          the_supertype.principal().to_action(this));
     }
 
     return null;

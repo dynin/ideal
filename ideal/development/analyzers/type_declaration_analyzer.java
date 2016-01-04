@@ -145,10 +145,10 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
           new base_notification("Value declaration in non-enum type", the_construct).report();
         }
       } else if (the_construct instanceof supertype_construct) {
-	// TODO: clean up.
-	body_list.append_all(new dispatcher().make_supertype_list(
-	    (supertype_construct) the_construct, this));
-	associate_with_this(the_construct);
+        // TODO: clean up.
+        body_list.append_all(new dispatcher().make_supertype_list(
+            (supertype_construct) the_construct, this));
+        associate_with_this(the_construct);
       } else {
         body_list.append(make(the_construct));
       }
@@ -173,19 +173,19 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       readonly_list<action> resolved = get_context().lookup(declared_in_type(), name);
 
       if (resolved.size() > 1) {
-	return new error_signal(messages.name_type_used, source);
+        return new error_signal(messages.name_type_used, source);
       }
 
       master_already_declared = resolved.size() == 1;
       if (master_already_declared) {
-	action maybe_type_action = resolved.get(0);
+        action maybe_type_action = resolved.get(0);
         if (! (maybe_type_action instanceof type_action)) {
           return new error_signal(messages.type_expected, source);
         }
         type maybe_master = ((type_action) maybe_type_action).get_type();
-	if (! (maybe_master instanceof master_type)) {
+        if (! (maybe_master instanceof master_type)) {
           // TODO: what error should be here?
-	  return new error_signal(messages.name_type_used, source);
+          return new error_signal(messages.name_type_used, source);
         }
         master = (master_type) maybe_master;
         if (master.get_kind() != get_kind()) {
@@ -195,7 +195,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
           master.set_declaration(this);
         }
       } else {
-	master = action_utilities.make_type(get_context(), get_kind(), null,
+        master = action_utilities.make_type(get_context(), get_kind(), null,
             name, declared_in_type(), this, this);
       }
 
@@ -398,7 +398,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     for (int i = 0; i < body.size(); ++i) {
       analyzable the_analyzable = body.get(i);
       if (the_analyzable instanceof variable_analyzer &&
-	  ((variable_analyzer) the_analyzable).get_category() == variable_category.STATIC) {
+          ((variable_analyzer) the_analyzable).get_category() == variable_category.STATIC) {
         subactions.append(analyzer_utilities.to_action(the_analyzable));
       }
     }

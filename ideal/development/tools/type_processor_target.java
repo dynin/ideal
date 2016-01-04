@@ -41,8 +41,8 @@ public abstract class type_processor_target extends target_value {
       abstract_value type_value = actions.get(i).result();
       if (! (type_value instanceof principal_type)) {
         // TODO: use notification with a source display...
-	log.error("Expected type, found " + type_value);
-	return;
+        log.error("Expected type, found " + type_value);
+        return;
       }
       process_type((principal_type) type_value);
     }

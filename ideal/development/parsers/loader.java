@@ -33,9 +33,9 @@ public class loader {
 
     try {
       if (do_debug_parse)
-	parse_tree = parser.debug_parse();
+        parse_tree = parser.debug_parse();
       else
-	parse_tree = parser.parse();
+        parse_tree = parser.parse();
     } catch (Exception e) {
       /* do cleanup here -- possibly rethrow e */
     } finally {

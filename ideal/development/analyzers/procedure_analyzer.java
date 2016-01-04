@@ -140,7 +140,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       // TODO:...check that it's |void_type|
       if (body != null) {
         declare_this_and_super();
-	analyze_and_ignore_errors(body, pass);
+        analyze_and_ignore_errors(body, pass);
       }
     }
 
@@ -207,7 +207,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       parameter_variables.append(the_argument);
       @Nullable error_signal ae = find_error(the_argument);
       if (ae != null) {
-	arg_error = new error_signal(messages.error_in_fn_param, ae, source);
+        arg_error = new error_signal(messages.error_in_fn_param, ae, source);
       } else {
         if (the_argument.declared_as_reference()) {
           proc_args.append(the_argument.reference_type());

@@ -31,32 +31,32 @@ public class scanner_engine {
       char c = input.get(begin);
 
       if (config.is_whitespace(c)) {
-	int end = begin + 1;
-	for (; end < input.size(); ++end) {
-	  if (!config.is_whitespace(input.get(end))) {
-	    break;
-	  }
-	}
-	position pos = source.make_position(begin, end);
+        int end = begin + 1;
+        for (; end < input.size(); ++end) {
+          if (!config.is_whitespace(input.get(end))) {
+            break;
+          }
+        }
+        position pos = source.make_position(begin, end);
         string image = input.slice(begin, end);
         // TODO: handle newlines specially.
-	tokens.append(new base_token<comment>(special_token_type.COMMENT,
+        tokens.append(new base_token<comment>(special_token_type.COMMENT,
             new comment(comment_type.WHITESPACE, image, image), pos));
-	begin = end;
+        begin = end;
       } else if (config.is_name_start(c)) {
-	int end = begin + 1;
-	for (; end < input.size(); ++end) {
-	  if (!config.is_name_part(input.get(end))) {
-	    break;
-	  }
-	}
-	position pos = source.make_position(begin, end);
-	string image = input.slice(begin, end);
+        int end = begin + 1;
+        for (; end < input.size(); ++end) {
+          if (!config.is_name_part(input.get(end))) {
+            break;
+          }
+        }
+        position pos = source.make_position(begin, end);
+        string image = input.slice(begin, end);
         simple_name token_as_name = simple_name.make(image);
         token t = new base_token<simple_name>(special_token_type.SIMPLE_NAME, token_as_name, pos);
-	t = config.process_token(t);
-	tokens.append(t);
-	begin = end;
+        t = config.process_token(t);
+        tokens.append(t);
+        begin = end;
       } else {
         scan_state next = null;
         readonly_list<scanner_element> elements = config.elements();
@@ -82,10 +82,10 @@ public class scanner_engine {
           continue;
         }
 
-	int end = begin + 1;
-	position pos = source.make_position(begin, end);
-	new base_notification(messages.unrecognized_character, pos).report();
-	begin = end;
+        int end = begin + 1;
+        position pos = source.make_position(begin, end);
+        new base_notification(messages.unrecognized_character, pos).report();
+        begin = end;
       }
     }
     return tokens;

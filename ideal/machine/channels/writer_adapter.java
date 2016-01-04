@@ -40,7 +40,7 @@ public class writer_adapter implements output<Character> {
     } else {
       StringBuilder builder = new StringBuilder();
       for (int i = 0; i < elements.size(); ++i) {
-	builder.append(elements.get(i));
+        builder.append(elements.get(i));
       }
       s = builder.toString();
     }

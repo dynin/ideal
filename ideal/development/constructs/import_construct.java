@@ -18,8 +18,8 @@ public class import_construct extends base_construct {
   public final readonly_list<annotation_construct> annotations;
   public final construct type;
   public import_construct(readonly_list<annotation_construct> annotations,
-		          construct type,
-		          position pos) {
+                          construct type,
+                          position pos) {
     super(pos);
     this.annotations = annotations;
     this.type = type;

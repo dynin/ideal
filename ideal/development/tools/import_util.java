@@ -63,9 +63,9 @@ public class import_util {
 
   public type_declaration_construct import_type(Class cl, position pos) {
     list<annotation_construct> annotations = modifiers_as_list(cl.getModifiers(),
-	pos);
+        pos);
     kind kind = cl.isInterface() ? type_kinds.interface_kind:
-	type_kinds.class_kind;
+        type_kinds.class_kind;
     simple_name name = name_utilities.parse_camel_case(cl.getSimpleName());
 
     list<construct> declarations = new base_list<construct>();
@@ -73,14 +73,14 @@ public class import_util {
       declarations.append(import_method(method, pos));
     }
     type_declaration_construct result = new type_declaration_construct(annotations, kind, name,
-	null, declarations, pos);
+        null, declarations, pos);
 
     return result;
   }
 
   public procedure_construct import_method(Method method, position pos) {
     list<annotation_construct> annotations = modifiers_as_list(
-	method.getModifiers(), pos);
+        method.getModifiers(), pos);
     construct ret = get_name(method.getReturnType(), pos);
     simple_name name = name_utilities.parse_camel_case(method.getName());
     list<construct> params = new base_list<construct>();
@@ -90,7 +90,7 @@ public class import_util {
     }
 
     procedure_construct result = new procedure_construct(annotations, ret, name,
-	new list_construct(params, grouping_type.PARENS, pos),
+        new list_construct(params, grouping_type.PARENS, pos),
         new empty<annotation_construct>(), null, pos);
 
     return result;
@@ -98,7 +98,7 @@ public class import_util {
 
   private construct get_name(Class type, position pos) {
     return new name_construct(name_utilities.parse_camel_case(
-	type.getSimpleName()), pos);
+        type.getSimpleName()), pos);
   }
 
   private variable_construct get_var(Class type, int index, position pos) {
@@ -142,7 +142,7 @@ public class import_util {
 
     for (modifier_mapping mod : all_modifiers) {
       if ((mod.value & modifiers) != 0) {
-	result.append(new modifier_construct(mod.kind, pos));
+        result.append(new modifier_construct(mod.kind, pos));
       }
     }
 

@@ -21,11 +21,11 @@ public class variable_construct extends base_construct {
   public final @Nullable construct init;
 
   public variable_construct(readonly_list<annotation_construct> annotations,
-		       @Nullable construct type,
+                       @Nullable construct type,
                        action_name name,
                        readonly_list<annotation_construct> post_annotations,
-		       @Nullable construct init,
-		       position pos) {
+                       @Nullable construct init,
+                       position pos) {
     super(pos);
     this.annotations = annotations;
     this.type = type;

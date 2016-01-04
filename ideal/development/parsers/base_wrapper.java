@@ -37,10 +37,10 @@ public class base_wrapper extends base_parser {
     if (info instanceof Symbol) {
       Symbol s = (Symbol) info;
       /* if (s.left != -1) {
-	err.writeln(" at character " + ((Symbol)info).left + " of input"); */
+        err.writeln(" at character " + ((Symbol)info).left + " of input"); */
       if (s.value instanceof position) {
-	new base_notification(message, ((position) s.value)).report();
-	return;
+        new base_notification(message, ((position) s.value)).report();
+        return;
       }
     }
     new base_notification(message, null).report();

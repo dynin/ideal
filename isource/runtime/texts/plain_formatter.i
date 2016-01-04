@@ -39,11 +39,11 @@ class plain_formatter {
 
     if (text_util.is_block(element)) {
       if (!first || element.get_id() == text_library.BR) {
-	write_newline();
+        write_newline();
       }
 
       if (text_util.is_indent(element)) {
-	indent += 1;
+        indent += 1;
       }
     }
 
@@ -56,13 +56,13 @@ class plain_formatter {
 
     if (text_util.is_block(element)) {
       if (!first) {
-	write_newline();
+        write_newline();
       }
 
       if (text_util.is_indent(element)) {
         new_indent : indent - 1;
         assert new_indent is nonnegative;
-	indent = new_indent;
+        indent = new_indent;
       }
     }
 
@@ -97,14 +97,14 @@ class plain_formatter {
       -- TODO: this should be a variable.
       -- TODO: use repeat
       while (carets.size() < chars_written) {
-	carets.write(SPACE);
+        carets.write(SPACE);
       }
       last_underline_index : underline_stack.size - 1;
       assert last_underline_index is nonnegative;
       underline_character : underline_stack[last_underline_index].display_character;
       -- TODO: use repeat
       for (var nonnegative i : 0; i < the_string.size; i += 1) {
-	carets.write(underline_character);
+        carets.write(underline_character);
       }
     }
     chars_written += the_string.size;

@@ -22,7 +22,7 @@ public class dispatcher extends construct_visitor<analyzable> {
   public analyzable process_default(construct source) {
     utilities.panic("Unknown construct " + source);
     return new error_signal(new base_string(
-	"unknown construct " + source.getClass().getName()), source);
+        "unknown construct " + source.getClass().getName()), source);
   }
 
   @Override

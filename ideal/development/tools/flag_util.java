@@ -24,17 +24,17 @@ public class flag_util {
     for (index = 0; index < args.length; ++index) {
       String arg = args[index];
       if (arg.charAt(0) == '-') {
-	int end = arg.indexOf('=');
-	if (end == -1) {
+        int end = arg.indexOf('=');
+        if (end == -1) {
           end = arg.indexOf(':');
         }
-	if (end == -1) {
-	  argmap.put(normalize(arg.substring(1)), new base_string(""));
-	} else {
-	  argmap.put(normalize(arg.substring(1, end)), new base_string(arg.substring(end + 1)));
-	}
+        if (end == -1) {
+          argmap.put(normalize(arg.substring(1)), new base_string(""));
+        } else {
+          argmap.put(normalize(arg.substring(1, end)), new base_string(arg.substring(end + 1)));
+        }
       } else {
-	break;
+        break;
       }
     }
 
@@ -62,9 +62,9 @@ public class flag_util {
       }
     } catch (Exception e) {
       if (e instanceof RuntimeException) {
-	throw (RuntimeException) e;
+        throw (RuntimeException) e;
       } else {
-	throw new RuntimeException(e);
+        throw new RuntimeException(e);
       }
     }
 
@@ -78,7 +78,7 @@ public class flag_util {
     for (int i = 0; i < s.length(); ++i) {
       char c = s.charAt(i);
       if (c != '-' && c != '_') {
-	result.append(Character.toLowerCase(c));
+        result.append(Character.toLowerCase(c));
       }
     }
     return new base_string(result.toString());

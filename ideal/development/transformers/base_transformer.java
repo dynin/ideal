@@ -46,16 +46,16 @@ public class base_transformer extends construct_visitor<Object>
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < constructs.size(); ++i) {
       if (constructs.get(i) != null) {
-	Object transformed = process(constructs.get(i));
-	if (transformed instanceof construct) {
-	  result.append((construct) transformed);
-	} else if (transformed instanceof readonly_list/*<construct>*/) {
-	  result.append_all((readonly_list<construct>) transformed);
-	} else if (transformed == null) {
-	  // nothing
-	} else {
-	  utilities.panic("Unknown result of transform " + transformed);
-	}
+        Object transformed = process(constructs.get(i));
+        if (transformed instanceof construct) {
+          result.append((construct) transformed);
+        } else if (transformed instanceof readonly_list/*<construct>*/) {
+          result.append_all((readonly_list<construct>) transformed);
+        } else if (transformed == null) {
+          // nothing
+        } else {
+          utilities.panic("Unknown result of transform " + transformed);
+        }
       }
     }
     return result;

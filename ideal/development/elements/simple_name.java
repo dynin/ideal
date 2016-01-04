@@ -66,8 +66,8 @@ public class simple_name extends debuggable implements action_name, readonly_dis
     while (true) {
       int underscore = name.indexOf('_', index);
       if (underscore < 0) {
-	segments.append(new base_string(name.substring(index)));
-	break;
+        segments.append(new base_string(name.substring(index)));
+        break;
       }
       segments.append(new base_string(name.substring(index, underscore)));
       index = underscore + 1;

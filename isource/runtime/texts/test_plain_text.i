@@ -40,7 +40,7 @@ class test_plain_text {
     bar : base_element.make(text_library.P, BAR);
     baz : base_element.make(text_library.P, BAZ);
     the_formatter.write(base_element.make(text_library.INDENT,
-	base_list_text_node.make(bar, baz)));
+        base_list_text_node.make(bar, baz)));
     the_formatter.write(base_element.make(text_library.P, WYZZY));
 
     assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements();
@@ -91,7 +91,7 @@ class test_plain_text {
     world_string : "world" as base_string;
     br : base_element.make(text_library.BR, missing.instance);
     the_formatter.write(base_element.make(text_library.UNDERLINE,
-	base_list_text_node.make(world_string, br, FOO)));
+        base_list_text_node.make(world_string, br, FOO)));
     the_formatter.write(" bar" as base_string);
     the_formatter.write(base_element.make(text_library.BR, missing.instance));
 
@@ -107,7 +107,7 @@ class test_plain_text {
     world_string : "world" as base_string;
     br : base_element.make(text_library.BR, missing.instance);
     the_formatter.write(base_element.make(text_library.UNDERLINE2,
-	base_list_text_node.make(world_string, br, FOO)));
+        base_list_text_node.make(world_string, br, FOO)));
     the_formatter.write(" bar" as base_string);
     the_formatter.write(base_element.make(text_library.BR, missing.instance));
 

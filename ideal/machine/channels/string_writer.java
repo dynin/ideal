@@ -28,7 +28,7 @@ public class string_writer implements output<Character> {
       builder.append(utilities.s((string) elements));
     } else {
       for (int i = 0; i < elements.size(); ++i) {
-	builder.append(elements.get(i));
+        builder.append(elements.get(i));
       }
     }
   }

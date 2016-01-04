@@ -26,15 +26,15 @@ public class documenter_filter {
     while (index < tokens.size()) {
       token next_token = tokens.get(index);
       if (next_token.type() == special_token_type.COMMENT) {
-	token<comment> the_comment = (token<comment>) next_token;
-	if (the_comment.payload().type.is_doc) {
-	  index = handle_doc_comment(tokens, index, result, the_comment);
-	} else {
-	  ++index;
-	}
+        token<comment> the_comment = (token<comment>) next_token;
+        if (the_comment.payload().type.is_doc) {
+          index = handle_doc_comment(tokens, index, result, the_comment);
+        } else {
+          ++index;
+        }
       } else {
-	result.append(next_token);
-	++index;
+        result.append(next_token);
+        ++index;
       }
     }
     return result;
@@ -47,7 +47,7 @@ public class documenter_filter {
     while (index < tokens.size()) {
       token next_token = tokens.get(index);
       if (next_token.type() != special_token_type.COMMENT) {
-	break;
+        break;
       }
 
       token<comment> the_comment = (token<comment>) next_token;

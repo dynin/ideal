@@ -212,7 +212,7 @@ public class common_library implements value {
 
   public type get_reference(type_flavor flavor, type value_type) {
     return REFERENCE_TYPE.bind_parameters(
-	new type_parameters(new base_list<abstract_value>(value_type))).get_flavored(flavor);
+        new type_parameters(new base_list<abstract_value>(value_type))).get_flavored(flavor);
   }
 
   public boolean is_reference_type(type the_type) {

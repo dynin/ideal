@@ -158,7 +158,7 @@ public class create_manager {
     assert module.get_declaration() == null;
 
     source_content module_source = load_source(library_catalog(),
-	to_resource_name(module.short_name()));
+        to_resource_name(module.short_name()));
     list<construct> constructs = parse(module_source);
     assert constructs != null;
 

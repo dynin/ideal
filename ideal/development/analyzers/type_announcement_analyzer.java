@@ -87,7 +87,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
       }
 
       if (external_body.size() == 0) {
-	return new error_signal(new base_string("External declaration expected"), this);
+        return new error_signal(new base_string("External declaration expected"), this);
       }
 
       list<analyzable> subdeclarations = new base_list<analyzable>();

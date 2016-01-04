@@ -33,7 +33,7 @@ function show_world() {
       columns.push(show_data_values(ref, values, false));
       columns.push(save_button('Edit', bind1st_ref(edit_value_page, ref)));
       if (data_type.lookup_method(PUBLISH)) {
-	columns.push(save_button('Publish', bind1st_ref(publish_page, ref)));
+        columns.push(save_button('Publish', bind1st_ref(publish_page, ref)));
       }
     }
     columns.push(new button('Add', bind1st(add_value_page, data_type)));
@@ -815,8 +815,8 @@ select_input.prototype.update = function() {
     for (var i = 0; i < this.options.length; ++i) {
       var option = this.options[i];
       if (this.identifier(option) == selected) {
-	this.model.set(option);
-	return;
+        this.model.set(option);
+        return;
       }
     }
   }

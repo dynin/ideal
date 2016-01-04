@@ -63,18 +63,18 @@ abstract class text_formatter {
     var nonnegative index : 0;
     while (index < the_string.size) {
       if (first) {
-	do_write_indent();
+        do_write_indent();
       }
       newline_match : NEWLINE_PATTERN.find_in(the_string, index);
       if (newline_match is null) {
-	do_write_string(the_string.slice(index));
-	break;
+        do_write_string(the_string.slice(index));
+        break;
       } else {
         newline_index : newline_match.begin;
-	do_write_string(the_string.slice(index, newline_index));
-	do_write_newline();
-	index = newline_match.end;
-	first = true;
+        do_write_string(the_string.slice(index, newline_index));
+        do_write_newline();
+        index = newline_match.end;
+        first = true;
       }
     }
   }

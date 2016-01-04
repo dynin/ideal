@@ -47,7 +47,7 @@ class transitive_set extends debuggable implements readonly_displayable {
       readonly_list<action> new_actions = actions.lookup(considered_type, special_name.PROMOTION);
       for (int j = 0; j < new_actions.size(); ++j) {
         action new_action = new_actions.get(j);
-	type new_action_type = new_action.result().type_bound();
+        type new_action_type = new_action.result().type_bound();
         if (!result.contains_key(new_action_type)) {
           action the_action = new_action.bind_from(considered_action, action_utilities.no_position);
           assert the_action.result().type_bound() == new_action_type;

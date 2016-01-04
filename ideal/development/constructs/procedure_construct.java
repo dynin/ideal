@@ -21,12 +21,12 @@ public class procedure_construct extends base_construct {
   public final readonly_list<annotation_construct> post_annotations;
   public final @Nullable readonly_list<construct> body;
   public procedure_construct(readonly_list<annotation_construct> annotations,
-  			    @Nullable construct ret,
+                            @Nullable construct ret,
                             action_name name,
-			    list_construct parameters,
-			    readonly_list<annotation_construct> post_annotations,
-			    @Nullable readonly_list<construct> body,
-			    position pos) {
+                            list_construct parameters,
+                            readonly_list<annotation_construct> post_annotations,
+                            @Nullable readonly_list<construct> body,
+                            position pos) {
     super(pos);
     this.annotations = annotations;
     this.ret = ret;

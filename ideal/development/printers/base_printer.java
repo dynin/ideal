@@ -137,9 +137,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public text_fragment print_block_or_nothing(@Nullable readonly_list<construct> constructs) {
     if (constructs == null) {
       if (is_stylish_mode()) {
-	return text_util.EMPTY_FRAGMENT;
+        return text_util.EMPTY_FRAGMENT;
       } else {
-	return print_empty();
+        return print_empty();
       }
     } else {
       return print_block(constructs, true, false);
@@ -153,10 +153,10 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     // TODO: how do we handle comment_construct?
     return c instanceof type_declaration_construct ||
-	   c instanceof comment_construct ||
+           c instanceof comment_construct ||
            c instanceof procedure_construct ||
-	   c instanceof block_construct ||
-	   c instanceof loop_construct ||
+           c instanceof block_construct ||
+           c instanceof loop_construct ||
            (c instanceof conditional_construct &&
              ((conditional_construct) c).is_statement);
   }
@@ -227,17 +227,17 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       list<text_fragment> fragments = new base_list<text_fragment>();
 
       for (int i = 0; i < params.size(); ++i) {
-	construct c = params.get(i);
-	if (c instanceof variable_construct) {
+        construct c = params.get(i);
+        if (c instanceof variable_construct) {
           fragments.append(print_var((variable_construct) c));
-	} else {
+        } else {
           fragments.append(print(c));
-	}
+        }
 
-	if (i < params.size() - 1) {
+        if (i < params.size() - 1) {
           fragments.append(print_punctuation(punctuation.COMMA));
           fragments.append(print_space());
-	}
+        }
       }
       inside_text = text_util.join(fragments);
     }
@@ -469,8 +469,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     for (int i = 0; i < segments.size(); ++i) {
       s.append(utilities.s(segments.get(i)));
       if (i < segments.size() - 1) {
-	// TODO: output nbsp's; more control?
-	s.append(is_stylish_mode() ? ' ' : '_');
+        // TODO: output nbsp's; more control?
+        s.append(is_stylish_mode() ? ' ' : '_');
       }
     }
 
@@ -685,8 +685,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     for (int i = 0; i < types.size(); ++i) {
       fragments.append(styles.wrap(styles.supertype_declaration_name_style, print(types.get(i))));
       if (i < types.size() - 1) {
-	fragments.append(print_punctuation(punctuation.COMMA));
-	fragments.append(print_space());
+        fragments.append(print_punctuation(punctuation.COMMA));
+        fragments.append(print_space());
       }
     }
 

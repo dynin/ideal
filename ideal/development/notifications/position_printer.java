@@ -32,7 +32,7 @@ public class position_printer {
     // so drill down until we find one.
     while (true) {
       if (pos instanceof text_position) {
-	return render_text_position((text_position) pos, fragment_begin, fragment_end);
+        return render_text_position((text_position) pos, fragment_begin, fragment_end);
       } else if (pos instanceof special_position) {
         string description = ((special_position) pos).description;
         return base_element.make(text_library.DIV, (base_string) description);
@@ -100,7 +100,7 @@ public class position_printer {
     // nicer display of the end of file -- no caret by itself
     if (begin == input.length() &&
         begin > 0 &&
-	input.charAt(begin - 1) == '\n') {
+        input.charAt(begin - 1) == '\n') {
       begin = begin - 1;
     }
     int line_begin = input.lastIndexOf('\n', begin - 1) + 1;
@@ -133,7 +133,7 @@ public class position_printer {
       suffix_caret = true;
     }
     base_string underlined = new base_string(input.substring(begin, end) +
-	(suffix_caret ? " " : ""));
+        (suffix_caret ? " " : ""));
 
     base_string suffix = new base_string("");
     base_string highlight_suffix = new base_string("");

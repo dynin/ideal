@@ -20,9 +20,9 @@ public class conditional_construct extends base_construct {
   public final boolean is_statement;
   public conditional_construct(construct cond_expr,
                         construct then_expr,
-		        @Nullable construct else_expr,
-			boolean is_statement,
-		        position pos) {
+                        @Nullable construct else_expr,
+                        boolean is_statement,
+                        position pos) {
     super(pos);
     this.cond_expr = cond_expr;
     this.then_expr = then_expr;

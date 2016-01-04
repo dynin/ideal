@@ -34,8 +34,8 @@ public class line_comment implements scanner_element {
     int end;
     for (end = result.end; end < input.size(); ++end) {
       if (input.get(end) == '\n') {
-	end += 1;
-	break;
+        end += 1;
+        break;
       }
     }
     string image = input.slice(begin, end);

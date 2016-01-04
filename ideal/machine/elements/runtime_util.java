@@ -50,16 +50,16 @@ public class runtime_util {
       Class current = c;
 
       do {
-	for (Field f : current.getDeclaredFields()) {
-	  int modifiers = f.getModifiers();
+        for (Field f : current.getDeclaredFields()) {
+          int modifiers = f.getModifiers();
 
-	  if ((modifiers & Modifier.STATIC) == 0) {
-	    f.setAccessible(true);
-	    fields.add(f);
-	  }
-	}
+          if ((modifiers & Modifier.STATIC) == 0) {
+            f.setAccessible(true);
+            fields.add(f);
+          }
+        }
 
-	current = current.getSuperclass();
+        current = current.getSuperclass();
       } while (current != null);
 
       result = new Field[fields.size()];
@@ -105,17 +105,17 @@ public class runtime_util {
       Object val = null;
       int hash;
       try {
-	val = f.get(d);
+        val = f.get(d);
       } catch (Exception e) {
-	throw new RuntimeException(e);
+        throw new RuntimeException(e);
       }
       if (val == null) {
-	hash = 42;
+        hash = 42;
       } else if (val instanceof readonly_value) {
-	hash = compute_hash_code((readonly_value) val);
+        hash = compute_hash_code((readonly_value) val);
       } else {
         //utilities.panic("compute_hash_code() for " + val.getClass());
-	hash = val.hashCode();
+        hash = val.hashCode();
       }
       result = result * 31 + hash;
     }
@@ -147,13 +147,13 @@ public class runtime_util {
       immutable_list<readonly_data> list2 = (immutable_list<readonly_data>) d2;
 
       if (list1.size() != list2.size()) {
-	return false;
+        return false;
       }
 
       for (int i = 0; i < list1.size(); ++i) {
-	if (!data_equals(list1.get(i), list2.get(i))) {
-	  return false;
-	}
+        if (!data_equals(list1.get(i), list2.get(i))) {
+          return false;
+        }
       }
 
       return true;
@@ -164,13 +164,13 @@ public class runtime_util {
     for (int i = 0; i < fields.length; ++i) {
       Field f = fields[i];
       try {
-	Object val1 = f.get(d1);
-	Object val2 = f.get(d2);
-	if (!values_equal(val1, val2)) {
-	  return false;
-	}
+        Object val1 = f.get(d1);
+        Object val2 = f.get(d2);
+        if (!values_equal(val1, val2)) {
+          return false;
+        }
       } catch (Exception e) {
-	throw new RuntimeException(e);
+        throw new RuntimeException(e);
       }
     }
 

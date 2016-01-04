@@ -56,13 +56,13 @@ public class name_utilities {
       StringBuilder sb = new StringBuilder();
 
       while (index < name.length() && Character.isUpperCase(name.charAt(index))) {
-	sb.append(Character.toLowerCase(name.charAt(index)));
-	++index;
+        sb.append(Character.toLowerCase(name.charAt(index)));
+        ++index;
       }
 
       while (index < name.length() && !Character.isUpperCase(name.charAt(index))) {
-	sb.append(name.charAt(index));
-	++index;
+        sb.append(name.charAt(index));
+        ++index;
       }
 
       segments.append(new base_string(sb.toString()));

@@ -89,7 +89,7 @@ public class base_notification implements notification {
     // TODO: do not hardcode style.
     text_fragment primary = text_util.join(position_printer.show_position(the_position),
         base_element.make(text_library.DIV, text_library.CLASS, new base_string("message"),
-	    full_message));
+            full_message));
 
     if (secondary != null) {
       text_fragment secondaries = text_util.EMPTY_FRAGMENT;

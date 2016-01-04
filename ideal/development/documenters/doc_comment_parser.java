@@ -32,27 +32,27 @@ public class doc_comment_parser {
     while (index < content.length()) {
       char c1 = content.charAt(index++);
       if (c1 != '<') {
-	if (c1 == '|') {
-	  append_string(result, sb);
+        if (c1 == '|') {
+          append_string(result, sb);
           if (!in_code) {
             result.append(new start_element(doc_elements.CODE));
           } else {
             result.append(new end_element(doc_elements.CODE));
           }
-	  in_code = !in_code;
-	} else {
-	  sb.append(c1);
-	}
-	continue;
+          in_code = !in_code;
+        } else {
+          sb.append(c1);
+        }
+        continue;
       }
       append_string(result, sb);
 
       while (index < content.length()) {
-	char c2 = content.charAt(index++);
-	if (c2 == '>') {
-	  break;
-	}
-	sb.append(c2);
+        char c2 = content.charAt(index++);
+        if (c2 == '>') {
+          break;
+        }
+        sb.append(c2);
       }
       String tag = sb.toString().trim();
       sb.setLength(0);
@@ -61,8 +61,8 @@ public class doc_comment_parser {
       boolean end_tag = false;
       if (tag.charAt(0) == '/') {
         end_tag = true;
-	tag = tag.substring(1);
-	// TODO: block markup?...
+        tag = tag.substring(1);
+        // TODO: block markup?...
       }
 
       string tag_name = new base_string(tag);

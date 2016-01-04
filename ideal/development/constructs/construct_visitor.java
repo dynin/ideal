@@ -111,7 +111,7 @@ public abstract class construct_visitor<T> implements value {
     }
 
     throw new RuntimeException("unknown construct type in " +
-	"construct_visitor.visit(): " + c.getClass());
+        "construct_visitor.visit(): " + c.getClass());
   }
 
   public abstract T process_default(construct c);

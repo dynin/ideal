@@ -45,7 +45,7 @@ class supertype_set extends debuggable implements readonly_displayable {
       readonly_list<action> new_actions = actions.lookup(considered_type, special_name.SUPERTYPE);
       for (int j = 0; j < new_actions.size(); ++j) {
         action new_action = new_actions.get(j);
-	type new_action_type = new_action.result().type_bound();
+        type new_action_type = new_action.result().type_bound();
         if (!result.contains(new_action_type)) {
           considered.append(new_action_type);
           result.add(new_action_type);

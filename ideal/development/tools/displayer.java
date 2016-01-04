@@ -63,10 +63,10 @@ public class displayer {
     Class type = field.getClass();
     if (any_entity.class.isAssignableFrom(type)) {
       if (field instanceof readonly_value) {
-	return display_object((readonly_value) field);
+        return display_object((readonly_value) field);
       } else {
         utilities.panic("Unknown field: " + field);
-	//return (base_string) utilities.describe(field);
+        //return (base_string) utilities.describe(field);
       }
     }
 
@@ -112,9 +112,9 @@ public class displayer {
       }
     } catch (Exception e) {
       if (e instanceof RuntimeException) {
-	throw (RuntimeException) e;
+        throw (RuntimeException) e;
       } else {
-	throw new RuntimeException(e);
+        throw new RuntimeException(e);
       }
     }
 
@@ -145,7 +145,7 @@ public class displayer {
 
     result.append(start);
     text_element content = new base_element(text_library.INDENT,
-	fragments.frozen_copy());
+        fragments.frozen_copy());
     content = base_element.make(text_library.DIV, content);
     result.append(content);
     result.append(end);
@@ -159,10 +159,10 @@ public class displayer {
     for (int i = 0; i < list.size(); ++i) {
       Object obj = list.get(i);
       if (obj instanceof readonly_value) {
-	append(result, base_element.make(
-	    text_library.DIV, display_object((readonly_value) obj)));
+        append(result, base_element.make(
+            text_library.DIV, display_object((readonly_value) obj)));
       } else {
-	throw new RuntimeException("Not data: " + obj);
+        throw new RuntimeException("Not data: " + obj);
       }
     }
 

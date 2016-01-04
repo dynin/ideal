@@ -41,7 +41,7 @@ public class quoted_token_element implements scanner_element {
     for (end = begin + 1; end < input.length(); ++end) {
       char c = input.charAt(end);
       if (c == quote_character) {
-	break;
+        break;
       }
       if (c == ESCAPE) {
         // Support other escape chars.
@@ -69,9 +69,9 @@ public class quoted_token_element implements scanner_element {
       position start_pos = source.make_position(begin, begin + 1);
       position eof_pos = source.make_position(end, end);
       notification open_message = new base_notification(
-	  messages.opening_quote, start_pos);
+          messages.opening_quote, start_pos);
       list<notification> subnotifications =
-	  new base_list<notification>(open_message);
+          new base_list<notification>(open_message);
       new base_notification(messages.quote_not_found, eof_pos, subnotifications).report();
 
       image_end = end;

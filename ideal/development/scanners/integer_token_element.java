@@ -22,7 +22,7 @@ public class integer_token_element implements scanner_element {
     int end;
     for (end = begin; end < input.length(); ++end) {
       if (!Character.isDigit(input.charAt(end))) {
-	break;
+        break;
       }
     }
     if (end == begin) {

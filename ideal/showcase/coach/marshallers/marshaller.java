@@ -188,8 +188,8 @@ public class marshaller {
       int comp = t1.compareTo(t2);
 
       if (comp == 0) {
-	// Then order by id
-	comp = utilities.s(d1.get_data_id()).compareTo(utilities.s(d2.get_data_id()));
+        // Then order by id
+        comp = utilities.s(d1.get_data_id()).compareTo(utilities.s(d2.get_data_id()));
       }
 
       return comp;

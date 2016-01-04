@@ -24,7 +24,9 @@ integer constant() { return 34; }
 --four();
 constant();
 println(((6868)));
-println(5 * 5);
+--json: [a: 'foo', b: 5, c: [1, 2, 3]];
+--Checking paramteres with initializers.
+println('foo' : 5 * 5);
 println(constant());
 println(double(double(three)));
 println(plus(add5(three), two));
@@ -93,6 +95,8 @@ void test_assignment() {
   }
 
   if (test_string is null) {
+    for (; false; 3) { }
+
     println("null...");
   } else {
     println(test_string.size);

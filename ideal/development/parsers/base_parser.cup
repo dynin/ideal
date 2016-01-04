@@ -68,11 +68,11 @@ non terminal list<construct>  compilation_unit;
 non terminal list<construct>  statements_opt;
 non terminal construct  expression;
 non terminal construct  statement;
-non terminal construct  declaration;
 non terminal type_declaration_construct  type_declaration;
 non terminal type_announcement_construct  type_announcement;
 non terminal name_construct name;
 non terminal literal_construct  literal_value;
+non terminal construct  parameter;
 non terminal list<construct>  parameter_list_opt;
 non terminal list<construct>  types;
 non terminal construct  expression_opt;
@@ -81,7 +81,7 @@ non terminal construct  condition_in_parens;
 non terminal block_construct  block;
 non terminal list<construct>  procedure_body;
 non terminal list_construct  typedecl_parameters_opt;
-non terminal construct  variable_or_expression;
+non terminal construct  variable_or_expression_opt;
 non terminal variable_construct  variable_declaration;
 non terminal supertype_construct  supertype_declaration;
 non terminal procedure_construct  procedure_declaration;
@@ -128,9 +128,7 @@ statements_opt ::=
 	;
 
 statement ::=
-		declaration:d
-		{: RESULT = d; :}
-	|	block_statement:s
+		block_statement:s
 	        {: RESULT = s; :}
 	|	annotations_opt:m block:b
 	        {: RESULT = new block_construct(m, b.body, b); :}
@@ -138,10 +136,7 @@ statement ::=
 		{: RESULT = parser_util.expr_or_ctor(m, t, b); :}
 	|	SEMICOLON:s
 	        {: RESULT = new empty_construct(s); :}
-	;
-
-declaration ::=
-		variable_declaration:d SEMICOLON:s
+	|	variable_declaration:d SEMICOLON:s
 		{: RESULT = d; :}
 	|	procedure_declaration:d
 		{: RESULT = d; :}
@@ -226,7 +221,7 @@ block_statement ::=
 		{: RESULT = new loop_construct(st, new fragment_position(p, p, st)); :}
 	|	WHILE:w condition_in_parens:c statement:t
 		{: RESULT = new while_construct(c, t, new fragment_position(w, w, t)); :}
-	|	FOR:f OPEN_PARENTHESIS variable_or_expression:i SEMICOLON:s
+	|	FOR:f OPEN_PARENTHESIS variable_or_expression_opt:i SEMICOLON:s
 		      expression_opt:c SEMICOLON expression_opt:u CLOSE_PARENTHESIS
 		      statement:st
 		{: RESULT = new for_construct(i, c, u, st, new fragment_position(f, f, st)); :}
@@ -243,11 +238,11 @@ typedecl_parameters_opt ::=
 		{: RESULT = null; :}
 	;
 
-variable_or_expression ::=
-		annotations_opt:m expression:e     // annotations are an artifact of grammar
-	        {: parser_util.ensure_empty(m); RESULT = e; :}
-	|	variable_declaration:v
-		{: RESULT = v; :}
+variable_or_expression_opt ::=
+                annotations_opt:m expression_opt:e     // annotations are an artifact of grammar
+                {: parser_util.ensure_empty(m); RESULT = e; :}
+        |       variable_declaration:v
+                {: RESULT = v; :}
         ;
 
 annotation ::=	MODIFIER_KIND:mk
@@ -314,10 +309,31 @@ parameters ::=
 parameter_list_opt ::=
 		/* epsilon */
 		{: RESULT = new base_list<construct>(); :}
-	|	variable_or_expression:p
+	|	parameter:p
 		{: RESULT = new base_list<construct>(p); :}
-	|	variable_or_expression:hd COMMA:cm parameter_list_opt:tl
+	|	parameter:hd COMMA:cm parameter_list_opt:tl
 		{: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
+	;
+
+// TODO: refactor and separate procedure parameters from expression parameters.
+parameter ::=
+		annotations_opt:m expression:e     // annotations are an artifact of grammar
+	        {: parser_util.ensure_empty(m); RESULT = e; :}
+	|	annotations_opt:m expression:t name:n post_annotations_opt:pm COLON expression:e
+		{: RESULT = new variable_construct(m, t, n.the_name, pm, e,
+                    new fragment_position(t, n, e)); :}
+	|	annotations_opt:m expression:t name:n post_annotations_opt:pm
+		{: RESULT = new variable_construct(m, t, n.the_name, pm, null,
+                    new fragment_position(t, n, n)); :}
+	|	annotations_opt:m expression:t post_annotations_opt:pm COLON expression:e
+		{:
+                  // TODO: handle initializer expressions correctly.
+                  // Right now, we just drop the tag expression.
+                  RESULT = (t instanceof name_construct) ?
+                    new variable_construct(m, null, ((name_construct) t).the_name, pm, e,
+                        new fragment_position(t, t, e)) :
+                        e;
+                :}
 	;
 
 expression ::=	name:n

@@ -36,6 +36,7 @@ public class text_library {
   public final static attribute_id HREF = new attribute_id(HTML_NS, new base_string("href"));
   public final static attribute_id REL = new attribute_id(HTML_NS, new base_string("rel"));
   public final static attribute_id TYPE = new attribute_id(HTML_NS, new base_string("style"));
+  public final static text_entity BULL = new text_entity(HTML_NS, new base_string("*"), new base_string("&bull;"));
   public final static text_entity MIDDOT = new text_entity(HTML_NS, new base_string("."), new base_string("&middot;"));
   public final static text_entity MDASH = new text_entity(HTML_NS, new base_string("--"), new base_string("&mdash;"));
   public final static text_entity NBSP = new text_entity(HTML_NS, new base_string(" "), new base_string("&nbsp;"));

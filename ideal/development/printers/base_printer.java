@@ -40,12 +40,15 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   private static final string ASSERT = new base_string("assert");
   private static final string RETURN = new base_string("return");
 
-  public static final text_fragment bold_dot_fragment =
-      base_list_text_node.make(text_library.THINSP,
-          base_element.make(text_library.B, text_library.MIDDOT), text_library.THINSP);
+  public static final text_fragment bullet_fragment =
+      base_list_text_node.make(SPACE, text_library.BULL, SPACE);
 
-  public static final text_fragment dot_fragment =
-      base_list_text_node.make(text_library.NBSP, text_library.MIDDOT, new base_string(" "));
+  public static final text_fragment bullet_thinsp_fragment =
+      new base_list_text_node(new base_list<text_node>(
+          text_library.THINSP, text_library.THINSP, text_library.THINSP,
+          text_library.BULL,
+          text_library.THINSP, text_library.THINSP, text_library.THINSP
+          ));
 
   public base_printer(printer_mode the_mode, @Nullable printer_assistant the_assistant) {
     this.the_mode = the_mode;
@@ -657,7 +660,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   public text_fragment print_connector_dot() {
     if (is_stylish_mode()) {
-      return bold_dot_fragment;
+      return bullet_thinsp_fragment;
     } else {
       return print_punctuation(punctuation.DOT);
     }

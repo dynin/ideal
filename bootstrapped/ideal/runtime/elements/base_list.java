@@ -45,6 +45,16 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
     append(n5);
     append(n6);
   }
+  public base_list(final element_type n1, final element_type n2, final element_type n3, final element_type n4, final element_type n5, final element_type n6, final element_type n7) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+    append(n5);
+    append(n6);
+    append(n7);
+  }
   public base_list(final readonly_list<element_type> the_list) {
     this();
     append_all(the_list);

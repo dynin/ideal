@@ -142,7 +142,7 @@ public class publish_generator {
     // TODO: replace with join()
     for (int i = 0; i < full_name.size(); ++i) {
       if (i > 0) {
-        result.append(base_printer.dot_fragment);
+        result.append(base_printer.bullet_fragment);
       }
       // TODO: use code from the base_printer that generates spaces.
       result.append((base_string) full_name.get(i).to_string());
@@ -204,7 +204,7 @@ public class publish_generator {
           name_text = text_util.make_html_link(name_text, link);
         }
         if (the_text != null) {
-          the_text = text_util.join(name_text, base_printer.bold_dot_fragment, the_text);
+          the_text = text_util.join(name_text, base_printer.bullet_fragment, the_text);
         } else {
           the_text = name_text;
         }

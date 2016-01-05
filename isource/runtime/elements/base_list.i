@@ -58,6 +58,18 @@ class base_list[value element_type] {
     append(n6);
   }
 
+  public base_list(element_type n1, element_type n2, element_type n3, element_type n4,
+      element_type n5, element_type n6, element_type n7) {
+    this();
+    append(n1);
+    append(n2);
+    append(n3);
+    append(n4);
+    append(n5);
+    append(n6);
+    append(n7);
+  }
+
   -- TODO: replace with a copy constructor
   public base_list(readonly list[element_type] the_list) {
     this();

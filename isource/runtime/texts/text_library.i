@@ -41,6 +41,7 @@ public namespace text_library {
   REL : attribute_id.new(HTML_NS, "rel");
   TYPE : attribute_id.new(HTML_NS, "style");
 
+  BULL : text_entity.new(HTML_NS, "*", "&bull;");
   MIDDOT : text_entity.new(HTML_NS, ".", "&middot;");
   MDASH : text_entity.new(HTML_NS, "--", "&mdash;");
   NBSP : text_entity.new(HTML_NS, " ", "&nbsp;");

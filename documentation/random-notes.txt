@@ -11,3 +11,17 @@ Doc comment structure:
 --- #Summary
 ---   The core types of the ideal library.
 package elements {
+
+Runtime options:
+
+  reckless
+  restricted
+  reliable
+
+Configuration components:
+
+  use curly_braces; // As opposed to: indentation_syntax
+  use clean_slate;
+  use strictest_checks;
+  use good_manners; // Support for: please statement
+

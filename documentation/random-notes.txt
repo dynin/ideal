@@ -25,3 +25,18 @@ Configuration components:
   use strictest_checks;
   use good_manners; // Support for: please statement
 
+Numbers:
+
+  integer
+  decimal
+  rational
+  real
+
+Type modifier:
+  For numbers:
+    exact (default)
+    extended (supports -0 and infinity)
+    inexact
+    floating point: inexact real or not_a_number
+  For collections:
+    non_empty

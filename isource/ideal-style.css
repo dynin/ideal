@@ -1,8 +1,8 @@
-/* @import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700); */
+@import url(https://fonts.googleapis.com/css?family=Roboto:n,i,b,bi);
 
 body {
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  /* font-family: 'Myriad Pro', sans-serif; */
+  /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
+  font-family: 'Roboto', sans-serif;
   font-size: 16;
   margin-left: 1em;
   margin-right: 1em;
@@ -35,8 +35,7 @@ a:active {
 }
 
 .documentation {
-  /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
-  font-family: /* 'Minion Pro', */ serif;
+  /* font-family: 'Minion Pro', serif; */
   /* font-size: 15; */
   padding: 0.5em;
   margin-top: 0.5em;
@@ -62,7 +61,7 @@ a:active {
 }
 
 .type-declaration-name {
-  font-size: larger;
+/*  font-size: larger; */
   font-weight: bolder;
   margin-right: 0.2em;
 }

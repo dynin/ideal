@@ -34,7 +34,7 @@ APPENGINE_JARS = $(APPENGINE_SDK_JAR):$(SERVLET_JAR)
 BOOTSTRAPPED_DIR = bootstrapped
 
 JAVA = $(JDK_DIR)/bin/java -ea -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS)
-JAVAC_SOURCE_OPTS = -source $(JDK_VERSION) -target $(JDK_VERSION)
+JAVAC_SOURCE_OPTS = -source $(JDK_VERSION) -target $(JDK_VERSION) -Xlint:deprecation
 JAVAC_OPTS = $(JAVAC_SOURCE_OPTS) \
         -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS) -d $(CLASSES_DIR) \
 	-sourcepath .:$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)

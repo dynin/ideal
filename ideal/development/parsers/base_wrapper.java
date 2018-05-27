@@ -18,11 +18,16 @@ import generated.ideal.development.parsers.base_parser;
 
 public class base_wrapper extends base_parser {
 
-  /** Default constructor. */
-  public base_wrapper() {super();}
-
-  /** Constructor which sets the default scanner. */
-  public base_wrapper(Scanner s) {super(s);}
+  /**
+   * Constructor which sets the default scanner.
+   *
+   * We want to use <code>new DefaultSymbolFactory</code> when is
+   * deprecated as of JavaCUP 11b.
+   */
+  @SuppressWarnings("deprecation")
+  public base_wrapper(Scanner s) {
+    super(s, new DefaultSymbolFactory());
+  }
 
   /** Report a non fatal error (or warning).  This method takes a message
    *  string and an additional object (to be used by specializations

@@ -15,11 +15,12 @@ fi
 
 cd ${THIRDPARTY}
 
-echo Fetching JSR 305 annotations via https://code.google.com/p/jsr-305/
-curl -O https://google-collections.googlecode.com/svn/trunk/lib/jsr305.jar
-echo
-
 MAVEN2=http://central.maven.org/maven2
+
+echo Fetching JSR 305 annotations via http://findbugs.sourceforge.net/
+JSR305_VERSION=3.0.2
+curl -O ${MAVEN2}/com/google/code/findbugs/jsr305/${JSR305_VERSION}/jsr305-${JSR305_VERSION}.jar
+echo
 
 echo Fetching JUnit4 via http://junit.org/
 JUNIT_VERSION=4.12

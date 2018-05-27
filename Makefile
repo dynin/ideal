@@ -7,7 +7,7 @@
 THIRD_PARTY_DIR = thirdparty
 
 JDK_DIR = $(THIRD_PARTY_DIR)/jdk
-JDK_VERSION = 1.6
+JDK_VERSION = 1.8
 
 BUILD_DIR = build
 CLASSES_DIR = $(BUILD_DIR)/classes
@@ -19,7 +19,7 @@ SCRATCH_DIR = $(BUILD_DIR)/scratch
 
 MKDIR = mkdir -p
 
-JSR305_JAR = $(THIRD_PARTY_DIR)/jsr305.jar
+JSR305_JAR = $(THIRD_PARTY_DIR)/jsr305-3.0.2.jar
 JUNIT_JAR = $(THIRD_PARTY_DIR)/junit-4.12.jar
 JAVACUP_JAR = $(THIRD_PARTY_DIR)/java-cup-11b.jar
 GSON_JAR = $(THIRD_PARTY_DIR)/gson-2.5.jar

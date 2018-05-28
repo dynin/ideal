@@ -38,11 +38,11 @@ class utilities {
   static close_bracket : "]";
   static colon : ": ";
 
-  static string describe(readonly value the_value) {
+  static overload string describe(readonly value the_value) {
     return base_string.new(open_bracket, runtime_util.value_identifier(the_value), close_bracket);
   }
 
-  static string describe(readonly value the_value, readonly stringable details) {
+  static overload string describe(readonly value the_value, readonly stringable details) {
     if (details is null) {
       return describe(the_value);
     } else {
@@ -51,11 +51,11 @@ class utilities {
     }
   }
 
-  static noreturn void panic(string message) {
+  static overload noreturn void panic(string message) {
     runtime_util.do_panic(s(message));
   }
 
-  static noreturn void panic(String message) {
+  static overload noreturn void panic(String message) {
     runtime_util.do_panic(message);
   }
 }

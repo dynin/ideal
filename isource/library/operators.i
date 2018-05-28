@@ -41,8 +41,8 @@ package operators {
   string concatenate(readonly stringable first,
       readonly stringable second) pure;
 
-  integer add_assign(integer lvalue mutable, integer rvalue);
-  nonnegative add_assign(nonnegative lvalue mutable, nonnegative rvalue);
+  overload integer add_assign(integer lvalue mutable, integer rvalue);
+  overload nonnegative add_assign(nonnegative lvalue mutable, nonnegative rvalue);
 
   integer subtract_assign(integer lvalue mutable, integer rvalue);
   integer multiply_assign(integer lvalue mutable, integer rvalue);

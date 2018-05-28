@@ -258,35 +258,27 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     }
 
     // Handle overloading
-    if (get_category() == procedure_category.METHOD) {
-      principal_type the_type = declared_in_type();
-      assert the_type.get_declaration() instanceof type_declaration;
-      type_declaration the_type_declaration = (type_declaration) the_type.get_declaration();
-      readonly_list<declaration> signature = the_type_declaration.get_signature();
-      for (int i = 0; i < signature.size(); ++i) {
-        declaration signature_declaration = signature.get(i);
-        if (signature_declaration == this) {
-          // The remaining declarations are not yet processed
-          break;
-        }
-        if (signature_declaration instanceof procedure_declaration) {
-          procedure_declaration other_procedure = (procedure_declaration) signature_declaration;
-          if (other_procedure.short_name() == short_name() &&
-              other_procedure.get_flavor() == get_flavor()) {
-            if (annotations().has(general_modifier.overload_modifier) &&
-                other_procedure.annotations().has(general_modifier.overload_modifier)) {
-              // TODO: detect unused  overload modifiers.
-              continue;
-            }
-            // To fix, add overloaded modifier
-            notification original_notification = new base_notification(
-              "Original declaration", other_procedure);
-            notification duplicate_notification = new base_notification(
-              new base_string("Overloaded procedure declaration"), this,
-              new base_list<notification>(original_notification));
-            error_signal overloaded_error = new error_signal(duplicate_notification, false);
-            maybe_report_error(overloaded_error);
+    if (get_category() == procedure_category.METHOD ||
+        get_category() == procedure_category.STATIC) {
+      type from_type = declared_in_type().get_flavored(get_flavor());
+      readonly_list<action> overloaded_actions = get_context().lookup(from_type, short_name());
+      for (int i = 0; i < overloaded_actions.size(); ++i) {
+        declaration overloaded_declaration = overloaded_actions.get(i).get_declaration();
+        if (overloaded_declaration instanceof procedure_declaration) {
+          procedure_declaration other_procedure = (procedure_declaration) overloaded_declaration;
+          if (annotations().has(general_modifier.overload_modifier) &&
+              other_procedure.annotations().has(general_modifier.overload_modifier)) {
+            // TODO: detect unused overload modifiers.
+            continue;
           }
+          // To fix, add overloaded modifier
+          notification original_notification = new base_notification(
+            "Original declaration", other_procedure);
+          notification duplicate_notification = new base_notification(
+            new base_string("Overloaded procedure declaration"), this,
+            new base_list<notification>(original_notification));
+          error_signal overloaded_error = new error_signal(duplicate_notification, false);
+          maybe_report_error(overloaded_error);
         }
       }
     }

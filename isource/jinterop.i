@@ -49,8 +49,8 @@ package java {
       public overload String substring(integer begin, integer end);
       public char charAt(integer index);
 
-      public static String valueOf(int value);
-      public static String valueOf(char value);
+      public overload static String valueOf(int value);
+      public overload static String valueOf(char value);
     }
 
     class StringBuffer {

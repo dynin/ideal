@@ -105,19 +105,19 @@ class base_string {
     return (the_string as base_string).s();
   }
 
-  static String c(String s1, String s2) {
+  static overload String c(String s1, String s2) {
     return (s1 ++ s2) as String;
   }
 
-  static String c(String s1, string s2) {
+  static overload String c(String s1, string s2) {
     return (s1 ++ unbox(s2)) as String;
   }
 
-  static String c(string s1, string s2) {
+  static overload String c(string s1, string s2) {
     return (unbox(s1) ++ unbox(s2)) as String;
   }
 
-  static String c(string s1, String s2) {
+  static overload String c(string s1, String s2) {
     return (unbox(s1) ++ s2) as String;
   }
 

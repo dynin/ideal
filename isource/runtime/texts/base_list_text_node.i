@@ -15,14 +15,14 @@ class base_list_text_node {
     this.the_nodes = the_nodes.frozen_copy();
   }
 
-  public static list_text_node make(text_node first, text_node second) {
+  public overload static list_text_node make(text_node first, text_node second) {
     list[text_node] result : base_list[text_node].new();
     result.append(first);
     result.append(second);
     return base_list_text_node.new(result);
   }
 
-  public static list_text_node make(text_node first, text_node second, text_node third) {
+  public overload static list_text_node make(text_node first, text_node second, text_node third) {
     list[text_node] result : base_list[text_node].new();
     result.append(first);
     result.append(second);

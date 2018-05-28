@@ -55,7 +55,7 @@ namespace text_util {
     }
   }
 
-  text_fragment join(readonly list[text_fragment] fragments) {
+  overload text_fragment join(readonly list[text_fragment] fragments) {
     nodes : base_list[text_node].new();
 
     for (var nonnegative i : 0; i < fragments.size; i += 1) {
@@ -65,7 +65,7 @@ namespace text_util {
     return to_fragment(nodes);
   }
 
-  text_fragment join(text_fragment first, text_fragment second) {
+  overload text_fragment join(text_fragment first, text_fragment second) {
     nodes : base_list[text_node].new();
 
     append(nodes, first);
@@ -75,7 +75,7 @@ namespace text_util {
   }
 
   -- TODO: refactor and reuse code.
-  text_fragment join(text_fragment first, text_fragment second, text_fragment third) {
+  overload text_fragment join(text_fragment first, text_fragment second, text_fragment third) {
     nodes : base_list[text_node].new();
 
     append(nodes, first);

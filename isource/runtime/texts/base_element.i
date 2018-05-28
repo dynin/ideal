@@ -23,11 +23,11 @@ class base_element {
         the_children.frozen_copy() : empty[text_node].new();
   }
 
-  static text_element make(text_id id, text_fragment or null fragment) {
+  static overload text_element make(text_id id, text_fragment or null fragment) {
     return base_element.new(id, text_util.to_list(fragment));
   }
 
-  static text_element make(element_id id, attribute_id attr,
+  static overload text_element make(element_id id, attribute_id attr,
       string value, text_fragment or null fragment) {
     children : base_list[text_node].new();
     children.append(base_element.new(attr, base_list[text_node].new(value as base_string)));

@@ -141,7 +141,7 @@ class base_readonly_list[value element_type] {
     return base_immutable_list[element_type].new(state);
   }
 
-  implement immutable list[element_type] slice(nonnegative begin, nonnegative end) {
+  overload implement immutable list[element_type] slice(nonnegative begin, nonnegative end) {
     assert begin >= 0 && end <= size;
     length : end - begin;
     assert length is nonnegative;
@@ -151,7 +151,7 @@ class base_readonly_list[value element_type] {
     return base_immutable_list[element_type].new(slice_state);
   }
 
-  implement immutable list[element_type] slice(nonnegative begin) {
+  overload implement immutable list[element_type] slice(nonnegative begin) {
     return slice(begin, size);
   }
 }

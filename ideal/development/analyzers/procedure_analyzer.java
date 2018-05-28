@@ -257,6 +257,40 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       }
     }
 
+    // Handle overloading
+    if (get_category() == procedure_category.METHOD) {
+      principal_type the_type = declared_in_type();
+      assert the_type.get_declaration() instanceof type_declaration;
+      type_declaration the_type_declaration = (type_declaration) the_type.get_declaration();
+      readonly_list<declaration> signature = the_type_declaration.get_signature();
+      for (int i = 0; i < signature.size(); ++i) {
+        declaration signature_declaration = signature.get(i);
+        if (signature_declaration == this) {
+          // The remaining declarations are not yet processed
+          break;
+        }
+        if (signature_declaration instanceof procedure_declaration) {
+          procedure_declaration other_procedure = (procedure_declaration) signature_declaration;
+          if (other_procedure.short_name() == short_name() &&
+              other_procedure.get_flavor() == get_flavor()) {
+            if (annotations().has(general_modifier.overload_modifier) &&
+                other_procedure.annotations().has(general_modifier.overload_modifier)) {
+              // TODO: detect unused  overload modifiers.
+              continue;
+            }
+            // To fix, add overloaded modifier
+            notification original_notification = new base_notification(
+              "Original declaration", other_procedure);
+            notification duplicate_notification = new base_notification(
+              new base_string("Overloaded procedure declaration"), this,
+              new base_list<notification>(original_notification));
+            error_signal overloaded_error = new error_signal(duplicate_notification, false);
+            maybe_report_error(overloaded_error);
+          }
+        }
+      }
+    }
+
     // TODO: should this be handled in METHOD_AND_VARIABLE_DECL pass?
     if (analyzer_utilities.has_overriden(this)) {
       readonly_list<declaration> found_overriden = analyzer_utilities.do_find_overriden(this);

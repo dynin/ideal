@@ -35,12 +35,12 @@ class empty[value element_type] {
     return this;
   }
 
-  implement immutable list[element_type] slice(nonnegative begin, nonnegative end) {
+  overload implement immutable list[element_type] slice(nonnegative begin, nonnegative end) {
     assert begin == 0 && end == 0;
     return this;
   }
 
-  implement immutable list[element_type] slice(nonnegative begin) {
+  overload implement immutable list[element_type] slice(nonnegative begin) {
     assert begin == 0;
     return this;
   }

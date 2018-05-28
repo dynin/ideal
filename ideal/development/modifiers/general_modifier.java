@@ -30,6 +30,7 @@ public class general_modifier {
   public static modifier_kind varargs_modifier = new base_modifier_kind("varargs");
 
   public static modifier_kind override_modifier = new base_modifier_kind("override");
+  public static modifier_kind overload_modifier = new base_modifier_kind("overload");
   public static modifier_kind implement_modifier = new base_modifier_kind("implement");
   public static modifier_kind noreturn_modifier = new base_modifier_kind("noreturn");
   public static modifier_kind testcase_modifier = new base_modifier_kind("testcase");

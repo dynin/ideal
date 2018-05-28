@@ -221,6 +221,7 @@ public abstract class base_analyzer<C extends position> extends debuggable imple
     }
   }
 
+  // TODO: redundant with maybe_report_error()
   protected void handle_error(error_signal signal) {
     maybe_report_error(signal);
   }

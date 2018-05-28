@@ -50,13 +50,13 @@ class base_range {
     return this;
   }
 
-  implement range slice(nonnegative slice_begin) {
+  overload implement range slice(nonnegative slice_begin) {
     new_begin : the_begin + slice_begin;
     assert new_begin <= the_end;
     return base_range.new(new_begin, the_end);
   }
 
-  implement range slice(nonnegative slice_begin, nonnegative slice_end) {
+  overload implement range slice(nonnegative slice_begin, nonnegative slice_end) {
     new_begin : the_begin + slice_begin;
     new_end : the_begin + slice_end;
     assert new_begin <= new_end;

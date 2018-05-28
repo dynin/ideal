@@ -141,11 +141,11 @@ class base_string {
     return this;
   }
 
-  implement string slice(nonnegative begin, nonnegative end) {
+  overload implement string slice(nonnegative begin, nonnegative end) {
     return base_string.new(state.substring(begin, end));
   }
 
-  implement string slice(nonnegative begin) {
+  overload implement string slice(nonnegative begin) {
     return base_string.new(state.substring(begin));
   }
 

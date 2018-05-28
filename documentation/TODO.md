@@ -10,6 +10,7 @@
   - [ ] Comment only vs inline code
   - [ ] Related links tied to the bottom of a screen
 - [ ] Added overload (as opposed to override)
+  - [x] Add overload to regular methods
   - [ ] Refactor source with unique names
   - [ ] Simplify resolver
 - [ ] Initial setup

@@ -38,8 +38,8 @@ package resources {
     extends value;
 
     resource_identifier get_id() pure;
-    resource_identifier resolve(string name);
-    resource_identifier resolve(string name, extension ext);
+    overload resource_identifier resolve(string name);
+    overload resource_identifier resolve(string name, extension ext);
   }
 
   interface extension {

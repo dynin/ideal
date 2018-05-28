@@ -45,8 +45,8 @@ package java {
       implements deeply_immutable data, stringable;
 
       public integer length();
-      public String substring(integer begin);
-      public String substring(integer begin, integer end);
+      public overload String substring(integer begin);
+      public overload String substring(integer begin, integer end);
       public char charAt(integer index);
 
       public static String valueOf(int value);

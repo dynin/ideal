@@ -28,7 +28,7 @@ class base_resource_catalog {
   -- TODO: resource name parser should be separated from the catalog logic.
   -- We should just panic if we encounter special characters or names,
   -- such as '/', '\', '::', '.', '..'.
-  override resource_identifier resolve(string name) {
+  overload implement resource_identifier resolve(string name) {
     if (name.is_empty) {
       return base_resource_identifier.new(the_resource_store, path);
     }
@@ -77,7 +77,7 @@ class base_resource_catalog {
     return base_resource_identifier.new(the_resource_store, result.frozen_copy());
   }
 
-  override resource_identifier resolve(string name, extension or null the_extension) {
+  overload implement resource_identifier resolve(string name, extension or null the_extension) {
     if (the_extension is_not null) {
       return resolve(base_string.new(name, the_extension.dot_name));
     } else {

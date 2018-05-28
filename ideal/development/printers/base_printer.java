@@ -43,13 +43,6 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public static final text_fragment bullet_fragment =
       base_list_text_node.make(SPACE, text_library.BULL, SPACE);
 
-  public static final text_fragment bullet_thinsp_fragment =
-      new base_list_text_node(new base_list<text_node>(
-          text_library.THINSP, text_library.THINSP, text_library.THINSP,
-          text_library.BULL,
-          text_library.THINSP, text_library.THINSP, text_library.THINSP
-          ));
-
   public base_printer(printer_mode the_mode, @Nullable printer_assistant the_assistant) {
     this.the_mode = the_mode;
     this.the_assistant = the_assistant;
@@ -660,7 +653,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   public text_fragment print_connector_dot() {
     if (is_stylish_mode()) {
-      return bullet_thinsp_fragment;
+      return bullet_fragment;
     } else {
       return print_punctuation(punctuation.DOT);
     }

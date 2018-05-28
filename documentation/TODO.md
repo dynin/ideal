@@ -6,9 +6,16 @@
 - [ ] Publish: better style
   - [ ] Font experiments
   - [ ] Bolded colon
+  - [x] No thinspaces around bullet
+  - [ ] Comment only vs inline code
+  - [ ] Related links tied to the bottom of a screen
 - [ ] Added overload (as opposed to override)
   - [ ] Refactor source with unique names
   - [ ] Simplify resolver
 - [ ] Initial setup
+  - [x] Updated JSR 305 jar
 - [ ] Inherit doc comments
 - [ ] Cross references
+- [ ] Cleanly compile with -Xlint:unchecked
+- [ ] Document the code better
+- [ ] Handle '.' in doc comment summaries.

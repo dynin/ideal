@@ -7,7 +7,7 @@
 import java.lang.String;
 import java.lang.Object;
 
---- Bridges string conversion between ideal and and Objects.
+--- Bridges string conversion between ideal and Objects.
 class debuggable {
   extends Object;
   implements stringable;

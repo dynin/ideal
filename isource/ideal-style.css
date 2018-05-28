@@ -49,7 +49,7 @@ a:active {
 }
 
 .code {
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
   /* font-family: 'Myriad Pro', sans-serif; */
   font-size: 15;
   font-style: normal;

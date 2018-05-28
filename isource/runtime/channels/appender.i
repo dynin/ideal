@@ -11,12 +11,12 @@ class appender[any value value_type] {
   private list[value_type] the_list;
   private var boolean active;
 
-  appender(list[value_type] the_list) {
+  overload appender(list[value_type] the_list) {
     this.the_list = the_list;
     this.active = true;
   }
 
-  appender() {
+  overload appender() {
     this(base_list[value_type].new());
   }
 

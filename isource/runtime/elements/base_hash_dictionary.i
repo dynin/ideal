@@ -22,7 +22,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
     -- TODO: use self here
     protected var hash_cell[key_type, value_type] or null next;
 
-    public hash_cell(key_type the_key, integer the_key_hash, value_type the_value,
+    public overload hash_cell(key_type the_key, integer the_key_hash, value_type the_value,
         hash_cell[key_type, value_type] or null next) {
       this.the_key = the_key;
       this.the_key_hash = the_key_hash;
@@ -30,7 +30,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
       this.next = next;
     }
 
-    public hash_cell(key_type the_key, integer the_key_hash, value_type the_value) {
+    public overload hash_cell(key_type the_key, integer the_key_hash, value_type the_value) {
       this(the_key, the_key_hash, the_value, missing.instance);
     }
 
@@ -65,14 +65,14 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
     var nonnegative size;
 
     --- Construct a dictionary state with an array of specified size.
-    dictionary_state(nonnegative initial_size) {
+    overload dictionary_state(nonnegative initial_size) {
       writable = true;
       the_buckets = array[hash_cell[key_type, value_type] or null].new(initial_size);
       size = 0;
     }
 
     --- Construct a dictionary state with a table of default size.
-    dictionary_state() {
+    overload dictionary_state() {
       this(parameters.default_size);
     }
 
@@ -141,12 +141,12 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
   protected equivalence_with_hash[key_type] equivalence;
   protected var dictionary_state[key_type, value_type] state;
 
-  protected base_hash_dictionary(equivalence_with_hash[key_type] equivalence) {
+  protected overload base_hash_dictionary(equivalence_with_hash[key_type] equivalence) {
     this.equivalence = equivalence;
     this.state = dictionary_state[key_type, value_type].new();
   }
 
-  protected base_hash_dictionary(equivalence_with_hash[key_type] equivalence,
+  protected overload base_hash_dictionary(equivalence_with_hash[key_type] equivalence,
       dictionary_state[key_type, value_type] state) {
     this.equivalence = equivalence;
     this.state = state;

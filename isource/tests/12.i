@@ -52,8 +52,8 @@ class new_type {
   implements value;
 
   string field;
-  new_type() { }
-  new_type(string val) {
+  overload new_type() { }
+  overload new_type(string val) {
     field = val;
   }
   string get_state() {

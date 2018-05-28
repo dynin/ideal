@@ -12,21 +12,21 @@ public class immutable_list_dictionary[readonly value key_type, value value_type
   extends base_list_dictionary[key_type, value_type];
   implements immutable dictionary[key_type, value_type];
 
-  public immutable_list_dictionary(equivalence_relation[key_type] equivalence) {
+  public overload immutable_list_dictionary(equivalence_relation[key_type] equivalence) {
     super(equivalence);
   }
 
-  public immutable_list_dictionary() {
+  public overload immutable_list_dictionary() {
     -- TODO: cast is redundant.
     super(runtime_util.default_equivalence as equivalence_relation[key_type]);
   }
 
-  public immutable_list_dictionary(key_type the_key, value_type the_value) {
+  public overload immutable_list_dictionary(key_type the_key, value_type the_value) {
     -- TODO: cast is redundant.
     super(the_key, the_value, runtime_util.default_equivalence as equivalence_relation[key_type]);
   }
 
-  public immutable_list_dictionary(base_list_dictionary[key_type, value_type] original) {
+  public overload immutable_list_dictionary(base_list_dictionary[key_type, value_type] original) {
     super(original);
   }
 

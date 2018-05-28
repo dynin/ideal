@@ -12,12 +12,12 @@ class base_element {
   private text_id id;
   private immutable list[text_node] the_children;
 
-  base_element(text_id id) {
+  overload base_element(text_id id) {
     this.id = id;
     this.the_children = empty[text_node].new();
   }
 
-  public base_element(text_id id, readonly list[text_node] or null the_children) {
+  public overload base_element(text_id id, readonly list[text_node] or null the_children) {
     this.id = id;
     this.the_children = the_children is_not null ?
         the_children.frozen_copy() : empty[text_node].new();

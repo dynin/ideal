@@ -17,14 +17,14 @@ public abstract class base_hash_set[readonly value element_type] {
     protected integer the_hash;
     protected var hash_cell[element_type] or null next;
 
-    public hash_cell(element_type the_value, integer the_hash,
+    public overload hash_cell(element_type the_value, integer the_hash,
         hash_cell[element_type] or null next) {
       this.the_value = the_value;
       this.the_hash = the_hash;
       this.next = next;
     }
 
-    public hash_cell(element_type the_value, integer the_hash) {
+    public overload hash_cell(element_type the_value, integer the_hash) {
       this(the_value, the_hash, missing.instance);
     }
   }
@@ -47,14 +47,14 @@ public abstract class base_hash_set[readonly value element_type] {
     var nonnegative size;
 
     --- Construct a dictionary state with an array of specified size.
-    set_state(nonnegative initial_size) {
+    overload set_state(nonnegative initial_size) {
       writable = true;
       the_buckets = array[hash_cell[element_type] or null].new(initial_size);
       size = 0;
     }
 
     --- Construct a dictionary state with a table of default size.
-    set_state() {
+    overload set_state() {
       this(parameters.default_size);
     }
 
@@ -123,12 +123,12 @@ public abstract class base_hash_set[readonly value element_type] {
   protected equivalence_with_hash[element_type] equivalence;
   protected var set_state[element_type] state;
 
-  protected base_hash_set(equivalence_with_hash[element_type] equivalence) {
+  protected overload base_hash_set(equivalence_with_hash[element_type] equivalence) {
     this.equivalence = equivalence;
     this.state = set_state[element_type].new();
   }
 
-  protected base_hash_set(equivalence_with_hash[element_type] equivalence,
+  protected overload base_hash_set(equivalence_with_hash[element_type] equivalence,
       set_state[element_type] state) {
     this.equivalence = equivalence;
     this.state = state;

@@ -32,14 +32,14 @@ class base_readonly_list[value element_type] {
     var nonnegative size;
 
     --- Construct a list state with an array of specified size.
-    list_state(nonnegative initial_size) {
+    overload list_state(nonnegative initial_size) {
       writable = true;
       the_elements = array[element_type].new(initial_size);
       size = 0;
     }
 
     --- Construct a list state with an array of default size.
-    list_state() {
+    overload list_state() {
       this(parameters.default_size);
     }
 
@@ -112,11 +112,11 @@ class base_readonly_list[value element_type] {
 
   protected var list_state[element_type] state;
 
-  protected base_readonly_list() {
+  protected overload base_readonly_list() {
     state = list_state[element_type].new();
   }
 
-  protected base_readonly_list(list_state[element_type] state) {
+  protected overload base_readonly_list(list_state[element_type] state) {
     this.state = state;
   }
 

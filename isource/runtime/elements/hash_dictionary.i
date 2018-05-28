@@ -11,11 +11,11 @@ public class hash_dictionary[readonly value key_type, value value_type] {
   extends base_hash_dictionary[key_type, value_type];
   implements dictionary[key_type, value_type];
 
-  public hash_dictionary(equivalence_with_hash[key_type] equivalence) {
+  public overload hash_dictionary(equivalence_with_hash[key_type] equivalence) {
     super(equivalence);
   }
 
-  public hash_dictionary() {
+  public overload hash_dictionary() {
     -- TODO: cast is redundant.
     super(runtime_util.default_equivalence as equivalence_with_hash[key_type]);
   }

@@ -28,12 +28,12 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
   protected equivalence_relation[vertice_type] equivalence;
   private dictionary[vertice_type, set[edge[vertice_type, edge_type]]] all_edges;
 
-  base_graph(equivalence_relation[vertice_type] equivalence) {
+  overload base_graph(equivalence_relation[vertice_type] equivalence) {
     this.equivalence = equivalence;
     this.all_edges = hash_dictionary[vertice_type, set[edge[vertice_type, edge_type]]].new();
   }
 
-  base_graph() {
+  overload base_graph() {
     -- TODO: cast is redundant.
     this(runtime_util.default_equivalence as readonly value as equivalence_relation[vertice_type]);
   }

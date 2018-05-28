@@ -22,11 +22,11 @@ class markup_formatter {
 
   static DEFAULT_INDENT : " ";
 
-  markup_formatter(output[character] out, string spaces) {
+  overload markup_formatter(output[character] out, string spaces) {
     super(out, spaces);
   }
 
-  markup_formatter(output[character] out) {
+  overload markup_formatter(output[character] out) {
     this(out, DEFAULT_INDENT);
   }
 

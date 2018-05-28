@@ -17,14 +17,14 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
     -- TODO: use self here
     protected var entry_cell[key_type, value_type] or null next;
 
-    public entry_cell(key_type the_key, value_type the_value,
+    public overload entry_cell(key_type the_key, value_type the_value,
         entry_cell[key_type, value_type] or null next) {
       this.the_key = the_key;
       this.the_value = the_value;
       this.next = next;
     }
 
-    public entry_cell(key_type the_key, value_type the_value) {
+    public overload entry_cell(key_type the_key, value_type the_value) {
       this(the_key, the_value, missing.instance);
     }
 
@@ -45,13 +45,13 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
   protected var nonnegative the_size;
   protected var entry_cell[key_type, value_type] or null entries;
 
-  protected base_list_dictionary(equivalence_relation[key_type] equivalence) {
+  protected overload base_list_dictionary(equivalence_relation[key_type] equivalence) {
     this.equivalence = equivalence;
     the_size = 0;
     entries = missing.instance;
   }
 
-  protected base_list_dictionary(key_type key, value_type value,
+  protected overload base_list_dictionary(key_type key, value_type value,
       equivalence_relation[key_type] equivalence) {
     this.equivalence = equivalence;
     the_size = 1;
@@ -59,7 +59,7 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
   }
 
   -- TODO: readonly dictionary
-  protected base_list_dictionary(base_list_dictionary[key_type, value_type] original) {
+  protected overload base_list_dictionary(base_list_dictionary[key_type, value_type] original) {
     this.equivalence = original.equivalence;
     the_size = original.the_size;
     entries = duplicate(original.entries);

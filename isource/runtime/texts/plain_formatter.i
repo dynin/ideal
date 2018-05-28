@@ -17,14 +17,14 @@ class plain_formatter {
   private static character SPACE : ' ';
   private static string DEFAULT_INDENT : "  ";
 
-  plain_formatter(output[character] the_output, string spaces) {
+  overload plain_formatter(output[character] the_output, string spaces) {
     super(the_output, spaces);
     chars_written = 0;
     underline_stack = base_list[underline_style].new();
     carets = string_writer.new();
   }
 
-  public plain_formatter(output[character] the_output) {
+  public overload plain_formatter(output[character] the_output) {
     this(the_output, DEFAULT_INDENT);
   }
 

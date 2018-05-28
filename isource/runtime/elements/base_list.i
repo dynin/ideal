@@ -8,28 +8,28 @@ class base_list[value element_type] {
   extends base_readonly_list[element_type];
   implements list[element_type];
 
-  public base_list() {
+  public overload base_list() {
   }
 
-  public base_list(element_type n1) {
+  public overload base_list(element_type n1) {
     this();
     append(n1);
   }
 
-  public base_list(element_type n1, element_type n2) {
+  public overload base_list(element_type n1, element_type n2) {
     this();
     append(n1);
     append(n2);
   }
 
-  public base_list(element_type n1, element_type n2, element_type n3) {
+  public overload base_list(element_type n1, element_type n2, element_type n3) {
     this();
     append(n1);
     append(n2);
     append(n3);
   }
 
-  public base_list(element_type n1, element_type n2, element_type n3, element_type n4) {
+  public overload base_list(element_type n1, element_type n2, element_type n3, element_type n4) {
     this();
     append(n1);
     append(n2);
@@ -37,7 +37,7 @@ class base_list[value element_type] {
     append(n4);
   }
 
-  public base_list(element_type n1, element_type n2, element_type n3, element_type n4,
+  public overload base_list(element_type n1, element_type n2, element_type n3, element_type n4,
       element_type n5) {
     this();
     append(n1);
@@ -47,7 +47,7 @@ class base_list[value element_type] {
     append(n5);
   }
 
-  public base_list(element_type n1, element_type n2, element_type n3, element_type n4,
+  public overload base_list(element_type n1, element_type n2, element_type n3, element_type n4,
       element_type n5, element_type n6) {
     this();
     append(n1);
@@ -58,7 +58,7 @@ class base_list[value element_type] {
     append(n6);
   }
 
-  public base_list(element_type n1, element_type n2, element_type n3, element_type n4,
+  public overload base_list(element_type n1, element_type n2, element_type n3, element_type n4,
       element_type n5, element_type n6, element_type n7) {
     this();
     append(n1);
@@ -71,7 +71,7 @@ class base_list[value element_type] {
   }
 
   -- TODO: replace with a copy constructor
-  public base_list(readonly list[element_type] the_list) {
+  public overload base_list(readonly list[element_type] the_list) {
     this();
     append_all(the_list);
   }

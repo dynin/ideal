@@ -19,4 +19,6 @@
 - [ ] Cross references
 - [ ] Cleanly compile with -Xlint:unchecked
 - [ ] Document the code better
-- [ ] Handle '.' in doc comment summaries.
+- [ ] Handle '.' in doc comment summaries
+- [ ] Add default parameters to procedures
+- [ ] Make singleton.instance optional

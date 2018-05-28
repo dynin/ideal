@@ -17,83 +17,84 @@ class base_string {
 
   private String state;
 
-  base_string(String s1) {
+  overload base_string(String s1) {
     this.state = s1;
   }
 
-  base_string(String s1, String s2) {
+  overload base_string(String s1, String s2) {
     this.state = s1 ++ s2;
   }
 
-  base_string(String s1, String s2, String s3) {
+  overload base_string(String s1, String s2, String s3) {
     this.state = c(c(s1, s2), s3);
   }
 
-  base_string(String s1, String s2, String s3, String s4) {
+  overload base_string(String s1, String s2, String s3, String s4) {
     this.state = c(c(c(s1, s2), s3), s4);
   }
 
-  base_string(String s1, String s2, String s3, String s4, String s5) {
+  overload base_string(String s1, String s2, String s3, String s4, String s5) {
     this.state = c(c(c(c(s1, s2), s3), s4), s5);
   }
 
-  base_string(String s1, String s2, String s3, String s4, String s5, String s6) {
+  overload base_string(String s1, String s2, String s3, String s4, String s5, String s6) {
     this.state = c(c(c(c(c(s1, s2), s3), s4), s5), s6);
   }
 
-  base_string(String s1, String s2, String s3, String s4, String s5, String s6, String s7) {
+  overload base_string(String s1, String s2, String s3, String s4, String s5, String s6,
+      String s7) {
     this.state = c(c(c(c(c(c(s1, s2), s3), s4), s5), s6), s7);
   }
 
-  base_string(string s1, string s2) {
+  overload base_string(string s1, string s2) {
     this.state = unbox(s1) ++ unbox(s2);
   }
 
-  base_string(string s1, string s2, string s3) {
+  overload base_string(string s1, string s2, string s3) {
     this.state = c(c(s1, s2), s3);
   }
 
-  base_string(string s1, string s2, string s3, string s4) {
+  overload base_string(string s1, string s2, string s3, string s4) {
     this.state = c(c(c(s1, s2), s3), s4);
   }
 
-  base_string(string s1, string s2, string s3, string s4, string s5) {
+  overload base_string(string s1, string s2, string s3, string s4, string s5) {
     this.state = c(c(c(c(s1, s2), s3), s4), s5);
   }
 
-  base_string(string s1, string s2, string s3, string s4, string s5, string s6) {
+  overload base_string(string s1, string s2, string s3, string s4, string s5, string s6) {
     this.state = c(c(c(c(c(s1, s2), s3), s4), s5), s6);
   }
 
-  base_string(String s1, string s2) {
+  overload base_string(String s1, string s2) {
     this.state = s1 ++ unbox(s2);
   }
 
-  base_string(string s1, String s2) {
+  overload base_string(string s1, String s2) {
     this.state = unbox(s1) ++ s2;
   }
 
-  base_string(string s1, String s2, String s3) {
+  overload base_string(string s1, String s2, String s3) {
     this.state = c(c(s1, s2), s3);
   }
 
-  base_string(String s1, string s2, String s3) {
+  overload base_string(String s1, string s2, String s3) {
     this.state = c(c(s1, s2), s3);
   }
 
-  base_string(String s1, String s2, string s3) {
+  overload base_string(String s1, String s2, string s3) {
     this.state = c(c(s1, s2), s3);
   }
 
-  base_string(string s1, String s2, string s3) {
+  overload base_string(string s1, String s2, string s3) {
     this.state = c(c(s1, s2), s3);
   }
 
-  base_string(string s1, string s2, String s3) {
+  overload base_string(string s1, string s2, String s3) {
     this.state = c(c(s1, s2), s3);
   }
 
-  base_string(String s1, string s2, String s3, String s4, String s5) {
+  overload base_string(String s1, string s2, String s3, String s4, String s5) {
     this.state = c(c(c(c(s1, s2), s3), s4), s5);
   }
 

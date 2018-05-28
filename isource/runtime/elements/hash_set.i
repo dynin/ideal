@@ -11,11 +11,11 @@ public class hash_set[readonly value element_type] {
   extends base_hash_set[element_type];
   implements set[element_type];
 
-  public hash_set(equivalence_with_hash[element_type] equivalence) {
+  public overload hash_set(equivalence_with_hash[element_type] equivalence) {
     super(equivalence);
   }
 
-  public hash_set() {
+  public overload hash_set() {
     -- TODO: cast is redundant.  Double cast is used to please Java compiler.
     super(runtime_util.default_equivalence as any value as equivalence_with_hash[element_type]);
   }

@@ -22,3 +22,5 @@
 - [ ] Handle '.' in doc comment summaries
 - [ ] Add default parameters to procedures
 - [ ] Make singleton.instance optional
+- [ ] Support => in procedure declarations
+- [ ] Add C/C++ backend

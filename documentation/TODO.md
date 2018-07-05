@@ -24,3 +24,4 @@
 - [ ] Make singleton.instance optional
 - [ ] Support => in procedure declarations
 - [ ] Add C/C++ backend
+- [x] Update AppEngine app

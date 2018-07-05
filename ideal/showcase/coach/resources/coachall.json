@@ -1,0 +1,1158 @@
+{
+  "world_type": "coach",
+  "source_version": "05.17",
+  "version_id": "05.17 @06:22.06PM/1530753739624/2",
+  "data": [
+    {
+      "data_type": "exercise",
+      "data_id": "id:100",
+      "type": "id:0",
+      "repetition_count": "",
+      "distance": "300m"
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:102",
+      "type": "id:59",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:103",
+      "type": "id:51",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:104",
+      "type": "id:9",
+      "repetition_count": "20/side",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:105",
+      "type": "id:63",
+      "repetition_count": "20/side",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:106",
+      "type": "id:64",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:107",
+      "type": "id:61",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:109",
+      "type": "id:31",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:11",
+      "type": "id:24",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:111",
+      "type": "id:73",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:112",
+      "type": "id:96",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:114",
+      "type": "id:66",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:115",
+      "type": "id:35",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:118",
+      "type": "id:67",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:119",
+      "type": "id:32",
+      "repetition_count": "20/side",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:12",
+      "type": "id:1",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:120",
+      "type": "id:31",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:121",
+      "type": "id:50",
+      "repetition_count": "",
+      "distance": "500m"
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:122",
+      "type": "id:54",
+      "repetition_count": "20/leg",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:123",
+      "type": "id:5",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:124",
+      "type": "id:6",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:126",
+      "type": "id:50",
+      "repetition_count": "",
+      "distance": "1000m"
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:127",
+      "type": "id:0",
+      "repetition_count": "",
+      "distance": "0.5 miles"
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:128",
+      "type": "id:47",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:129",
+      "type": "id:49",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:13",
+      "type": "id:5",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:130",
+      "type": "id:7",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:131",
+      "type": "id:27",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:133",
+      "type": "id:60",
+      "repetition_count": "10",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:134",
+      "type": "id:96",
+      "repetition_count": "100",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:135",
+      "type": "id:28",
+      "repetition_count": "10",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:136",
+      "type": "id:24",
+      "repetition_count": "10",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:137",
+      "type": "id:42",
+      "repetition_count": "10/side",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:139",
+      "type": "id:25",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:14",
+      "type": "id:6",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:140",
+      "type": "id:43",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:141",
+      "type": "id:10",
+      "repetition_count": "100",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:143",
+      "type": "id:1",
+      "repetition_count": "25",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:144",
+      "type": "id:25",
+      "repetition_count": "25",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:145",
+      "type": "id:26",
+      "repetition_count": "25",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:147",
+      "type": "id:146",
+      "repetition_count": "25/side",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:148",
+      "type": "id:21",
+      "repetition_count": "25",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:15",
+      "type": "id:7",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:150",
+      "type": "id:52",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:151",
+      "type": "id:53",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:152",
+      "type": "id:0",
+      "repetition_count": "1 mile",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:154",
+      "type": "id:31",
+      "repetition_count": "10",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:155",
+      "type": "id:43",
+      "repetition_count": "30",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:156",
+      "type": "id:4",
+      "repetition_count": "40",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:16",
+      "type": "id:8",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:18",
+      "type": "id:10",
+      "repetition_count": "400",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:2",
+      "type": "id:9",
+      "repetition_count": "50/side",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:22",
+      "type": "id:21",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:78",
+      "type": "id:96",
+      "repetition_count": "25",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:79",
+      "type": "id:26",
+      "repetition_count": "100",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:80",
+      "type": "id:27",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:81",
+      "type": "id:28",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:82",
+      "type": "id:29",
+      "repetition_count": "50/leg",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:84",
+      "type": "id:43",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:85",
+      "type": "id:51",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:86",
+      "type": "id:70",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:87",
+      "type": "id:68",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:88",
+      "type": "id:69",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:90",
+      "type": "id:46",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:91",
+      "type": "id:4",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:92",
+      "type": "id:26",
+      "repetition_count": "50",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:94",
+      "type": "id:74",
+      "repetition_count": "20/leg",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:95",
+      "type": "id:75",
+      "repetition_count": "20/side",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:97",
+      "type": "id:96",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:98",
+      "type": "id:4",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise",
+      "data_id": "id:99",
+      "type": "id:24",
+      "repetition_count": "20",
+      "distance": ""
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:101",
+      "name": "WOD#2",
+      "rounds": "3",
+      "exercises": [
+        "id:94",
+        "id:95",
+        "id:97",
+        "id:98",
+        "id:99",
+        "id:100"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:108",
+      "name": "WOD#3",
+      "rounds": "3",
+      "exercises": [
+        "id:102",
+        "id:107",
+        "id:104",
+        "id:105",
+        "id:106"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:113",
+      "name": "WOD#4",
+      "rounds": "",
+      "exercises": [
+        "id:78",
+        "id:109",
+        "id:112",
+        "id:84",
+        "id:2",
+        "id:111",
+        "id:78"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:117",
+      "name": "WOD#5",
+      "rounds": "",
+      "exercises": [
+        "id:114",
+        "id:115",
+        "id:13",
+        "id:112",
+        "id:109",
+        "id:112"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:125",
+      "name": "WOD#6",
+      "rounds": "3",
+      "exercises": [
+        "id:118",
+        "id:119",
+        "id:122",
+        "id:123",
+        "id:124",
+        "id:97",
+        "id:120",
+        "id:121"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:132",
+      "name": "WOD#7",
+      "rounds": "2",
+      "exercises": [
+        "id:128",
+        "id:120",
+        "id:127",
+        "id:103",
+        "id:126",
+        "id:130",
+        "id:131"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:138",
+      "name": "WOD#8",
+      "rounds": "5",
+      "exercises": [
+        "id:133",
+        "id:134",
+        "id:135",
+        "id:136",
+        "id:137"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:142",
+      "name": "WOD#9",
+      "rounds": "2",
+      "exercises": [
+        "id:106",
+        "id:95",
+        "id:119",
+        "id:139",
+        "id:140",
+        "id:98",
+        "id:99",
+        "id:141"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:149",
+      "name": "WOD#10",
+      "rounds": "2",
+      "exercises": [
+        "id:148",
+        "id:78",
+        "id:143",
+        "id:145",
+        "id:144",
+        "id:147",
+        "id:127"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:153",
+      "name": "WOD#11",
+      "rounds": "2",
+      "exercises": [
+        "id:128",
+        "id:139",
+        "id:150",
+        "id:151",
+        "id:129",
+        "id:136"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:157",
+      "name": "WOD#12",
+      "rounds": "",
+      "exercises": [
+        "id:154",
+        "id:139",
+        "id:155",
+        "id:156",
+        "id:90",
+        "id:156",
+        "id:155",
+        "id:139",
+        "id:154"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:83",
+      "name": "WOD#1",
+      "rounds": "4",
+      "exercises": [
+        "id:2",
+        "id:78",
+        "id:79",
+        "id:80",
+        "id:81",
+        "id:82",
+        "id:11",
+        "id:130",
+        "id:12"
+      ]
+    },
+    {
+      "data_type": "exercise_set",
+      "data_id": "id:93",
+      "name": " Lucky 50",
+      "rounds": "3",
+      "exercises": [
+        "id:84",
+        "id:85",
+        "id:91",
+        "id:92",
+        "id:80",
+        "id:86",
+        "id:87",
+        "id:88",
+        "id:15",
+        "id:90",
+        "id:112"
+      ]
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:0",
+      "name": "Run",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:1",
+      "name": "Frog jumps",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:10",
+      "name": "Jumping jacks",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:146",
+      "name": "Hanging side lifts",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:21",
+      "name": "Snatches",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:24",
+      "name": "Dips",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:25",
+      "name": "Pull ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:26",
+      "name": "Lunges",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:27",
+      "name": "Hanging knee ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:28",
+      "name": "Rows",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:29",
+      "name": "Step ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:30",
+      "name": "Squats",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:31",
+      "name": "Dead lifts",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:32",
+      "name": "Lunge squats",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:33",
+      "name": "Hamstring push ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:34",
+      "name": "Bench press",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:35",
+      "name": "Pull downs",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:36",
+      "name": "Shoulder press",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:37",
+      "name": "Bicep curls",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:38",
+      "name": "Horizontal pull ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:39",
+      "name": "Pull overs",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:4",
+      "name": "Swings",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:40",
+      "name": "Bar twists",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:41",
+      "name": "Hip raises",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:42",
+      "name": "Spider man",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:43",
+      "name": "Box jumps",
+      "description_link": "",
+      "category": "CARDIO",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:45",
+      "name": "Jump rope",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:46",
+      "name": "Double unders",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:47",
+      "name": "Turkish get ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:49",
+      "name": "V ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:5",
+      "name": "Sit ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:50",
+      "name": "Rowing ",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:51",
+      "name": "Jumping pull ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:52",
+      "name": "Over head squats",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:53",
+      "name": "Bag lifts",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:54",
+      "name": "Step ups with press",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:56",
+      "name": "Crunches",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:59",
+      "name": "Alternating pull downs",
+      "description_link": "",
+      "category": "CARDIO",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:6",
+      "name": "Leg raises",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:60",
+      "name": "Chin ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:61",
+      "name": "Jump push ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:63",
+      "name": "Scissor lunges",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:64",
+      "name": "Step over with a press",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:65",
+      "name": "Cleans",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:66",
+      "name": "Snatches with squats",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:67",
+      "name": "Clean with squat",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:68",
+      "name": "Back extension",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:69",
+      "name": "Ball shots",
+      "description_link": "",
+      "category": "CORE",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:7",
+      "name": "Burpees",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:70",
+      "name": "Push press",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:72",
+      "name": "Bike",
+      "description_link": "",
+      "category": "CARDIO",
+      "parameter": "DISTANCE"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:73",
+      "name": "Clean and press",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:74",
+      "name": "Srtaight arm step ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:75",
+      "name": "Sitting side twists",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:8",
+      "name": "Upright rows",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:9",
+      "name": "Windshield wipers",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    },
+    {
+      "data_type": "exercise_type",
+      "data_id": "id:96",
+      "name": "Push ups",
+      "description_link": "",
+      "category": "UPPER_BODY",
+      "parameter": "REPETITION_COUNT"
+    }
+  ]
+}

@@ -17,11 +17,11 @@
         </init-param>
         <init-param>
             <param-name>admins</param-name>
-            <param-value>test@example.com</param-value>
+            <param-value>mdynin@gmail.com, test@example.com</param-value>
         </init-param>
         <init-param>
             <param-name>users</param-name>
-            <param-value>user@example.com</param-value>
+            <param-value>mdynin@gmail.com, test@example.com</param-value>
         </init-param>
     </servlet>
 

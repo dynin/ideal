@@ -39,8 +39,9 @@ curl -O http://www2.cs.tum.edu/projects/cup/releases/${JAVACUP_TGZ}
 tar xfz ${JAVACUP_TGZ}
 echo
 
-echo Fetching AppEngine SDK for Java via https://developers.google.com/appengine/downloads
-APPENGINE_VERSION=1.9.30
+echo Fetching AppEngine SDK for Java via \
+    https://cloud.google.com/appengine/docs/standard/java/download
+APPENGINE_VERSION=1.9.64
 APPENGINE_ZIP=appengine-java-sdk-${APPENGINE_VERSION}.zip
 curl -O https://storage.googleapis.com/appengine-sdks/featured/${APPENGINE_ZIP}
 unzip -q ${APPENGINE_ZIP}

@@ -18,43 +18,43 @@ public class sequence[readonly_data element] {
   implements readonly_data;
 
   private List list;
-  public sequence() {
+  public overload sequence() {
     list : ArrayList.new();
   }
-  public sequence(element n1) {
+  public overload sequence(element n1) {
     this();
-{
-    append(n1); }
+
+    append(n1);
   }
-  public sequence(element n1, element n2) {
+  public overload sequence(element n1, element n2) {
     this();
     append(n1);
     append(n2);
   }
-  public sequence(sequence ns1, element n2) {
+  public overload sequence(sequence ns1, element n2) {
     this();
     append_all(ns1);
     append(n2);
   }
-  public sequence(element n1, sequence ns2) {
+  public overload sequence(element n1, sequence ns2) {
     this();
     append(n1);
     append_all(ns2);
   }
-  public sequence(element n1, element n2, element n3) {
+  public overload sequence(element n1, element n2, element n3) {
     this();
     append(n1);
     append(n2);
     append(n3);
   }
-  public sequence(element n1, element n2, element n3, element n4) {
+  public overload sequence(element n1, element n2, element n3, element n4) {
     this();
     append(n1);
     append(n2);
     append(n3);
     append(n4);
   }
-  public sequence(element n1, element n2, element n3, element n4, element n5) {
+  public overload sequence(element n1, element n2, element n3, element n4, element n5) {
     this();
     append(n1);
     append(n2);
@@ -62,7 +62,7 @@ public class sequence[readonly_data element] {
     append(n4);
     append(n5);
   }
-  public sequence(element n1,
+  public overload sequence(element n1,
                   element n2,
 		  element n3,
 		  element n4,

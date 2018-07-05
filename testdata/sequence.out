@@ -177,6 +177,9 @@
           modifier_construct {
             the_kind: <public>
           }
+          modifier_construct {
+            the_kind: <overload>
+          }
         ]
         ret: <null>
         name: sequence
@@ -215,6 +218,9 @@
           modifier_construct {
             the_kind: <public>
           }
+          modifier_construct {
+            the_kind: <overload>
+          }
         ]
         ret: <null>
         name: sequence
@@ -245,23 +251,18 @@
               grouping: parens
             }
           }
-          block_construct {
-            annotations: [ ]
-            body: [
-              parameter_construct {
-                main: name_construct {
-                  the_name: append
+          parameter_construct {
+            main: name_construct {
+              the_name: append
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: n1
                 }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: n1
-                    }
-                  ]
-                  grouping: parens
-                }
-              }
-            ]
+              ]
+              grouping: parens
+            }
           }
         ]
       }
@@ -269,6 +270,9 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+          }
+          modifier_construct {
+            the_kind: <overload>
           }
         ]
         ret: <null>
@@ -341,6 +345,9 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+          }
+          modifier_construct {
+            the_kind: <overload>
           }
         ]
         ret: <null>
@@ -414,6 +421,9 @@
           modifier_construct {
             the_kind: <public>
           }
+          modifier_construct {
+            the_kind: <overload>
+          }
         ]
         ret: <null>
         name: sequence
@@ -485,6 +495,9 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+          }
+          modifier_construct {
+            the_kind: <overload>
           }
         ]
         ret: <null>
@@ -579,6 +592,9 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+          }
+          modifier_construct {
+            the_kind: <overload>
           }
         ]
         ret: <null>
@@ -695,6 +711,9 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+          }
+          modifier_construct {
+            the_kind: <overload>
           }
         ]
         ret: <null>
@@ -833,6 +852,9 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+          }
+          modifier_construct {
+            the_kind: <overload>
           }
         ]
         ret: <null>
@@ -1826,44 +1848,42 @@ import ideal.semantics.lookup_row;
 public class sequence[readonly_data element] {
   implements readonly_data;
   private List list;
-  public sequence() {
+  public overload sequence() {
     list : ArrayList.new();
   }
-  public sequence(element n1) {
+  public overload sequence(element n1) {
     this();
-    {
-      append(n1);
-    }
+    append(n1);
   }
-  public sequence(element n1, element n2) {
+  public overload sequence(element n1, element n2) {
     this();
     append(n1);
     append(n2);
   }
-  public sequence(sequence ns1, element n2) {
+  public overload sequence(sequence ns1, element n2) {
     this();
     append_all(ns1);
     append(n2);
   }
-  public sequence(element n1, sequence ns2) {
+  public overload sequence(element n1, sequence ns2) {
     this();
     append(n1);
     append_all(ns2);
   }
-  public sequence(element n1, element n2, element n3) {
+  public overload sequence(element n1, element n2, element n3) {
     this();
     append(n1);
     append(n2);
     append(n3);
   }
-  public sequence(element n1, element n2, element n3, element n4) {
+  public overload sequence(element n1, element n2, element n3, element n4) {
     this();
     append(n1);
     append(n2);
     append(n3);
     append(n4);
   }
-  public sequence(element n1, element n2, element n3, element n4, element n5) {
+  public overload sequence(element n1, element n2, element n3, element n4, element n5) {
     this();
     append(n1);
     append(n2);
@@ -1871,7 +1891,7 @@ public class sequence[readonly_data element] {
     append(n4);
     append(n5);
   }
-  public sequence(element n1, element n2, element n3, element n4, element n5, element n6) {
+  public overload sequence(element n1, element n2, element n3, element n4, element n5, element n6) {
     this();
     append(n1);
     append(n2);

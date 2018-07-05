@@ -12,6 +12,7 @@
 - [ ] Added overload (as opposed to override)
   - [x] Add overload to regular methods
   - [ ] Refactor source with unique names
+    - [ ] de-overload list.slice()
   - [ ] Simplify resolver
 - [ ] Initial setup
   - [x] Updated JSR 305 jar

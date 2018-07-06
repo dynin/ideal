@@ -100,7 +100,7 @@ public class markup_formatter extends text_formatter {
     for (int j = i; j < nodes.size(); j += 1) {
       assert !is_attribute(nodes.get(j));
     }
-    return nodes.slice(i);
+    return nodes.skip(i);
   }
   public @Override Void process_special(final special_text t) {
     write_string(t.to_markup());

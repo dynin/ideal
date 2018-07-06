@@ -37,8 +37,8 @@ public class base_range implements range {
   public @Override range frozen_copy() {
     return this;
   }
-  public @Override range slice(final int slice_begin) {
-    final int new_begin = the_begin + slice_begin;
+  public @Override range skip(final int count) {
+    final int new_begin = the_begin + count;
     assert new_begin <= the_end;
     return new base_range(new_begin, the_end);
   }

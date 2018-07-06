@@ -5,6 +5,6 @@ package ideal.library.elements;
 public interface range extends deeply_immutable_list<Integer>, deeply_immutable_equality_comparable {
   int begin();
   int end();
-  range slice(int begin);
+  range skip(int count);
   range slice(int begin, int end);
 }

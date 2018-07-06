@@ -524,7 +524,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
                 first.source_position());
             list<analyzable> result = new base_list<analyzable>();
             result.append(ctor_call);
-            result.append_all(body.slice(1));
+            result.append_all(body.skip(1));
             return result;
           }
         }

@@ -36,7 +36,7 @@ public class test_range {
     assert the_range.get(2) == 7;
     assert ideal.machine.elements.runtime_util.values_equal(the_range.elements(), the_range);
     assert ideal.machine.elements.runtime_util.values_equal(the_range.frozen_copy(), the_range);
-    final range the_slice = the_range.slice(1);
+    final range the_slice = the_range.skip(1);
     assert the_slice.size() == 2;
     assert the_slice.begin() == 6;
     assert the_slice.end() == 8;

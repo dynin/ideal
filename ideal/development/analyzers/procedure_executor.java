@@ -49,7 +49,7 @@ public class procedure_executor extends base_procedure {
       execution_context the_context) {
     if (has_this_argument()) {
       return action_utilities.execute_procedure(the_declaration, (value_wrapper) arguments.get(0),
-          arguments.slice(1), the_context);
+          arguments.skip(1), the_context);
     } else {
       return action_utilities.execute_procedure(the_declaration, null, arguments, the_context);
     }

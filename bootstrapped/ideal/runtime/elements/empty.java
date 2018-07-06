@@ -25,12 +25,12 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
   public @Override empty<element_type> frozen_copy() {
     return this;
   }
-  public @Override immutable_list<element_type> slice(final int begin, final int end) {
-    assert begin == 0 && end == 0;
+  public @Override immutable_list<element_type> skip(final int count) {
+    assert count == 0;
     return this;
   }
-  public @Override immutable_list<element_type> slice(final int begin) {
-    assert begin == 0;
+  public @Override immutable_list<element_type> slice(final int begin, final int end) {
+    assert begin == 0 && end == 0;
     return this;
   }
   public @Override immutable_list<element_type> reverse() {

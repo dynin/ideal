@@ -44,7 +44,7 @@ class singleton_pattern[readonly equality_comparable element_type] {
         result.append(the_list.slice(index, match.begin));
         index = match.end;
       } else {
-        result.append(the_list.slice(index));
+        result.append(the_list.skip(index));
         break;
       }
     }

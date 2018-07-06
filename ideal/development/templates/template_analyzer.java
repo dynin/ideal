@@ -107,7 +107,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
       return make_error("Unrecognized symbol at the start of s-expression", first);
     }
 
-    readonly_list<construct> arguments = sexpr.elements.slice(1);
+    readonly_list<construct> arguments = sexpr.elements.skip(1);
     return handler.to_analyzable(arguments, this, first);
   }
 

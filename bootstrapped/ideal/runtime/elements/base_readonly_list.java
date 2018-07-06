@@ -109,7 +109,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
     state.the_elements.copy(begin, slice_state.the_elements, 0, length);
     return new base_immutable_list<element_type>(slice_state);
   }
-  public @Override immutable_list<element_type> slice(final int begin) {
-    return slice(begin, size());
+  public @Override immutable_list<element_type> skip(final int count) {
+    return slice(count, size());
   }
 }

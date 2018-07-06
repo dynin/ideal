@@ -40,7 +40,7 @@ class test_range {
     assert the_range.elements == the_range;
     assert the_range.frozen_copy() == the_range;
 
-    the_slice : the_range.slice(1);
+    the_slice : the_range.skip(1);
     assert the_slice.size == 2;
     assert the_slice.begin == 6;
     assert the_slice.end == 8;

@@ -116,7 +116,7 @@ class markup_formatter {
     for (var nonnegative j : i; j < nodes.size; j += 1) {
       assert !is_attribute(nodes[j]);
     }
-    return nodes.slice(i);
+    return nodes.skip(i);
   }
 
   override void process_special(special_text t) {

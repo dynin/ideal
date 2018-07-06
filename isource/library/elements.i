@@ -292,13 +292,13 @@ package elements {
 
     element remove_last();
 
-    --- <div>Returns an immutable sublist, from the specified starting index
-    --- until the end of this list.</div>
+    --- <div>Skips over the specified count of elements and returns an immutable slice
+    --- that begins with |count| and ends with the end of this list.</div>
     -- TODO: slice in readonly should return readonly view.
-    overload immutable list[element] slice(nonnegative begin) pure;
+    immutable list[element] skip(nonnegative count) pure;
     --- <div>Returns an immutable sublist with the given the starting and ending indices.</div>
     --- <div>The starting index is inclusive, the ending is exclusive.</div>
-    overload immutable list[element] slice(nonnegative begin, nonnegative end) pure;
+    immutable list[element] slice(nonnegative begin, nonnegative end) pure;
 
     -- TODO: readonly reverse() should return readonly view.
     not_yet_implemented readonly list[element] reverse() pure;
@@ -323,8 +323,8 @@ package elements {
     --- End of the range; greater or equal than start.
     nonnegative end;
 
-    overload range slice(nonnegative begin) pure;
-    overload range slice(nonnegative begin, nonnegative end) pure;
+    range skip(nonnegative count) pure;
+    range slice(nonnegative begin, nonnegative end) pure;
   }
 
   --- A finite set of elements.
@@ -375,8 +375,8 @@ package elements {
     implements equality_comparable;
 
     -- TODO: these shouldn't be needed once type aliases work properly.
-    overload implement string slice(nonnegative begin) pure;
-    overload implement string slice(nonnegative begin, nonnegative end) pure;
+    implement string skip(nonnegative count) pure;
+    implement string slice(nonnegative begin, nonnegative end) pure;
   }
 
   --- <div>A type whose values can be converted to a canonical

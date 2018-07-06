@@ -36,7 +36,7 @@ public class singleton_pattern<element_type> implements pattern<element_type> {
         result.append(the_list.slice(index, match.begin()));
         index = match.end();
       } else {
-        result.append(the_list.slice(index));
+        result.append(the_list.skip(index));
         break;
       }
     }

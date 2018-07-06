@@ -103,11 +103,11 @@ public class base_string extends debuggable implements string, string_text_node 
   public @Override immutable_list<Character> frozen_copy() {
     return this;
   }
+  public @Override string skip(final int count) {
+    return new base_string(state.substring(count));
+  }
   public @Override string slice(final int begin, final int end) {
     return new base_string(state.substring(begin, end));
-  }
-  public @Override string slice(final int begin) {
-    return new base_string(state.substring(begin));
   }
   public @Override string reverse() {
     return new base_string(new StringBuffer(state).reverse().toString());

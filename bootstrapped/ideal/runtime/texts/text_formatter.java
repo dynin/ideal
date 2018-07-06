@@ -55,7 +55,7 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
       }
       final @Nullable range newline_match = NEWLINE_PATTERN.find_in(the_string, index);
       if (newline_match == null) {
-        do_write_string(the_string.slice(index));
+        do_write_string(the_string.skip(index));
         break;
       } else {
         final int newline_index = newline_match.begin();

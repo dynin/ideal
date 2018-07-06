@@ -49,9 +49,7 @@ public class select_input<T extends value_wrapper> implements widget {
       tmp_options.append(new option(displayer.display(value), value));
     }
     if (sort) {
-      // TODO: use comparator.
-      //the_options = sorter.sort(tmp_options);
-      the_options = tmp_options;
+      the_options = sorter.do_sort(tmp_options);
     } else {
       the_options = tmp_options;
     }

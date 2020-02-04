@@ -15,7 +15,7 @@ fi
 
 cd ${THIRDPARTY}
 
-MAVEN2=http://central.maven.org/maven2
+MAVEN2=https://repo1.maven.org/maven2
 
 echo Fetching JSR 305 annotations via http://findbugs.sourceforge.net/
 JSR305_VERSION=3.0.2
@@ -23,12 +23,12 @@ curl -O ${MAVEN2}/com/google/code/findbugs/jsr305/${JSR305_VERSION}/jsr305-${JSR
 echo
 
 echo Fetching JUnit4 via http://junit.org/
-JUNIT_VERSION=4.12
+JUNIT_VERSION=4.13
 curl -O ${MAVEN2}/junit/junit/${JUNIT_VERSION}/junit-${JUNIT_VERSION}.jar
 echo
 
 echo Fetching Google Gson via https://github.com/google/gson
-GSON_VERSION=2.5
+GSON_VERSION=2.8.6
 curl -O ${MAVEN2}/com/google/code/gson/gson/${GSON_VERSION}/gson-${GSON_VERSION}.jar
 echo
 
@@ -41,7 +41,7 @@ echo
 
 echo Fetching AppEngine SDK for Java via \
     https://cloud.google.com/appengine/docs/standard/java/download
-APPENGINE_VERSION=1.9.64
+APPENGINE_VERSION=1.9.78
 APPENGINE_ZIP=appengine-java-sdk-${APPENGINE_VERSION}.zip
 curl -O https://storage.googleapis.com/appengine-sdks/featured/${APPENGINE_ZIP}
 unzip -q ${APPENGINE_ZIP}

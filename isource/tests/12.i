@@ -17,9 +17,9 @@ println(cool.sfield2);
 
 integer three : plus(one, two);
 --int four() { return plus(two, two); }
-integer double(integer x) { return plus(x, x); }
-integer add5(integer y) { return plus(y, 5); }
-integer constant() { return 34; }
+integer double(integer x) => plus(x, x);
+integer add5(integer y) => plus(y, 5);
+integer constant() => 34;
 --println(plus(double(two), four()));
 --four();
 constant();
@@ -53,12 +53,8 @@ class new_type {
 
   string field;
   overload new_type() { }
-  overload new_type(string val) {
-    field = val;
-  }
-  string get_state() {
-    return "state: " ++ field;
-  }
+  overload new_type(string val) => field = val;
+  string get_state() => "state: " ++ field;
 }
 println(new_type.new("hey!").get_state());
 

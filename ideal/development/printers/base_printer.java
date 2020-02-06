@@ -130,15 +130,27 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     }
   }
 
-  public text_fragment print_block_or_nothing(@Nullable readonly_list<construct> constructs) {
-    if (constructs == null) {
+  public text_fragment print_procedure_body(@Nullable construct body) {
+    if (body == null) {
       if (is_stylish_mode()) {
         return text_util.EMPTY_FRAGMENT;
       } else {
         return print_empty();
       }
+    }
+
+    if (body instanceof block_construct) {
+      return print_block(((block_construct) body).body, true, false);
     } else {
-      return print_block(constructs, true, false);
+      list<text_fragment> fragments = new base_list<text_fragment>();
+      fragments.append(print_space());
+      fragments.append(print_punctuation(punctuation.EQUALS_GREATER_THAN));
+      fragments.append(print_space());
+      fragments.append(print(body));
+      if (is_curly_mode()) {
+        fragments.append(print_punctuation(punctuation.SEMICOLON));
+      }
+      return text_util.join(fragments);
     }
   }
 
@@ -416,13 +428,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     fragments.append(print(c.parameters));
     fragments.append(print_modifiers(c.post_annotations, false));
+    fragments.append(print_procedure_body(c.body));
 
     if (is_stylish_mode()) {
-      text_fragment declaration = styles.wrap(styles.procedure_declaration_style,
+      return styles.wrap(styles.procedure_declaration_style,
           text_util.join(fragments));
-      return text_util.join(declaration, print_block_or_nothing(c.body));
     } else {
-      fragments.append(print_block_or_nothing(c.body));
       return print_line(text_util.join(fragments));
     }
   }

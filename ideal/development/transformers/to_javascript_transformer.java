@@ -99,22 +99,19 @@ public class to_javascript_transformer {
     return result;
   }
 
-  public @Nullable list<construct> to_construct_list(action the_action) {
+  public @Nullable construct to_body(action the_action) {
     if (the_action == null) {
       return null;
     }
 
     list<construct> result = new base_list<construct>();
     append_action(the_action, result);
-    return result;
-  }
 
-  public list<construct> to_construct_list(readonly_list<action> actions) {
-    list<construct> result = new base_list<construct>();
-    for (int i = 0; i < actions.size(); ++i) {
-      append_action(actions.get(i), result);
+    if (result.is_empty()) {
+      return null;
     }
-    return result;
+
+    return new block_construct(result, the_action);
   }
 
   private void append_action(action the_action, list<construct> result) {
@@ -186,7 +183,7 @@ public class to_javascript_transformer {
     parameters.append(make_this_declaration(procedure.declared_in_type(), pos));
     parameters.append_all(parameters_to_constructs(procedure.get_parameter_variables(), pos));
     readonly_list<annotation_construct> post_annotations = new empty<annotation_construct>();
-    @Nullable list<construct> body = to_construct_list(procedure.get_body_action());
+    @Nullable construct body = to_body(procedure.get_body_action());
 
     return new procedure_construct(annotations, null, name,
         new list_construct(parameters, grouping_type.PARENS, pos), post_annotations, body, pos);

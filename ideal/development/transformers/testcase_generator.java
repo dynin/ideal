@@ -79,7 +79,7 @@ public class testcase_generator {
         new name_construct(common_library.get_instance().void_type().short_name(), source),
         RUN_ALL_TESTS,
         new list_construct(new empty<construct>(), grouping_type.PARENS, source),
-        new empty<annotation_construct>(), test_calls, source);
+        new empty<annotation_construct>(), new block_construct(test_calls, source), source);
   }
 
   public static boolean has_testcases(type_declaration the_type_declaration) {

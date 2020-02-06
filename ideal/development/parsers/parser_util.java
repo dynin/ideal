@@ -30,7 +30,7 @@ public class parser_util {
   }
 
   public static construct expr_or_ctor(list<annotation_construct> annotations, construct expression,
-      @Nullable readonly_list<construct> body) {
+      @Nullable construct body) {
     if (expression instanceof parameter_construct) {
       parameter_construct pc = (parameter_construct) expression;
       if (!annotations.is_empty() || body != null || has_variables(pc.parameters.elements)) {

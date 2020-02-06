@@ -45,6 +45,7 @@ public class common_scanner extends base_scanner_config {
     add_punctuation(punctuation.COMMA);
     add_punctuation(punctuation.COLON);
     add_punctuation(punctuation.SEMICOLON);
+    add_punctuation(punctuation.EQUALS_GREATER_THAN);
 
     add_punctuation(punctuation.QUESTION_MARK);
 

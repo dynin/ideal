@@ -128,7 +128,12 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       }
 
       if (source.body != null) {
-        readonly_list<analyzable> body_statements = make_list(source.body);
+        readonly_list<analyzable> body_statements;
+        if (source.body instanceof block_construct) {
+          body_statements = make_list(((block_construct) source.body).body);
+        } else {
+          body_statements = new base_list<analyzable>(make(source.body));
+        }
         if (category == procedure_category.CONSTRUCTOR) {
           body_statements = rewrite_ctor_body(body_statements);
         }

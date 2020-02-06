@@ -28,6 +28,7 @@ terminal token<punctuation>  OPEN_PARENTHESIS, CLOSE_PARENTHESIS;
 terminal token<punctuation>  OPEN_BRACKET, CLOSE_BRACKET;
 terminal token<punctuation>  OPEN_BRACE, CLOSE_BRACE;
 terminal token<punctuation>  DOT, COMMA, EQUALS, COLON, SEMICOLON;
+terminal token<punctuation>  EQUALS_GREATER_THAN;
 terminal token<literal>  LITERAL;
 terminal token<punctuation>  PLUS_PLUS; // concatenation (not postincrement_expression)
 // terminal MINUS_MINUS; // postdecrement_expression
@@ -76,7 +77,7 @@ non terminal list<construct>  types;
 non terminal construct  expression_opt;
 non terminal construct  condition_in_parens;
 non terminal block_construct  block;
-non terminal list<construct>  procedure_body;
+non terminal construct  procedure_body;
 non terminal construct  variable_or_expression_opt;
 non terminal variable_construct  variable_declaration;
 non terminal supertype_construct  supertype_declaration;
@@ -197,12 +198,14 @@ block ::=       OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb
         ;
 
 procedure_body ::=
-                OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb
-                {: RESULT = st; :}
+                block:b
+                {: RESULT = b; :}
+        |       EQUALS_GREATER_THAN:egt expression:e SEMICOLON:s
+                {: RESULT = e; :}
         |       SEMICOLON:s
                 {: RESULT = null; :}
         |       template:t
-                {: RESULT = new base_list<construct>(t); :}
+                {: RESULT = t; :}
         ;
 
 block_statement ::=

@@ -33,6 +33,7 @@ public interface punctuation extends token_type {
   token_type COMMA = new base_token_type(",", base_symbols.COMMA);
   token_type COLON = new base_token_type(":", base_symbols.COLON);
   token_type SEMICOLON = new base_token_type(";", base_symbols.SEMICOLON);
+  token_type EQUALS_GREATER_THAN = new base_token_type("=>", base_symbols.EQUALS_GREATER_THAN);
   token_type QUESTION_MARK = new base_token_type("?", base_symbols.QUESTION_MARK);
 
   token_type EQUALS = new base_token_type("=", base_symbols.EQUALS);

@@ -14,16 +14,17 @@ import ideal.development.elements.*;
 
 public class block_construct extends base_construct {
   public final readonly_list<annotation_construct> annotations;
-  public final list<construct> body;
+  public final readonly_list<construct> body;
 
   public block_construct(readonly_list<annotation_construct> annotations,
-      list<construct> body, position pos) {
+      readonly_list<construct> body, position pos) {
     super(pos);
     this.annotations = annotations;
+    assert body != null;
     this.body = body;
   }
 
-  public block_construct(list<construct> body, position pos) {
+  public block_construct(readonly_list<construct> body, position pos) {
     this(new empty<annotation_construct>(), body, pos);
   }
 

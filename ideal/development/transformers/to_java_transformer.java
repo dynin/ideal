@@ -435,7 +435,19 @@ public class to_java_transformer extends base_transformer {
     @Nullable construct ret;
     action_name name = c.name;
     readonly_list<construct> parameters = process_list(c.parameters).elements;
-    @Nullable readonly_list<construct> body = transform(c.body);
+    @Nullable readonly_list<construct> body_statements = null;
+
+    construct transformed_body = transform(c.body);
+    if (transformed_body != null) {
+      if (transformed_body instanceof block_construct) {
+        body_statements = ((block_construct) transformed_body).body;
+      } else if (transformed_body instanceof return_construct) {
+        body_statements = new base_list<construct>(transformed_body);
+      } else {
+        // TODO: do not add return to ctors and void functions
+        body_statements = new base_list<construct>(new return_construct(transformed_body, source));
+      }
+    }
 
     if (c.ret == null) {
       if (the_analyzable.get_category() == procedure_category.CONSTRUCTOR) {
@@ -475,17 +487,22 @@ public class to_java_transformer extends base_transformer {
           // Note: if Java return type is 'Void' (with the capital V),
           // then we may need to insert "return null" to keep javac happy.
           if (the_analyzable.get_return_type() == library().immutable_void_type() &&
-              body != null &&
+              body_statements != null &&
               the_analyzable.get_body_action().result() != core_types.unreachable_type()) {
             list<construct> new_body = new base_list<construct>();
-            new_body.append_all(body);
+            new_body.append_all(body_statements);
             new_body.append(make_default_return(return_type, source));
-            body = new_body;
+            body_statements = new_body;
           }
         } else {
           ret = transform(c.ret);
         }
       }
+    }
+
+    construct body = null;
+    if (body_statements != null) {
+      body = new block_construct(body_statements, source);
     }
 
     // Note: the flavor is always missing.
@@ -1172,7 +1189,7 @@ public class to_java_transformer extends base_transformer {
         CALL_NAME,
         new list_construct(declaration_arguments, grouping_type.PARENS, source),
         new empty<annotation_construct>(),
-        new base_list<construct>(the_call_body),
+        new block_construct(new base_list<construct>(the_call_body), source),
         source);
 
     return new parameter_construct(with_parens,

@@ -52,10 +52,10 @@ public class javascript_printer extends base_printer {
     fragments.append(print(c.parameters));
 
     if (FUNCTIONS_IN_OBJECT) {
-      fragments.append(print_block(c.body, true, false));
+      fragments.append(print_block(((block_construct) c.body).body, true, false));
       fragments.append(print_word(punctuation.COMMA));
     } else {
-      fragments.append(print_block_or_nothing(c.body));
+      fragments.append(print_procedure_body(c.body));
     }
 
     return print_line(text_util.join(fragments));

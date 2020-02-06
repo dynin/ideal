@@ -72,26 +72,29 @@
       grouping: parens
     }
     post_annotations: [ ]
-    body: [
-      return_construct {
-        the_expression: parameter_construct {
-          main: name_construct {
-            the_name: plus
-          }
-          parameters: list_construct {
-            elements: [
-              name_construct {
-                the_name: x
-              }
-              name_construct {
-                the_name: x
-              }
-            ]
-            grouping: parens
+    body: block_construct {
+      annotations: [ ]
+      body: [
+        return_construct {
+          the_expression: parameter_construct {
+            main: name_construct {
+              the_name: plus
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: x
+                }
+                name_construct {
+                  the_name: x
+                }
+              ]
+              grouping: parens
+            }
           }
         }
-      }
-    ]
+      ]
+    }
   }
   procedure_construct {
     annotations: [ ]
@@ -114,29 +117,32 @@
       grouping: parens
     }
     post_annotations: [ ]
-    body: [
-      return_construct {
-        the_expression: parameter_construct {
-          main: name_construct {
-            the_name: plus
-          }
-          parameters: list_construct {
-            elements: [
-              name_construct {
-                the_name: y
-              }
-              literal_construct {
-                the_literal: integer_literal {
-                  the_value: 5
-                  image: "5"
+    body: block_construct {
+      annotations: [ ]
+      body: [
+        return_construct {
+          the_expression: parameter_construct {
+            main: name_construct {
+              the_name: plus
+            }
+            parameters: list_construct {
+              elements: [
+                name_construct {
+                  the_name: y
                 }
-              }
-            ]
-            grouping: parens
+                literal_construct {
+                  the_literal: integer_literal {
+                    the_value: 5
+                    image: "5"
+                  }
+                }
+              ]
+              grouping: parens
+            }
           }
         }
-      }
-    ]
+      ]
+    }
   }
   parameter_construct {
     main: name_construct {

@@ -188,30 +188,33 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          variable_construct {
-            annotations: [ ]
-            type: <null>
-            name: list
-            post_annotations: [ ]
-            init: parameter_construct {
-              main: resolve_construct {
-                qualifier: name_construct {
-                  the_name: ArrayList
-                }
-                name: name_construct {
-                  the_name: special_name {
-                    name: "new"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            variable_construct {
+              annotations: [ ]
+              type: <null>
+              name: list
+              post_annotations: [ ]
+              init: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: ArrayList
+                  }
+                  name: name_construct {
+                    the_name: special_name {
+                      name: "new"
+                    }
                   }
                 }
-              }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
+                parameters: list_construct {
+                  elements: [ ]
+                  grouping: parens
+                }
               }
             }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -239,32 +242,35 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n1
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -301,45 +307,48 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n2
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n1
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n2
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -376,45 +385,48 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append_all
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: ns1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append_all
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n2
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: ns1
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n2
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -451,45 +463,48 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append_all
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: ns2
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n1
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append_all
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: ns2
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -535,58 +550,61 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n2
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n1
-                }
-              ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n3
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n2
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n3
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -641,71 +659,74 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n2
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n1
-                }
-              ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n3
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n4
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n2
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n3
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n4
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -769,84 +790,87 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n2
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n1
-                }
-              ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n3
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n4
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n2
-                }
-              ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n5
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n3
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n4
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n5
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -919,97 +943,100 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: name_construct {
-              the_name: special_name {
-                name: "this"
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
               }
             }
-            parameters: list_construct {
-              elements: [ ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n1
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n2
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n1
-                }
-              ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n3
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n4
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n2
-                }
-              ]
-              grouping: parens
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n5
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
+            parameter_construct {
+              main: name_construct {
+                the_name: append
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: n6
+                  }
+                ]
+                grouping: parens
+              }
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n3
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n4
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n5
-                }
-              ]
-              grouping: parens
-            }
-          }
-          parameter_construct {
-            main: name_construct {
-              the_name: append
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: n6
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1026,24 +1053,27 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          return_construct {
-            the_expression: parameter_construct {
-              main: resolve_construct {
-                qualifier: name_construct {
-                  the_name: list
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: list
+                  }
+                  name: name_construct {
+                    the_name: size
+                  }
                 }
-                name: name_construct {
-                  the_name: size
+                parameters: list_construct {
+                  elements: [ ]
+                  grouping: parens
                 }
-              }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
               }
             }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1060,24 +1090,27 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          return_construct {
-            the_expression: parameter_construct {
-              main: resolve_construct {
-                qualifier: name_construct {
-                  the_name: list
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: list
+                  }
+                  name: name_construct {
+                    the_name: isEmpty
+                  }
                 }
-                name: name_construct {
-                  the_name: isEmpty
+                parameters: list_construct {
+                  elements: [ ]
+                  grouping: parens
                 }
-              }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
               }
             }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1104,40 +1137,43 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          return_construct {
-            the_expression: operator_construct {
-              the_operator: operator {
-                type: infix
-                name: as
-                alpha_name: as_operator
-              }
-              arguments: [
-                parameter_construct {
-                  main: resolve_construct {
-                    qualifier: name_construct {
-                      the_name: list
-                    }
-                    name: name_construct {
-                      the_name: get
-                    }
-                  }
-                  parameters: list_construct {
-                    elements: [
-                      name_construct {
-                        the_name: index
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            return_construct {
+              the_expression: operator_construct {
+                the_operator: operator {
+                  type: infix
+                  name: as
+                  alpha_name: as_operator
+                }
+                arguments: [
+                  parameter_construct {
+                    main: resolve_construct {
+                      qualifier: name_construct {
+                        the_name: list
                       }
-                    ]
-                    grouping: parens
+                      name: name_construct {
+                        the_name: get
+                      }
+                    }
+                    parameters: list_construct {
+                      elements: [
+                        name_construct {
+                          the_name: index
+                        }
+                      ]
+                      grouping: parens
+                    }
                   }
-                }
-                name_construct {
-                  the_name: element
-                }
-              ]
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+              }
             }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1164,26 +1200,29 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: resolve_construct {
-              qualifier: name_construct {
-                the_name: list
-              }
-              name: name_construct {
-                the_name: add
-              }
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: t
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: list
                 }
-              ]
-              grouping: parens
+                name: name_construct {
+                  the_name: add
+                }
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: t
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1210,31 +1249,34 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          parameter_construct {
-            main: resolve_construct {
-              qualifier: name_construct {
-                the_name: list
-              }
-              name: name_construct {
-                the_name: addAll
-              }
-            }
-            parameters: list_construct {
-              elements: [
-                resolve_construct {
-                  qualifier: name_construct {
-                    the_name: s
-                  }
-                  name: name_construct {
-                    the_name: list
-                  }
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: list
                 }
-              ]
-              grouping: parens
+                name: name_construct {
+                  the_name: addAll
+                }
+              }
+              parameters: list_construct {
+                elements: [
+                  resolve_construct {
+                    qualifier: name_construct {
+                      the_name: s
+                    }
+                    name: name_construct {
+                      the_name: list
+                    }
+                  }
+                ]
+                grouping: parens
+              }
             }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1270,166 +1312,169 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          constraint_construct {
-            expr: operator_construct {
-              the_operator: operator {
-                type: infix
-                name: &&
-                alpha_name: logical_and
-              }
-              arguments: [
-                operator_construct {
-                  the_operator: operator {
-                    type: infix
-                    name: >=
-                    alpha_name: greater_equal
-                  }
-                  arguments: [
-                    name_construct {
-                      the_name: begin
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            constraint_construct {
+              expr: operator_construct {
+                the_operator: operator {
+                  type: infix
+                  name: &&
+                  alpha_name: logical_and
+                }
+                arguments: [
+                  operator_construct {
+                    the_operator: operator {
+                      type: infix
+                      name: >=
+                      alpha_name: greater_equal
                     }
-                    literal_construct {
-                      the_literal: integer_literal {
-                        the_value: 0
-                        image: "0"
+                    arguments: [
+                      name_construct {
+                        the_name: begin
                       }
-                    }
-                  ]
-                }
-                operator_construct {
-                  the_operator: operator {
-                    type: infix
-                    name: <=
-                    alpha_name: less_equal
-                  }
-                  arguments: [
-                    name_construct {
-                      the_name: end
-                    }
-                    parameter_construct {
-                      main: name_construct {
-                        the_name: size
+                      literal_construct {
+                        the_literal: integer_literal {
+                          the_value: 0
+                          image: "0"
+                        }
                       }
-                      parameters: list_construct {
-                        elements: [ ]
-                        grouping: parens
+                    ]
+                  }
+                  operator_construct {
+                    the_operator: operator {
+                      type: infix
+                      name: <=
+                      alpha_name: less_equal
+                    }
+                    arguments: [
+                      name_construct {
+                        the_name: end
                       }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-          variable_construct {
-            annotations: [ ]
-            type: name_construct {
-              the_name: sequence
-            }
-            name: result
-            post_annotations: [ ]
-            init: parameter_construct {
-              main: resolve_construct {
-                qualifier: name_construct {
-                  the_name: sequence
-                }
-                name: name_construct {
-                  the_name: special_name {
-                    name: "new"
-                  }
-                }
-              }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-              }
-            }
-          }
-          for_construct {
-            init: variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: int
-              }
-              name: i
-              post_annotations: [ ]
-              init: name_construct {
-                the_name: begin
-              }
-            }
-            condition: operator_construct {
-              the_operator: operator {
-                type: infix
-                name: <
-                alpha_name: less
-              }
-              arguments: [
-                name_construct {
-                  the_name: i
-                }
-                name_construct {
-                  the_name: end
-                }
-              ]
-            }
-            update: operator_construct {
-              the_operator: operator {
-                type: assignment
-                name: +=
-                alpha_name: add_assign
-              }
-              arguments: [
-                name_construct {
-                  the_name: i
-                }
-                literal_construct {
-                  the_literal: integer_literal {
-                    the_value: 1
-                    image: "1"
-                  }
-                }
-              ]
-            }
-            body: block_construct {
-              annotations: [ ]
-              body: [
-                parameter_construct {
-                  main: resolve_construct {
-                    qualifier: name_construct {
-                      the_name: result
-                    }
-                    name: name_construct {
-                      the_name: append
-                    }
-                  }
-                  parameters: list_construct {
-                    elements: [
                       parameter_construct {
                         main: name_construct {
-                          the_name: get
+                          the_name: size
                         }
                         parameters: list_construct {
-                          elements: [
-                            name_construct {
-                              the_name: i
-                            }
-                          ]
+                          elements: [ ]
                           grouping: parens
                         }
                       }
                     ]
-                    grouping: parens
+                  }
+                ]
+              }
+            }
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: sequence
+              }
+              name: result
+              post_annotations: [ ]
+              init: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: sequence
+                  }
+                  name: name_construct {
+                    the_name: special_name {
+                      name: "new"
+                    }
                   }
                 }
-              ]
+                parameters: list_construct {
+                  elements: [ ]
+                  grouping: parens
+                }
+              }
             }
-          }
-          return_construct {
-            the_expression: name_construct {
-              the_name: result
+            for_construct {
+              init: variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: int
+                }
+                name: i
+                post_annotations: [ ]
+                init: name_construct {
+                  the_name: begin
+                }
+              }
+              condition: operator_construct {
+                the_operator: operator {
+                  type: infix
+                  name: <
+                  alpha_name: less
+                }
+                arguments: [
+                  name_construct {
+                    the_name: i
+                  }
+                  name_construct {
+                    the_name: end
+                  }
+                ]
+              }
+              update: operator_construct {
+                the_operator: operator {
+                  type: assignment
+                  name: +=
+                  alpha_name: add_assign
+                }
+                arguments: [
+                  name_construct {
+                    the_name: i
+                  }
+                  literal_construct {
+                    the_literal: integer_literal {
+                      the_value: 1
+                      image: "1"
+                    }
+                  }
+                ]
+              }
+              body: block_construct {
+                annotations: [ ]
+                body: [
+                  parameter_construct {
+                    main: resolve_construct {
+                      qualifier: name_construct {
+                        the_name: result
+                      }
+                      name: name_construct {
+                        the_name: append
+                      }
+                    }
+                    parameters: list_construct {
+                      elements: [
+                        parameter_construct {
+                          main: name_construct {
+                            the_name: get
+                          }
+                          parameters: list_construct {
+                            elements: [
+                              name_construct {
+                                the_name: i
+                              }
+                            ]
+                            grouping: parens
+                          }
+                        }
+                      ]
+                      grouping: parens
+                    }
+                  }
+                ]
+              }
             }
-          }
-        ]
+            return_construct {
+              the_expression: name_construct {
+                the_name: result
+              }
+            }
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1456,32 +1501,35 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          return_construct {
-            the_expression: parameter_construct {
-              main: name_construct {
-                the_name: subsequence
-              }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: begin
-                  }
-                  parameter_construct {
-                    main: name_construct {
-                      the_name: size
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            return_construct {
+              the_expression: parameter_construct {
+                main: name_construct {
+                  the_name: subsequence
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: begin
                     }
-                    parameters: list_construct {
-                      elements: [ ]
-                      grouping: parens
+                    parameter_construct {
+                      main: name_construct {
+                        the_name: size
+                      }
+                      parameters: list_construct {
+                        elements: [ ]
+                        grouping: parens
+                      }
                     }
-                  }
-                ]
-                grouping: parens
+                  ]
+                  grouping: parens
+                }
               }
             }
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1498,42 +1546,45 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          conditional_construct {
-            cond_expr: name_construct {
-              the_name: true
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            conditional_construct {
+              cond_expr: name_construct {
+                the_name: true
+              }
+              then_expr: block_construct {
+                annotations: [ ]
+                body: [
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: test
+                    }
+                    parameters: list_construct {
+                      elements: [ ]
+                      grouping: parens
+                    }
+                  }
+                ]
+              }
+              else_expr: block_construct {
+                annotations: [ ]
+                body: [
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: test
+                    }
+                    parameters: list_construct {
+                      elements: [ ]
+                      grouping: parens
+                    }
+                  }
+                ]
+              }
+              is_statement: true
             }
-            then_expr: block_construct {
-              annotations: [ ]
-              body: [
-                parameter_construct {
-                  main: name_construct {
-                    the_name: test
-                  }
-                  parameters: list_construct {
-                    elements: [ ]
-                    grouping: parens
-                  }
-                }
-              ]
-            }
-            else_expr: block_construct {
-              annotations: [ ]
-              body: [
-                parameter_construct {
-                  main: name_construct {
-                    the_name: test
-                  }
-                  parameters: list_construct {
-                    elements: [ ]
-                    grouping: parens
-                  }
-                }
-              ]
-            }
-            is_statement: true
-          }
-        ]
+          ]
+        }
       }
       procedure_construct {
         annotations: [
@@ -1569,28 +1620,92 @@
           grouping: parens
         }
         post_annotations: [ ]
-        body: [
-          variable_construct {
-            annotations: [ ]
-            type: name_construct {
-              the_name: identifier
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            variable_construct {
+              annotations: [ ]
+              type: name_construct {
+                the_name: identifier
+              }
+              name: id
+              post_annotations: [ ]
+              init: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: display_function
+                  }
+                  name: name_construct {
+                    the_name: name
+                  }
+                }
+                parameters: list_construct {
+                  elements: [
+                    parameter_construct {
+                      main: name_construct {
+                        the_name: getClass
+                      }
+                      parameters: list_construct {
+                        elements: [ ]
+                        grouping: parens
+                      }
+                    }
+                  ]
+                  grouping: parens
+                }
+              }
             }
-            name: id
-            post_annotations: [ ]
-            init: parameter_construct {
+            parameter_construct {
               main: resolve_construct {
                 qualifier: name_construct {
-                  the_name: display_function
+                  the_name: writer
                 }
                 name: name_construct {
-                  the_name: name
+                  the_name: start_list
                 }
               }
               parameters: list_construct {
                 elements: [
+                  name_construct {
+                    the_name: id
+                  }
+                ]
+                grouping: parens
+              }
+            }
+            for_construct {
+              init: variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: int
+                }
+                name: i
+                post_annotations: [ ]
+                init: literal_construct {
+                  the_literal: integer_literal {
+                    the_value: 0
+                    image: "0"
+                  }
+                }
+              }
+              condition: operator_construct {
+                the_operator: operator {
+                  type: infix
+                  name: <
+                  alpha_name: less
+                }
+                arguments: [
+                  name_construct {
+                    the_name: i
+                  }
                   parameter_construct {
-                    main: name_construct {
-                      the_name: getClass
+                    main: resolve_construct {
+                      qualifier: name_construct {
+                        the_name: list
+                      }
+                      name: name_construct {
+                        the_name: size
+                      }
                     }
                     parameters: list_construct {
                       elements: [ ]
@@ -1598,163 +1713,102 @@
                     }
                   }
                 ]
+              }
+              update: operator_construct {
+                the_operator: operator {
+                  type: assignment
+                  name: +=
+                  alpha_name: add_assign
+                }
+                arguments: [
+                  name_construct {
+                    the_name: i
+                  }
+                  literal_construct {
+                    the_literal: integer_literal {
+                      the_value: 1
+                      image: "1"
+                    }
+                  }
+                ]
+              }
+              body: block_construct {
+                annotations: [ ]
+                body: [
+                  parameter_construct {
+                    main: resolve_construct {
+                      qualifier: name_construct {
+                        the_name: function
+                      }
+                      name: name_construct {
+                        the_name: display
+                      }
+                    }
+                    parameters: list_construct {
+                      elements: [
+                        name_construct {
+                          the_name: writer
+                        }
+                        operator_construct {
+                          the_operator: operator {
+                            type: infix
+                            name: as
+                            alpha_name: as_operator
+                          }
+                          arguments: [
+                            parameter_construct {
+                              main: resolve_construct {
+                                qualifier: name_construct {
+                                  the_name: list
+                                }
+                                name: name_construct {
+                                  the_name: get
+                                }
+                              }
+                              parameters: list_construct {
+                                elements: [
+                                  name_construct {
+                                    the_name: i
+                                  }
+                                ]
+                                grouping: parens
+                              }
+                            }
+                            name_construct {
+                              the_name: element
+                            }
+                          ]
+                        }
+                        name_construct {
+                          the_name: options
+                        }
+                      ]
+                      grouping: parens
+                    }
+                  }
+                ]
+              }
+            }
+            parameter_construct {
+              main: resolve_construct {
+                qualifier: name_construct {
+                  the_name: writer
+                }
+                name: name_construct {
+                  the_name: end_list
+                }
+              }
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: id
+                  }
+                ]
                 grouping: parens
               }
             }
-          }
-          parameter_construct {
-            main: resolve_construct {
-              qualifier: name_construct {
-                the_name: writer
-              }
-              name: name_construct {
-                the_name: start_list
-              }
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: id
-                }
-              ]
-              grouping: parens
-            }
-          }
-          for_construct {
-            init: variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: int
-              }
-              name: i
-              post_annotations: [ ]
-              init: literal_construct {
-                the_literal: integer_literal {
-                  the_value: 0
-                  image: "0"
-                }
-              }
-            }
-            condition: operator_construct {
-              the_operator: operator {
-                type: infix
-                name: <
-                alpha_name: less
-              }
-              arguments: [
-                name_construct {
-                  the_name: i
-                }
-                parameter_construct {
-                  main: resolve_construct {
-                    qualifier: name_construct {
-                      the_name: list
-                    }
-                    name: name_construct {
-                      the_name: size
-                    }
-                  }
-                  parameters: list_construct {
-                    elements: [ ]
-                    grouping: parens
-                  }
-                }
-              ]
-            }
-            update: operator_construct {
-              the_operator: operator {
-                type: assignment
-                name: +=
-                alpha_name: add_assign
-              }
-              arguments: [
-                name_construct {
-                  the_name: i
-                }
-                literal_construct {
-                  the_literal: integer_literal {
-                    the_value: 1
-                    image: "1"
-                  }
-                }
-              ]
-            }
-            body: block_construct {
-              annotations: [ ]
-              body: [
-                parameter_construct {
-                  main: resolve_construct {
-                    qualifier: name_construct {
-                      the_name: function
-                    }
-                    name: name_construct {
-                      the_name: display
-                    }
-                  }
-                  parameters: list_construct {
-                    elements: [
-                      name_construct {
-                        the_name: writer
-                      }
-                      operator_construct {
-                        the_operator: operator {
-                          type: infix
-                          name: as
-                          alpha_name: as_operator
-                        }
-                        arguments: [
-                          parameter_construct {
-                            main: resolve_construct {
-                              qualifier: name_construct {
-                                the_name: list
-                              }
-                              name: name_construct {
-                                the_name: get
-                              }
-                            }
-                            parameters: list_construct {
-                              elements: [
-                                name_construct {
-                                  the_name: i
-                                }
-                              ]
-                              grouping: parens
-                            }
-                          }
-                          name_construct {
-                            the_name: element
-                          }
-                        ]
-                      }
-                      name_construct {
-                        the_name: options
-                      }
-                    ]
-                    grouping: parens
-                  }
-                }
-              ]
-            }
-          }
-          parameter_construct {
-            main: resolve_construct {
-              qualifier: name_construct {
-                the_name: writer
-              }
-              name: name_construct {
-                the_name: end_list
-              }
-            }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: id
-                }
-              ]
-              grouping: parens
-            }
-          }
-        ]
+          ]
+        }
       }
     ]
   }

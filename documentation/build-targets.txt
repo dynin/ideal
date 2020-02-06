@@ -1,0 +1,6 @@
+Targets
+
+test: run unittests
+
+testall: run regression tests
+          bin/reset-regression.sh: reset regression tests

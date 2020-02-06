@@ -1,7 +1,7 @@
 #!/bin/sh
 
 JDK_DIR="thirdparty/jdk"
-CLASSPATH="build/classes:thirdparty/junit-4.12.jar:thirdparty/java-cup-11b-runtime.jar"
+CLASSPATH="build/classes:thirdparty/junit-4.13.jar:thirdparty/java-cup-11b-runtime.jar"
 JAVA_OPTS="-ea -classpath ${CLASSPATH}"
 JAVA="${JDK_DIR}/bin/java ${JAVA_OPTS}"
 

@@ -14,25 +14,28 @@
       grouping: parens
     }
     post_annotations: [ ]
-    body: [
-      parameter_construct {
-        main: name_construct {
-          the_name: inform
-        }
-        parameters: list_construct {
-          elements: [
-            literal_construct {
-              the_literal: quoted_literal {
-                value: "Hello, world!"
-                with_escapes: "Hello, world!"
-                quote: "
+    body: block_construct {
+      annotations: [ ]
+      body: [
+        parameter_construct {
+          main: name_construct {
+            the_name: inform
+          }
+          parameters: list_construct {
+            elements: [
+              literal_construct {
+                the_literal: quoted_literal {
+                  value: "Hello, world!"
+                  with_escapes: "Hello, world!"
+                  quote: "
+                }
               }
-            }
-          ]
-          grouping: parens
+            ]
+            grouping: parens
+          }
         }
-      }
-    ]
+      ]
+    }
   }
 ]
 ============ BEFORE_EVALUATION

@@ -3,6 +3,7 @@
 - [ ] Renaming
   - [ ] map
   - [ ] stringable
+  - [ ] runtime_util -> runtime_utilities
 - [ ] Publish: better style
   - [ ] Font experiments
   - [ ] Bolded colon
@@ -23,7 +24,10 @@
 - [ ] Handle '.' in doc comment summaries
 - [ ] Add default parameters to procedures
 - [ ] Make singleton.instance optional
-- [ ] Support => in procedure declarations
+- [x] Support => in procedure declarations
 - [ ] Add C/C++ backend
 - [x] Update AppEngine app
 - [ ] Test harness
+- [ ] Refactor text library to use dictionary
+- [ ] Handle # in source code
+- [ ] Handle # in comments

@@ -9,7 +9,6 @@
 package ideal.development.elements;
 
 import ideal.library.elements.*;
-import ideal.runtime.elements.*;
 
 /**
  * Describes the state of the interpeter, such as stack state.

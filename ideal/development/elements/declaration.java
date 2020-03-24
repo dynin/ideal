@@ -9,7 +9,6 @@
 package ideal.development.elements;
 
 import ideal.library.elements.*;
-import ideal.runtime.elements.*;
 
 public interface declaration extends position {
   //action_name short_name();

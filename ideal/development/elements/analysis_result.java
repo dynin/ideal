@@ -9,8 +9,6 @@
 package ideal.development.elements;
 
 import ideal.library.elements.*;
-import javax.annotation.Nullable;
-import ideal.runtime.elements.*;
-import ideal.runtime.reflections.*;
+
 public interface analysis_result extends position, readonly_data {
 }

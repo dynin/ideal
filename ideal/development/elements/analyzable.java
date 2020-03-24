@@ -10,8 +10,6 @@
 package ideal.development.elements;
 
 import ideal.library.elements.*;
-import javax.annotation.Nullable;
-import ideal.runtime.elements.*;
 
 /**
  * A data object that can be analyzed and convrted into an action.

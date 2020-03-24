@@ -32,11 +32,13 @@ package texts {
 
   interface list_text_node {
     extends text_fragment;
+
     immutable list[text_node] nodes();
   }
 
   interface special_text {
     extends text_node;
+
     string to_plain_text();
     string to_markup();
   }

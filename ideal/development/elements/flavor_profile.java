@@ -9,7 +9,6 @@
 package ideal.development.elements;
 
 import ideal.library.elements.*;
-import ideal.runtime.elements.*;
 
 /**
  * Specifies what flavors of the types can and can't be used.

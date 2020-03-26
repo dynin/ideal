@@ -11,8 +11,8 @@ namespace texts {
   import ideal.library.channels.output;
 
   class base_namespace;
-  class element_id;
-  class attribute_id;
+  class base_element_id;
+  class base_attribute_id;
   class text_entity;
 
   class base_element;

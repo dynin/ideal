@@ -27,6 +27,12 @@ import ideal.development.names.*;
 import ideal.development.values.*;
 import ideal.development.analyzers.*;
 
+/**
+ * The interface that hides the differences between element and attribute ids was
+ * proposed by Erik Naggum.
+ *
+ * @see http://genius.cat-v.org/erik-naggum/lisp-markup
+ */
 public class element_handler implements sexpression_handler {
   private final element_id element;
 

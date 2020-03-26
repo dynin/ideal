@@ -19,15 +19,16 @@ package texts {
     extends text_fragment;
   }
 
-  --- This interface that hides the differences between element and attribute ids was
-  --- proposed by Erik Naggum.
-  ---
-  --- @see http://genius.cat-v.org/erik-naggum/lisp-markup
+  --- Text element is data structure defining a markup element.
+  --- It has an identifier, optional collection of attributes,
+  --- and optional children.  If children are missing, then the element
+  --- is self-closing.
   interface text_element {
     extends text_node;
 
-    text_id get_id();
-    immutable list[text_node] children;
+    element_id get_id();
+    immutable dictionary[attribute_id, string] attributes();
+    immutable text_fragment or null children();
   }
 
   interface list_text_node {
@@ -47,7 +48,13 @@ package texts {
     extends text_node, string;
   }
 
-  interface text_id {
+  interface element_id {
+    extends identifier;
+    text_namespace get_namespace();
+    string short_name;
+  }
+
+  interface attribute_id {
     extends identifier;
     text_namespace get_namespace();
     string short_name;

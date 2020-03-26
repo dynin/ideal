@@ -17,37 +17,28 @@ import ideal.development.texts.*;
 import ideal.development.documenters.*;
 public class html_rewriter extends text_rewriter {
 
-  private static text_fragment wrap(text_element element,
-      @Nullable immutable_list<text_node> children) {
-
-    if (children == null || children.is_empty()) {
-      return element;
-    }
-
-    list<text_node> new_children = new base_list<text_node>(); // TODO: use list.copy()
-    new_children.append_all(element.children());
-    new_children.append_all(children);
-    return new base_element(element.get_id(), new_children);
-  }
-
-  private static boolean is_div(text_node node) {
-    return node instanceof text_element && ((text_element) node).get_id() == text_library.DIV;
+  private static boolean is_div(text_fragment fragment) {
+    return fragment instanceof text_element &&
+        ((text_element) fragment).get_id() == text_library.DIV;
   }
 
   @Override
-  protected text_fragment rewrite_element(element_id id, immutable_list<text_node> children) {
+  protected text_fragment rewrite_element(element_id id,
+      immutable_dictionary<attribute_id, string> attributes,
+      @Nullable text_fragment children) {
+
     if (id == text_library.INDENT) {
-      return wrap(styles.indent_style, children);
+      return styles.wrap(styles.indent_style, children);
     } else if (id.get_namespace() == doc_elements.DOC_NS) {
       if (id == doc_elements.CODE) {
-        return wrap(styles.code_style, children);
+        return styles.wrap(styles.code_style, children);
       } else {
-        return wrap(styles.documentation_note_style, children);
+        return styles.wrap(styles.documentation_note_style, children);
       }
-    } else if (id == text_library.DIV && children.size() == 1 && is_div(children.get(0))) {
-      return children.get(0);
+    } else if (id == text_library.DIV && attributes.is_empty() && is_div(children)) {
+      return children;
     } else {
-      return new base_element(id, children);
+      return new base_element(id, attributes, children);
     }
   }
 }

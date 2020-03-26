@@ -107,7 +107,7 @@ public class displayer {
           field.append(new base_string(f.getName()));
           field.append(FIELD_IS);
           append(field, display_field(f, obj));
-          body.append(new base_element(text_library.DIV, field));
+          body.append(publish_generator.make_element(text_library.DIV, field));
         }
       }
     } catch (Exception e) {
@@ -144,7 +144,7 @@ public class displayer {
     list<text_node> result = new base_list<text_node>();
 
     result.append(start);
-    text_element content = new base_element(text_library.INDENT,
+    text_element content = publish_generator.make_element(text_library.INDENT,
         fragments.frozen_copy());
     content = base_element.make(text_library.DIV, content);
     result.append(content);

@@ -4,16 +4,16 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
---- Text identifier corresponding to element identifiers in markup languages.
-class element_id {
+--- Attribute identifiers in markup languages, such as <code>href</code>.
+class base_attribute_id {
   extends debuggable;
-  implements text_id;
+  implements attribute_id;
   implements reference_equality;
 
   private text_namespace the_namespace;
   private string name;
 
-  element_id(text_namespace the_namespace, string name) {
+  base_attribute_id(text_namespace the_namespace, string name) {
     this.the_namespace = the_namespace;
     this.name = name;
   }

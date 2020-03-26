@@ -163,7 +163,7 @@ public class publish_generator {
     text_element left = make_nav_cell(predecessor.get(the_type), true, the_naming_strategy);
     text_element center = make_center_cell(the_type.get_parent(), the_naming_strategy);
     text_element right = make_nav_cell(successor.get(the_type), false, the_naming_strategy);
-    text_element row = new base_element(TR, new base_list<text_node>(left, center, right));
+    text_element row = make_element(TR, new base_list<text_node>(left, center, right));
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
@@ -183,7 +183,7 @@ public class publish_generator {
         the_text = text_util.join(the_text, text_library.NBSP, text_library.RARR);
       }
     } else {
-      the_text = text_util.EMPTY_FRAGMENT;
+      the_text = null;
     }
 
     return base_element.make(TD, text_library.CLASS, left ? styles.nav_left_style :
@@ -212,26 +212,27 @@ public class publish_generator {
       current_type = current_type.get_parent();
     }
 
-    if (the_text == null) {
-      the_text = text_util.EMPTY_FRAGMENT;
-    }
-
     return base_element.make(TD, text_library.CLASS, styles.nav_center_style, the_text);
   }
 
   private static text_fragment wrap_body(text_fragment body_text,
       readonly_list<simple_name> full_name, naming_strategy the_naming_strategy) {
-    text_element title = new base_element(TITLE, text_util.to_list(make_title(full_name)));
+    text_element title = make_element(TITLE, text_util.to_list(make_title(full_name)));
     // TODO: introduce constants.
     base_string css_href = the_naming_strategy.link_to(
         new base_list<simple_name>(IDEAL_STYLE_NAME), base_extension.CSS);
-    text_element link = new base_element(LINK,
-        new base_list<text_node>(
-            base_element.make(HREF, css_href),
-            base_element.make(REL, new base_string("stylesheet")),
-            base_element.make(TYPE, new base_string("text/css"))));
-    text_element head = new base_element(HEAD, new base_list<text_node>(title, link));
+    list_dictionary<attribute_id, string> attributes = new list_dictionary<attribute_id, string>();
+    attributes.put(HREF, css_href);
+    attributes.put(REL, new base_string("stylesheet"));
+    attributes.put(TYPE, new base_string("text/css"));
+    text_element link = new base_element(LINK, attributes, null);
+    text_element head = make_element(HEAD, new base_list<text_node>(title, link));
     text_element body = base_element.make(BODY, body_text);
-    return new base_element(HTML, new base_list<text_node>(head, body));
+    return make_element(HTML, new base_list<text_node>(head, body));
+  }
+
+  public static text_element make_element(element_id id, readonly_list<text_node> children) {
+    text_fragment child_fragment = children != null ? new base_list_text_node(children) : null;
+    return new base_element(id, new list_dictionary<attribute_id, string>(), child_fragment);
   }
 }

@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 
 public class underline_style extends debuggable implements deeply_immutable_data {
-  public static dictionary<text_id, underline_style> all_styles;
+  public static dictionary<element_id, underline_style> all_styles;
   public final element_id style_id;
   public final char display_character;
   private underline_style(final element_id style_id, final char display_character) {
@@ -24,7 +24,7 @@ public class underline_style extends debuggable implements deeply_immutable_data
   private static final char CARET = '^';
   private static final char DASH = '-';
   static {
-    all_styles = new list_dictionary<text_id, underline_style>();
+    all_styles = new list_dictionary<element_id, underline_style>();
     register(new underline_style(text_library.UNDERLINE, CARET));
     register(new underline_style(text_library.UNDERLINE2, DASH));
   }

@@ -52,10 +52,8 @@ public class styles {
   public static final base_string nav_right_style = new base_string("nav-right");
 
   public static text_fragment wrap(text_element element, @Nullable text_fragment fragment) {
-    list<text_node> children = new base_list<text_node>(); // TODO: use list.copy()
-    children.append_all(element.children());
-    children.append_all(text_util.to_list(fragment));
-    return new base_element(element.get_id(), children);
+    assert element.children() == null;
+    return new base_element(element.get_id(), element.attributes(), fragment);
   }
 
   private static text_element make_div(base_string div_class) {

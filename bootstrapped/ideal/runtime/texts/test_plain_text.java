@@ -119,7 +119,7 @@ public class test_plain_text {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
     final text_element hi = base_element.make(text_library.UNDERLINE, (base_string) new base_string("hi"));
-    final text_element mid = new base_element(text_library.UNDERLINE2, new base_list<text_node>((base_string) new base_string("start "), hi, (base_string) new base_string(" end")));
+    final text_element mid = new base_element(text_library.UNDERLINE2, new list_dictionary<attribute_id, string>(), base_list_text_node.make((base_string) new base_string("start "), hi, (base_string) new base_string(" end")));
     the_formatter.write(text_util.join((base_string) new base_string("foo "), mid, (base_string) new base_string(" bar")));
     the_formatter.write(base_element.make(text_library.BR, null));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo start hi end bar\n    ------^^----\n"), the_writer.elements());

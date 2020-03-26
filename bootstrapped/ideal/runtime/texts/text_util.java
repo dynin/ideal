@@ -16,7 +16,7 @@ public class text_util {
     return element.get_id() == text_library.INDENT;
   }
   public static boolean is_block(final text_element element) {
-    final text_id id = element.get_id();
+    final element_id id = element.get_id();
     return is_indent(element) || id == text_library.HTML || id == text_library.HEAD || id == text_library.BODY || id == text_library.TITLE || id == text_library.LINK || id == text_library.P || id == text_library.DIV || id == text_library.H1 || id == text_library.H2 || id == text_library.TABLE || id == text_library.TR || id == text_library.TH || id == text_library.TD || id == text_library.BR;
   }
   public static immutable_list<text_node> make_singleton(final text_node element) {

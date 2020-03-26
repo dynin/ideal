@@ -25,7 +25,7 @@ class test_elements {
     text_element element : base_element.new(text_library.P);
 
     assert element.get_id() == text_library.P;
-    assert element.children is_not null;
-    assert element.children.is_empty;
+    assert element.attributes().is_empty;
+    assert element.children() is null;
   }
 }

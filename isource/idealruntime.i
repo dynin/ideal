@@ -14,6 +14,8 @@ namespace ideal {
 
 generate_runtime : generate_java(ideal.runtime);
 
+generate_all: generate_java(ideal.library, ideal.runtime);
+
 document_all: print_documentation(ideal.library, ideal.runtime);
 
 document_runtime: print_documentation(ideal.runtime);

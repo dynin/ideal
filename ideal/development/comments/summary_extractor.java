@@ -13,6 +13,7 @@ import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.development.elements.*;
+import javax.annotation.Nullable;
 
 public class summary_extractor extends text_visitor<String> {
 
@@ -55,7 +56,12 @@ public class summary_extractor extends text_visitor<String> {
 
   @Override
   protected String process_element(text_element element) {
-    return process_list(element.children());
+    @Nullable text_fragment children = element.children();
+    if (children != null) {
+      return process(children);
+    } else {
+      return "";
+    }
   }
 
   @Override

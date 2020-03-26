@@ -9,39 +9,36 @@ class base_element {
   extends debuggable;
   implements text_element;
 
-  private text_id id;
-  private immutable list[text_node] the_children;
+  private element_id id;
+  private immutable dictionary[attribute_id, string] the_attributes;
+  private text_fragment or null the_children;
 
-  overload base_element(text_id id) {
-    this.id = id;
-    this.the_children = empty[text_node].new();
+  overload base_element(element_id id) {
+    -- TODO: Implement empty dictionary
+    this(id, list_dictionary[attribute_id, string].new(), missing.instance);
   }
 
-  public overload base_element(text_id id, readonly list[text_node] or null the_children) {
+  public overload base_element(element_id id, readonly dictionary[attribute_id, string] attributes,
+      text_fragment or null children) {
     this.id = id;
-    this.the_children = the_children is_not null ?
-        the_children.frozen_copy() : empty[text_node].new();
+    this.the_attributes = attributes.frozen_copy();
+    this.the_children = children;
   }
 
-  static overload text_element make(text_id id, text_fragment or null fragment) {
-    return base_element.new(id, text_util.to_list(fragment));
+  static overload text_element make(element_id id, text_fragment or null children) {
+    return base_element.new(id, list_dictionary[attribute_id, string].new(), children);
   }
 
   static overload text_element make(element_id id, attribute_id attr,
-      string value, text_fragment or null fragment) {
-    children : base_list[text_node].new();
-    children.append(base_element.new(attr, base_list[text_node].new(value as base_string)));
-    children.append_all(text_util.to_list(fragment));
-    return base_element.new(id, children);
+      string value, text_fragment or null children) {
+    return base_element.new(id, list_dictionary[attribute_id, string].new(attr, value), children);
   }
 
-  override text_id get_id() {
-    return id;
-  }
+  override element_id get_id() => id;
 
-  override immutable list[text_node] children() {
-    return the_children;
-  }
+  override immutable dictionary[attribute_id, string] attributes() => the_attributes;
+
+  override immutable text_fragment or null children() => the_children;
 
   override string to_string() {
     return "<" ++ id.to_string ++ " ...>";

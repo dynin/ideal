@@ -10,7 +10,7 @@ class underline_style {
   implements deeply_immutable data;
 
   -- TODO: make readonly/immutable?
-  public static var dictionary[text_id, underline_style] all_styles;
+  public static var dictionary[element_id, underline_style] all_styles;
 
   public element_id style_id;
   public character display_character;
@@ -32,7 +32,7 @@ class underline_style {
   private static character DASH : '-';
 
   static {
-    all_styles = list_dictionary[text_id, underline_style].new();
+    all_styles = list_dictionary[element_id, underline_style].new();
     register(underline_style.new(text_library.UNDERLINE, CARET));
     register(underline_style.new(text_library.UNDERLINE2, DASH));
   }

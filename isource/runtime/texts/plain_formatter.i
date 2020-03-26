@@ -33,10 +33,6 @@ class plain_formatter {
   }
 
   override void process_element(text_element element) {
-    if (element.get_id() is attribute_id) {
-      return;
-    }
-
     if (text_util.is_block(element)) {
       if (!first || element.get_id() == text_library.BR) {
         write_newline();
@@ -52,7 +48,10 @@ class plain_formatter {
       underline_stack.append(style);
     }
 
-    process_all(element.children);
+    children : element.children();
+    if (children is_not null) {
+      process(children);
+    }
 
     if (text_util.is_block(element)) {
       if (!first) {

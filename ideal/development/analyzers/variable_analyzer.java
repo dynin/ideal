@@ -170,7 +170,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
       if (shadowed_actions.size() > 0) {
         for (int i = 0; i < shadowed_actions.size(); ++i) {
           action shadowed = shadowed_actions.get(0);
-          if (! (shadowed instanceof type_action)) {
+          if (! (shadowed instanceof type_action) && ! (shadowed instanceof error_signal)) {
             notification original = new base_notification("Shadowed declaration",
                 shadowed.get_declaration());
             new base_notification(new base_string("Variable shadows another declaration"), this,

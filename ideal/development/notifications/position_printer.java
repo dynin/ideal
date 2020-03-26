@@ -157,10 +157,11 @@ public class position_printer {
       text_fragment highlighted = text_util.join(highlight_prefix, underlined_element,
           highlight_suffix);
       highlighted_element = new base_element(text_library.UNDERLINE2,
-          text_util.to_list(highlighted));
+          new list_dictionary<attribute_id, string>(), highlighted);
     }
     text_fragment text_line = text_util.join(prefix, highlighted_element, suffix);
 
-    return new base_element(text_library.DIV, text_util.to_list(text_line));
+    return new base_element(text_library.DIV,
+          new list_dictionary<attribute_id, string>(), text_line);
   }
 }

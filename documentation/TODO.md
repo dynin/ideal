@@ -1,9 +1,9 @@
 # Tasks
   
 - [ ] Renaming
-  - [ ] map
-  - [ ] stringable
+  - [x] stringable
   - [ ] runtime_util -> runtime_utilities
+  - [ ] text_util -> text_utilities
 - [ ] Publish: better style
   - [ ] Font experiments
   - [ ] Bolded colon
@@ -29,5 +29,10 @@
 - [x] Update AppEngine app
 - [ ] Test harness
 - [ ] Refactor text library to use dictionary
+- [ ] Default value for procedure parameters
+- [ ] Implement collection.map()
+- [ ] Implement list.join()
 - [ ] Handle # in source code
 - [ ] Handle # in comments
+- [ ] Add block comments
+- [ ] Implement empty dictionary

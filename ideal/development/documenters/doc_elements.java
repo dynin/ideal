@@ -16,10 +16,10 @@ public class doc_elements {
 
   public static final text_namespace DOC_NS = new base_namespace(new base_string("ideal-doc"));
 
-  public static final element_id CODE = new element_id(DOC_NS, new base_string("code"));
-  public static final element_id C = new element_id(DOC_NS, new base_string("c"));
-  public static final element_id J = new element_id(DOC_NS, new base_string("j"));
-  public static final element_id CPP = new element_id(DOC_NS, new base_string("cpp"));
+  public static final element_id CODE = new base_element_id(DOC_NS, new base_string("code"));
+  public static final element_id C = new base_element_id(DOC_NS, new base_string("c"));
+  public static final element_id J = new base_element_id(DOC_NS, new base_string("j"));
+  public static final element_id CPP = new base_element_id(DOC_NS, new base_string("cpp"));
 
   public static final dictionary<string, element_id> WHITELIST = new hash_dictionary<string, element_id>();
 

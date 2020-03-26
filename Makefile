@@ -39,6 +39,8 @@ JAVAC_OPTS = $(JAVAC_SOURCE_OPTS) \
         -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS) -d $(CLASSES_DIR) \
 	-sourcepath .:$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
 JAVAC = $(JDK_DIR)/bin/javac $(JAVAC_OPTS)
+JAVAC_HERMETIC_OPTS = $(JAVAC_SOURCE_OPTS) -classpath $(THIRD_PARTY_JARS) -d $(CLASSES_DIR)
+JAVAC_HERMETIC = $(JDK_DIR)/bin/javac $(JAVAC_HERMETIC_OPTS)
 JAVAC_LINT_OPT = -Xlint:unchecked
 JAVAC_OPTS_APPENGINE = $(JAVAC_SOURCE_OPTS) \
         -classpath $(THIRD_PARTY_JARS):$(APPENGINE_JARS):$(CLASSES_DIR) \
@@ -190,8 +192,10 @@ runtimep: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
 	$(CREATE_PROF) -input=$(IDEAL_RUNTIME) -target=generate_runtime > /dev/null
 
 runtimet: $(IDEAL_TARGET) $(IDEAL_RUNTIME) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(SCRATCH_DIR)
-	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/*/*java
+	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_all -output=$(SCRATCH_DIR)
+	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
+	cp -r ideal/machine/* $(SCRATCH_DIR)/ideal/machine
+	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
 
 runtimeb: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
 	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
@@ -217,12 +221,6 @@ texts: $(IDEAL_TARGET)
 textst: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/texts/*java
-
-textst_: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(SCRATCH_DIR)
-	cp runtests.java  $(SCRATCH_DIR)/ideal/runtime/texts/
-	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/texts/*java
-	$(JAVA) -cp $(CLASSES_DIR) ideal.runtime.texts.runtests
 
 textsb: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(BOOTSTRAPPED_DIR)

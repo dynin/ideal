@@ -9,6 +9,8 @@ import ideal.library.channels.output;
 import ideal.machine.channels.string_writer;
 import ideal.machine.elements.runtime_util;
 
+import javax.annotation.Nullable;
+
 public class markup_formatter extends text_formatter {
   public static final string OPEN_START_TAG = new base_string("<");
   public static final string OPEN_END_TAG = new base_string("</");
@@ -30,9 +32,9 @@ public class markup_formatter extends text_formatter {
   }
   public @Override Void process_element(final text_element element) {
     final boolean is_block = text_util.is_block(element);
-    final readonly_list<text_element> attributes = get_attributes(element.children());
-    final readonly_list<text_node> non_attributes = skip_attributes(element.children());
-    if (non_attributes.is_empty()) {
+    final immutable_dictionary<attribute_id, string> attributes = element.attributes();
+    final @Nullable text_fragment children = element.children();
+    if (children == null) {
       write_self_closing_tag(element, attributes);
       if (is_block) {
         write_newline();
@@ -51,7 +53,7 @@ public class markup_formatter extends text_formatter {
       } else {
         write_start_tag(element, attributes);
       }
-      process_all(non_attributes);
+      process(children);
       if (is_block) {
         if (!first) {
           write_newline();
@@ -76,37 +78,11 @@ public class markup_formatter extends text_formatter {
     assert new_indent >= 0;
     indent = new_indent;
   }
-  private static boolean is_attribute(final text_node node) {
-    if (node instanceof text_element) {
-      return ((text_element) node).get_id() instanceof attribute_id;
-    } else {
-      return false;
-    }
-  }
-  private static readonly_list<text_element> get_attributes(final readonly_list<text_node> nodes) {
-    final base_list<text_element> result = new base_list<text_element>();
-    for (int i = 0; i < nodes.size(); i += 1) {
-      if (is_attribute(nodes.get(i))) {
-        result.append((text_element) nodes.get(i));
-      }
-    }
-    return result;
-  }
-  private static readonly_list<text_node> skip_attributes(final readonly_list<text_node> nodes) {
-    int i = 0;
-    while (i < nodes.size() && is_attribute(nodes.get(i))) {
-      i += 1;
-    }
-    for (int j = i; j < nodes.size(); j += 1) {
-      assert !is_attribute(nodes.get(j));
-    }
-    return nodes.skip(i);
-  }
   public @Override Void process_special(final special_text t) {
     write_string(t.to_markup());
     return null;
   }
-  private void write_start_tag(final text_element element, final readonly_list<text_element> attributes) {
+  private void write_start_tag(final text_element element, final readonly_dictionary<attribute_id, string> attributes) {
     write_string(OPEN_START_TAG);
     write_escaped(element.get_id().short_name());
     write_tag_attributes(attributes);
@@ -117,22 +93,20 @@ public class markup_formatter extends text_formatter {
     write_escaped(element.get_id().short_name());
     write_string(CLOSE_TAG);
   }
-  private void write_self_closing_tag(final text_element element, final readonly_list<text_element> attributes) {
+  private void write_self_closing_tag(final text_element element, final readonly_dictionary<attribute_id, string> attributes) {
     write_string(OPEN_START_TAG);
     write_escaped(element.get_id().short_name());
     write_tag_attributes(attributes);
     write_string(CLOSE_SELF_CLOSING_TAG);
   }
-  private void write_tag_attributes(final readonly_list<text_element> attributes) {
-    for (int i = 0; i < attributes.size(); i += 1) {
-      final text_element attribute = attributes.get(i);
-      assert attribute.get_id() instanceof attribute_id;
-      assert attribute.children().size() == 1;
-      assert attribute.children().get(0) instanceof string;
+  private void write_tag_attributes(final readonly_dictionary<attribute_id, string> attributes) {
+    final immutable_list<dictionary.entry<attribute_id, string>> attributes_list = attributes.elements();
+    for (int i = 0; i < attributes_list.size(); i += 1) {
+      final dictionary.entry<attribute_id, string> attribute = attributes_list.get(i);
       write_string(ATTRIBUTE_SEPARATOR);
-      write_escaped(attribute.get_id().short_name());
+      write_escaped(attribute.key().short_name());
       write_string(ATTRIBUTE_START);
-      write_escaped((string) attribute.children().get(0));
+      write_escaped(attribute.value());
       write_string(ATTRIBUTE_END);
     }
   }

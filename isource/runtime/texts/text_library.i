@@ -9,37 +9,37 @@ public namespace text_library {
 
   HTML_NS : base_namespace.new("html");
 
-  HTML : element_id.new(HTML_NS, "html");
-  HEAD : element_id.new(HTML_NS, "head");
-  TITLE : element_id.new(HTML_NS, "title");
-  LINK : element_id.new(HTML_NS, "link");
-  BODY : element_id.new(HTML_NS, "body");
-  P : element_id.new(HTML_NS, "p");
-  DIV : element_id.new(HTML_NS, "div");
-  H1 : element_id.new(HTML_NS, "h1");
-  H2 : element_id.new(HTML_NS, "h2");
+  HTML : base_element_id.new(HTML_NS, "html");
+  HEAD : base_element_id.new(HTML_NS, "head");
+  TITLE : base_element_id.new(HTML_NS, "title");
+  LINK : base_element_id.new(HTML_NS, "link");
+  BODY : base_element_id.new(HTML_NS, "body");
+  P : base_element_id.new(HTML_NS, "p");
+  DIV : base_element_id.new(HTML_NS, "div");
+  H1 : base_element_id.new(HTML_NS, "h1");
+  H2 : base_element_id.new(HTML_NS, "h2");
 
-  TABLE : element_id.new(HTML_NS, "table");
-  TR : element_id.new(HTML_NS, "tr");
-  TH : element_id.new(HTML_NS, "th");
-  TD : element_id.new(HTML_NS, "td");
+  TABLE : base_element_id.new(HTML_NS, "table");
+  TR : base_element_id.new(HTML_NS, "tr");
+  TH : base_element_id.new(HTML_NS, "th");
+  TD : base_element_id.new(HTML_NS, "td");
 
-  SPAN : element_id.new(HTML_NS, "span");
-  BR : element_id.new(HTML_NS, "br");
-  EM : element_id.new(HTML_NS, "em");
-  A : element_id.new(HTML_NS, "a");
-  B : element_id.new(HTML_NS, "b");
-  UNDERLINE : element_id.new(HTML_NS, "u");
+  SPAN : base_element_id.new(HTML_NS, "span");
+  BR : base_element_id.new(HTML_NS, "br");
+  EM : base_element_id.new(HTML_NS, "em");
+  A : base_element_id.new(HTML_NS, "a");
+  B : base_element_id.new(HTML_NS, "b");
+  UNDERLINE : base_element_id.new(HTML_NS, "u");
   -- TODO: use some other type of emphasis...
-  UNDERLINE2 : element_id.new(HTML_NS, "u2");
+  UNDERLINE2 : base_element_id.new(HTML_NS, "u2");
 
-  NAME : attribute_id.new(HTML_NS, "name");
-  CLEAR : attribute_id.new(HTML_NS, "clear");
-  CLASS : attribute_id.new(HTML_NS, "class");
-  STYLE : attribute_id.new(HTML_NS, "style");
-  HREF : attribute_id.new(HTML_NS, "href");
-  REL : attribute_id.new(HTML_NS, "rel");
-  TYPE : attribute_id.new(HTML_NS, "style");
+  NAME : base_attribute_id.new(HTML_NS, "name");
+  CLEAR : base_attribute_id.new(HTML_NS, "clear");
+  CLASS : base_attribute_id.new(HTML_NS, "class");
+  STYLE : base_attribute_id.new(HTML_NS, "style");
+  HREF : base_attribute_id.new(HTML_NS, "href");
+  REL : base_attribute_id.new(HTML_NS, "rel");
+  TYPE : base_attribute_id.new(HTML_NS, "style");
 
   BULL : text_entity.new(HTML_NS, "*", "&bull;");
   MIDDOT : text_entity.new(HTML_NS, ".", "&middot;");
@@ -53,5 +53,5 @@ public namespace text_library {
   DARR : text_entity.new(HTML_NS, "V", "&darr;");
 
   IDEAL_TEXT : base_namespace.new("itext");
-  INDENT : element_id.new(IDEAL_TEXT, "indent");
+  INDENT : base_element_id.new(IDEAL_TEXT, "indent");
 }

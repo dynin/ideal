@@ -34,7 +34,7 @@ public class test_elements {
   public void test_base_element() {
     final text_element element = new base_element(text_library.P);
     assert element.get_id() == text_library.P;
-    assert element.children() != null;
-    assert element.children().is_empty();
+    assert element.attributes().is_empty();
+    assert element.children() == null;
   }
 }

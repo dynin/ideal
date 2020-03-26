@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
+
 public abstract class text_rewriter extends text_visitor<text_fragment> {
 
   public text_fragment rewrite(text_fragment fragment) {
@@ -26,24 +27,13 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
 
   @Override
   protected text_fragment process_element(text_element element) {
-    if (element.get_id() instanceof element_id) {
-      element_id id = (element_id) element.get_id();
-      immutable_list<text_node> children = element.children();
-      if (!children.is_empty()) {
-        children = text_util.to_list(rewrite(new base_list_text_node(children)));
-      }
-
-      text_fragment result = rewrite_element(id, children);
-      assert result != null;
-      return result;
-    } else {
-      // TODO: support rewriting attributes?
-      return element;
-    }
+    @Nullable text_fragment children = rewrite(element.children());
+    return rewrite_element(element.get_id(), element.attributes(), children);
   }
 
   protected abstract text_fragment rewrite_element(element_id id,
-      immutable_list<text_node> children);
+      immutable_dictionary<attribute_id, string> attributes,
+      @Nullable text_fragment children);
 
   @Override
   protected text_fragment process_special(special_text t) {

@@ -16,6 +16,7 @@ import ideal.runtime.elements.*;
 public enum analysis_pass implements deeply_immutable_data, stringable {
 
   BEFORE_EVALUATION,
+  TARGET_DECL,
   TYPE_DECL,
   IMPORT_AND_TYPE_VAR_DECL,
   SUPERTYPE_DECL,

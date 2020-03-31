@@ -28,7 +28,7 @@
 - [ ] Add C/C++ backend
 - [x] Update AppEngine app
 - [ ] Test harness
-- [ ] Refactor text library to use dictionary
+- [x] Refactor text library to use dictionary
 - [ ] Default value for procedure parameters
 - [ ] Implement collection.map()
 - [ ] Implement list.join()

@@ -2480,6 +2480,7 @@
   }
 ]
 ============ BEFORE_EVALUATION
+============ TARGET_DECL
 ============ TYPE_DECL
 procedure_kind procedure[entity ret, entity arg1, entity arg2] {
                ^^^^^^^^^

@@ -38,12 +38,14 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   public type_declaration_analyzer(type_declaration_construct source) {
     super(source);
     assert source.body != null;
+    assert source.annotations != null;
   }
 
   public type_declaration_analyzer(type_declaration_construct source,
       principal_type parent, analysis_context context) {
     super(source, parent, context);
     assert source.body != null;
+    assert source.annotations != null;
 
     // TODO: this should be moved out of constructor.
     @Nullable analyzable before = context.get_analyzable(source);
@@ -163,14 +165,10 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 
-    if (pass == analysis_pass.TYPE_DECL) {
+    if (pass == analysis_pass.TARGET_DECL) {
       process_annotations(source.annotations, language().get_default_type_access(outer_kind()));
 
-      action_name name = short_name();
-      // TODO: signal error
-      assert name instanceof simple_name;
-
-      readonly_list<action> resolved = get_context().lookup(declared_in_type(), name);
+      readonly_list<action> resolved = get_context().lookup(declared_in_type(), short_name());
 
       if (resolved.size() > 1) {
         return new error_signal(messages.name_type_used, source);
@@ -196,9 +194,13 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         }
       } else {
         master = action_utilities.make_type(get_context(), get_kind(), null,
-            name, declared_in_type(), this, this);
+            short_name(), declared_in_type(), this, this);
       }
 
+      return null;
+    }
+
+    if (pass == analysis_pass.TYPE_DECL) {
       if (has_parameters()) {
         if (master.get_primary() != null) {
           // TODO: support multiple primary types.
@@ -224,14 +226,14 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
       assert body == null;
       body = make_body_list(source.body);
-    } else {
-      assert master != null;
-      if (body == null) {
-        assert has_errors();
-        return null;
-      }
-      assert body != null;
     }
+
+    assert master != null;
+    if (body == null) {
+      assert has_errors();
+      return null;
+    }
+    assert body != null;
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL && has_parameters()) {
       for (int i = 0; i < parameters.size(); ++i) {

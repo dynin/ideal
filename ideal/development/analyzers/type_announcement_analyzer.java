@@ -25,15 +25,13 @@ import ideal.development.declarations.*;
 
 public class type_announcement_analyzer extends declaration_analyzer<type_announcement_construct> {
 
-  private list<type_declaration> type_declarations;
+  private @Nullable type_declaration type_declaration;
   private @Nullable analyzable external_declaration;
   private @Nullable principal_type inside_type;
   private @Nullable readonly_list<construct> external_body;
-  private @Nullable list<type_declaration_construct> declaration_constructs;
 
   public type_announcement_analyzer(type_announcement_construct source) {
     super(source);
-    type_declarations = new base_list<type_declaration>();
   }
 
   public action_name short_name() {
@@ -54,9 +52,9 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 
-    if (pass == analysis_pass.TYPE_DECL) {
-      // TODO: handle modifiers, at least the document modifier.
-      //assert source.modifiers.is_empty();
+    if (pass == analysis_pass.TARGET_DECL) {
+      // TODO: really handle modifiers, at least the document modifier.
+      process_annotations(source.annotations, access_modifier.public_modifier);
 
       assert external_declaration == null;
 
@@ -69,67 +67,71 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
           // Type is boostrapped, e.g. if it's library.elements or library.operators
           type_declaration the_type_declaration = (type_declaration) the_type.get_declaration();
           assert the_type_declaration != null;
-          type_declarations.append(the_type_declaration);
-          // TODO: is there a way to do this cleaner?
-          // What if there are import statements in the type declaration?
-          external_body = new base_list<construct>(
-              (construct) the_type_declaration.source_position());
-          return null;
+          type_declaration = the_type_declaration;
         }
       }
 
-      external_body = get_context().load_type_body(source);
-
-      if (external_body == null) {
-        // Assume the error has been reported.
-        // TODO: load_type_body() should return error_signal.
-        return null;
-      }
-
-      if (external_body.size() == 0) {
-        return new error_signal(new base_string("External declaration expected"), this);
-      }
-
-      list<analyzable> subdeclarations = new base_list<analyzable>();
-      declaration_constructs = new base_list<type_declaration_construct>();
-
-      for (int i = 0; i < external_body.size(); ++i) {
-        construct the_construct = external_body.get(i);
-        if (the_construct instanceof import_construct) {
-          subdeclarations.append(new import_analyzer((import_construct) the_construct));
-        } else if (the_construct instanceof type_declaration_construct) {
-          type_declaration_construct declaration = (type_declaration_construct) the_construct;
-
-          if (!utilities.eq(declaration.name, short_name())) {
-            return new error_signal(new base_string("Name mismatch: expected " + short_name()),
-                declaration);
-          }
-
-          if (declaration.kind != source.kind) {
-            return new error_signal(new base_string("Kind mismatch: expected " + source.kind),
-                declaration);
-          }
-
-          assert declaration.body != null;
-
-          declaration_constructs.append(declaration);
-
-          type_declaration_analyzer the_type_declaration =
-              new type_declaration_analyzer(declaration);
-          subdeclarations.append(the_type_declaration);
-          type_declarations.append(the_type_declaration);
-        } else {
-          return new error_signal(
-              new base_string("Type declaration or import expected"), the_construct);
-        }
-      }
-
-      inside_type = make_inside_type(parent(), this);
-      external_declaration = new declaration_list_analyzer(subdeclarations, this);
+      return null;
     }
 
-    if (external_declaration != null) {
-      analyze_and_ignore_errors(external_declaration, pass);
+    if (pass == analysis_pass.TYPE_DECL) {
+      if (type_declaration != null) {
+        inside_type = make_inside_type(parent(), this);
+        external_declaration = (type_declaration_analyzer) type_declaration;
+      } else {
+        external_body = get_context().load_type_body(source);
+
+        if (external_body == null) {
+          // Assume the error has been reported.
+          // TODO: load_type_body() should return error_signal.
+          return null;
+        }
+
+        if (external_body.size() == 0) {
+          return new error_signal(new base_string("External declaration expected"), this);
+        }
+
+        list<analyzable> subdeclarations = new base_list<analyzable>();
+
+        for (int i = 0; i < external_body.size(); ++i) {
+          construct the_construct = external_body.get(i);
+          if (the_construct instanceof import_construct) {
+            subdeclarations.append(new import_analyzer((import_construct) the_construct));
+          } else if (the_construct instanceof type_declaration_construct) {
+            type_declaration_construct declaration = (type_declaration_construct) the_construct;
+
+            if (!utilities.eq(declaration.name, short_name())) {
+              return new error_signal(new base_string("Name mismatch: expected " + short_name()),
+                  declaration);
+            }
+
+            if (declaration.kind != source.kind) {
+              return new error_signal(new base_string("Kind mismatch: expected " + source.kind),
+                  declaration);
+            }
+
+            assert declaration.body != null;
+
+            type_declaration_analyzer the_type_declaration =
+                new type_declaration_analyzer(declaration);
+            subdeclarations.append(the_type_declaration);
+            // TODO: signal error
+            assert the_type_declaration != null;
+            type_declaration = the_type_declaration;
+          } else {
+            return new error_signal(
+                new base_string("Type declaration or import expected"), the_construct);
+          }
+        }
+
+        inside_type = make_inside_type(parent(), this);
+        external_declaration = new declaration_list_analyzer(subdeclarations, this);
+        init_context(external_declaration);
+      }
+    }
+
+    if (external_declaration instanceof multi_pass_analyzer) {
+      return ((multi_pass_analyzer) external_declaration).multi_pass_analysis(pass);
     }
 
     return null;
@@ -142,23 +144,21 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   }
 
   public readonly_list<construct> get_external_body() {
-    assert external_body != null;
-    return external_body;
+    if (external_body != null) {
+      return external_body;
+    } else {
+      return new base_list<construct>(
+          (type_declaration_construct) type_declaration.source_position());
+    }
   }
 
-  public readonly_list<type_declaration> get_type_declarations() {
-    assert type_declarations != null;
-    return type_declarations;
-  }
-
-  public readonly_list<type_declaration_construct> get_declaration_constructs() {
-    assert declaration_constructs != null;
-    return declaration_constructs;
+  public type_declaration get_type_declaration() {
+    assert type_declaration != null;
+    return type_declaration;
   }
 
   public principal_type get_master_type() {
-    assert type_declarations.size() == 1;
-    return type_declarations.get(0).get_declared_type();
+    return type_declaration.get_declared_type();
   }
 
   @Override

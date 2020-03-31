@@ -159,7 +159,7 @@ ideal-run: $(IDEAL_TARGET) $(LIBRARY_ELEMENTS)
 	$(CREATE) -debug-passes -input=$(IDEAL_SOURCE) -target=print_elements
 
 library: $(IDEAL_TARGET) $(IDEAL_SOURCE)
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library
+	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_library
 
 libraryb: $(IDEAL_TARGET) $(IDEAL_SOURCE)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)
@@ -186,7 +186,7 @@ circle: $(IDEAL_TARGET) $(CIRCLE)
 ### Generating runtime
 
 runtime: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime
+	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=generate_runtime
 
 runtimep: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
 	$(CREATE_PROF) -input=$(IDEAL_RUNTIME) -target=generate_runtime > /dev/null

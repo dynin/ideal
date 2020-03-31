@@ -30,7 +30,7 @@ public class create_util {
         result.append((type_declaration) the_declaration);
       } else if (the_declaration instanceof type_announcement_analyzer) {
         // TODO: should this be in get_signature?
-        result.append_all(((type_announcement_analyzer) the_declaration).get_type_declarations());
+        result.append(((type_announcement_analyzer) the_declaration).get_type_declaration());
       }
     }
 

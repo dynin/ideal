@@ -24,6 +24,7 @@ import ideal.development.flavors.*;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
+import ideal.development.comments.*;
 
 public abstract class base_analyzer<C extends position> extends debuggable implements analyzable {
 

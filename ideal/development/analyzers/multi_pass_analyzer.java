@@ -34,6 +34,10 @@ public abstract class multi_pass_analyzer<C extends position> extends base_analy
 
     last_pass = analysis_pass.BEFORE_EVALUATION;
     last_error = null;
+
+    if (trace_analysis()) {
+      log.debug("Init " + utilities.describe(this));
+    }
   }
 
   protected multi_pass_analyzer(C source) {

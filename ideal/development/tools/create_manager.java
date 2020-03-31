@@ -103,6 +103,7 @@ public class create_manager {
   }
 
   private source_content load_source(resource_catalog parent_catalog, string filename) {
+    // log.info(new base_string("============>>> ", filename));
     return new source_content(parent_catalog.resolve(filename, SOURCE_EXTENSION));
   }
 
@@ -280,6 +281,7 @@ public class create_manager {
 
     // TODO: signal non-fatal error
     source_content source = new source_content(source_id);
+    // log.info(new base_string("============>>> ", source_id.to_string()));
 
     list<construct> constructs = parse(source);
     // TODO: signal non-fatal error

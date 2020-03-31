@@ -305,6 +305,7 @@
   }
 ]
 ============ BEFORE_EVALUATION
+============ TARGET_DECL
 ============ TYPE_DECL
 ============ IMPORT_AND_TYPE_VAR_DECL
 ============ SUPERTYPE_DECL

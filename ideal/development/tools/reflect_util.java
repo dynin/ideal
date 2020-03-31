@@ -35,7 +35,6 @@ import ideal.development.transformers.*;
 import ideal.development.printers.*;
 import ideal.development.documenters.*;
 import ideal.development.flavors.*;
-import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.functions.*;

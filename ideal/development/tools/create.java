@@ -8,6 +8,9 @@
 
 package ideal.development.tools;
 
+import java.util.Arrays;
+import java.util.List;
+
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
 import ideal.library.channels.*;
@@ -40,8 +43,6 @@ class create {
 
   private static final simple_name CLEAN_SLATE = simple_name.make("clean_slate");
 
-  private boolean DEBUG_PASSES;
-
   public static void main(String[] args) {
     create_options options = new create_options();
     flag_util.parse_flags(args, options);
@@ -49,7 +50,7 @@ class create {
   }
 
   public void start(create_options options) {
-    DEBUG_PASSES = options.DEBUG_PASSES;
+    create_util.DEBUG_PROGRESS = options.DEBUG_PROGRESS;
 
     resolve_analyzer.CURE_UNDECLARED = options.CURE_UNDECLARED;
     resolve_analyzer.HIDE_DECLARATIONS = options.HIDE_DECLARATIONS;
@@ -69,7 +70,7 @@ class create {
       return;
     }
 
-    progress("INIT");
+    create_util.progress("INIT");
 
     create_manager cm = new create_manager(filesystem.CURRENT_CATALOG);
     cm.process_targets();
@@ -79,7 +80,7 @@ class create {
           filesystem.CURRENT_CATALOG.resolve(output_name).access_catalog().content().get());
     }
 
-    progress("PARSE");
+    create_util.progress("PARSE");
 
     source_content input = new source_content(filesystem.CURRENT_CATALOG.resolve(input_name));
     list<construct> constructs = cm.parse(input);
@@ -94,12 +95,12 @@ class create {
     if (false && extensions.contains(CLEAN_SLATE)) {
       cm.process_type_operators();
     } else {
-      progress("BOOTSTRAP");
+      create_util.progress("BOOTSTRAP");
       cm.process_bootstrap();
 
       // TODO: make processing jinterop a feature that is activated with a 'use' construct.
       if (options.target != null) {
-        progress("JINTEROP");
+        create_util.progress("JINTEROP");
         cm.process_jinterop();
       }
 
@@ -107,7 +108,7 @@ class create {
     }
 
     if (options.DEBUG_CONSTRUCTS) {
-      progress("DISPLAY");
+      create_util.progress("DISPLAY");
       output<text_fragment> out = new plain_formatter(standard_channels.stdout);
       out.write(displayer.display(constructs));
     }
@@ -116,8 +117,16 @@ class create {
     multi_pass_analyzer body =
         new declaration_list_analyzer(constructs, cm.root, the_context, input);
 
-    for (analysis_pass pass : analysis_pass.values()) {
-      progress(pass.toString());
+    List<analysis_pass> passes = Arrays.asList(analysis_pass.values());
+    assert passes.get(0) == analysis_pass.BEFORE_EVALUATION;
+
+    create_util.progress(analysis_pass.TARGET_DECL.toString());
+    body.multi_pass_analysis(analysis_pass.TARGET_DECL);
+    assert passes.get(1) == analysis_pass.TARGET_DECL;
+
+    // The first
+    for (analysis_pass pass : passes.subList(2, passes.size())) {
+      create_util.progress(pass.toString());
       body.multi_pass_analysis(pass);
     }
 
@@ -126,7 +135,7 @@ class create {
     }
 
     if (options.RUN && !cm.has_errors()) {
-      progress("EXECUTE");
+      create_util.progress("EXECUTE");
       analyzer_utilities.to_action(body).execute(cm.new_execution_context());
     }
 
@@ -178,13 +187,6 @@ class create {
     target_value the_target = (target_value) the_target_value;
 
     the_target.process(bound_target.parameters, cm, the_context);
-  }
-
-  private void progress(String name) {
-    if (DEBUG_PASSES) {
-      // TODO: add timing info
-      log.info(new base_string("============ ", name));
-    }
   }
 
   // TODO: use filter()

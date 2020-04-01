@@ -61,8 +61,7 @@ IDEAL_TARGET = $(TARGETS_DIR)/ideal
 CREATE_MAIN = ideal.development.tools.create
 CREATE = $(JAVA) $(CREATE_MAIN)
 
-FLAGS_PRETTY = -pretty-print -output=$(PRETTY_DIR)
-FLAGS_RUN = -debug-passes -run
+FLAGS_RUN = -debug-progress -run
 FLAGS_REFLECT = -debug-reflect
 
 ISOURCE_DIR = isource
@@ -156,10 +155,10 @@ default: ideal-run
 all: $(IDEAL_TARGET)
 
 ideal-run: $(IDEAL_TARGET) $(LIBRARY_ELEMENTS)
-	$(CREATE) -debug-passes -input=$(IDEAL_SOURCE) -target=print_elements
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=print_elements
 
 library: $(IDEAL_TARGET) $(IDEAL_SOURCE)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_library
+	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=generate_library
 
 libraryb: $(IDEAL_TARGET) $(IDEAL_SOURCE)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)
@@ -186,7 +185,7 @@ circle: $(IDEAL_TARGET) $(CIRCLE)
 ### Generating runtime
 
 runtime: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=generate_runtime
+	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=generate_runtime
 
 runtimep: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
 	$(CREATE_PROF) -input=$(IDEAL_RUNTIME) -target=generate_runtime > /dev/null
@@ -201,7 +200,7 @@ runtimeb: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
 	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
 
 runtimed: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=document_runtime \
+	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=document_runtime \
             -output=$(PRETTY_DIR)
 
 ### Generating other
@@ -243,19 +242,19 @@ import: $(IDEAL_TARGET)
 	$(CREATE) -debug-import
 
 pretty: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_SOURCE) -target=document_elements \
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_elements \
             -output=$(PRETTY_DIR)
 
 prettylib: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_SOURCE) -target=document_library \
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_library \
             -output=$(PRETTY_DIR)
 
 prettylist: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=document_elements \
+	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=document_elements \
             -output=$(PRETTY_DIR)
 
 doc: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=document_all \
+	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=document_all \
             -output=$(PRETTY_DIR)
 
 hello: $(IDEAL_TARGET)

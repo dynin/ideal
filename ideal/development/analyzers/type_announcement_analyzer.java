@@ -56,8 +56,6 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
       // TODO: really handle modifiers, at least the document modifier.
       process_annotations(source.annotations, access_modifier.public_modifier);
 
-      assert external_declaration == null;
-
       readonly_list<action> already_declared = get_context().lookup(declared_in_type(),
           short_name());
       if (already_declared.size() == 1) {

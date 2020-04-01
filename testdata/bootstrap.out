@@ -1,6 +1,8 @@
 ============ INIT
 ============ PARSE
 ============ BOOTSTRAP
+==== Loading isource/library/elements.i
+==== Loading isource/library/operators.i
 ============ DISPLAY
 [
   type_declaration_construct {
@@ -2479,7 +2481,6 @@
     ]
   }
 ]
-============ BEFORE_EVALUATION
 ============ TARGET_DECL
 ============ TYPE_DECL
 procedure_kind procedure[entity ret, entity arg1, entity arg2] {

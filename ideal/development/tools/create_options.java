@@ -23,7 +23,7 @@ class create_options {
   public boolean HIDE_DECLARATIONS;
 
   public boolean DEBUG_CONSTRUCTS;
-  public boolean DEBUG_PASSES;
+  public boolean DEBUG_PROGRESS;
   public boolean DEBUG_IMPORT;
   public boolean DEBUG_REFLECT;
 }

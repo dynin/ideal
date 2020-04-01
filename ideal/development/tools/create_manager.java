@@ -103,8 +103,9 @@ public class create_manager {
   }
 
   private source_content load_source(resource_catalog parent_catalog, string filename) {
-    // log.info(new base_string("============>>> ", filename));
-    return new source_content(parent_catalog.resolve(filename, SOURCE_EXTENSION));
+    resource_identifier source_id = parent_catalog.resolve(filename, SOURCE_EXTENSION);
+    create_util.progress_loading(source_id);
+    return new source_content(source_id);
   }
 
   private resource_catalog library_catalog() {
@@ -230,6 +231,7 @@ public class create_manager {
     bootstrap_context.add(root, the_target.name(), the_target.to_action(root_position));
   }
 
+  /*
   public void process_project(list<construct> constructs, analysis_context context) {
     declaration_list_analyzer body =
         new declaration_list_analyzer(constructs, root, context, root_position);
@@ -253,6 +255,7 @@ public class create_manager {
       }
     }
   }
+  */
 
   public @Nullable readonly_list<construct> load_type_body(
       type_announcement_construct the_declaration) {
@@ -281,7 +284,7 @@ public class create_manager {
 
     // TODO: signal non-fatal error
     source_content source = new source_content(source_id);
-    // log.info(new base_string("============>>> ", source_id.to_string()));
+    create_util.progress_loading(source_id);
 
     list<construct> constructs = parse(source);
     // TODO: signal non-fatal error

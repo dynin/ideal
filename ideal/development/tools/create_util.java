@@ -9,6 +9,7 @@
 package ideal.development.tools;
 
 import ideal.library.elements.*;
+import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 import ideal.runtime.logs.*;
@@ -17,6 +18,21 @@ import ideal.development.declarations.*;
 import ideal.development.analyzers.*;
 
 public class create_util {
+
+  public static boolean DEBUG_PROGRESS;
+
+  public static void progress(String name) {
+    if (DEBUG_PROGRESS) {
+      // TODO: add timing info
+      log.info(new base_string("============ ", name));
+    }
+  }
+
+  public static void progress_loading(resource_identifier source_id) {
+    if (DEBUG_PROGRESS) {
+      log.info(new base_string("==== Loading ", source_id.to_string()));
+    }
+  }
 
   public static readonly_list<type_declaration> get_declared_types(
       type_declaration the_type_declaration) {

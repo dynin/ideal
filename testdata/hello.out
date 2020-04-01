@@ -1,6 +1,8 @@
 ============ INIT
 ============ PARSE
 ============ BOOTSTRAP
+==== Loading isource/library/elements.i
+==== Loading isource/library/operators.i
 ============ DISPLAY
 [
   procedure_construct {
@@ -38,7 +40,6 @@
     }
   }
 ]
-============ BEFORE_EVALUATION
 ============ TARGET_DECL
 ============ TYPE_DECL
 ============ IMPORT_AND_TYPE_VAR_DECL

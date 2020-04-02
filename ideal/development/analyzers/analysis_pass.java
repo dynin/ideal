@@ -31,6 +31,14 @@ public enum analysis_pass implements deeply_immutable_data, stringable {
     return this.ordinal() > other.ordinal();
   }
 
+  public static immutable_list<analysis_pass> all() {
+    list<analysis_pass> result = new base_list<analysis_pass>();
+    for (analysis_pass pass : values()) {
+      result.append(pass);
+    }
+    return result.frozen_copy();
+  }
+
   public static analysis_pass last() {
     return values()[values().length - 1];
   }

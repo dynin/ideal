@@ -8,9 +8,6 @@
 
 package ideal.development.tools;
 
-import java.util.Arrays;
-import java.util.List;
-
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
 import ideal.library.channels.*;
@@ -117,15 +114,16 @@ class create {
     multi_pass_analyzer body =
         new declaration_list_analyzer(constructs, cm.root, the_context, input);
 
-    List<analysis_pass> passes = Arrays.asList(analysis_pass.values());
+    immutable_list<analysis_pass> passes = analysis_pass.all();
     assert passes.get(0) == analysis_pass.BEFORE_EVALUATION;
 
     create_util.progress(analysis_pass.TARGET_DECL.toString());
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);
     assert passes.get(1) == analysis_pass.TARGET_DECL;
 
-    // The first
-    for (analysis_pass pass : passes.subList(2, passes.size())) {
+    //process_variable_targets(constructs, the_context);
+    for (int i = 2; i < passes.size(); ++i) {
+      analysis_pass pass = passes.get(i);
       create_util.progress(pass.toString());
       body.multi_pass_analysis(pass);
     }
@@ -162,6 +160,7 @@ class create {
     }
 
     if (options.target != null) {
+      //create_util.progress("TARGETS");
       readonly_list<variable_declaration> targets = find_targets(constructs, the_context);
 
       for (int i = 0; i < targets.size(); ++i) {
@@ -222,5 +221,19 @@ class create {
       }
     }
     return results;
+  }
+
+  private void process_variable_targets(readonly_list<construct> constructs,
+      analysis_context context) {
+    for (int i = 0; i < constructs.size(); ++i) {
+      construct c = constructs.get(i);
+      if (c instanceof variable_construct) {
+        variable_construct vc = (variable_construct) c;
+        analyzable a = context.get_analyzable(vc);
+        if (a instanceof variable_declaration) {
+          a.analyze();
+        }
+      }
+    }
   }
 }

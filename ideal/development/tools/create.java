@@ -34,6 +34,7 @@ import ideal.development.transformers.*;
 import ideal.development.printers.*;
 import ideal.development.declarations.*;
 import ideal.development.functions.*;
+import ideal.development.targets.*;
 import ideal.development.extensions.*;
 
 class create {
@@ -121,7 +122,6 @@ class create {
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);
     assert passes.get(1) == analysis_pass.TARGET_DECL;
 
-    //process_variable_targets(constructs, the_context);
     for (int i = 2; i < passes.size(); ++i) {
       analysis_pass pass = passes.get(i);
       create_util.progress(pass.toString());
@@ -161,7 +161,7 @@ class create {
 
     if (options.target != null) {
       //create_util.progress("TARGETS");
-      readonly_list<variable_declaration> targets = find_targets(constructs, the_context);
+      readonly_list<target_declaration> targets = find_targets(constructs, the_context);
 
       for (int i = 0; i < targets.size(); ++i) {
         if (utilities.eq(targets.get(i).short_name().to_string(), options.target)) {
@@ -174,12 +174,12 @@ class create {
     }
   }
 
-  private void build_target(variable_declaration target_declaration, create_manager cm,
+  private void build_target(target_declaration target_declaration, create_manager cm,
       analysis_context the_context) {
-    assert target_declaration.get_init() != null;
-    assert target_declaration.get_init() instanceof bound_procedure;
+    assert target_declaration.target_action() != null;
+    assert target_declaration.target_action() instanceof bound_procedure;
 
-    bound_procedure bound_target = (bound_procedure) target_declaration.get_init();
+    bound_procedure bound_target = (bound_procedure) target_declaration.target_action();
 
     abstract_value the_target_value = bound_target.the_procedure_action.result();
     assert the_target_value instanceof target_value;
@@ -203,37 +203,19 @@ class create {
     return extensions;
   }
 
-  private readonly_list<variable_declaration> find_targets(readonly_list<construct> constructs,
+  private readonly_list<target_declaration> find_targets(readonly_list<construct> constructs,
       analysis_context context) {
-    list<variable_declaration> results = new base_list<variable_declaration>();
-    readonly_list<construct> flattened = base_construct.flatten(constructs);
-    for (int i = 0; i < flattened.size(); ++i) {
-      construct c = flattened.get(i);
-      if (c instanceof variable_construct) {
-        variable_construct vc = (variable_construct) c;
-        analyzable a = context.get_analyzable(vc);
-        if (a instanceof variable_declaration) {
-          variable_declaration the_declaration = (variable_declaration) a;
-          if (the_declaration.value_type() == core_types.target_type()) {
-            results.append(the_declaration);
-          }
-        }
+    list<target_declaration> results = new base_list<target_declaration>();
+    // TODO: replace with list.filter() and list.map();
+    for (int i = 0; i < constructs.size(); ++i) {
+      construct c = constructs.get(i);
+      if (c instanceof target_construct) {
+        target_construct tc = (target_construct) c;
+        analyzable a = context.get_analyzable(tc);
+        assert (a instanceof target_declaration);
+        results.append((target_declaration) a);
       }
     }
     return results;
-  }
-
-  private void process_variable_targets(readonly_list<construct> constructs,
-      analysis_context context) {
-    for (int i = 0; i < constructs.size(); ++i) {
-      construct c = constructs.get(i);
-      if (c instanceof variable_construct) {
-        variable_construct vc = (variable_construct) c;
-        analyzable a = context.get_analyzable(vc);
-        if (a instanceof variable_declaration) {
-          a.analyze();
-        }
-      }
-    }
   }
 }

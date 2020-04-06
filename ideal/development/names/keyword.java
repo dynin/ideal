@@ -38,5 +38,7 @@ public interface keyword extends token_type {
   token_type FOR = new base_token_type(FOR_NAME.to_string().s(), base_symbols.FOR);
   token_type IMPORT = new base_token_type("import", base_symbols.IMPORT);
   token_type USE = new base_token_type("use", base_symbols.USE);
+  token_type TARGET = new base_token_type("target", base_symbols.TARGET);
+
   token_type PLEASE = new base_token_type("please", base_symbols.PLEASE);
 }

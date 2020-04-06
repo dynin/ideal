@@ -68,8 +68,11 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
           type_declaration = the_type_declaration;
         }
       } else {
-        action_utilities.make_type(get_context(), source.kind, null,
-            short_name(), declared_in_type(), null, this);
+        if (false) {
+          // TODO: make sure type declaration is lazily loaded
+          action_utilities.make_type(get_context(), source.kind, null,
+              short_name(), declared_in_type(), null, this);
+        }
       }
 
       return null;

@@ -20,6 +20,7 @@ import ideal.development.names.*;
 import ideal.development.modifiers.*;
 import ideal.development.parsers.*;
 import ideal.development.extensions.*;
+import ideal.development.targets.*;
 import ideal.development.templates.*;
 import ideal.development.notifications.*;
 
@@ -61,7 +62,7 @@ terminal token<keyword>  IMPORT;
 // Temporary.
 //terminal token<keyword>  TEMPLATE;
 terminal token<punctuation>  HASH;
-terminal token<keyword>  USE;
+terminal token<keyword>  USE, TARGET;
 terminal token<keyword>  PLEASE;
 
 /* Non terminals */
@@ -152,6 +153,8 @@ statement ::=
                 {: RESULT = new import_construct(m, t, new fragment_position(i, i, s)); :}
         |       USE:u name:n SEMICOLON:s
                 {: RESULT = new use_construct(n, new fragment_position(u, u, s)); :}
+        |       TARGET:t name:n COLON:c expression:e SEMICOLON:s
+                {: RESULT = new target_construct(n, e, new fragment_position(t, t, s)); :}
         ;
 
 type_declaration ::=

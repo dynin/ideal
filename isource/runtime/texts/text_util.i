@@ -122,7 +122,7 @@ namespace text_util {
     return the_writer.elements();
   }
 
-  text_element make_html_link(text_fragment text, string target) {
-    return base_element.make(text_library.A, text_library.HREF, target, text);
+  text_element make_html_link(text_fragment text, string link_target) {
+    return base_element.make(text_library.A, text_library.HREF, link_target, text);
   }
 }

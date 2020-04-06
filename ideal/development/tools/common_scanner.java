@@ -101,6 +101,8 @@ public class common_scanner extends base_scanner_config {
     add_keyword(keyword.IMPORT);
 
     add_keyword(keyword.USE);
+    add_keyword(keyword.TARGET);
+
     add_keyword(keyword.PLEASE);
 
     add_jump(jump_type.BREAK_JUMP);

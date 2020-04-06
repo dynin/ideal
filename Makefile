@@ -137,6 +137,7 @@ DEVELOPMENT_JAVA = \
     ideal/development/transformers/*.java \
     ideal/development/printers/*.java \
     ideal/development/extensions/*.java \
+    ideal/development/targets/*.java \
     ideal/development/parsers/*.java \
     ideal/development/documenters/*.java \
     ideal/development/tools/*.java \

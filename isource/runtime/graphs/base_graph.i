@@ -81,14 +81,14 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
     for (var nonnegative i : 0; i < considered.size; i += 1) {
       outgoing : adjacent(considered[i]).elements;
       for (var nonnegative j : 0; j < outgoing.size; j += 1) {
-        target : outgoing[j];
-        if (visited.contains(target)) {
-          if (equivalence(target, from)) {
+        target_vertice : outgoing[j];
+        if (visited.contains(target_vertice)) {
+          if (equivalence(target_vertice, from)) {
             return true;
           }
         } else {
-          considered.append(target);
-          visited.add(target);
+          considered.append(target_vertice);
+          visited.add(target_vertice);
         }
       }
     }

@@ -12,22 +12,22 @@ namespace ideal {
   namespace machine;
 }
 
-generate_library: generate_java(ideal.library);
+target generate_library: generate_java(ideal.library);
 
-print_elements: print_source(ideal.library.elements);
+target print_elements: print_source(ideal.library.elements);
 
-document_elements: print_documentation(ideal.library.elements);
+target document_elements: print_documentation(ideal.library.elements);
 
-document_library: print_documentation(ideal.library);
+target document_library: print_documentation(ideal.library);
 
-generate_runtime : generate_java(ideal.runtime);
+target generate_runtime : generate_java(ideal.runtime);
 
-generate_all: generate_java(ideal.library, ideal.runtime);
+target generate_all: generate_java(ideal.library, ideal.runtime);
 
-document_all: print_documentation(ideal.library, ideal.runtime);
+target document_all: print_documentation(ideal.library, ideal.runtime);
 
-document_runtime: print_documentation(ideal.runtime);
+target document_runtime: print_documentation(ideal.runtime);
 
-generate_texts : generate_java(ideal.runtime.texts);
+target generate_texts : generate_java(ideal.runtime.texts);
 
-generate_reflections : generate_java(ideal.runtime.reflections);
+target generate_reflections : generate_java(ideal.runtime.reflections);

@@ -10,10 +10,10 @@ namespace ideal {
   namespace library;
 }
 
-generate_library: generate_java(ideal.library);
+target generate_library: generate_java(ideal.library);
 
-print_elements: print_source(ideal.library.elements);
+target print_elements: print_source(ideal.library.elements);
 
-document_elements: print_documentation(ideal.library.elements);
+target document_elements: print_documentation(ideal.library.elements);
 
-document_library: print_documentation(ideal.library);
+target document_library: print_documentation(ideal.library);

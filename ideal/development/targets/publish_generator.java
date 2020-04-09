@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.tools;
+package ideal.development.targets;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
@@ -70,7 +70,7 @@ public class publish_generator {
       // TODO: we should handle other subdeclarations here,
       //  such as variable declarations.
       readonly_list<type_declaration> sub_declarations =
-          create_util.get_declared_types(the_declaration);
+          target_utilities.get_declared_types(the_declaration);
       for (int i = 0; i < sub_declarations.size(); ++i) {
         type_declaration sub_declaration = sub_declarations.get(i);
         if (i < sub_declarations.size() - 1) {
@@ -163,7 +163,7 @@ public class publish_generator {
     text_element left = make_nav_cell(predecessor.get(the_type), true, the_naming_strategy);
     text_element center = make_center_cell(the_type.get_parent(), the_naming_strategy);
     text_element right = make_nav_cell(successor.get(the_type), false, the_naming_strategy);
-    text_element row = make_element(TR, new base_list<text_node>(left, center, right));
+    text_element row = text_util.make_element(TR, new base_list<text_node>(left, center, right));
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
@@ -217,7 +217,7 @@ public class publish_generator {
 
   private static text_fragment wrap_body(text_fragment body_text,
       readonly_list<simple_name> full_name, naming_strategy the_naming_strategy) {
-    text_element title = make_element(TITLE, text_util.to_list(make_title(full_name)));
+    text_element title = text_util.make_element(TITLE, text_util.to_list(make_title(full_name)));
     // TODO: introduce constants.
     base_string css_href = the_naming_strategy.link_to(
         new base_list<simple_name>(IDEAL_STYLE_NAME), base_extension.CSS);
@@ -226,13 +226,8 @@ public class publish_generator {
     attributes.put(REL, new base_string("stylesheet"));
     attributes.put(TYPE, new base_string("text/css"));
     text_element link = new base_element(LINK, attributes, null);
-    text_element head = make_element(HEAD, new base_list<text_node>(title, link));
+    text_element head = text_util.make_element(HEAD, new base_list<text_node>(title, link));
     text_element body = base_element.make(BODY, body_text);
-    return make_element(HTML, new base_list<text_node>(head, body));
-  }
-
-  public static text_element make_element(element_id id, readonly_list<text_node> children) {
-    text_fragment child_fragment = children != null ? new base_list_text_node(children) : null;
-    return new base_element(id, new list_dictionary<attribute_id, string>(), child_fragment);
+    return text_util.make_element(HTML, new base_list<text_node>(head, body));
   }
 }

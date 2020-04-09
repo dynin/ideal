@@ -36,6 +36,7 @@ import ideal.development.declarations.*;
 import ideal.development.functions.*;
 import ideal.development.targets.*;
 import ideal.development.extensions.*;
+import ideal.development.targets.*;
 
 class create {
 
@@ -138,8 +139,8 @@ class create {
     }
 
     if (options.PRINT) {
-      printer_target printer = new printer_target(simple_name.make("printer"));
-      printer.setup(cm, the_context);
+      printer_target printer = new printer_target(simple_name.make("printer"), cm);
+      printer.setup(the_context);
       readonly_list<simple_name> test_name =
           new base_list<simple_name>(simple_name.make("test"));
       printer.print_constructs(constructs, test_name);
@@ -185,7 +186,7 @@ class create {
     assert the_target_value instanceof target_value;
     target_value the_target = (target_value) the_target_value;
 
-    the_target.process(bound_target.parameters, cm, the_context);
+    the_target.process(bound_target.parameters, the_context);
   }
 
   // TODO: use filter()

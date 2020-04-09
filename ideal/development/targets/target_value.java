@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.tools;
+package ideal.development.targets;
 
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
@@ -32,6 +32,5 @@ public abstract class target_value extends base_procedure {
     return null;
   }
 
-  public abstract void process(action_parameters parameters, create_manager the_manager,
-      analysis_context the_context);
+  public abstract void process(action_parameters parameters, analysis_context the_context);
 }

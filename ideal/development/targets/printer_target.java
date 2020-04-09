@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.tools;
+package ideal.development.targets;
 
 import ideal.library.elements.*;
 import ideal.library.resources.*;
@@ -29,26 +29,28 @@ import javax.annotation.Nullable;
 
 public class printer_target extends type_processor_target {
 
+  private target_manager the_manager;
   private content_writer the_writer;
 
-  public printer_target(simple_name the_name) {
+  public printer_target(simple_name the_name, target_manager the_manager) {
     super(the_name);
+    this.the_manager = the_manager;
   }
 
   @Override
-  protected void setup(create_manager the_manager, analysis_context the_context) {
+  public void setup(analysis_context the_context) {
     the_writer = new content_writer(the_manager.output_catalog(), naming_strategy.dash_renderer);
   }
 
   @Override
-  protected void process_type(principal_type the_type) {
+  public void process_type(principal_type the_type) {
     type_declaration_construct the_declaration =
         (type_declaration_construct) the_type.get_declaration().source_position();
     print_constructs(new base_list<construct>(the_declaration),
         type_utilities.get_full_names(the_type));
   }
 
-  protected void print_constructs(readonly_list<construct> constructs,
+  public void print_constructs(readonly_list<construct> constructs,
       readonly_list<simple_name> full_name) {
 
     assert !full_name.is_empty();

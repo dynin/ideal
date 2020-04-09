@@ -122,6 +122,19 @@ namespace text_util {
     return the_writer.elements();
   }
 
+  -- TODO: add a unit test
+  text_element make_element(element_id id, readonly list[text_node] children) {
+    var text_fragment or null child_fragment;
+    -- TODO: use conditional ? operator
+    if (children is_not null) {
+      child_fragment = base_list_text_node.new(children);
+    } else {
+      child_fragment = missing.instance;
+    }
+    -- TODO: use empty dictionary
+    return base_element.new(id, list_dictionary[attribute_id, string].new(), child_fragment);
+  }
+
   text_element make_html_link(text_fragment text, string link_target) {
     return base_element.make(text_library.A, text_library.HREF, link_target, text);
   }

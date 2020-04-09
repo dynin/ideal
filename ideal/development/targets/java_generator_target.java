@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.tools;
+package ideal.development.targets;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
@@ -21,20 +21,22 @@ import ideal.development.transformers.*;
 
 public class java_generator_target extends type_processor_target {
 
+  private target_manager the_manager;
   private @Nullable java_generator generator;
 
-  public java_generator_target(simple_name the_name) {
+  public java_generator_target(simple_name the_name, target_manager the_manager) {
     super(the_name);
+    this.the_manager = the_manager;
   }
 
   @Override
-  protected void setup(create_manager the_manager, analysis_context the_context) {
+  public void setup(analysis_context the_context) {
     generator = new java_generator(the_manager.process_jinterop(), the_context,
         new content_writer(the_manager.output_catalog(), null));
   }
 
   @Override
-  protected void process_type(principal_type the_type) {
+  public void process_type(principal_type the_type) {
     generator.generate_for_type(the_type);
   }
 }

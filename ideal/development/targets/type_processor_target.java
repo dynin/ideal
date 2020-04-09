@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.tools;
+package ideal.development.targets;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
@@ -25,15 +25,14 @@ public abstract class type_processor_target extends target_value {
     super(the_name);
   }
 
-  protected abstract void setup(create_manager the_manager, analysis_context the_context);
+  public abstract void setup(analysis_context the_context);
 
-  protected abstract void process_type(principal_type the_type);
+  public abstract void process_type(principal_type the_type);
 
   @Override
-  public void process(action_parameters parameters, create_manager the_manager,
-      analysis_context the_context) {
+  public void process(action_parameters parameters, analysis_context the_context) {
 
-    setup(the_manager, the_context);
+    setup(the_context);
 
     immutable_list<action> actions = parameters.params();
 

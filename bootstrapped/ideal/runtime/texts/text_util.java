@@ -89,7 +89,16 @@ public class text_util {
     formatter.write(text);
     return the_writer.elements();
   }
-  public static text_element make_html_link(final text_fragment text, final string target) {
-    return base_element.make(text_library.A, text_library.HREF, target, text);
+  public static text_element make_element(final element_id id, final readonly_list<text_node> children) {
+    @Nullable text_fragment child_fragment;
+    if (children != null) {
+      child_fragment = new base_list_text_node(children);
+    } else {
+      child_fragment = null;
+    }
+    return new base_element(id, new list_dictionary<attribute_id, string>(), child_fragment);
+  }
+  public static text_element make_html_link(final text_fragment text, final string link_target) {
+    return base_element.make(text_library.A, text_library.HREF, link_target, text);
   }
 }

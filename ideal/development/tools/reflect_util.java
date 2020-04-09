@@ -37,6 +37,7 @@ import ideal.development.documenters.*;
 import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
+import ideal.development.targets.*;
 import ideal.development.functions.*;
 
 public class reflect_util {
@@ -75,7 +76,8 @@ public class reflect_util {
     String line = "World: " + world_declaration.short_name();
     text_fragment result = base_element.make(text_library.DIV, new base_string(line));
 
-    readonly_list<type_declaration> subtypes = create_util.get_declared_types(world_declaration);
+    readonly_list<type_declaration> subtypes =
+        target_utilities.get_declared_types(world_declaration);
     for (int i = 0; i < subtypes.size(); ++i) {
       result = text_util.join(result, print_subtype(subtypes.get(i)));
     }
@@ -123,7 +125,8 @@ public class reflect_util {
   public text_fragment render_world(type_declaration world_declaration) {
     text_fragment result = text_util.EMPTY_FRAGMENT;
 
-    readonly_list<type_declaration> subtypes = create_util.get_declared_types(world_declaration);
+    readonly_list<type_declaration> subtypes =
+        target_utilities.get_declared_types(world_declaration);
     for (int i = 0; i < subtypes.size(); ++i) {
       result = text_util.join(result, render_subtype(subtypes.get(i)));
     }

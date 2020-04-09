@@ -36,8 +36,9 @@ import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.functions.*;
+import ideal.development.targets.*;
 
-public class create_manager {
+public class create_manager implements target_manager {
 
   private static final string IDEAL_SOURCE_DIR = new base_string("isource");
 
@@ -72,6 +73,10 @@ public class create_manager {
 
   public boolean has_errors() {
     return notifications.get_count() > 0;
+  }
+
+  public @Nullable resource_catalog source_catalog() {
+    return source_catalog;
   }
 
   public @Nullable resource_catalog output_catalog() {
@@ -222,9 +227,9 @@ public class create_manager {
 
   /** Introduce target declarations. */
   public void process_targets() {
-    add_target(new java_generator_target(simple_name.make(new base_string("generate_java"))));
-    add_target(new printer_target(simple_name.make(new base_string("print_source"))));
-    add_target(new publish_target(simple_name.make(new base_string("print_documentation"))));
+    add_target(new java_generator_target(simple_name.make(new base_string("generate_java")), this));
+    add_target(new printer_target(simple_name.make(new base_string("print_source")), this));
+    add_target(new publish_target(simple_name.make(new base_string("print_documentation")), this));
   }
 
   private void add_target(target_value the_target) {

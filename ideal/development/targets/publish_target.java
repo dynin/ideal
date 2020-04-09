@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.tools;
+package ideal.development.targets;
 
 import ideal.library.elements.*;
 import ideal.library.resources.*;
@@ -29,14 +29,16 @@ import javax.annotation.Nullable;
 
 public class publish_target extends type_processor_target {
 
+  private target_manager the_manager;
   private publish_generator the_generator;
 
-  public publish_target(simple_name the_name) {
+  public publish_target(simple_name the_name, target_manager the_manager) {
     super(the_name);
+    this.the_manager = the_manager;
   }
 
   @Override
-  protected void setup(create_manager the_manager, analysis_context the_context) {
+  public void setup(analysis_context the_context) {
 
     content_writer the_writer = new content_writer(the_manager.output_catalog(),
         naming_strategy.dash_renderer);
@@ -46,7 +48,7 @@ public class publish_target extends type_processor_target {
       resource_catalog output_catalog = the_manager.output_catalog();
       string ideal_style = naming_strategy.dash_renderer.call(publish_generator.IDEAL_STYLE_NAME);
       resource_identifier css_source =
-          the_manager.source_catalog.resolve(ideal_style, base_extension.CSS);
+          the_manager.source_catalog().resolve(ideal_style, base_extension.CSS);
       string stylesheet_content = css_source.access_string(null).content().get();
       the_writer.write(stylesheet_content,
           new base_list<simple_name>(publish_generator.IDEAL_STYLE_NAME), base_extension.CSS);
@@ -54,7 +56,7 @@ public class publish_target extends type_processor_target {
   }
 
   @Override
-  protected void process_type(principal_type the_type) {
+  public void process_type(principal_type the_type) {
     the_generator.generate_for_type(the_type);
   }
 }

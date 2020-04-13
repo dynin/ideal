@@ -7,6 +7,8 @@ import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 
+import javax.annotation.Nullable;
+
 public class test_elements {
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test("test_elements.test_namespace_id");
@@ -17,6 +19,9 @@ public class test_elements {
     ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_elements.test_base_element");
     test_base_element();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_elements.test_make_element");
+    test_make_element();
     ideal.machine.elements.runtime_util.end_test();
   }
   public void test_namespace_id() {
@@ -36,5 +41,26 @@ public class test_elements {
     assert element.get_id() == text_library.P;
     assert element.attributes().is_empty();
     assert element.children() == null;
+  }
+  public void test_make_element() {
+    final base_element node0 = new base_element(text_library.P);
+    final base_string node1 = (base_string) new base_string("foo");
+    final base_list<text_node> nodes = new base_list<text_node>(node0, node1);
+    final text_element element = text_util.make_element(text_library.BODY, nodes);
+    assert element instanceof base_element;
+    assert ((base_element) element).get_id() == text_library.BODY;
+    assert ((base_element) element).attributes().is_empty();
+    final @Nullable text_fragment children = ((base_element) element).children();
+    assert children instanceof list_text_node;
+    final immutable_list<text_node> child_nodes = ((list_text_node) children).nodes();
+    assert child_nodes.size() == 2;
+    final text_node child0 = child_nodes.get(0);
+    assert child0 instanceof base_element;
+    assert ((base_element) child0).get_id() == text_library.P;
+    assert ((base_element) child0).attributes().is_empty();
+    assert ((base_element) child0).children() == null;
+    final text_node child1 = child_nodes.get(1);
+    assert child1 instanceof string;
+    assert ideal.machine.elements.runtime_util.values_equal(((string) child1), new base_string("foo"));
   }
 }

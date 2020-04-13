@@ -28,4 +28,32 @@ class test_elements {
     assert element.attributes().is_empty;
     assert element.children() is null;
   }
+
+  testcase test_make_element() {
+    node0 : base_element.new(text_library.P);
+    -- TODO: drop cast
+    node1 : "foo" as base_string;
+
+    nodes : base_list[text_node].new(node0, node1);
+    element : text_util.make_element(text_library.BODY, nodes);
+
+    assert element is base_element;
+    assert element.get_id() == text_library.BODY;
+    assert element.attributes().is_empty;
+
+    children : element.children();
+    assert children is list_text_node;
+    child_nodes : children.nodes();
+    assert child_nodes.size == 2;
+
+    child0 : child_nodes[0];
+    assert child0 is base_element;
+    assert child0.get_id() == text_library.P;
+    assert child0.attributes().is_empty;
+    assert child0.children() is null;
+
+    child1 : child_nodes[1];
+    assert child1 is string;
+    assert child1 == "foo";
+  }
 }

@@ -144,8 +144,7 @@ public class displayer {
     list<text_node> result = new base_list<text_node>();
 
     result.append(start);
-    text_element content = text_util.make_element(text_library.INDENT,
-        fragments.frozen_copy());
+    text_element content = text_util.make_element(text_library.INDENT, fragments.frozen_copy());
     content = base_element.make(text_library.DIV, content);
     result.append(content);
     result.append(end);

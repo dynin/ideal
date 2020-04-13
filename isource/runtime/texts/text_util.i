@@ -122,7 +122,6 @@ namespace text_util {
     return the_writer.elements();
   }
 
-  -- TODO: add a unit test
   text_element make_element(element_id id, readonly list[text_node] children) {
     var text_fragment or null child_fragment;
     -- TODO: use conditional ? operator

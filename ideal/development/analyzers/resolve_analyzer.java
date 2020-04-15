@@ -135,12 +135,8 @@ public class resolve_analyzer extends single_pass_analyzer {
     }
 
     declaration the_declaration = from_type.principal().get_declaration();
-    if (the_declaration instanceof type_announcement_analyzer) {
-      // System.out.println("LOOKUP " + the_name +
-      //   " DECL " + the_declaration + " P " +
-      //   ((type_announcement_analyzer) the_declaration).last_pass);
-      ((type_announcement_analyzer) the_declaration).
-          multi_pass_analysis(analysis_pass.TYPE_DECL);
+    if (the_declaration instanceof type_announcement) {
+      ((type_announcement) the_declaration).load_type();
     }
 
     readonly_list<action> all_resolved = get_context().resolve(from_type, the_name,

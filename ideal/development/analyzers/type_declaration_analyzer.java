@@ -197,20 +197,13 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
             short_name(), declared_in_type(), this, this);
       }
 
-      if (!has_parameters()) {
-        result_type = master;
-        inside_type = make_inside_type(result_type, this);
-
-        assert body == null;
-        body = make_body_list(source.body);
-
-        // TODO: merge with same code below
-        for (int i = 0; i < body.size(); ++i) {
-          analyze_and_ignore_errors(body.get(i), pass);
-        }
+      if (has_parameters()) {
+        return null;
       }
 
-      return null;
+      result_type = master;
+      inside_type = make_inside_type(result_type, this);
+      body = make_body_list(source.body);
     }
 
     if (pass == analysis_pass.TYPE_DECL) {
@@ -241,12 +234,10 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       }
     }
 
-    assert master != null;
     if (body == null) {
       assert has_errors();
       return null;
     }
-    assert body != null;
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL && has_parameters()) {
       for (int i = 0; i < parameters.size(); ++i) {
@@ -287,8 +278,10 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       maybe_add_default_supertype();
     }
 
-    for (int i = 0; i < body.size(); ++i) {
-      analyze_and_ignore_errors(body.get(i), pass);
+    if (body != null) {
+      for (int i = 0; i < body.size(); ++i) {
+        analyze_and_ignore_errors(body.get(i), pass);
+      }
     }
 
     if (pass == analysis_pass.SUPERTYPE_DECL) {

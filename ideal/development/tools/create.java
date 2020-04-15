@@ -123,7 +123,7 @@ class create {
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);
     assert passes.get(1) == analysis_pass.TARGET_DECL;
 
-    if (true || options.target == null) {
+    if (options.target == null) {
       for (int i = 2; i < passes.size(); ++i) {
         analysis_pass pass = passes.get(i);
         create_util.progress(pass.toString());

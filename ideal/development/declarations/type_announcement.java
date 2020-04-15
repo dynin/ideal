@@ -14,5 +14,6 @@ import ideal.development.elements.*;
 import javax.annotation.Nullable;
 
 public interface type_announcement extends type_declaration {
+  void load_type();
   type_declaration get_type_declaration();
 }

@@ -30,6 +30,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   private @Nullable analyzable external_declaration;
   private @Nullable principal_type inside_type;
   private @Nullable readonly_list<construct> external_body;
+  private boolean announcement_analysis_in_progress;
 
   public type_announcement_analyzer(type_announcement_construct source) {
     super(source);
@@ -48,6 +49,14 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
 
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+    assert !announcement_analysis_in_progress;
+    announcement_analysis_in_progress = true;
+    @Nullable error_signal result = do_announcement_analysis(pass);
+    announcement_analysis_in_progress = false;
+    return result;
+  }
+
+  private @Nullable error_signal do_announcement_analysis(analysis_pass pass) {
     if (pass == analysis_pass.TARGET_DECL) {
       // TODO: really handle modifiers, at least the document modifier.
       process_annotations(source.annotations, access_modifier.public_modifier);
@@ -69,8 +78,6 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
       } else {
         return new error_signal(new base_string("More than one type declaration"), this);
       }
-
-      return null;
     }
 
     if (pass == analysis_pass.TYPE_DECL) {
@@ -134,6 +141,13 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     }
 
     return null;
+  }
+
+  @Override
+  public void load_type() {
+    if (!announcement_analysis_in_progress) {
+      multi_pass_analysis(analysis_pass.METHOD_AND_VARIABLE_DECL);
+    }
   }
 
   @Override

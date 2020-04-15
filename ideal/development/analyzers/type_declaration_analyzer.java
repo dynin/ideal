@@ -197,6 +197,19 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
             short_name(), declared_in_type(), this, this);
       }
 
+      if (!has_parameters()) {
+        result_type = master;
+        inside_type = make_inside_type(result_type, this);
+
+        assert body == null;
+        body = make_body_list(source.body);
+
+        // TODO: merge with same code below
+        for (int i = 0; i < body.size(); ++i) {
+          analyze_and_ignore_errors(body.get(i), pass);
+        }
+      }
+
       return null;
     }
 
@@ -210,11 +223,10 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         with_params.set_declaration(this);
         result_type = with_params;
         add_promotion(result_type, master);
-      } else {
-        result_type = master;
+
+        inside_type = make_inside_type(result_type, this);
       }
 
-      inside_type = make_inside_type(result_type, this);
 
       if (parent() != core_types.root_type()) {
         add_promotion(inside_type, core_types.root_type());
@@ -224,8 +236,9 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         parameters = make_var_list(source.parameters.elements, pass);
       }
 
-      assert body == null;
-      body = make_body_list(source.body);
+      if (body == null) {
+        body = make_body_list(source.body);
+      }
     }
 
     assert master != null;

@@ -48,14 +48,23 @@ public class java_generator {
   }
 
   public void generate_for_type(principal_type the_type) {
-    assert the_type.get_declaration() instanceof type_declaration;
-    type_declaration decl = (type_declaration) the_type.get_declaration();
+    type_declaration the_type_declaration = get_type_declaration(the_type.get_declaration());
+    type_declaration_construct the_construct =
+        (type_declaration_construct) the_type_declaration.source_position();
 
-    type_declaration_construct the_declaration =
-        (type_declaration_construct) decl.source_position();
-
-    generate_top_level(the_type, new base_list<construct>(the_declaration),
+    generate_top_level(the_type, new base_list<construct>(the_construct),
         new empty<import_construct>());
+  }
+
+  private type_declaration get_type_declaration(declaration the_declaration) {
+    if (the_declaration instanceof type_announcement) {
+      return ((type_announcement) the_declaration).get_type_declaration();
+    } else if (the_declaration instanceof type_declaration) {
+      return (type_declaration) the_declaration;
+    } else {
+      utilities.panic("Type declaration expected");
+      return null;
+    }
   }
 
   private void generate_top_level(principal_type the_type, readonly_list<construct> constructs,
@@ -83,7 +92,7 @@ public class java_generator {
               (type_announcement_construct) the_construct;
           type_announcement_analyzer announced_analyzer =
               (type_announcement_analyzer) context.get_analyzable(the_declaration);
-          generate_top_level(announced_analyzer.get_master_type(),
+          generate_top_level(announced_analyzer.get_declared_type(),
               announced_analyzer.get_external_body(), all_imports);
         }
       }
@@ -92,7 +101,7 @@ public class java_generator {
       type_declaration the_declaration = (type_declaration) the_type.get_declaration();
       assert the_declaration != null;
       type_declaration_construct the_declaration_construct =
-          (type_declaration_construct) the_declaration.source_position();
+          (type_declaration_construct) get_type_declaration(the_declaration).source_position();
       generate_sources(the_type, the_declaration_construct, all_imports);
     }
   }

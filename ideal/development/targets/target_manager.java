@@ -46,4 +46,6 @@ public interface target_manager {
   @Nullable resource_catalog output_catalog();
 
   jinterop_library process_jinterop();
+
+  boolean has_errors();
 }

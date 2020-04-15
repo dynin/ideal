@@ -29,12 +29,10 @@ import javax.annotation.Nullable;
 
 public class publish_target extends type_processor_target {
 
-  private target_manager the_manager;
   private publish_generator the_generator;
 
   public publish_target(simple_name the_name, target_manager the_manager) {
-    super(the_name);
-    this.the_manager = the_manager;
+    super(the_name, the_manager);
   }
 
   @Override

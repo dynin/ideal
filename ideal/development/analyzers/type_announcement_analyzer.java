@@ -23,7 +23,8 @@ import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 
-public class type_announcement_analyzer extends declaration_analyzer<type_announcement_construct> {
+public class type_announcement_analyzer extends declaration_analyzer<type_announcement_construct>
+    implements type_announcement {
 
   private @Nullable type_declaration type_declaration;
   private @Nullable analyzable external_declaration;
@@ -34,6 +35,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     super(source);
   }
 
+  @Override
   public action_name short_name() {
     return source.name;
   }
@@ -44,35 +46,28 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     return inside_type;
   }
 
-  private boolean is_bootstrapped(principal_type the_type) {
-    return the_type == library().elements_package() ||
-           the_type == library().operators_package();
-  }
-
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
-
     if (pass == analysis_pass.TARGET_DECL) {
       // TODO: really handle modifiers, at least the document modifier.
       process_annotations(source.annotations, access_modifier.public_modifier);
 
       readonly_list<action> already_declared = get_context().lookup(declared_in_type(),
           short_name());
-      if (already_declared.size() == 1) {
+      if (already_declared.size() == 0) {
+        action_utilities.make_type(get_context(), source.kind, null,
+            short_name(), declared_in_type(), this, this);
+      } else if (already_declared.size() == 1) {
         action the_action = already_declared.get(0);
         principal_type the_type = the_action.result().type_bound().principal();
-        if (is_bootstrapped(the_type)) {
-          // Type is boostrapped, e.g. if it's library.elements or library.operators
-          type_declaration the_type_declaration = (type_declaration) the_type.get_declaration();
-          assert the_type_declaration != null;
-          type_declaration = the_type_declaration;
+        declaration the_declaration = the_type.get_declaration();
+        if (the_declaration != null) {
+          type_declaration = (type_declaration) the_declaration;
+        } else {
+          ((base_principal_type) the_type).set_declaration(this);
         }
       } else {
-        if (false) {
-          // TODO: make sure type declaration is lazily loaded
-          action_utilities.make_type(get_context(), source.kind, null,
-              short_name(), declared_in_type(), null, this);
-        }
+        return new error_signal(new base_string("More than one type declaration"), this);
       }
 
       return null;
@@ -156,13 +151,30 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     }
   }
 
+  @Override
   public type_declaration get_type_declaration() {
     assert type_declaration != null;
     return type_declaration;
   }
 
-  public principal_type get_master_type() {
+  @Override
+  public kind get_kind() {
+    return get_type_declaration().get_kind();
+  }
+
+  @Override
+  public principal_type get_declared_type() {
     return type_declaration.get_declared_type();
+  }
+
+  @Override
+  public void process_declaration(declaration_pass pass) {
+    type_declaration.process_declaration(pass);
+  }
+
+  @Override
+  public readonly_list<declaration> get_signature() {
+    return type_declaration.get_signature();
   }
 
   @Override

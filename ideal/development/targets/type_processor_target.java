@@ -18,11 +18,16 @@ import ideal.development.actions.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.transformers.*;
+import ideal.development.analyzers.*;
+import ideal.development.notifications.*;
 
 public abstract class type_processor_target extends target_value {
 
-  public type_processor_target(simple_name the_name) {
+  protected final target_manager the_manager;
+
+  public type_processor_target(simple_name the_name, target_manager the_manager) {
     super(the_name);
+    this.the_manager = the_manager;
   }
 
   public abstract void setup(analysis_context the_context);
@@ -35,6 +40,7 @@ public abstract class type_processor_target extends target_value {
     setup(the_context);
 
     immutable_list<action> actions = parameters.params();
+    list<principal_type> types = new base_list<principal_type>();
 
     for (int i = 0; i < actions.size(); ++i) {
       abstract_value type_value = actions.get(i).result();
@@ -43,7 +49,21 @@ public abstract class type_processor_target extends target_value {
         log.error("Expected type, found " + type_value);
         return;
       }
-      process_type((principal_type) type_value);
+
+      principal_type the_type = type_value.type_bound().principal();
+      declaration the_declaration = the_type.get_declaration();
+      if (the_declaration instanceof type_announcement_analyzer) {
+        ((type_announcement_analyzer) the_declaration).analyze();
+      }
+      type_utilities.prepare(the_type, declaration_pass.METHODS_AND_VARIABLES);
+
+      types.append(the_type);
+    }
+
+    if (!the_manager.has_errors()) {
+      for (int i = 0; i < types.size(); ++i) {
+        process_type(types.get(i));
+      }
     }
   }
 }

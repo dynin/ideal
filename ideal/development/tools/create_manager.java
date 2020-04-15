@@ -71,6 +71,7 @@ public class create_manager implements target_manager {
     notification_context.set(notifications);
   }
 
+  @Override
   public boolean has_errors() {
     return notifications.get_count() > 0;
   }

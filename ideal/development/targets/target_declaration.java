@@ -20,6 +20,7 @@ import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.kinds.*;
 import ideal.development.analyzers.*;
+import ideal.development.values.*;
 
 public class target_declaration extends declaration_analyzer<target_construct> {
 
@@ -35,11 +36,6 @@ public class target_declaration extends declaration_analyzer<target_construct> {
     return source.name;
   }
 
-  public action target_action() {
-    assert target_action != null;
-    return target_action;
-  }
-
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
     analyze_and_ignore_errors(expression, pass);
@@ -53,6 +49,24 @@ public class target_declaration extends declaration_analyzer<target_construct> {
     }
 
     return null;
+  }
+
+  public void process() {
+    analyze();
+
+    if (target_action == null) {
+      // TODO: report error
+      return;
+    }
+
+    assert target_action instanceof bound_procedure;
+    bound_procedure bound_target = (bound_procedure) target_action;
+
+    abstract_value the_target_value = bound_target.the_procedure_action.result();
+    assert the_target_value instanceof target_value;
+    target_value the_target = (target_value) the_target_value;
+
+    the_target.process(bound_target.parameters, get_context());
   }
 
   @Override

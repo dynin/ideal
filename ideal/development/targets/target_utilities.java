@@ -39,12 +39,4 @@ public class target_utilities {
 
     return result;
   }
-
-/*
-  Moved to text_util.
-  public static text_element make_element(element_id id, readonly_list<text_node> children) {
-    text_fragment child_fragment = children != null ? new base_list_text_node(children) : null;
-    return new base_element(id, new list_dictionary<attribute_id, string>(), child_fragment);
-  }
-  */
 }

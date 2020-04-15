@@ -21,12 +21,10 @@ import ideal.development.transformers.*;
 
 public class java_generator_target extends type_processor_target {
 
-  private target_manager the_manager;
   private @Nullable java_generator generator;
 
   public java_generator_target(simple_name the_name, target_manager the_manager) {
-    super(the_name);
-    this.the_manager = the_manager;
+    super(the_name, the_manager);
   }
 
   @Override

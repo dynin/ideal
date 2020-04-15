@@ -59,6 +59,7 @@ public abstract class type_action extends debuggable implements action {
 
   @Override
   public string to_string() {
-    return new base_string("type-action: ", get_type().to_string());
+    return new base_string(new base_string("type-action: "), get_type().to_string(),
+        new base_string(" @ "), source.to_string());
   }
 }

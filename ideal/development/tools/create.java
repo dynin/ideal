@@ -123,10 +123,12 @@ class create {
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);
     assert passes.get(1) == analysis_pass.TARGET_DECL;
 
-    for (int i = 2; i < passes.size(); ++i) {
-      analysis_pass pass = passes.get(i);
-      create_util.progress(pass.toString());
-      body.multi_pass_analysis(pass);
+    if (true || options.target == null) {
+      for (int i = 2; i < passes.size(); ++i) {
+        analysis_pass pass = passes.get(i);
+        create_util.progress(pass.toString());
+        body.multi_pass_analysis(pass);
+      }
     }
 
     if (!cm.has_errors()) {
@@ -161,32 +163,18 @@ class create {
     }
 
     if (options.target != null) {
-      //create_util.progress("TARGETS");
+      create_util.progress("TARGETS");
       readonly_list<target_declaration> targets = find_targets(constructs, the_context);
 
       for (int i = 0; i < targets.size(); ++i) {
         if (utilities.eq(targets.get(i).short_name().to_string(), options.target)) {
-          build_target(targets.get(i), cm, the_context);
+          targets.get(i).process();
           return;
         }
       }
 
       log.error("Target '" + options.target + "' not found.");
     }
-  }
-
-  private void build_target(target_declaration target_declaration, create_manager cm,
-      analysis_context the_context) {
-    assert target_declaration.target_action() != null;
-    assert target_declaration.target_action() instanceof bound_procedure;
-
-    bound_procedure bound_target = (bound_procedure) target_declaration.target_action();
-
-    abstract_value the_target_value = bound_target.the_procedure_action.result();
-    assert the_target_value instanceof target_value;
-    target_value the_target = (target_value) the_target_value;
-
-    the_target.process(bound_target.parameters, the_context);
   }
 
   // TODO: use filter()

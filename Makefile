@@ -1,4 +1,4 @@
-# Copyright 2014 The Ideal Authors. All rights reserved.
+# Copyright 2014-2020 The Ideal Authors. All rights reserved.
 #
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file or at
@@ -350,6 +350,10 @@ $(COACH_WAR_TARGET): $(COACH_TARGET) $(ISOURCES) $(COACH_WAR_FILES)
 	cp `find  $(APPENGINE_DIR)/lib/user/ -name \*jar` $(JAVACUP_JAR) $(COACH_WEB_INF_DIR)/lib/
 	cp $(GSON_JAR) $(COACH_WEB_INF_DIR)/lib/
 	@touch $@
+
+buildcoach: $(IDEAL_TARGET)
+	$(JAVAC_APPENGINE) $(SHOWCASE_COACH_JAVA)
+	@echo === Coach done.
 
 runserver: $(COACH_WAR_TARGET)
 	$(APPENGINE_DIR)/bin/dev_appserver.sh $(COACH_WAR_DIR)

@@ -6,13 +6,13 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.experiment.mini;
+package ideal.experimental.mini;
 
-import static ideal.experiment.mini.bootstrapped.text;
-import static ideal.experiment.mini.bootstrapped.text_string;
-import static ideal.experiment.mini.bootstrapped.indented_text;
-import static ideal.experiment.mini.bootstrapped.text_list;
-import static ideal.experiment.mini.bootstrapped.describable;
+import static ideal.experimental.mini.bootstrapped.text;
+import static ideal.experimental.mini.bootstrapped.text_string;
+import static ideal.experimental.mini.bootstrapped.indented_text;
+import static ideal.experimental.mini.bootstrapped.text_list;
+import static ideal.experimental.mini.bootstrapped.describable;
 
 import java.util.Arrays;
 import java.util.ArrayList;

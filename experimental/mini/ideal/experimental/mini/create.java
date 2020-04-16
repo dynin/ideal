@@ -6,10 +6,10 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.experiment.mini;
+package ideal.experimental.mini;
 
-import static ideal.experiment.mini.bootstrapped.*;
-import static ideal.experiment.mini.library.*;
+import static ideal.experimental.mini.bootstrapped.*;
+import static ideal.experimental.mini.library.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

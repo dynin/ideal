@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.experiment.mini;
+package ideal.experimental.mini;
 
 import java.awt.*;
 import java.awt.event.*;

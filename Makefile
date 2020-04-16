@@ -72,7 +72,6 @@ ONE = $(ISOURCE_DIR)/tests/1.i
 DIRECTORY = $(ISOURCE_DIR)/tests/directory.i
 CIRCLE = $(ISOURCE_DIR)/showcase/circle.i
 HELLO = $(ISOURCE_DIR)/showcase/hello.i
-IDEAL_RUNTIME = $(ISOURCE_DIR)/idealruntime.i
 # TODO: deprecate ISOURCES
 ISOURCES = $(ISOURCE_DIR)/*
 
@@ -86,12 +85,6 @@ COACH_WAR_DIR = $(BUILD_DIR)/coach-war
 COACH_WEB_INF_DIR = $(COACH_WAR_DIR)/WEB-INF
 COACH_WAR_TEMPLATE = $(COACH_RESOURCES_DIR)/war-template
 COACH_WAR_FILES = $(COACH_WAR_TEMPLATE)/* $(COACH_WAR_TEMPLATE)/WEB-INF/web.xml
-
-# For profiling
-AGENT_PATH = $(THIRD_PARTY_DIR)/yjp-12.0.6/bin/linux-x86-32/libyjpagent.so
-JAVA_PROFILING_OPT = -agentpath:$(AGENT_PATH)=tracing
-JAVA_PROFILING_OPT2 = -agentlib:hprof=cpu=times
-CREATE_PROF = $(JAVA) $(JAVA_PROFILING_OPT) $(CREATE_MAIN)
 
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \
@@ -151,31 +144,34 @@ SHOWCASE_COACH_JAVA = \
     ideal/showcase/coach/webforms/*.java \
     ideal/showcase/coach/appengine/*.java
 
-default: ideal-run
+default: print_elements
 
-all: $(IDEAL_TARGET)
+analyze_library: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_library
 
-ideal-run: $(IDEAL_TARGET) $(LIBRARY_ELEMENTS)
+analyze_all: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_all
+
+print_elements: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=print_elements
 
-library: $(IDEAL_TARGET) $(IDEAL_SOURCE)
-	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=generate_library
+generate_library: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_library
 
-libraryb: $(IDEAL_TARGET) $(IDEAL_SOURCE)
+bootstrap_library: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)
 
-libraryt: $(IDEAL_TARGET) $(IDEAL_SOURCE) rm-scratch
+test_library: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java
+
+### Running sample code
 
 1: $(IDEAL_TARGET) $(ONE)
 	$(CREATE) $(FLAGS_RUN) -input=$(ONE)
 
 12: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -input=$(ONETWO)
-
-12p: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE_PROF) $(FLAGS_RUN) -input=$(ONETWO)
 
 dir: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -input=$(DIRECTORY)
@@ -185,78 +181,71 @@ circle: $(IDEAL_TARGET) $(CIRCLE)
 
 ### Generating runtime
 
-runtime: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=generate_runtime
+generate_runtime: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_runtime
 
-runtimep: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE_PROF) -input=$(IDEAL_RUNTIME) -target=generate_runtime > /dev/null
-
-runtimet: $(IDEAL_TARGET) $(IDEAL_RUNTIME) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_all -output=$(SCRATCH_DIR)
+test_runtime: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
 	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
 	cp -r ideal/machine/* $(SCRATCH_DIR)/ideal/machine
 	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
 
-runtimeb: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
-
-runtimed: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=document_runtime \
-            -output=$(PRETTY_DIR)
+bootstrap_runtime: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
 
 ### Generating other
 
-reboot:
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
-
-allt: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(SCRATCH_DIR)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
+generate_all: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
 
-texts: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts
+reboot:
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(BOOTSTRAPPED_DIR)
 
-textst: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(SCRATCH_DIR)
+generate_texts: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_texts
+
+test_texts: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_texts -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/texts/*java
 
-textsb: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(BOOTSTRAPPED_DIR)
+bootstrap_texts: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_texts -output=$(BOOTSTRAPPED_DIR)
 
 ### Reflections runtime
 
-reflect: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_reflections
+generate_reflections: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections
 
-reflectt: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_reflections -output=$(SCRATCH_DIR)
+test_reflections: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/reflections/*java
 
-reflectb: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_reflections -output=$(BOOTSTRAPPED_DIR)
+bootstrap_reflections: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections -output=$(BOOTSTRAPPED_DIR)
+
+### Documentation generation
+
+document_elements: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_elements \
+            -output=$(PRETTY_DIR)
+
+document_library: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_library \
+            -output=$(PRETTY_DIR)
+
+document_runtime: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_runtime \
+            -output=$(PRETTY_DIR)
+
+document_all: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_all \
+            -output=$(PRETTY_DIR)
 
 ### Other targets
 
 import: $(IDEAL_TARGET)
 	$(CREATE) -debug-import
-
-pretty: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_elements \
-            -output=$(PRETTY_DIR)
-
-prettylib: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_library \
-            -output=$(PRETTY_DIR)
-
-prettylist: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=document_elements \
-            -output=$(PRETTY_DIR)
-
-doc: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_RUNTIME) -target=document_all \
-            -output=$(PRETTY_DIR)
 
 hello: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(HELLO)
@@ -326,6 +315,18 @@ wipeout:
 testall: wipeout buildall test
 	bin/regression.sh
 	bin/doc-regression.sh
+
+# Targets for profiling
+AGENT_PATH = $(THIRD_PARTY_DIR)/yjp-12.0.6/bin/linux-x86-32/libyjpagent.so
+JAVA_PROFILING_OPT = -agentpath:$(AGENT_PATH)=tracing
+JAVA_PROFILING_OPT2 = -agentlib:hprof=cpu=times
+CREATE_PROF = $(JAVA) $(JAVA_PROFILING_OPT) $(CREATE_MAIN)
+
+12p: $(IDEAL_TARGET) $(ONETWO)
+	$(CREATE_PROF) $(FLAGS_RUN) -input=$(ONETWO)
+
+runtimep: $(IDEAL_TARGET)
+	$(CREATE_PROF) -input=$(IDEAL_SOURCE) -target=generate_runtime > /dev/null
 
 # Targets related to Coach app
 

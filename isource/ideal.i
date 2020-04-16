@@ -8,12 +8,30 @@ use clean_slate;
 
 namespace ideal {
   namespace library;
+  namespace runtime;
+  namespace machine;
 }
+
+target analyze_library: analyze(ideal.library);
+
+target analyze_all: analyze(ideal.library, ideal.runtime);
+
+target print_elements: print_source(ideal.library.elements);
 
 target generate_library: generate_java(ideal.library);
 
-target print_elements: print_source(ideal.library.elements);
+target generate_runtime: generate_java(ideal.runtime);
+
+target generate_texts: generate_java(ideal.runtime.texts);
+
+target generate_reflections: generate_java(ideal.runtime.reflections);
+
+target generate_all: generate_java(ideal.library, ideal.runtime);
 
 target document_elements: print_documentation(ideal.library.elements);
 
 target document_library: print_documentation(ideal.library);
+
+target document_runtime: print_documentation(ideal.runtime);
+
+target document_all: print_documentation(ideal.library, ideal.runtime);

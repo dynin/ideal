@@ -24,6 +24,7 @@ Configuration components:
   use clean_slate;
   use strictest_checks;
   use good_manners; // Support for: please statement
+  use verbose_logging;
 
 Numbers:
 

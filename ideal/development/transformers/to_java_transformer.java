@@ -770,9 +770,11 @@ public class to_java_transformer extends base_transformer {
 
     principal_type declared_type = the_declaration.get_declared_type();
 
-    if (declared_type.get_declaration() != the_declaration) {
-      // This happens when specializes declaration, e.g. for collection[data]
-      return null;
+    if (false) { // Looks like this never happens.  TODO: retire this
+      if (declared_type.get_declaration() != the_declaration) {
+        // This happens when specializes declaration, e.g. for collection[data]
+        return null;
+      }
     }
 
     if (skip_type_declaration(declared_type)) {

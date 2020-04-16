@@ -63,7 +63,7 @@ public class publish_generator {
     type_declaration the_declaration = (type_declaration) the_type.get_declaration();
 
     type_declaration_construct the_declaration_construct =
-        (type_declaration_construct) the_declaration.source_position();
+        (type_declaration_construct) (get_type_declaration(the_declaration).source_position());
 
     if (the_type.get_kind().is_namespace()) {
       list<construct> namespace_body = new base_list<construct>();
@@ -72,7 +72,7 @@ public class publish_generator {
       readonly_list<type_declaration> sub_declarations =
           target_utilities.get_declared_types(the_declaration);
       for (int i = 0; i < sub_declarations.size(); ++i) {
-        type_declaration sub_declaration = sub_declarations.get(i);
+        type_declaration sub_declaration = get_type_declaration(sub_declarations.get(i));
         if (i < sub_declarations.size() - 1) {
           declare_successor(sub_declaration.get_declared_type(),
               sub_declarations.get(i + 1).get_declared_type());
@@ -110,6 +110,17 @@ public class publish_generator {
       generate_declaration(the_type, namespace_declaration);
     } else {
       generate_declaration(the_type, the_declaration_construct);
+    }
+  }
+
+   private type_declaration get_type_declaration(declaration the_declaration) {
+    if (the_declaration instanceof type_announcement) {
+      return ((type_announcement) the_declaration).get_type_declaration();
+    } else if (the_declaration instanceof type_declaration) {
+      return (type_declaration) the_declaration;
+    } else {
+      utilities.panic("Type declaration expected");
+      return null;
     }
   }
 

@@ -40,23 +40,19 @@ import ideal.development.targets.*;
 
 public class create_manager implements target_manager {
 
-  private static final string IDEAL_SOURCE_DIR = new base_string("isource");
-
-  public static final extension SOURCE_EXTENSION = base_extension.IDEAL_SOURCE;
-
   public final base_semantics language;
   public final principal_type root;
-  public final resource_catalog source_catalog;
+  private final resource_catalog top_catalog;
   public final analysis_context bootstrap_context;
   private final position root_position;
   private output_counter<notification> notifications;
   private @Nullable resource_catalog output_catalog;
   private @Nullable jinterop_library jinterop;
 
-  public create_manager(resource_catalog project_catalog) {
+  public create_manager(resource_catalog top_catalog) {
     language = new base_semantics();
     root = core_types.root_type();
-    source_catalog = project_catalog.resolve(IDEAL_SOURCE_DIR).access_catalog().content().get();
+    this.top_catalog = top_catalog;
     bootstrap_context = new create_analysis_context(this, language);
     root_position = semantics.BUILTIN_POSITION; // TODO: use resource id as position
     set_notification_handler((output<notification>) (output) log.log_output);
@@ -76,8 +72,9 @@ public class create_manager implements target_manager {
     return notifications.get_count() > 0;
   }
 
-  public @Nullable resource_catalog source_catalog() {
-    return source_catalog;
+  @Override
+  public resource_catalog top_catalog() {
+    return top_catalog;
   }
 
   public @Nullable resource_catalog output_catalog() {
@@ -109,13 +106,13 @@ public class create_manager implements target_manager {
   }
 
   private source_content load_source(resource_catalog parent_catalog, string filename) {
-    resource_identifier source_id = parent_catalog.resolve(filename, SOURCE_EXTENSION);
+    resource_identifier source_id = parent_catalog.resolve(filename, base_extension.IDEAL_SOURCE);
     create_util.progress_loading(source_id);
     return new source_content(source_id);
   }
 
   private resource_catalog library_catalog() {
-    return source_catalog.resolve(to_resource_name(common_library.library_name)).
+    return top_catalog.resolve(to_resource_name(common_library.library_name)).
         access_catalog().content().get();
   }
 
@@ -282,7 +279,7 @@ public class create_manager implements target_manager {
       declaration_catalog = catalog_id.access_catalog().content().get();
     }
 
-    resource_identifier source_id = declaration_catalog.resolve(name, SOURCE_EXTENSION);
+    resource_identifier source_id = declaration_catalog.resolve(name, base_extension.IDEAL_SOURCE);
     if (!source_id.exists()) {
       new base_notification(
           new base_string("Can't locate resource with type declaration"), the_declaration).report();
@@ -333,7 +330,7 @@ public class create_manager implements target_manager {
 
   public jinterop_library process_jinterop() {
     if (jinterop == null) {
-      source_content jinterop_source = load_source(source_catalog, jinterop_library.JINTEROP_NAME);
+      source_content jinterop_source = load_source(top_catalog, jinterop_library.JINTEROP_NAME);
       principal_type jinterop_frame = root;
       // TODO: panic on errors
       process_source(jinterop_source, jinterop_frame, bootstrap_context);

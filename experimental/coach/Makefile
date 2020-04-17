@@ -36,14 +36,13 @@ JAVAC_OPTS_APPENGINE = $(JAVAC_SOURCE_OPTS) \
 JAVAC_APPENGINE = $(JDK_DIR)/bin/javac $(JAVAC_OPTS_APPENGINE)
 
 IDEAL_TARGET = $(TARGETS_DIR)/ideal
+COACH_TARGET = $(TARGETS_DIR)/coach
+COACH_WAR_TARGET = $(TARGETS_DIR)/coach-war
 
 CREATE_MAIN = ideal.development.tools.create
 CREATE = $(JAVA) $(CREATE_MAIN)
 
-ISOURCE_DIR = isource
-
-COACH_TARGET = $(TARGETS_DIR)/coach
-COACH_WAR_TARGET = $(TARGETS_DIR)/coach-war
+ISOURCE_DIR = ../../isource
 
 COACH_RESOURCES_DIR = ideal/showcase/coach/resources
 COACH_IDEAL = $(COACH_RESOURCES_DIR)/coach.i
@@ -60,13 +59,13 @@ SHOWCASE_COACH_JAVA = \
     ideal/showcase/coach/webforms/*.java \
     ideal/showcase/coach/appengine/*.java
 
-$(COACH_TARGET): $(SHOWCASE_COACH_JAVA)
+$(COACH_TARGET): $(SHOWCASE_COACH_JAVA) $(IDEAL_TARGET)
 	$(JAVAC_APPENGINE) $(SHOWCASE_COACH_JAVA)
 	@touch $@
 	@echo === Coach done.
 
 coach: $(IDEAL_TARGET) $(COACH_TARGET) $(COACH_IDEAL)
-	$(CREATE) -debug-reflect -input=$(COACH_IDEAL)
+	$(CREATE) -top=$(ISOURCE_DIR) -debug-reflect -input=$(COACH_IDEAL)
 
 $(COACH_WAR_TARGET): $(COACH_TARGET) $(COACH_WAR_FILES)
 	$(MKDIR) $(COACH_WEB_INF_DIR)

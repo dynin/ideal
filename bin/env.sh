@@ -7,7 +7,7 @@ JAVA="${JDK_DIR}/bin/java ${JAVA_OPTS}"
 
 MAINCLASS="ideal.development.tools.create"
 
-BASEARGS="-hide-declarations"
+BASEARGS="-top=isource -hide-declarations"
 RUNARGS="$BASEARGS -debug-progress -debug-constructs -print -run"
 DOCARGS="$BASEARGS -pretty-print"
 TEXTDOCARGS="$BASEARGS -print"

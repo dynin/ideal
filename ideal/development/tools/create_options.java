@@ -11,6 +11,7 @@ package ideal.development.tools;
 import ideal.library.elements.*;
 
 class create_options {
+  public string top;
   public string input;
   public string output;
   public string target;

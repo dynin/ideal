@@ -36,3 +36,4 @@
 - [ ] Handle # in comments
 - [ ] Add block comments
 - [ ] Implement empty dictionary
+- [ ] Add readonly list.last

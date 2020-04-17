@@ -44,8 +44,18 @@ public class base_resource_catalog implements resource_catalog {
       if (component.is_empty() || ideal.machine.elements.runtime_util.values_equal(component, resource_util.CURRENT_CATALOG)) {
         continue;
       } else if (ideal.machine.elements.runtime_util.values_equal(component, resource_util.PARENT_CATALOG)) {
-        if (result.is_empty()) { } else {
-          result.remove_last();
+        if (result.is_empty()) {
+          if (the_resource_store.allow_up()) {
+            result.append(component);
+          } else { }
+        } else {
+          final string last = result.at(result.size() - 1).get();
+          if (ideal.machine.elements.runtime_util.values_equal(last, resource_util.PARENT_CATALOG)) {
+            assert the_resource_store.allow_up();
+            result.append(component);
+          } else {
+            result.remove_last();
+          }
         }
       } else {
         result.append(component);
@@ -53,6 +63,8 @@ public class base_resource_catalog implements resource_catalog {
     }
     if (absolute) {
       result.prepend(new base_string(""));
+    } else if (result.is_empty()) {
+      result.append(resource_util.CURRENT_CATALOG);
     }
     return new base_resource_identifier(the_resource_store, result.frozen_copy());
   }

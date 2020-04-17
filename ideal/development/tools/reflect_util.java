@@ -50,16 +50,13 @@ public class reflect_util {
     method_printer = new javascript_printer(printer_mode.CURLY);
   }
 
-  public static void start_reflect(string input_name) {
-    resource_catalog project_catalog = filesystem.CURRENT_CATALOG;
-    create_manager cm = new create_manager(project_catalog);
-    cm.process_bootstrap();
+  public static void start_reflect(create_manager manager, source_content input) {
+    manager.process_bootstrap();
 
-    analysis_context context = cm.new_analysis_context();
-    principal_type parent = cm.new_block(new base_string("reflect"), context);
-    source_content input_source = new source_content(project_catalog.resolve(input_name));
+    analysis_context context = manager.new_analysis_context();
+    principal_type parent = manager.new_block(new base_string("reflect"), context);
 
-    list<construct> decl = cm.process_source(input_source, parent, context);
+    list<construct> decl = manager.process_source(input, parent, context);
     type_declaration world_decl = create_manager.get_declaration(decl, context);
     assert world_decl != null;
 

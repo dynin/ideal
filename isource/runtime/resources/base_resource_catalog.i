@@ -61,9 +61,20 @@ class base_resource_catalog {
         continue;
       } else if (component == resource_util.PARENT_CATALOG) {
         if (result.is_empty) {
-          -- TODO: log attempt to break out of the catalog
+          if (the_resource_store.allow_up) {
+            result.append(component);
+          } else {
+            -- TODO: log attempt to break out of the catalog
+          }
         } else {
-          result.remove_last();
+          -- TODO: implement list.last
+          last : result[result.size - 1 as nonnegative];
+          if (last == resource_util.PARENT_CATALOG) {
+            assert the_resource_store.allow_up;
+            result.append(component);
+          } else {
+            result.remove_last();
+          }
         }
       } else {
         result.append(component);
@@ -72,6 +83,8 @@ class base_resource_catalog {
 
     if (absolute) {
       result.prepend("");
+    } else if (result.is_empty) {
+      result.append(resource_util.CURRENT_CATALOG);
     }
 
     return base_resource_identifier.new(the_resource_store, result.frozen_copy());

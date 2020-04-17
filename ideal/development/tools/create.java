@@ -60,18 +60,24 @@ class create {
     }
 
     assert options.input != null;
-    string input_name = options.input;
+    source_content input = new source_content(filesystem.CURRENT_CATALOG.resolve(options.input));
 
     @Nullable string output_name = options.output;
 
+    create_util.progress("INIT");
+
+    resource_catalog top_catalog = filesystem.CURRENT_CATALOG;
+    if (options.top != null) {
+      top_catalog = top_catalog.resolve(options.top).access_catalog().content().get();
+    }
+
+    create_manager cm = new create_manager(top_catalog);
+
     if (options.DEBUG_REFLECT) {
-      reflect_util.start_reflect(input_name);
+      reflect_util.start_reflect(cm, input);
       return;
     }
 
-    create_util.progress("INIT");
-
-    create_manager cm = new create_manager(filesystem.CURRENT_CATALOG);
     cm.process_targets();
 
     if (output_name != null) {
@@ -81,7 +87,6 @@ class create {
 
     create_util.progress("PARSE");
 
-    source_content input = new source_content(filesystem.CURRENT_CATALOG.resolve(input_name));
     list<construct> constructs = cm.parse(input);
     assert constructs != null;
 

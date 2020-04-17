@@ -49,7 +49,7 @@ BASEPARSER_TARGET = $(TARGETS_DIR)/baseparser
 IDEAL_TARGET = $(TARGETS_DIR)/ideal
 
 CREATE_MAIN = ideal.development.tools.create
-CREATE = $(JAVA) $(CREATE_MAIN)
+CREATE = $(JAVA) $(CREATE_MAIN) -top=isource
 
 FLAGS_RUN = -debug-progress -run
 

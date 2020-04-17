@@ -34,6 +34,8 @@ import com.google.appengine.api.users.*;
  */
 public abstract class base_servlet extends HttpServlet {
 
+  private static final string IDEAL_SOURCE_DIR = new base_string("isource");
+
   private static final name APP_NAME_PARAM = new name("app_name");
   private static final name RESTRICT_URI_PARAM = new name("restrict_uri");
   private static final name DATASTORE_NAME_PARAM = new name("datastore_name");
@@ -73,11 +75,12 @@ public abstract class base_servlet extends HttpServlet {
     users_whitelist = parse_email_list(the_config.get(USERS_PARAM));
     users_whitelist.add_all(admins_whitelist);
 
-    resources = new servlet_resources(servlet_config.getServletContext()).top();
+    resource_catalog resources = new servlet_resources(servlet_config.getServletContext()).top();
+    resources = resources.resolve(IDEAL_SOURCE_DIR).access_catalog().content().get();
 
     the_translator = new translator(resources);
 
-    source_content source = load_source(get_source_name(), create_manager.SOURCE_EXTENSION);
+    source_content source = load_source(get_source_name(), base_extension.IDEAL_SOURCE);
     translation_result translated = translate_source(source, app_name, null);
     if (!translated.is_success()) {
       utilities.panic("Translation error " + translated.get_error_messages());
@@ -121,7 +124,7 @@ public abstract class base_servlet extends HttpServlet {
   }
 
   private source_content load_source(string filename, extension ext) {
-    return new source_content(creator().source_catalog.resolve(filename, ext));
+    return new source_content(creator().top_catalog().resolve(filename, ext));
   }
 
   private static set<string> parse_email_list(string param) {

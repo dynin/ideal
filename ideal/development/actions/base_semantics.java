@@ -88,7 +88,7 @@ public class base_semantics implements semantics {
     assert !the_best.is_empty();
 
     if (the_best.size() == 1) {
-      action the_action = the_best.get(0);
+      action the_action = the_best.first();
       abstract_value action_result = the_action.result();
       if (target != null &&
           !target.matches(action_result) &&
@@ -121,7 +121,7 @@ public class base_semantics implements semantics {
     }
 
     if (candidates.size() == 1) {
-      return new base_list<action>(candidates.get(0).get_action());
+      return new base_list<action>(candidates.first().get_action());
     }
 
     for (int i = 0; i < candidates.size(); ++i) {
@@ -247,7 +247,7 @@ public class base_semantics implements semantics {
         // TODO: unexpected--can just return null here...
         utilities.panic("Too many supertypes");
       } else if (candidates.size() == 1) {
-        return candidates.get(0);
+        return candidates.first();
       }
     }
 
@@ -297,7 +297,7 @@ public class base_semantics implements semantics {
       }
       readonly_list<action> best = select_best(actions, candidates);
       if (best.size() == 1) {
-        return best.get(0);
+        return best.first();
       }
       if (best.size() > 1) {
         utilities.panic("Multiple subtypes");
@@ -316,7 +316,7 @@ public class base_semantics implements semantics {
       readonly_list<action> best = select_best(actions, candidates);
 
       if (best.size() == 1) {
-        return best.get(0);
+        return best.first();
       }
     }
 
@@ -378,7 +378,7 @@ public class base_semantics implements semantics {
 
     readonly_list<action> aliases = actions.lookup(subtype_type.principal(),
         special_name.TYPE_ALIAS);
-    if (aliases.size() == 1 && aliases.get(0).result() == supertype_type) {
+    if (aliases.size() == 1 && aliases.first().result() == supertype_type) {
       //log.debug("ALIAS " +  subtype_value + " SUPER: " + supertype_value);
       return true;
     }
@@ -612,8 +612,8 @@ public class base_semantics implements semantics {
     immutable_list<abstract_value> params = new_type.get_parameters().fixed_size_list();
     // TODO: signal an error
     assert params.size() == 1;
-    assert params.get(0) instanceof type;
-    type param = (type) params.get(0);
+    assert params.first() instanceof type;
+    type param = (type) params.first();
 
     action deref = new dereference_action(param, the_declaration, the_declaration);
     context.add(new_type.get_flavored(flavors.readonly_flavor), special_name.PROMOTION, deref);

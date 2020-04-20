@@ -132,7 +132,7 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
     if (parameters.size() != 1) {
       return null;
     }
-    type param = (type) parameters.get(0);
+    type param = (type) parameters.first();
     principal_type master = pt.get_master();
 
     if (master == library().list_type()) {

@@ -102,7 +102,7 @@ namespace text_util {
     if (nodes.is_empty) {
       return EMPTY_FRAGMENT;
     } else if (nodes.size == 1) {
-      return nodes[0];
+      return nodes.first;
     } else {
       return base_list_text_node.new(nodes);
     }

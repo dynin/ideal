@@ -36,6 +36,18 @@ class base_range {
     return the_begin == the_end;
   }
 
+  implement nonnegative first() {
+    assert !is_empty;
+    return the_begin;
+  }
+
+  implement nonnegative last() {
+    assert !is_empty;
+    result : the_end - 1;
+    assert result is nonnegative;
+    return result;
+  }
+
   implement implicit readonly reference[nonnegative] get(nonnegative index) pure {
     result : the_begin + index;
     assert result < the_end;

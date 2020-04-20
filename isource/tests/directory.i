@@ -114,7 +114,7 @@ public datatype entry_v2_impl {
 boolean custom_predicate(entry_v2 the_entry) pure {
   name : the_entry.name;
   -- A name that starts with 'J': matches "Jim" and "John".
-  return !name.is_empty && name[0] == 'J';
+  return !name.is_empty && name.first == 'J';
 }
 
 void find_js(group_v2 the_group) {

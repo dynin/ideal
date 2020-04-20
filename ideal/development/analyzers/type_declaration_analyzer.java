@@ -176,7 +176,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
       master_already_declared = resolved.size() == 1;
       if (master_already_declared) {
-        action maybe_type_action = resolved.get(0);
+        action maybe_type_action = resolved.first();
         if (! (maybe_type_action instanceof type_action)) {
           return new error_signal(messages.type_expected, source);
         }

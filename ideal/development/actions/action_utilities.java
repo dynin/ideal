@@ -115,7 +115,7 @@ public class action_utilities {
     principal_type the_principal = procedure_type.principal();
     assert the_principal.get_kind() == type_kinds.procedure_kind;
 
-    return ((parametrized_type) the_principal).get_parameters().get(0);
+    return ((parametrized_type) the_principal).get_parameters().first();
   }
 
   public static base_execution_context get_context(execution_context the_context) {

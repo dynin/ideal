@@ -24,7 +24,7 @@ public class test_graph {
     assert !foo.is_empty();
     assert foo.size() == 1;
     final immutable_list<string> foo_elements = foo.elements();
-    assert ideal.machine.elements.runtime_util.values_equal(foo_elements.get(0), new base_string("bar"));
+    assert ideal.machine.elements.runtime_util.values_equal(foo_elements.first(), new base_string("bar"));
   }
   public void cycle_test() {
     final base_graph<string, string> the_graph = new base_graph<string, string>();

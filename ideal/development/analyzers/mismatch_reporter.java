@@ -68,7 +68,7 @@ public class mismatch_reporter {
     }
 
     assert filtered_candidates.size() == 1;
-    return signal_mismatch(filtered_candidates.get(0), the_parameter_target, context, source);
+    return signal_mismatch(filtered_candidates.first(), the_parameter_target, context, source);
   }
 
   static error_signal signal_mismatch(action candidate, parameter_target the_parameter_target,

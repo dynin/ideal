@@ -633,7 +633,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     if (c.the_operator.name.is_keyword()) {
       fragments.append(print_space());
     }
-    fragments.append(print(c.arguments.get(0)));
+    fragments.append(print(c.arguments.first()));
     return text_util.join(fragments);
   }
 

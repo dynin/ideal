@@ -31,6 +31,8 @@ public class test_range {
     assert the_range.end() == 8;
     assert the_range.size() == 3;
     assert !the_range.is_empty();
+    assert the_range.first() == 5;
+    assert the_range.last() == 7;
     assert the_range.get(0) == 5;
     assert the_range.get(1) == 6;
     assert the_range.get(2) == 7;
@@ -40,6 +42,8 @@ public class test_range {
     assert the_slice.size() == 2;
     assert the_slice.begin() == 6;
     assert the_slice.end() == 8;
+    assert the_slice.first() == 6;
+    assert the_slice.last() == 7;
     final range the_slice2 = the_range.slice(1, 1);
     assert the_slice2.size() == 0;
     assert the_slice2.is_empty();
@@ -48,6 +52,8 @@ public class test_range {
     final immutable_list<Integer> reversed = the_range.reverse();
     assert reversed.size() == 3;
     assert !reversed.is_empty();
+    assert reversed.first() == 7;
+    assert reversed.last() == 5;
     assert reversed.get(0) == 7;
     assert reversed.get(1) == 6;
     assert reversed.get(2) == 5;

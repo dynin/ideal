@@ -37,3 +37,4 @@
 - [ ] Add block comments
 - [ ] Implement empty dictionary
 - [ ] Add readonly list.last
+- [ ] Catch abstract methods that are not implemented

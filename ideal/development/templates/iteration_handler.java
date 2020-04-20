@@ -39,7 +39,7 @@ public class iteration_handler implements sexpression_handler {
     if (arguments.size() < 2) {
       return new error_signal(new base_string("Expected at least two arguments"), source);
     }
-    construct var_arg = arguments.get(0);
+    construct var_arg = arguments.first();
     if (!(var_arg instanceof sexpression_construct)) {
       return new error_signal(new base_string("Expected an s-expression"), var_arg);
     }
@@ -47,10 +47,10 @@ public class iteration_handler implements sexpression_handler {
     if (var_decl.size() != 2) {
       return new error_signal(new base_string("Expected two elements"), var_arg);
     }
-    if (! (var_decl.get(0) instanceof name_construct)) {
-      return new error_signal(new base_string("Expected an identifier"), var_decl.get(0));
+    if (! (var_decl.first() instanceof name_construct)) {
+      return new error_signal(new base_string("Expected an identifier"), var_decl.first());
     }
-    name_construct name = ((name_construct) var_decl.get(0));
+    name_construct name = ((name_construct) var_decl.first());
     construct list_construct = var_decl.get(1);
     analyzable init_action = template.make(list_construct);
     analyzable body_action =

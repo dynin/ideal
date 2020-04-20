@@ -26,7 +26,7 @@ public class simple_name extends debuggable implements action_name, readonly_dis
   @Override
   public base_string to_string() {
     if (segments.size() == 1) {
-      return (base_string) segments.get(0);
+      return (base_string) segments.first();
     } else {
       StringBuilder s = new StringBuilder();
       for (int i = 0; i < segments.size(); ++i) {

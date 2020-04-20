@@ -29,7 +29,7 @@ public class base_resource_catalog implements resource_catalog {
     boolean absolute = false;
     int index;
     final base_list<string> result = new base_list<string>();
-    if (components.get(0).is_empty()) {
+    if (components.first().is_empty()) {
       if (the_resource_store.allow_up()) {
         absolute = true;
       } else { }
@@ -49,8 +49,7 @@ public class base_resource_catalog implements resource_catalog {
             result.append(component);
           } else { }
         } else {
-          final string last = result.at(result.size() - 1).get();
-          if (ideal.machine.elements.runtime_util.values_equal(last, resource_util.PARENT_CATALOG)) {
+          if (ideal.machine.elements.runtime_util.values_equal(result.last(), resource_util.PARENT_CATALOG)) {
             assert the_resource_store.allow_up();
             result.append(component);
           } else {

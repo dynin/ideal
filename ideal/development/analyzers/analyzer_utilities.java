@@ -128,7 +128,7 @@ public class analyzer_utilities {
     readonly_list<action> actions = the_context.lookup(
         the_variable.declared_in_type().get_flavored(dispatch_flavor), the_variable.short_name());
     assert actions.size() == 1;
-    return (dispatch_action) actions.get(0);
+    return (dispatch_action) actions.first();
   }
 
   public static void add_instance_variable(variable_declaration the_variable,

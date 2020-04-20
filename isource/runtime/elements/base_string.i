@@ -130,6 +130,16 @@ class base_string {
     return state.length() == 0;
   }
 
+  implement character first() {
+    assert !is_empty;
+    return state.charAt(0);
+  }
+
+  implement character last() {
+    assert !is_empty;
+    return state.charAt(state.length() - 1);
+  }
+
   implement implicit readonly reference[character] get(nonnegative index) pure {
     return state.charAt(index);
   }

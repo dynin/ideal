@@ -281,6 +281,14 @@ package elements {
     -- TODO: handle writeonly refs
     not_yet_implemented implicit writeonly reference[element] set(nonnegative index) writeonly pure;
 
+    --- Access the first element of the list.
+    --- Assumes the list is not empty.
+    element first readonly;
+
+    --- Access the last element of the list.
+    --- Assumes the list is not empty.
+    element last readonly;
+
     void append(element the_element);
     void append_all(readonly list[element] the_list);
     void prepend(element the_element);

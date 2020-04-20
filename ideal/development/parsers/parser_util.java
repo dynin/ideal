@@ -25,7 +25,7 @@ public class parser_util {
 
   public static void ensure_empty(readonly_list<annotation_construct> seq) {
     if (!seq.is_empty()) {
-      new base_notification(messages.unexpected_modifier, seq.get(0)).report();
+      new base_notification(messages.unexpected_modifier, seq.first()).report();
     }
   }
 
@@ -47,7 +47,7 @@ public class parser_util {
   // TODO: rewrite with list methods..
   private static boolean has_variables(readonly_list<construct> constructs) {
     for (int i = 0; i < constructs.size(); ++i) {
-      if (constructs.get(0) instanceof variable_construct) {
+      if (constructs.get(i) instanceof variable_construct) {
         return true;
       }
     }

@@ -37,7 +37,7 @@ public class escape_fn extends base_procedure {
   public final entity_wrapper execute(readonly_list<entity_wrapper> args,
           execution_context exec_context) {
     assert args.size() == 1;
-    string s = ((string_value) args.get(0)).unwrap();
+    string s = ((string_value) args.first()).unwrap();
     s = runtime_util.escape_markup(s);
     return new base_string_value(s, library().immutable_string_type());
   }

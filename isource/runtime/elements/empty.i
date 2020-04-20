@@ -19,6 +19,14 @@ class empty[value element_type] {
     return true;
   }
 
+  implement element_type first() {
+    utilities.panic("Can't access the first element of the empty list");
+  }
+
+  implement element_type last() {
+    utilities.panic("Can't access the last element of the empty list");
+  }
+
   implement boolean contains(element_type key) {
     return false;
   }

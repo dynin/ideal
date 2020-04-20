@@ -95,7 +95,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
       return make_error("Expected a non-empty s-expression", sexpr);
     }
 
-    construct first = sexpr.elements.get(0);
+    construct first = sexpr.elements.first();
     if (! (first instanceof name_construct)) {
       return make_error("Expected a symbol as the first element of s-expression", first);
     }
@@ -138,7 +138,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
       sexpression_construct sexpr = (sexpression_construct) c;
 
       if (!sexpr.elements.is_empty()) {
-        construct first = sexpr.elements.get(0);
+        construct first = sexpr.elements.first();
 
         if (first instanceof name_construct) {
           action_name name = ((name_construct) first).the_name;

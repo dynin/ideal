@@ -40,7 +40,7 @@ class base_resource_catalog {
     var nonnegative index;
     result : base_list[string].new();
 
-    if (components[0].is_empty) {
+    if (components.first.is_empty) {
       if (the_resource_store.allow_up) {
         absolute = true;
       } else {
@@ -67,9 +67,7 @@ class base_resource_catalog {
             -- TODO: log attempt to break out of the catalog
           }
         } else {
-          -- TODO: implement list.last
-          last : result[result.size - 1 as nonnegative];
-          if (last == resource_util.PARENT_CATALOG) {
+          if (result.last == resource_util.PARENT_CATALOG) {
             assert the_resource_store.allow_up;
             result.append(component);
           } else {

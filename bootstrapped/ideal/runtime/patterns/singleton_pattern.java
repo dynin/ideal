@@ -14,10 +14,10 @@ public class singleton_pattern<element_type> implements pattern<element_type> {
     this.the_element = the_element;
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
-    return the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.get(0), the_element);
+    return the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.first(), the_element);
   }
   public @Override boolean is_viable_prefix(final readonly_list<element_type> the_list) {
-    return the_list.is_empty() || (the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.get(0), the_element));
+    return the_list.is_empty() || (the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.first(), the_element));
   }
   public @Override @Nullable range find_in(final readonly_list<element_type> the_list, final int start_index) {
     for (int i = start_index; i < the_list.size(); i += 1) {

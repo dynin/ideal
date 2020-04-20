@@ -20,7 +20,7 @@ class test_graph {
     assert foo.size == 1;
     -- TODO: we shouldn't need to introduce a variable here.
     foo_elements : foo.elements;
-    assert foo_elements[0] == "bar";
+    assert foo_elements.first == "bar";
   }
 
   testcase cycle_test() {

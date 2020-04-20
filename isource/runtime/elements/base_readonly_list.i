@@ -63,7 +63,7 @@ class base_readonly_list[value element_type] {
       if (new_elements.is_empty) {
         return;
       } else if (new_elements.size == 1) {
-        insert(index, new_elements[0]);
+        insert(index, new_elements.first);
         return;
       }
 
@@ -123,6 +123,18 @@ class base_readonly_list[value element_type] {
   implement nonnegative size() => state.size;
 
   implement boolean is_empty() => state.size == 0;
+
+  implement element_type first() {
+    assert !is_empty;
+    return state.the_elements[0];
+  }
+
+  implement element_type last() {
+    assert !is_empty;
+    last_index : state.size - 1;
+    assert last_index is nonnegative;
+    return state.the_elements[last_index];
+  }
 
   implement implicit readonly reference[element_type] get(nonnegative index) pure {
     assert index < state.size;

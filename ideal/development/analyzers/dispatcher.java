@@ -63,7 +63,7 @@ public class dispatcher extends construct_visitor<analyzable> {
   @Override
   public analyzable process_list(list_construct source) {
     if (source.is_simple_grouping()) {
-      return process(source.elements.get(0));
+      return process(source.elements.first());
     } else {
       return new parameter_analyzer(source);
     }
@@ -107,7 +107,7 @@ public class dispatcher extends construct_visitor<analyzable> {
   @Override
   public analyzable process_supertype(supertype_construct source) {
     if (source.types.size() == 1) {
-      return new supertype_analyzer(process(source.types.get(0)), source);
+      return new supertype_analyzer(process(source.types.first()), source);
     } else {
       return new declaration_list_analyzer(make_supertype_list(source, source), source);
     }

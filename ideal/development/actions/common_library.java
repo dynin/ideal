@@ -227,7 +227,7 @@ public class common_library implements value {
   public type get_reference_parameter(type ref_type) {
     parametrized_type ptype = (parametrized_type) ref_type.principal();
     assert ptype.get_master() == REFERENCE_TYPE;
-    return (type) ptype.get_parameters().get(0);
+    return (type) ptype.get_parameters().first();
   }
 
   public master_type procedure_type() {
@@ -271,7 +271,7 @@ public class common_library implements value {
     readonly_list<type> types = action_utilities.lookup_types(context, elements_type, name);
     // TODO: handle error conditions
     if (types.size() == 1) {
-      return (master_type) types.get(0);
+      return (master_type) types.first();
     } else {
       return action_utilities.make_type(context, kind, the_flavor_profile, name, elements_type,
           null, semantics.BUILTIN_POSITION);
@@ -282,7 +282,7 @@ public class common_library implements value {
     simple_name the_name = simple_name.make(new base_string(sname));
     readonly_list<action> actions = context.lookup(boolean_type(), the_name);
     assert actions.size() == 1;
-    abstract_value the_value = actions.get(0).result();
+    abstract_value the_value = actions.first().result();
     assert the_value instanceof enum_value;
     return (enum_value) the_value;
   }

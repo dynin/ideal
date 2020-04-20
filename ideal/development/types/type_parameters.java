@@ -49,6 +49,10 @@ public class type_parameters extends debuggable implements deeply_immutable_data
     }
   }
 
+  public abstract_value first() {
+    return get(0);
+  }
+
   public abstract_value get(int index) {
     if (index < parameters.size()) {
       return parameters.get(index);

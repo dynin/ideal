@@ -61,8 +61,6 @@ ONE = $(ISOURCE_DIR)/tests/1.i
 DIRECTORY = $(ISOURCE_DIR)/tests/directory.i
 CIRCLE = $(ISOURCE_DIR)/showcase/circle.i
 HELLO = $(ISOURCE_DIR)/showcase/hello.i
-# TODO: deprecate ISOURCES
-ISOURCES = $(ISOURCE_DIR)/*
 
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \

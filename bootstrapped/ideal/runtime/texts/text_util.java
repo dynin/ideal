@@ -72,7 +72,7 @@ public class text_util {
     if (nodes.is_empty()) {
       return EMPTY_FRAGMENT;
     } else if (nodes.size() == 1) {
-      return nodes.get(0);
+      return nodes.first();
     } else {
       return new base_list_text_node(nodes);
     }

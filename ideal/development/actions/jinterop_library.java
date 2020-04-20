@@ -153,7 +153,7 @@ public class jinterop_library implements value {
       utilities.panic("Got " + types.size() + " for " + sname);
       assert types.size() == 1;
     }
-    return (principal_type) types.get(0);
+    return (principal_type) types.first();
   }
 
   // TODO: use features...

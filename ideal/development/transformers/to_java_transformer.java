@@ -131,7 +131,7 @@ public class to_java_transformer extends base_transformer {
       if (c instanceof list_construct) {
         list_construct the_list_construct = (list_construct) c;
         assert the_list_construct.is_simple_grouping();
-        c = the_list_construct.elements.get(0);
+        c = the_list_construct.elements.first();
       } else {
         assert c.source_position() instanceof construct : "Source of " + c + " is " +
             c.source_position() + " for " + the_construct;
@@ -411,8 +411,18 @@ public class to_java_transformer extends base_transformer {
         if (should_use_wrapper_in_return(super_procedure)) {
           return true;
         }
+      } else if (overriden_declaration instanceof variable_declaration) {
+        variable_declaration super_variable = (variable_declaration) overriden_declaration;
+        if (super_variable instanceof specialized_variable) {
+          super_variable = ((specialized_variable) super_variable).get_main();
+        }
+        type return_type = super_variable.value_type();
+        if (return_type.principal().get_declaration() instanceof type_parameter_declaration) {
+          return true;
+        }
       }
     }
+
     return false;
   }
 
@@ -470,7 +480,7 @@ public class to_java_transformer extends base_transformer {
           assert ret instanceof parameter_construct;
           readonly_list<construct> ret_parameters = ((parameter_construct) ret).parameters.elements;
           assert ret_parameters.size() == 1;
-          ret = ret_parameters.get(0);
+          ret = ret_parameters.first();
           if (ref_flavor == writeonly_flavor) {
             // TODO: use copy ctor.
             list<construct> new_parameters = new base_list<construct>(parameters);
@@ -517,7 +527,7 @@ public class to_java_transformer extends base_transformer {
     assert the_values.size() == 2;
     type null_type = (type) the_values.get(1);
     assert null_type.principal() == library().null_type();
-    return (type) the_values.get(0);
+    return (type) the_values.first();
   }
 
   private construct remove_null_union(construct the_construct) {
@@ -530,7 +540,7 @@ public class to_java_transformer extends base_transformer {
     assert null_construct instanceof name_construct;
     assert utilities.eq(((name_construct) null_construct).the_name,
         library().null_type().short_name());
-    return transform_with_mapping(arguments.get(0), mapping.MAP_TO_WRAPPER_TYPE);
+    return transform_with_mapping(arguments.first(), mapping.MAP_TO_WRAPPER_TYPE);
   }
 
   private construct make_type_with_mapping(type the_type, position pos, mapping new_mapping) {
@@ -1373,7 +1383,7 @@ public class to_java_transformer extends base_transformer {
 
     // TODO: handle other assignment operators.
     if (c.the_operator == operator.ASSIGN) {
-      construct lhs = c.arguments.get(0);
+      construct lhs = c.arguments.first();
       construct rhs = transform_and_maybe_rewrite(c.arguments.get(1));
       if (lhs instanceof parameter_construct) {
         parameter_construct lhs2 = (parameter_construct) lhs;
@@ -1384,7 +1394,7 @@ public class to_java_transformer extends base_transformer {
           if (proc_decl.annotations().has(implicit_modifier) && plhs.size() == 1) {
             construct main = transform(lhs2.main);
             readonly_list<construct> set_params =
-                new base_list<construct>(transform(plhs.get(0)), rhs);
+                new base_list<construct>(transform(plhs.first()), rhs);
             construct set = new resolve_construct(main, new name_construct(SET_NAME, source),
                 source);
             return make_call(set, set_params, source);

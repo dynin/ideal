@@ -54,7 +54,7 @@ public class test_elements {
     assert children instanceof list_text_node;
     final immutable_list<text_node> child_nodes = ((list_text_node) children).nodes();
     assert child_nodes.size() == 2;
-    final text_node child0 = child_nodes.get(0);
+    final text_node child0 = child_nodes.first();
     assert child0 instanceof base_element;
     assert ((base_element) child0).get_id() == text_library.P;
     assert ((base_element) child0).attributes().is_empty();

@@ -415,7 +415,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       utilities.panic("More than one superclass for " + this_type);
     }
 
-    return superclasses.is_empty() ? null : superclasses.get(0);
+    return superclasses.is_empty() ? null : superclasses.first();
   }
 
   private void do_declare_this(type_flavor this_flavor) {
@@ -513,7 +513,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
   private readonly_list<analyzable> rewrite_ctor_body(readonly_list<analyzable> body) {
     if (!body.is_empty()) {
-      analyzable first = body.get(0);
+      analyzable first = body.first();
       if (first instanceof parameter_analyzer) {
         analyzable first_main = ((parameter_analyzer) first).main_analyzable;
         if (first_main instanceof resolve_analyzer) {

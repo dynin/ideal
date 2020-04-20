@@ -26,7 +26,7 @@ public class quoted_token_element implements scanner_element {
     this.the_token_type = the_token_type;
     string name = this.the_token_type.name();
     assert name.size() == 1;
-    quote_character = name.get(0);
+    quote_character = name.first();
   }
 
   // TODO: FIX ESCAPING!!!

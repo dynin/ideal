@@ -15,11 +15,11 @@ class singleton_pattern[readonly equality_comparable element_type] {
   }
 
   override implicit boolean call(readonly list[element_type] the_list) {
-    return the_list.size == 1 && the_list[0] == the_element;
+    return the_list.size == 1 && the_list.first == the_element;
   }
 
   override boolean is_viable_prefix(readonly list[element_type] the_list) {
-    return the_list.is_empty || (the_list.size == 1 && the_list[0] == the_element);
+    return the_list.is_empty || (the_list.size == 1 && the_list.first == the_element);
   }
 
   override range or null find_in(readonly list[element_type] the_list,

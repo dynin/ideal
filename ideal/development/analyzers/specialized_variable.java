@@ -46,12 +46,15 @@ public class specialized_variable extends debuggable implements variable_declara
            get_category() == variable_category.INSTANCE;
   }
 
+  public variable_declaration get_main() {
+    return main;
+  }
+
   @Override
   public action_name short_name() {
     return main.short_name();
   }
 
-  @Override
   public action analyze() {
     return common_library.get_instance().void_instance().to_action(this);
   }

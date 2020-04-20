@@ -59,12 +59,12 @@ class create {
       return;
     }
 
+    create_util.progress("INIT");
+
     assert options.input != null;
     source_content input = new source_content(filesystem.CURRENT_CATALOG.resolve(options.input));
 
     @Nullable string output_name = options.output;
-
-    create_util.progress("INIT");
 
     resource_catalog top_catalog = filesystem.CURRENT_CATALOG;
     if (options.top != null) {
@@ -122,7 +122,7 @@ class create {
         new declaration_list_analyzer(constructs, cm.root, the_context, input);
 
     immutable_list<analysis_pass> passes = analysis_pass.all();
-    assert passes.get(0) == analysis_pass.BEFORE_EVALUATION;
+    assert passes.first() == analysis_pass.BEFORE_EVALUATION;
 
     create_util.progress(analysis_pass.TARGET_DECL.toString());
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);

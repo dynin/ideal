@@ -46,7 +46,7 @@ class test_elements {
     child_nodes : children.nodes();
     assert child_nodes.size == 2;
 
-    child0 : child_nodes[0];
+    child0 : child_nodes.first;
     assert child0 is base_element;
     assert child0.get_id() == text_library.P;
     assert child0.attributes().is_empty;

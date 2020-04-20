@@ -169,7 +169,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
           declared_in_type().get_flavored(flavors.mutable_flavor), short_name(), null, this);
       if (shadowed_actions.size() > 0) {
         for (int i = 0; i < shadowed_actions.size(); ++i) {
-          action shadowed = shadowed_actions.get(0);
+          action shadowed = shadowed_actions.first();
           if (! (shadowed instanceof type_action) && ! (shadowed instanceof error_signal)) {
             notification original = new base_notification("Shadowed declaration",
                 shadowed.get_declaration());

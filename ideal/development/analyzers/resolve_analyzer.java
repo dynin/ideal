@@ -174,7 +174,7 @@ public class resolve_analyzer extends single_pass_analyzer {
     }
 
     assert all_resolved.size() == 1;
-    main_candidate = all_resolved.get(0);
+    main_candidate = all_resolved.first();
     if (from != null) {
       // TODO: don't convert from to action twice...
       main_candidate = main_candidate.bind_from(action_not_error(from), this);
@@ -203,7 +203,7 @@ public class resolve_analyzer extends single_pass_analyzer {
             get_context(), this);
       }
 
-      result = implicit_results.get(0).bind_from(main_candidate, this);
+      result = implicit_results.first().bind_from(main_candidate, this);
     }
 
     type_utilities.prepare(result.result(), resolve_pass);

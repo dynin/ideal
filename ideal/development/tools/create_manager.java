@@ -169,7 +169,7 @@ public class create_manager implements target_manager {
 
     // TODO: gracefully handle errors.
     assert constructs.size() == 1;
-    type_declaration_construct module_decl = (type_declaration_construct) constructs.get(0);
+    type_declaration_construct module_decl = (type_declaration_construct) constructs.first();
     check(new type_declaration_analyzer(module_decl, module.get_parent(), bootstrap_context));
     assert module.get_declaration() != null;
     assert bootstrap_context.get_analyzable(module_decl) != null;
@@ -319,7 +319,7 @@ public class create_manager implements target_manager {
       if (actions.size() != 1) {
         utilities.panic("Can't process operator " + symbol);
       }
-      action the_action = operator_procedure.to_action(actions.get(0));
+      action the_action = operator_procedure.to_action(actions.first());
       bootstrap_context.add(parent, the_operator, the_action);
     } else {
       for (int i = 0; i < actions.size(); ++i) {
@@ -351,7 +351,7 @@ public class create_manager implements target_manager {
       return null;
     }
 
-    analyzable a = context.get_analyzable(constructs.get(0));
+    analyzable a = context.get_analyzable(constructs.first());
     if (! (a instanceof type_declaration_analyzer)) {
       log.error("Type declaration expected.");
       return null;

@@ -67,7 +67,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         action_utilities.make_type(get_context(), source.kind, null,
             short_name(), declared_in_type(), this, this);
       } else if (already_declared.size() == 1) {
-        action the_action = already_declared.get(0);
+        action the_action = already_declared.first();
         principal_type the_type = the_action.result().type_bound().principal();
         declaration the_declaration = the_type.get_declaration();
         if (the_declaration != null) {

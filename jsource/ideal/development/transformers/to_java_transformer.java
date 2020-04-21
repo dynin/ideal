@@ -42,7 +42,7 @@ public class to_java_transformer extends base_transformer {
     NO_MAPPING;
   }
 
-  private final j_adapter_library j_adapter;
+  private final java_adapter_library java_adapter;
   private final analysis_context context;
   private list<construct> common_headers;
   private set<principal_type> implicit_names;
@@ -60,8 +60,8 @@ public class to_java_transformer extends base_transformer {
 
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
 
-  public to_java_transformer(j_adapter_library j_adapter, analysis_context context) {
-    this.j_adapter = j_adapter;
+  public to_java_transformer(java_adapter_library java_adapter, analysis_context context) {
+    this.java_adapter = java_adapter;
     this.context = context;
     this.mapping_strategy = mapping.MAP_TO_PRIMITIVE_TYPE;
 
@@ -69,8 +69,8 @@ public class to_java_transformer extends base_transformer {
 
     implicit_names = new hash_set<principal_type>();
     implicit_names.add(core_types.root_type());
-    implicit_names.add(j_adapter.lang_package());
-    implicit_names.add(j_adapter.builtins_package());
+    implicit_names.add(java_adapter.lang_package());
+    implicit_names.add(java_adapter.builtins_package());
 
     imported_names = new hash_set<principal_type>();
   }
@@ -97,8 +97,8 @@ public class to_java_transformer extends base_transformer {
       for (int i = 0; i < imports.size(); ++i) {
         import_construct the_import = process_import(imports.get(i));
         principal_type imported_type = (principal_type) get_type(the_import.type);
-        if (imported_type == j_adapter.builtins_package() ||
-            imported_type.get_parent() == j_adapter.builtins_package()) {
+        if (imported_type == java_adapter.builtins_package() ||
+            imported_type.get_parent() == java_adapter.builtins_package()) {
           continue;
         }
         if (the_import.has_implicit()) {
@@ -168,7 +168,7 @@ public class to_java_transformer extends base_transformer {
       }
       if (the_action.result() instanceof principal_type) {
         principal_type the_type = (principal_type) the_action.result();
-        if (j_adapter.is_mapped(the_type)) {
+        if (java_adapter.is_mapped(the_type)) {
           return make_type(the_type, source);
         }
       }
@@ -560,19 +560,19 @@ public class to_java_transformer extends base_transformer {
     principal_type principal = the_type.principal();
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
-        @Nullable principal_type mapped = j_adapter.map_to_primitive(principal);
+        @Nullable principal_type mapped = java_adapter.map_to_primitive(principal);
         if (mapped != null) {
           principal = mapped;
         }
         break;
       case MAP_TO_WRAPPER_TYPE:
-        @Nullable simple_name mapped_name = j_adapter.map_to_wrapper(principal);
+        @Nullable simple_name mapped_name = java_adapter.map_to_wrapper(principal);
         if (mapped_name != null) {
           return new name_construct(mapped_name, pos);
         }
         break;
       case NO_MAPPING:
-        if (j_adapter.is_mapped(principal)) {
+        if (java_adapter.is_mapped(principal)) {
           utilities.panic("No mapping expected for " + principal);
         }
         break;
@@ -642,7 +642,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean is_top_package(type the_type) {
-    return the_type == j_adapter.java_package() || the_type == j_adapter.javax_package();
+    return the_type == java_adapter.java_package() || the_type == java_adapter.javax_package();
   }
 
   private construct make_full_name(construct name, principal_type the_type, position pos) {
@@ -750,7 +750,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean skip_type_declaration(principal_type the_type) {
-    if (j_adapter.is_mapped(the_type) || the_type.is_subtype_of(library().null_type())) {
+    if (java_adapter.is_mapped(the_type) || the_type.is_subtype_of(library().null_type())) {
       return true;
     }
     kind the_kind = the_type.get_kind();
@@ -1460,14 +1460,14 @@ public class to_java_transformer extends base_transformer {
       }
       type second_type = second.result().type_bound();
 
-      boolean is_primitive = j_adapter.is_mapped(first_type.principal()) ||
-          j_adapter.is_mapped(second_type.principal());
+      boolean is_primitive = java_adapter.is_mapped(first_type.principal()) ||
+          java_adapter.is_mapped(second_type.principal());
       boolean is_reference_equality =
           first_type.is_subtype_of(library().reference_equality_type().get_flavored(any_flavor)) ||
           second_type.is_subtype_of(library().reference_equality_type().get_flavored(any_flavor));
 
       if (!is_primitive && !is_reference_equality) {
-        construct values_equal = new resolve_construct(make_type(j_adapter.runtime_util_class(),
+        construct values_equal = new resolve_construct(make_type(java_adapter.runtime_util_class(),
             source), new name_construct(OBJECTS_EQUAL_NAME, source), source);
         return make_call(values_equal, transform_parameters(c.arguments), source);
       }
@@ -1475,7 +1475,7 @@ public class to_java_transformer extends base_transformer {
       // TODO: convert into an equivalence function call if the argument is not a primitive.
     } else if (c.the_operator == operator.CONCATENATE) {
       if (!is_string_type(c.arguments.get(0)) || !is_string_type(c.arguments.get(1))) {
-        construct concatenation = new resolve_construct(make_type(j_adapter.runtime_util_class(),
+        construct concatenation = new resolve_construct(make_type(java_adapter.runtime_util_class(),
             source), new name_construct(CONCATENATE_NAME, source), source);
         return make_call(concatenation, transform(c.arguments), source);
       }
@@ -1531,7 +1531,7 @@ public class to_java_transformer extends base_transformer {
 
   private boolean is_string_type(construct the_construct) {
     type the_type = result_value(get_action(the_construct));
-    return the_type.principal() == j_adapter.string_type();
+    return the_type.principal() == java_adapter.string_type();
   }
 
   @Override
@@ -1616,7 +1616,7 @@ public class to_java_transformer extends base_transformer {
     headers.append_all(common_headers);
     if (has_nullable(the_declaration)) {
       // TODO: kill empty line after common imports but before nullable import?
-      headers.append(make_import(j_adapter.nullable_type(), source));
+      headers.append(make_import(java_adapter.nullable_type(), source));
       headers.append(make_newline(source));
     }
 

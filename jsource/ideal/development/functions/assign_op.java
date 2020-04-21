@@ -80,7 +80,7 @@ public class assign_op extends binary_procedure {
   }
 
   private type immutable_java_string() {
-    return j_adapter_library.get_instance().string_type().
+    return java_adapter_library.get_instance().string_type().
         get_flavored(flavors.deeply_immutable_flavor);
   }
 

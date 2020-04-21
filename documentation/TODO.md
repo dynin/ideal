@@ -39,3 +39,4 @@
 - [x] Add readonly list.last
 - [ ] Add readonly collection.is_not_empty
 - [ ] Catch abstract methods that are not implemented
+- [ ] Introduce ideal/development/languages/...

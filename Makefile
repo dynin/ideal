@@ -25,13 +25,14 @@ JAVACUP_JAR = $(THIRD_PARTY_DIR)/java-cup-11b.jar
 
 THIRD_PARTY_JARS = $(JSR305_JAR):$(JUNIT_JAR):$(JAVACUP_JAR)
 
+JSOURCE_DIR = jsource
 BOOTSTRAPPED_DIR = bootstrapped
 
 JAVA = $(JDK_DIR)/bin/java -ea -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS)
 JAVAC_SOURCE_OPTS = -source $(JDK_VERSION) -target $(JDK_VERSION) -Xlint:deprecation
 JAVAC_OPTS = $(JAVAC_SOURCE_OPTS) \
         -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS) -d $(CLASSES_DIR) \
-	-sourcepath .:$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
+	-sourcepath $(JSOURCE_DIR):$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
 JAVAC = $(JDK_DIR)/bin/javac $(JAVAC_OPTS)
 JAVAC_HERMETIC_OPTS = $(JAVAC_SOURCE_OPTS) -classpath $(THIRD_PARTY_JARS) -d $(CLASSES_DIR)
 JAVAC_HERMETIC = $(JDK_DIR)/bin/javac $(JAVAC_HERMETIC_OPTS)
@@ -75,42 +76,42 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java
 
 MACHINE_JAVA = \
-    ideal/machine/elements/*.java \
-    ideal/machine/channels/*.java \
-    ideal/machine/resources/*.java
+    $(JSOURCE_DIR)/ideal/machine/elements/*.java \
+    $(JSOURCE_DIR)/ideal/machine/channels/*.java \
+    $(JSOURCE_DIR)/ideal/machine/resources/*.java
 
-PARSER_CUP = ideal/development/parsers/base_parser.cup
+PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
 
 DEVELOPMENT_JAVA = \
-    ideal/development/elements/*.java \
-    ideal/development/texts/*.java \
-    ideal/development/components/*.java \
-    ideal/development/comments/*.java \
-    ideal/development/annotations/*.java \
-    ideal/development/names/*.java \
-    ideal/development/flavors/*.java \
-    ideal/development/modifiers/*.java \
-    ideal/development/declarations/*.java \
-    ideal/development/constructs/*.java \
-    ideal/development/kinds/*.java \
-    ideal/development/types/*.java \
-    ideal/development/literals/*.java \
+    $(JSOURCE_DIR)/ideal/development/elements/*.java \
+    $(JSOURCE_DIR)/ideal/development/texts/*.java \
+    $(JSOURCE_DIR)/ideal/development/components/*.java \
+    $(JSOURCE_DIR)/ideal/development/comments/*.java \
+    $(JSOURCE_DIR)/ideal/development/annotations/*.java \
+    $(JSOURCE_DIR)/ideal/development/names/*.java \
+    $(JSOURCE_DIR)/ideal/development/flavors/*.java \
+    $(JSOURCE_DIR)/ideal/development/modifiers/*.java \
+    $(JSOURCE_DIR)/ideal/development/declarations/*.java \
+    $(JSOURCE_DIR)/ideal/development/constructs/*.java \
+    $(JSOURCE_DIR)/ideal/development/kinds/*.java \
+    $(JSOURCE_DIR)/ideal/development/types/*.java \
+    $(JSOURCE_DIR)/ideal/development/literals/*.java \
     \
-    ideal/development/actions/*.java \
-    ideal/development/notifications/*.java \
-    ideal/development/values/*.java \
-    ideal/development/functions/*.java \
-    ideal/development/scanners/*.java \
-    ideal/development/analyzers/*.java \
-    ideal/development/templates/*.java \
-    ideal/development/transformers/*.java \
-    ideal/development/printers/*.java \
-    ideal/development/extensions/*.java \
-    ideal/development/targets/*.java \
-    ideal/development/parsers/*.java \
-    ideal/development/documenters/*.java \
-    ideal/development/tools/*.java \
-    ideal/development/tests/*.java
+    $(JSOURCE_DIR)/ideal/development/actions/*.java \
+    $(JSOURCE_DIR)/ideal/development/notifications/*.java \
+    $(JSOURCE_DIR)/ideal/development/values/*.java \
+    $(JSOURCE_DIR)/ideal/development/functions/*.java \
+    $(JSOURCE_DIR)/ideal/development/scanners/*.java \
+    $(JSOURCE_DIR)/ideal/development/analyzers/*.java \
+    $(JSOURCE_DIR)/ideal/development/templates/*.java \
+    $(JSOURCE_DIR)/ideal/development/transformers/*.java \
+    $(JSOURCE_DIR)/ideal/development/printers/*.java \
+    $(JSOURCE_DIR)/ideal/development/extensions/*.java \
+    $(JSOURCE_DIR)/ideal/development/targets/*.java \
+    $(JSOURCE_DIR)/ideal/development/parsers/*.java \
+    $(JSOURCE_DIR)/ideal/development/documenters/*.java \
+    $(JSOURCE_DIR)/ideal/development/tools/*.java \
+    $(JSOURCE_DIR)/ideal/development/tests/*.java
 
 default: print_elements
 
@@ -155,7 +156,7 @@ generate_runtime: $(IDEAL_TARGET)
 test_runtime: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
 	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
-	cp -r ideal/machine/* $(SCRATCH_DIR)/ideal/machine
+	cp -r $(JSOURCE_DIR)/ideal/machine/* $(SCRATCH_DIR)/ideal/machine
 	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
 
 bootstrap_runtime: $(IDEAL_TARGET)

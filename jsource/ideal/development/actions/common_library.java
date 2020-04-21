@@ -308,6 +308,10 @@ public class common_library implements value {
     return instance;
   }
 
+  public analysis_context get_context() {
+    return context;
+  }
+
   // TODO: fix this hack
   public static singleton_value do_get_undefined_instance() {
     assert instance != null;

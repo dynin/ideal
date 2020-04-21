@@ -56,7 +56,6 @@ public class create_manager implements target_manager {
     bootstrap_context = new create_analysis_context(this, language);
     root_position = semantics.BUILTIN_POSITION; // TODO: use resource id as position
     set_notification_handler((output<notification>) (output) log.log_output);
-    new j_adapter_library(bootstrap_context);
   }
 
   public common_library library() {

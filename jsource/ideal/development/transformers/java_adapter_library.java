@@ -19,9 +19,9 @@ import ideal.development.flavors.*;
 import ideal.development.actions.*;
 import ideal.development.analyzers.*;
 
-public class j_adapter_library implements value {
+public class java_adapter_library implements value {
 
-  private static j_adapter_library instance;
+  private static java_adapter_library instance;
 
   private analysis_context context;
 
@@ -48,17 +48,10 @@ public class j_adapter_library implements value {
   private final dictionary<principal_type, principal_type> primitive_mapping;
   private final dictionary<principal_type, simple_name> wrapper_mapping;
 
-  public j_adapter_library(analysis_context context) {
-    this.context = context;
+  private java_adapter_library() {
+    common_library library = common_library.get_instance();
+    context = library.get_context();
 
-    primitive_mapping = new list_dictionary<principal_type, principal_type>();
-    wrapper_mapping = new list_dictionary<principal_type, simple_name>();
-
-    assert instance == null;
-    instance = this;
-  }
-
-  private void initialize() {
     principal_type machine_type = machine_namespace();
     machine_adapters_namespace = get_type(machine_type, "adapters");
 
@@ -77,13 +70,17 @@ public class j_adapter_library implements value {
     annotation_package = get_type(javax_package, "annotation");
     nullable_type = get_type(annotation_package, "Nullable");
 
-    common_library library = common_library.get_instance();
+    primitive_mapping = new list_dictionary<principal_type, principal_type>();
+    wrapper_mapping = new list_dictionary<principal_type, simple_name>();
 
     add_mapping(library.boolean_type(), boolean_type(), "Boolean");
     add_mapping(library.character_type(), char_type(), "Character");
     add_mapping(library.integer_type(), int_type(), "Integer");
     add_mapping(library.nonnegative_type(), int_type(), "Integer");
     add_mapping(library.void_type(), library.void_type(), "Void");
+
+    assert instance == null;
+    instance = this;
   }
 
   private void add_mapping(principal_type ideal_type, principal_type java_type,
@@ -183,12 +180,9 @@ public class j_adapter_library implements value {
     return (principal_type) types.first();
   }
 
-  // TODO: use features...
-  public static j_adapter_library get_instance() {
-    assert instance != null;
-
-    if (instance.machine_namespace == null) {
-      instance.initialize();
+  public static java_adapter_library get_instance() {
+    if (instance == null) {
+      instance = new java_adapter_library();
     }
 
     return instance;

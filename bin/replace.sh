@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM='ideal.runtime.interop'
-TO='ideal.machine.elements'
+FROM='j_adapter'
+TO='java_adapter'
 
 #cd $HOME/Projects/ideal
 

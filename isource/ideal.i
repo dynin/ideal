@@ -14,7 +14,7 @@ namespace ideal {
 
 target analyze_library: analyze(ideal.library);
 
-target analyze_all: analyze(ideal.library, ideal.runtime);
+target analyze_all: analyze(ideal.library, ideal.runtime, ideal.machine);
 
 target print_elements: print_source(ideal.library.elements);
 

@@ -345,4 +345,12 @@ public class analyzer_utilities {
     }
     return the_type.bind_parameters(new type_parameters(args));
   }
+
+  public static void analyze_and_prepare(principal_type the_type) {
+    declaration the_declaration = the_type.get_declaration();
+    if (the_declaration instanceof type_announcement_analyzer) {
+      ((type_announcement_analyzer) the_declaration).analyze();
+    }
+    type_utilities.prepare(the_type, declaration_pass.METHODS_AND_VARIABLES);
+  }
 }

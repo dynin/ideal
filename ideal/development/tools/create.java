@@ -101,13 +101,6 @@ class create {
     } else {
       create_util.progress("BOOTSTRAP");
       cm.process_bootstrap();
-
-      // TODO: make processing jinterop a feature that is activated with a 'use' construct.
-      if (options.target != null) {
-        create_util.progress("JINTEROP");
-        cm.process_jinterop();
-      }
-
       test_library.init(cm.bootstrap_context, cm.root);
     }
 

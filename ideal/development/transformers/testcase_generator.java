@@ -39,7 +39,7 @@ public class testcase_generator {
     }
 
     position source = the_type_declaration;
-    construct runtime_util_name = make_type(jinterop_library.get_instance().runtime_util_class(),
+    construct runtime_util_name = make_type(j_adapter_library.get_instance().runtime_util_class(),
         source);
     construct start_construct = new resolve_construct(runtime_util_name,
           new name_construct(START_TEST, source), source);

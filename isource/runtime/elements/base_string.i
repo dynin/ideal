@@ -5,10 +5,10 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 import ideal.library.texts.string_text_node;
-import java.builtins.char;
-import java.lang.Object;
-import java.lang.String;
-import java.lang.StringBuffer;
+import ideal.machine.adapters.java.builtins.char;
+import ideal.machine.adapters.java.lang.Object;
+import ideal.machine.adapters.java.lang.String;
+import ideal.machine.adapters.java.lang.StringBuffer;
 
 class base_string {
   extends debuggable;

@@ -36,5 +36,6 @@
 - [ ] Handle # in comments
 - [ ] Add block comments
 - [ ] Implement empty dictionary
-- [ ] Add readonly list.last
+- [x] Add readonly list.last
+- [ ] Add readonly collection.is_not_empty
 - [ ] Catch abstract methods that are not implemented

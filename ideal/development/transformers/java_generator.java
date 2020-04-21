@@ -34,14 +34,14 @@ import ideal.development.declarations.*;
 
 public class java_generator {
 
-  private final jinterop_library jinterop;
+  private final j_adapter_library j_adapter;
   private final analysis_context context;
   private final content_writer processor;
   private final java_printer printer;
 
-  public java_generator(jinterop_library jinterop, analysis_context context,
+  public java_generator(j_adapter_library j_adapter, analysis_context context,
       content_writer processor) {
-    this.jinterop = jinterop;
+    this.j_adapter = j_adapter;
     this.context = context;
     this.processor = processor;
     this.printer = new java_printer(printer_mode.CURLY);
@@ -138,7 +138,7 @@ public class java_generator {
 
   private void generate_sources(principal_type main_type, type_declaration_construct main_decl,
       readonly_list<import_construct> all_imports) {
-    to_java_transformer to_java = new to_java_transformer(jinterop, context);
+    to_java_transformer to_java = new to_java_transformer(j_adapter, context);
     to_java.set_type_context(main_type, all_imports, main_decl);
     readonly_list<construct> generated = to_java.transform1(main_decl);
 

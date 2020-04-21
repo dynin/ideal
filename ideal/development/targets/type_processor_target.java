@@ -51,12 +51,7 @@ public abstract class type_processor_target extends target_value {
       }
 
       principal_type the_type = type_value.type_bound().principal();
-      declaration the_declaration = the_type.get_declaration();
-      if (the_declaration instanceof type_announcement_analyzer) {
-        ((type_announcement_analyzer) the_declaration).analyze();
-      }
-      type_utilities.prepare(the_type, declaration_pass.METHODS_AND_VARIABLES);
-
+      analyzer_utilities.analyze_and_prepare(the_type);
       types.append(the_type);
     }
 

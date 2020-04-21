@@ -36,6 +36,7 @@ import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.functions.*;
+import ideal.development.transformers.*;
 import ideal.development.targets.*;
 
 public class create_manager implements target_manager {
@@ -47,7 +48,6 @@ public class create_manager implements target_manager {
   private final position root_position;
   private output_counter<notification> notifications;
   private @Nullable resource_catalog output_catalog;
-  private @Nullable jinterop_library jinterop;
 
   public create_manager(resource_catalog top_catalog) {
     language = new base_semantics();
@@ -56,6 +56,7 @@ public class create_manager implements target_manager {
     bootstrap_context = new create_analysis_context(this, language);
     root_position = semantics.BUILTIN_POSITION; // TODO: use resource id as position
     set_notification_handler((output<notification>) (output) log.log_output);
+    new j_adapter_library(bootstrap_context);
   }
 
   public common_library library() {
@@ -326,17 +327,6 @@ public class create_manager implements target_manager {
         bootstrap_context.add(parent, the_operator, actions.get(i));
       }
     }
-  }
-
-  public jinterop_library process_jinterop() {
-    if (jinterop == null) {
-      source_content jinterop_source = load_source(top_catalog, jinterop_library.JINTEROP_NAME);
-      principal_type jinterop_frame = root;
-      // TODO: panic on errors
-      process_source(jinterop_source, jinterop_frame, bootstrap_context);
-      jinterop = new jinterop_library(bootstrap_context, jinterop_frame);
-    }
-    return jinterop;
   }
 
   public static @Nullable type_declaration_analyzer get_declaration(list<construct> constructs,

@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.actions;
+package ideal.development.transformers;
 
 import javax.annotation.Nullable;
 import ideal.library.elements.*;
@@ -16,12 +16,12 @@ import ideal.development.names.*;
 import ideal.development.kinds.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
+import ideal.development.actions.*;
+import ideal.development.analyzers.*;
 
-public class jinterop_library implements value {
+public class j_adapter_library implements value {
 
-  public static final base_string JINTEROP_NAME = new base_string("jinterop");
-
-  private static jinterop_library instance;
+  private static j_adapter_library instance;
 
   private analysis_context context;
 
@@ -40,16 +40,29 @@ public class jinterop_library implements value {
   private principal_type annotation_package;
   private principal_type nullable_type;
 
-  private principal_type machine_elements_package;
+  private principal_type machine_namespace;
+  private principal_type machine_elements_namespace;
+  private principal_type machine_adapters_namespace;
   private principal_type runtime_util_class;
 
   private final dictionary<principal_type, principal_type> primitive_mapping;
   private final dictionary<principal_type, simple_name> wrapper_mapping;
 
-  public jinterop_library(analysis_context context, principal_type top) {
+  public j_adapter_library(analysis_context context) {
     this.context = context;
 
-    java_package = get_type(top, "java");
+    primitive_mapping = new list_dictionary<principal_type, principal_type>();
+    wrapper_mapping = new list_dictionary<principal_type, simple_name>();
+
+    assert instance == null;
+    instance = this;
+  }
+
+  private void initialize() {
+    principal_type machine_type = machine_namespace();
+    machine_adapters_namespace = get_type(machine_type, "adapters");
+
+    java_package = get_type(machine_adapters_namespace, "java");
     builtins_package = get_type(java_package, "builtins");
     lang_package = get_type(java_package, "lang");
 
@@ -60,12 +73,9 @@ public class jinterop_library implements value {
     object_type = get_type(lang_package, "Object");
     string_type = get_type(lang_package, "String");
 
-    javax_package = get_type(top, "javax");
+    javax_package = get_type(machine_adapters_namespace, "javax");
     annotation_package = get_type(javax_package, "annotation");
     nullable_type = get_type(annotation_package, "Nullable");
-
-    primitive_mapping = new list_dictionary<principal_type, principal_type>();
-    wrapper_mapping = new list_dictionary<principal_type, simple_name>();
 
     common_library library = common_library.get_instance();
 
@@ -74,9 +84,6 @@ public class jinterop_library implements value {
     add_mapping(library.integer_type(), int_type(), "Integer");
     add_mapping(library.nonnegative_type(), int_type(), "Integer");
     add_mapping(library.void_type(), library.void_type(), "Void");
-
-    assert instance == null;
-    instance = this;
   }
 
   private void add_mapping(principal_type ideal_type, principal_type java_type,
@@ -95,6 +102,14 @@ public class jinterop_library implements value {
 
   public @Nullable simple_name map_to_wrapper(principal_type the_type) {
     return wrapper_mapping.get(the_type);
+  }
+
+  public principal_type java_package() {
+    return java_package;
+  }
+
+  public principal_type javax_package() {
+    return javax_package;
   }
 
   public principal_type int_type() {
@@ -117,6 +132,10 @@ public class jinterop_library implements value {
     return string_type;
   }
 
+  public principal_type adapters_namespace() {
+    return machine_adapters_namespace;
+  }
+
   public principal_type builtins_package() {
     return builtins_package;
   }
@@ -129,18 +148,25 @@ public class jinterop_library implements value {
     return nullable_type;
   }
 
-  public principal_type machine_elements_package() {
-    if (machine_elements_package == null) {
+  public principal_type machine_namespace() {
+    if (machine_namespace == null) {
       principal_type ideal_type = common_library.get_instance().ideal_namespace();
-      principal_type machine_type = get_type(ideal_type, "machine");
-      machine_elements_package = get_type(machine_type, "elements");
+      machine_namespace = get_type(ideal_type, "machine");
     }
-    return machine_elements_package;
+    return machine_namespace;
+  }
+
+  public principal_type machine_elements_namespace() {
+    if (machine_elements_namespace == null) {
+      principal_type machine_type = machine_namespace();
+      machine_elements_namespace = get_type(machine_type, "elements");
+    }
+    return machine_elements_namespace;
   }
 
   public principal_type runtime_util_class() {
     if (runtime_util_class == null) {
-      runtime_util_class = get_type(machine_elements_package(), "runtime_util");
+      runtime_util_class = get_type(machine_elements_namespace(), "runtime_util");
     }
     return runtime_util_class;
   }
@@ -148,6 +174,7 @@ public class jinterop_library implements value {
   // TODO: this code is duplicated, factor out.
   private principal_type get_type(principal_type parent, String sname) {
     simple_name name = simple_name.make(new base_string(sname));
+    analyzer_utilities.analyze_and_prepare(parent);
     readonly_list<type> types = action_utilities.lookup_types(context, parent, name);
     if (types.size() != 1) {
       utilities.panic("Got " + types.size() + " for " + sname);
@@ -157,13 +184,13 @@ public class jinterop_library implements value {
   }
 
   // TODO: use features...
-  public static boolean is_enabled() {
-    return instance != null;
-  }
-
-  // TODO: use features...
-  public static jinterop_library get_instance() {
+  public static j_adapter_library get_instance() {
     assert instance != null;
+
+    if (instance.machine_namespace == null) {
+      instance.initialize();
+    }
+
     return instance;
   }
 }

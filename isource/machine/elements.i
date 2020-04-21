@@ -30,7 +30,7 @@ namespace elements {
   }
 
   class runtime_util {
-    implicit import java.lang;
+    implicit import ideal.machine.adapters.java.lang;
 
     static equivalence_with_hash[readonly value] default_equivalence;
 

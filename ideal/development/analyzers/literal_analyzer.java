@@ -23,8 +23,6 @@ import ideal.development.values.*;
 
 public class literal_analyzer extends single_pass_analyzer {
 
-  private static final boolean USE_JAVA_STRING_TYPE = false;
-
   public final literal the_literal;
 
   public literal_analyzer(literal_construct source) {
@@ -43,18 +41,13 @@ public class literal_analyzer extends single_pass_analyzer {
       quoted_literal the_quoted_literal = (quoted_literal) the_literal;
       string the_value = the_quoted_literal.the_value();
       type bound;
-      if (USE_JAVA_STRING_TYPE && jinterop_library.is_enabled()) {
-        bound = jinterop_library.get_instance().string_type().
-            get_flavored(flavors.mutable_flavor);
+      if (the_quoted_literal.quote == punctuation.SINGLE_QUOTE) {
+        bound = library().immutable_character_type();
+      } else if (the_quoted_literal.quote == punctuation.DOUBLE_QUOTE) {
+        bound = library().immutable_string_type();
       } else {
-        if (the_quoted_literal.quote == punctuation.SINGLE_QUOTE) {
-          bound = library().immutable_character_type();
-        } else if (the_quoted_literal.quote == punctuation.DOUBLE_QUOTE) {
-          bound = library().immutable_string_type();
-        } else {
-          utilities.panic("Unrecognized quote type: " + the_quoted_literal.quote);
-          return null;
-        }
+        utilities.panic("Unrecognized quote type: " + the_quoted_literal.quote);
+        return null;
       }
       return new base_string_value(the_value, bound).to_action(this);
     } else {

@@ -24,6 +24,7 @@ import ideal.development.values.*;
 import ideal.development.analyzers.*;
 import ideal.development.flavors.*;
 import ideal.development.notifications.*;
+import ideal.development.transformers.*;
 
 public class assign_op extends binary_procedure {
 
@@ -64,8 +65,7 @@ public class assign_op extends binary_procedure {
     action left = context.promote(first, writable_ref, pos);
 
     // TODO: this is used in base_string.i; remove once string handling is improved.
-    if (jinterop_library.is_enabled() &&
-        value_type == immutable_java_string() &&
+    if (value_type == immutable_java_string() &&
         !context.can_promote(second.result(), immutable_java_string())) {
       value_type = library().immutable_string_type();
     }
@@ -80,7 +80,7 @@ public class assign_op extends binary_procedure {
   }
 
   private type immutable_java_string() {
-    return jinterop_library.get_instance().string_type().
+    return j_adapter_library.get_instance().string_type().
         get_flavored(flavors.deeply_immutable_flavor);
   }
 

@@ -35,6 +35,7 @@ import ideal.development.documenters.*;
 import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
+import ideal.development.transformers.*;
 import ideal.development.functions.*;
 
 public interface target_manager {
@@ -44,8 +45,6 @@ public interface target_manager {
   @Nullable resource_catalog top_catalog();
 
   @Nullable resource_catalog output_catalog();
-
-  jinterop_library process_jinterop();
 
   boolean has_errors();
 }

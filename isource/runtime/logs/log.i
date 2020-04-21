@@ -9,7 +9,7 @@ namespace log {
   implicit import ideal.library.channels;
   implicit import ideal.runtime.channels;
 
-  import java.lang.String;
+  import ideal.machine.adapters.java.lang.String;
   import ideal.machine.channels.standard_channels;
 
   private text_fragment to_text(log_message the_message) pure {

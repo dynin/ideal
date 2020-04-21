@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import java.lang.String;
+import ideal.machine.adapters.java.lang.String;
 import ideal.machine.elements.runtime_util;
 
 class utilities {

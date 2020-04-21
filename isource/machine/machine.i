@@ -7,4 +7,5 @@
 namespace machine {
   namespace elements;
   namespace channels;
+  namespace adapters;
 }

@@ -50,18 +50,19 @@ BASEPARSER_TARGET = $(TARGETS_DIR)/baseparser
 IDEAL_TARGET = $(TARGETS_DIR)/ideal
 
 CREATE_MAIN = ideal.development.tools.create
-CREATE = $(JAVA) $(CREATE_MAIN) -top=isource
+CREATE = $(JAVA) $(CREATE_MAIN)
+IDEAL_SOURCE = ideal.i
 
 FLAGS_RUN = -debug-progress -run
 
-ISOURCE_DIR = isource
-IDEAL_SOURCE = $(ISOURCE_DIR)/ideal.i
-LIBRARY_ELEMENTS = $(ISOURCE_DIR)/library/elements.i
-ONETWO = $(ISOURCE_DIR)/tests/12.i
-ONE = $(ISOURCE_DIR)/tests/1.i
-DIRECTORY = $(ISOURCE_DIR)/tests/directory.i
-CIRCLE = $(ISOURCE_DIR)/showcase/circle.i
-HELLO = $(ISOURCE_DIR)/showcase/hello.i
+TEST_DIR = tests
+ONETWO = $(TEST_DIR)/12.i
+ONE = $(TEST_DIR)/1.i
+DIRECTORY = $(TEST_DIR)/directory.i
+
+SHOWCASE_DIR = showcase
+CIRCLE = $(SHOWCASE_DIR)/circle.i
+HELLO = $(SHOWCASE_DIR)/hello.i
 
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \
@@ -220,7 +221,7 @@ hello: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(HELLO)
 
 diff: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - $(LIBRARY_ELEMENTS)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - library/elements.i
 
 test: build $(IDEAL_TARGET)
 	$(JAVA) ideal.development.tests.main

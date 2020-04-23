@@ -1,8 +1,8 @@
 ============ INIT
 ============ PARSE
 ============ BOOTSTRAP
-==== Loading isource/library/elements.i
-==== Loading isource/library/operators.i
+==== Loading library/elements.i
+==== Loading library/operators.i
 ============ DISPLAY
 [
   variable_construct {

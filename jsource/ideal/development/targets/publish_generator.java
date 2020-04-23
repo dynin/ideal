@@ -38,6 +38,7 @@ import ideal.development.transformers.content_writer;
 
 public class publish_generator {
 
+  public static final simple_name ASSETS_NAME = simple_name.make("assets");
   public static final simple_name IDEAL_STYLE_NAME = simple_name.make("ideal_style");
 
   private final analysis_context the_context;
@@ -231,7 +232,7 @@ public class publish_generator {
     text_element title = text_util.make_element(TITLE, text_util.to_list(make_title(full_name)));
     // TODO: introduce constants.
     base_string css_href = the_naming_strategy.link_to(
-        new base_list<simple_name>(IDEAL_STYLE_NAME), base_extension.CSS);
+        new base_list<simple_name>(ASSETS_NAME, IDEAL_STYLE_NAME), base_extension.CSS);
     list_dictionary<attribute_id, string> attributes = new list_dictionary<attribute_id, string>();
     attributes.put(HREF, css_href);
     attributes.put(REL, new base_string("stylesheet"));

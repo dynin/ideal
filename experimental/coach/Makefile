@@ -42,7 +42,7 @@ COACH_WAR_TARGET = $(TARGETS_DIR)/coach-war
 CREATE_MAIN = ideal.development.tools.create
 CREATE = $(JAVA) $(CREATE_MAIN)
 
-ISOURCE_DIR = ../../isource
+ISOURCE_DIR = ../..
 
 COACH_RESOURCES_DIR = ideal/showcase/coach/resources
 COACH_IDEAL = $(COACH_RESOURCES_DIR)/coach.i

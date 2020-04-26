@@ -19,12 +19,12 @@ import ideal.development.flavors.*;
 import ideal.development.actions.*;
 import ideal.development.analyzers.*;
 
-public class java_adapter_library implements value {
+public class java_library implements value {
 
   public static final simple_name machine_name = simple_name.make(new base_string("machine"));
   public static final simple_name adapters_name = simple_name.make(new base_string("adapters"));
 
-  private static java_adapter_library instance;
+  private static java_library instance;
 
   private type_bootstrapper bootstrapper;
   private analysis_context context;
@@ -52,7 +52,7 @@ public class java_adapter_library implements value {
   private final dictionary<principal_type, principal_type> primitive_mapping;
   private final dictionary<principal_type, simple_name> wrapper_mapping;
 
-  private java_adapter_library(type_bootstrapper bootstrapper) {
+  private java_library(type_bootstrapper bootstrapper) {
     this.bootstrapper = bootstrapper;
 
     primitive_mapping = new list_dictionary<principal_type, principal_type>();
@@ -70,7 +70,9 @@ public class java_adapter_library implements value {
       return;
     }
 
-    bootstrapper.bootstrap_type(machine_adapters_namespace);
+    if (machine_adapters_namespace.get_declaration() == null) {
+      bootstrapper.bootstrap_type(machine_adapters_namespace);
+    }
 
     java_package = get_type(machine_adapters_namespace, "java");
     builtins_package = get_type(java_package, "builtins");
@@ -204,13 +206,27 @@ public class java_adapter_library implements value {
 
   public static void bootstrap_on_demand(type_bootstrapper bootstrapper) {
     assert instance == null;
-    instance = new java_adapter_library(bootstrapper);
+    instance = new java_library(bootstrapper);
   }
 
-  public static java_adapter_library get_instance() {
+  public static java_library get_instance() {
     assert instance != null;
     instance.bootstrap_if_needed();
 
     return instance;
+  }
+
+  public static boolean is_java_type(type the_type) {
+    assert instance != null;
+
+    principal_type the_principal_type = the_type.principal();
+    while (the_principal_type != null) {
+      if (the_principal_type == instance.machine_adapters_namespace) {
+        return true;
+      }
+      the_principal_type = the_principal_type.get_parent();
+    }
+
+    return false;
   }
 }

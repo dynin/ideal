@@ -40,7 +40,7 @@ public class testcase_generator {
 
     position source = the_type_declaration;
     construct runtime_util_name = make_type(
-        java_adapter_library.get_instance().runtime_util_class(), source);
+        java_library.get_instance().runtime_util_class(), source);
     construct start_construct = new resolve_construct(runtime_util_name,
           new name_construct(START_TEST, source), source);
     construct end_construct = new resolve_construct(runtime_util_name,

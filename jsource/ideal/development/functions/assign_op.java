@@ -65,9 +65,13 @@ public class assign_op extends binary_procedure {
     action left = context.promote(first, writable_ref, pos);
 
     // TODO: this is used in base_string.i; remove once string handling is improved.
-    if (value_type == immutable_java_string() &&
-        !context.can_promote(second.result(), immutable_java_string())) {
-      value_type = library().immutable_string_type();
+    if (java_library.is_java_type(value_type)) {
+      // This causes loading of java adapter, so the check above avoids it unless necessary
+      type java_string = java_library.get_instance().string_type().
+          get_flavored(flavors.deeply_immutable_flavor);
+      if (value_type == java_string && !context.can_promote(second.result(), java_string)) {
+        value_type = library().immutable_string_type();
+      }
     }
 
     if (!context.can_promote(second.result(), value_type)) {
@@ -77,11 +81,6 @@ public class assign_op extends binary_procedure {
 
     return action_plus_constraints.make_result(make_action(value_type, left, the_value, pos),
         constraints);
-  }
-
-  private type immutable_java_string() {
-    return java_adapter_library.get_instance().string_type().
-        get_flavored(flavors.deeply_immutable_flavor);
   }
 
   @Override

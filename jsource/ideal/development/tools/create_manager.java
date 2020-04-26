@@ -140,7 +140,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     action_utilities.add_promotion(bootstrap_context, root, elements, root_position);
 
-    java_adapter_library.bootstrap_on_demand(this);
+    java_library.bootstrap_on_demand(this);
   }
 
   public void process_type_operators() {

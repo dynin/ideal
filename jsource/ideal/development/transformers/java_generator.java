@@ -34,12 +34,12 @@ import ideal.development.declarations.*;
 
 public class java_generator {
 
-  private final java_adapter_library java_adapter;
+  private final java_library java_adapter;
   private final analysis_context context;
   private final content_writer processor;
   private final java_printer printer;
 
-  public java_generator(java_adapter_library java_adapter, analysis_context context,
+  public java_generator(java_library java_adapter, analysis_context context,
       content_writer processor) {
     this.java_adapter = java_adapter;
     this.context = context;

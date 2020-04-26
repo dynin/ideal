@@ -42,7 +42,7 @@ public class to_java_transformer extends base_transformer {
     NO_MAPPING;
   }
 
-  private final java_adapter_library java_adapter;
+  private final java_library java_adapter;
   private final analysis_context context;
   private list<construct> common_headers;
   private set<principal_type> implicit_names;
@@ -60,7 +60,7 @@ public class to_java_transformer extends base_transformer {
 
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
 
-  public to_java_transformer(java_adapter_library java_adapter, analysis_context context) {
+  public to_java_transformer(java_library java_adapter, analysis_context context) {
     this.java_adapter = java_adapter;
     this.context = context;
     this.mapping_strategy = mapping.MAP_TO_PRIMITIVE_TYPE;

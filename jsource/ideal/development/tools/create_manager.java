@@ -39,7 +39,7 @@ import ideal.development.functions.*;
 import ideal.development.transformers.*;
 import ideal.development.targets.*;
 
-public class create_manager implements target_manager {
+public class create_manager implements target_manager, type_bootstrapper {
 
   public final base_semantics language;
   public final principal_type root;
@@ -111,11 +111,6 @@ public class create_manager implements target_manager {
     return new source_content(source_id);
   }
 
-  private resource_catalog library_catalog() {
-    return top_catalog.resolve(to_resource_name(common_library.library_name)).
-        access_catalog().content().get();
-  }
-
   public list<construct> parse(source_content source) {
     readonly_list<token> tokens = new common_scanner().scan(source);
 
@@ -138,12 +133,14 @@ public class create_manager implements target_manager {
     process_type_operators();
 
     principal_type elements = library().elements_package();
-    bootstrap_package(elements);
-    bootstrap_package(library().operators_package());
+    bootstrap_type(elements);
+    bootstrap_type(library().operators_package());
 
     process_bootstrap_ops(bootstrap_context);
 
     action_utilities.add_promotion(bootstrap_context, root, elements, root_position);
+
+    java_adapter_library.bootstrap_on_demand(this);
   }
 
   public void process_type_operators() {
@@ -159,23 +156,33 @@ public class create_manager implements target_manager {
     return name.to_string();
   }
 
-  private void bootstrap_package(principal_type module) {
-    assert module.get_declaration() == null;
+  @Override
+  public void bootstrap_type(principal_type the_type) {
+    assert the_type.get_declaration() == null;
 
-    source_content module_source = load_source(library_catalog(),
-        to_resource_name(module.short_name()));
-    list<construct> constructs = parse(module_source);
+    resource_catalog source_catalog;
+    if (the_type.get_parent() == library().ideal_namespace()) {
+      source_catalog = top_catalog.resolve(to_resource_name(the_type.short_name())).
+          access_catalog().content().get();
+    } else {
+      source_catalog = top_catalog.resolve(to_resource_name(the_type.get_parent().short_name())).
+          access_catalog().content().get();
+    }
+
+    source_content type_source = load_source(source_catalog,
+        to_resource_name(the_type.short_name()));
+    list<construct> constructs = parse(type_source);
     assert constructs != null;
 
     // TODO: gracefully handle errors.
     assert constructs.size() == 1;
-    type_declaration_construct module_decl = (type_declaration_construct) constructs.first();
-    check(new type_declaration_analyzer(module_decl, module.get_parent(), bootstrap_context));
-    assert module.get_declaration() != null;
-    assert bootstrap_context.get_analyzable(module_decl) != null;
+    type_declaration_construct the_declaration = (type_declaration_construct) constructs.first();
+    check(new type_declaration_analyzer(the_declaration, the_type.get_parent(), bootstrap_context));
+    assert the_type.get_declaration() != null;
+    assert bootstrap_context.get_analyzable(the_declaration) != null;
 
     if (has_errors()) {
-      utilities.panic("Errors bootstrapping " + module.short_name());
+      utilities.panic("Errors bootstrapping " + the_type.short_name());
     }
   }
 

@@ -1,4 +1,5 @@
 ============ INIT
+==== Loading testdata/hello.i
 ============ PARSE
 ============ BOOTSTRAP
 ==== Loading library/elements.i

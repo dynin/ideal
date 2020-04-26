@@ -21,6 +21,7 @@ public class base_token_type implements token_type, readonly_displayable {
 
   public base_token_type(String name, int base_symbol) {
     this.name = new base_string(name);
+    assert !this.name.is_empty();
     this.base_symbol = base_symbol;
   }
 

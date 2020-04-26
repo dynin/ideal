@@ -21,8 +21,12 @@ import ideal.development.analyzers.*;
 
 public class java_adapter_library implements value {
 
+  public static final simple_name machine_name = simple_name.make(new base_string("machine"));
+  public static final simple_name adapters_name = simple_name.make(new base_string("adapters"));
+
   private static java_adapter_library instance;
 
+  private type_bootstrapper bootstrapper;
   private analysis_context context;
 
   private principal_type java_package;
@@ -48,12 +52,25 @@ public class java_adapter_library implements value {
   private final dictionary<principal_type, principal_type> primitive_mapping;
   private final dictionary<principal_type, simple_name> wrapper_mapping;
 
-  private java_adapter_library() {
+  private java_adapter_library(type_bootstrapper bootstrapper) {
+    this.bootstrapper = bootstrapper;
+
+    primitive_mapping = new list_dictionary<principal_type, principal_type>();
+    wrapper_mapping = new list_dictionary<principal_type, simple_name>();
+
     common_library library = common_library.get_instance();
     context = library.get_context();
 
-    principal_type machine_type = machine_namespace();
-    machine_adapters_namespace = get_type(machine_type, "adapters");
+    machine_namespace = get_namespace(machine_name, library.ideal_namespace());
+    machine_adapters_namespace = get_namespace(adapters_name, machine_namespace);
+  }
+
+  private void bootstrap_if_needed() {
+    if (java_package != null) {
+      return;
+    }
+
+    bootstrapper.bootstrap_type(machine_adapters_namespace);
 
     java_package = get_type(machine_adapters_namespace, "java");
     builtins_package = get_type(java_package, "builtins");
@@ -70,17 +87,13 @@ public class java_adapter_library implements value {
     annotation_package = get_type(javax_package, "annotation");
     nullable_type = get_type(annotation_package, "Nullable");
 
-    primitive_mapping = new list_dictionary<principal_type, principal_type>();
-    wrapper_mapping = new list_dictionary<principal_type, simple_name>();
+    common_library library = common_library.get_instance();
 
     add_mapping(library.boolean_type(), boolean_type(), "Boolean");
     add_mapping(library.character_type(), char_type(), "Character");
     add_mapping(library.integer_type(), int_type(), "Integer");
     add_mapping(library.nonnegative_type(), int_type(), "Integer");
     add_mapping(library.void_type(), library.void_type(), "Void");
-
-    assert instance == null;
-    instance = this;
   }
 
   private void add_mapping(principal_type ideal_type, principal_type java_type,
@@ -146,17 +159,16 @@ public class java_adapter_library implements value {
   }
 
   public principal_type machine_namespace() {
-    if (machine_namespace == null) {
-      principal_type ideal_type = common_library.get_instance().ideal_namespace();
-      machine_namespace = get_type(ideal_type, "machine");
-    }
     return machine_namespace;
+  }
+
+  public principal_type machine_adapters_namespace() {
+    return machine_adapters_namespace;
   }
 
   public principal_type machine_elements_namespace() {
     if (machine_elements_namespace == null) {
-      principal_type machine_type = machine_namespace();
-      machine_elements_namespace = get_type(machine_type, "elements");
+      machine_elements_namespace = get_type(machine_namespace, "elements");
     }
     return machine_elements_namespace;
   }
@@ -166,6 +178,16 @@ public class java_adapter_library implements value {
       runtime_util_class = get_type(machine_elements_namespace(), "runtime_util");
     }
     return runtime_util_class;
+  }
+
+  private principal_type get_namespace(simple_name name, principal_type parent) {
+    readonly_list<type> types = action_utilities.lookup_types(context, parent, name);
+    if (types.size() == 1) {
+      return (principal_type) types.first();
+    }
+    master_type result = action_utilities.make_type(context, type_kinds.namespace_kind,
+        flavor_profiles.nameonly_profile, name, parent, null, semantics.BUILTIN_POSITION);
+    return result;
   }
 
   // TODO: this code is duplicated, factor out.
@@ -180,10 +202,14 @@ public class java_adapter_library implements value {
     return (principal_type) types.first();
   }
 
+  public static void bootstrap_on_demand(type_bootstrapper bootstrapper) {
+    assert instance == null;
+    instance = new java_adapter_library(bootstrapper);
+  }
+
   public static java_adapter_library get_instance() {
-    if (instance == null) {
-      instance = new java_adapter_library();
-    }
+    assert instance != null;
+    instance.bootstrap_if_needed();
 
     return instance;
   }

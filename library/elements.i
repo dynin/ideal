@@ -130,7 +130,7 @@ package elements {
     false;
   }
 
-  --- Sign of a number, or result of a compatison.
+  --- Sign of a number, or result of a comparison.
   enum sign {
     implements deeply_immutable data;
     implements comparable;

@@ -36,7 +36,9 @@
 - [ ] Handle # in comments
 - [ ] Add block comments
 - [ ] Implement empty dictionary
-- [x] Add readonly list.last
 - [ ] Add readonly collection.is_not_empty
 - [ ] Catch abstract methods that are not implemented
 - [ ] Introduce ideal/development/languages/...
+- [ ] Implement memoization extension
+- [ ] Introduce parameterized subtype refinement
+- [ ] Move regression tests from testdata to tests

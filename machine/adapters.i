@@ -6,9 +6,9 @@
 
 -- Interoperability with Java(tm).
 
-implicit import ideal.library.elements;
-
 namespace adapters {
+  implicit import ideal.library.elements;
+
   package java {
     package builtins {
       interface primitive_type {

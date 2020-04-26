@@ -154,12 +154,6 @@ circle: $(IDEAL_TARGET) $(CIRCLE)
 generate_runtime: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_runtime
 
-test_runtime: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
-	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
-	cp -r $(JSOURCE_DIR)/ideal/machine/* $(SCRATCH_DIR)/ideal/machine
-	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
-
 bootstrap_runtime: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
 
@@ -168,6 +162,12 @@ bootstrap_runtime: $(IDEAL_TARGET)
 generate_all: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
+
+test_all: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
+	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
+	cp -r $(JSOURCE_DIR)/ideal/machine/* $(SCRATCH_DIR)/ideal/machine
+	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
 
 reboot:
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(BOOTSTRAPPED_DIR)

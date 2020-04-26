@@ -62,7 +62,10 @@ class create {
     create_util.progress("INIT");
 
     assert options.input != null;
-    source_content input = new source_content(filesystem.CURRENT_CATALOG.resolve(options.input));
+    resource_identifier input_id = filesystem.CURRENT_CATALOG.resolve(options.input);
+    create_util.progress_loading(input_id);
+
+    source_content input = new source_content(input_id);
 
     @Nullable string output_name = options.output;
 
@@ -76,13 +79,6 @@ class create {
     if (options.DEBUG_REFLECT) {
       reflect_util.start_reflect(cm, input);
       return;
-    }
-
-    cm.process_targets();
-
-    if (output_name != null) {
-      cm.set_output_catalog(
-          filesystem.CURRENT_CATALOG.resolve(output_name).access_catalog().content().get());
     }
 
     create_util.progress("PARSE");
@@ -102,6 +98,13 @@ class create {
       create_util.progress("BOOTSTRAP");
       cm.process_bootstrap();
       test_library.init(cm.bootstrap_context, cm.root);
+    }
+
+    cm.process_targets();
+
+    if (output_name != null) {
+      cm.set_output_catalog(
+          filesystem.CURRENT_CATALOG.resolve(output_name).access_catalog().content().get());
     }
 
     if (options.DEBUG_CONSTRUCTS) {

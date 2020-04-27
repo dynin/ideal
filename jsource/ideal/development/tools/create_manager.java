@@ -87,9 +87,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     this.output_catalog = output_catalog;
   }
 
-  public analysis_context new_analysis_context() {
-    // TODO: introduce analysis context with fallback...
-    //return new create_analysis_context(this, language);
+  public analysis_context get_analysis_context() {
     return bootstrap_context;
   }
 
@@ -289,7 +287,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     resource_identifier source_id = declaration_catalog.resolve(name, base_extension.IDEAL_SOURCE);
     if (!source_id.exists()) {
       new base_notification(
-          new base_string("Can't locate resource with type declaration"), the_declaration).report();
+          new base_string("Can't locate resource for type declaration"), the_declaration).report();
       return null;
     }
 

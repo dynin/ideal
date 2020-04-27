@@ -10,11 +10,12 @@ namespace ideal {
   namespace library;
   namespace runtime;
   namespace machine;
+  namespace development;
 }
 
 target analyze_library: analyze(ideal.library);
 
-target analyze_all: analyze(ideal.library, ideal.runtime, ideal.machine);
+target analyze_all: analyze(ideal);
 
 target print_elements: print_source(ideal.library.elements);
 
@@ -25,6 +26,8 @@ target generate_runtime: generate_java(ideal.runtime);
 target generate_texts: generate_java(ideal.runtime.texts);
 
 target generate_reflections: generate_java(ideal.runtime.reflections);
+
+target generate_development: generate_java(ideal.development);
 
 target generate_all: generate_java(ideal.library, ideal.runtime);
 

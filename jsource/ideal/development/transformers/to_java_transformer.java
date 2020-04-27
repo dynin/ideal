@@ -1002,7 +1002,13 @@ public class to_java_transformer extends base_transformer {
     position pos = the_variable;
     type return_type = is_readonly_flavor(the_variable.reference_type().get_flavor()) ?
         the_variable.value_type() : the_variable.reference_type();
-    return new procedure_construct(new empty<annotation_construct>() /*annotations*/,
+    // TODO: should we inherit attotaions from the_variable?
+    list<annotation_construct> annotations = new base_list<annotation_construct>();
+    if (type_utilities.is_union(return_type)) {
+      annotations.append(new modifier_construct(nullable_modifier, pos));
+      // make_type() strips null from union type
+    }
+    return new procedure_construct(annotations,
         make_type(return_type, pos) /*ret*/,
         the_variable.short_name(),
         new list_construct(new base_list<construct>(), grouping_type.PARENS, pos)/*parameters*/,

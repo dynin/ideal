@@ -113,7 +113,7 @@ class create {
       out.write(displayer.display(constructs));
     }
 
-    analysis_context the_context = cm.new_analysis_context();
+    analysis_context the_context = cm.get_analysis_context();
     multi_pass_analyzer body =
         new declaration_list_analyzer(constructs, cm.root, the_context, input);
 

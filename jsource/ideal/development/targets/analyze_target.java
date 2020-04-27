@@ -40,7 +40,13 @@ public class analyze_target extends type_processor_target {
 
   @Override
   public void process_type(principal_type the_type) {
-    // Only do this in verbose mode
-    log.info(new base_string(printer.print_type(the_type), " looking good."));
+    declaration the_declaration = the_type.get_declaration();
+    assert the_declaration instanceof analyzable;
+    ((analyzable) the_declaration).analyze();
+
+    if (!the_manager.has_errors()) {
+      // TODO: only do this in verbose mode
+      log.info(new base_string(printer.print_type(the_type), " looking good."));
+    }
   }
 }

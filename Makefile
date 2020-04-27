@@ -46,6 +46,7 @@ JAVACUP = $(PARSER2SRC_DIR)/$(JDK_DIR)/bin/java \
 
 BOOTSTRAPPED_TARGET = $(TARGETS_DIR)/boostrapped
 LIBRARY_TARGET = $(TARGETS_DIR)/library
+DEVELOPMENT_TARGET = $(TARGETS_DIR)/development
 BASEPARSER_TARGET = $(TARGETS_DIR)/baseparser
 IDEAL_TARGET = $(TARGETS_DIR)/ideal
 
@@ -82,6 +83,13 @@ MACHINE_JAVA = \
     $(JSOURCE_DIR)/ideal/machine/resources/*.java
 
 PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
+
+DEVELOPMENT_IDEAL = \
+    development/development.i \
+    development/elements.i
+
+BOOTSTRAPPED_DEVELOPMENT = \
+    $(BOOTSTRAPPED_DIR)/ideal/development/elements/*.java
 
 DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/elements/*.java \
@@ -194,6 +202,18 @@ test_reflections: $(IDEAL_TARGET) rm-scratch
 bootstrap_reflections: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections -output=$(BOOTSTRAPPED_DIR)
 
+### Development
+
+generate_development gd: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development
+
+test_development td: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(SCRATCH_DIR)
+	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
+
+bootstrap_development: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(BOOTSTRAPPED_DIR)
+
 ### Documentation generation
 
 document_elements: $(IDEAL_TARGET)
@@ -236,6 +256,11 @@ $(LIBRARY_TARGET): $(MACHINE_JAVA) $(BOOTSTRAPPED_TARGET)
 	@touch $@
 	@echo === Library done.
 
+$(DEVELOPMENT_TARGET): $(BOOTSTRAPPED_DEVELOPMENT) $(LIBRARY_TARGET)
+	$(JAVAC) $(BOOTSTRAPPED_DEVELOPMENT)
+	@touch $@
+	@echo === Development done.
+
 $(BASEPARSER_TARGET): $(PARSER_CUP)
 	$(MKDIR) $(PARSER_DIR)
 	cd $(PARSER_DIR) ; \
@@ -247,7 +272,8 @@ $(BASEPARSER_TARGET): $(PARSER_CUP)
 	@touch $@
 	@echo === Parser done.
 
-$(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(BASEPARSER_TARGET) Makefile
+$(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(DEVELOPMENT_TARGET) \
+          $(BASEPARSER_TARGET) Makefile
 	$(JAVAC) $(DEVELOPMENT_JAVA)
 	@touch $@
 	@echo === ideal done.

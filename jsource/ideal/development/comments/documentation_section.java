@@ -13,4 +13,5 @@ import ideal.library.elements.*;
 public enum documentation_section implements deeply_immutable_data {
   ALL,
   SUMMARY;
+  // DESCRIPTION
 }

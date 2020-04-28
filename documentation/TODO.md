@@ -1,5 +1,6 @@
 # Tasks
   
+- [ ] Cross references
 - [ ] Renaming
   - [x] stringable
   - [ ] runtime_util -> runtime_utilities
@@ -18,7 +19,6 @@
 - [ ] Initial setup
   - [x] Updated JSR 305 jar
 - [ ] Inherit doc comments
-- [ ] Cross references
 - [ ] Cleanly compile with -Xlint:unchecked
 - [ ] Document the code better
 - [ ] Handle '.' in doc comment summaries

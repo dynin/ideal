@@ -46,8 +46,7 @@ public class publish_target extends type_processor_target {
       resource_catalog output_catalog = the_manager.output_catalog();
       string assets = naming_strategy.dash_renderer.call(publish_generator.ASSETS_NAME);
       string ideal_style = naming_strategy.dash_renderer.call(publish_generator.IDEAL_STYLE_NAME);
-      resource_catalog assets_catalog = the_manager.top_catalog().resolve(assets).
-          access_catalog().content().get();
+      resource_catalog assets_catalog = the_manager.top_catalog().resolve(assets).access_catalog();
       resource_identifier css_source = assets_catalog.resolve(ideal_style, base_extension.CSS);
       string stylesheet_content = css_source.access_string(null).content().get();
       the_writer.write(stylesheet_content,

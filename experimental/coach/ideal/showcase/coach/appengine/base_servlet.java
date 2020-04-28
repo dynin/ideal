@@ -76,7 +76,7 @@ public abstract class base_servlet extends HttpServlet {
     users_whitelist.add_all(admins_whitelist);
 
     resource_catalog resources = new servlet_resources(servlet_config.getServletContext()).top();
-    resources = resources.resolve(IDEAL_SOURCE_DIR).access_catalog().content().get();
+    resources = resources.resolve(IDEAL_SOURCE_DIR).access_catalog();
 
     the_translator = new translator(resources);
 

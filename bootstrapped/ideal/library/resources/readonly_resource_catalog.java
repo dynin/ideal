@@ -3,8 +3,9 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
-import ideal.library.channels.*;
 
-public interface readonly_resource_catalog extends readonly_value, any_resource_catalog {
+public interface readonly_resource_catalog extends readonly_resource<dictionary<string, resource_identifier>>, any_resource_catalog {
   resource_identifier get_id();
+  resource_identifier resolve(string name);
+  resource_identifier resolve(string name, extension ext);
 }

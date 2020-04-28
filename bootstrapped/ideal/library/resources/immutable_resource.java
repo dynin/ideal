@@ -3,6 +3,5 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
-import ideal.library.channels.*;
 
 public interface immutable_resource<content_type> extends immutable_value, readonly_resource<content_type> { }

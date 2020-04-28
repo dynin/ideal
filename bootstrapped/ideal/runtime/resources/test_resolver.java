@@ -67,7 +67,7 @@ public class test_resolver {
     final resource_catalog cat = CURRENT;
     final resource_identifier dog = cat.resolve(new base_string("dog"));
     assert ideal.machine.elements.runtime_util.values_equal(dog.to_string(), new base_string("dog"));
-    final resource_catalog cat2 = dog.access_catalog().content().get();
+    final resource_catalog cat2 = dog.access_catalog();
     assert ideal.machine.elements.runtime_util.values_equal(cat2.get_id().to_string(), new base_string("dog"));
     final resource_identifier dog2 = cat2.resolve(new base_string("Yoshka"));
     assert ideal.machine.elements.runtime_util.values_equal(dog2.to_string(), new base_string("dog/Yoshka"));
@@ -76,7 +76,7 @@ public class test_resolver {
     final resource_catalog cat = ROOT;
     final resource_identifier dog = cat.resolve(new base_string("dog"));
     assert ideal.machine.elements.runtime_util.values_equal(dog.to_string(), new base_string("/dog"));
-    final resource_catalog cat2 = dog.access_catalog().content().get();
+    final resource_catalog cat2 = dog.access_catalog();
     assert ideal.machine.elements.runtime_util.values_equal(cat2.get_id().to_string(), new base_string("/dog"));
     final resource_identifier dog2 = cat2.resolve(new base_string("Yoshka"));
     assert ideal.machine.elements.runtime_util.values_equal(dog2.to_string(), new base_string("/dog/Yoshka"));
@@ -85,14 +85,14 @@ public class test_resolver {
     resource_catalog foo = ROOT;
     resource_identifier bar = foo.resolve(new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(bar.to_string(), new base_string("/bar"));
-    foo = bar.access_catalog().content().get();
+    foo = bar.access_catalog();
     assert ideal.machine.elements.runtime_util.values_equal(foo.get_id().to_string(), new base_string("/bar"));
     bar = foo.resolve(new base_string("baz"));
     assert ideal.machine.elements.runtime_util.values_equal(bar.to_string(), new base_string("/bar/baz"));
-    foo = bar.access_catalog().content().get();
+    foo = bar.access_catalog();
     bar = foo.resolve(new base_string("quux"));
     assert ideal.machine.elements.runtime_util.values_equal(bar.to_string(), new base_string("/bar/baz/quux"));
-    foo = bar.access_catalog().content().get();
+    foo = bar.access_catalog();
     bar = foo.resolve(new base_string(""));
     assert ideal.machine.elements.runtime_util.values_equal(bar.to_string(), new base_string("/bar/baz/quux"));
     bar = foo.resolve(new base_string("./././."));
@@ -102,13 +102,13 @@ public class test_resolver {
     resource_catalog foo = CURRENT;
     resource_identifier bar = foo.resolve(new base_string("foo/bar/././baz"));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo/bar/baz"), bar.to_string());
-    foo = bar.access_catalog().content().get();
+    foo = bar.access_catalog();
     bar = foo.resolve(new base_string(".."));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo/bar"), bar.to_string());
-    foo = bar.access_catalog().content().get();
+    foo = bar.access_catalog();
     bar = foo.resolve(new base_string("../.."));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("."), bar.to_string());
-    foo = bar.access_catalog().content().get();
+    foo = bar.access_catalog();
     bar = foo.resolve(new base_string(".."));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("."), bar.to_string());
   }

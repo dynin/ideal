@@ -39,7 +39,7 @@ public class content_writer implements value {
 
     resource_catalog catalog = output_catalog;
     for (int i = 0; i < full_name.size() - 1; ++i) {
-      catalog = catalog.resolve(format_name(full_name.get(i))).access_catalog().content().get();
+      catalog = catalog.resolve(format_name(full_name.get(i))).access_catalog();
     }
     simple_name last_name = full_name.get(full_name.size() - 1);
     return catalog.resolve(format_name(last_name), the_extension);

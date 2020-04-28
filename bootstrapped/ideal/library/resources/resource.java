@@ -3,7 +3,6 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
-import ideal.library.channels.*;
 
 public interface resource<content_type> extends value, readonly_resource<content_type>, writeonly_resource<content_type> {
   reference<content_type> content();

@@ -3,6 +3,5 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
-import ideal.library.channels.*;
 
-public interface writeonly_resource_catalog extends writeonly_value, any_resource_catalog { }
+public interface writeonly_resource_catalog extends writeonly_resource<dictionary<string, resource_identifier>>, any_resource_catalog { }

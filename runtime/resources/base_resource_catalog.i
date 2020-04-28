@@ -6,7 +6,7 @@
 
 --- Implements a resource catalog backed by a resource store.
 class base_resource_catalog {
-  implements resource_catalog;
+  implements resource_catalog, reference[dictionary[string, resource_identifier] or null];
 
   implicit import ideal.library.patterns;
   implicit import ideal.runtime.patterns;
@@ -19,6 +19,18 @@ class base_resource_catalog {
   protected base_resource_catalog(resource_store the_resource_store, immutable list[string] path) {
     this.the_resource_store = the_resource_store;
     this.path = path;
+  }
+
+  override reference[dictionary[string, resource_identifier] or null] content() {
+    return this;
+  }
+
+  override dictionary[string, resource_identifier] or null get() {
+    return missing.instance;
+  }
+
+  override void set(dictionary[string, resource_identifier] or null new_value) {
+    utilities.panic("can't set a catalog");
   }
 
   override resource_identifier get_id() {

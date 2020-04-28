@@ -10,13 +10,22 @@ import ideal.runtime.patterns.*;
 
 import javax.annotation.Nullable;
 
-public class base_resource_catalog implements resource_catalog {
+public class base_resource_catalog implements resource_catalog, reference<dictionary<string, resource_identifier>> {
   private static final pattern<Character> path_separator = new singleton_pattern<Character>('/');
   private final resource_store the_resource_store;
   private final immutable_list<string> path;
   protected base_resource_catalog(final resource_store the_resource_store, final immutable_list<string> path) {
     this.the_resource_store = the_resource_store;
     this.path = path;
+  }
+  public @Override reference<dictionary<string, resource_identifier>> content() {
+    return this;
+  }
+  public @Override @Nullable dictionary<string, resource_identifier> get() {
+    return null;
+  }
+  public @Override void set(final @Nullable dictionary<string, resource_identifier> new_value) {
+    utilities.panic(new base_string("can't set a catalog"));
   }
   public @Override resource_identifier get_id() {
     return new base_resource_identifier(the_resource_store, path);

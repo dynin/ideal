@@ -3,6 +3,5 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
-import ideal.library.channels.*;
 
-public interface immutable_resource_catalog extends immutable_value, readonly_resource_catalog { }
+public interface immutable_resource_catalog extends immutable_resource<dictionary<string, resource_identifier>>, readonly_resource_catalog { }

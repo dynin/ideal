@@ -161,10 +161,10 @@ public class create_manager implements target_manager, type_bootstrapper {
     resource_catalog source_catalog;
     if (the_type.get_parent() == library().ideal_namespace()) {
       source_catalog = top_catalog.resolve(to_resource_name(the_type.short_name())).
-          access_catalog().content().get();
+          access_catalog();
     } else {
       source_catalog = top_catalog.resolve(to_resource_name(the_type.get_parent().short_name())).
-          access_catalog().content().get();
+          access_catalog();
     }
 
     source_content type_source = load_source(source_catalog,
@@ -274,14 +274,14 @@ public class create_manager implements target_manager, type_bootstrapper {
     assert declaration_sourcee.name instanceof resource_identifier;
 
     resource_catalog declaration_catalog =
-        ((resource_identifier) declaration_sourcee.name).parent().access_catalog().content().get();
+        ((resource_identifier) declaration_sourcee.name).parent().access_catalog();
 
     assert the_declaration.name instanceof simple_name;
     string name = to_resource_name(the_declaration.name);
 
     resource_identifier catalog_id = declaration_catalog.resolve(name);
     if (catalog_id.exists()) {
-      declaration_catalog = catalog_id.access_catalog().content().get();
+      declaration_catalog = catalog_id.access_catalog();
     }
 
     resource_identifier source_id = declaration_catalog.resolve(name, base_extension.IDEAL_SOURCE);

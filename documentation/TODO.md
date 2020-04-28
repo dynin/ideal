@@ -42,3 +42,5 @@
 - [ ] Implement memoization extension
 - [ ] Introduce parameterized subtype refinement
 - [ ] Move regression tests from testdata to tests
+- [ ] Streamline the resource_catalog API
+- [x] Support procedure parameters with default values

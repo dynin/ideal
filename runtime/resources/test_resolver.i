@@ -57,7 +57,7 @@ class test_resolver {
 
     assert dog.to_string == "dog";
 
-    cat2 : dog.access_catalog().content;
+    cat2 : dog.access_catalog();
     assert cat2.get_id().to_string == "dog";
 
     dog2 : cat2.resolve("Yoshka");
@@ -70,7 +70,7 @@ class test_resolver {
 
     assert dog.to_string == "/dog";
 
-    cat2 : dog.access_catalog().content;
+    cat2 : dog.access_catalog();
     assert cat2.get_id().to_string == "/dog";
 
     dog2 : cat2.resolve("Yoshka");
@@ -83,17 +83,17 @@ class test_resolver {
 
     assert bar.to_string == "/bar";
 
-    foo = bar.access_catalog().content;
+    foo = bar.access_catalog();
     assert foo.get_id().to_string == "/bar";
 
     bar = foo.resolve("baz");
     assert bar.to_string == "/bar/baz";
 
-    foo = bar.access_catalog().content;
+    foo = bar.access_catalog();
     bar = foo.resolve("quux");
     assert bar.to_string == "/bar/baz/quux";
 
-    foo = bar.access_catalog().content;
+    foo = bar.access_catalog();
     bar = foo.resolve("");
     assert bar.to_string == "/bar/baz/quux";
 
@@ -107,15 +107,15 @@ class test_resolver {
 
     assert "foo/bar/baz" == bar.to_string;
 
-    foo = bar.access_catalog().content;
+    foo = bar.access_catalog();
     bar = foo.resolve("..");
     assert "foo/bar" == bar.to_string;
 
-    foo = bar.access_catalog().content;
+    foo = bar.access_catalog();
     bar = foo.resolve("../..");
     assert "." == bar.to_string;
 
-    foo = bar.access_catalog().content;
+    foo = bar.access_catalog();
     bar = foo.resolve("..");
     assert "." == bar.to_string;
   }

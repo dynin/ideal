@@ -71,7 +71,7 @@ class create {
 
     resource_catalog top_catalog = filesystem.CURRENT_CATALOG;
     if (options.top != null) {
-      top_catalog = top_catalog.resolve(options.top).access_catalog().content().get();
+      top_catalog = top_catalog.resolve(options.top).access_catalog();
     }
 
     create_manager cm = new create_manager(top_catalog);
@@ -104,7 +104,7 @@ class create {
 
     if (output_name != null) {
       cm.set_output_catalog(
-          filesystem.CURRENT_CATALOG.resolve(output_name).access_catalog().content().get());
+          filesystem.CURRENT_CATALOG.resolve(output_name).access_catalog());
     }
 
     if (options.DEBUG_CONSTRUCTS) {

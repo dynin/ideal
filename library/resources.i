@@ -6,7 +6,6 @@
 
 package resources {
   implicit import ideal.library.elements;
-  implicit import ideal.library.channels;
 
   interface resource[value content_type] {
     extends value;
@@ -27,7 +26,7 @@ package resources {
     boolean exists() pure;
 
     resource[string] access_string(access_option or null options);
-    resource[resource_catalog] access_catalog();
+    resource_catalog access_catalog();
   }
 
   interface access_option {
@@ -35,11 +34,11 @@ package resources {
   }
 
   interface resource_catalog {
-    extends value;
+    extends resource[dictionary[string, resource_identifier] or null];
 
     resource_identifier get_id() pure;
-    overload resource_identifier resolve(string name);
-    overload resource_identifier resolve(string name, extension ext);
+    overload resource_identifier resolve(string name) pure;
+    overload resource_identifier resolve(string name, extension ext) pure;
   }
 
   interface extension {

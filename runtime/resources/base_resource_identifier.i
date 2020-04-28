@@ -35,8 +35,8 @@ class base_resource_identifier {
     return string_resource.new(this, options);
   }
 
-  override resource[resource_catalog] access_catalog() {
-    return catalog_resource.new(this);
+  override resource_catalog access_catalog() {
+    return base_resource_catalog.new(the_resource_store, path);
   }
 
   override string to_string() {
@@ -67,28 +67,6 @@ class base_resource_identifier {
         the_identifier.the_resource_store.make_catalog(the_identifier.parent().path);
       }
       the_identifier.the_resource_store.write_string(the_identifier.path, new_value);
-    }
-  }
-
-  private class catalog_resource {
-    implements resource[resource_catalog], reference[resource_catalog];
-
-    private base_resource_identifier the_identifier;
-
-    catalog_resource(base_resource_identifier the_identifier) {
-      this.the_identifier = the_identifier;
-    }
-
-    override reference[resource_catalog] content() {
-      return this;
-    }
-
-    override resource_catalog get() {
-      return base_resource_catalog.new(the_identifier.the_resource_store, the_identifier.path);
-    }
-
-    override void set(resource_catalog new_value) {
-      utilities.panic("can't set a catalog");
     }
   }
 }

@@ -3,6 +3,5 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
-import ideal.library.channels.*;
 
 public interface access_option extends deeply_immutable_data, deeply_immutable_stringable { }

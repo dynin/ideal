@@ -8,6 +8,8 @@ package elements {
   implicit import ideal.library.elements;
 
   interface position;
+  interface token;
+  interface token_type;
   interface declaration;
 
   -- interface abstract_value;
@@ -26,8 +28,6 @@ package elements {
   -- interface simple_name;
   -- interface specialization_context;
   -- interface supertype_kind;
-  -- interface token;
-  -- interface token_type;
   -- interface type;
   -- interface type_flavor;
 }

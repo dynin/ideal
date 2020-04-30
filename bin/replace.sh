@@ -1,17 +1,17 @@
 #!/bin/sh
 
-FROM='ideal.runtime.interop'
-TO='ideal.machine.elements'
+FROM='j_adapter'
+TO='java_adapter'
 
 #cd $HOME/Projects/ideal
 
-ALLFILES="isource/*.i \
-    isource/*/*.i \
-    isource/*/*/*.i \
+ALLFILES="*.i \
+    */*.i \
+    */*/*.i \
     testdata/* \
     bootstrapped/ideal/*/*/*.java \
-    ideal/*/*/*.java \
-    ideal/*/*/*.cup \
+    jsource/ideal/*/*/*.java \
+    jsource/ideal/*/*/*.cup \
     Makefile"
 
 for OLDFILE in $ALLFILES

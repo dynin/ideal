@@ -2,7 +2,7 @@
 
 THIRDPARTY=thirdparty
 
-if [ ! -d isource -o ! -d ideal ] ; then
+if [ ! -f ideal.i -o ! -d jsource ] ; then
   echo This script must be run from the top-level directory.
   exit
 else

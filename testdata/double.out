@@ -1,6 +1,9 @@
 ============ INIT
+==== Loading testdata/double.i
 ============ PARSE
 ============ BOOTSTRAP
+==== Loading library/elements.i
+==== Loading library/operators.i
 ============ DISPLAY
 [
   variable_construct {
@@ -304,7 +307,7 @@
     ]
   }
 ]
-============ BEFORE_EVALUATION
+============ TARGET_DECL
 ============ TYPE_DECL
 ============ IMPORT_AND_TYPE_VAR_DECL
 ============ SUPERTYPE_DECL

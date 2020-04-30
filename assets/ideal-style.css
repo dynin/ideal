@@ -1,0 +1,103 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:n,i,b,bi);
+
+body {
+  /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
+  font-family: 'Roboto', sans-serif;
+  font-size: 16;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: black;
+}
+
+a:active {
+  text-decoration: underline;
+  color: blue;
+}
+
+.indent {
+  margin-left: 1.5em;
+  margin-bottom: 0.1em;
+}
+
+.documentation {
+  /* font-family: 'Minion Pro', serif; */
+  /* font-size: 15; */
+  padding: 0.5em;
+  margin-top: 0.5em;
+  margin-left: -0.5em;
+  background-color: #eee;
+  font-style: italic;
+}
+
+.documentation-note {
+  font-size: 14;
+}
+
+.code {
+  /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
+  /* font-family: 'Myriad Pro', sans-serif; */
+  font-size: 15;
+  font-style: normal;
+}
+
+.type-declaration {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.type-declaration-name {
+/*  font-size: larger; */
+  font-weight: bolder;
+  margin-right: 0.2em;
+}
+
+.supertype-declaration-name {
+  font-weight: bolder;
+}
+
+.var-declaration-name {
+  font-weight: bolder;
+}
+
+.procedure-declaration {
+  margin-top: 0.7em;
+}
+
+.procedure-declaration-name {
+  font-weight: bolder;
+  margin-right: 0.1em;
+}
+
+.nav-table {
+  width: 100%;
+}
+
+.nav-left {
+  text-align: left;
+  width: 30%;
+}
+
+.nav-center {
+  text-align: center;
+  width: 40%;
+}
+
+.nav-right {
+  text-align: right;
+  width: 30%;
+}

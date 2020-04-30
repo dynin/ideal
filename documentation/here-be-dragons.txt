@@ -8,14 +8,17 @@ types, and flavored types (described in type-flavors.txt).  The output
 notations include Java, JavaScript, interpreter and pretty-printer.
 
 The directory structure
-  isource       - source code in the ideal notation
-  \_library     - core library interfaces
-  \_runtime     - implementation of the library
-  \_showcase    - simple ideal programs
-  ideal         - source code in Java
+  ideal.i       - root source file in the ideal notation
+  library       - core library interfaces
+  runtime       - implementation of the library
+  showcase      - simple ideal programs
+  machine       - code that is handled by the target machine
+  jsource/ideal - source code in Java
   \_machine     - JVM-specific runtime code
   \_development - main metaprogramming framework code
-  \_showcase    - AppEngine-hosted demo app
+  experimental  - experiments that are not essential part of the codebase
+  \_coach       - AppEngine-hosted demo app
+  \_mini        - lightweight mplementation of ideal concepts, incomplete
   bootstrapped  - library and runtime, translated into Java
   thirdparty    - software needed to build and run ideal
   testdata      - input and ouput for regression tests
@@ -28,9 +31,9 @@ The directory structure
 
   * * *
 
-To read the ideal source code: browse isource.  The best place to start is
-isource/library/elements.i; the "library" describes the core interfaces,
-the "runtime" includes implementations.
+To read the ideal source code: browse library and runtime directories.
+The best place to start is library/elements.i; the "library" describes
+the core interfaces, the "runtime" includes implementations.
 
 The ideal notation was designed to be easily readable by a programmer who
 is familiar with Java or C#.  Here's quick overview of the ideal-specific
@@ -71,12 +74,12 @@ It should be possible to invoke the Java compiler via thirdparty/jdk/bin/javac.
 
 Make is currently used to build and run ideal.  Default target builds
 the "create" tool, bootstraps library.elements, analyzes it and prints it out.
-Targets "hello" and "circle" execute respective code from isource/showcase.
-"12" executes isource/testdata/12.i. The targets "library" and "runtime"
-generate Java source code from isource/library and isource/runtime,
-respectively.  The targets "libraryt" and "runtimet" test that the code
-compiles.  The targets "libraryb" and "runtimeb" bootstrap the code by
-overwriting the files in bootstrapped directory.
+Targets "hello" and "circle" execute respective code from showcase directive.
+"12" executes tests/12.i. The targets "generate_library" and "generate_runtime"
+generate Java source code from library and runtime, respectively.
+The targets "test_library" and "test_runtime" test that the code
+compiles.  The targets "bootstrap_library" and "bootstrap_runtimeb" bootstrap
+the code by overwriting the files in bootstrapped directory.
 
   * * *
 

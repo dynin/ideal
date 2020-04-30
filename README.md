@@ -1,3 +1,5 @@
+This is not an officially supported Google product.
+
 The ideal metaprogramming framework is an experiment and a work in progress.
 
 Features are missing and not yet implemented; there is no documentation

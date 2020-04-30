@@ -1,0 +1,458 @@
+/*
+ * Copyright 2014-2020 The Ideal Authors. All rights reserved.
+ *
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+/**
+ * JavaCup specification for the base ideal grammar.
+ */
+
+import ideal.library.elements.*;
+import ideal.runtime.elements.*;
+import ideal.development.elements.*;
+import ideal.development.comments.*;
+import ideal.development.constructs.*;
+import ideal.development.scanners.*;
+import ideal.development.names.*;
+import ideal.development.modifiers.*;
+import ideal.development.parsers.*;
+import ideal.development.extensions.*;
+import ideal.development.targets.*;
+import ideal.development.templates.*;
+import ideal.development.notifications.*;
+
+/* Terminals (tokens returned by the scanner). */
+terminal token<punctuation>  OPEN_PARENTHESIS, CLOSE_PARENTHESIS;
+terminal token<punctuation>  OPEN_BRACKET, CLOSE_BRACKET;
+terminal token<punctuation>  OPEN_BRACE, CLOSE_BRACE;
+terminal token<punctuation>  DOT, COMMA, EQUALS, COLON, SEMICOLON;
+terminal token<punctuation>  EQUALS_GREATER_THAN;
+terminal token<literal>  LITERAL;
+terminal token<punctuation>  PLUS_PLUS; // concatenation (not postincrement_expression)
+// terminal MINUS_MINUS; // postdecrement_expression
+terminal token<punctuation>  EXCLAMATION_MARK;
+terminal token<punctuation>  PLUS, MINUS, ASTERISK, SLASH, PERCENT;
+// terminal LSHIFT, RSHIFT, URSHIFT; // shift_expression
+// relational_expression
+terminal token<punctuation>  LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS;
+terminal token<keyword>  AS, IS, IS_NOT;
+terminal token<punctuation>  EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS; // equality_expression
+terminal token<punctuation>  AMPERSAND; // and_expression
+terminal token<punctuation>  CARET; // exclusive_or_expression
+terminal token<punctuation>  VERTICAL_BAR;  // inclusive_or_expression
+terminal token<punctuation>  AMPERSAND_AMPERSAND; // conditional_and_expression
+terminal token<punctuation>  VERTICAL_BAR_VERTICAL_BAR, OR; // conditional_or_expression
+terminal token<punctuation>  QUESTION_MARK; // conditional_expression
+                // assignment_operators:
+terminal token<punctuation>  PLUS_EQUALS, MINUS_EQUALS, ASTERISK_EQUALS, PLUS_PLUS_EQUALS;
+terminal token<keyword>  RETURN, IF, ELSE, LOOP, WHILE, FOR;
+terminal token<simple_name>  SIMPLE_NAME;
+terminal token<special_name>  SPECIAL_NAME;
+terminal token<modifier_kind>  MODIFIER_KIND;
+terminal token<comment>  COMMENT;
+terminal token<type_flavor>  FLAVOR;
+terminal token<kind>  KIND;
+terminal token<supertype_kind>  SUPERTYPE_KIND;
+terminal token<jump_type>  JUMP;
+terminal token<keyword>  ASSERT;
+terminal token<keyword>  IMPORT;
+// Temporary.
+//terminal token<keyword>  TEMPLATE;
+terminal token<punctuation>  HASH;
+terminal token<keyword>  USE, TARGET;
+terminal token<keyword>  PLEASE;
+
+/* Non terminals */
+non terminal list<construct>  compilation_unit;
+non terminal list<construct>  statements_opt;
+non terminal construct  expression;
+non terminal construct  statement;
+non terminal type_declaration_construct  type_declaration;
+non terminal type_announcement_construct  type_announcement;
+non terminal name_construct name;
+non terminal literal_construct  literal_value;
+non terminal list<construct>  types;
+non terminal construct  expression_opt;
+non terminal construct  condition_in_parens;
+non terminal block_construct  block;
+non terminal construct  procedure_body;
+non terminal construct  variable_or_expression_opt;
+non terminal variable_construct  variable_declaration;
+non terminal supertype_construct  supertype_declaration;
+non terminal procedure_construct  procedure_declaration;
+non terminal construct  block_statement;
+non terminal annotation_construct  annotation, post_annotation;
+non terminal list<annotation_construct>  annotations_opt, post_annotations_opt;
+
+non terminal list_construct  parameters;
+non terminal list_construct  parameters_opt;
+non terminal list<construct>  parameter_list_opt;
+non terminal construct  parameter;
+
+/* Grammar for s-expression language */
+non terminal construct  template;
+non terminal sexpression_construct  sexpression;
+non terminal name_construct sexpression_atom;
+non terminal construct  sexpression_element;
+non terminal list<construct>  sexpression_elements;
+
+/* Precedences */
+precedence left ELSE;
+precedence right EQUALS, PLUS_EQUALS, MINUS_EQUALS, ASTERISK_EQUALS, PLUS_PLUS_EQUALS;
+precedence left QUESTION_MARK;
+precedence left VERTICAL_BAR_VERTICAL_BAR, OR;
+precedence left AMPERSAND_AMPERSAND;
+precedence left VERTICAL_BAR;
+precedence left CARET;
+precedence left AMPERSAND;
+precedence left EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS;
+precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AS, IS, IS_NOT;
+precedence left PLUS, MINUS, PLUS_PLUS;
+precedence left ASTERISK, SLASH, PERCENT;
+precedence left EXCLAMATION_MARK;
+precedence nonassoc FLAVOR;
+precedence left DOT, OPEN_PARENTHESIS, OPEN_BRACKET;
+
+
+/* The grammar */
+compilation_unit ::=
+                statements_opt:st
+                {: RESULT = st; :}
+        ;
+
+statements_opt ::=
+                statement:hd statements_opt:tl
+                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
+        |       /* epsilon */
+                {: RESULT = new base_list<construct>(); :}
+        ;
+
+statement ::=
+                block_statement:s
+                {: RESULT = s; :}
+        |       annotations_opt:m block:b
+                {: RESULT = new block_construct(m, b.body, b); :}
+        |       annotations_opt:m expression:t procedure_body:b
+                {: RESULT = parser_util.expr_or_ctor(m, t, b); :}
+        |       SEMICOLON:s
+                {: RESULT = new empty_construct(s); :}
+        |       variable_declaration:d SEMICOLON:s
+                {: RESULT = d; :}
+        |       procedure_declaration:d
+                {: RESULT = d; :}
+        |       type_declaration:d
+                {: RESULT = d; :}
+        |       type_announcement:d
+                {: RESULT = d; :}
+        |       supertype_declaration:d
+                {: RESULT = d; :}
+        |       annotations_opt:m IMPORT:i expression:t SEMICOLON:s
+                {: RESULT = new import_construct(m, t, new fragment_position(i, i, s)); :}
+        |       USE:u name:n SEMICOLON:s
+                {: RESULT = new use_construct(n, new fragment_position(u, u, s)); :}
+        |       TARGET:t name:n COLON:c expression:e SEMICOLON:s
+                {: RESULT = new target_construct(n, e, new fragment_position(t, t, s)); :}
+        ;
+
+type_declaration ::=
+                annotations_opt:m KIND:k name:n parameters_opt:p
+                    OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb
+                // TODO: use fragment position
+                {: RESULT = new type_declaration_construct(m, k.payload(), n.the_name, p, st, n); :}
+        ;
+
+type_announcement ::=
+                annotations_opt:m KIND:k name:n SEMICOLON:s
+                // TODO: use fragment position
+                {: RESULT = new type_announcement_construct(m, k.payload(), n.the_name, n); :}
+        ;
+
+procedure_declaration ::=
+                annotations_opt:m expression:t name:n parameters:p post_annotations_opt:pm
+                    procedure_body:b
+                {: RESULT = new procedure_construct(m, t, n.the_name, p, pm, b, n); :}
+        ;
+
+variable_declaration ::=
+                annotations_opt:m expression:t name:n post_annotations_opt:pm COLON expression:e
+                {: RESULT = new variable_construct(m, t, n.the_name, pm, e,
+                    new fragment_position(t, n, e)); :}
+        |       annotations_opt:m expression:t name:n post_annotations_opt:pm
+                {: RESULT = new variable_construct(m, t, n.the_name, pm, null,
+                    new fragment_position(t, n, n)); :}
+        |       annotations_opt:m name:n post_annotations_opt:pm COLON expression:e
+                {: RESULT = new variable_construct(m, null, n.the_name, pm, e,
+                    new fragment_position(n, n, e)); :}
+        ;
+
+supertype_declaration ::=
+                annotations_opt:m SUPERTYPE_KIND:st types:tl SEMICOLON:s
+                {: RESULT = new supertype_construct(st.payload(), tl, st); :}
+                // TODO: handle annotations and flavor
+        //|       annotations_opt:m FLAVOR:f SUPERTYPE_KIND:st types:tl SEMICOLON:s
+        //      {: RESULT = new supertype_construct(st.payload(), tl, st); :}
+        ;
+
+block ::=       OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb
+                {: RESULT = new block_construct(st, new fragment_position(ob, ob, cb)); :}
+        ;
+
+procedure_body ::=
+                block:b
+                {: RESULT = b; :}
+        |       EQUALS_GREATER_THAN:egt expression:e SEMICOLON:s
+                {: RESULT = e; :}
+        |       SEMICOLON:s
+                {: RESULT = null; :}
+        |       template:t
+                {: RESULT = t; :}
+        ;
+
+block_statement ::=
+                RETURN:r expression_opt:e SEMICOLON:s
+                {: RESULT = new return_construct(e, new fragment_position(r, r, s)); :}
+        |       JUMP:j SEMICOLON:s
+                {: RESULT = new jump_construct(j.payload(), new fragment_position(j, j, s)); :}
+        |       ASSERT:a expression:e SEMICOLON:s
+                {: RESULT = new constraint_construct(e, new fragment_position(a, a, s)); :}
+        |       IF:i condition_in_parens:c statement:t
+                {: RESULT = new conditional_construct(c, t, null, true,
+                                           new fragment_position(i, i, t)); :}
+        |       IF:i condition_in_parens:c statement:t ELSE statement:e
+                {: RESULT = new conditional_construct(c, t, e, true,
+                                           new fragment_position(i, i, e)); :}
+        |       LOOP:p statement:st
+                {: RESULT = new loop_construct(st, new fragment_position(p, p, st)); :}
+        |       WHILE:w condition_in_parens:c statement:t
+                {: RESULT = new while_construct(c, t, new fragment_position(w, w, t)); :}
+        |       FOR:f OPEN_PARENTHESIS variable_or_expression_opt:i SEMICOLON:s
+                      expression_opt:c SEMICOLON expression_opt:u CLOSE_PARENTHESIS
+                      statement:st
+                {: RESULT = new for_construct(i, c, u, st, new fragment_position(f, f, st)); :}
+        |       FOR:f OPEN_PARENTHESIS variable_declaration:v CLOSE_PARENTHESIS statement:st
+                {: RESULT = new list_iteration_construct(v, st, new fragment_position(f, f, st)); :}
+        |       PLEASE:p statement:st
+                {: RESULT = new please_construct(st, new fragment_position(p, p, st)); :}
+        ;
+
+variable_or_expression_opt ::=
+                annotations_opt:m expression_opt:e     // annotations are an artifact of grammar
+                {: parser_util.ensure_empty(m); RESULT = e; :}
+        |       variable_declaration:v
+                {: RESULT = v; :}
+        ;
+
+annotation ::=  MODIFIER_KIND:mk
+                {: RESULT = new modifier_construct(mk.payload(), mk); :}
+                /*
+        |       MODIFIER_KIND:mk parameters:p
+                {: RESULT = new annotation_construct(mk.payload(), p,
+                    new fragment_position(mk, mk, p)); :}
+                */
+        |       COMMENT:c
+                {: RESULT = new comment_construct(c.payload(), c); :}
+        ;
+
+annotations_opt ::=
+                /* epsilon */
+                {: RESULT = new base_list<annotation_construct>(); :}
+        |       annotation:hd annotations_opt:tl
+                {: RESULT = new base_list<annotation_construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+post_annotation ::=     MODIFIER_KIND:mk
+                {: RESULT = new modifier_construct(mk.payload(), mk); :}
+        |       FLAVOR:f
+                {: RESULT = new modifier_construct(f.payload(), f); :}
+        ;
+
+post_annotations_opt ::=
+                /* epsilon */
+                {: RESULT = new base_list<annotation_construct>(); :}
+        |       post_annotation:hd post_annotations_opt:tl
+                {: RESULT = new base_list<annotation_construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+expression_opt ::=
+                expression:e
+                {: RESULT = e; :}
+        |       /* epsilon */
+                {: RESULT = new empty_construct(parser_util.empty_position); :}
+        ;
+
+condition_in_parens ::=
+                OPEN_PARENTHESIS:op expression:e CLOSE_PARENTHESIS:cp
+                {: RESULT = e; :}
+        ;
+
+types ::=       expression:t
+                {: RESULT = new base_list<construct>(t); :}
+        |       types:hd COMMA:cm expression:tl
+                {: RESULT = new base_list<construct>(hd); RESULT.append(tl); :}
+        ;
+
+parameters ::=
+                OPEN_PARENTHESIS:o parameter_list_opt:ie CLOSE_PARENTHESIS:c
+                {: RESULT = new list_construct(ie, grouping_type.PARENS,
+                                new fragment_position(o, o, c)); :}
+        |       OPEN_BRACKET:o parameter_list_opt:ie CLOSE_BRACKET:c
+                {: RESULT = new list_construct(ie, grouping_type.BRACKETS,
+                                new fragment_position(o, o, c)); :}
+        ;
+
+parameters_opt ::=
+                parameters:p
+                {: RESULT = p; :}
+        |       /* epsilon */
+                {: RESULT = null; :}
+        ;
+
+// Trailing comma is allowed in parameters for declaring singleton lists:
+// [1] is an integer, and [1,] is a one-element list.
+parameter_list_opt ::=
+                /* epsilon */
+                {: RESULT = new base_list<construct>(); :}
+        |       parameter:p
+                {: RESULT = new base_list<construct>(p); :}
+        |       parameter:hd COMMA:cm parameter_list_opt:tl
+                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+parameter ::=
+                annotations_opt:m expression:e     // annotations are an artifact of grammar
+                {: parser_util.ensure_empty(m); RESULT = e; :}
+        |       annotations_opt:m expression:t name:n post_annotations_opt:pm COLON expression:e
+                {: RESULT = new variable_construct(m, t, n.the_name, pm, e,
+                    new fragment_position(t, n, e)); :}
+        |       annotations_opt:m expression:t name:n post_annotations_opt:pm
+                {: RESULT = new variable_construct(m, t, n.the_name, pm, null,
+                    new fragment_position(t, n, n)); :}
+        |       annotations_opt:m expression:t post_annotations_opt:pm COLON expression:e
+                {:
+                  // TODO: handle initializer expressions correctly.
+                  // Right now, we just drop the tag expression.
+                  RESULT = (t instanceof name_construct) ?
+                    new variable_construct(m, null, ((name_construct) t).the_name, pm, e,
+                        new fragment_position(t, t, e)) :
+                        e;
+                :}
+        ;
+
+expression ::=  name:n
+                {: RESULT = n; :}
+        |       literal_value:v
+                {: RESULT = v; :}
+        |       parameters:p
+                {: RESULT = p; :}
+        |       expression:e1 DOT:d expression:e2
+                {: RESULT = new resolve_construct(e1, e2, new fragment_position(e1, d, e2)); :}
+        |       expression:e parameters:p
+                {: RESULT = new parameter_construct(e, p, new fragment_position(e, p, p)); :}
+        |       EXCLAMATION_MARK:op expression:e
+                {: RESULT = parser_util.make_op(op, e, operator.LOGICAL_NOT); :}
+        |       expression:e1 ASTERISK:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.MULTIPLY); :}
+        |       expression:e1 SLASH:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.DIVIDE); :}
+        |       expression:e1 PERCENT:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.MODULO); :}
+        |       expression:e1 PLUS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.ADD); :}
+        |       expression:e1 PLUS_PLUS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.CONCATENATE); :}
+        |       expression:e1 MINUS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.SUBTRACT); :}
+        |       expression:e1 EQUALS_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.EQUAL_TO); :}
+        |       expression:e1 EXCLAMATION_MARK_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.NOT_EQUAL_TO); :}
+        |       expression:e1 LESS_THAN:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.LESS); :}
+        |       expression:e1 GREATER_THAN:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.GREATER); :}
+        |       expression:e1 LESS_THAN_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.LESS_EQUAL); :}
+        |       expression:e1 GREATER_THAN_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.GREATER_EQUAL); :}
+        |       expression:e AS:op expression:t
+                {: RESULT = parser_util.make_op(e, op, t, operator.AS_OPERATOR); :}
+        |       expression:e1 IS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.IS_OPERATOR); :}
+        |       expression:e1 IS_NOT:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.IS_NOT_OPERATOR); :}
+        |       expression:e1 AMPERSAND:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.BIT_AND); :}
+        |       expression:e1 CARET:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.XOR); :}
+        |       expression:e1 VERTICAL_BAR:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.BIT_OR); :}
+        |       expression:e1 AMPERSAND_AMPERSAND:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.LOGICAL_AND); :}
+        |       expression:e1 VERTICAL_BAR_VERTICAL_BAR:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.LOGICAL_OR); :}
+        |       expression:e1 OR:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.GENERAL_OR); :}
+        |       expression:e1 QUESTION_MARK:q expression:e2 COLON:c expression:e3
+                {: RESULT = new conditional_construct(e1, e2, e3, false,
+                                           new fragment_position(e1, q, e3)); :}
+        |       expression:e1 EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.ASSIGN); :}
+        |       expression:e1 PLUS_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.ADD_ASSIGN); :}
+        |       expression:e1 MINUS_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.SUBTRACT_ASSIGN); :}
+        |       expression:e1 ASTERISK_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.MULTIPLY_ASSIGN); :}
+        |       expression:e1 PLUS_PLUS_EQUALS:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.CONCATENATE_ASSIGN); :}
+        |       FLAVOR:f expression:t
+                {: RESULT = new flavor_construct(f.payload(), t, new fragment_position(f, t, t)); :}
+        ;
+
+literal_value ::=
+                LITERAL:v
+                {: RESULT = new literal_construct(v.payload(), v); :}
+        ;
+
+name ::=        SIMPLE_NAME:n
+                {: RESULT = new name_construct(n.payload(), n); :}
+        |       SPECIAL_NAME:n
+                {: RESULT = new name_construct(n.payload(), n); :}
+        ;
+
+template ::=    HASH:h sexpression:sexpr
+                {: RESULT = new template_construct(sexpr, new fragment_position(h, h, sexpr)); :}
+        ;
+
+sexpression ::= OPEN_PARENTHESIS:op sexpression_elements:e CLOSE_PARENTHESIS:cp
+                {: RESULT = new sexpression_construct(e, new fragment_position(op, op, cp)); :}
+        ;
+
+sexpression_elements ::=
+                /* epsilon */
+                {: RESULT = new base_list<construct>(); :}
+        |       sexpression_element:hd sexpression_elements:tl
+                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+sexpression_element ::=
+                sexpression_atom:a
+                {: RESULT = a; :}
+        |       literal_value:v
+                {: RESULT = v; :}
+        |       sexpression:sexpr
+                {: RESULT = sexpr; :}
+        |       OPEN_BRACE:ob expression:expr CLOSE_BRACE:cb
+                {: RESULT = new list_construct(new base_list<construct>(expr), grouping_type.BRACES,
+                                new fragment_position(ob, ob, cb)); :}
+        ;
+
+sexpression_atom ::=
+                name:n
+                {: RESULT = n; :}
+        |       FOR:t
+                {: RESULT = new name_construct(keyword.FOR_NAME, t); :}
+        ;

@@ -1,7 +1,7 @@
 
 Doc comment structure:
 
---- #Copyright 2014-2016 The Ideal Authors. All rights reserved.
+--- #Copyright 2014-2020 The Ideal Authors. All rights reserved.
 ---
 --- #License
 ---   Use of this source code is governed by a BSD-style
@@ -24,6 +24,7 @@ Configuration components:
   use clean_slate;
   use strictest_checks;
   use good_manners; // Support for: please statement
+  use verbose_logging;
 
 Numbers:
 
@@ -35,8 +36,11 @@ Numbers:
 Type modifier:
   For numbers:
     exact (default)
-    extended (supports -0 and infinity)
+    extended (supports -0 and +/- infinity)
     inexact
+    not_a_number (subtype of null)
     floating point: inexact real or not_a_number
   For collections:
     non_empty
+
+theideal.org-ideal-RELEASE-1.0.iar

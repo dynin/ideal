@@ -1,6 +1,9 @@
 ============ INIT
+==== Loading testdata/bootstrap.i
 ============ PARSE
 ============ BOOTSTRAP
+==== Loading library/elements.i
+==== Loading library/operators.i
 ============ DISPLAY
 [
   type_declaration_construct {
@@ -2479,7 +2482,7 @@
     ]
   }
 ]
-============ BEFORE_EVALUATION
+============ TARGET_DECL
 ============ TYPE_DECL
 procedure_kind procedure[entity ret, entity arg1, entity arg2] {
                ^^^^^^^^^

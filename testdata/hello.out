@@ -1,6 +1,9 @@
 ============ INIT
+==== Loading testdata/hello.i
 ============ PARSE
 ============ BOOTSTRAP
+==== Loading library/elements.i
+==== Loading library/operators.i
 ============ DISPLAY
 [
   procedure_construct {
@@ -38,7 +41,7 @@
     }
   }
 ]
-============ BEFORE_EVALUATION
+============ TARGET_DECL
 ============ TYPE_DECL
 ============ IMPORT_AND_TYPE_VAR_DECL
 ============ SUPERTYPE_DECL

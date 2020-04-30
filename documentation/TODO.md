@@ -1,8 +1,9 @@
 # Tasks
-  
+- [ ] Cross references
 - [ ] Renaming
-  - [ ] map
-  - [ ] stringable
+  - [x] stringable
+  - [ ] runtime_util -> runtime_utilities
+  - [ ] text_util -> text_utilities
 - [ ] Publish: better style
   - [ ] Font experiments
   - [ ] Bolded colon
@@ -17,13 +18,30 @@
 - [ ] Initial setup
   - [x] Updated JSR 305 jar
 - [ ] Inherit doc comments
-- [ ] Cross references
 - [ ] Cleanly compile with -Xlint:unchecked
 - [ ] Document the code better
 - [ ] Handle '.' in doc comment summaries
 - [ ] Add default parameters to procedures
 - [ ] Make singleton.instance optional
-- [ ] Support => in procedure declarations
+- [x] Support => in procedure declarations
 - [ ] Add C/C++ backend
 - [x] Update AppEngine app
 - [ ] Test harness
+- [x] Refactor text library to use dictionary
+- [ ] Default value for procedure parameters
+- [ ] Implement collection.map()
+- [ ] Implement list.join()
+- [ ] Handle # in source code
+- [ ] Handle # in comments
+- [ ] Add block comments
+- [ ] Implement empty dictionary
+- [ ] Add readonly collection.is_not_empty
+- [ ] Catch abstract methods that are not implemented
+- [ ] Introduce ideal/development/languages/...
+- [ ] Implement memoization extension
+- [ ] Introduce parameterized subtype refinement
+- [ ] Move regression tests from testdata to tests
+- [x] Streamline the resource_catalog API
+- [ ] Support procedure parameters with default values
+- [ ] Move dont_display annotation to ideal.machine
+- [ ] Handle more than one target

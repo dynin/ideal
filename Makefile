@@ -1,4 +1,4 @@
-# Copyright 2014 The Ideal Authors. All rights reserved.
+# Copyright 2014-2020 The Ideal Authors. All rights reserved.
 #
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file or at
@@ -22,28 +22,21 @@ MKDIR = mkdir -p
 JSR305_JAR = $(THIRD_PARTY_DIR)/jsr305-3.0.2.jar
 JUNIT_JAR = $(THIRD_PARTY_DIR)/junit-4.13.jar
 JAVACUP_JAR = $(THIRD_PARTY_DIR)/java-cup-11b.jar
-GSON_JAR = $(THIRD_PARTY_DIR)/gson-2.8.6.jar
-APPENGINE_VERSION = 1.9.78
-APPENGINE_DIR = $(THIRD_PARTY_DIR)/appengine-java-sdk-$(APPENGINE_VERSION)
-APPENGINE_SDK_JAR = $(APPENGINE_DIR)/lib/user/appengine-api-1.0-sdk-$(APPENGINE_VERSION).jar
-SERVLET_JAR = $(APPENGINE_DIR)/jetty94/jetty-home/lib/servlet-api-3.1.jar
 
-THIRD_PARTY_JARS = $(JSR305_JAR):$(JUNIT_JAR):$(JAVACUP_JAR):$(GSON_JAR)
-APPENGINE_JARS = $(APPENGINE_SDK_JAR):$(SERVLET_JAR)
+THIRD_PARTY_JARS = $(JSR305_JAR):$(JUNIT_JAR):$(JAVACUP_JAR)
 
+JSOURCE_DIR = jsource
 BOOTSTRAPPED_DIR = bootstrapped
 
 JAVA = $(JDK_DIR)/bin/java -ea -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS)
 JAVAC_SOURCE_OPTS = -source $(JDK_VERSION) -target $(JDK_VERSION) -Xlint:deprecation
 JAVAC_OPTS = $(JAVAC_SOURCE_OPTS) \
         -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS) -d $(CLASSES_DIR) \
-	-sourcepath .:$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
+	-sourcepath $(JSOURCE_DIR):$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
 JAVAC = $(JDK_DIR)/bin/javac $(JAVAC_OPTS)
+JAVAC_HERMETIC_OPTS = $(JAVAC_SOURCE_OPTS) -classpath $(THIRD_PARTY_JARS) -d $(CLASSES_DIR)
+JAVAC_HERMETIC = $(JDK_DIR)/bin/javac $(JAVAC_HERMETIC_OPTS)
 JAVAC_LINT_OPT = -Xlint:unchecked
-JAVAC_OPTS_APPENGINE = $(JAVAC_SOURCE_OPTS) \
-        -classpath $(THIRD_PARTY_JARS):$(APPENGINE_JARS):$(CLASSES_DIR) \
-        -d $(CLASSES_DIR)
-JAVAC_APPENGINE = $(JDK_DIR)/bin/javac $(JAVAC_OPTS_APPENGINE)
 JAVADOC = $(JDK_DIR)/bin/javadoc -d $(JAVADOC_DIR)
 
 PARSER_DIR = $(GENERATED_DIR)/generated/ideal/development/parsers
@@ -53,44 +46,24 @@ JAVACUP = $(PARSER2SRC_DIR)/$(JDK_DIR)/bin/java \
 
 BOOTSTRAPPED_TARGET = $(TARGETS_DIR)/boostrapped
 LIBRARY_TARGET = $(TARGETS_DIR)/library
+DEVELOPMENT_TARGET = $(TARGETS_DIR)/development
 BASEPARSER_TARGET = $(TARGETS_DIR)/baseparser
 IDEAL_TARGET = $(TARGETS_DIR)/ideal
 
 CREATE_MAIN = ideal.development.tools.create
 CREATE = $(JAVA) $(CREATE_MAIN)
+IDEAL_SOURCE = ideal.i
 
-FLAGS_PRETTY = -pretty-print -output=$(PRETTY_DIR)
-FLAGS_RUN = -debug-passes -run
-FLAGS_REFLECT = -debug-reflect
+FLAGS_RUN = -debug-progress -run
 
-ISOURCE_DIR = isource
-IDEAL_SOURCE = $(ISOURCE_DIR)/ideal.i
-LIBRARY_ELEMENTS = $(ISOURCE_DIR)/library/elements.i
-ONETWO = $(ISOURCE_DIR)/tests/12.i
-ONE = $(ISOURCE_DIR)/tests/1.i
-DIRECTORY = $(ISOURCE_DIR)/tests/directory.i
-CIRCLE = $(ISOURCE_DIR)/showcase/circle.i
-HELLO = $(ISOURCE_DIR)/showcase/hello.i
-IDEAL_RUNTIME = $(ISOURCE_DIR)/idealruntime.i
-# TODO: deprecate ISOURCES
-ISOURCES = $(ISOURCE_DIR)/*
+TEST_DIR = tests
+ONETWO = $(TEST_DIR)/12.i
+ONE = $(TEST_DIR)/1.i
+DIRECTORY = $(TEST_DIR)/directory.i
 
-# Defintions for the Coach app
-COACH_TARGET = $(TARGETS_DIR)/coach
-COACH_WAR_TARGET = $(TARGETS_DIR)/coach-war
-
-COACH_RESOURCES_DIR = ideal/showcase/coach/resources
-COACH_IDEAL = $(COACH_RESOURCES_DIR)/coach.i
-COACH_WAR_DIR = $(BUILD_DIR)/coach-war
-COACH_WEB_INF_DIR = $(COACH_WAR_DIR)/WEB-INF
-COACH_WAR_TEMPLATE = $(COACH_RESOURCES_DIR)/war-template
-COACH_WAR_FILES = $(COACH_WAR_TEMPLATE)/* $(COACH_WAR_TEMPLATE)/WEB-INF/web.xml
-
-# For profiling
-AGENT_PATH = $(THIRD_PARTY_DIR)/yjp-12.0.6/bin/linux-x86-32/libyjpagent.so
-JAVA_PROFILING_OPT = -agentpath:$(AGENT_PATH)=tracing
-JAVA_PROFILING_OPT2 = -agentlib:hprof=cpu=times
-CREATE_PROF = $(JAVA) $(JAVA_PROFILING_OPT) $(CREATE_MAIN)
+SHOWCASE_DIR = showcase
+CIRCLE = $(SHOWCASE_DIR)/circle.i
+HELLO = $(SHOWCASE_DIR)/hello.i
 
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \
@@ -105,75 +78,78 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java
 
 MACHINE_JAVA = \
-    ideal/machine/elements/*.java \
-    ideal/machine/channels/*.java \
-    ideal/machine/resources/*.java
+    $(JSOURCE_DIR)/ideal/machine/elements/*.java \
+    $(JSOURCE_DIR)/ideal/machine/channels/*.java \
+    $(JSOURCE_DIR)/ideal/machine/resources/*.java
 
-PARSER_CUP = ideal/development/parsers/base_parser.cup
+PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
+
+DEVELOPMENT_IDEAL = \
+    development/development.i \
+    development/elements.i
+
+BOOTSTRAPPED_DEVELOPMENT = \
+    $(BOOTSTRAPPED_DIR)/ideal/development/elements/*.java
 
 DEVELOPMENT_JAVA = \
-    ideal/development/elements/*.java \
-    ideal/development/texts/*.java \
-    ideal/development/components/*.java \
-    ideal/development/comments/*.java \
-    ideal/development/annotations/*.java \
-    ideal/development/names/*.java \
-    ideal/development/flavors/*.java \
-    ideal/development/modifiers/*.java \
-    ideal/development/declarations/*.java \
-    ideal/development/constructs/*.java \
-    ideal/development/kinds/*.java \
-    ideal/development/types/*.java \
-    ideal/development/literals/*.java \
+    $(JSOURCE_DIR)/ideal/development/elements/*.java \
+    $(JSOURCE_DIR)/ideal/development/texts/*.java \
+    $(JSOURCE_DIR)/ideal/development/components/*.java \
+    $(JSOURCE_DIR)/ideal/development/comments/*.java \
+    $(JSOURCE_DIR)/ideal/development/annotations/*.java \
+    $(JSOURCE_DIR)/ideal/development/names/*.java \
+    $(JSOURCE_DIR)/ideal/development/flavors/*.java \
+    $(JSOURCE_DIR)/ideal/development/modifiers/*.java \
+    $(JSOURCE_DIR)/ideal/development/declarations/*.java \
+    $(JSOURCE_DIR)/ideal/development/constructs/*.java \
+    $(JSOURCE_DIR)/ideal/development/kinds/*.java \
+    $(JSOURCE_DIR)/ideal/development/types/*.java \
+    $(JSOURCE_DIR)/ideal/development/literals/*.java \
     \
-    ideal/development/actions/*.java \
-    ideal/development/notifications/*.java \
-    ideal/development/values/*.java \
-    ideal/development/functions/*.java \
-    ideal/development/scanners/*.java \
-    ideal/development/analyzers/*.java \
-    ideal/development/templates/*.java \
-    ideal/development/transformers/*.java \
-    ideal/development/printers/*.java \
-    ideal/development/extensions/*.java \
-    ideal/development/parsers/*.java \
-    ideal/development/documenters/*.java \
-    ideal/development/tools/*.java \
-    ideal/development/tests/*.java
+    $(JSOURCE_DIR)/ideal/development/actions/*.java \
+    $(JSOURCE_DIR)/ideal/development/notifications/*.java \
+    $(JSOURCE_DIR)/ideal/development/values/*.java \
+    $(JSOURCE_DIR)/ideal/development/functions/*.java \
+    $(JSOURCE_DIR)/ideal/development/scanners/*.java \
+    $(JSOURCE_DIR)/ideal/development/analyzers/*.java \
+    $(JSOURCE_DIR)/ideal/development/templates/*.java \
+    $(JSOURCE_DIR)/ideal/development/transformers/*.java \
+    $(JSOURCE_DIR)/ideal/development/printers/*.java \
+    $(JSOURCE_DIR)/ideal/development/extensions/*.java \
+    $(JSOURCE_DIR)/ideal/development/targets/*.java \
+    $(JSOURCE_DIR)/ideal/development/parsers/*.java \
+    $(JSOURCE_DIR)/ideal/development/documenters/*.java \
+    $(JSOURCE_DIR)/ideal/development/tools/*.java \
+    $(JSOURCE_DIR)/ideal/development/tests/*.java
 
-SHOWCASE_COACH_JAVA = \
-    ideal/showcase/coach/reflections/*.java \
-    ideal/showcase/coach/marshallers/*.java \
-    ideal/showcase/coach/forms/*.java \
-    ideal/showcase/coach/common/*.java \
-    ideal/showcase/coach/webforms/*.java \
-    ideal/showcase/coach/appengine/*.java
+default: print_elements
 
-default: ideal-run
+analyze_library: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_library
 
-all: $(IDEAL_TARGET)
+analyze_all: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_all
 
-ideal-run: $(IDEAL_TARGET) $(LIBRARY_ELEMENTS)
-	$(CREATE) -debug-passes -input=$(IDEAL_SOURCE) -target=print_elements
+print_elements: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=print_elements
 
-library: $(IDEAL_TARGET) $(IDEAL_SOURCE)
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library
+generate_library: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_library
 
-libraryb: $(IDEAL_TARGET) $(IDEAL_SOURCE)
+bootstrap_library: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)
 
-libraryt: $(IDEAL_TARGET) $(IDEAL_SOURCE) rm-scratch
+test_library: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java
+
+### Running sample code
 
 1: $(IDEAL_TARGET) $(ONE)
 	$(CREATE) $(FLAGS_RUN) -input=$(ONE)
 
 12: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -input=$(ONETWO)
-
-12p: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE_PROF) $(FLAGS_RUN) -input=$(ONETWO)
 
 dir: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -input=$(DIRECTORY)
@@ -183,88 +159,89 @@ circle: $(IDEAL_TARGET) $(CIRCLE)
 
 ### Generating runtime
 
-runtime: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime
+generate_runtime: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_runtime
 
-runtimep: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE_PROF) -input=$(IDEAL_RUNTIME) -target=generate_runtime > /dev/null
-
-runtimet: $(IDEAL_TARGET) $(IDEAL_RUNTIME) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(SCRATCH_DIR)
-	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/*/*java
-
-runtimeb: $(IDEAL_TARGET) $(IDEAL_RUNTIME)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
-
-runtimed: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=document_runtime \
-            -output=$(PRETTY_DIR)
+bootstrap_runtime: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
 
 ### Generating other
 
-reboot:
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
-
-allt: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(SCRATCH_DIR)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
+generate_all: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
 
-texts: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts
+test_all: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
+	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
+	cp -r $(JSOURCE_DIR)/ideal/machine/* $(SCRATCH_DIR)/ideal/machine
+	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
 
-textst: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(SCRATCH_DIR)
+reboot:
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(BOOTSTRAPPED_DIR)
+
+generate_texts: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_texts
+
+test_texts: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_texts -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/texts/*java
 
-textst_: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(SCRATCH_DIR)
-	cp runtests.java  $(SCRATCH_DIR)/ideal/runtime/texts/
-	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/texts/*java
-	$(JAVA) -cp $(CLASSES_DIR) ideal.runtime.texts.runtests
-
-textsb: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_texts -output=$(BOOTSTRAPPED_DIR)
+bootstrap_texts: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_texts -output=$(BOOTSTRAPPED_DIR)
 
 ### Reflections runtime
 
-reflect: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_reflections
+generate_reflections: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections
 
-reflectt: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_reflections -output=$(SCRATCH_DIR)
+test_reflections: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/reflections/*java
 
-reflectb: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_RUNTIME) -target=generate_reflections -output=$(BOOTSTRAPPED_DIR)
+bootstrap_reflections: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections -output=$(BOOTSTRAPPED_DIR)
+
+### Development
+
+generate_development gd: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development
+
+test_development td: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(SCRATCH_DIR)
+	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
+
+bootstrap_development: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(BOOTSTRAPPED_DIR)
+
+### Documentation generation
+
+document_elements: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_elements \
+            -output=$(PRETTY_DIR)
+
+document_library: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_library \
+            -output=$(PRETTY_DIR)
+
+document_runtime: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_runtime \
+            -output=$(PRETTY_DIR)
+
+document_all: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_all \
+            -output=$(PRETTY_DIR)
 
 ### Other targets
 
 import: $(IDEAL_TARGET)
 	$(CREATE) -debug-import
 
-pretty: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_SOURCE) -target=document_elements \
-            -output=$(PRETTY_DIR)
-
-prettylib: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_SOURCE) -target=document_library \
-            -output=$(PRETTY_DIR)
-
-prettylist: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=document_elements \
-            -output=$(PRETTY_DIR)
-
-doc: $(IDEAL_TARGET)
-	$(CREATE) -debug-passes -input=$(IDEAL_RUNTIME) -target=document_all \
-            -output=$(PRETTY_DIR)
-
 hello: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(HELLO)
 
 diff: $(IDEAL_TARGET)
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - $(LIBRARY_ELEMENTS)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - library/elements.i
 
 test: build $(IDEAL_TARGET)
 	$(JAVA) ideal.development.tests.main
@@ -279,6 +256,11 @@ $(LIBRARY_TARGET): $(MACHINE_JAVA) $(BOOTSTRAPPED_TARGET)
 	@touch $@
 	@echo === Library done.
 
+$(DEVELOPMENT_TARGET): $(BOOTSTRAPPED_DEVELOPMENT) $(LIBRARY_TARGET)
+	$(JAVAC) $(BOOTSTRAPPED_DEVELOPMENT)
+	@touch $@
+	@echo === Development done.
+
 $(BASEPARSER_TARGET): $(PARSER_CUP)
 	$(MKDIR) $(PARSER_DIR)
 	cd $(PARSER_DIR) ; \
@@ -290,12 +272,14 @@ $(BASEPARSER_TARGET): $(PARSER_CUP)
 	@touch $@
 	@echo === Parser done.
 
-$(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(BASEPARSER_TARGET) Makefile
+$(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(DEVELOPMENT_TARGET) \
+          $(BASEPARSER_TARGET) Makefile
 	$(JAVAC) $(DEVELOPMENT_JAVA)
 	@touch $@
 	@echo === ideal done.
 
-buildall: $(IDEAL_TARGET) $(COACH_TARGET)
+buildall: $(IDEAL_TARGET)
+	cd experimental/coach ; make
 
 jdoc: build
 	$(MKDIR) $(BUILD_DIR)/javadoc
@@ -329,100 +313,14 @@ testall: wipeout buildall test
 	bin/regression.sh
 	bin/doc-regression.sh
 
-# Targets related to Coach app
+# Targets for profiling
+AGENT_PATH = $(THIRD_PARTY_DIR)/yjp-12.0.6/bin/linux-x86-32/libyjpagent.so
+JAVA_PROFILING_OPT = -agentpath:$(AGENT_PATH)=tracing
+JAVA_PROFILING_OPT2 = -agentlib:hprof=cpu=times
+CREATE_PROF = $(JAVA) $(JAVA_PROFILING_OPT) $(CREATE_MAIN)
 
-coach: $(IDEAL_TARGET) $(COACH_TARGET) $(COACH_IDEAL)
-	$(CREATE) $(FLAGS_REFLECT) -input=$(COACH_IDEAL)
+12p: $(IDEAL_TARGET) $(ONETWO)
+	$(CREATE_PROF) $(FLAGS_RUN) -input=$(ONETWO)
 
-$(COACH_TARGET): $(SHOWCASE_COACH_JAVA)
-	$(JAVAC_APPENGINE) $(SHOWCASE_COACH_JAVA)
-	@touch $@
-	@echo === Coach done.
-
-$(COACH_WAR_TARGET): $(COACH_TARGET) $(ISOURCES) $(COACH_WAR_FILES)
-	$(MKDIR) $(COACH_WEB_INF_DIR)
-	$(MKDIR) $(COACH_WEB_INF_DIR)/lib
-	$(MKDIR) $(COACH_WEB_INF_DIR)/classes
-	$(MKDIR) $(COACH_WEB_INF_DIR)/isource
-	cp -r $(CLASSES_DIR)/* $(COACH_WEB_INF_DIR)/classes
-	cp -r $(COACH_WAR_TEMPLATE)/* $(COACH_WAR_DIR)
-	cp -r $(ISOURCE_DIR)/library $(COACH_WEB_INF_DIR)/isource
-	cp $(COACH_IDEAL) $(COACH_RESOURCES_DIR)/runtime.js $(COACH_WEB_INF_DIR)/isource
-	cp `find  $(APPENGINE_DIR)/lib/user/ -name \*jar` $(JAVACUP_JAR) $(COACH_WEB_INF_DIR)/lib/
-	cp $(GSON_JAR) $(COACH_WEB_INF_DIR)/lib/
-	@touch $@
-
-runserver: $(COACH_WAR_TARGET)
-	$(APPENGINE_DIR)/bin/dev_appserver.sh $(COACH_WAR_DIR)
-
-update: $(COACH_WAR_TARGET)
-	$(APPENGINE_DIR)/bin/appcfg.sh update $(COACH_WAR_DIR)
-
-rollback: $(COACH_WAR_TARGET)
-	$(APPENGINE_DIR)/bin/appcfg.sh rollback $(COACH_WAR_DIR)
-
-MINI_DIR = ideal/experiment/mini
-
-JAVA_MINI = $(JDK_DIR)/bin/java -cp $(CLASSES_DIR) -ea
-JAVAC_MINI = $(JDK_DIR)/bin/javac $(JAVAC_SOURCE_OPTS) -Xlint:unchecked \
-    -classpath $(JSR305_JAR) -d $(CLASSES_DIR)
-
-MINI_CREATE_SOURCE = \
-    $(MINI_DIR)/library.java \
-    $(MINI_DIR)/bootstrapped.java \
-    $(MINI_DIR)/create.java
-MINI_CREATE_TARGET = $(TARGETS_DIR)/mini-create
-MINI_CREATE_MAIN = ideal.experiment.mini.create
-JAVA_MINI_CREATE = $(JAVA_MINI) $(MINI_CREATE_MAIN)
-
-MINI_HI_SOURCE = \
-    $(MINI_DIR)/hi.java
-MINI_HI_TARGET = $(TARGETS_DIR)/mini-hi
-MINI_HI_MAIN = ideal.experiment.mini.hi
-JAVA_MINI_HI = $(JAVA_MINI) $(MINI_HI_MAIN)
-
-MINI_IDEAL_SOURCE = $(MINI_DIR)/bootstrapped.i
-MINI_BOOTSTRAPPED = $(MINI_DIR)/bootstrapped.java
-MINI_BOOTSTRAPPED_TMP = $(MINI_BOOTSTRAPPED).tmp
-MINI_BOOTSTRAPPED_SAVE = $(MINI_BOOTSTRAPPED).save
-
-$(MINI_CREATE_TARGET): $(MINI_CREATE_SOURCE)
-	$(JAVAC_MINI) $^
-	@touch $@
-
-$(MINI_HI_TARGET): $(MINI_HI_SOURCE)
-	$(JAVAC_MINI) $^
-	@touch $@
-
-m0: $(MINI_CREATE_TARGET)
-	@$(JAVA_MINI_CREATE) $(MINI_DIR)/test.i
-
-mini: $(MINI_CREATE_TARGET)
-	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/test.i
-
-minia: $(MINI_CREATE_TARGET)
-	@$(JAVA_MINI_CREATE) -analyze $(MINI_IDEAL_SOURCE)
-
-minib: $(MINI_CREATE_TARGET)
-	@cat $(MINI_DIR)/header.txt
-	@$(JAVA_MINI_CREATE) $(MINI_IDEAL_SOURCE) | sed s'/^/  /'
-	@echo }
-
-minip: $(MINI_CREATE_TARGET)
-	@echo Testing bootstrapping
-	@cp $(MINI_BOOTSTRAPPED) $(MINI_BOOTSTRAPPED_SAVE)
-	@make -s minib > $(MINI_BOOTSTRAPPED_TMP)
-	@-mv $(MINI_BOOTSTRAPPED_TMP) $(MINI_BOOTSTRAPPED)
-	@-make $(MINI_CREATE_TARGET)
-	@-mv $(MINI_BOOTSTRAPPED_SAVE) $(MINI_BOOTSTRAPPED)
-
-miniboot: $(MINI_CREATE_TARGET)
-	@echo Bootstrapping $(MINI_BOOTSTRAPPED)
-	@make -s minib > $(MINI_BOOTSTRAPPED_TMP)
-	@mv $(MINI_BOOTSTRAPPED_TMP) $(MINI_BOOTSTRAPPED)
-
-hi: $(MINI_HI_TARGET)
-	@$(JAVA_MINI_HI)
-
-hiswing: $(MINI_HI_TARGET)
-	@$(JAVA_MINI) -Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel $(MINI_HI_MAIN)
+runtimep: $(IDEAL_TARGET)
+	$(CREATE_PROF) -input=$(IDEAL_SOURCE) -target=generate_runtime > /dev/null

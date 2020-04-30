@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface position extends readonly_data, reference_equality, stringable, readonly_position, writeonly_position { }
+public interface position extends data, reference_equality, stringable, readonly_position, writeonly_position { }

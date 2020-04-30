@@ -32,6 +32,10 @@ public abstract class single_pass_analyzer extends base_analyzer {
     super(source);
   }
 
+  public principal_type declared_in_type() {
+    return parent();
+  }
+
   protected abstract analysis_result do_single_pass_analysis();
 
   protected boolean has_saved_result() {

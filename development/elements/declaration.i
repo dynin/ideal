@@ -10,7 +10,9 @@
 interface declaration {
   extends position;
 
+  -- The named parent type in which this declaration belongs.
+  -- principal_type declared_in_type;
+
   -- TODO: expose this if we need to.
-  --action_name short_name()
-  --principal_type declared_in_type()
+  --action_name short_name;
 }

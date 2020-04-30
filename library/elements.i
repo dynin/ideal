@@ -349,22 +349,22 @@ package elements {
     immutable set[element] frozen_copy() pure;
   }
 
---  --- A finite set of elements with an explicit ordering.
---  --- Unlike a list, it is guaranteed not have duplicate elements.
---  --- Attempting to insert a duplicate element will trigger an assertion failure.
-  --interface ordered_set[combivariant value element] {
+  --- A finite set of elements with an explicit ordering.
+  --- Unlike a list, it is guaranteed not have duplicate elements.
+  --- Attempting to insert a duplicate element will trigger an assertion failure.
+  interface ordered_set[combivariant value element] {
+    implements collection[element];
     -- TODO: that shouldn't be necessary once flavors in supertypes are handled robustly
- --   implements collection[element];
- --   implements readonly list[element], readonly set[element];
+    -- implements readonly list[element], readonly set[element];
 
---    void append(element the_element);
---    void append_all(readonly list[element] the_list);
---    void prepend(element the_element);
+    void append(element the_element);
+    void append_all(readonly list[element] the_list);
+    void prepend(element the_element);
 
---    immutable ordered_set[element] frozen_copy() pure;
+    immutable ordered_set[element] frozen_copy() pure;
 
     -- TODO: Declare remaining methods.
- -- }
+  }
 
   --- A type that encapsulates an atom of text.  Lists of characters
   --- make up |string|s.

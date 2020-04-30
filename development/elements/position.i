@@ -12,7 +12,7 @@
 --- |null| is encountered.
 
 interface position {
-  extends readonly data, reference_equality, stringable;
+  extends data, reference_equality, stringable;
 
   position or null source_position;
 }

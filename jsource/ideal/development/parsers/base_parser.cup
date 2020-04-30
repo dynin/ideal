@@ -189,11 +189,11 @@ variable_declaration ::=
         ;
 
 supertype_declaration ::=
-                // TODO: handle annotations and flavor
                 annotations_opt:m SUPERTYPE_KIND:st types:tl SEMICOLON:s
                 {: RESULT = new supertype_construct(st.payload(), tl, st); :}
-        |       annotations_opt:m FLAVOR:f SUPERTYPE_KIND:st types:tl SEMICOLON:s
-                {: RESULT = new supertype_construct(st.payload(), tl, st); :}
+                // TODO: handle annotations and flavor
+        //|       annotations_opt:m FLAVOR:f SUPERTYPE_KIND:st types:tl SEMICOLON:s
+        //      {: RESULT = new supertype_construct(st.payload(), tl, st); :}
         ;
 
 block ::=       OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb

@@ -345,7 +345,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         result_type != library().entity_type() &&
         result_type != library().value_type()) {
 
-      // TODO: moved default supertype to semantics
+      // TODO: move default supertype to semantics
       principal_type default_supertype = library().value_type();
 
       assert body != null;

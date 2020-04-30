@@ -71,7 +71,7 @@ public class runtime_util {
   }
 
   public static int compute_hash_code(readonly_value d) {
-    if (d instanceof reference_equality) {
+    if (d instanceof readonly_reference_equality) {
       return System.identityHashCode(d);
     }
 
@@ -132,7 +132,7 @@ public class runtime_util {
       return false;
     }
 
-    if (d1 instanceof reference_equality) {
+    if (d1 instanceof readonly_reference_equality) {
       return d1 == d2;
     }
 

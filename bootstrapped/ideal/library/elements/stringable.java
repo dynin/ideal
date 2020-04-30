@@ -2,4 +2,4 @@
 
 package ideal.library.elements;
 
-public interface stringable extends readonly_value, readonly_stringable, writeonly_stringable { }
+public interface stringable extends value, readonly_stringable, writeonly_stringable { }

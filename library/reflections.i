@@ -14,7 +14,7 @@ package reflections {
   }
 
   interface entity_wrapper {
-    extends readonly stringable;
+    extends stringable;
 
     type_id type_bound deeply_immutable;
   }

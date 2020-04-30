@@ -22,8 +22,6 @@ import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 
-import ideal.development.analyzers.supertype_analyzer;
-import ideal.development.analyzers.analyzable_action;
 import ideal.development.values.singleton_value;
 
 public class base_semantics implements semantics {
@@ -410,21 +408,21 @@ public class base_semantics implements semantics {
 
     type_declaration the_type_declaration = (type_declaration) new_type.get_declaration();
 
-    if (true) {
-      if (the_type_declaration == null) {
-        assert pass == declaration_pass.TYPES_AND_PROMOTIONS;
-        assert new_type instanceof parametrized_type;
-        // or utilities.panic("No declaration for " + new_type);
-        parametrized_type ptype = (parametrized_type) new_type;
-        principal_type declared_type =
-            ((type_declaration) ptype.get_master().get_declaration()).get_declared_type();
-        assert declared_type != new_type : "Got type " + new_type;
-        assert declared_type instanceof parametrized_type;
-        the_type_declaration = specialize_declaration(ptype,
-            (parametrized_type) declared_type, pass, context);
-        ptype.set_declaration(the_type_declaration);
-      }
-    } else {
+    if (the_type_declaration == null) {
+      assert pass == declaration_pass.TYPES_AND_PROMOTIONS;
+      assert new_type instanceof parametrized_type;
+      // or utilities.panic("No declaration for " + new_type);
+      parametrized_type ptype = (parametrized_type) new_type;
+      principal_type declared_type =
+          ((type_declaration) ptype.get_master().get_declaration()).get_declared_type();
+      assert declared_type != new_type : "Got type " + new_type;
+      assert declared_type instanceof parametrized_type;
+      the_type_declaration = specialize_declaration(ptype,
+          (parametrized_type) declared_type, pass, context);
+      ptype.set_declaration(the_type_declaration);
+    }
+
+    /*
       if (the_type_declaration == null) {
         utilities.panic("No declaration for " + new_type);
       }
@@ -453,6 +451,7 @@ public class base_semantics implements semantics {
         }
       }
     }
+    */
 
     the_type_declaration.process_declaration(pass);
 

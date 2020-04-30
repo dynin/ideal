@@ -7,7 +7,7 @@
 --- An object that knows how to display itself.
 -- TODO: this should be moved to a different namespace or retired.
 interface displayable {
-  implements readonly value;
+  implements value;
 
   string display() pure;
 }

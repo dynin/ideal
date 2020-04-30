@@ -2,4 +2,4 @@
 
 package ideal.library.elements;
 
-public interface equality_comparable extends readonly_value, readonly_equality_comparable, writeonly_equality_comparable { }
+public interface equality_comparable extends value, readonly_equality_comparable, writeonly_equality_comparable { }

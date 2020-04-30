@@ -872,23 +872,32 @@ public class to_java_transformer extends base_transformer {
             }
           } else {
             position pos = decl;
-            immutable_list<type_flavor> type_flavors = flavored_bodies.keys().elements();
-            for (int k = 0; k < type_flavors.size(); ++k) {
-              type_flavor flavor = type_flavors.get(k);
-              flavor_profile supertype_profile = supertype.principal().get_flavor_profile();
-              // TODO: iterate over supertype_lists?
-              if (supertype_profile.supports(flavor)) {
-                construct flavored_supertype;
-                if (flavor == supertype_profile.default_flavor()) {
-                  flavored_supertype = transform_with_mapping(supertype_construct,
-                      mapping.MAP_TO_WRAPPER_TYPE);
-                } else {
-                  flavored_supertype = change_flavor(supertype_construct, flavor, pos);
+            if (supertype instanceof principal_type) {
+              immutable_list<type_flavor> type_flavors = flavored_bodies.keys().elements();
+              for (int k = 0; k < type_flavors.size(); ++k) {
+                type_flavor flavor = type_flavors.get(k);
+                flavor_profile supertype_profile = supertype.principal().get_flavor_profile();
+                // TODO: iterate over supertype_lists?
+                if (supertype_profile.supports(flavor)) {
+                  construct flavored_supertype;
+                  if (flavor == supertype_profile.default_flavor()) {
+                    flavored_supertype = transform_with_mapping(supertype_construct,
+                        mapping.MAP_TO_WRAPPER_TYPE);
+                  } else {
+                    flavored_supertype = change_flavor(supertype_construct, flavor, pos);
+                  }
+                  list<construct> supertype_list = supertype_lists.get(flavor);
+                  assert supertype_list != null;
+                  supertype_list.append(flavored_supertype);
                 }
-                list<construct> supertype_list = supertype_lists.get(flavor);
-                assert supertype_list != null;
-                supertype_list.append(flavored_supertype);
               }
+            } else {
+              type_flavor flavor = supertype.get_flavor();
+              construct flavored_supertype = transform_with_mapping(supertype_construct,
+                  mapping.MAP_TO_WRAPPER_TYPE);
+              list<construct> supertype_list = supertype_lists.get(profile.map(flavor));
+              assert supertype_list != null;
+              supertype_list.append(flavored_supertype);
             }
           }
         }

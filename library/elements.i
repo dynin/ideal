@@ -109,7 +109,7 @@ package elements {
   --- <div>For operators == and != to work on values of a type, the type
   --- must implement this interface.</div>
   concept equality_comparable {
-    refines readonly value;
+    refines value;
 
     not_yet_implemented static equivalence_relation[equality_comparable] natural_equality;
   }
@@ -349,20 +349,22 @@ package elements {
     immutable set[element] frozen_copy() pure;
   }
 
-  --- A finite set of elements with an explicit ordering.
-  --- Unlike a list, it is guaranteed not have duplicate elements.
-  --- Attempting to insert a duplicate element will trigger an assertion failure.
-  interface ordered_set[combivariant value element] {
-    implements readonly list[element], readonly set[element];
+--  --- A finite set of elements with an explicit ordering.
+--  --- Unlike a list, it is guaranteed not have duplicate elements.
+--  --- Attempting to insert a duplicate element will trigger an assertion failure.
+  --interface ordered_set[combivariant value element] {
+    -- TODO: that shouldn't be necessary once flavors in supertypes are handled robustly
+ --   implements collection[element];
+ --   implements readonly list[element], readonly set[element];
 
-    void append(element the_element);
-    void append_all(readonly list[element] the_list);
-    void prepend(element the_element);
+--    void append(element the_element);
+--    void append_all(readonly list[element] the_list);
+--    void prepend(element the_element);
 
-    immutable ordered_set[element] frozen_copy() pure;
+--    immutable ordered_set[element] frozen_copy() pure;
 
     -- TODO: Declare remaining methods.
-  }
+ -- }
 
   --- A type that encapsulates an atom of text.  Lists of characters
   --- make up |string|s.
@@ -390,7 +392,7 @@ package elements {
   --- <div>A type whose values can be converted to a canonical
   --- string representation.</div>
   interface stringable {
-    refines readonly value;
+    refines value;
 
     string to_string readonly;
   }
@@ -401,7 +403,7 @@ package elements {
     implements collection[dictionary.entry[key_type, value_type]];
 
     interface entry[readonly value key_type, value value_type] {
-      implements readonly value;
+      implements value;
 
       -- TODO: replace with references
       key_type key immutable;

@@ -3,7 +3,7 @@ Here Be Dragons.
 The ideal metaprogramming framework reads in code in one of several
 input notations, analyzes it, and generates output in one of several
 output notations.  The input notations supported are the curly-brace-style
-and the LISP-parens-style.  The analysis handles plain types, parametrized
+and the LISP-parens-style.  The analysis handles plain types, parameterized
 types, and flavored types (described in type-flavors.txt).  The output
 notations include Java, JavaScript, interpreter and pretty-printer.
 
@@ -18,7 +18,7 @@ The directory structure
   \_development - main metaprogramming framework code
   experimental  - experiments that are not essential part of the codebase
   \_coach       - AppEngine-hosted demo app
-  \_mini        - lightweight mplementation of ideal concepts, incomplete
+  \_mini        - lightweight implementation of ideal concepts, incomplete
   bootstrapped  - library and runtime, translated into Java
   thirdparty    - software needed to build and run ideal
   testdata      - input and ouput for regression tests
@@ -57,7 +57,7 @@ features:
     see documentation/type-flavors.txt
 
 The LALR(1) grammar for the ideal notation can be found in
-ideal/development/parsers/base_parser.cup
+jsource/ideal/development/parsers/base_parser.cup
 
   * * *
 
@@ -78,7 +78,7 @@ Targets "hello" and "circle" execute respective code from showcase directive.
 "12" executes tests/12.i. The targets "generate_library" and "generate_runtime"
 generate Java source code from library and runtime, respectively.
 The targets "test_library" and "test_runtime" test that the code
-compiles.  The targets "bootstrap_library" and "bootstrap_runtimeb" bootstrap
+compiles.  The targets "bootstrap_library" and "bootstrap_runtime" bootstrap
 the code by overwriting the files in bootstrapped directory.
 
   * * *

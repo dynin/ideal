@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM='j_adapter'
-TO='java_adapter'
+FROM='supertype_kind'
+TO='subtype_tag'
 
 #cd $HOME/Projects/ideal
 

@@ -24,7 +24,7 @@ import static ideal.development.flavors.flavors.*;
 import ideal.development.names.*;
 import ideal.development.kinds.*;
 import static ideal.development.kinds.type_kinds.*;
-import static ideal.development.kinds.supertype_kinds.*;
+import static ideal.development.kinds.subtype_tags.*;
 import ideal.development.types.*;
 import ideal.development.declarations.*;
 import ideal.development.scanners.*;
@@ -856,11 +856,11 @@ public class to_java_transformer extends base_transformer {
         for (int j = 0; j < super_list.size(); ++j) {
           construct supertype_construct = super_list.get(j);
           type supertype = get_type(supertype_construct);
-          kind supertype_kind = supertype.principal().get_kind();
+          kind subtype_tag = supertype.principal().get_kind();
           if (concrete_mode) {
             construct transformed_supertype = transform_with_mapping(supertype_construct,
                 mapping.NO_MAPPING);
-            if (supertype_kind == class_kind) {
+            if (subtype_tag == class_kind) {
               if (superclass != null) {
                 utilities.panic("Oh no. Two superclasses!");
               }
@@ -964,7 +964,7 @@ public class to_java_transformer extends base_transformer {
       }
 
       if (!supertype_list.is_empty()) {
-        supertype_kind st_kind = concrete_mode ? implements_kind : extends_kind;
+        subtype_tag st_kind = concrete_mode ? implements_tag : extends_tag;
         flavored_body.prepend(new supertype_construct(st_kind, supertype_list, source));
       }
 
@@ -972,7 +972,7 @@ public class to_java_transformer extends base_transformer {
       if (concrete_mode) {
         flavored_name = type_name;
         if (superclass != null) {
-          flavored_body.prepend(new supertype_construct(extends_kind,
+          flavored_body.prepend(new supertype_construct(extends_tag,
               new base_list<construct>(superclass), source));
         }
       } else {
@@ -1100,7 +1100,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     list<construct> type_body = new base_list<construct>();
-    type_body.append(new supertype_construct(extends_kind, extends_types, pos));
+    type_body.append(new supertype_construct(extends_tag, extends_types, pos));
 
     if (!is_function) {
       type_body.append(new procedure_construct(empty_annotations, return_construct,

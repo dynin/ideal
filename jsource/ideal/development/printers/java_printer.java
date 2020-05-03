@@ -95,7 +95,7 @@ public class java_printer extends base_printer {
 
     if (c.type != null) {
       fragments.append(print_space());
-      fragments.append(print_simple_name(supertype_kinds.extends_kind.name()));
+      fragments.append(print_simple_name(subtype_tags.extends_tag.name()));
       fragments.append(print_space());
       fragments.append(print(c.type));
     }

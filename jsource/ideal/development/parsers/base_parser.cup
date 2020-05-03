@@ -55,7 +55,7 @@ terminal token<modifier_kind>  MODIFIER_KIND;
 terminal token<comment>  COMMENT;
 terminal token<type_flavor>  FLAVOR;
 terminal token<kind>  KIND;
-terminal token<supertype_kind>  SUPERTYPE_KIND;
+terminal token<subtype_tag>  SUBTYPE_TAG;
 terminal token<jump_type>  JUMP;
 terminal token<keyword>  ASSERT;
 terminal token<keyword>  IMPORT;
@@ -189,10 +189,10 @@ variable_declaration ::=
         ;
 
 supertype_declaration ::=
-                annotations_opt:m SUPERTYPE_KIND:st types:tl SEMICOLON:s
+                annotations_opt:m SUBTYPE_TAG:st types:tl SEMICOLON:s
                 {: RESULT = new supertype_construct(st.payload(), tl, st); :}
                 // TODO: handle annotations and flavor
-        //|       annotations_opt:m FLAVOR:f SUPERTYPE_KIND:st types:tl SEMICOLON:s
+        //|       annotations_opt:m FLAVOR:f SUBTYPE_TAG:st types:tl SEMICOLON:s
         //      {: RESULT = new supertype_construct(st.payload(), tl, st); :}
         ;
 

@@ -13,12 +13,12 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
 public class supertype_construct extends base_construct {
-  public final supertype_kind kind;
+  public final subtype_tag tag;
   public final readonly_list<construct> types;
 
-  public supertype_construct(supertype_kind kind, readonly_list<construct> types, position pos) {
+  public supertype_construct(subtype_tag tag, readonly_list<construct> types, position pos) {
     super(pos);
-    this.kind = kind;
+    this.tag = tag;
     this.types = types;
 
     assert !types.is_empty();

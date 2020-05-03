@@ -124,10 +124,11 @@ public class common_scanner extends base_scanner_config {
     add_kind(type_kinds.reference_kind); // TODO: this should be a special keyword
     add_kind(type_kinds.procedure_kind); // TODO: this should be a special keyword
 
-    add_supertype_kind(supertype_kinds.extends_kind);
-    add_supertype_kind(supertype_kinds.implements_kind);
-    add_supertype_kind(supertype_kinds.refines_kind);
-    add_supertype_kind(supertype_kinds.aliases_kind);
+    add_subtype_tag(subtype_tags.subtypes_tag);
+    add_subtype_tag(subtype_tags.extends_tag);
+    add_subtype_tag(subtype_tags.implements_tag);
+    add_subtype_tag(subtype_tags.refines_tag);
+    add_subtype_tag(subtype_tags.aliases_tag);
 
     add_modifier(access_modifier.public_modifier);
     add_modifier(access_modifier.private_modifier);

@@ -14,12 +14,12 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
-public class base_supertype_kind extends debuggable implements supertype_kind,
+public class base_subtype_tag extends debuggable implements subtype_tag,
     readonly_displayable {
 
   private final simple_name name;
 
-  public base_supertype_kind(String name) {
+  public base_subtype_tag(String name) {
     this.name = simple_name.make(name);
   }
 

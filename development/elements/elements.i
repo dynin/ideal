@@ -27,7 +27,7 @@ package elements {
   -- interface principal_type;
   -- interface simple_name;
   -- interface specialization_context;
-  -- interface supertype_kind;
+  -- interface subtype_tag;
   -- interface type;
   -- interface type_flavor;
 }

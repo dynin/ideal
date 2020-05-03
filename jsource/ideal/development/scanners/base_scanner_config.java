@@ -85,9 +85,9 @@ public class base_scanner_config implements scanner_config {
     add_keyword(kind.name(), new token_matcher<kind>(special_token_type.KIND, kind));
   }
 
-  public void add_supertype_kind(supertype_kind kind) {
-    add_keyword(kind.name(),
-        new token_matcher<supertype_kind>(special_token_type.SUPERTYPE_KIND, kind));
+  public void add_subtype_tag(subtype_tag tag) {
+    add_keyword(tag.name(),
+        new token_matcher<subtype_tag>(special_token_type.SUBTYPE_TAG, tag));
   }
 
   public void add_modifier(modifier_kind modifier) {

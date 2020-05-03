@@ -7,7 +7,7 @@
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface supertype_kind extends deeply_immutable_data, reference_equality,
+public interface subtype_tag extends deeply_immutable_data, reference_equality,
     stringable {
 
   simple_name name();

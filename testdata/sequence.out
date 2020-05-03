@@ -155,7 +155,7 @@
     }
     body: [
       supertype_construct {
-        kind: <implements>
+        tag: <implements>
         types: [
           name_construct {
             the_name: readonly_data

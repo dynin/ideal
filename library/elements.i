@@ -32,7 +32,7 @@ package elements {
   --- <j>Roughly corresponds to |Object| in Java.</j>
 
   concept value {
-    refines entity;
+    subtypes entity;
   }
 
   --- <div>An entity that supports read and write access to a value.
@@ -49,7 +49,7 @@ package elements {
   --- operators such as assignment and getter/setter convention for fields.</j>
 
   reference_kind reference[combivariant any value value_type] {
-    refines entity;
+    subtypes entity;
 
     value_type get() pure;
     void set(value_type new_value) writeonly;
@@ -71,12 +71,12 @@ package elements {
   --- <j>Related concepts in Java are |Serializable| and |Cloneable|.</j>
 
   concept data {
-    refines value;
+    subtypes value;
   }
 
   --- A value with an internal structure.
   concept composite_value {
-    refines value;
+    subtypes value;
 
     -- TODO: use special constructors to implement this.
     --not_yet_implemented self copy() pure;
@@ -91,7 +91,7 @@ package elements {
   --- the unit type.</div>
   -- <div>TODO: make a singleton</div>
   singleton void {
-    extends deeply_immutable data;
+    subtypes deeply_immutable data;
   }
 
   --- <div>Describes types that have a natural equivalence relation,
@@ -109,7 +109,7 @@ package elements {
   --- <div>For operators == and != to work on values of a type, the type
   --- must implement this interface.</div>
   concept equality_comparable {
-    refines value;
+    subtypes value;
 
     not_yet_implemented static equivalence_relation[equality_comparable] natural_equality;
   }
@@ -122,9 +122,9 @@ package elements {
   --- evaluated, as is the case when the first operand to |and| is |false|.</div>
   --- <j>Equivalent to Java's boolean type.</j>
   enum boolean {
-    implements deeply_immutable data;
-    implements equality_comparable;
-    implements stringable;
+    subtypes deeply_immutable data;
+    subtypes equality_comparable;
+    subtypes stringable;
 
     true;
     false;
@@ -132,9 +132,9 @@ package elements {
 
   --- Sign of a number, or result of a comparison.
   enum sign {
-    implements deeply_immutable data;
-    implements comparable;
-    -- TODO: implements stringable;
+    subtypes deeply_immutable data;
+    subtypes comparable;
+    -- TODO: subtypes stringable;
 
     less;
     equal;
@@ -143,7 +143,7 @@ package elements {
 
   --- Describes types that have a natural order.
   concept comparable {
-    refines equality_comparable;
+    subtypes equality_comparable;
 
     not_yet_implemented static order[comparable] natural_order;
   }
@@ -159,10 +159,10 @@ package elements {
   --- <div>When integers with a specific representation are needed,
   --- types such |int32| from |ideal.library.interop| should be used.</div>
   datatype integer {
-    implements deeply_immutable data;
+    subtypes deeply_immutable data;
     --TODO: this should be implemented by deeply_immutable data...
-    implements comparable;
-    implements stringable;
+    subtypes comparable;
+    subtypes stringable;
 
     -- TODO: add signum method
   }
@@ -170,7 +170,7 @@ package elements {
   --- A type that encapsulates integer values from 0 (inclusive) to
   --- positive infinity (exclusive).
   datatype nonnegative {
-    refines integer;
+    subtypes integer;
   }
 
   --- <div>A type whose values are distinct from valid values of other types.
@@ -188,15 +188,15 @@ package elements {
   -- Some runtimes may choose to use a single value for null in
   -- performance-optimized mode.
   interface null {
-    extends deeply_immutable data;
-    implements stringable;
+    subtypes deeply_immutable data;
+    subtypes stringable;
     -- TODO: this is a hack to make equal_to work, remove.
-    implements equality_comparable;
+    subtypes equality_comparable;
   }
 
   --- Signals that a value is missing.
   singleton missing {
-    implements null;
+    subtypes null;
   }
 
   --- A procedure that given entities as arguments, performs
@@ -207,47 +207,47 @@ package elements {
   --- |procedure[boolean, integer]| is a procedure that takes an integer
   --- argument and returns a boolean value.
   procedure_kind procedure[covariant entity return_type, ... contravariant entity argument_types] {
-    implements immutable value;
-    implements equality_comparable;
+    subtypes immutable value;
+    subtypes equality_comparable;
   }
 
   --- A procedure that has no visible side effects.
   procedure_kind function[covariant entity return_type, ... contravariant entity argument_types] {
     -- TODO: handle variable argument types in supertype
-    -- refines procedure[return_type, argument_types];
-    implements deeply_immutable data;
+    -- subtypes procedure[return_type, argument_types];
+    subtypes deeply_immutable data;
   }
 
   --- A boolean-valued pure function.
   concept predicate[contravariant value element] {
-    refines function[boolean, element];
+    subtypes function[boolean, element];
   }
 
   --- A binary relation.
   concept relation[contravariant value element] {
-    refines function[boolean, element, element];
+    subtypes function[boolean, element, element];
   }
 
   --- Equivalence relation is reflexive, symmetric, and transitive.
   concept equivalence_relation[contravariant value element] {
-    refines relation[element];
+    subtypes relation[element];
   }
 
   --- Equivalence relation with a corresponding hash function.
   concept equivalence_with_hash[contravariant value element] {
-    refines equivalence_relation[element];
+    subtypes equivalence_relation[element];
     -- TODO: instead of returning integer, have a type declaration.
     integer hash(element the_element) pure;
   }
 
   --- Order defined by a relation that is transitive, antisymmetric, and total.
   concept order[contravariant value element] {
-    refines function[sign, element, element];
+    subtypes function[sign, element, element];
   }
 
   --- A finite collection of element values, such as a sequence or a set.
   interface collection[combivariant value element] {
-    implements composite_value;
+    subtypes composite_value;
 
     --- The number of elements in the collection.
     nonnegative size readonly;
@@ -273,7 +273,7 @@ package elements {
 
   --- A finite sequence of elements.
   interface list[combivariant value element] {
-    implements collection[element];
+    subtypes collection[element];
 
     --- Read the list's element for the specified index.
     implicit readonly reference[element] get(nonnegative index) pure;
@@ -322,8 +322,8 @@ package elements {
   --- |begin| is inclusive, |end| is exclusive.
   -- TODO: implement ordered_set; parametrize over integers.
   interface range {
-    implements deeply_immutable list[nonnegative];
-    implements equality_comparable;
+    subtypes deeply_immutable list[nonnegative];
+    subtypes equality_comparable;
 
     --- Start of the range.
     nonnegative begin;
@@ -337,7 +337,7 @@ package elements {
 
   --- A finite set of elements.
   interface set[combivariant value element] {
-    implements collection[element];
+    subtypes collection[element];
 
     boolean contains(element the_element) pure;
 
@@ -353,9 +353,9 @@ package elements {
   --- Unlike a list, it is guaranteed not have duplicate elements.
   --- Attempting to insert a duplicate element will trigger an assertion failure.
   interface ordered_set[combivariant value element] {
-    implements collection[element];
+    subtypes collection[element];
     -- TODO: that shouldn't be necessary once flavors in supertypes are handled robustly
-    -- implements readonly list[element], readonly set[element];
+    -- subtypes readonly list[element], readonly set[element];
 
     void append(element the_element);
     void append_all(readonly list[element] the_list);
@@ -369,20 +369,20 @@ package elements {
   --- A type that encapsulates an atom of text.  Lists of characters
   --- make up |string|s.
   datatype character {
-    implements deeply_immutable data;
+    subtypes deeply_immutable data;
     --TODO: this should be implemented by deeply_immutable data...
-    implements equality_comparable;
-    implements stringable;
+    subtypes equality_comparable;
+    subtypes stringable;
   }
 
   --- A list of characters.
   datatype string {
-    implements deeply_immutable list[character];
-    implements stringable;
-    -- TODO: this won't be needed when list[data] implements data.
-    implements deeply_immutable data;
+    subtypes deeply_immutable list[character];
+    subtypes stringable;
+    -- TODO: this won't be needed when list[data] subtypes data.
+    subtypes deeply_immutable data;
     --TODO: this should be implemented by deeply_immutable data...
-    implements equality_comparable;
+    subtypes equality_comparable;
 
     -- TODO: these shouldn't be needed once type aliases work properly.
     implement string skip(nonnegative count) pure;
@@ -392,7 +392,7 @@ package elements {
   --- <div>A type whose values can be converted to a canonical
   --- string representation.</div>
   interface stringable {
-    refines value;
+    subtypes value;
 
     string to_string readonly;
   }
@@ -400,10 +400,10 @@ package elements {
   --- A finite associative collection.
   interface dictionary[combivariant readonly value key_type, value value_type] {
     -- TODO: "dictionary" shouldn't be needed here, if to_java_transformer is smarter.
-    implements collection[dictionary.entry[key_type, value_type]];
+    subtypes collection[dictionary.entry[key_type, value_type]];
 
     interface entry[readonly value key_type, value value_type] {
-      implements value;
+      subtypes value;
 
       -- TODO: replace with references
       key_type key immutable;
@@ -429,14 +429,14 @@ package elements {
   --- Values of this type can be compared for equality using
   --- reference comparison.
   interface reference_equality {
-    extends equality_comparable;
+    subtypes equality_comparable;
   }
 
   --- An identifier such as a URI.
   interface identifier {
-    extends deeply_immutable data;
-    extends stringable;
-    extends equality_comparable;
+    subtypes deeply_immutable data;
+    subtypes stringable;
+    subtypes equality_comparable;
   }
 
   -- TODO: of_type()

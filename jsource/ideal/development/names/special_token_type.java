@@ -19,7 +19,7 @@ public interface special_token_type {
 
   token_type KIND = new base_token_type("<kind>", base_symbols.KIND);
   token_type MODIFIER_KIND = new base_token_type("<modifier-kind>", base_symbols.MODIFIER_KIND);
-  token_type SUPERTYPE_KIND = new base_token_type("<supertype-kind>", base_symbols.SUPERTYPE_KIND);
+  token_type SUBTYPE_TAG = new base_token_type("<subtype-tag>", base_symbols.SUBTYPE_TAG);
   token_type FLAVOR = new base_token_type("<flavor>", base_symbols.FLAVOR);
   token_type JUMP = new base_token_type("<jump>", base_symbols.JUMP);
 

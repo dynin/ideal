@@ -41,7 +41,8 @@
 - [ ] Implement memoization extension
 - [ ] Introduce parameterized subtype refinement
 - [ ] Move regression tests from testdata to tests
-- [x] Streamline the resource_catalog API
 - [ ] Support procedure parameters with default values
 - [ ] Move dont_display annotation to ideal.machine
 - [ ] Handle more than one target
+- [ ] Update type-flavors doc; move docs to HTML
+- [x] Introduce subtypes, rename supertype_kind to subtype_kind/tag

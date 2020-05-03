@@ -23,7 +23,7 @@ import ideal.development.declarations.*;
 
 public class supertype_analyzer extends declaration_analyzer implements supertype_declaration {
 
-  // TODO: add supertype_kind.
+  // TODO: add subtype_tag.
   private final analyzable the_analyzable;
   private @Nullable type the_supertype;
   private boolean specializable;

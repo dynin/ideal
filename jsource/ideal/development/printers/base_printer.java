@@ -685,6 +685,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public text_fragment process_supertype(supertype_construct c) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
+    fragments.append(print_modifiers(c.annotations, true));
+
+    if (c.subtype_flavor != null) {
+      fragments.append(print_flavor(c.subtype_flavor));
+      fragments.append(print_space());
+    }
     fragments.append(print_simple_name(c.tag.name()));
     fragments.append(print_space());
 

@@ -2,6 +2,6 @@
 
 package ideal.library.elements;
 
-public interface readonly_ordered_set<element> extends readonly_collection<element>, any_ordered_set<element> {
+public interface readonly_ordered_set<element> extends readonly_collection<element>, readonly_list<element>, readonly_set<element>, any_ordered_set<element> {
   immutable_ordered_set<element> frozen_copy();
 }

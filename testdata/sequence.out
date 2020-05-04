@@ -155,6 +155,8 @@
     }
     body: [
       supertype_construct {
+        annotations: [ ]
+        subtype_flavor: <null>
         tag: <implements>
         types: [
           name_construct {

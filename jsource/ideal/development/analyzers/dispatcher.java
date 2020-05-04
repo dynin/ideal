@@ -107,7 +107,8 @@ public class dispatcher extends construct_visitor<analyzable> {
   @Override
   public analyzable process_supertype(supertype_construct source) {
     if (source.types.size() == 1) {
-      return new supertype_analyzer(process(source.types.first()), source);
+      return new supertype_analyzer(source.subtype_flavor, source.tag,
+          process(source.types.first()), source);
     } else {
       return new declaration_list_analyzer(make_supertype_list(source, source), source);
     }
@@ -120,7 +121,8 @@ public class dispatcher extends construct_visitor<analyzable> {
 
     for (int i = 0; i < supertypes.size(); ++i) {
       construct supertype = supertypes.get(i);
-      result.append(new supertype_analyzer(process(supertype), source));
+      result.append(new supertype_analyzer(the_supertype_construct.subtype_flavor,
+          the_supertype_construct.tag, process(supertype), source));
     }
 
     return result;

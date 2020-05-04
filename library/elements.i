@@ -354,8 +354,9 @@ package elements {
   --- Attempting to insert a duplicate element will trigger an assertion failure.
   interface ordered_set[combivariant value element] {
     subtypes collection[element];
-    -- TODO: that shouldn't be necessary once flavors in supertypes are handled robustly
-    -- subtypes readonly list[element], readonly set[element];
+    readonly subtypes readonly list[element], readonly set[element];
+    immutable subtypes immutable list[element], immutable set[element];
+    deeply_immutable subtypes deeply_immutable list[element], deeply_immutable set[element];
 
     void append(element the_element);
     void append_all(readonly list[element] the_list);

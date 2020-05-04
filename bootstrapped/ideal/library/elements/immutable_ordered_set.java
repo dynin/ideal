@@ -2,4 +2,4 @@
 
 package ideal.library.elements;
 
-public interface immutable_ordered_set<element> extends immutable_collection<element>, readonly_ordered_set<element> { }
+public interface immutable_ordered_set<element> extends immutable_collection<element>, immutable_list<element>, immutable_set<element>, readonly_ordered_set<element> { }

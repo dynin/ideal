@@ -480,7 +480,7 @@ public class base_semantics implements semantics {
         type procedure_type = library().procedure_type().bind_parameters(
           ((parametrized_type) new_type).get_parameters()).get_flavored(
             flavors.immutable_flavor);
-        process_super_flavors(new_type, procedure_type, pos, context);
+        process_super_flavors(new_type, null, procedure_type, pos, context);
       }
 
       immutable_list<type_flavor> supported_flavors = profile.supported_flavors();
@@ -506,7 +506,8 @@ public class base_semantics implements semantics {
             continue;
           }
           type the_supertype = the_supertype_declaration.get_supertype();
-          process_super_flavors(new_type, the_supertype, the_supertype_declaration, context);
+          process_super_flavors(new_type, the_supertype_declaration.subtype_flavor(),
+              the_supertype, the_supertype_declaration, context);
         }
       }
     } else {
@@ -535,13 +536,14 @@ public class base_semantics implements semantics {
     }
   }
 
-  private void process_super_flavors(principal_type the_subtype, type the_supertype, position pos,
+  private void process_super_flavors(principal_type the_subtype,
+      @Nullable type_flavor subtype_flavor, type the_supertype, position pos,
       analysis_context the_context) {
 
     immutable_list<type_flavor> supported_flavors =
         the_subtype.get_flavor_profile().supported_flavors();
 
-    if (the_supertype instanceof principal_type) {
+    if (subtype_flavor == null && the_supertype instanceof principal_type) {
       for (int i = 0; i < supported_flavors.size(); ++i) {
         type_flavor the_flavor = supported_flavors.get(i);
         if (type_utilities.get_flavor_profile(the_supertype.principal()).supports(the_flavor)) {
@@ -550,7 +552,10 @@ public class base_semantics implements semantics {
         }
       }
     } else {
-      add_supertype_and_promotion(the_subtype.get_flavored(the_supertype.get_flavor()),
+      if (subtype_flavor == null) {
+        subtype_flavor = the_supertype.get_flavor();
+      }
+      add_supertype_and_promotion(the_subtype.get_flavored(subtype_flavor),
           the_supertype, the_context, pos);
     }
   }

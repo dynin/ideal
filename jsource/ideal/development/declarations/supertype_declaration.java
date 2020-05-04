@@ -15,6 +15,8 @@ import ideal.development.elements.*;
 
 public interface supertype_declaration extends declaration {
   boolean has_errors();
+  type_flavor subtype_flavor();
+  subtype_tag tag();
   type get_supertype();
   supertype_declaration specialize(specialization_context context, principal_type new_parent);
 }

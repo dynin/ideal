@@ -190,10 +190,9 @@ variable_declaration ::=
 
 supertype_declaration ::=
                 annotations_opt:m SUBTYPE_TAG:st types:tl SEMICOLON:s
-                {: RESULT = new supertype_construct(st.payload(), tl, st); :}
-                // TODO: handle annotations and flavor
-        //|       annotations_opt:m FLAVOR:f SUBTYPE_TAG:st types:tl SEMICOLON:s
-        //      {: RESULT = new supertype_construct(st.payload(), tl, st); :}
+                {: RESULT = new supertype_construct(m, null, st.payload(), tl, st); :}
+        |       annotations_opt:m FLAVOR:f SUBTYPE_TAG:st types:tl SEMICOLON:s
+                {: RESULT = new supertype_construct(m, f.payload(), st.payload(), tl, st); :}
         ;
 
 block ::=       OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb

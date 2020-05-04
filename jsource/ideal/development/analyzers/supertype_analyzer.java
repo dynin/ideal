@@ -23,21 +23,38 @@ import ideal.development.declarations.*;
 
 public class supertype_analyzer extends declaration_analyzer implements supertype_declaration {
 
-  // TODO: add subtype_tag.
+  private final @Nullable type_flavor subtype_flavor;
+  private final subtype_tag tag;
   private final analyzable the_analyzable;
   private @Nullable type the_supertype;
   private boolean specializable;
 
-  public supertype_analyzer(analyzable the_analyzable, position pos) {
+  public supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
+      analyzable the_analyzable, position pos) {
     super(pos);
+    this.subtype_flavor = subtype_flavor;
+    this.tag = tag;
     this.the_analyzable = the_analyzable;
     specializable = true;
   }
 
-  private supertype_analyzer(type the_type, position pos) {
+  private supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
+      type the_type, position pos) {
     super(pos);
+    this.subtype_flavor = subtype_flavor;
+    this.tag = tag;
     this.the_analyzable = analyzable_action.from_value(the_type, pos);
     specializable = false;
+  }
+
+  @Override
+  public type_flavor subtype_flavor() {
+    return subtype_flavor;
+  }
+
+  @Override
+  public subtype_tag tag() {
+    return tag;
   }
 
   @Override
@@ -84,7 +101,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     assert specializable;
     assert new_parent != declared_in_type();
     analyzable specialized = the_analyzable.specialize(context, new_parent);
-    supertype_analyzer result = new supertype_analyzer(specialized, this);
+    supertype_analyzer result = new supertype_analyzer(subtype_flavor, tag, specialized, this);
     result.set_context(new_parent, get_context());
     result.multi_pass_analysis(analysis_pass.SUPERTYPE_DECL);
     return result;

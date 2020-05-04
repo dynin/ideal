@@ -174,7 +174,8 @@ public class base_transformer extends construct_visitor<Object>
 
   @Override
   public Object process_supertype(supertype_construct c) {
-    return new supertype_construct(c.tag, transform(c.types), c);
+    return new supertype_construct(transform_a(c.annotations, c), c.subtype_flavor, c.tag,
+        transform(c.types), c);
   }
 
   @Override

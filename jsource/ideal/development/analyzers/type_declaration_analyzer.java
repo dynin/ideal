@@ -350,7 +350,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
       assert body != null;
       position pos = this;
-      add_to_body(new supertype_analyzer(
+      add_to_body(new supertype_analyzer(null, subtype_tags.subtypes_tag,
           analyzable_action.from_value(default_supertype, pos), pos));
     }
 
@@ -391,8 +391,11 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     for (int i = 0; i < body.size(); ++i) {
       analyzable a = body.get(i);
       if (a instanceof supertype_analyzer && !has_errors(a)) {
-        flavor_profile super_profile = action_utilities.get_profile((supertype_analyzer) a);
-        result = flavor_profiles.combine(result, super_profile);
+        supertype_analyzer the_supertype_analyzer = (supertype_analyzer) a;
+        if (the_supertype_analyzer.subtype_flavor() == null) {
+          flavor_profile super_profile = action_utilities.get_profile(the_supertype_analyzer);
+          result = flavor_profiles.combine(result, super_profile);
+        }
       }
     }
 

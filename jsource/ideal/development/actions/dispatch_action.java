@@ -22,7 +22,7 @@ import ideal.development.values.*;
 public class dispatch_action extends base_action {
 
   private final action primary_action;
-  public final type from_type;
+  private final type from_type;
   private final dictionary<type, action> vtable;
   @Nullable private final action from;
 

@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.texts.string_text_node;
 import java.lang.Object;
 import java.lang.String;
-import java.lang.StringBuffer;
+import java.lang.StringBuilder;
 
 public class base_string extends debuggable implements string, string_text_node {
   private final String state;
@@ -118,7 +118,7 @@ public class base_string extends debuggable implements string, string_text_node 
     return new base_string(state.substring(begin, end));
   }
   public @Override string reverse() {
-    return new base_string(new StringBuffer(state).reverse().toString());
+    return new base_string(new StringBuilder(state).reverse().toString());
   }
   public @Override boolean equals(final Object other) {
     return other instanceof base_string && this.state.equals(((base_string) other).state);

@@ -55,12 +55,12 @@ namespace adapters {
         public overload static String valueOf(char value);
       }
 
-      class StringBuffer {
+      class StringBuilder {
         extends Object;
 
-        public StringBuffer(String s);
+        public StringBuilder(String s);
 
-        public StringBuffer reverse();
+        public StringBuilder reverse();
       }
     }
   }

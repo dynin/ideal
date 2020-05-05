@@ -8,7 +8,7 @@ import ideal.library.texts.string_text_node;
 import ideal.machine.adapters.java.builtins.char;
 import ideal.machine.adapters.java.lang.Object;
 import ideal.machine.adapters.java.lang.String;
-import ideal.machine.adapters.java.lang.StringBuffer;
+import ideal.machine.adapters.java.lang.StringBuilder;
 
 class base_string {
   extends debuggable;
@@ -162,7 +162,7 @@ class base_string {
 
   implement string reverse() {
     -- There is no String.reverse() in Java.  Yeah.
-    return base_string.new(StringBuffer.new(state).reverse().toString());
+    return base_string.new(StringBuilder.new(state).reverse().toString());
   }
 
   -- TODO: remove this once tests are rewritten.

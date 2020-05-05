@@ -24,9 +24,9 @@ class test_elements {
   testcase test_base_element() {
     text_element element : base_element.new(text_library.P);
 
-    assert element.get_id() == text_library.P;
-    assert element.attributes().is_empty;
-    assert element.children() is null;
+    assert element.get_id == text_library.P;
+    assert element.attributes.is_empty;
+    assert element.children is null;
   }
 
   testcase test_make_element() {
@@ -38,19 +38,19 @@ class test_elements {
     element : text_util.make_element(text_library.BODY, nodes);
 
     assert element is base_element;
-    assert element.get_id() == text_library.BODY;
-    assert element.attributes().is_empty;
+    assert element.get_id == text_library.BODY;
+    assert element.attributes.is_empty;
 
-    children : element.children();
+    children : element.children;
     assert children is list_text_node;
-    child_nodes : children.nodes();
+    child_nodes : children.nodes;
     assert child_nodes.size == 2;
 
     child0 : child_nodes.first;
     assert child0 is base_element;
-    assert child0.get_id() == text_library.P;
-    assert child0.attributes().is_empty;
-    assert child0.children() is null;
+    assert child0.get_id == text_library.P;
+    assert child0.attributes.is_empty;
+    assert child0.children is null;
 
     child1 : child_nodes[1];
     assert child1 is string;

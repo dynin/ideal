@@ -45,10 +45,11 @@ class create {
   public static void main(String[] args) {
     create_options options = new create_options();
     flag_util.parse_flags(args, options);
-    new create().start(options);
+    status the_status = new create().start(options);
+    System.exit(the_status.is_ok ? 0 : 1);
   }
 
-  public void start(create_options options) {
+  public status start(create_options options) {
     create_util.DEBUG_PROGRESS = options.DEBUG_PROGRESS;
 
     resolve_analyzer.CURE_UNDECLARED = options.CURE_UNDECLARED;
@@ -56,7 +57,7 @@ class create {
 
     if (options.DEBUG_IMPORT) {
       import_util.start_import();
-      return;
+      return status.ok;
     }
 
     create_util.progress("INIT");
@@ -78,7 +79,7 @@ class create {
 
     if (options.DEBUG_REFLECT) {
       reflect_util.start_reflect(cm, input);
-      return;
+      return status.ok;
     }
 
     create_util.progress("PARSE");
@@ -87,7 +88,7 @@ class create {
     assert constructs != null;
 
     if (cm.has_errors()) {
-      return;
+      return status.error;
     }
 
     readonly_set<simple_name> extensions = find_use_constructs(constructs);
@@ -160,7 +161,7 @@ class create {
     }
 
     if (cm.has_errors()) {
-      return;
+      return status.error;
     }
 
     if (options.target != null) {
@@ -170,12 +171,15 @@ class create {
       for (int i = 0; i < targets.size(); ++i) {
         if (utilities.eq(targets.get(i).short_name().to_string(), options.target)) {
           targets.get(i).process();
-          return;
+          // TODO: process more than one target.
+          return cm.has_errors() ? status.error: status.ok;
         }
       }
 
       log.error("Target '" + options.target + "' not found.");
     }
+
+    return cm.has_errors() ? status.error: status.ok;
   }
 
   // TODO: use filter()

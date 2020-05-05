@@ -21,11 +21,11 @@ abstract class text_rewriter {
   }
 
   protected override text_fragment process_element(text_element element) {
-    var children : element.children();
+    var children : element.children;
     if (children is_not null) {
       children = rewrite(children);
     }
-    return rewrite_element(element.get_id(), element.attributes(), children);
+    return rewrite_element(element.get_id, element.attributes, children);
   }
 
   protected override text_fragment process_special(special_text t) {
@@ -33,7 +33,7 @@ abstract class text_rewriter {
   }
 
   protected override text_fragment process_nodes(list_text_node nodes) {
-    source : nodes.nodes();
+    source : nodes.nodes;
     result : base_list[text_fragment].new();
 
     for (var nonnegative i : 0; i < source.size; i += 1) {

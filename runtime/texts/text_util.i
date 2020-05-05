@@ -12,12 +12,12 @@ namespace text_util {
   text_fragment EMPTY_FRAGMENT : base_list_text_node.new(empty[text_node].new());
 
   boolean is_indent(text_element element) {
-    return element.get_id() == text_library.INDENT;
+    return element.get_id == text_library.INDENT;
   }
 
   -- TODO: rewrite this using a set
   boolean is_block(text_element element) {
-    id : element.get_id();
+    id : element.get_id;
 
     return is_indent(element) ||
            id == text_library.HTML ||
@@ -49,7 +49,7 @@ namespace text_util {
     } else if (fragment is text_node) {
       return make_singleton(fragment);
     } else if (fragment is list_text_node) {
-      return fragment.nodes();
+      return fragment.nodes;
     } else {
       utilities.panic("Unknown type " ++ fragment);
     }
@@ -94,7 +94,7 @@ namespace text_util {
     if (fragment is text_node) {
       nodes.append(fragment);
     } else {
-      nodes.append_all((fragment as list_text_node).nodes());
+      nodes.append_all((fragment as list_text_node).nodes);
     }
   }
 

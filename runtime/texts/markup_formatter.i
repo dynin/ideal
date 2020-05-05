@@ -37,8 +37,8 @@ class markup_formatter {
   override void process_element(text_element element) {
     is_block : text_util.is_block(element);
 
-    attributes : element.attributes();
-    children : element.children();
+    attributes : element.attributes;
+    children : element.children;
 
     if (children is null) {
       write_self_closing_tag(element, attributes);
@@ -95,21 +95,21 @@ class markup_formatter {
   private void write_start_tag(text_element element,
       readonly dictionary[attribute_id, string] attributes) {
     write_string(OPEN_START_TAG);
-    write_escaped(element.get_id().short_name);
+    write_escaped(element.get_id.short_name);
     write_tag_attributes(attributes);
     write_string(CLOSE_TAG);
   }
 
   private void write_end_tag(text_element element) {
     write_string(OPEN_END_TAG);
-    write_escaped(element.get_id().short_name);
+    write_escaped(element.get_id.short_name);
     write_string(CLOSE_TAG);
   }
 
   private void write_self_closing_tag(text_element element,
       readonly dictionary[attribute_id, string] attributes) {
     write_string(OPEN_START_TAG);
-    write_escaped(element.get_id().short_name);
+    write_escaped(element.get_id.short_name);
     write_tag_attributes(attributes);
     write_string(CLOSE_SELF_CLOSING_TAG);
   }

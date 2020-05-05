@@ -26,15 +26,15 @@ package texts {
   interface text_element {
     extends text_node;
 
-    element_id get_id();
-    immutable dictionary[attribute_id, string] attributes();
-    immutable text_fragment or null children();
+    element_id get_id;
+    immutable dictionary[attribute_id, string] attributes;
+    immutable text_fragment or null children;
   }
 
   interface list_text_node {
     extends text_fragment;
 
-    immutable list[text_node] nodes();
+    immutable list[text_node] nodes;
   }
 
   interface special_text {

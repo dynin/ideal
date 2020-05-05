@@ -51,7 +51,7 @@ abstract class text_formatter {
   override abstract void process_special(special_text t);
 
   override void process_nodes(list_text_node nodes) {
-    process_all(nodes.nodes());
+    process_all(nodes.nodes);
   }
 
   protected void process_all(readonly list[text_node] nodes) {

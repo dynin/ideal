@@ -34,7 +34,7 @@ class plain_formatter {
 
   override void process_element(text_element element) {
     if (text_util.is_block(element)) {
-      if (!first || element.get_id() == text_library.BR) {
+      if (!first || element.get_id == text_library.BR) {
         write_newline();
       }
 
@@ -43,12 +43,12 @@ class plain_formatter {
       }
     }
 
-    style : underline_style.all_styles.get(element.get_id());
+    style : underline_style.all_styles.get(element.get_id);
     if (style is_not null) {
       underline_stack.append(style);
     }
 
-    children : element.children();
+    children : element.children;
     if (children is_not null) {
       process(children);
     }

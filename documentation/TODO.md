@@ -45,6 +45,5 @@
 - [ ] Move dont_display annotation to ideal.machine
 - [ ] Handle more than one target
 - [ ] Update type-flavors doc; move docs to HTML
-- [x] Introduce subtypes, rename supertype_kind to subtype_kind/tag
-- [ ] Create should set non-zero exit code on errors
+- [x] Create should set non-zero exit code on errors
 - [ ] Handle variables overriding supertype variables

@@ -7,6 +7,7 @@ import ideal.library.texts.string_text_node;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
+import ideal.machine.channels.string_writer;
 
 public class base_string extends debuggable implements string, string_text_node {
   private final String state;
@@ -87,6 +88,11 @@ public class base_string extends debuggable implements string, string_text_node 
   }
   public static String c(final string s1, final String s2) {
     return (String) (unbox(s1) + s2);
+  }
+  public static string from_list(final readonly_list<Character> chars) {
+    final string_writer the_writer = new string_writer();
+    the_writer.write_all(chars);
+    return the_writer.extract_elements();
   }
   public @Override int size() {
     return state.length();

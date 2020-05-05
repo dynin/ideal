@@ -7,7 +7,7 @@
 implicit import ideal.runtime.elements;
 import ideal.runtime.logs.displayable;
 import ideal.machine.channels.string_writer;
---import ideal.runtime.patterns.singleton_pattern;
+import ideal.runtime.patterns.singleton_pattern;
 import ideal.machine.adapters.java.lang.String;
 
 --- Identifiers used in the ideal system.
@@ -16,8 +16,8 @@ class simple_name {
   extends debuggable;
   implements action_name, displayable;
 
-  the_underscore : '_';
-  --the_pattern : singleton_pattern[character].new(the_underscore);
+  static the_underscore : '_';
+  static the_pattern : singleton_pattern[character].new(the_underscore);
 
   private static final dictionary[immutable list[string], simple_name] all_names :
     hash_dictionary[immutable list[string], simple_name].new();
@@ -64,21 +64,12 @@ class simple_name {
   public overload static simple_name make(String name) {
     assert name.length() > 0;
 
-    -- TODO: use pattern.split()
-    list[string] segments : base_list[string].new();
-    var integer index : 0;
-
-    while (true) {
-      -- TODO: drop indexOf from adapters.
-      underscore : name.indexOf('_', index);
-      if (underscore < 0) {
-        segments.append(base_string.new(name.substring(index)));
-        break;
-      }
-      segments.append(base_string.new(name.substring(index, underscore)));
-      index = underscore + 1;
+    segments_list : the_pattern.split(base_string.new(name));
+    -- TODO: this won't be needed when string will be a type alias
+    segments : base_list[string].new();
+    for (var nonnegative i : 0; i < segments_list.size; i += 1) {
+      segments.append(base_string.from_list(segments_list[i]));
     }
-
     return make_from_segments(segments.frozen_copy());
   }
 

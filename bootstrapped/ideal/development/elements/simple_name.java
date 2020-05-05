@@ -6,12 +6,14 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.displayable;
 import ideal.machine.channels.string_writer;
+import ideal.runtime.patterns.singleton_pattern;
 import java.lang.String;
 
 import javax.annotation.Nullable;
 
 public class simple_name extends debuggable implements action_name, displayable {
-  public final char the_underscore = '_';
+  public static final char the_underscore = '_';
+  public static final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>(the_underscore);
   private static final dictionary<immutable_list<string>, simple_name> all_names = new hash_dictionary<immutable_list<string>, simple_name>();
   public final immutable_list<string> segments;
   private simple_name(final immutable_list<string> segments) {
@@ -46,16 +48,10 @@ public class simple_name extends debuggable implements action_name, displayable 
   }
   public static simple_name make(final String name) {
     assert name.length() > 0;
-    final list<string> segments = new base_list<string>();
-    int index = 0;
-    while (true) {
-      final int underscore = name.indexOf('_', index);
-      if (underscore < 0) {
-        segments.append(new base_string(name.substring(index)));
-        break;
-      }
-      segments.append(new base_string(name.substring(index, underscore)));
-      index = underscore + 1;
+    final immutable_list<immutable_list<Character>> segments_list = the_pattern.split(new base_string(name));
+    final base_list<string> segments = new base_list<string>();
+    for (int i = 0; i < segments_list.size(); i += 1) {
+      segments.append(base_string.from_list(segments_list.get(i)));
     }
     return make_from_segments(segments.frozen_copy());
   }

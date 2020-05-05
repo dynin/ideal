@@ -9,6 +9,7 @@ import ideal.machine.adapters.java.builtins.char;
 import ideal.machine.adapters.java.lang.Object;
 import ideal.machine.adapters.java.lang.String;
 import ideal.machine.adapters.java.lang.StringBuilder;
+import ideal.machine.channels.string_writer;
 
 class base_string {
   extends debuggable;
@@ -120,6 +121,12 @@ class base_string {
 
   static overload String c(string s1, String s2) {
     return (unbox(s1) ++ s2) as String;
+  }
+
+  static string from_list(readonly list[character] chars) {
+    the_writer : string_writer.new();
+    the_writer.write_all(chars);
+    return the_writer.extract_elements();
   }
 
   implement integer size() {

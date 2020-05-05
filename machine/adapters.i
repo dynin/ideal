@@ -48,6 +48,8 @@ namespace adapters {
         public overload String substring(integer begin);
         public overload String substring(integer begin, integer end);
         public char charAt(integer index);
+        -- TODO: drop
+        public integer indexOf(character c, integer begin_index);
 
         public overload static String valueOf(int value);
         public overload static String valueOf(char value);

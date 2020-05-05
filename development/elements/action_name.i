@@ -4,7 +4,8 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-
-public interface action_name extends identifier, reference_equality {
+--- The parent type of identifiers used in ideal.
+--- Usually it's a |simple_name|.
+interface action_name {
+  extends identifier, reference_equality;
 }

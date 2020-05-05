@@ -350,7 +350,7 @@ package elements {
   }
 
   --- A finite set of elements with an explicit ordering.
-  --- Unlike a list, it is guaranteed not have duplicate elements.
+  --- Unlike a list, it is guaranteed not to have duplicate elements.
   --- Attempting to insert a duplicate element will trigger an assertion failure.
   interface ordered_set[combivariant value element] {
     subtypes collection[element];

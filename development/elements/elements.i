@@ -11,23 +11,23 @@ package elements {
   interface token;
   interface token_type;
   interface declaration;
+  interface abstract_value;
+  interface type;
+  interface principal_type;
+  interface type_flavor;
+  interface action;
+  interface action_name;
+  interface analysis_result;
+  interface analyzable;
+  interface modifier_kind;
+  interface kind;
+  interface flavor_profile;
+  interface execution_context;
+  interface specialization_context;
+  class simple_name;
 
-  -- interface abstract_value;
-  -- interface action;
-  -- interface action_name;
-  -- interface analysis_result;
-  -- interface analyzable;
   -- interface construct;
-  -- interface execution_context;
-  -- interface flavor_profile;
-  -- interface kind;
   -- interface literal;
-  -- interface modifier_kind;
   -- interface notification;
-  -- interface principal_type;
-  -- interface simple_name;
-  -- interface specialization_context;
   -- interface subtype_tag;
-  -- interface type;
-  -- interface type_flavor;
 }

@@ -10,7 +10,8 @@ package reflections {
   interface type_id {
     extends identifier;
 
-    identifier short_name;
+    -- TODO: restore
+    -- identifier short_name;
   }
 
   interface entity_wrapper {

@@ -4,10 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
+--- A kind of modifier, such as |public| or |final|.
+interface modifier_kind {
+  extends identifier, reference_equality;
 
-public interface kind extends deeply_immutable_data, reference_equality, stringable {
-  simple_name name();
-  flavor_profile default_profile();
-  boolean is_namespace();
+  simple_name name;
+  -- TODO: boolean supports_parameters();
 }

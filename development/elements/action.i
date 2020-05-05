@@ -12,7 +12,7 @@ interface action {
   extends analysis_result, position, readonly data;
 
   abstract_value result;
-  action bind_from(action from, position pos);
+  action bind_from(action from, position pos) pure;
   declaration or null get_declaration;
   entity_wrapper execute(execution_context context);
 }

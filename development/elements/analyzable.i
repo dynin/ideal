@@ -14,5 +14,5 @@ interface analyzable {
    --- If there is an error this method returns an |error_signal|.
   analysis_result analyze();
 
-  analyzable specialize(specialization_context context, principal_type new_parent);
+  analyzable specialize(specialization_context context, principal_type new_parent) pure;
 }

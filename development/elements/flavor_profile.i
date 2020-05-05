@@ -11,7 +11,7 @@ interface flavor_profile {
   extends readonly data;
 
   type_flavor default_flavor;
-  boolean supports(type_flavor flavor);
-  type_flavor map(type_flavor from);
+  boolean supports(type_flavor flavor) pure;
+  type_flavor map(type_flavor from) pure;
   immutable list[type_flavor] supported_flavors;
 }

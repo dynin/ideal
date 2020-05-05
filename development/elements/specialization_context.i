@@ -10,5 +10,5 @@
 interface specialization_context {
   extends deeply_immutable data, stringable;
 
-  abstract_value or null lookup(principal_type key);
+  abstract_value or null lookup(principal_type key) pure;
 }

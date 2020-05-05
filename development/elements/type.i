@@ -9,10 +9,12 @@ implicit import ideal.library.reflections;
 --- A type is a set of invariants that are preserved throughout entity's lifetime,
 --- optionally including an algorithm for creating such entities.
 interface type {
-  extends abstract_value, data, type_id, stringable, reference_equality;
+  extends abstract_value, data, stringable, reference_equality;
+  -- TODO: should be immutable?
+  readonly subtypes readonly type_id;
 
-  boolean is_subtype_of(type the_supertype);
+  boolean is_subtype_of(type the_supertype) pure;
   principal_type principal;
   type_flavor get_flavor;
-  type get_flavored(type_flavor flavored);
+  type get_flavored(type_flavor flavored) pure;
 }

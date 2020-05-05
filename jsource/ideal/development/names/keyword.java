@@ -35,7 +35,7 @@ public interface keyword extends token_type {
   token_type LOOP = new base_token_type("loop", base_symbols.LOOP);
 
   token_type WHILE = new base_token_type("while", base_symbols.WHILE);
-  token_type FOR = new base_token_type(FOR_NAME.to_string().s(), base_symbols.FOR);
+  token_type FOR = new base_token_type("for", base_symbols.FOR);
   token_type IMPORT = new base_token_type("import", base_symbols.IMPORT);
   token_type USE = new base_token_type("use", base_symbols.USE);
   token_type TARGET = new base_token_type("target", base_symbols.TARGET);

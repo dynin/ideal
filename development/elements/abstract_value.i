@@ -10,5 +10,5 @@ interface abstract_value  {
   extends readonly data, stringable;
 
   type type_bound;
-  action to_action(position pos);
+  action to_action(position pos) pure;
 }

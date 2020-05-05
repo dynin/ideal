@@ -197,7 +197,7 @@ public class marshaller {
   };
 
   private JsonPrimitive to_json_enum(enum_value ev) {
-    return new JsonPrimitive(ev.short_name().to_string().s());
+    return new JsonPrimitive(utilities.s(ev.short_name().to_string()));
   }
 
   private JsonArray to_json_list(list_wrapper the_list) {

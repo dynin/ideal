@@ -4,4 +4,4 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface type_id extends stringable, equality_comparable, readonly_type_id, writeonly_type_id { }
+public interface any_type_id extends any_stringable, any_equality_comparable { }

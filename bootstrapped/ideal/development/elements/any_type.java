@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface any_type extends any_abstract_value, any_data, any_stringable, any_reference_equality { }
+public interface any_type extends any_abstract_value, any_data, any_stringable, any_reference_equality, any_type_id { }

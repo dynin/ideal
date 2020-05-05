@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface writeonly_type extends writeonly_abstract_value, writeonly_data, writeonly_stringable, writeonly_reference_equality, any_type { }
+public interface writeonly_type extends writeonly_abstract_value, writeonly_data, writeonly_stringable, writeonly_reference_equality, writeonly_type_id, any_type { }

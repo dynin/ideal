@@ -7,7 +7,7 @@ import ideal.library.elements.*;
 import javax.annotation.Nullable;
 
 public interface readonly_principal_type extends readonly_type, any_principal_type {
-  action_name short_name();
+  @Override action_name short_name();
   kind get_kind();
   @Nullable principal_type get_parent();
   @Nullable declaration get_declaration();

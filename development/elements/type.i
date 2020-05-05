@@ -10,8 +10,7 @@ implicit import ideal.library.reflections;
 --- optionally including an algorithm for creating such entities.
 interface type {
   extends abstract_value, data, stringable, reference_equality;
-  -- TODO: should be immutable?
-  readonly subtypes readonly type_id;
+  subtypes type_id;
 
   boolean is_subtype_of(type the_supertype) pure;
   principal_type principal;

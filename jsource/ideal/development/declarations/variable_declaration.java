@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
-import ideal.development.actions.dispatch_action;
 
 public interface variable_declaration extends declaration, variable_id {
   variable_category get_category();

@@ -8,7 +8,8 @@
 interface principal_type {
   extends type;
 
-  override action_name short_name;
+  -- TODO: make this a variable declaration
+  override action_name short_name() pure;
   kind get_kind;
   principal_type or null get_parent;
   declaration or null get_declaration;

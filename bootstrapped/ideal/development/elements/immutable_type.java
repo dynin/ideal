@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface immutable_type extends immutable_abstract_value, immutable_data, immutable_stringable, immutable_reference_equality, readonly_type { }
+public interface immutable_type extends immutable_abstract_value, immutable_data, immutable_stringable, immutable_reference_equality, immutable_type_id, readonly_type { }

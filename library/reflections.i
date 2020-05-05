@@ -8,10 +8,9 @@ package reflections {
   implicit import ideal.library.elements;
 
   interface type_id {
-    extends identifier;
+    subtypes stringable, equality_comparable;
 
-    -- TODO: restore
-    -- identifier short_name;
+    identifier short_name;
   }
 
   interface entity_wrapper {

@@ -6,4 +6,5 @@
 
 namespace development {
   package elements;
+  package texts;
 }

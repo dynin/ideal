@@ -4,10 +4,15 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
---- Constructs are the abstract syntax tree (AST) data structures used in ideal.
-interface construct {
-  extends data, position;
+--- A |text_event| which is a plain |string|.
+class string_event {
+  implements text_event;
 
-  readonly list[construct] children();
-  position source_position();
+  final string payload;
+
+  string_event(string payload) {
+    this.payload = payload;
+  }
+
+  override string to_string() => payload;
 }

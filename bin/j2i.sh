@@ -1,12 +1,19 @@
 #!/bin/sh
 
+TMPDIR=tmp
+PACKAGE=texts
 IDEAL=ideal.i
-ALLFILES=jsource/ideal/development/elements/*.java 
+ALLFILES="jsource/ideal/development/${PACKAGE}/*.java"
+PKGFILE=${TMPDIR}/${PACKAGE}.i
+
+head -n 6 $IDEAL > $PKGFILE
 
 for OLDFILE in $ALLFILES
 do
-  NEWFILE=tmp/`basename "${OLDFILE}" .java`.i
-  echo ==$NEWFILE
+  NAME=`basename "${OLDFILE}" .java`
+  echo ==$NAME
+  echo "  interface ${NAME};" >> $PKGFILE
+  NEWFILE=${TMPDIR}/${NAME}.i
   head -n 6 $IDEAL > $NEWFILE
   tail -n +11 < $OLDFILE >> $NEWFILE
 done

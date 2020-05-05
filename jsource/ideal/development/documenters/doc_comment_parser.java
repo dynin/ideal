@@ -105,7 +105,7 @@ public class doc_comment_parser {
       list<text_fragment> fragments = fragments_tree.get(fragments_tree.size() - 1);
 
       if (event instanceof string_event) {
-        fragments.append(((string_event) event).s);
+        fragments.append((base_string) ((string_event) event).payload);
       } else if (event instanceof start_element) {
         start_tags.append((start_element) event);
         fragments_tree.append(new base_list<text_fragment>());

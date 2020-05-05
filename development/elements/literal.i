@@ -4,11 +4,8 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
+interface literal[value value_type] {
+  extends stringable, deeply_immutable data;
 
-public interface subtype_tag extends deeply_immutable_data, reference_equality,
-    stringable {
-
-  simple_name name();
+  value_type the_value;
 }

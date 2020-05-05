@@ -4,9 +4,9 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
+--- A subtype tag, such as |subtypes|, |extends| and |implements|.
+interface subtype_tag {
+  extends deeply_immutable data, reference_equality, stringable;
 
-public interface construct extends data, position {
-  readonly_list<construct> children();
-  position source_position();
+  simple_name name;
 }

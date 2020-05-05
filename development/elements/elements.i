@@ -24,10 +24,9 @@ package elements {
   interface flavor_profile;
   interface execution_context;
   interface specialization_context;
+  interface construct;
+  interface literal;
+  interface notification;
+  interface subtype_tag;
   class simple_name;
-
-  -- interface construct;
-  -- interface literal;
-  -- interface notification;
-  -- interface subtype_tag;
 }

@@ -4,9 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
+--- Constructs are the abstract syntax tree (AST) used in ideal.
+interface construct {
+  extends data, position;
 
-public interface literal<V> extends stringable, deeply_immutable_data {
-  V the_value();
+  readonly list[construct] children();
+  position source_position();
 }

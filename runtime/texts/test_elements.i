@@ -13,11 +13,11 @@ class test_elements {
 
   testcase test_element_id() {
     assert text_library.P.short_name == "p";
-    assert text_library.P.get_namespace() == text_library.HTML_NS;
+    assert text_library.P.get_namespace == text_library.HTML_NS;
     assert text_library.P.to_string() == "html:p";
 
     assert text_library.DIV.short_name == "div";
-    assert text_library.DIV.get_namespace() == text_library.HTML_NS;
+    assert text_library.DIV.get_namespace == text_library.HTML_NS;
     assert text_library.DIV.to_string() == "html:div";
   }
 

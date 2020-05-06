@@ -89,7 +89,7 @@ class markup_formatter {
   }
 
   override void process_special(special_text t) {
-    write_string(t.to_markup());
+    write_string(t.to_markup);
   }
 
   private void write_start_tag(text_element element,

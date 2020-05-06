@@ -4,9 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace development {
-  package elements;
-  package texts;
-  package components;
-  package comments;
+enum documentation_section {
+  implements deeply_immutable data;
+
+  ALL;
+  SUMMARY;
+  -- DESCRIPTION;
 }

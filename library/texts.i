@@ -40,8 +40,8 @@ package texts {
   interface special_text {
     extends text_node;
 
-    string to_plain_text();
-    string to_markup();
+    string to_plain_text;
+    string to_markup;
   }
 
   interface string_text_node {
@@ -50,13 +50,13 @@ package texts {
 
   interface element_id {
     extends identifier;
-    text_namespace get_namespace();
+    text_namespace get_namespace;
     string short_name;
   }
 
   interface attribute_id {
     extends identifier;
-    text_namespace get_namespace();
+    text_namespace get_namespace;
     string short_name;
   }
 

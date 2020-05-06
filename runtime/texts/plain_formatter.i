@@ -71,7 +71,7 @@ class plain_formatter {
   }
 
   override void process_special(special_text t) {
-    write_string(t.to_plain_text());
+    write_string(t.to_plain_text);
   }
 
   override void do_write_newline() {

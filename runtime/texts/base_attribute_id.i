@@ -18,13 +18,9 @@ class base_attribute_id {
     this.name = name;
   }
 
-  override text_namespace get_namespace() {
-    return the_namespace;
-  }
+  override text_namespace get_namespace() => the_namespace;
 
-  override string short_name() {
-    return name;
-  }
+  override string short_name() => name;
 
   override string to_string() {
     return the_namespace.to_string ++ ":" ++ name;

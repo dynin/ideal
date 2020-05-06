@@ -23,7 +23,6 @@
 - [ ] Handle '.' in doc comment summaries
 - [ ] Add default parameters to procedures
 - [ ] Make singleton.instance optional
-- [x] Support => in procedure declarations
 - [ ] Add C/C++ backend
 - [x] Update AppEngine app
 - [ ] Test harness
@@ -47,3 +46,4 @@
 - [ ] Update type-flavors doc; move docs to HTML
 - [x] Create should set non-zero exit code on errors
 - [ ] Handle variables overriding supertype variables
+- [ ] Support => in variable declarations

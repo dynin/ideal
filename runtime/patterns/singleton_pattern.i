@@ -22,6 +22,7 @@ class singleton_pattern[readonly equality_comparable element_type] {
     return the_list.is_empty || (the_list.size == 1 && the_list.first == the_element);
   }
 
+  -- TODO: default start_index to 0.
   override range or null find_in(readonly list[element_type] the_list,
       nonnegative start_index) {
     for (var nonnegative i : start_index; i < the_list.size; i += 1) {

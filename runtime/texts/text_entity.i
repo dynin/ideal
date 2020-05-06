@@ -21,15 +21,9 @@ class text_entity {
     this.markup = markup;
   }
 
-  override string to_plain_text() {
-    return plain_text;
-  }
+  override string to_plain_text() => plain_text;
 
-  override string to_markup() {
-    return markup;
-  }
+  override string to_markup() => markup;
 
-  override string to_string() {
-    return markup;
-  }
+  override string to_string() => markup;
 }

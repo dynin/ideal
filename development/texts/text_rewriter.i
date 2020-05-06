@@ -16,6 +16,7 @@ abstract class text_rewriter {
       immutable dictionary[attribute_id, string] attributes,
       text_fragment or null children);
 
+  -- TODO: inherit protected access modifier from supertype.
   protected override text_fragment process_string(string s) {
     return s as base_string;
   }

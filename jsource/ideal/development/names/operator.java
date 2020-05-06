@@ -26,7 +26,7 @@ public class operator extends debuggable implements action_name {
     this.alpha_name = simple_name.make(alpha_name);
   }
 
-  // TODO: make addignment operator a subclass.
+  // TODO: make assignment operator a subclass.
   private operator(operator_type type, operator primary, token_type name, String alpha_name) {
     this(type, name, alpha_name);
     assert type == ASSIGNMENT;

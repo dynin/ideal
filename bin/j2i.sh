@@ -1,7 +1,7 @@
 #!/bin/sh
 
+PACKAGE=components
 TMPDIR=tmp
-PACKAGE=texts
 IDEAL=ideal.i
 ALLFILES="jsource/ideal/development/${PACKAGE}/*.java"
 PKGFILE=${TMPDIR}/${PACKAGE}.i

@@ -4,8 +4,8 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace development {
-  package elements;
-  package texts;
-  package components;
+interface transformer {
+  extends value;
+
+  construct transform(construct c);
 }

@@ -4,8 +4,11 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace development {
-  package elements;
-  package texts;
-  package components;
+--- Declaration of ideal system components.
+package components {
+  implicit import ideal.library.elements;
+  implicit import ideal.development.elements;
+
+  interface printer;
+  interface transformer;
 }

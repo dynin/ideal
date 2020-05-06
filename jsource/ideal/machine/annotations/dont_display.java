@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.annotations;
+package ideal.machine.annotations;
 
 import java.lang.annotation.*;
 

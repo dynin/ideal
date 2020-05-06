@@ -10,8 +10,11 @@ package ideal.machine.elements;
 
 import ideal.library.elements.*;
 import ideal.library.channels.*;
+import ideal.library.texts.text_fragment;
 import ideal.runtime.elements.base_string;
 import ideal.runtime.elements.utilities;
+import ideal.runtime.texts.text_library;
+import ideal.runtime.texts.base_element;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -268,6 +271,10 @@ public class runtime_util {
     }
 
     return new base_string(sb.toString());
+  }
+
+  public static text_fragment display(readonly_value obj) {
+    return base_element.make(text_library.DIV, displayer.display_object(obj));
   }
 
   public static void start_test(String name) {

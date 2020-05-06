@@ -5,6 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 implicit import ideal.library.elements;
+import ideal.library.texts.text_fragment;
 
 namespace elements {
 
@@ -41,6 +42,8 @@ namespace elements {
     -- TODO: return unreachable
     static noreturn void do_panic(String message);
     static string escape_markup(string the_string);
+
+    static text_fragment display(readonly value obj);
 
     -- Included for testing.
     static string short_class_name(readonly value the_value);

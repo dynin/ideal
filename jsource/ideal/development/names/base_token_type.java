@@ -12,7 +12,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.annotations.dont_display;
+import ideal.machine.annotations.dont_display;
 
 public class base_token_type implements token_type, readonly_displayable {
   private final string name;

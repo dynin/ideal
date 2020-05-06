@@ -6,39 +6,20 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.tools;
+package ideal.machine.elements;
 
 import ideal.library.elements.*;
-import ideal.development.annotations.dont_display;
 import ideal.library.texts.*;
-import ideal.library.channels.*;
 import ideal.runtime.elements.*;
-import ideal.runtime.channels.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.logs.*;
-import ideal.machine.elements.runtime_util;
+import ideal.machine.annotations.dont_display;
 import ideal.machine.channels.string_writer;
 
 import java.io.*;
 import java.lang.reflect.*;
 
 public class displayer {
-
-  public static text_fragment display(readonly_value obj) {
-    return base_element.make(text_library.DIV, display_object(obj));
-  }
-
-  /*
-  private static void write(readonly_value obj, output<text_fragment> out) {
-    out.write(display(obj));
-  }
-
-  private static string to_plain_string(readonly_value obj) {
-    string_writer out = new string_writer();
-    write(obj, new plain_formatter(out));
-    return out.elements();
-  }
-  */
 
   private static final base_string NULL_NAME = new base_string("<null>");
   private static final base_string START_OBJECT = new base_string("{");
@@ -83,7 +64,7 @@ public class displayer {
     }
   }
 
-  private static text_fragment display_object(readonly_value obj) {
+  static text_fragment display_object(readonly_value obj) {
     if (obj instanceof string) {
       return make_literal(utilities.s((string) obj), "\"");
     } else if (obj instanceof readonly_list) {

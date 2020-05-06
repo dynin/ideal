@@ -11,7 +11,7 @@ package ideal.development.types;
 import ideal.library.elements.*;
 import ideal.library.graphs.*;
 import javax.annotation.Nullable;
-import ideal.development.annotations.dont_display;
+import ideal.machine.annotations.dont_display;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;

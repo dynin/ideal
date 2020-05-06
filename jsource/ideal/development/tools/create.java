@@ -17,6 +17,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.resources.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.logs.*;
+import ideal.machine.elements.runtime_util;
 import ideal.machine.channels.standard_channels;
 import ideal.machine.resources.filesystem;
 
@@ -111,7 +112,7 @@ class create {
     if (options.DEBUG_CONSTRUCTS) {
       create_util.progress("DISPLAY");
       output<text_fragment> out = new plain_formatter(standard_channels.stdout);
-      out.write(displayer.display(constructs));
+      out.write(runtime_util.display(constructs));
     }
 
     analysis_context the_context = cm.get_analysis_context();

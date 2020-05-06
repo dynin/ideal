@@ -10,7 +10,7 @@ package ideal.development.analyzers;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
-import ideal.development.annotations.dont_display;
+import ideal.machine.annotations.dont_display;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.actions.*;

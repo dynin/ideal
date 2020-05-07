@@ -209,7 +209,7 @@ test_development td: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
 
-bootstrap_development: $(IDEAL_TARGET)
+bootstrap_development bootdev: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(BOOTSTRAPPED_DIR)
 
 ### Documentation generation

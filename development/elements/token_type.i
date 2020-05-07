@@ -12,8 +12,6 @@ interface token_type {
   extends identifier, reference_equality;
 
   string name;
-  -- TODO: this can be replaced by checking for the keyword type.
-  boolean is_keyword;
   -- TODO: we can retire this once we stop using javacup. 
-  nonnegative symbol;
+  integer symbol;
 }

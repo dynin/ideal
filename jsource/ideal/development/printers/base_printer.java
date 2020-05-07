@@ -630,7 +630,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public text_fragment print_prefix(operator_construct c) {
     list<text_fragment> fragments = new base_list<text_fragment>();
     fragments.append(print_word(c.the_operator.name));
-    if (c.the_operator.name.is_keyword()) {
+    if (!(c.the_operator.name instanceof punctuation_type)) {
       fragments.append(print_space());
     }
     fragments.append(print(c.arguments.first()));

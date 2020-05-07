@@ -14,20 +14,14 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 
 public class string_token_element<P extends deeply_immutable_data> implements scanner_element {
-  protected final token_type the_punctuation;
+  protected final punctuation_type the_punctuation;
   protected final token_type the_type;
   protected final P the_payload;
 
-  public string_token_element(token_type the_punctuation, token_type the_type, P the_payload) {
+  public string_token_element(punctuation_type the_punctuation, token_type the_type, P the_payload) {
     this.the_punctuation = the_punctuation;
     this.the_type = the_type;
     this.the_payload = the_payload;
-
-    assert !the_punctuation.is_keyword();
-  }
-
-  public string_token_element(token_type the_punctuation) {
-    this(the_punctuation, the_punctuation, null);
   }
 
   @Override

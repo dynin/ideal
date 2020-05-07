@@ -25,29 +25,29 @@ import ideal.development.templates.*;
 import ideal.development.notifications.*;
 
 /* Terminals (tokens returned by the scanner). */
-terminal token<punctuation>  OPEN_PARENTHESIS, CLOSE_PARENTHESIS;
-terminal token<punctuation>  OPEN_BRACKET, CLOSE_BRACKET;
-terminal token<punctuation>  OPEN_BRACE, CLOSE_BRACE;
-terminal token<punctuation>  DOT, COMMA, EQUALS, COLON, SEMICOLON;
-terminal token<punctuation>  EQUALS_GREATER_THAN;
+terminal token<string>  OPEN_PARENTHESIS, CLOSE_PARENTHESIS;
+terminal token<string>  OPEN_BRACKET, CLOSE_BRACKET;
+terminal token<string>  OPEN_BRACE, CLOSE_BRACE;
+terminal token<string>  DOT, COMMA, EQUALS, COLON, SEMICOLON;
+terminal token<string>  EQUALS_GREATER_THAN;
 terminal token<literal>  LITERAL;
-terminal token<punctuation>  PLUS_PLUS; // concatenation (not postincrement_expression)
+terminal token<string>  PLUS_PLUS; // concatenation (not postincrement_expression)
 // terminal MINUS_MINUS; // postdecrement_expression
-terminal token<punctuation>  EXCLAMATION_MARK;
-terminal token<punctuation>  PLUS, MINUS, ASTERISK, SLASH, PERCENT;
+terminal token<string>  EXCLAMATION_MARK;
+terminal token<string>  PLUS, MINUS, ASTERISK, SLASH, PERCENT;
 // terminal LSHIFT, RSHIFT, URSHIFT; // shift_expression
 // relational_expression
-terminal token<punctuation>  LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS;
+terminal token<string>  LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS;
 terminal token<keyword>  AS, IS, IS_NOT;
-terminal token<punctuation>  EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS; // equality_expression
-terminal token<punctuation>  AMPERSAND; // and_expression
-terminal token<punctuation>  CARET; // exclusive_or_expression
-terminal token<punctuation>  VERTICAL_BAR;  // inclusive_or_expression
-terminal token<punctuation>  AMPERSAND_AMPERSAND; // conditional_and_expression
-terminal token<punctuation>  VERTICAL_BAR_VERTICAL_BAR, OR; // conditional_or_expression
-terminal token<punctuation>  QUESTION_MARK; // conditional_expression
+terminal token<string>  EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS; // equality_expression
+terminal token<string>  AMPERSAND; // and_expression
+terminal token<string>  CARET; // exclusive_or_expression
+terminal token<string>  VERTICAL_BAR;  // inclusive_or_expression
+terminal token<string>  AMPERSAND_AMPERSAND; // conditional_and_expression
+terminal token<string>  VERTICAL_BAR_VERTICAL_BAR, OR; // conditional_or_expression
+terminal token<string>  QUESTION_MARK; // conditional_expression
                 // assignment_operators:
-terminal token<punctuation>  PLUS_EQUALS, MINUS_EQUALS, ASTERISK_EQUALS, PLUS_PLUS_EQUALS;
+terminal token<string>  PLUS_EQUALS, MINUS_EQUALS, ASTERISK_EQUALS, PLUS_PLUS_EQUALS;
 terminal token<keyword>  RETURN, IF, ELSE, LOOP, WHILE, FOR;
 terminal token<simple_name>  SIMPLE_NAME;
 terminal token<special_name>  SPECIAL_NAME;
@@ -61,7 +61,7 @@ terminal token<keyword>  ASSERT;
 terminal token<keyword>  IMPORT;
 // Temporary.
 //terminal token<keyword>  TEMPLATE;
-terminal token<punctuation>  HASH;
+terminal token<string>  HASH;
 terminal token<keyword>  USE, TARGET;
 terminal token<keyword>  PLEASE;
 

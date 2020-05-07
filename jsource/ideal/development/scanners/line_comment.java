@@ -19,8 +19,8 @@ public class line_comment implements scanner_element {
   private comment_type type;
   private final scanner_element start;
 
-  public line_comment(token_type start_punctuation, comment_type type) {
-    this.start = new string_token_element(start_punctuation);
+  public line_comment(punctuation_type start_punctuation, comment_type type) {
+    this.start = new punctuation_element(start_punctuation);
     this.type = type;
   }
 

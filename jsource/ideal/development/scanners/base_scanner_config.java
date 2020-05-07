@@ -66,14 +66,12 @@ public class base_scanner_config implements scanner_config {
   }
 
   public void add_keyword(token_type the_token_type) {
-    assert the_token_type.is_keyword();
     add_keyword(simple_name.make(the_token_type.name()),
         new token_matcher<deeply_immutable_data>(the_token_type, null));
   }
 
-  public void add_punctuation(token_type the_token_type) {
-    assert !the_token_type.is_keyword();
-    add(new string_token_element(the_token_type));
+  public void add_punctuation(punctuation_type the_punctuation_type) {
+    add(new punctuation_element(the_punctuation_type));
   }
 
   public void add_special(special_name the_special_name, token_type the_token_type) {

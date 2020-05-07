@@ -35,11 +35,6 @@ public class base_token_type implements token_type, readonly_displayable {
   }
 
   @Override
-  public boolean is_keyword() {
-    return Character.isJavaIdentifierStart(name.first());
-  }
-
-  @Override
   public int symbol() {
     return base_symbol;
   }

@@ -93,12 +93,6 @@ public class java_library implements value {
     annotation_package = get_type(javax_package, "annotation");
     nullable_type = get_type(annotation_package, "Nullable");
 
-    machine_annotations_namespace = get_type(machine_namespace, "annotations");
-    // TODO: implement this in type annotations.i
-    dont_display_type = action_utilities.make_type(context, type_kinds.namespace_kind,
-        flavor_profiles.nameonly_profile, general_modifier.dont_display_modifier.name(),
-        machine_annotations_namespace, null, semantics.BUILTIN_POSITION);
-
     common_library library = common_library.get_instance();
 
     add_mapping(library.boolean_type(), boolean_type(), "Boolean");
@@ -171,6 +165,11 @@ public class java_library implements value {
   }
 
   public principal_type dont_display_type() {
+    if (dont_display_type == null) {
+      machine_annotations_namespace = get_type(machine_namespace, "annotations");
+      dont_display_type = get_type(machine_annotations_namespace, "dont_display");
+    }
+
     return dont_display_type;
   }
 

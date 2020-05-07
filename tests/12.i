@@ -5,7 +5,7 @@ class cool {
   static var integer sfield2;
   var integer field;
   cool() {
-    field = 68;
+    #id:field = 68;
     sfield = 680;
   }
 }

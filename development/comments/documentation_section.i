@@ -10,4 +10,6 @@ enum documentation_section {
   ALL;
   SUMMARY;
   -- DESCRIPTION;
+  -- COPYRIGHT;
+  -- LICENSE;
 }

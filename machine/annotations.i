@@ -6,5 +6,5 @@
 
 --- User-defined annotations
 namespace annotations {
---  interface dont_display { }
+  interface #id:dont_display { }
 }

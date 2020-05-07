@@ -9,7 +9,7 @@ two : 2;
 --class testing {
 --   int xyz: one;
 --}
-integer three : plus(one, two);
+integer #id:three : plus(one, two);
 --int four() { return plus(two, two); }
 integer double(integer x) { return plus(x, x); }
 integer add5(integer y) { return plus(y, 5); }

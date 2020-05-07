@@ -32,8 +32,7 @@ public class common_scanner extends base_scanner_config {
     add(new string_token_element<modifier_kind>(
         punctuation.ELLIPSIS, special_token_type.MODIFIER_KIND, general_modifier.varargs_modifier));
 
-    // TODO: special handling.
-    add_punctuation(punctuation.HASH);
+    add(new hash_element(punctuation.HASH, this));
 
     add_punctuation(punctuation.DOT);
     add_punctuation(punctuation.OPEN_PARENTHESIS);

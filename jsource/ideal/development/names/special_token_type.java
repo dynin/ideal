@@ -10,7 +10,7 @@ package ideal.development.names;
 
 import ideal.library.elements.*;
 import ideal.development.elements.*;
-import generated.ideal.development.parsers.base_symbols;
+import ideal.development.symbols.base_symbols;
 
 public interface special_token_type {
 

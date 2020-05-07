@@ -14,7 +14,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.scanners.*;
 import ideal.development.notifications.*;
-import generated.ideal.development.parsers.base_parser;
+import ideal.development.symbols.base_parser;
 
 public class base_wrapper extends base_parser {
 

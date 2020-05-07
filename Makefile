@@ -39,8 +39,8 @@ JAVAC_HERMETIC = $(JDK_DIR)/bin/javac $(JAVAC_HERMETIC_OPTS)
 JAVAC_LINT_OPT = -Xlint:unchecked
 JAVADOC = $(JDK_DIR)/bin/javadoc -d $(JAVADOC_DIR)
 
-PARSER_DIR = $(GENERATED_DIR)/generated/ideal/development/parsers
-PARSER2SRC_DIR = ../../../../../..
+PARSER_DIR = $(GENERATED_DIR)/ideal/development/symbols
+PARSER2SRC_DIR = ../../../../..
 JAVACUP = $(PARSER2SRC_DIR)/$(JDK_DIR)/bin/java \
         -classpath $(PARSER2SRC_DIR)/$(JAVACUP_JAR) java_cup.Main
 
@@ -263,10 +263,13 @@ $(BASEPARSER_TARGET): $(PARSER_CUP)
 	$(MKDIR) $(PARSER_DIR)
 	cd $(PARSER_DIR) ; \
 	  $(JAVACUP) \
-	      -package generated.ideal.development.parsers \
+	      -package ideal.development.symbols \
 	      -parser base_parser \
 	      -symbols base_symbols \
 	      $(PARSER2SRC_DIR)/$(PARSER_CUP)
+	bin/process-base-symbols.sh \
+            < $(PARSER_DIR)/base_symbols.java \
+            > development/symbols/base_symbols.i
 	@touch $@
 	@echo === Parser done.
 
@@ -286,7 +289,7 @@ jdoc: build
 grammar:
 	cd $(PARSER_DIR) ; \
 	  $(JAVACUP) -dump_grammar \
-	      -package generated.ideal.development.parsers \
+	      -package ideal.development.symbols \
 	      -parser base_parser \
 	      -symbols base_symbols \
 	      $(PARSER2SRC_DIR)/$(PARSER_CUP)

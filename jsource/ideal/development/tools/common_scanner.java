@@ -150,6 +150,7 @@ public class common_scanner extends base_scanner_config {
     add_modifier(general_modifier.overload_modifier);
     add_modifier(general_modifier.noreturn_modifier);
     add_modifier(general_modifier.testcase_modifier);
+    add_modifier(general_modifier.dont_display_modifier);
 
     add_modifier(variance_modifier.invariant_modifier);
     add_modifier(variance_modifier.covariant_modifier);

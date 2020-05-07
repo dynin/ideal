@@ -14,6 +14,7 @@ import ideal.runtime.patterns.*;
 import ideal.runtime.resources.*;
 import ideal.runtime.channels.*;
 import ideal.runtime.graphs.*;
+import ideal.runtime.logs.test_display;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -50,6 +51,8 @@ public class main {
     new test_elements().run_all_tests();
     new test_plain_text().run_all_tests();
     new test_markup_text().run_all_tests();
+
+    new test_display().run_all_tests();
 
     new test_singleton_pattern().run_all_tests();
 

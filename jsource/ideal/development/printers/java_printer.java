@@ -174,8 +174,13 @@ public class java_printer extends base_printer {
   private text_fragment print_annotation_kind(modifier_kind the_kind) {
     String the_name = utilities.s(the_kind.name().to_string());
     assert !the_name.isEmpty();
-    String processed_name = "@" + Character.toUpperCase(the_name.charAt(0)) +
-        the_name.substring(1);
+    String processed_name;
+    // TODO: have a set of non-uppercaseable annotations in general_modifiers
+    if (the_kind != general_modifier.dont_display_modifier) {
+      processed_name = "@" + Character.toUpperCase(the_name.charAt(0)) + the_name.substring(1);
+    } else {
+      processed_name = "@" + the_name;
+    }
     return print_word(processed_name);
   }
 

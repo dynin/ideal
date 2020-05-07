@@ -84,7 +84,7 @@ unequal.  The ideal solution is simple: “circle”, instead of inheriting fro
 “ellipse”, should inherit from “readonly ellipse”.  Then it should support
 the fetching of width and height, but not the mutation that might turn
 a circle into an an ellipse.  (The code for this example can be found in
-ideal/showcase/circle.i; “make circle” runs it.)
+showcase/circle.i; “make circle” runs it.)
 
 With the variance in collection types (
 http://en.wikipedia.org/wiki/Covariance_and_contravariance_(computer_science) ),

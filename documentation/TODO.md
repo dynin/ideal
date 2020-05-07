@@ -47,3 +47,5 @@
 - [x] Create should set non-zero exit code on errors
 - [ ] Handle variables overriding supertype variables
 - [ ] Support => in variable declarations
+- [ ] Implement list initializers
+- [ ] Add a way to refer to identifiers named as reserved keywords

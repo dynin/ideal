@@ -15,4 +15,6 @@ namespace logs {
   namespace log;
 
   interface displayable;
+
+  class test_display;
 }

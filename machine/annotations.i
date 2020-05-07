@@ -4,9 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace machine {
-  namespace elements;
-  namespace channels;
-  namespace adapters;
-  namespace annotations;
+--- User-defined annotations
+namespace annotations {
+--  interface dont_display { }
 }

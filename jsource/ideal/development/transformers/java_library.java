@@ -18,6 +18,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.actions.*;
 import ideal.development.analyzers.*;
+import ideal.development.modifiers.*;
 
 public class java_library implements value {
 
@@ -48,6 +49,9 @@ public class java_library implements value {
   private principal_type machine_elements_namespace;
   private principal_type machine_adapters_namespace;
   private principal_type runtime_util_class;
+
+  private principal_type machine_annotations_namespace;
+  private principal_type dont_display_type;
 
   private final dictionary<principal_type, principal_type> primitive_mapping;
   private final dictionary<principal_type, simple_name> wrapper_mapping;
@@ -88,6 +92,12 @@ public class java_library implements value {
     javax_package = get_type(machine_adapters_namespace, "javax");
     annotation_package = get_type(javax_package, "annotation");
     nullable_type = get_type(annotation_package, "Nullable");
+
+    machine_annotations_namespace = get_type(machine_namespace, "annotations");
+    // TODO: implement this in type annotations.i
+    dont_display_type = action_utilities.make_type(context, type_kinds.namespace_kind,
+        flavor_profiles.nameonly_profile, general_modifier.dont_display_modifier.name(),
+        machine_annotations_namespace, null, semantics.BUILTIN_POSITION);
 
     common_library library = common_library.get_instance();
 
@@ -158,6 +168,10 @@ public class java_library implements value {
 
   public principal_type nullable_type() {
     return nullable_type;
+  }
+
+  public principal_type dont_display_type() {
+    return dont_display_type;
   }
 
   public principal_type machine_namespace() {

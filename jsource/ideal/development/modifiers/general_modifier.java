@@ -34,6 +34,7 @@ public class general_modifier {
   public static modifier_kind implement_modifier = new base_modifier_kind("implement");
   public static modifier_kind noreturn_modifier = new base_modifier_kind("noreturn");
   public static modifier_kind testcase_modifier = new base_modifier_kind("testcase");
+  public static modifier_kind dont_display_modifier = new base_modifier_kind("dont_display");
 
   // For interop with Java.
   public static modifier_kind synchronized_modifier = new base_modifier_kind("synchronized");
@@ -68,7 +69,8 @@ public class general_modifier {
     java_annotations = new hash_set<modifier_kind>();
     java_annotations.add_all(to_set(new modifier_kind[] {
         override_modifier,
-        nullable_modifier
+        nullable_modifier,
+        dont_display_modifier
     }));
     supported_by_java.add_all(java_annotations);
 

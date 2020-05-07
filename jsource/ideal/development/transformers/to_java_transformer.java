@@ -1637,9 +1637,20 @@ public class to_java_transformer extends base_transformer {
 
     headers.append(make_comment(source));
     headers.append_all(common_headers);
+    boolean add_newline = false;
+
     if (has_nullable(the_declaration)) {
       // TODO: kill empty line after common imports but before nullable import?
       headers.append(make_import(java_adapter.nullable_type(), source));
+      add_newline = true;
+    }
+
+    if (has_dont_display(the_declaration)) {
+      headers.append(make_import(java_adapter.dont_display_type(), source));
+      add_newline = true;
+    }
+
+    if (add_newline) {
       headers.append(make_newline(source));
     }
 
@@ -1664,6 +1675,19 @@ public class to_java_transformer extends base_transformer {
       construct the_construct = flattened.get(i);
       if (the_construct instanceof modifier_construct &&
           ((modifier_construct) the_construct).the_kind == nullable_modifier) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // TODO: use list.has()
+  private boolean has_dont_display(construct root_construct) {
+    readonly_list<construct> flattened = base_construct.flatten(root_construct);
+    for (int i = 0; i < flattened.size(); ++i) {
+      construct the_construct = flattened.get(i);
+      if (the_construct instanceof modifier_construct &&
+          ((modifier_construct) the_construct).the_kind == dont_display_modifier) {
         return true;
       }
     }

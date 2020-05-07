@@ -34,10 +34,13 @@ public class runtime_util {
   private static string main_name(String name) {
     int dot = name.lastIndexOf('.');
     if (dot > 0) {
-      return new base_string(name.substring(dot + 1));
-    } else {
-      return new base_string(name);
+      name = name.substring(dot + 1);
     }
+    int dollar = name.lastIndexOf('$');
+    if (dollar > 0) {
+      name = name.substring(dollar + 1);
+    }
+    return new base_string(name);
   }
 
   public static string value_identifier(readonly_value the_value) {

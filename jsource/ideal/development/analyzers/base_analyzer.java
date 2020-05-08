@@ -28,7 +28,8 @@ import ideal.development.comments.*;
 
 public abstract class base_analyzer<C extends position> extends debuggable implements analyzable {
 
-  protected static action_name INSIDE_NAME = new special_name("inside", base_analyzer.class);
+  protected static action_name INSIDE_NAME =
+      new special_name(new base_string("inside"), new base_string("base_analyzer"));
 
   @dont_display
   public final C source;

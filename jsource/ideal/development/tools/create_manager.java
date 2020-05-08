@@ -97,7 +97,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
   public principal_type new_block(string name, analysis_context context) {
     master_type result = new master_type(type_kinds.block_kind, flavor_profiles.nameonly_profile,
-        new special_name(utilities.s(name), create_manager.class), root, context, null);
+        new special_name(name, new base_string("create_manager")), root, context, null);
     // TODO: create a declaration and call result.process_declaration();
     action_utilities.add_promotion(context, result, root, root_position);
     return result;

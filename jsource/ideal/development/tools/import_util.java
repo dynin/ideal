@@ -66,7 +66,7 @@ public class import_util {
         pos);
     kind kind = cl.isInterface() ? type_kinds.interface_kind:
         type_kinds.class_kind;
-    simple_name name = name_utilities.parse_camel_case(cl.getSimpleName());
+    simple_name name = name_utilities.parse_camel_case(new base_string(cl.getSimpleName()));
 
     list<construct> declarations = new base_list<construct>();
     for (Method method : cl.getDeclaredMethods()) {
@@ -82,7 +82,7 @@ public class import_util {
     list<annotation_construct> annotations = modifiers_as_list(
         method.getModifiers(), pos);
     construct ret = get_name(method.getReturnType(), pos);
-    simple_name name = name_utilities.parse_camel_case(method.getName());
+    simple_name name = name_utilities.parse_camel_case(new base_string(method.getName()));
     list<construct> params = new base_list<construct>();
     int index = 0;
     for (Class param : method.getParameterTypes()) {
@@ -98,7 +98,7 @@ public class import_util {
 
   private construct get_name(Class type, position pos) {
     return new name_construct(name_utilities.parse_camel_case(
-        type.getSimpleName()), pos);
+        new base_string(type.getSimpleName())), pos);
   }
 
   private variable_construct get_var(Class type, int index, position pos) {

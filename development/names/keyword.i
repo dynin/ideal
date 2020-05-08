@@ -6,7 +6,8 @@
 
 --- Keywords used in the ideal system.
 --- TODO: convert into namespace, drop static.
-namespace keyword {
+class keyword {
+  extends deeply_immutable data;
 
   -- TODO: move out of keywords
   static FOR_NAME : simple_name.make("for");

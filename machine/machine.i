@@ -6,6 +6,7 @@
 
 namespace machine {
   namespace elements;
+  namespace characters;
   namespace channels;
   namespace adapters;
   namespace annotations;

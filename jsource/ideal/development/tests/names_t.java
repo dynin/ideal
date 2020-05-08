@@ -35,9 +35,9 @@ public class names_t extends TestCase {
   }
 
   public void test_special_names() {
-    special_name foo = new special_name("foo");
-    special_name bar = new special_name("bar");
-    special_name foo2 = new special_name("foo");
+    special_name foo = new special_name(new base_string("foo"));
+    special_name bar = new special_name(new base_string("bar"));
+    special_name foo2 = new special_name(new base_string("foo"));
 
     assertEquals(to_s(foo), "<foo>");
     assertEquals(to_s(bar), "<bar>");
@@ -65,7 +65,7 @@ public class names_t extends TestCase {
   }
 
   public void test_camel_case() {
-    simple_name the_name = name_utilities.parse_camel_case("thisIsCamelCase");
+    simple_name the_name = name_utilities.parse_camel_case(new base_string("thisIsCamelCase"));
     assertEquals(to_s(the_name), "this_is_camel_case");
   }
 }

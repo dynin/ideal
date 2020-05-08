@@ -4,15 +4,11 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace library {
-  package elements;
-  package operators;
-  package channels;
-  package patterns;
-  package characters;
-  package texts;
-  package resources;
-  package messages;
-  package reflections;
-  package graphs;
+--- Character-related function implementations.
+namespace characters {
+  implicit import ideal.library.characters;
+
+  singleton normal_handler {
+    subtypes character_handler;
+  }
 }

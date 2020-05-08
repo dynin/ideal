@@ -4,49 +4,45 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
+-- TODO: merge this with special_token_name.
+class special_name {
+  extends debuggable;
+  implements action_name;
 
-// TODO: merge this with special_token_name.
-public class special_name extends debuggable implements action_name {
+  static special_name ROOT : special_name.new("root");
 
-  public static final special_name ROOT = new special_name("root");
+  static special_name PROMOTION : special_name.new("promotion");
+  static special_name TYPE_ALIAS : special_name.new("type_alias");
+  static special_name THIS : special_name.new(keyword.THIS);
+  static special_name SUPER : special_name.new(keyword.SUPER);
+  static special_name NEW : special_name.new(keyword.NEW);
+  static special_name IMPLICIT_CALL : special_name.new("implicit_call");
+  static special_name SUPERTYPE : special_name.new("supertype");
+  static special_name CONSTRUCTOR : special_name.new("constructor");
 
-  public static final special_name PROMOTION = new special_name("promotion");
-  public static final special_name TYPE_ALIAS = new special_name("type_alias");
-  public static final special_name THIS = new special_name(keyword.THIS);
-  public static final special_name SUPER = new special_name(keyword.SUPER);
-  public static final special_name NEW = new special_name(keyword.NEW);
-  public static final special_name IMPLICIT_CALL = new special_name("implicit_call");
-  public static final special_name SUPERTYPE = new special_name("supertype");
-  public static final special_name CONSTRUCTOR = new special_name("constructor");
+  static special_name THIS_CONSTRUCTOR : special_name.new("this_constructor");
+  static special_name SUPER_CONSTRUCTOR : special_name.new("super_constructor");
 
-  public static final special_name THIS_CONSTRUCTOR = new special_name("this_constructor");
-  public static final special_name SUPER_CONSTRUCTOR = new special_name("super_constructor");
+  -- Used to a name the return pseudo-variable
+  static final special_name RETURN : special_name.new(keyword.RETURN);
 
-  /* Used to a name the return pseudo-variable */
-  public static final special_name RETURN = new special_name(keyword.RETURN);
+  -- Used in a list constructor; (1, 2) gets exposed as <list>(1, 2)
+  static final action_name SEQUENCE : special_name.new("list");
 
-  /* Used in a list constructor; (1, 2) gets exposed as <list>(1, 2) */
-  public static final action_name SEQUENCE = new special_name("list");
+  final string name;
 
-  public final string name;
-
-  public special_name(token_type ttype) {
-    this.name = ttype.name();
+  overload special_name(token_type the_token_name) {
+    this.name = the_token_name.name;
   }
 
-  public special_name(String name) {
-    this.name = new base_string(name);
+  overload special_name(string name) {
+    this.name = name;
   }
 
-  // TODO: retire this?
-  public special_name(String name, Class type) {
+  -- TODO: make this obsolete.
+  overload special_name(string name, string namespace_id) {
     this(name);
   }
 
-  public string to_string() {
-    return name_utilities.in_brackets(name);
-  }
+  string to_string() => name_utilities.in_brackets(name);
 }

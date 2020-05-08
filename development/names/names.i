@@ -14,11 +14,11 @@ package names {
 
   class base_token_type;
   class punctuation_type;
+  namespace special_token_type;
   class operator_type;
   namespace punctuation;
   class operator;
-  namespace keyword;
---  interface special_name;
---  interface special_token_type;
+  class keyword;
+  class special_name;
   namespace name_utilities;
 }

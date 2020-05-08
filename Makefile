@@ -73,6 +73,7 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/elements/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/texts/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/reflections/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/characters/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/channels/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/resources/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java
@@ -80,6 +81,7 @@ BOOTSTRAPPED_JAVA = \
 MACHINE_JAVA = \
     $(JSOURCE_DIR)/ideal/machine/elements/*.java \
     $(JSOURCE_DIR)/ideal/machine/channels/*.java \
+    $(JSOURCE_DIR)/ideal/machine/characters/*.java \
     $(JSOURCE_DIR)/ideal/machine/resources/*.java
 
 PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
@@ -91,7 +93,6 @@ BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/comments/*.java
 
 DEVELOPMENT_JAVA = \
-    $(JSOURCE_DIR)/ideal/development/names/*.java \
     $(JSOURCE_DIR)/ideal/development/flavors/*.java \
     $(JSOURCE_DIR)/ideal/development/modifiers/*.java \
     $(JSOURCE_DIR)/ideal/development/declarations/*.java \

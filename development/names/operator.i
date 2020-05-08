@@ -34,7 +34,7 @@ class operator {
   simple_name symbol() => alpha_name;
 
   string to_string() {
-    -- TODO: disamiguate type
+    -- TODO: disambiguate type
     return name_utilities.in_brackets(this.type ++ " " ++ name);
   }
 
@@ -48,7 +48,7 @@ class operator {
   static MODULO : operator.new(INFIX, punctuation.PERCENT, "modulo");
   static ADD : operator.new(INFIX, punctuation.PLUS, "add");
   static SUBTRACT : operator.new(INFIX, punctuation.MINUS, "subtract");
-  public NEGATE : operator.new(PREFIX, punctuation.MINUS, "negate");
+  static NEGATE : operator.new(PREFIX, punctuation.MINUS, "negate");
 
   static PRE_INCREMENT : operator.new(PREFIX, punctuation.PLUS_PLUS, "pre_increment");
   static CONCATENATE : operator.new(INFIX, punctuation.PLUS_PLUS, "concatenate");

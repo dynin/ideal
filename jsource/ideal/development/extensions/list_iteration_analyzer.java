@@ -29,7 +29,7 @@ import ideal.development.analyzers.*;
 public class list_iteration_analyzer extends single_pass_analyzer implements declaration {
 
   private static final action_name BLOCK_NAME =
-      new special_name("iterate", list_iteration_analyzer.class);
+      new special_name(new base_string("iterate"), new base_string("list_iteration_analyzer"));
 
   public final annotation_set annotations;
   public final action_name var_name;

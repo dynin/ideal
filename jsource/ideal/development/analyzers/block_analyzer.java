@@ -23,7 +23,8 @@ import ideal.development.declarations.*;
 
 public class block_analyzer extends single_pass_analyzer implements declaration {
 
-  private static final special_name BLOCK_NAME = new special_name("{", block_analyzer.class);
+  private static final special_name BLOCK_NAME =
+      new special_name(new base_string("{"), new base_string("block_analyzer"));
 
   private final analyzable body;
   private principal_type inside;

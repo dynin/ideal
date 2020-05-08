@@ -25,13 +25,20 @@ public class core_types {
   private final static master_type UNION_MASTER;
 
   static {
-    ROOT = new master_type(new special_name("root"), type_kinds.block_kind);
-    ANY_TYPE = new master_type(new special_name("any_type"), type_kinds.block_kind);
-    ERROR = new master_type(new special_name("error"), type_kinds.block_kind);
-    UNREACHABLE = new master_type(new special_name("unreachable"), type_kinds.block_kind);
-    TARGET = new master_type(new special_name("unreachable"), type_kinds.block_kind);
-    UNDEFINED = new master_type(new special_name("undefined"), type_kinds.block_kind);
-    UNION_MASTER = new master_union_type(new special_name("union"), type_kinds.union_kind);
+    ROOT = new master_type(new special_name(new base_string("root")),
+        type_kinds.block_kind);
+    ANY_TYPE = new master_type(new special_name(new base_string("any_type")),
+        type_kinds.block_kind);
+    ERROR = new master_type(new special_name(new base_string("error")),
+        type_kinds.block_kind);
+    UNREACHABLE = new master_type(new special_name(new base_string("unreachable")),
+        type_kinds.block_kind);
+    TARGET = new master_type(new special_name(new base_string("unreachable")),
+        type_kinds.block_kind);
+    UNDEFINED = new master_type(new special_name(new base_string("undefined")),
+        type_kinds.block_kind);
+    UNION_MASTER = new master_union_type(new special_name(new base_string("union")),
+        type_kinds.union_kind);
   }
 
   public static principal_type root_type() {

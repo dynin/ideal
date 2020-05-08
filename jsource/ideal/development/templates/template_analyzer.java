@@ -30,9 +30,9 @@ import ideal.development.functions.*;
 public class template_analyzer extends single_pass_analyzer implements declaration {
 
   private static final action_name BLOCK_NAME =
-      new special_name("template", template_analyzer.class);
+      new special_name(new base_string("template"), new base_string("template_analyzer"));
   private static final action_name RESULT_NAME =
-      new special_name("result", template_analyzer.class);
+      new special_name(new base_string("result"), new base_string("template_analyzer"));
 
   private static final simple_name ESCAPE_NAME = simple_name.make("escape_html");
 

@@ -84,10 +84,6 @@ MACHINE_JAVA = \
 
 PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
 
-DEVELOPMENT_IDEAL = \
-    development/development.i \
-    development/elements.i
-
 BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/elements/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/texts/*.java \
@@ -207,6 +203,9 @@ generate_development gd: $(IDEAL_TARGET)
 
 test_development td: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(SCRATCH_DIR)
+	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
+
+tdc:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
 
 bootstrap_development bootdev: $(IDEAL_TARGET)

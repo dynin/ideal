@@ -35,12 +35,12 @@ public class import_construct extends base_construct {
   }
 
   // TODO: the need for this is Java-specific, move out of constructs package.
-  public boolean has_implicit() {
+  public boolean has_modifier(modifier_kind modifier) {
     // TODO: use list.has()...
     for (int i = 0; i < annotations.size(); ++i) {
       annotation_construct the_annotation = annotations.get(i);
       if (the_annotation instanceof modifier_construct) {
-        if (((modifier_construct) the_annotation).the_kind == general_modifier.implicit_modifier) {
+        if (((modifier_construct) the_annotation).the_kind == modifier) {
           return true;
         }
       }

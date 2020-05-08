@@ -57,14 +57,33 @@ public class java_printer extends base_printer {
     list<text_fragment> fragments = new base_list<text_fragment>();
     fragments.append(print_word(keyword.IMPORT));
     fragments.append(print_space());
+
+    if (c.has_modifier(general_modifier.static_modifier)) {
+      fragments.append(print_modifier_kind(general_modifier.static_modifier));
+      fragments.append(print_space());
+    }
+
     fragments.append(print(c.type));
 
-    if (c.has_implicit()) {
+    if (c.has_modifier(general_modifier.implicit_modifier)) {
       fragments.append(print_punctuation(punctuation.DOT));
       fragments.append(print_punctuation(punctuation.ASTERISK));
     }
 
     return text_util.join(fragments);
+  }
+
+  public boolean has_modifier(import_construct c, modifier_kind modifier) {
+    // TODO: use list.has()...
+    for (int i = 0; i < c.annotations.size(); ++i) {
+      annotation_construct the_annotation = c.annotations.get(i);
+      if (the_annotation instanceof modifier_construct) {
+        if (((modifier_construct) the_annotation).the_kind == modifier) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @Override

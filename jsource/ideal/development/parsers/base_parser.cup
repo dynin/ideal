@@ -112,7 +112,7 @@ precedence left EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS;
 precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AS, IS, IS_NOT;
 precedence left PLUS, MINUS, PLUS_PLUS;
 precedence left ASTERISK, SLASH, PERCENT;
-precedence left EXCLAMATION_MARK;
+precedence left EXCLAMATION_MARK, MINUS;
 precedence nonassoc FLAVOR;
 precedence left DOT, OPEN_PARENTHESIS, OPEN_BRACKET;
 
@@ -352,6 +352,8 @@ expression ::=  name:n
                 {: RESULT = new parameter_construct(e, p, new fragment_position(e, p, p)); :}
         |       EXCLAMATION_MARK:op expression:e
                 {: RESULT = parser_util.make_op(op, e, operator.LOGICAL_NOT); :}
+        |       MINUS:op expression:e
+                {: RESULT = parser_util.make_op(op, e, operator.NEGATE); :}
         |       expression:e1 ASTERISK:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.MULTIPLY); :}
         |       expression:e1 SLASH:op expression:e2

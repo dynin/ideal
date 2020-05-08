@@ -211,6 +211,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     add_operator(operator.MODULO);
     add_operator(operator.SUBTRACT);
+    add_operator(operator.NEGATE);
 
     add_operator(operator.EQUAL_TO);
     add_operator(operator.NOT_EQUAL_TO);

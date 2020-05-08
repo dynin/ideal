@@ -101,7 +101,7 @@ public class to_java_transformer extends base_transformer {
             imported_type.get_parent() == java_adapter.builtins_package()) {
           continue;
         }
-        if (the_import.has_implicit()) {
+        if (the_import.has_modifier(general_modifier.implicit_modifier)) {
           implicit_names.add(imported_type);
         } else {
           imported_names.add(imported_type);
@@ -1560,10 +1560,18 @@ public class to_java_transformer extends base_transformer {
   @Override
   public import_construct process_import(import_construct c) {
     position origin = c;
-    // TODO: we'll need to handle 'static' modifier here.
-    readonly_list<annotation_construct> annotations = c.has_implicit() ?
-        new base_list<annotation_construct>(new modifier_construct(implicit_modifier, origin)) :
-        new empty<annotation_construct>();
+
+    list<annotation_construct> annotations = new base_list<annotation_construct>();
+    if (c.has_modifier(general_modifier.implicit_modifier))  {
+      annotations.append(new modifier_construct(implicit_modifier, origin));
+
+      action the_action = get_action(c.type);
+      if (the_action instanceof type_action &&
+          !((type_action) the_action).get_type().principal().get_kind().is_namespace()) {
+        annotations.append(new modifier_construct(static_modifier, origin));
+      }
+    }
+
     return new import_construct(annotations, transform(c.type), origin);
   }
 

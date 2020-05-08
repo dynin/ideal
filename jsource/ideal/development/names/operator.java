@@ -54,7 +54,9 @@ public class operator extends debuggable implements action_name {
   public static operator MODULO = new operator(INFIX, punctuation.PERCENT, "modulo");
   public static operator ADD = new operator(INFIX, punctuation.PLUS, "add");
   public static operator SUBTRACT = new operator(INFIX, punctuation.MINUS, "subtract");
+  public static operator NEGATE = new operator(PREFIX, punctuation.MINUS, "negate");
 
+  // TODO: do we use preincrement?
   public static operator PRE_INCREMENT = new operator(PREFIX, punctuation.PLUS_PLUS,
       "pre_increment");
   public static operator CONCATENATE = new operator(INFIX, punctuation.PLUS_PLUS, "concatenate");

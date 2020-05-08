@@ -68,12 +68,12 @@ HELLO = $(SHOWCASE_DIR)/hello.i
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/library/channels/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/library/characters/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/library/texts/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/library/resources/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/elements/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/texts/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/reflections/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/runtime/characters/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/channels/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/resources/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java

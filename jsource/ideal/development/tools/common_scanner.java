@@ -77,32 +77,32 @@ public class common_scanner extends base_scanner_config {
     add_punctuation(punctuation.ASTERISK_EQUALS);
     add_punctuation(punctuation.PLUS_PLUS_EQUALS);
 
-    add_keyword(keyword.OR);
+    add_keyword(keywords.OR);
 
-    add_keyword(keyword.IS);
-    add_keyword(keyword.IS_NOT);
-    add_keyword(keyword.AS);
+    add_keyword(keywords.IS);
+    add_keyword(keywords.IS_NOT);
+    add_keyword(keywords.AS);
 
-    add_special(special_name.THIS, keyword.THIS);
-    add_special(special_name.SUPER, keyword.SUPER);
-    add_special(special_name.NEW, keyword.NEW);
+    add_special(special_name.THIS, keywords.THIS);
+    add_special(special_name.SUPER, keywords.SUPER);
+    add_special(special_name.NEW, keywords.NEW);
 
-    add_keyword(keyword.RETURN);
-    add_keyword(keyword.ASSERT);
+    add_keyword(keywords.RETURN);
+    add_keyword(keywords.ASSERT);
 
-    add_keyword(keyword.IF);
-    add_keyword(keyword.ELSE);
+    add_keyword(keywords.IF);
+    add_keyword(keywords.ELSE);
 
-    add_keyword(keyword.LOOP);
-    add_keyword(keyword.WHILE);
-    add_keyword(keyword.FOR);
+    add_keyword(keywords.LOOP);
+    add_keyword(keywords.WHILE);
+    add_keyword(keywords.FOR);
 
-    add_keyword(keyword.IMPORT);
+    add_keyword(keywords.IMPORT);
 
-    add_keyword(keyword.USE);
-    add_keyword(keyword.TARGET);
+    add_keyword(keywords.USE);
+    add_keyword(keywords.TARGET);
 
-    add_keyword(keyword.PLEASE);
+    add_keyword(keywords.PLEASE);
 
     add_jump(jump_type.BREAK_JUMP);
     add_jump(jump_type.CONTINUE_JUMP);

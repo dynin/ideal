@@ -48,4 +48,5 @@
 - [ ] Handle variables overriding supertype variables
 - [ ] Support => in variable declarations
 - [ ] Implement list initializers
-- [x] Add a way to refer to identifiers named as reserved keywords
+- [ ] Do not require var modifier in for loop declarations
+- [ ] Implement switch construct

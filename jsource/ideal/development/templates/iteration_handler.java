@@ -31,7 +31,7 @@ import ideal.development.declarations.*;
 public class iteration_handler implements sexpression_handler {
 
   public action_name name() {
-    return keyword.FOR_NAME;
+    return keywords.FOR.keyword_name();
   }
 
   public analyzable to_analyzable(readonly_list<construct> arguments, template_analyzer template,

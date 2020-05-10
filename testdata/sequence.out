@@ -1148,7 +1148,7 @@
             return_construct {
               the_expression: operator_construct {
                 the_operator: operator {
-                  type: infix
+                  the_operator_type: infix
                   name: as
                   alpha_name: as_operator
                 }
@@ -1323,14 +1323,14 @@
             constraint_construct {
               expr: operator_construct {
                 the_operator: operator {
-                  type: infix
+                  the_operator_type: infix
                   name: &&
                   alpha_name: logical_and
                 }
                 arguments: [
                   operator_construct {
                     the_operator: operator {
-                      type: infix
+                      the_operator_type: infix
                       name: >=
                       alpha_name: greater_equal
                     }
@@ -1348,7 +1348,7 @@
                   }
                   operator_construct {
                     the_operator: operator {
-                      type: infix
+                      the_operator_type: infix
                       name: <=
                       alpha_name: less_equal
                     }
@@ -1408,7 +1408,7 @@
               }
               condition: operator_construct {
                 the_operator: operator {
-                  type: infix
+                  the_operator_type: infix
                   name: <
                   alpha_name: less
                 }
@@ -1423,7 +1423,7 @@
               }
               update: operator_construct {
                 the_operator: operator {
-                  type: assignment
+                  the_operator_type: infix
                   name: +=
                   alpha_name: add_assign
                 }
@@ -1695,7 +1695,7 @@
               }
               condition: operator_construct {
                 the_operator: operator {
-                  type: infix
+                  the_operator_type: infix
                   name: <
                   alpha_name: less
                 }
@@ -1721,7 +1721,7 @@
               }
               update: operator_construct {
                 the_operator: operator {
-                  type: assignment
+                  the_operator_type: infix
                   name: +=
                   alpha_name: add_assign
                 }
@@ -1756,7 +1756,7 @@
                         }
                         operator_construct {
                           the_operator: operator {
-                            type: infix
+                            the_operator_type: infix
                             name: as
                             alpha_name: as_operator
                           }

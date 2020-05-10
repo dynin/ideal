@@ -500,12 +500,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public text_fragment print_special_name(special_name name) {
     // TODO: simplify, convert to set of special_names
     if (name == special_name.THIS) {
-      return print_word(keyword.THIS);
+      return print_word(keywords.THIS);
     } else if (name == special_name.SUPER) {
-      return print_word(keyword.SUPER);
+      return print_word(keywords.SUPER);
     } else if (name == special_name.NEW) {
       // TODO: handle new as operator?
-      return print_word(keyword.NEW);
+      return print_word(keywords.NEW);
     } else {
       utilities.panic("unknown special name: " + name);
       return null;
@@ -544,14 +544,14 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public text_fragment process_if(conditional_construct c) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(print_word(keyword.IF));
+    fragments.append(print_word(keywords.IF));
     fragments.append(print_space());
     fragments.append(print_grouping_in_statement(print(c.cond_expr)));
 
     if (c.else_expr != null) {
       fragments.append(do_print_indented_statement(c.then_expr, false));
       fragments.append(print_space());
-      fragments.append(print_word(keyword.ELSE));
+      fragments.append(print_word(keywords.ELSE));
       if (is_chained_else(c.else_expr)) {
         fragments.append(print_space());
         fragments.append(print(c.else_expr));
@@ -576,7 +576,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     fragments.append(print_documentation(c.annotations, c));
     fragments.append(print_modifiers(c.annotations, true));
-    fragments.append(print_word(keyword.IMPORT));
+    fragments.append(print_word(keywords.IMPORT));
     fragments.append(print_space());
     fragments.append(print(c.type));
 
@@ -645,10 +645,10 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   @Override
   public text_fragment process_operator(operator_construct c) {
     operator op = c.the_operator;
-    if (op.type == operator_type.PREFIX) {
+    if (op.the_operator_type == operator_type.PREFIX) {
       assert c.arguments.size() == 1;
       return print_prefix(c);
-    } else if (op.type == operator_type.INFIX || op.type == operator_type.ASSIGNMENT) {
+    } else if (op.the_operator_type == operator_type.INFIX) {
       assert c.arguments.size() == 2;
       return print_infix(c);
     } else {
@@ -672,12 +672,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_return(return_construct c) {
-    text_fragment return_keyword = print_word(RETURN);
+    text_fragment return_keywords = print_word(RETURN);
 
     if (c.the_expression != null && !(c.the_expression instanceof empty_construct)) {
-      return text_util.join(return_keyword, print_space(), print(c.the_expression));
+      return text_util.join(return_keywords, print_space(), print(c.the_expression));
     } else {
-      return return_keyword;
+      return return_keywords;
     }
   }
 
@@ -800,7 +800,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public text_fragment process_loop(loop_construct c) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(print_word(keyword.LOOP));
+    fragments.append(print_word(keywords.LOOP));
     fragments.append(print_indented_statement(c.body));
 
     return text_util.join(fragments);

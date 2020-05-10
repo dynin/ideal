@@ -172,7 +172,11 @@ test_all: $(IDEAL_TARGET) rm-scratch
 	cp -r $(JSOURCE_DIR)/ideal/machine/* $(SCRATCH_DIR)/ideal/machine
 	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
 
+bbackup:
+	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
+
 reboot:
+	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(BOOTSTRAPPED_DIR)
 
 generate_texts: $(IDEAL_TARGET)
@@ -210,6 +214,7 @@ tdc:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
 
 bootstrap_development bootdev: $(IDEAL_TARGET)
+	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(BOOTSTRAPPED_DIR)
 
 ### Documentation generation

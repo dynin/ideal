@@ -21,7 +21,7 @@ public class operator_construct extends base_construct {
   public operator_construct(operator the_operator, readonly_list<construct> arguments,
       position source) {
     super(source);
-    assert arguments.size() == the_operator.type.arity;
+    assert arguments.size() == the_operator.the_operator_type.arity;
     this.the_operator = the_operator;
     this.arguments = arguments;
   }

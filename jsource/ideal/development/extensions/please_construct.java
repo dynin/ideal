@@ -42,7 +42,7 @@ public class please_construct extends extension_construct {
   public text_fragment print(printer p) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(p.print_word(keyword.PLEASE));
+    fragments.append(p.print_word(keywords.PLEASE));
     fragments.append(p.print_space());
     fragments.append(p.print(the_statement));
 

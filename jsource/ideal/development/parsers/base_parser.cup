@@ -455,5 +455,5 @@ sexpression_atom ::=
                 name:n
                 {: RESULT = n; :}
         |       FOR:t
-                {: RESULT = new name_construct(keyword.FOR_NAME, t); :}
+                {: RESULT = new name_construct(keywords.FOR.keyword_name(), t); :}
         ;

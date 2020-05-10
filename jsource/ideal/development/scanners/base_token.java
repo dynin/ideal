@@ -20,6 +20,7 @@ public class base_token<P extends deeply_immutable_data> extends debuggable impl
   private final position pos;
 
   public base_token(token_type type, P the_payload, position pos) {
+    assert the_payload != null;
     this.type = type;
     this.the_payload = the_payload;
     this.pos = pos;

@@ -55,7 +55,7 @@ public class java_printer extends base_printer {
   @Override
   public text_fragment process_import(import_construct c) {
     list<text_fragment> fragments = new base_list<text_fragment>();
-    fragments.append(print_word(keyword.IMPORT));
+    fragments.append(print_word(keywords.IMPORT));
     fragments.append(print_space());
 
     if (c.has_modifier(general_modifier.static_modifier)) {

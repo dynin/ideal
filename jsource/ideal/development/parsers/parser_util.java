@@ -56,7 +56,7 @@ public class parser_util {
 
   // TODO: introduce operator construct
   public static construct make_op(construct e1, token op_token, construct e2, operator op) {
-    assert op.type == operator_type.INFIX || op.type == operator_type.ASSIGNMENT;
+    //assert op.type == operator_type.INFIX;
     position op_position = new fragment_position(e1, op_token, e2);
     return new operator_construct(op, e1, e2, op_position);
   }

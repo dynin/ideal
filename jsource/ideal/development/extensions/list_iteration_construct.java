@@ -49,7 +49,7 @@ public class list_iteration_construct extends extension_construct {
   public text_fragment print(printer p) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(p.print_word(keyword.FOR));
+    fragments.append(p.print_word(keywords.FOR));
     fragments.append(p.print_space());
     fragments.append(p.print_punctuation(punctuation.OPEN_PARENTHESIS));
     fragments.append(p.print(var_decl));

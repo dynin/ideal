@@ -11,31 +11,20 @@ class operator {
   extends debuggable;
   implements action_name;
 
-  final operator_type type;
+  final operator_type the_operator_type;
   final token_type name;
   final simple_name alpha_name;
 
-  overload private operator(operator_type type, token_type name, string alpha_name) {
-    this.type = type;
+  overload private operator(operator_type the_operator_type, token_type name, string alpha_name) {
+    this.the_operator_type = the_operator_type;
     this.name = name;
     this.alpha_name = simple_name.make(alpha_name);
-  }
-
-  -- TODO: make assignment a subclass.
-  overload private operator(operator_type type, operator primary, token_type name,
-      string alpha_name) {
-    this(type, name, alpha_name);
-    assert type == ASSIGNMENT;
-    -- This looks ugly.  TODO: add make_assignment_op(...)
-    assert name.name == primary.name.name ++ "=";
-    assert alpha_name.to_string == primary.alpha_name ++ "_assign";
   }
 
   simple_name symbol() => alpha_name;
 
   string to_string() {
-    -- TODO: disambiguate type
-    return name_utilities.in_brackets(this.type ++ " " ++ name);
+    return name_utilities.in_brackets(the_operator_type ++ " " ++ name);
   }
 
   -- names from: https://svn.boost.org/trac/boost/wiki/Guidelines/Naming/Operators
@@ -65,19 +54,17 @@ class operator {
   static LOGICAL_AND : operator.new(INFIX, punctuation.AMPERSAND_AMPERSAND, "logical_and");
   static LOGICAL_OR : operator.new(INFIX, punctuation.VERTICAL_BAR_VERTICAL_BAR, "logical_or");
   static LOGICAL_NOT : operator.new(PREFIX, punctuation.EXCLAMATION_MARK, "logical_not");
-  static GENERAL_OR : operator.new(INFIX, keyword.OR, "general_or");
+  static GENERAL_OR : operator.new(INFIX, keywords.OR, "general_or");
 
-  static ADD_ASSIGN : operator.new(ASSIGNMENT, ADD, punctuation.PLUS_EQUALS, "add_assign");
-  static SUBTRACT_ASSIGN : operator.new(ASSIGNMENT, SUBTRACT, punctuation.MINUS_EQUALS,
-      "subtract_assign");
-  static MULTIPLY_ASSIGN : operator.new(ASSIGNMENT, MULTIPLY, punctuation.ASTERISK_EQUALS,
-      "multiply_assign");
-  static CONCATENATE_ASSIGN : operator.new(ASSIGNMENT, CONCATENATE, punctuation.PLUS_PLUS_EQUALS,
+  static ADD_ASSIGN : operator.new(INFIX, punctuation.PLUS_EQUALS, "add_assign");
+  static SUBTRACT_ASSIGN : operator.new(INFIX, punctuation.MINUS_EQUALS, "subtract_assign");
+  static MULTIPLY_ASSIGN : operator.new(INFIX, punctuation.ASTERISK_EQUALS, "multiply_assign");
+  static CONCATENATE_ASSIGN : operator.new(INFIX, punctuation.PLUS_PLUS_EQUALS,
       "concatenate_assign");
 
-  static AS_OPERATOR : operator.new(INFIX, keyword.AS, "as_operator");
-  static IS_OPERATOR : operator.new(INFIX, keyword.IS, "is_operator");
-  static IS_NOT_OPERATOR : operator.new(INFIX, keyword.IS_NOT, "is_not_operator");
+  static AS_OPERATOR : operator.new(INFIX, keywords.AS, "as_operator");
+  static IS_OPERATOR : operator.new(INFIX, keywords.IS, "is_operator");
+  static IS_NOT_OPERATOR : operator.new(INFIX, keywords.IS_NOT, "is_not_operator");
 
-  static ALLOCATE : operator.new(PREFIX, keyword.NEW, "allocate");
+  static ALLOCATE : operator.new(PREFIX, keywords.NEW, "allocate");
 }

@@ -65,7 +65,7 @@ public class for_construct extends extension_construct {
   public text_fragment print(printer p) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(p.print_word(keyword.FOR));
+    fragments.append(p.print_word(keywords.FOR));
     fragments.append(p.print_space());
 
     list<text_fragment> expressions = new base_list<text_fragment>();

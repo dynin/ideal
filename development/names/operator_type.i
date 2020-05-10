@@ -4,6 +4,8 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
+--- Type of operator (prefix, postfix, infix).
+--- TODO: convert to enum.
 class operator_type {
   implements identifier, readonly displayable;
 
@@ -24,7 +26,4 @@ class operator_type {
   static operator_type POSTFIX : operator_type.new("postfix", 1);
 
   static operator_type INFIX : operator_type.new("infix", 2);
-
-  -- TODO: do we need this?
-  static operator_type ASSIGNMENT : operator_type.new("assignment", 2);
 }

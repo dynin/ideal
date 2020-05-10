@@ -10,25 +10,19 @@ import ideal.development.symbols.base_symbols;
 import static ideal.development.names.operator_type.*;
 
 public class operator extends debuggable implements action_name {
-  public final operator_type type;
+  public final operator_type the_operator_type;
   public final token_type name;
   public final simple_name alpha_name;
-  private operator(final operator_type type, final token_type name, final string alpha_name) {
-    this.type = type;
+  private operator(final operator_type the_operator_type, final token_type name, final string alpha_name) {
+    this.the_operator_type = the_operator_type;
     this.name = name;
     this.alpha_name = simple_name.make(alpha_name);
-  }
-  private operator(final operator_type type, final operator primary, final token_type name, final string alpha_name) {
-    this(type, name, alpha_name);
-    assert ideal.machine.elements.runtime_util.values_equal(type, ASSIGNMENT);
-    assert ideal.machine.elements.runtime_util.values_equal(name.name(), ideal.machine.elements.runtime_util.concatenate(primary.name.name(), new base_string("=")));
-    assert ideal.machine.elements.runtime_util.values_equal(alpha_name.to_string(), ideal.machine.elements.runtime_util.concatenate(primary.alpha_name, new base_string("_assign")));
   }
   public simple_name symbol() {
     return alpha_name;
   }
   public string to_string() {
-    return name_utilities.in_brackets(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(this.type, new base_string(" ")), name));
+    return name_utilities.in_brackets(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(the_operator_type, new base_string(" ")), name));
   }
   public static final operator ASSIGN = new operator(INFIX, punctuation.EQUALS, new base_string("assign"));
   public static final operator MULTIPLY = new operator(INFIX, punctuation.ASTERISK, new base_string("multiply"));
@@ -51,13 +45,13 @@ public class operator extends debuggable implements action_name {
   public static final operator LOGICAL_AND = new operator(INFIX, punctuation.AMPERSAND_AMPERSAND, new base_string("logical_and"));
   public static final operator LOGICAL_OR = new operator(INFIX, punctuation.VERTICAL_BAR_VERTICAL_BAR, new base_string("logical_or"));
   public static final operator LOGICAL_NOT = new operator(PREFIX, punctuation.EXCLAMATION_MARK, new base_string("logical_not"));
-  public static final operator GENERAL_OR = new operator(INFIX, keyword.OR, new base_string("general_or"));
-  public static final operator ADD_ASSIGN = new operator(ASSIGNMENT, ADD, punctuation.PLUS_EQUALS, new base_string("add_assign"));
-  public static final operator SUBTRACT_ASSIGN = new operator(ASSIGNMENT, SUBTRACT, punctuation.MINUS_EQUALS, new base_string("subtract_assign"));
-  public static final operator MULTIPLY_ASSIGN = new operator(ASSIGNMENT, MULTIPLY, punctuation.ASTERISK_EQUALS, new base_string("multiply_assign"));
-  public static final operator CONCATENATE_ASSIGN = new operator(ASSIGNMENT, CONCATENATE, punctuation.PLUS_PLUS_EQUALS, new base_string("concatenate_assign"));
-  public static final operator AS_OPERATOR = new operator(INFIX, keyword.AS, new base_string("as_operator"));
-  public static final operator IS_OPERATOR = new operator(INFIX, keyword.IS, new base_string("is_operator"));
-  public static final operator IS_NOT_OPERATOR = new operator(INFIX, keyword.IS_NOT, new base_string("is_not_operator"));
-  public static final operator ALLOCATE = new operator(PREFIX, keyword.NEW, new base_string("allocate"));
+  public static final operator GENERAL_OR = new operator(INFIX, keywords.OR, new base_string("general_or"));
+  public static final operator ADD_ASSIGN = new operator(INFIX, punctuation.PLUS_EQUALS, new base_string("add_assign"));
+  public static final operator SUBTRACT_ASSIGN = new operator(INFIX, punctuation.MINUS_EQUALS, new base_string("subtract_assign"));
+  public static final operator MULTIPLY_ASSIGN = new operator(INFIX, punctuation.ASTERISK_EQUALS, new base_string("multiply_assign"));
+  public static final operator CONCATENATE_ASSIGN = new operator(INFIX, punctuation.PLUS_PLUS_EQUALS, new base_string("concatenate_assign"));
+  public static final operator AS_OPERATOR = new operator(INFIX, keywords.AS, new base_string("as_operator"));
+  public static final operator IS_OPERATOR = new operator(INFIX, keywords.IS, new base_string("is_operator"));
+  public static final operator IS_NOT_OPERATOR = new operator(INFIX, keywords.IS_NOT, new base_string("is_not_operator"));
+  public static final operator ALLOCATE = new operator(PREFIX, keywords.NEW, new base_string("allocate"));
 }

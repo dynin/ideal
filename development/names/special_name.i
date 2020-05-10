@@ -13,9 +13,9 @@ class special_name {
 
   static special_name PROMOTION : special_name.new("promotion");
   static special_name TYPE_ALIAS : special_name.new("type_alias");
-  static special_name THIS : special_name.new(keyword.THIS);
-  static special_name SUPER : special_name.new(keyword.SUPER);
-  static special_name NEW : special_name.new(keyword.NEW);
+  static special_name THIS : special_name.new(keywords.THIS);
+  static special_name SUPER : special_name.new(keywords.SUPER);
+  static special_name NEW : special_name.new(keywords.NEW);
   static special_name IMPLICIT_CALL : special_name.new("implicit_call");
   static special_name SUPERTYPE : special_name.new("supertype");
   static special_name CONSTRUCTOR : special_name.new("constructor");
@@ -24,7 +24,7 @@ class special_name {
   static special_name SUPER_CONSTRUCTOR : special_name.new("super_constructor");
 
   -- Used to a name the return pseudo-variable
-  static final special_name RETURN : special_name.new(keyword.RETURN);
+  static final special_name RETURN : special_name.new(keywords.RETURN);
 
   -- Used in a list constructor; (1, 2) gets exposed as <list>(1, 2)
   static final action_name SEQUENCE : special_name.new("list");

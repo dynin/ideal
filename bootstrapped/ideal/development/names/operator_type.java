@@ -24,5 +24,4 @@ public class operator_type implements identifier, readonly_displayable {
   public static final operator_type PREFIX = new operator_type(new base_string("prefix"), 1);
   public static final operator_type POSTFIX = new operator_type(new base_string("postfix"), 1);
   public static final operator_type INFIX = new operator_type(new base_string("infix"), 2);
-  public static final operator_type ASSIGNMENT = new operator_type(new base_string("assignment"), 2);
 }

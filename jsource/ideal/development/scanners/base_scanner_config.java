@@ -65,9 +65,9 @@ public class base_scanner_config implements scanner_config {
     assert old == null;
   }
 
-  public void add_keyword(token_type the_token_type) {
-    add_keyword(simple_name.make(the_token_type.name()),
-        new token_matcher<deeply_immutable_data>(the_token_type, null));
+  public void add_keyword(keyword the_keyword) {
+    add_keyword(simple_name.make(the_keyword.name()),
+        new token_matcher<keyword>(the_keyword, the_keyword));
   }
 
   public void add_punctuation(punctuation_type the_punctuation_type) {
@@ -106,6 +106,7 @@ public class base_scanner_config implements scanner_config {
     private P payload;
 
     public token_matcher(token_type type, P payload) {
+      assert payload != null;
       this.type = type;
       this.payload = payload;
     }

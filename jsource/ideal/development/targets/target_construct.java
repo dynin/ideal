@@ -48,7 +48,7 @@ public class target_construct extends extension_construct {
   public text_fragment print(printer p) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(p.print_word(keyword.TARGET));
+    fragments.append(p.print_word(keywords.TARGET));
     fragments.append(p.print_space());
     fragments.append(p.print_simple_name(name));
     fragments.append(p.print_space());

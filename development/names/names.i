@@ -19,6 +19,7 @@ package names {
   namespace punctuation;
   class operator;
   class keyword;
+  namespace keywords;
   class special_name;
   namespace name_utilities;
 }

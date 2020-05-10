@@ -44,7 +44,7 @@ public class use_construct extends extension_construct {
   public text_fragment print(printer p) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(p.print_word(keyword.USE));
+    fragments.append(p.print_word(keywords.USE));
     fragments.append(p.print_space());
     fragments.append(p.print_simple_name(name));
 

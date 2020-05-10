@@ -54,7 +54,7 @@ public class while_construct extends extension_construct {
   public text_fragment print(printer p) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(p.print_word(keyword.WHILE));
+    fragments.append(p.print_word(keywords.WHILE));
     fragments.append(p.print_space());
     fragments.append(p.print_grouping_in_statement(p.print(condition)));
     fragments.append(p.print_indented_statement(body));

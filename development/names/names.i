@@ -22,4 +22,5 @@ package names {
   namespace keywords;
   class special_name;
   namespace name_utilities;
+  class test_names;
 }

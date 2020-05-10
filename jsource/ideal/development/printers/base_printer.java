@@ -672,12 +672,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_return(return_construct c) {
-    text_fragment return_keywords = print_word(RETURN);
+    text_fragment return_keyword = print_word(RETURN);
 
     if (c.the_expression != null && !(c.the_expression instanceof empty_construct)) {
-      return text_util.join(return_keywords, print_space(), print(c.the_expression));
+      return text_util.join(return_keyword, print_space(), print(c.the_expression));
     } else {
-      return return_keywords;
+      return return_keyword;
     }
   }
 

@@ -31,7 +31,7 @@ public class base_notification implements notification {
     assert the_origin != null;
     this.message = message;
     this.the_origin = the_origin;
-    this.secondary = (secondary != null && !secondary.is_empty()) ? secondary : null;
+    this.secondary = (secondary != null && secondary.is_not_empty()) ? secondary : null;
   }
 
   public base_notification(string message, origin the_origin) {

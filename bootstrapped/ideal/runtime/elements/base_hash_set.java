@@ -100,6 +100,9 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
   public @Override boolean is_empty() {
     return state.size == 0;
   }
+  public @Override boolean is_not_empty() {
+    return state.size != 0;
+  }
   public @Override immutable_list<element_type> elements() {
     if (is_empty()) {
       return new empty<element_type>();

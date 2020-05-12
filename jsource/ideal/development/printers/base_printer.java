@@ -343,7 +343,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   @Override
   public text_fragment process_block(block_construct c) {
     text_fragment block = print_block(c.body, false, true);
-    if (!c.annotations.is_empty()) {
+    if (c.annotations.is_not_empty()) {
       block = text_util.join(print_modifiers(c.annotations, true), block);
     }
     if (is_curly_mode()) {

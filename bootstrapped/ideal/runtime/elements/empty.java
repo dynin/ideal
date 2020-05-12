@@ -12,6 +12,9 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
   public @Override boolean is_empty() {
     return true;
   }
+  public @Override boolean is_not_empty() {
+    return false;
+  }
   public @Override element_type first() {
     utilities.panic(new base_string("Can't access the first element of the empty list"));
     return null;

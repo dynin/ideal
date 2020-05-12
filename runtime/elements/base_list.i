@@ -77,7 +77,7 @@ class base_list[value element_type] {
   }
 
   implement void clear() {
-    if (!is_empty) {
+    if (is_not_empty) {
       state = list_state[element_type].new();
     }
   }
@@ -112,7 +112,7 @@ class base_list[value element_type] {
   -- writeonly reference[element_type] implicit at(nonnegative index)
 
   implement element_type remove_last() {
-    assert !is_empty;
+    assert is_not_empty;
     last_index : size - 1;
     assert last_index is nonnegative;
     result : state.the_elements[last_index];

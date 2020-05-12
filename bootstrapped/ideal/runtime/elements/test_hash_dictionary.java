@@ -19,21 +19,25 @@ public class test_hash_dictionary {
   public void test_mutable_dictionary() {
     final hash_dictionary<string, string> dict = new hash_dictionary<string, string>();
     assert dict.is_empty();
+    assert !dict.is_not_empty();
     assert dict.size() == 0;
     final hash_dictionary<string, string> dict2 = new hash_dictionary<string, string>();
     dict2.put(new base_string("key"), new base_string("value"));
     assert dict2.size() == 1;
     assert !dict2.is_empty();
+    assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("value"));
     assert dict2.get(new base_string("notfound")) == null;
     dict2.put(new base_string("key"), new base_string("new_value"));
     assert dict2.size() == 1;
     assert !dict2.is_empty();
+    assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("new_value"));
     assert dict2.get(new base_string("notfound")) == null;
     dict2.put(new base_string("key2"), new base_string("bar"));
     assert dict2.size() == 2;
     assert !dict2.is_empty();
+    assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("new_value"));
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key2")), new base_string("bar"));
     assert dict2.get(new base_string("notfound")) == null;
@@ -42,6 +46,7 @@ public class test_hash_dictionary {
     assert dict2.size() == 3;
     assert dict3.size() == 2;
     assert !dict3.is_empty();
+    assert dict3.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key")), new base_string("new_value"));
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key2")), new base_string("bar"));
     assert dict3.get(new base_string("notfound")) == null;
@@ -57,6 +62,7 @@ public class test_hash_dictionary {
     final immutable_dictionary<string, string> dict2i = dict2.frozen_copy();
     assert dict2i.size() == 1;
     assert !dict2i.is_empty();
+    assert dict2i.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2i.get(new base_string("key")), new base_string("value"));
     assert dict2i.get(new base_string("notfound")) == null;
   }

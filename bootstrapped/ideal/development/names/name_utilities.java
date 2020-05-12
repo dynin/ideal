@@ -52,7 +52,7 @@ public class name_utilities {
       }
       segments.append(the_writer.extract_elements());
     }
-    if (!segments.is_empty()) {
+    if (segments.is_not_empty()) {
       return simple_name.make_from_segments(segments.frozen_copy());
     } else {
       utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Can't parse name "), name));

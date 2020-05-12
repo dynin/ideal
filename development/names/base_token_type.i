@@ -12,7 +12,7 @@ class base_token_type {
   dont_display private final integer the_symbol;
 
   overload base_token_type(string name, integer the_symbol) {
-    assert !name.is_empty;
+    assert name.is_not_empty;
     this.the_name = name;
     this.the_symbol = the_symbol;
   }

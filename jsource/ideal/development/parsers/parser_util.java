@@ -24,7 +24,7 @@ public class parser_util {
   public static origin empty_origin = new special_position(new base_string("empty"));
 
   public static void ensure_empty(readonly_list<annotation_construct> seq) {
-    if (!seq.is_empty()) {
+    if (seq.is_not_empty()) {
       new base_notification(messages.unexpected_modifier, seq.first()).report();
     }
   }
@@ -33,7 +33,7 @@ public class parser_util {
       @Nullable construct body) {
     if (expression instanceof parameter_construct) {
       parameter_construct pc = (parameter_construct) expression;
-      if (!annotations.is_empty() || body != null || has_variables(pc.parameters.elements)) {
+      if (annotations.is_not_empty() || body != null || has_variables(pc.parameters.elements)) {
         // TODO: notify user instead of failing cast
         name_construct nc = (name_construct) pc.main;
         // TODO: origin...

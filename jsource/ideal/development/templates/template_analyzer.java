@@ -137,7 +137,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
     if (c instanceof sexpression_construct) {
       sexpression_construct sexpr = (sexpression_construct) c;
 
-      if (!sexpr.elements.is_empty()) {
+      if (sexpr.elements.is_not_empty()) {
         construct first = sexpr.elements.first();
 
         if (first instanceof name_construct) {

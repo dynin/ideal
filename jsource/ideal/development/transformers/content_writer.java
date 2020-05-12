@@ -35,7 +35,7 @@ public class content_writer implements value {
   private resource_identifier make_output(readonly_list<simple_name> full_name,
       extension the_extension) {
 
-    assert !full_name.is_empty();
+    assert full_name.is_not_empty();
 
     resource_catalog catalog = output_catalog;
     for (int i = 0; i < full_name.size() - 1; ++i) {

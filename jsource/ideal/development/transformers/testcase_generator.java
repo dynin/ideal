@@ -72,7 +72,7 @@ public class testcase_generator {
       }
     }
 
-    assert !test_calls.is_empty();
+    assert test_calls.is_not_empty();
 
     return new procedure_construct(new base_list<annotation_construct>(
         new modifier_construct(access_modifier.public_modifier, source)),
@@ -96,7 +96,7 @@ public class testcase_generator {
 
   private static construct make_type(principal_type the_type, origin source) {
     immutable_list<simple_name> full_name = type_utilities.get_full_names(the_type);
-    assert !full_name.is_empty();
+    assert full_name.is_not_empty();
 
     @Nullable construct result = null;
     for (int i = 0; i < full_name.size(); ++i) {

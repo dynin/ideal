@@ -26,12 +26,15 @@ public class base_range implements range {
   public @Override boolean is_empty() {
     return the_begin == the_end;
   }
+  public @Override boolean is_not_empty() {
+    return the_begin != the_end;
+  }
   public @Override Integer first() {
-    assert !is_empty();
+    assert is_not_empty();
     return the_begin;
   }
   public @Override Integer last() {
-    assert !is_empty();
+    assert is_not_empty();
     final int result = the_end - 1;
     assert result >= 0;
     return result;

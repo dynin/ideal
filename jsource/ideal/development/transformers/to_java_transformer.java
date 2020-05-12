@@ -90,7 +90,7 @@ public class to_java_transformer extends base_transformer {
       implicit_names.add(package_type);
     }
 
-    if (!imports.is_empty()) {
+    if (imports.is_not_empty()) {
       list<construct> import_headers = new base_list<construct>();
 
       // TODO: refactor as a filter
@@ -109,7 +109,7 @@ public class to_java_transformer extends base_transformer {
         import_headers.append(the_import);
       }
 
-      if (!import_headers.is_empty()) {
+      if (import_headers.is_not_empty()) {
         common_headers.append_all(import_headers);
         common_headers.append(make_newline(pos));
       }
@@ -976,7 +976,7 @@ public class to_java_transformer extends base_transformer {
         }
       }
 
-      if (!supertype_list.is_empty()) {
+      if (supertype_list.is_not_empty()) {
         subtype_tag the_subtype_tag = concrete_mode ? implements_tag : extends_tag;
         flavored_body.prepend(new supertype_construct(new empty<annotation_construct>(),
             null, the_subtype_tag, supertype_list, source));

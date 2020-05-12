@@ -124,13 +124,15 @@ class base_readonly_list[value element_type] {
 
   implement boolean is_empty => state.size == 0;
 
+  implement boolean is_not_empty => state.size != 0;
+
   implement element_type first() {
-    assert !is_empty;
+    assert is_not_empty;
     return state.the_elements[0];
   }
 
   implement element_type last() {
-    assert !is_empty;
+    assert is_not_empty;
     last_index : state.size - 1;
     assert last_index is nonnegative;
     return state.the_elements[last_index];

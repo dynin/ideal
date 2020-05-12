@@ -18,18 +18,21 @@ class test_dictionary {
 
     assert dict2.size == 1;
     assert !dict2.is_empty;
+    assert dict2.is_not_empty;
     assert dict2.get("key") == "value";
     assert dict2.get("notfound") is null;
 
     dict2.put("key", "new_value");
     assert dict2.size == 1;
     assert !dict2.is_empty;
+    assert dict2.is_not_empty;
     assert dict2.get("key") == "new_value";
     assert dict2.get("notfound") is null;
 
     dict2.put("key2", "bar");
     assert dict2.size == 2;
     assert !dict2.is_empty;
+    assert dict2.is_not_empty;
     assert dict2.get("key") == "new_value";
     assert dict2.get("key2") == "bar";
     assert dict2.get("notfound") is null;
@@ -39,6 +42,7 @@ class test_dictionary {
     assert dict2.size == 3;
     assert dict3.size == 2;
     assert !dict3.is_empty;
+    assert dict3.is_not_empty;
     assert dict3.get("key") == "new_value";
     assert dict3.get("key2") == "bar";
     assert dict3.get("notfound") is null;
@@ -54,12 +58,14 @@ class test_dictionary {
     dict : immutable_list_dictionary[string, string].new();
 
     assert dict.is_empty;
+    assert !dict.is_not_empty;
     assert dict.size == 0;
 
     dict2 : immutable_list_dictionary[string, string].new("key", "value");
 
     assert dict2.size == 1;
     assert !dict2.is_empty;
+    assert dict2.is_not_empty;
     assert dict2.get("key") == "value";
     assert dict2.get("notfound") is null;
   }

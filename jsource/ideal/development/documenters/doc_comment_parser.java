@@ -128,7 +128,7 @@ public class doc_comment_parser {
     }
 
     if (fragments_tree.size() != 1) {
-      assert !start_tags.is_empty();
+      assert start_tags.is_not_empty();
       return report_error("Some tags were not closed, for example " + start_tags.remove_last());
     }
 

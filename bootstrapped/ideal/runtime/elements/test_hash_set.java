@@ -19,21 +19,25 @@ public class test_hash_set {
   public void test_mutable_set() {
     final hash_set<string> set = new hash_set<string>();
     assert set.is_empty();
+    assert !set.is_not_empty();
     assert set.size() == 0;
     final hash_set<string> set2 = new hash_set<string>();
     set2.add(new base_string("value"));
     assert set2.size() == 1;
     assert !set2.is_empty();
+    assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
     assert !set2.contains(new base_string("notfound"));
     set2.add(new base_string("value"));
     assert set2.size() == 1;
     assert !set2.is_empty();
+    assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
     assert !set2.contains(new base_string("notfound"));
     set2.add(new base_string("value2"));
     assert set2.size() == 2;
     assert !set2.is_empty();
+    assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
     assert set2.contains(new base_string("value2"));
     assert !set2.contains(new base_string("notfound"));
@@ -42,6 +46,7 @@ public class test_hash_set {
     assert set2.size() == 3;
     assert set3.size() == 2;
     assert !set3.is_empty();
+    assert set3.is_not_empty();
     assert set3.contains(new base_string("value"));
     assert set3.contains(new base_string("value2"));
     assert set2.contains(new base_string("value3"));

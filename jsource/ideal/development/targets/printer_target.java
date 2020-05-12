@@ -51,7 +51,7 @@ public class printer_target extends type_processor_target {
   public void print_constructs(readonly_list<construct> constructs,
       readonly_list<simple_name> full_name) {
 
-    assert !full_name.is_empty();
+    assert full_name.is_not_empty();
 
     text_fragment result = new base_printer(printer_mode.CURLY).print_statements(constructs);
     string string_result = text_util.to_plain_text(result);

@@ -22,6 +22,7 @@ public class test_graph {
     assert the_graph.adjacent(new base_string("bar")).is_empty();
     final immutable_set<string> foo = the_graph.adjacent(new base_string("foo"));
     assert !foo.is_empty();
+    assert foo.is_not_empty();
     assert foo.size() == 1;
     final immutable_list<string> foo_elements = foo.elements();
     assert ideal.machine.elements.runtime_util.values_equal(foo_elements.first(), new base_string("bar"));

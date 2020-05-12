@@ -111,6 +111,9 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
   public @Override boolean is_empty() {
     return state.size == 0;
   }
+  public @Override boolean is_not_empty() {
+    return state.size != 0;
+  }
   public @Override immutable_list<dictionary.entry<key_type, value_type>> elements() {
     if (is_empty()) {
       return new empty<dictionary.entry<key_type, value_type>>();

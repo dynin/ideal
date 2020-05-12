@@ -67,7 +67,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     this.current_type = current_type;
     this.the_context = the_context;
 
-    assert !full_names.is_empty();
+    assert full_names.is_not_empty();
     this.current_catalog = full_names.slice(0, full_names.size() - 1);
 
     this.the_printer = new base_printer(printer_mode.STYLISH, this);
@@ -117,7 +117,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public @Nullable string link_to_type(principal_type the_type) {
     readonly_list<simple_name> target_name = type_utilities.get_full_names(the_type);
-    if (!target_name.is_empty()) {
+    if (target_name.is_not_empty()) {
       return link_to(target_name, base_extension.HTML);
     } else {
       return null;

@@ -152,13 +152,11 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
     this.state = state;
   }
 
-  implement nonnegative size() {
-    return state.size;
-  }
+  implement nonnegative size => state.size;
 
-  implement boolean is_empty() {
-    return state.size == 0;
-  }
+  implement boolean is_empty => state.size == 0;
+
+  implement boolean is_not_empty => state.size != 0;
 
   implement immutable list[dictionary.entry[key_type, value_type]] elements() {
     if (is_empty) {

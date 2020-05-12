@@ -48,7 +48,7 @@ public class mismatch_reporter {
     parameter_target the_parameter_target = (parameter_target) the_action_target;
 
     //dump_dependencies(context.type_graph());
-    assert !candidates.is_empty();
+    assert candidates.is_not_empty();
 
     readonly_list<action> filtered_candidates = filter_by_arity(candidates,
         the_parameter_target.arity());
@@ -135,7 +135,7 @@ public class mismatch_reporter {
     boolean first = true;
     s.append('(');
 
-    if (!parameters.is_empty()) {
+    if (parameters.is_not_empty()) {
       for (int i = 0; i < parameters.size(); ++i) {
         if (first) {
           first = false;

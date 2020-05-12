@@ -79,7 +79,7 @@ public class plain_formatter extends text_formatter {
   }
   public @Override void do_write_string(final readonly_list<Character> the_string) {
     super.do_write_string(the_string);
-    if (!underline_stack.is_empty()) {
+    if (underline_stack.is_not_empty()) {
       while (carets.size() < chars_written) {
         carets.write(SPACE);
       }

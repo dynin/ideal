@@ -90,12 +90,15 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
   public @Override boolean is_empty() {
     return state.size == 0;
   }
+  public @Override boolean is_not_empty() {
+    return state.size != 0;
+  }
   public @Override element_type first() {
-    assert !is_empty();
+    assert is_not_empty();
     return state.the_elements.at(0).get();
   }
   public @Override element_type last() {
-    assert !is_empty();
+    assert is_not_empty();
     final int last_index = state.size - 1;
     assert last_index >= 0;
     return state.the_elements.at(last_index).get();

@@ -517,7 +517,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
   }
 
   private readonly_list<analyzable> rewrite_ctor_body(readonly_list<analyzable> body) {
-    if (!body.is_empty()) {
+    if (body.is_not_empty()) {
       analyzable first = body.first();
       if (first instanceof parameter_analyzer) {
         analyzable first_main = ((parameter_analyzer) first).main_analyzable;

@@ -298,7 +298,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     list<construct> constructs = parse(source);
     // TODO: signal non-fatal error
-    assert !constructs.is_empty();
+    assert constructs.is_not_empty();
     return constructs;
   }
 

@@ -17,6 +17,7 @@ class test_graph {
 
     foo : the_graph.adjacent("foo");
     assert !foo.is_empty;
+    assert foo.is_not_empty;
     assert foo.size == 1;
     -- TODO: we shouldn't need to introduce a variable here.
     foo_elements : foo.elements;

@@ -20,16 +20,19 @@ public class test_dictionary {
     final list_dictionary<string, string> dict2 = new list_dictionary<string, string>(new base_string("key"), new base_string("value"));
     assert dict2.size() == 1;
     assert !dict2.is_empty();
+    assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("value"));
     assert dict2.get(new base_string("notfound")) == null;
     dict2.put(new base_string("key"), new base_string("new_value"));
     assert dict2.size() == 1;
     assert !dict2.is_empty();
+    assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("new_value"));
     assert dict2.get(new base_string("notfound")) == null;
     dict2.put(new base_string("key2"), new base_string("bar"));
     assert dict2.size() == 2;
     assert !dict2.is_empty();
+    assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("new_value"));
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key2")), new base_string("bar"));
     assert dict2.get(new base_string("notfound")) == null;
@@ -38,6 +41,7 @@ public class test_dictionary {
     assert dict2.size() == 3;
     assert dict3.size() == 2;
     assert !dict3.is_empty();
+    assert dict3.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key")), new base_string("new_value"));
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key2")), new base_string("bar"));
     assert dict3.get(new base_string("notfound")) == null;
@@ -50,10 +54,12 @@ public class test_dictionary {
   public void test_immutable_dictionary() {
     final immutable_list_dictionary<string, string> dict = new immutable_list_dictionary<string, string>();
     assert dict.is_empty();
+    assert !dict.is_not_empty();
     assert dict.size() == 0;
     final immutable_list_dictionary<string, string> dict2 = new immutable_list_dictionary<string, string>(new base_string("key"), new base_string("value"));
     assert dict2.size() == 1;
     assert !dict2.is_empty();
+    assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("value"));
     assert dict2.get(new base_string("notfound")) == null;
   }

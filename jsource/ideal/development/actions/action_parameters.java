@@ -63,7 +63,7 @@ public class action_parameters extends debuggable
     boolean first = true;
     s.append('[');
 
-    if (!params.is_empty()) {
+    if (params.is_not_empty()) {
       for (int i = 0; i < params.size(); ++i) {
         if (first) {
           first = false;
@@ -75,7 +75,7 @@ public class action_parameters extends debuggable
     }
 
     /*
-    if (!named_params.is_empty()) {
+    if (named_params.is_not_empty()) {
       readonly_list<dictionary.entry<variable_declaration, action>> named_list =
           named_params.elements();
       for (int i = 0; i < named_list.size(); ++i) {
@@ -100,7 +100,7 @@ public class action_parameters extends debuggable
     boolean first = true;
     s.append('[');
 
-    if (!params.is_empty()) {
+    if (params.is_not_empty()) {
       for (int i = 0; i < params.size(); ++i) {
         if (first) {
           first = false;

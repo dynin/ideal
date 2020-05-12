@@ -134,13 +134,11 @@ public abstract class base_hash_set[readonly value element_type] {
     this.state = state;
   }
 
-  implement nonnegative size() {
-    return state.size;
-  }
+  implement nonnegative size => state.size;
 
-  implement boolean is_empty() {
-    return state.size == 0;
-  }
+  implement boolean is_empty => state.size == 0;
+
+  implement boolean is_not_empty => state.size != 0;
 
   implement immutable list[element_type] elements() {
     if (is_empty) {

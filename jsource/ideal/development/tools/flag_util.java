@@ -68,7 +68,7 @@ public class flag_util {
       }
     }
 
-    if (!argmap.is_empty()) {
+    if (argmap.is_not_empty()) {
       throw new RuntimeException("Unknown flag: " + argmap.keys().elements().first());
     }
   }

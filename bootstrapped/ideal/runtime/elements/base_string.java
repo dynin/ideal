@@ -100,12 +100,15 @@ public class base_string extends debuggable implements string, string_text_node 
   public @Override boolean is_empty() {
     return state.length() == 0;
   }
+  public @Override boolean is_not_empty() {
+    return state.length() != 0;
+  }
   public @Override Character first() {
-    assert !is_empty();
+    assert is_not_empty();
     return state.charAt(0);
   }
   public @Override Character last() {
-    assert !is_empty();
+    assert is_not_empty();
     return state.charAt(state.length() - 1);
   }
   public @Override Character get(final int index) {

@@ -32,7 +32,7 @@ public class summary_extractor extends text_visitor<string> {
     for (int i = 0; i < nodes.size(); i += 1) {
       final string s = process(nodes.get(i));
       result.write_all(s);
-      if (!s.is_empty() && s.last() == dot) {
+      if (s.is_not_empty() && s.last() == dot) {
         break;
       }
     }

@@ -12,6 +12,7 @@ class test_hash_set {
     set : hash_set[string].new();
 
     assert set.is_empty;
+    assert !set.is_not_empty;
     assert set.size == 0;
 
     set2 : hash_set[string].new();
@@ -19,18 +20,21 @@ class test_hash_set {
 
     assert set2.size == 1;
     assert !set2.is_empty;
+    assert set2.is_not_empty;
     assert set2.contains("value");
     assert !set2.contains("notfound");
 
     set2.add("value");
     assert set2.size == 1;
     assert !set2.is_empty;
+    assert set2.is_not_empty;
     assert set2.contains("value");
     assert !set2.contains("notfound");
 
     set2.add("value2");
     assert set2.size == 2;
     assert !set2.is_empty;
+    assert set2.is_not_empty;
     assert set2.contains("value");
     assert set2.contains("value2");
     assert !set2.contains("notfound");
@@ -40,6 +44,7 @@ class test_hash_set {
     assert set2.size == 3;
     assert set3.size == 2;
     assert !set3.is_empty;
+    assert set3.is_not_empty;
     assert set3.contains("value");
     assert set3.contains("value2");
     assert set2.contains("value3");

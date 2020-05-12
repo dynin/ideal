@@ -49,7 +49,7 @@ class simple_name {
   }
 
   public static simple_name make_from_segments(immutable list[string] segments) {
-    assert !segments.is_empty;
+    assert segments.is_not_empty;
     existing_name : all_names.get(segments); -- TODO: use []
 
     if (existing_name is_not null) {

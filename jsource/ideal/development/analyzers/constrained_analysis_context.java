@@ -49,7 +49,7 @@ public class constrained_analysis_context extends debuggable implements analysis
       constraint_dictionary.put(the_constraint.the_declaration, the_constraint.the_value);
     }
 
-    assert !constraint_dictionary.is_empty();
+    assert constraint_dictionary.is_not_empty();
     return new constrained_analysis_context(parent, constraint_dictionary.frozen_copy());
   }
 

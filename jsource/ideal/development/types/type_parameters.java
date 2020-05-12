@@ -41,6 +41,10 @@ public class type_parameters extends debuggable implements deeply_immutable_data
     return parameters.is_empty() && is_fixed_size();
   }
 
+  public boolean is_not_empty() {
+    return !is_empty();
+  }
+
   public boolean is_valid_arity(int arity) {
     if (is_fixed_size()) {
       return arity == parameters.size();

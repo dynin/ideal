@@ -84,13 +84,11 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
     return copy;
   }
 
-  implement nonnegative size() {
-    return the_size;
-  }
+  implement nonnegative size => the_size;
 
-  implement boolean is_empty() {
-    return the_size == 0;
-  }
+  implement boolean is_empty => the_size == 0;
+
+  implement boolean is_not_empty => the_size != 0;
 
   implement immutable list[dictionary.entry[key_type, value_type]] elements() {
     if (is_empty) {

@@ -33,7 +33,7 @@ public class type_declaration_construct extends base_construct {
     this.body = body;
 
     // TODO: we should signal error instead.
-    assert parameters == null || !parameters.elements.is_empty();
+    assert parameters == null || parameters.elements.is_not_empty();
 
     assert body != null;
   }

@@ -42,7 +42,7 @@ class summary_extractor {
       s : process(nodes[i]);
       result.write_all(s);
 
-      if (!s.is_empty && s.last == dot) {
+      if (s.is_not_empty && s.last == dot) {
         break;
       }
     }

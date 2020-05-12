@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PACKAGE=comments
+PACKAGE=flavors
 TMPDIR=tmp
 IDEAL=ideal.i
 ALLFILES="jsource/ideal/development/${PACKAGE}/*.java"

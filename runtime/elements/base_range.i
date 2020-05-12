@@ -32,17 +32,17 @@ class base_range {
     return the_size;
   }
 
-  implement boolean is_empty() {
-    return the_begin == the_end;
-  }
+  implement boolean is_empty => the_begin == the_end;
+
+  implement boolean is_not_empty => the_begin != the_end;
 
   implement nonnegative first() {
-    assert !is_empty;
+    assert is_not_empty;
     return the_begin;
   }
 
   implement nonnegative last() {
-    assert !is_empty;
+    assert is_not_empty;
     result : the_end - 1;
     assert result is nonnegative;
     return result;

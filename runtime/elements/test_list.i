@@ -15,6 +15,7 @@ class test_list {
     slice : strings.slice(0, 0);
 
     assert slice.is_empty;
+    assert !slice.is_not_empty;
     assert slice.size == 0;
 
     -- TODO: test exception throwing on out-of-bounds
@@ -30,6 +31,7 @@ class test_list {
 
     assert strings.size == 1;
     assert !strings.is_empty;
+    assert strings.is_not_empty;
     assert strings.first == "foo";
     assert strings.last == "foo";
     assert strings[0] == "foo";
@@ -38,6 +40,7 @@ class test_list {
 
     assert strings.size == 2;
     assert !strings.is_empty;
+    assert strings.is_not_empty;
     assert strings.first == "foo";
     assert strings.last == "bar";
     assert strings[0] == "foo";
@@ -48,6 +51,7 @@ class test_list {
     assert removed == "bar";
     assert strings.size == 1;
     assert !strings.is_empty;
+    assert strings.is_not_empty;
     assert strings.first == "foo";
     assert strings.last == "foo";
     assert strings[0] == "foo";
@@ -59,12 +63,14 @@ class test_list {
     strings : base_list[string].new();
 
     assert strings.is_empty;
+    assert !strings.is_not_empty;
     assert strings.size == 0;
 
     strings.append("foo");
 
     assert strings.size == 1;
     assert !strings.is_empty;
+    assert strings.is_not_empty;
     assert strings.first == "foo";
     assert strings.last == "foo";
     assert strings[0] == "foo";
@@ -72,6 +78,7 @@ class test_list {
     elements : strings.elements;
     assert elements.size == 1;
     assert !elements.is_empty;
+    assert strings.is_not_empty;
     assert elements.first == "foo";
     assert elements.last == "foo";
     assert elements[0] == "foo";
@@ -81,6 +88,7 @@ class test_list {
 
     assert strings.size == 2;
     assert !strings.is_empty;
+    assert strings.is_not_empty;
     assert strings.first == "foo";
     assert strings.last == "bar";
     assert strings[0] == "foo";

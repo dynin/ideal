@@ -60,7 +60,7 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
     append_all(the_list);
   }
   public @Override void clear() {
-    if (!is_empty()) {
+    if (is_not_empty()) {
       state = new list_state<element_type>();
     }
   }
@@ -85,7 +85,7 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
     return writable_state().the_elements.at(index);
   }
   public @Override element_type remove_last() {
-    assert !is_empty();
+    assert is_not_empty();
     final int last_index = size() - 1;
     assert last_index >= 0;
     final element_type result = state.the_elements.at(last_index).get();

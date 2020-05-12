@@ -160,7 +160,7 @@ public class java_printer extends base_printer {
       body_statements = null;
     } else {
       body_statements = print_statements(filtered_body);
-      if (!enum_values.is_empty()) {
+      if (enum_values.is_not_empty()) {
         body_statements = text_util.join(print_enum_values(enum_values), body_statements);
       }
     }

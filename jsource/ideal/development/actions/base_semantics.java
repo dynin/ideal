@@ -83,7 +83,7 @@ public class base_semantics implements semantics {
     }
 
     readonly_list<action> the_best = select_best(actions, filtered);
-    assert !the_best.is_empty();
+    assert the_best.is_not_empty();
 
     if (the_best.size() == 1) {
       action the_action = the_best.first();

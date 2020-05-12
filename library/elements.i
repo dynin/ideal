@@ -255,6 +255,10 @@ package elements {
     --- Specifies whether the collection has zero elements.
     boolean is_empty readonly;
 
+    --- Specifies whether the collection has more than zero elements.
+    --- Shortcut for |!is_empty|.
+    boolean is_not_empty readonly;
+
     --- Enumerates elements in some collection-defined order.
     --- This method returns a snapshot of the collection state, so subsequent mutations
     --- of the collection do not cause changes in the returned list.

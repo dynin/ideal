@@ -37,7 +37,7 @@ public class simple_name extends debuggable implements action_name, displayable 
     return to_string();
   }
   public static simple_name make_from_segments(final immutable_list<string> segments) {
-    assert !segments.is_empty();
+    assert segments.is_not_empty();
     final @Nullable simple_name existing_name = all_names.get(segments);
     if (existing_name != null) {
       return existing_name;

@@ -129,21 +129,19 @@ class base_string {
     return the_writer.extract_elements();
   }
 
-  implement integer size() {
-    return state.length();
-  }
+  implement integer size => state.length();
 
-  implement boolean is_empty() {
-    return state.length() == 0;
-  }
+  implement boolean is_empty => state.length() == 0;
+
+  implement boolean is_not_empty => state.length() != 0;
 
   implement character first() {
-    assert !is_empty;
+    assert is_not_empty;
     return state.charAt(0);
   }
 
   implement character last() {
-    assert !is_empty;
+    assert is_not_empty;
     return state.charAt(state.length() - 1);
   }
 

@@ -33,7 +33,7 @@ public class supertype_construct extends base_construct {
 
     // TODO: handle annotations.
     assert annotations.is_empty();
-    assert !types.is_empty();
+    assert types.is_not_empty();
   }
 
   public readonly_list<construct> children() {

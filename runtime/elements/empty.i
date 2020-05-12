@@ -11,13 +11,11 @@ class empty[value element_type] {
 
   public empty() { }
 
-  implement nonnegative size() {
-    return 0;
-  }
+  implement nonnegative size => 0;
 
-  implement boolean is_empty() {
-    return true;
-  }
+  implement boolean is_empty => true;
+
+  implement boolean is_not_empty => false;
 
   implement element_type first() {
     utilities.panic("Can't access the first element of the empty list");

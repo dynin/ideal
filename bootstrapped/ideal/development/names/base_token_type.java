@@ -14,7 +14,7 @@ public class base_token_type implements token_type, readonly_displayable {
   private final string the_name;
   @dont_display private final int the_symbol;
   public base_token_type(final string name, final int the_symbol) {
-    assert !name.is_empty();
+    assert name.is_not_empty();
     this.the_name = name;
     this.the_symbol = the_symbol;
   }

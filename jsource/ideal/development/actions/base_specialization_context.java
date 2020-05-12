@@ -46,7 +46,7 @@ public class base_specialization_context extends debuggable implements specializ
     boolean first = true;
     s.append('[');
 
-    if (!params.is_empty()) {
+    if (params.is_not_empty()) {
       readonly_list<dictionary.entry<master_type, abstract_value>> named_list =
           params.elements();
       for (int i = 0; i < named_list.size(); ++i) {

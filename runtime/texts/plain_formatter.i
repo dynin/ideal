@@ -92,7 +92,7 @@ class plain_formatter {
   -- TODO: string should work here.
   override void do_write_string(readonly list[character] the_string) {
     super.do_write_string(the_string);
-    if (!underline_stack.is_empty) {
+    if (underline_stack.is_not_empty) {
       -- TODO: this should be a variable.
       -- TODO: use repeat
       while (carets.size() < chars_written) {

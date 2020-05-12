@@ -74,7 +74,7 @@ public class parametrized_type extends base_principal_type {
     if (parameters.is_empty()) {
       utilities.panic("Attempt to parametrize " + this);
     }
-    assert !parameters.is_empty(); // TODO: enforce this in analyzer
+    assert parameters.is_not_empty(); // TODO: enforce this in analyzer
     this.parameters = parameters;
   }
 

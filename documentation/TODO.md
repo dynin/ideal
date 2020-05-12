@@ -34,7 +34,7 @@
 - [ ] Handle # in comments
 - [ ] Add block comments
 - [ ] Implement empty dictionary
-- [ ] Add readonly collection.is_not_empty
+- [x] Add readonly collection.is_not_empty
 - [ ] Catch abstract methods that are not implemented
 - [ ] Introduce ideal/development/languages/...
 - [ ] Implement memoization extension
@@ -50,3 +50,4 @@
 - [ ] Implement list initializers
 - [ ] Do not require var modifier in for loop declarations
 - [ ] Implement switch construct
+- [ ] Infer procedure flavors from shortcut declarations

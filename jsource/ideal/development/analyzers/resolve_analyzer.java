@@ -155,7 +155,7 @@ public class resolve_analyzer extends single_pass_analyzer {
       return error;
     }
 
-    assert !all_resolved.is_empty();
+    assert all_resolved.is_not_empty();
 
     if (all_resolved.size() > 1) {
       readonly_list<notification> declarations;

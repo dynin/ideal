@@ -12,6 +12,7 @@ class test_hash_dictionary {
     dict : hash_dictionary[string, string].new();
 
     assert dict.is_empty;
+    assert !dict.is_not_empty;
     assert dict.size == 0;
 
     dict2 : hash_dictionary[string, string].new();
@@ -19,18 +20,21 @@ class test_hash_dictionary {
 
     assert dict2.size == 1;
     assert !dict2.is_empty;
+    assert dict2.is_not_empty;
     assert dict2.get("key") == "value";
     assert dict2.get("notfound") is null;
 
     dict2.put("key", "new_value");
     assert dict2.size == 1;
     assert !dict2.is_empty;
+    assert dict2.is_not_empty;
     assert dict2.get("key") == "new_value";
     assert dict2.get("notfound") is null;
 
     dict2.put("key2", "bar");
     assert dict2.size == 2;
     assert !dict2.is_empty;
+    assert dict2.is_not_empty;
     assert dict2.get("key") == "new_value";
     assert dict2.get("key2") == "bar";
     assert dict2.get("notfound") is null;
@@ -40,6 +44,7 @@ class test_hash_dictionary {
     assert dict2.size == 3;
     assert dict3.size == 2;
     assert !dict3.is_empty;
+    assert dict3.is_not_empty;
     assert dict3.get("key") == "new_value";
     assert dict3.get("key2") == "bar";
     assert dict3.get("notfound") is null;
@@ -58,6 +63,7 @@ class test_hash_dictionary {
 
     assert dict2i.size == 1;
     assert !dict2i.is_empty;
+    assert dict2i.is_not_empty;
     assert dict2i.get("key") == "value";
     assert dict2i.get("notfound") is null;
   }

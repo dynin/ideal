@@ -34,11 +34,11 @@ class base_element {
     return base_element.new(id, list_dictionary[attribute_id, string].new(attr, value), children);
   }
 
-  override element_id get_id() => id;
+  override element_id get_id => id;
 
-  override immutable dictionary[attribute_id, string] attributes() => the_attributes;
+  override immutable dictionary[attribute_id, string] attributes => the_attributes;
 
-  override immutable text_fragment or null children() => the_children;
+  override immutable text_fragment or null children => the_children;
 
   override string to_string() {
     return "<" ++ id.to_string ++ " ...>";

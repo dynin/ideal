@@ -21,7 +21,7 @@ class operator {
     this.alpha_name = simple_name.make(alpha_name);
   }
 
-  simple_name symbol() => alpha_name;
+  simple_name symbol => alpha_name;
 
   string to_string() {
     return name_utilities.in_brackets(the_operator_type ++ " " ++ name);

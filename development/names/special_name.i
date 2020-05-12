@@ -44,5 +44,5 @@ class special_name {
     this(name);
   }
 
-  string to_string() => name_utilities.in_brackets(name);
+  string to_string => name_utilities.in_brackets(name);
 }

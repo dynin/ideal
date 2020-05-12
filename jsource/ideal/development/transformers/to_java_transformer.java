@@ -449,7 +449,11 @@ public class to_java_transformer extends base_transformer {
         source);
     @Nullable construct ret;
     action_name name = c.name;
-    readonly_list<construct> parameters = process_list(c.parameters).elements;
+    @Nullable list_construct the_list_construct = process_list(c.parameters);
+    if (the_list_construct == null) {
+      the_list_construct = make_parens(source);
+    }
+    readonly_list<construct> parameters = the_list_construct.elements;
     @Nullable readonly_list<construct> body_statements = null;
 
     construct transformed_body = transform(c.body);
@@ -736,9 +740,12 @@ public class to_java_transformer extends base_transformer {
         if (the_declaration.get_category() != procedure_category.CONSTRUCTOR) {
           annotations = append_static(annotations, proc_decl);
         }
+        list_construct proc_params = proc_decl.parameters;
+        if (proc_params == null) {
+          proc_params = make_parens(proc_decl);
+        }
         proc_decl = new procedure_construct(annotations, proc_decl.ret, proc_decl.name,
-              proc_decl.parameters, new empty<annotation_construct>(), proc_decl.body,
-              proc_decl);
+              proc_params, new empty<annotation_construct>(), proc_decl.body, proc_decl);
         result.append(proc_decl);
       } else if (decl instanceof import_construct) {
         // Skip imports: they should have been declared at the top level.
@@ -1027,10 +1034,14 @@ public class to_java_transformer extends base_transformer {
     return new procedure_construct(annotations,
         make_type(return_type, pos) /*ret*/,
         the_variable.short_name(),
-        new list_construct(new base_list<construct>(), grouping_type.PARENS, pos)/*parameters*/,
+        make_parens(pos)/*parameters*/,
         new empty<annotation_construct>() /*post_annotations*/,
         null /*body*/,
         pos);
+  }
+
+  private list_construct make_parens(origin the_origin) {
+    return new list_construct(new base_list<construct>(), grouping_type.PARENS, the_origin);
   }
 
   private Object make_procedure_declarations(readonly_list<annotation_construct> annotations,
@@ -1204,8 +1215,7 @@ public class to_java_transformer extends base_transformer {
 
     construct procedure_type = make_type(the_procedure.get_procedure_type(), source);
     construct new_construct = new operator_construct(operator.ALLOCATE, procedure_type, source);
-    construct with_parens = new parameter_construct(new_construct,
-        new list_construct(new empty<construct>(), grouping_type.PARENS, source), source);
+    construct with_parens = new parameter_construct(new_construct, make_parens(source), source);
 
     readonly_list<annotation_construct> annotations = new base_list<annotation_construct>(
         new modifier_construct(override_modifier, source),

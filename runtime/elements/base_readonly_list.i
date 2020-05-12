@@ -120,9 +120,9 @@ class base_readonly_list[value element_type] {
     this.state = state;
   }
 
-  implement nonnegative size() => state.size;
+  implement nonnegative size => state.size;
 
-  implement boolean is_empty() => state.size == 0;
+  implement boolean is_empty => state.size == 0;
 
   implement element_type first() {
     assert !is_empty;

@@ -188,7 +188,12 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
         break;
     }
 
-    readonly_list<construct> parameters = source.parameters.elements;
+    readonly_list<construct> parameters;
+    if (source.parameters != null) {
+      parameters = source.parameters.elements;
+    } else {
+      parameters = new empty<construct>();
+    }
     parameter_variables = new base_list<variable_declaration>();
     proc_args = new base_list<type>();
 

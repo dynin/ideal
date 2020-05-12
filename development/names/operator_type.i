@@ -17,7 +17,7 @@ class operator_type {
     this.arity = arity;
   }
 
-  override string to_string() => name;
+  override string to_string => name;
 
   override string display() => to_string;
 

@@ -16,11 +16,11 @@ println(x.field);
 println(cool.sfield2);
 
 integer three : plus(one, two);
---int four() { return plus(two, two); }
+integer four => plus(2, 2);
 integer double(integer x) => plus(x, x);
 integer add5(integer y) => plus(y, 5);
 integer constant() => 34;
---println(plus(double(two), four()));
+println(plus(double(two), four()));
 --four();
 constant();
 println(((6868)));

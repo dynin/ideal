@@ -426,7 +426,10 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(styles.wrap(styles.procedure_declaration_name_style,
         print_action_name(c.name)));
 
-    fragments.append(print(c.parameters));
+    if (c.parameters != null) {
+      fragments.append(print(c.parameters));
+    }
+
     fragments.append(print_modifiers(c.post_annotations, false));
     fragments.append(print_procedure_body(c.body));
 

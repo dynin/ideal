@@ -15,7 +15,7 @@ class start_element {
     this.id = id;
   }
 
-  element_id get_id() => id;
+  element_id get_id => id;
 
-  override string to_string() => base_string.new("<", id.to_string, ">");
+  override string to_string => base_string.new("<", id.to_string, ">");
 }

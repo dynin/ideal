@@ -14,5 +14,5 @@ class string_event {
     this.payload = payload;
   }
 
-  override string to_string() => payload;
+  override string to_string => payload;
 }

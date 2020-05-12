@@ -17,13 +17,13 @@ public class procedure_construct extends base_construct {
   public final readonly_list<annotation_construct> annotations;
   public final @Nullable construct ret;
   public final action_name name;
-  public final list_construct parameters;
+  public final @Nullable list_construct parameters;
   public final readonly_list<annotation_construct> post_annotations;
   public final @Nullable construct body;
   public procedure_construct(readonly_list<annotation_construct> annotations,
                             @Nullable construct ret,
                             action_name name,
-                            list_construct parameters,
+                            @Nullable list_construct parameters,
                             readonly_list<annotation_construct> post_annotations,
                             @Nullable construct body,
                             origin pos) {
@@ -47,7 +47,9 @@ public class procedure_construct extends base_construct {
     if (ret != null) {
       result.append(ret);
     }
-    result.append(parameters);
+    if (parameters != null) {
+      result.append(parameters);
+    }
     do_append_all(result, post_annotations);
     if (body != null) {
       result.append(body);

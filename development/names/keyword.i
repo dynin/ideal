@@ -16,5 +16,5 @@ class keyword {
     super(name);
   }
 
-  simple_name keyword_name() => simple_name.make(name);
+  simple_name keyword_name => simple_name.make(name);
 }

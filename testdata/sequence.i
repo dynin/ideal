@@ -79,9 +79,11 @@ public class sequence[readonly_data element] {
   public int size() {
     return list.size();
   }
-  public boolean empty() {
-    return list.isEmpty();
-  }
+
+  public boolean empty => list.isEmpty();
+
+  public boolean is_not_empty => !empty;
+
   public element get(int index) {
     return list.get(index) as element;
   }

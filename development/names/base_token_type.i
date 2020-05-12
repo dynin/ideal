@@ -21,11 +21,11 @@ class base_token_type {
     this(name, -1);
   }
 
-  override string name() => the_name;
+  override string name => the_name;
 
-  override integer symbol() => the_symbol;
+  override integer symbol => the_symbol;
 
-  override string to_string() => "\"" ++ the_name ++ "\"";
+  override string to_string => "\"" ++ the_name ++ "\"";
 
   override string display() => the_name;
 }

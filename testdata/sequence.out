@@ -1090,29 +1090,44 @@
           the_name: boolean
         }
         name: empty
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-        }
+        parameters: <null>
         post_annotations: [ ]
-        body: block_construct {
-          annotations: [ ]
-          body: [
-            return_construct {
-              the_expression: parameter_construct {
-                main: resolve_construct {
-                  qualifier: name_construct {
-                    the_name: list
-                  }
-                  name: name_construct {
-                    the_name: isEmpty
-                  }
-                }
-                parameters: list_construct {
-                  elements: [ ]
-                  grouping: parens
-                }
-              }
+        body: parameter_construct {
+          main: resolve_construct {
+            qualifier: name_construct {
+              the_name: list
+            }
+            name: name_construct {
+              the_name: isEmpty
+            }
+          }
+          parameters: list_construct {
+            elements: [ ]
+            grouping: parens
+          }
+        }
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+        ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: is_not_empty
+        parameters: <null>
+        post_annotations: [ ]
+        body: operator_construct {
+          the_operator: operator {
+            the_operator_type: prefix
+            name: !
+            alpha_name: logical_not
+          }
+          arguments: [
+            name_construct {
+              the_name: empty
             }
           ]
         }
@@ -1855,47 +1870,50 @@ testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
 testdata/sequence.i:79: Lookup failed: no int in sequence.size
   public element get(int index) {
                      ^^^
-testdata/sequence.i:85: Lookup failed: no int in sequence.get
+testdata/sequence.i:87: Lookup failed: no int in sequence.get
   public sequence subsequence(int begin, int end) {
                               ^^^
-testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+testdata/sequence.i:96: Lookup failed: no int in sequence.subsequence
   public sequence subsequence(int begin, int end) {
                                          ^^^
-testdata/sequence.i:94: Lookup failed: no int in sequence.subsequence
+testdata/sequence.i:96: Lookup failed: no int in sequence.subsequence
   public sequence subsequence(int begin) {
                               ^^^
-testdata/sequence.i:103: Lookup failed: no int in sequence.subsequence
+testdata/sequence.i:105: Lookup failed: no int in sequence.subsequence
   public void _display(display_writer writer, display_context options) {
                        ^^^^^^^^^^^^^^
-testdata/sequence.i:115: Lookup failed: no display_writer in sequence._display
+testdata/sequence.i:117: Lookup failed: no display_writer in sequence._display
   public void _display(display_writer writer, display_context options) {
                                               ^^^^^^^^^^^^^^^
-testdata/sequence.i:115: Lookup failed: no display_context in sequence._display
+testdata/sequence.i:117: Lookup failed: no display_context in sequence._display
 ============ BODY_CHECK
+  public boolean is_not_empty => !empty;
+                                  ^^^^^
+testdata/sequence.i:85: Argument #0: expected deeply_immutable boolean, found immutable procedure[deeply_immutable boolean]
     list.addAll(s.list);
                 -^----
-testdata/sequence.i:92: Lookup failed: no list in immutable reference[mutable sequence]
+testdata/sequence.i:94: Lookup failed: no list in immutable reference[mutable sequence]
     assert begin >= 0 && end <= size();
                                 ^^^^
-testdata/sequence.i:95: Lookup failed: no size in sequence.subsequence, target parameters ()
+testdata/sequence.i:97: Lookup failed: no size in sequence.subsequence, target parameters ()
     sequence result : sequence.new();
                       --------^---
-testdata/sequence.i:96: Can't find declarations with matching arity
+testdata/sequence.i:98: Can't find declarations with matching arity
   public class sequence[readonly_data element] {
                ^^^^^^^^
   testdata/sequence.i:17: (declaration #0: raw sequence)
     for (int i : begin; i < end; i += 1) {
          ^^^
-testdata/sequence.i:98: Lookup failed: no int in sequence.subsequence
+testdata/sequence.i:100: Lookup failed: no int in sequence.subsequence
     return subsequence(begin, size());
                               ^^^^
-testdata/sequence.i:104: Lookup failed: no size in sequence.subsequence, target parameters ()
+testdata/sequence.i:106: Lookup failed: no size in sequence.subsequence, target parameters ()
     identifier id : display_function.name(getClass());
                                           ^^^^^^^^
-testdata/sequence.i:116: Lookup failed: no getClass in sequence._display, target parameters ()
+testdata/sequence.i:118: Lookup failed: no getClass in sequence._display, target parameters ()
     for (int i : 0; i < list.size(); i += 1) {
          ^^^
-testdata/sequence.i:118: Lookup failed: no int in sequence._display
+testdata/sequence.i:120: Lookup failed: no int in sequence._display
 import java.util.List;
 import java.util.ArrayList;
 implicit import ideal.library;
@@ -1962,9 +1980,8 @@ public class sequence[readonly_data element] {
   public int size() {
     return list.size();
   }
-  public boolean empty() {
-    return list.isEmpty();
-  }
+  public boolean empty => list.isEmpty();
+  public boolean is_not_empty => !empty;
   public element get(int index) {
     return list.get(index) as element;
   }

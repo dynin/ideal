@@ -59,7 +59,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
       escaper = new escape_fn(ESCAPE_NAME);
     }
 
-    position pos = this;
+    origin pos = this;
     template_block = make_block(BLOCK_NAME, this);
     local_variable_declaration result_decl = new local_variable_declaration(
         analyzer_utilities.LOCAL_MODIFIERS, RESULT_NAME, template_block,
@@ -111,7 +111,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
     return handler.to_analyzable(arguments, this, first);
   }
 
-  private error_signal make_error(String message, position pos) {
+  private error_signal make_error(String message, origin pos) {
     return new error_signal(new base_string(message), pos);
   }
 
@@ -119,7 +119,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
     if (c instanceof sexpression_construct) {
       return sexpr_to_analyzable((sexpression_construct) c);
     } else {
-      position pos = this;
+      origin pos = this;
       return make_appender(make_escaper(make(c), pos), pos);
     }
   }
@@ -161,7 +161,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
   }
   */
 
-  analyzable make_escaper(analyzable string_analyzable, position pos) {
+  analyzable make_escaper(analyzable string_analyzable, origin pos) {
     // TODO: insert verification instead of check_string()
     // check_string(string_analyzable);
     // TODO: if it's a string_value, escape the constant at compile time...
@@ -170,13 +170,13 @@ public class template_analyzer extends single_pass_analyzer implements declarati
     return new parameter_analyzer(analyzable_action.from_value(escaper, pos), escape_params, pos);
   }
 
-  analyzable make_appender(analyzable string_analyzable, position pos) {
+  analyzable make_appender(analyzable string_analyzable, origin pos) {
     list<analyzable> append_params = new base_list<analyzable>(result_access, string_analyzable);
     return new parameter_analyzer(new resolve_analyzer(operator.CONCATENATE_ASSIGN, pos),
         append_params, pos);
   }
 
-  analyzable make_appender(string s, position pos) {
+  analyzable make_appender(string s, origin pos) {
     analyzable string_analyzable = analyzable_action.from_value(make_string_value(s), pos);
     return make_appender(string_analyzable, pos);
   }

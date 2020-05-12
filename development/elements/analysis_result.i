@@ -6,5 +6,5 @@
 
 --- The result of semantic analysis, typically an |action|. 
 interface analysis_result {
-  extends position, readonly data;
+  extends origin, readonly data;
 }

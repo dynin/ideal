@@ -22,14 +22,14 @@ public class target_construct extends extension_construct {
   public final simple_name name;
   public final construct expression;
 
-  public target_construct(simple_name name, construct expression, position source) {
+  public target_construct(simple_name name, construct expression, origin source) {
     super(source);
     this.name = name;
     this.expression = expression;
   }
 
   public target_construct(name_construct the_name_construct, construct expression,
-      position source) {
+      origin source) {
     super(source);
     this.name = (simple_name) the_name_construct.the_name;
     this.expression = expression;

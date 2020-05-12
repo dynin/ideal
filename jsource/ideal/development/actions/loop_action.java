@@ -23,13 +23,13 @@ public class loop_action extends base_action {
   private @Nullable action body;
   private boolean has_breaks;
 
-  public loop_action(@Nullable action body, position source) {
+  public loop_action(@Nullable action body, origin source) {
     super(source);
     this.body = body;
     this.has_breaks = false;
   }
 
-  public loop_action(position source) {
+  public loop_action(origin source) {
     this(null, source);
   }
 

@@ -26,12 +26,12 @@ import ideal.development.types.*;
 public class statement_list_analyzer extends single_pass_analyzer {
   private readonly_list<analyzable> the_elements;
 
-  public statement_list_analyzer(readonly_list<analyzable> the_elements, position pos) {
+  public statement_list_analyzer(readonly_list<analyzable> the_elements, origin pos) {
     super(pos);
     this.the_elements = the_elements;
   }
 
-  public statement_list_analyzer(position pos) {
+  public statement_list_analyzer(origin pos) {
     super(pos);
     the_elements = null;
   }

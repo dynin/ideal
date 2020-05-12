@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface writeonly_analyzable extends writeonly_position, any_analyzable { }
+public interface writeonly_analyzable extends writeonly_origin, any_analyzable { }

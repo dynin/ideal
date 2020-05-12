@@ -50,13 +50,13 @@ public class procedure_with_this extends base_data_value<procedure_value>
   }
 
   @Override
-  public procedure_value bind_from(action from, position pos) {
+  public procedure_value bind_from(action from, origin pos) {
     return new procedure_with_this(the_procedure, this_action.bind_from(from, pos));
   }
 
   @Override
   public analysis_result bind_parameters(action_parameters params, analysis_context context,
-      position pos) {
+      origin pos) {
     analysis_result bound_procedure = the_procedure.bind_parameters(params, context, pos);
     if (bound_procedure instanceof error_signal) {
       return (error_signal) bound_procedure;

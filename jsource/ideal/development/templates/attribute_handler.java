@@ -45,7 +45,7 @@ public class attribute_handler implements sexpression_handler {
   }
 
   public analyzable to_analyzable(readonly_list<construct> arguments, template_analyzer template,
-      position source) {
+      origin source) {
     statement_list_analyzer result = new statement_list_analyzer(source);
 
     list<analyzable> subactions = new base_list<analyzable>();

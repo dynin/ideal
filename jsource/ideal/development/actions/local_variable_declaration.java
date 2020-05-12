@@ -38,7 +38,7 @@ public class local_variable_declaration extends base_action implements variable_
   // TODO: drop context
   public local_variable_declaration(annotation_set annotations, action_name name,
       principal_type parent_type, type_flavor reference_flavor, type var_type,
-      @Nullable action init_action, position source) {
+      @Nullable action init_action, origin source) {
     super(source);
     this.annotations = annotations;
     this.name = name;

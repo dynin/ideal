@@ -14,7 +14,7 @@ import ideal.development.elements.*;
 
 public class name_construct extends base_construct implements stringable {
   public action_name the_name;
-  public name_construct(action_name the_name, position pos) {
+  public name_construct(action_name the_name, origin pos) {
     super(pos);
     this.the_name = the_name;
   }

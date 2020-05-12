@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface immutable_action extends immutable_analysis_result, immutable_position, readonly_action { }
+public interface immutable_action extends immutable_analysis_result, immutable_origin, readonly_action { }

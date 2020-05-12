@@ -48,7 +48,7 @@ public class hash_element implements scanner_element {
             break;
           }
         }
-        position pos = source.make_position(begin, id_end);
+        origin pos = source.make_origin(begin, id_end);
         string image = source.content.slice(id_begin, id_end);
         simple_name token_as_name = simple_name.make(image);
         return new scan_state(new base_token<simple_name>(
@@ -56,7 +56,7 @@ public class hash_element implements scanner_element {
       }
     }
 
-    position pos = source.make_position(begin, end);
+    origin pos = source.make_origin(begin, end);
     String image = input.substring(begin, end);
     return new scan_state(
         new base_token<string>(the_token_type, new base_string(image), pos), end, end);

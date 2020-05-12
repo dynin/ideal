@@ -64,7 +64,7 @@ public class publish_generator {
     type_declaration the_declaration = (type_declaration) the_type.get_declaration();
 
     type_declaration_construct the_declaration_construct =
-        (type_declaration_construct) (get_type_declaration(the_declaration).source_position());
+        (type_declaration_construct) (get_type_declaration(the_declaration).deeper_origin());
 
     if (the_type.get_kind().is_namespace()) {
       list<construct> namespace_body = new base_list<construct>();

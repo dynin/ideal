@@ -40,7 +40,7 @@ public class line_comment implements scanner_element {
     }
     string image = input.slice(begin, end);
     string content = input.slice(result.end, end);
-    position pos = source.make_position(begin, end);
+    origin pos = source.make_origin(begin, end);
     token comment = new base_token<comment>(special_token_type.COMMENT,
         new comment(type, content, image), pos);
     return new scan_state(comment, result.end, end);

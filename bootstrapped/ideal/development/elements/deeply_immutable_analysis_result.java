@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_analysis_result extends deeply_immutable_position, immutable_analysis_result { }
+public interface deeply_immutable_analysis_result extends deeply_immutable_origin, immutable_analysis_result { }

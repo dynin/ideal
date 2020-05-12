@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface readonly_construct extends readonly_data, readonly_position, any_construct { }
+public interface readonly_construct extends readonly_data, readonly_origin, any_construct { }

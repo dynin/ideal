@@ -466,7 +466,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
   }
 
   private local_variable_declaration make_this_variable(type_flavor this_flavor) {
-    position source = this;
+    origin source = this;
     return new local_variable_declaration(analyzer_utilities.THIS_MODIFIERS, special_name.THIS,
         inside, flavors.immutable_flavor, declared_in_type().get_flavored(this_flavor), null,
         source);
@@ -474,7 +474,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
   private void add_super_reference(special_name the_name, type superclass,
       type_flavor super_flavor) {
-    position source = this;
+    origin source = this;
     local_variable_declaration super_decl = new local_variable_declaration(
         analyzer_utilities.THIS_MODIFIERS, the_name, inside,
         flavors.immutable_flavor, superclass.get_flavored(super_flavor), null, source);
@@ -522,11 +522,11 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
           if (mapped_name != null) {
             calls_this_constructor = mapped_name == special_name.THIS_CONSTRUCTOR;
             resolve_analyzer ctor_name = new resolve_analyzer(mapped_name,
-                main_name.source_position());
+                main_name.deeper_origin());
             readonly_list<analyzable> ctor_params =
                 ((parameter_analyzer) first).analyzable_parameters;
             analyzable ctor_call = new parameter_analyzer(ctor_name, ctor_params,
-                first.source_position());
+                first.deeper_origin());
             list<analyzable> result = new base_list<analyzable>();
             result.append(ctor_call);
             result.append_all(body.skip(1));

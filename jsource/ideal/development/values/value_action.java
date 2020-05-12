@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 
 public class value_action<T extends base_data_value> extends base_value_action<T> {
 
-  public value_action(T the_value, position source) {
+  public value_action(T the_value, origin source) {
     super(the_value, source);
   }
 
@@ -30,7 +30,7 @@ public class value_action<T extends base_data_value> extends base_value_action<T
   }
 
   @Override
-  public action bind_from(action from, position pos) {
+  public action bind_from(action from, origin pos) {
     return ((abstract_value) the_value.bind_from(from, pos)).to_action(pos);
   }
 

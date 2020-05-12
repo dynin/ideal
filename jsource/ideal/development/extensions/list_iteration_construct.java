@@ -24,7 +24,7 @@ public class list_iteration_construct extends extension_construct {
   public final variable_construct var_decl;
   public final construct body;
 
-  public list_iteration_construct(variable_construct var_decl, construct body, position pos) {
+  public list_iteration_construct(variable_construct var_decl, construct body, origin pos) {
     super(pos);
     this.var_decl = var_decl;
     this.body = body;

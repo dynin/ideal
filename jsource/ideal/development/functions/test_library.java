@@ -29,7 +29,7 @@ public class test_library {
   private static simple_name PLUS_NAME = simple_name.make(new base_string("plus"));
 
   public static void init(analysis_context context, type parent) {
-    position pos = semantics.BUILTIN_POSITION;
+    origin pos = semantics.BUILTIN_POSITION;
     context.add(parent, PRINTLN_NAME, new info_fn(PRINTLN_NAME).to_action(pos));
     context.add(parent, PLUS_NAME, new add_op().to_action(pos));
   }

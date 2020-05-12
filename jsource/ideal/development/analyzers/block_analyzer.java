@@ -29,7 +29,7 @@ public class block_analyzer extends single_pass_analyzer implements declaration 
   private final analyzable body;
   private principal_type inside;
 
-  public block_analyzer(analyzable body, position pos) {
+  public block_analyzer(analyzable body, origin pos) {
     super(pos);
     this.body = body;
   }

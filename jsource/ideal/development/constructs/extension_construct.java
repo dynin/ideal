@@ -15,7 +15,7 @@ import ideal.development.elements.*;
 import ideal.development.components.*;
 
 public abstract class extension_construct extends base_construct {
-  public extension_construct(position source) {
+  public extension_construct(origin source) {
     super(source);
   }
 

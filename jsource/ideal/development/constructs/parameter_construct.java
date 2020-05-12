@@ -17,7 +17,7 @@ public class parameter_construct extends base_construct {
   public final construct main;
   public final list_construct parameters;
 
-  public parameter_construct(construct main, list_construct parameters, position pos) {
+  public parameter_construct(construct main, list_construct parameters, origin pos) {
     super(pos);
 
     assert main != null;

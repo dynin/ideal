@@ -28,12 +28,12 @@ public class error_signal extends debuggable implements analysis_result, analyza
     this.is_cascading = is_cascading;
   }
 
-  public error_signal(string message, position pos) {
+  public error_signal(string message, origin pos) {
     this(new base_notification(message, pos), false);
   }
 
   /** Constructor for cascading errors. */
-  public error_signal(string message, analyzable primary, position pos) {
+  public error_signal(string message, analyzable primary, origin pos) {
     assert primary.analyze() instanceof error_signal;
     error_signal primary_error = (error_signal) primary.analyze();
     assert primary_error != null;
@@ -43,8 +43,8 @@ public class error_signal extends debuggable implements analysis_result, analyza
   }
 
   @Override
-  public position source_position() {
-    return cause.position();
+  public origin deeper_origin() {
+    return cause.origin();
   }
 
   @Override

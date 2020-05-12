@@ -26,7 +26,7 @@ import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 import ideal.development.comments.*;
 
-public abstract class base_analyzer<C extends position> extends debuggable implements analyzable {
+public abstract class base_analyzer<C extends origin> extends debuggable implements analyzable {
 
   protected static action_name INSIDE_NAME =
       new special_name(new base_string("inside"), new base_string("base_analyzer"));
@@ -50,7 +50,7 @@ public abstract class base_analyzer<C extends position> extends debuggable imple
   }
 
   @Override
-  public final position source_position() {
+  public final origin deeper_origin() {
     return source;
   }
 
@@ -137,8 +137,8 @@ public abstract class base_analyzer<C extends position> extends debuggable imple
   }
 
   private void update_map_in_context(analyzable the_analyzable) {
-    if (the_analyzable.source_position() instanceof construct) {
-      construct source = (construct) the_analyzable.source_position();
+    if (the_analyzable.deeper_origin() instanceof construct) {
+      construct source = (construct) the_analyzable.deeper_origin();
       @Nullable analyzable before = context.get_analyzable(source);
       if (before == null) {
         context.put_analyzable(source, the_analyzable);
@@ -233,7 +233,7 @@ public abstract class base_analyzer<C extends position> extends debuggable imple
       return;
     }
 
-    graph<principal_type, position> the_type_graph = get_context().type_graph();
+    graph<principal_type, origin> the_type_graph = get_context().type_graph();
 
     if (the_type_graph.introduces_cycle(subtype, supertype)) {
       handle_error(new error_signal(messages.type_cycle, this));
@@ -258,7 +258,7 @@ public abstract class base_analyzer<C extends position> extends debuggable imple
 
   protected master_type make_block(action_name name, principal_type block_parent,
       declaration the_declaration) {
-    position source = this;
+    origin source = this;
     master_type result = new master_type(type_kinds.block_kind, flavor_profiles.nameonly_profile,
         name, block_parent, get_context(), the_declaration);
     result.process_declaration(declaration_pass.last());

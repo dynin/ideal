@@ -35,7 +35,7 @@ public class iteration_handler implements sexpression_handler {
   }
 
   public analyzable to_analyzable(readonly_list<construct> arguments, template_analyzer template,
-      position source) {
+      origin source) {
     if (arguments.size() < 2) {
       return new error_signal(new base_string("Expected at least two arguments"), source);
     }

@@ -160,13 +160,13 @@ statement ::=
 type_declaration ::=
                 annotations_opt:m KIND:k name:n parameters_opt:p
                     OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb
-                // TODO: use fragment position
+                // TODO: use fragment origin
                 {: RESULT = new type_declaration_construct(m, k.payload(), n.the_name, p, st, n); :}
         ;
 
 type_announcement ::=
                 annotations_opt:m KIND:k name:n SEMICOLON:s
-                // TODO: use fragment position
+                // TODO: use fragment origin
                 {: RESULT = new type_announcement_construct(m, k.payload(), n.the_name, n); :}
         ;
 
@@ -279,7 +279,7 @@ expression_opt ::=
                 expression:e
                 {: RESULT = e; :}
         |       /* epsilon */
-                {: RESULT = new empty_construct(parser_util.empty_position); :}
+                {: RESULT = new empty_construct(parser_util.empty_origin); :}
         ;
 
 condition_in_parens ::=

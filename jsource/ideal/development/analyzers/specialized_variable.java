@@ -98,7 +98,7 @@ public class specialized_variable extends debuggable implements variable_declara
   }
 
   @Override
-  public position source_position() {
+  public origin deeper_origin() {
     return main;
   }
 

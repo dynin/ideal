@@ -26,7 +26,7 @@ public class conditional_action extends base_action {
   private final abstract_value result;
 
   public conditional_action(action condition, action then_action, action else_action,
-      abstract_value result, position the_origin) {
+      abstract_value result, origin the_origin) {
     super(the_origin);
     this.condition = condition;
     this.then_action = then_action;

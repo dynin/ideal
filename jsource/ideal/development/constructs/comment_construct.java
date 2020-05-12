@@ -23,7 +23,7 @@ public class comment_construct extends base_construct
   public final comment the_comment;
   private @Nullable text_fragment the_text;
 
-  public comment_construct(comment the_comment, position source) {
+  public comment_construct(comment the_comment, origin source) {
     super(source);
     assert the_comment != null;
     this.the_comment = the_comment;

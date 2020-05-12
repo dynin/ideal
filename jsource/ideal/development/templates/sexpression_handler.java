@@ -29,5 +29,5 @@ import ideal.development.analyzers.*;
 public interface sexpression_handler {
   action_name name();
   analyzable to_analyzable(readonly_list<construct> arguments, template_analyzer template,
-      position source);
+      origin source);
 }

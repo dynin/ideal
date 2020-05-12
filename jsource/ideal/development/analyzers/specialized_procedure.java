@@ -160,7 +160,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
   }
 
   @Override
-  public position source_position() {
+  public origin deeper_origin() {
     return main;
   }
 

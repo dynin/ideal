@@ -27,7 +27,7 @@ public class for_construct extends extension_construct {
   public construct body;
 
   public for_construct(construct init, construct condition, construct update, construct body,
-      position pos) {
+      origin pos) {
     super(pos);
     this.init = init;
     this.condition = condition;
@@ -49,7 +49,7 @@ public class for_construct extends extension_construct {
 
   @Override
   public analyzable to_analyzable() {
-    position pos = this;
+    origin pos = this;
 
     analyzable body_and_update = new statement_list_analyzer(
         new base_list<analyzable>(base_analyzer.make(body), base_analyzer.make(update)), pos);

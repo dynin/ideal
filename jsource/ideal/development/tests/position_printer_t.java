@@ -26,9 +26,9 @@ import junit.framework.TestCase;
  */
 public class position_printer_t extends TestCase {
 
-  private static void show_position_helper(string input, int begin, int end, String output) {
+  private static void show_origin_helper(string input, int begin, int end, String output) {
     source_content source = new source_content(simple_name.make("foo"), input);
-    text_position pos = (text_position) source.make_position(begin, end);
+    text_position pos = (text_position) source.make_origin(begin, end);
     string_writer the_writer = new string_writer();
     plain_formatter out = new plain_formatter(the_writer);
 
@@ -37,15 +37,15 @@ public class position_printer_t extends TestCase {
     assertEquals(new base_string(output), the_writer.elements());
   }
 
-  public void test_show_positions() {
+  public void test_show_origins() {
     string input = new base_string("hello\nworld\n");
-    show_position_helper(input, 1, 2, "hello\n ^\n");
-    show_position_helper(input, 0, 5, "hello\n^^^^^\n");
-    show_position_helper(input, 2, 6, "hello \n  ^^^^\n");
-    show_position_helper(input, 0, 10, "hello \n^^^^^^\n");
-    show_position_helper(input, 8, 10, "world\n  ^^\n");
-    show_position_helper(input, 7, 7, "world\n ^\n");
-    show_position_helper(input, 5, 5, "hello \n     ^\n");
-    show_position_helper(input, 12, 12, "world \n     ^\n");
+    show_origin_helper(input, 1, 2, "hello\n ^\n");
+    show_origin_helper(input, 0, 5, "hello\n^^^^^\n");
+    show_origin_helper(input, 2, 6, "hello \n  ^^^^\n");
+    show_origin_helper(input, 0, 10, "hello \n^^^^^^\n");
+    show_origin_helper(input, 8, 10, "world\n  ^^\n");
+    show_origin_helper(input, 7, 7, "world\n ^\n");
+    show_origin_helper(input, 5, 5, "hello \n     ^\n");
+    show_origin_helper(input, 12, 12, "world \n     ^\n");
   }
 }

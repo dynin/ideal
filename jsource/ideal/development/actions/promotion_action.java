@@ -22,18 +22,18 @@ public class promotion_action extends base_action {
   private final type the_type;
   private final @Nullable action the_action;
 
-  private promotion_action(type the_type, @Nullable action the_action, position source) {
+  private promotion_action(type the_type, @Nullable action the_action, origin source) {
     super(source);
     this.the_type = the_type;
     this.the_action = the_action;
   }
 
-  public promotion_action(type the_type, position source) {
+  public promotion_action(type the_type, origin source) {
     this(the_type, null, source);
   }
 
   public promotion_action(type the_type) {
-    this(the_type, action_utilities.no_position);
+    this(the_type, action_utilities.no_origin);
   }
 
   public @Nullable action get_action() {
@@ -61,7 +61,7 @@ public class promotion_action extends base_action {
   }
 
   @Override
-  public action bind_from(action from, position source) {
+  public action bind_from(action from, origin source) {
     if (from.result() == the_type) {
       return from;
     }

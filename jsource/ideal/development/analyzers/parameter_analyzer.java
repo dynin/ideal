@@ -29,7 +29,7 @@ public class parameter_analyzer extends single_pass_analyzer {
   private @Nullable action main_action;
   private declaration_pass parameter_pass;
 
-  public parameter_analyzer(analyzable main, readonly_list<analyzable> params, position pos) {
+  public parameter_analyzer(analyzable main, readonly_list<analyzable> params, origin pos) {
     super(pos);
     this.main_analyzable = main;
     this.analyzable_parameters = params;

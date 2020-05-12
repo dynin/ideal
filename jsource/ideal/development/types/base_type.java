@@ -23,7 +23,7 @@ public abstract class base_type extends debuggable implements type {
   }
 
   @Override
-  public action to_action(position pos) {
+  public action to_action(origin pos) {
     return new concrete_type_action(this, pos);
   }
 

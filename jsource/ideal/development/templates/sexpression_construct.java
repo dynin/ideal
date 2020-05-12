@@ -18,7 +18,7 @@ import ideal.development.components.*;
 public class sexpression_construct extends extension_construct {
   public final readonly_list<construct> elements;
 
-  public sexpression_construct(readonly_list<construct> elements, position source) {
+  public sexpression_construct(readonly_list<construct> elements, origin source) {
     super(source);
     this.elements = elements;
   }

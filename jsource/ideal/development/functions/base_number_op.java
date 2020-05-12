@@ -32,7 +32,7 @@ public abstract class base_number_op extends binary_procedure {
         library().immutable_integer_type(), library().immutable_integer_type());
   }
 
-  private action promote_to_integer(action argument, analysis_context context, position pos) {
+  private action promote_to_integer(action argument, analysis_context context, origin pos) {
     abstract_value argument_value = argument.result();
     if (context.can_promote(argument_value, library().immutable_nonnegative_type())) {
       return context.promote(argument, library().immutable_nonnegative_type(), pos);
@@ -43,7 +43,7 @@ public abstract class base_number_op extends binary_procedure {
 
   @Override
   protected action bind_binary(action first, action second, analysis_context context,
-      position pos) {
+      origin pos) {
     boolean all_nonnegative = true;
 
     first = promote_to_integer(first, context, pos);

@@ -1,17 +1,14 @@
 #!/bin/sh
 
-FROM='supertype_kind'
-TO='subtype_tag'
+FROM='text_origin'
+TO='text_position'
 
 #cd $HOME/Projects/ideal
 
-ALLFILES="*.i \
-    */*.i \
-    */*/*.i \
-    testdata/* \
-    bootstrapped/ideal/*/*/*.java \
-    jsource/ideal/*/*/*.java \
+ALLFILES="`find library runtime machine development -name \*.i` \
+    `find jsource bootstrapped experimental/coach -name \*.java` \
     jsource/ideal/*/*/*.cup \
+    testdata/* \
     Makefile"
 
 for OLDFILE in $ALLFILES

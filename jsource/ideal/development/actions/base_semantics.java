@@ -40,7 +40,7 @@ public class base_semantics implements semantics {
   }
 
   public readonly_list<action> resolve(action_table actions, type from, action_name name,
-      @Nullable action_target target, position pos) {
+      @Nullable action_target target, origin pos) {
 
     assert name != special_name.PROMOTION;
 
@@ -273,7 +273,7 @@ public class base_semantics implements semantics {
 
     // Anything can be promoted to the 'void' value.
     if (specific_type == library().immutable_void_type()) {
-      return library().void_instance().to_action(action_utilities.no_position);
+      return library().void_instance().to_action(action_utilities.no_origin);
     }
 
     transitive_set promotions = transitive_set.make(subtype, actions);
@@ -470,7 +470,7 @@ public class base_semantics implements semantics {
       return;
     }
 
-    position pos = the_type_declaration;
+    origin pos = the_type_declaration;
 
     if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
       if (the_kind == procedure_kind &&
@@ -537,7 +537,7 @@ public class base_semantics implements semantics {
   }
 
   private void process_super_flavors(principal_type the_subtype,
-      @Nullable type_flavor subtype_flavor, type the_supertype, position pos,
+      @Nullable type_flavor subtype_flavor, type the_supertype, origin pos,
       analysis_context the_context) {
 
     immutable_list<type_flavor> supported_flavors =
@@ -561,7 +561,7 @@ public class base_semantics implements semantics {
   }
 
   private static void add_supertype_and_promotion(type from, type to, analysis_context context,
-      position pos) {
+      origin pos) {
     assert !(from instanceof principal_type);
     assert !(to instanceof principal_type);
 

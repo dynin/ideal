@@ -134,7 +134,7 @@ public class to_javascript_transformer {
   }
 
   public variable_construct make_variable(variable_declaration variable, @Nullable action init,
-      position pos) {
+      origin pos) {
 
     list<annotation_construct> annotations = make_var_annotation(pos);
     action_name name = variable.short_name();
@@ -161,7 +161,7 @@ public class to_javascript_transformer {
         initializer);
   }
 
-  public variable_construct make_this_declaration(type this_type, position pos) {
+  public variable_construct make_this_declaration(type this_type, origin pos) {
     readonly_list<annotation_construct> annotations = new empty<annotation_construct>();
 
     return new variable_construct(annotations, null, THIS_DATA,  new empty<annotation_construct>(),
@@ -175,7 +175,7 @@ public class to_javascript_transformer {
   }
 
   public procedure_construct to_construct(procedure_analyzer procedure) {
-    position pos = procedure;
+    origin pos = procedure;
     readonly_list<annotation_construct> annotations = new empty<annotation_construct>();
     action_name name = make_proc_name(procedure);
     list<construct> parameters = new base_list<construct>();
@@ -206,7 +206,7 @@ public class to_javascript_transformer {
   public construct to_construct(bound_procedure bp) {
     // TODO: handle other procedure value.
     procedure_value proc = (procedure_value) bp.the_procedure_action.result();
-    position pos = bp;
+    origin pos = bp;
 
     action_name the_name = proc.name();
     list<construct> params = to_param_list(bp.parameters.params());
@@ -238,7 +238,7 @@ public class to_javascript_transformer {
   private static final boolean ACCESS_FIELDS_DIRECTLY = false;
 
   public construct to_construct(instance_variable fa) {
-    position pos = fa;
+    origin pos = fa;
     assert fa.from != null;
     construct from = to_construct_action(fa.from);
     simple_name the_name = (simple_name) fa.short_name();
@@ -259,14 +259,14 @@ public class to_javascript_transformer {
   }
 
   public construct to_construct(local_variable lv) {
-    position pos = lv;
+    origin pos = lv;
     variable_declaration decl = lv.the_declaration;
     return new name_construct(process_name(decl), pos);
   }
 
   public construct to_construct(list_iteration_action iteration_action) {
     list_iteration_analyzer iteration = iteration_action.source;
-    position pos = iteration_action;
+    origin pos = iteration_action;
 
     list<annotation_construct> annotations = make_var_annotation(pos);
     simple_name list_name = generate_unique_name(LIST_PREFIX);
@@ -324,7 +324,7 @@ public class to_javascript_transformer {
   }
 
   public construct to_construct(value_action the_action) {
-    position pos = the_action;
+    origin pos = the_action;
     value_wrapper the_value = the_action.the_value;
 
     if (the_value instanceof string_value) {
@@ -359,14 +359,14 @@ public class to_javascript_transformer {
     return simple_name.make("$" + utilities.s(prefix) + (name_index++));
   }
 
-  private list<annotation_construct> make_var_annotation(position pos) {
+  private list<annotation_construct> make_var_annotation(origin pos) {
     list<annotation_construct> result = new base_list<annotation_construct>();
     result.append(new modifier_construct(general_modifier.var_modifier, pos));
     return result;
   }
 
   private list<construct> parameters_to_constructs(
-      readonly_list<variable_declaration> params_actions, position pos) {
+      readonly_list<variable_declaration> params_actions, origin pos) {
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < params_actions.size(); ++i) {
       result.append(to_construct(params_actions.get(i)));

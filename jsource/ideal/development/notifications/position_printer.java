@@ -18,17 +18,17 @@ import ideal.development.elements.*;
 import ideal.development.scanners.*;
 
 /**
- * A collection of methods responsible for displaying position
+ * A collection of methods responsible for displaying origin
  * infromation associatd with error and warning messages.
  */
 public class position_printer {
 
-  /** If possible, display information about a position. */
-  public static text_fragment show_position(position pos) {
+  /** If possible, display information about a origin. */
+  public static text_fragment show_origin(origin pos) {
     assert pos != null;
     @Nullable text_position fragment_begin = null;
     @Nullable text_position fragment_end = null;
-    // We only know how to display selected positions,
+    // We only know how to display selected origins,
     // so drill down until we find one.
     while (true) {
       if (pos instanceof text_position) {
@@ -44,14 +44,14 @@ public class position_printer {
         if (fragment_end == null) {
           fragment_end = find_text_position(fp.end, false);
         }
-      } else if (pos.source_position() == null) {
-        utilities.panic("Can't display position " + pos + " of type " + pos.getClass());
+      } else if (pos.deeper_origin() == null) {
+        utilities.panic("Can't display origin " + pos + " of type " + pos.getClass());
       }
-      pos = pos.source_position();
+      pos = pos.deeper_origin();
     }
   }
 
-  private static @Nullable text_position find_text_position(position pos, boolean begin) {
+  private static @Nullable text_position find_text_position(origin pos, boolean begin) {
     while (pos != null) {
       if (pos instanceof text_position) {
         return (text_position) pos;
@@ -59,7 +59,7 @@ public class position_printer {
         fragment_position fp = (fragment_position) pos;
         pos = begin ? fp.begin : fp.end;
       } else {
-        pos = pos.source_position();
+        pos = pos.deeper_origin();
       }
     }
     return null;
@@ -123,7 +123,7 @@ public class position_printer {
 
     // print an extra caret:
     // 1) if there were no carets printed (e.g. at the end of file),
-    // 2) to signal that position continues past newline
+    // 2) to signal that origin continues past newline
     boolean suffix_caret = false;
     if (end == begin) {
       end = begin + 1;

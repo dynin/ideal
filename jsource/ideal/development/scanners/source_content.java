@@ -16,7 +16,7 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 
 public class source_content extends debuggable
-    implements deeply_immutable_data, position, stringable {
+    implements deeply_immutable_data, origin, stringable {
 
   public final identifier name;
   public final string content;
@@ -31,11 +31,11 @@ public class source_content extends debuggable
     this.content = content;
   }
 
-  public @Nullable position source_position() {
+  public @Nullable origin deeper_origin() {
     return null;
   }
 
-  public position make_position(int begin, int end) {
+  public origin make_origin(int begin, int end) {
     return new text_position(this, begin, end);
   }
 

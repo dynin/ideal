@@ -26,7 +26,7 @@ public class procedure_construct extends base_construct {
                             list_construct parameters,
                             readonly_list<annotation_construct> post_annotations,
                             @Nullable construct body,
-                            position pos) {
+                            origin pos) {
     super(pos);
     this.annotations = annotations;
     this.ret = ret;

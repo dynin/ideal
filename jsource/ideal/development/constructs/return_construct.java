@@ -16,7 +16,7 @@ import ideal.development.elements.*;
 public class return_construct extends base_construct {
   public final @Nullable construct the_expression;
 
-  public return_construct(@Nullable construct the_expression, position pos) {
+  public return_construct(@Nullable construct the_expression, origin pos) {
     super(pos);
     this.the_expression = the_expression;
   }

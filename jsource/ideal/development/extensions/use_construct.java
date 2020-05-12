@@ -21,12 +21,12 @@ import ideal.development.analyzers.*;
 public class use_construct extends extension_construct {
   public final simple_name name;
 
-  public use_construct(simple_name name, position source) {
+  public use_construct(simple_name name, origin source) {
     super(source);
     this.name = name;
   }
 
-  public use_construct(name_construct the_name_construct, position source) {
+  public use_construct(name_construct the_name_construct, origin source) {
     super(source);
     this.name = (simple_name) the_name_construct.the_name;
   }

@@ -29,7 +29,7 @@ public class integer_token_element implements scanner_element {
       return null;
     }
     String image = input.substring(begin, end);
-    position pos = source.make_position(begin, end);
+    origin pos = source.make_origin(begin, end);
     int value = 0;
     try {
       value = Integer.parseInt(image);

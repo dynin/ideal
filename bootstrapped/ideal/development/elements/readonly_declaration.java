@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface readonly_declaration extends readonly_position, any_declaration { }
+public interface readonly_declaration extends readonly_origin, any_declaration { }

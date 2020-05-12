@@ -14,7 +14,7 @@ import ideal.machine.annotations.dont_display;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
-public class text_position implements deeply_immutable_data, position, stringable {
+public class text_position implements deeply_immutable_data, origin, stringable {
   @dont_display
   public final source_content source;
   @dont_display
@@ -35,7 +35,7 @@ public class text_position implements deeply_immutable_data, position, stringabl
   }
   */
 
-  public position source_position() {
+  public origin deeper_origin() {
     return source;
   }
 

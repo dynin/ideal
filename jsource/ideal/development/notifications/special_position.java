@@ -13,7 +13,7 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
 
-public class special_position extends debuggable implements position, deeply_immutable_data,
+public class special_position extends debuggable implements origin, deeply_immutable_data,
     stringable {
 
   public final string description;
@@ -23,7 +23,7 @@ public class special_position extends debuggable implements position, deeply_imm
   }
 
   @Override
-  public @Nullable position source_position() {
+  public @Nullable origin deeper_origin() {
     return null;
   }
 

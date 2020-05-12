@@ -27,7 +27,7 @@ public class flavor_analyzer extends single_pass_analyzer {
   // TODO: do we need flavor_pass?
   private declaration_pass flavor_pass;
 
-  private flavor_analyzer(type_flavor flavor, analyzable expression, position source) {
+  private flavor_analyzer(type_flavor flavor, analyzable expression, origin source) {
     super(source);
     this.flavor = flavor;
     this.expression = expression;

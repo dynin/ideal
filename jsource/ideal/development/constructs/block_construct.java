@@ -17,14 +17,14 @@ public class block_construct extends base_construct {
   public final readonly_list<construct> body;
 
   public block_construct(readonly_list<annotation_construct> annotations,
-      readonly_list<construct> body, position pos) {
+      readonly_list<construct> body, origin pos) {
     super(pos);
     this.annotations = annotations;
     assert body != null;
     this.body = body;
   }
 
-  public block_construct(readonly_list<construct> body, position pos) {
+  public block_construct(readonly_list<construct> body, origin pos) {
     this(new empty<annotation_construct>(), body, pos);
   }
 

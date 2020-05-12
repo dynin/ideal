@@ -9,10 +9,10 @@ implicit import ideal.library.reflections;
 --- An action encapsulates functionality of the machine--it corresponds to an interpreter
 --- operation, or virtual machine instruction.
 interface action {
-  extends analysis_result, position, readonly data;
+  extends analysis_result, origin, readonly data;
 
   abstract_value result;
-  action bind_from(action from, position pos) pure;
+  action bind_from(action from, origin the_origin) pure;
   declaration or null get_declaration;
   entity_wrapper execute(execution_context context);
 }

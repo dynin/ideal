@@ -6,8 +6,8 @@
 
 --- Constructs are the abstract syntax tree (AST) data structures used in ideal.
 interface construct {
-  extends data, position;
+  extends data, origin;
 
   readonly list[construct] children();
-  position source_position();
+  origin deeper_origin();
 }

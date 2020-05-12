@@ -23,7 +23,7 @@ public class cast_action extends base_action {
   public final action expression;
   public final type the_type;
 
-  public cast_action(action expression, type the_type, position source) {
+  public cast_action(action expression, type the_type, origin source) {
     super(source);
     this.expression = expression;
     this.the_type = the_type;

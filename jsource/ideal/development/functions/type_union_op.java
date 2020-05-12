@@ -34,7 +34,7 @@ public class type_union_op extends binary_procedure {
 
   @Override
   protected analysis_result bind_binary(action first, action second, analysis_context context,
-      position the_origin) {
+      origin the_origin) {
 
     principal_type null_type = common_library.get_instance().null_type();
     action primary_action;

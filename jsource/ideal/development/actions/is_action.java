@@ -24,7 +24,7 @@ public class is_action extends base_action {
   public final type the_type;
   public final boolean negated;
 
-  public is_action(action expression, type the_type, boolean negated, position source) {
+  public is_action(action expression, type the_type, boolean negated, origin source) {
     super(source);
     this.expression = expression;
     this.the_type = the_type;

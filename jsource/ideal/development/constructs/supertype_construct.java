@@ -24,7 +24,7 @@ public class supertype_construct extends base_construct {
       type_flavor subtype_flavor,
       subtype_tag tag,
       readonly_list<construct> types,
-      position pos) {
+      origin pos) {
     super(pos);
     this.annotations = annotations;
     this.subtype_flavor = subtype_flavor;

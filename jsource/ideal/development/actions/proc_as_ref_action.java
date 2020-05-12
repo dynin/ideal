@@ -30,7 +30,7 @@ public class proc_as_ref_action extends base_action {
   public final action from;
 
   private proc_as_ref_action(procedure_declaration the_declaration, @Nullable action from,
-      position source) {
+      origin source) {
     super(source);
     this.the_declaration = the_declaration;
     this.from = from;
@@ -82,7 +82,7 @@ public class proc_as_ref_action extends base_action {
   }
 
   @Override
-  public action bind_from(action new_from, position source) {
+  public action bind_from(action new_from, origin source) {
     if (from != null) {
       new_from = from.bind_from(new_from, source);
     }

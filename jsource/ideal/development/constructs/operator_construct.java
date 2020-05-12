@@ -19,19 +19,19 @@ public class operator_construct extends base_construct {
   public final readonly_list<construct> arguments;
 
   public operator_construct(operator the_operator, readonly_list<construct> arguments,
-      position source) {
+      origin source) {
     super(source);
     assert arguments.size() == the_operator.the_operator_type.arity;
     this.the_operator = the_operator;
     this.arguments = arguments;
   }
 
-  public operator_construct(operator the_operator, construct argument, position source) {
+  public operator_construct(operator the_operator, construct argument, origin source) {
     this(the_operator, new base_list<construct>(argument), source);
   }
 
   public operator_construct(operator the_operator, construct left, construct right,
-      position source) {
+      origin source) {
     this(the_operator, new base_list<construct>(left, right), source);
   }
 

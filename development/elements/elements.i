@@ -7,7 +7,7 @@
 package elements {
   implicit import ideal.library.elements;
 
-  interface position;
+  interface origin;
   interface token;
   interface token_type;
   interface declaration;

@@ -349,7 +349,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       principal_type default_supertype = library().value_type();
 
       assert body != null;
-      position pos = this;
+      origin pos = this;
       add_to_body(new supertype_analyzer(null, subtype_tags.subtypes_tag,
           analyzable_action.from_value(default_supertype, pos), pos));
     }
@@ -362,7 +362,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       type procedure_supertype = library().procedure_type().bind_parameters(parameter_values).
           get_flavored(flavors.immutable_flavor);
       assert body != null;
-      position pos = this;
+      origin pos = this;
       add_to_body(new supertype_analyzer(procedure_supertype, pos));
     }
     */

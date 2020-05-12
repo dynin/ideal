@@ -18,7 +18,7 @@ public class modifier_construct extends base_construct
 
   public final modifier_kind the_kind;
 
-  public modifier_construct(modifier_kind the_kind, position pos) {
+  public modifier_construct(modifier_kind the_kind, origin pos) {
     super(pos);
     assert the_kind != null;
     this.the_kind = the_kind;

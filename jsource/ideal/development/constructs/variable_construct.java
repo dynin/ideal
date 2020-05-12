@@ -25,7 +25,7 @@ public class variable_construct extends base_construct {
                        action_name name,
                        readonly_list<annotation_construct> post_annotations,
                        @Nullable construct init,
-                       position pos) {
+                       origin pos) {
     super(pos);
     this.annotations = annotations;
     this.type = type;

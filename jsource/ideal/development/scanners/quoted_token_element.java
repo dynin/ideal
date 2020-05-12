@@ -66,8 +66,8 @@ public class quoted_token_element implements scanner_element {
     }
     int image_end;
     if (end == input.length()) {
-      position start_pos = source.make_position(begin, begin + 1);
-      position eof_pos = source.make_position(end, end);
+      origin start_pos = source.make_origin(begin, begin + 1);
+      origin eof_pos = source.make_origin(end, end);
       notification open_message = new base_notification(
           messages.opening_quote, start_pos);
       list<notification> subnotifications =
@@ -79,7 +79,7 @@ public class quoted_token_element implements scanner_element {
       image_end = end + 1;
     }
     String image = input.substring(begin, image_end);
-    position pos = source.make_position(begin, image_end);
+    origin pos = source.make_origin(begin, image_end);
     string quoted = new base_string(input.substring(begin + 1, end));
     quoted_literal string_literal = new quoted_literal(new base_string(value.toString()),
         quoted, the_token_type);

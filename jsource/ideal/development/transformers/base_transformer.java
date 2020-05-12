@@ -63,7 +63,7 @@ public class base_transformer extends construct_visitor<Object>
 
   // _m to get around "have the same erasure" error
   protected list<annotation_construct> transform_a(readonly_list<annotation_construct> seq,
-      position source) {
+      origin source) {
     list<annotation_construct> result = new base_list<annotation_construct>();
     for (int i = 0; i < seq.size(); ++i) {
       result.append(transform(seq.get(i)));

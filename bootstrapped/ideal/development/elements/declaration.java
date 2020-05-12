@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface declaration extends position, readonly_declaration, writeonly_declaration { }
+public interface declaration extends origin, readonly_declaration, writeonly_declaration { }

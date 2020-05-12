@@ -31,7 +31,7 @@ public class return_analyzer extends single_pass_analyzer {
     the_expression = make(source.the_expression);
   }
 
-  public return_analyzer(analyzable the_expression, position source) {
+  public return_analyzer(analyzable the_expression, origin source) {
     super(source);
     this.the_expression = the_expression;
   }

@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface any_action extends any_analysis_result, any_position { }
+public interface any_action extends any_analysis_result, any_origin { }

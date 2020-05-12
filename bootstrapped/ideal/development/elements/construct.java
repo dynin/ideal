@@ -4,7 +4,7 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface construct extends data, position, readonly_construct, writeonly_construct {
+public interface construct extends data, origin, readonly_construct, writeonly_construct {
   readonly_list<construct> children();
-  position source_position();
+  origin deeper_origin();
 }

@@ -12,7 +12,7 @@ interface notification {
   extends log_message;
 
   string message;
-  position position;
+  origin origin;
   readonly list[notification] secondary;
   -- TODO: pass a render_context that contains styles?
   text_fragment render_text(boolean prefix_with_source);

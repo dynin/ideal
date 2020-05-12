@@ -16,7 +16,7 @@ import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 
-public abstract class base_action<S extends position> extends debuggable implements action {
+public abstract class base_action<S extends origin> extends debuggable implements action {
   public final S source;
 
   public base_action(S source) {
@@ -25,7 +25,7 @@ public abstract class base_action<S extends position> extends debuggable impleme
   }
 
   @Override
-  public final S source_position() {
+  public final S deeper_origin() {
     return source;
   }
 
@@ -36,8 +36,8 @@ public abstract class base_action<S extends position> extends debuggable impleme
   }
 
   @Override
-  public action bind_from(action from, position pos) {
-    // TODO: subtypes should override this to update the source position.
+  public action bind_from(action from, origin pos) {
+    // TODO: subtypes should override this to update the source origin.
     return this;
   }
 }

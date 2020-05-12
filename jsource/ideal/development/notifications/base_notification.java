@@ -22,24 +22,24 @@ import ideal.development.scanners.*;
 public class base_notification implements notification {
 
   private string message;
-  private position the_position;
+  private origin the_origin;
   private @Nullable readonly_list<notification> secondary;
 
-  public base_notification(string message, position the_position,
+  public base_notification(string message, origin the_origin,
       @Nullable readonly_list<notification> secondary) {
     assert message != null;
-    assert the_position != null;
+    assert the_origin != null;
     this.message = message;
-    this.the_position = the_position;
+    this.the_origin = the_origin;
     this.secondary = (secondary != null && !secondary.is_empty()) ? secondary : null;
   }
 
-  public base_notification(string message, position the_position) {
-    this(message, the_position, null);
+  public base_notification(string message, origin the_origin) {
+    this(message, the_origin, null);
   }
 
-  public base_notification(String message, position the_position) {
-    this(new base_string(message), the_position, null);
+  public base_notification(String message, origin the_origin) {
+    this(new base_string(message), the_origin, null);
   }
 
   @Override
@@ -48,8 +48,8 @@ public class base_notification implements notification {
   }
 
   @Override
-  public position position() {
-    return the_position;
+  public origin origin() {
+    return the_origin;
   }
 
   @Override
@@ -82,12 +82,12 @@ public class base_notification implements notification {
   public text_fragment render_text(boolean prefix_with_source) {
     base_string full_message;
     if (prefix_with_source) {
-      full_message = new base_string(position_util.get_source_prefix(the_position), message);
+      full_message = new base_string(position_util.get_source_prefix(the_origin), message);
     } else {
       full_message = (base_string) message;
     }
     // TODO: do not hardcode style.
-    text_fragment primary = text_util.join(position_printer.show_position(the_position),
+    text_fragment primary = text_util.join(position_printer.show_origin(the_origin),
         base_element.make(text_library.DIV, text_library.CLASS, new base_string("message"),
             full_message));
 

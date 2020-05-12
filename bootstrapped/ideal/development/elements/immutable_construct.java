@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface immutable_construct extends immutable_data, immutable_position, readonly_construct { }
+public interface immutable_construct extends immutable_data, immutable_origin, readonly_construct { }

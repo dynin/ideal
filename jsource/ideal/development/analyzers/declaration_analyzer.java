@@ -23,7 +23,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 
-public abstract class declaration_analyzer<C extends position> extends multi_pass_analyzer<C>
+public abstract class declaration_analyzer<C extends origin> extends multi_pass_analyzer<C>
     implements declaration {
 
   private @Nullable annotation_set the_annotation_set;

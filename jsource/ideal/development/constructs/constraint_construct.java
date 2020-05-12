@@ -14,7 +14,7 @@ import ideal.development.elements.*;
 
 public class constraint_construct extends base_construct {
   public final construct expr;
-  public constraint_construct(construct expr, position pos) {
+  public constraint_construct(construct expr, origin pos) {
     super(pos);
     this.expr = expr;
   }

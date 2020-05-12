@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface deeply_immutable_action extends deeply_immutable_analysis_result, deeply_immutable_position, immutable_action { }
+public interface deeply_immutable_action extends deeply_immutable_analysis_result, deeply_immutable_origin, immutable_action { }

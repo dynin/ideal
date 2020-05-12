@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_construct extends deeply_immutable_data, deeply_immutable_position, immutable_construct { }
+public interface deeply_immutable_construct extends deeply_immutable_data, deeply_immutable_origin, immutable_construct { }

@@ -42,7 +42,7 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_not_matching(readonly_list<action> candidates,
-      action_target the_action_target, analysis_context context, position source) {
+      action_target the_action_target, analysis_context context, origin source) {
 
     assert the_action_target instanceof parameter_target;
     parameter_target the_parameter_target = (parameter_target) the_action_target;
@@ -72,7 +72,7 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_mismatch(action candidate, parameter_target the_parameter_target,
-      analysis_context context, position source) {
+      analysis_context context, origin source) {
 
     type failed_procedure_type = candidate.result().type_bound();
     assert action_utilities.is_procedure_type(failed_procedure_type);
@@ -96,7 +96,7 @@ public class mismatch_reporter {
             context.print_value(declared_type) + ", found " +
             context.print_value(supplied_value)),
             supplied_arguments.get(i));
-        // TODO: position that highlights argument while showing the full expression
+        // TODO: origin that highlights argument while showing the full expression
         // TODO: continue and report other arg mismatches
       }
     }
@@ -118,7 +118,7 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_lookup_failure(action_name the_name, type from_type,
-      action_target the_action_target, value_printer printer, position source) {
+      action_target the_action_target, value_printer printer, origin source) {
     base_string error_message = new base_string(new base_string("Lookup failed: no "),
         the_name.to_string(), new base_string(" in "), printer.print_value(from_type));
     if (the_action_target != null) {
@@ -151,7 +151,7 @@ public class mismatch_reporter {
   }
 
   // TODO: this is for debug only.
-  public static void dump_dependencies(readonly_graph<principal_type, position> the_type_graph) {
+  public static void dump_dependencies(readonly_graph<principal_type, origin> the_type_graph) {
     readonly_list<principal_type> all_types = the_type_graph.vertices().elements();
     for (int i = 0; i < all_types.size(); ++i) {
       principal_type the_type = all_types.get(i);

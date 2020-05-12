@@ -41,7 +41,7 @@ public class is_op extends binary_procedure {
 
   @Override
   protected analysis_result bind_binary(action first, action second, analysis_context context,
-      position pos) {
+      origin pos) {
     action first_value = action_utilities.to_value(first, pos);
 
     if (first_value instanceof error_signal) {

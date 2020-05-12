@@ -58,7 +58,7 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
   }
 
   public list_iteration_analyzer(annotation_set annotations, action_name var_name, analyzable init,
-      analyzable body, position source) {
+      analyzable body, origin source) {
     super(source);
     this.annotations = annotations;
     this.var_name = var_name;

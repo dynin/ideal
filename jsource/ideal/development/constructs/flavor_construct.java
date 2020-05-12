@@ -17,7 +17,7 @@ public class flavor_construct extends base_construct {
   public final construct expr;
   public flavor_construct(type_flavor flavor,
                           construct expr,
-                          position pos) {
+                          origin pos) {
     super(pos);
     this.flavor = flavor;
     this.expr = expr;

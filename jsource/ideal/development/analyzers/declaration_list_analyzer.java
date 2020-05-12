@@ -26,13 +26,13 @@ import ideal.development.types.*;
 public class declaration_list_analyzer extends multi_pass_analyzer {
   private readonly_list<analyzable> the_elements;
 
-  public declaration_list_analyzer(readonly_list<analyzable> the_elements, position pos) {
+  public declaration_list_analyzer(readonly_list<analyzable> the_elements, origin pos) {
     super(pos);
     this.the_elements = the_elements;
   }
 
   public declaration_list_analyzer(readonly_list<construct> constructs, principal_type parent,
-      analysis_context context, position pos) {
+      analysis_context context, origin pos) {
     super(pos, parent, context);
     assert constructs != null;
     the_elements = make_list(constructs);

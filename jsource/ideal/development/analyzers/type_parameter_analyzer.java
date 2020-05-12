@@ -42,7 +42,7 @@ public class type_parameter_analyzer extends declaration_analyzer
     the_name = source.name;
   }
 
-  public type_parameter_analyzer(action_name the_name, position source) {
+  public type_parameter_analyzer(action_name the_name, origin source) {
     super(source);
     this.parameter_analyzable = null;
     this.the_name = the_name;

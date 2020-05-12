@@ -16,7 +16,7 @@ public class concrete_type_action extends type_action {
 
   private final type the_type;
 
-  concrete_type_action(type the_type, position source) {
+  concrete_type_action(type the_type, origin source) {
     super(source);
     assert the_type != null;
     this.the_type = the_type;

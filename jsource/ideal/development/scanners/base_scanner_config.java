@@ -50,7 +50,7 @@ public class base_scanner_config implements scanner_config {
       simple_name the_name = ((token<simple_name>) the_token).payload();
       token_matcher matcher = keywords.get(the_name);
       if (matcher != null) {
-        return matcher.process(the_token.source_position());
+        return matcher.process(the_token.deeper_origin());
       }
     }
     return the_token;
@@ -111,7 +111,7 @@ public class base_scanner_config implements scanner_config {
       this.payload = payload;
     }
 
-    public token<P> process(position pos) {
+    public token<P> process(origin pos) {
       return new base_token<P>(type, payload, pos);
     }
   }

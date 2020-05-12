@@ -181,7 +181,7 @@ public class specialized_type_declaration extends debuggable implements type_dec
   }
 
   @Override
-  public position source_position() {
+  public origin deeper_origin() {
     return main_declaration;
   }
 

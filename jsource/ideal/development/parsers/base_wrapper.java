@@ -43,8 +43,8 @@ public class base_wrapper extends base_parser {
       Symbol s = (Symbol) info;
       /* if (s.left != -1) {
         err.writeln(" at character " + ((Symbol)info).left + " of input"); */
-      if (s.value instanceof position) {
-        new base_notification(message, ((position) s.value)).report();
+      if (s.value instanceof origin) {
+        new base_notification(message, ((origin) s.value)).report();
         return;
       }
     }

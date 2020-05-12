@@ -13,7 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
 public class empty_construct extends base_construct {
-  public empty_construct(position pos) {
+  public empty_construct(origin pos) {
     super(pos);
   }
 

@@ -21,7 +21,7 @@ import ideal.development.values.*;
 public class return_action extends base_action {
   public final action expression;
 
-  public return_action(action expression, position source) {
+  public return_action(action expression, origin source) {
     super(source);
     this.expression = expression;
   }

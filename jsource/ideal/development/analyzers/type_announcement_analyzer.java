@@ -161,7 +161,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
       return external_body;
     } else {
       return new base_list<construct>(
-          (type_declaration_construct) type_declaration.source_position());
+          (type_declaration_construct) type_declaration.deeper_origin());
     }
   }
 

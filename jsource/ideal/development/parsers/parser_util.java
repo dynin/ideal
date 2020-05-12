@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 public class parser_util {
 
-  public static position empty_position = new special_position(new base_string("empty"));
+  public static origin empty_origin = new special_position(new base_string("empty"));
 
   public static void ensure_empty(readonly_list<annotation_construct> seq) {
     if (!seq.is_empty()) {
@@ -36,9 +36,9 @@ public class parser_util {
       if (!annotations.is_empty() || body != null || has_variables(pc.parameters.elements)) {
         // TODO: notify user instead of failing cast
         name_construct nc = (name_construct) pc.main;
-        // TODO: position...
+        // TODO: origin...
         return new procedure_construct(annotations, null, nc.the_name, pc.parameters,
-            new empty<annotation_construct>(), body, expression.source_position());
+            new empty<annotation_construct>(), body, expression.deeper_origin());
       }
     }
     return expression;
@@ -57,8 +57,8 @@ public class parser_util {
   // TODO: introduce operator construct
   public static construct make_op(construct e1, token op_token, construct e2, operator op) {
     assert op.the_operator_type == operator_type.INFIX;
-    position op_position = new fragment_position(e1, op_token, e2);
-    return new operator_construct(op, e1, e2, op_position);
+    origin op_origin = new fragment_position(e1, op_token, e2);
+    return new operator_construct(op, e1, e2, op_origin);
   }
 
   public static construct make_op(token op_token, construct e, operator op) {

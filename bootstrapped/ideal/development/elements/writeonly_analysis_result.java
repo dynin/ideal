@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface writeonly_analysis_result extends writeonly_position, any_analysis_result { }
+public interface writeonly_analysis_result extends writeonly_origin, any_analysis_result { }

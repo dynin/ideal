@@ -23,7 +23,7 @@ import ideal.development.kinds.*;
 public class package_construct extends extension_construct {
   public final construct package_name;
 
-  public package_construct(construct package_name, position pos) {
+  public package_construct(construct package_name, origin pos) {
     super(pos);
     this.package_name = package_name;
   }

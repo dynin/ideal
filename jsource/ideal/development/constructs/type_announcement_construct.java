@@ -19,7 +19,7 @@ public class type_announcement_construct extends base_construct {
   public final action_name name;
 
   public type_announcement_construct(readonly_list<annotation_construct> annotations,
-      kind kind, action_name name, position pos) {
+      kind kind, action_name name, origin pos) {
     super(pos);
     this.annotations = annotations;
     this.kind = kind;

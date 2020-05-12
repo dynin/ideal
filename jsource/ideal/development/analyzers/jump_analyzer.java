@@ -24,7 +24,7 @@ public class jump_analyzer extends single_pass_analyzer {
 
   public final jump_type the_jump_type;
 
-  public jump_analyzer(jump_type the_jump_type, position pos) {
+  public jump_analyzer(jump_type the_jump_type, origin pos) {
     super(pos);
     this.the_jump_type = the_jump_type;
   }

@@ -26,7 +26,7 @@ public class narrow_action extends base_action {
   public final variable_declaration the_declaration;
 
   public narrow_action(action expression, type the_type, variable_declaration the_declaration,
-      position source) {
+      origin source) {
     super(source);
     this.expression = expression;
     this.the_type = the_type;

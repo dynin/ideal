@@ -26,7 +26,7 @@ public class bound_procedure extends base_action implements stringable {
   public final abstract_value return_value;
 
   public bound_procedure(action the_procedure_action, abstract_value return_value,
-      action_parameters parameters, position source) {
+      action_parameters parameters, origin source) {
     super(source);
     this.the_procedure_action = the_procedure_action;
     this.return_value = return_value;
@@ -34,7 +34,7 @@ public class bound_procedure extends base_action implements stringable {
   }
 
   public bound_procedure(procedure_value the_procedure_value, abstract_value return_value,
-      action_parameters parameters, position source) {
+      action_parameters parameters, origin source) {
     this(the_procedure_value.to_action(source), return_value, parameters, source);
   }
 
@@ -49,7 +49,7 @@ public class bound_procedure extends base_action implements stringable {
   }
 
   @Override
-  public action bind_from(action from, position pos) {
+  public action bind_from(action from, origin pos) {
     return new bound_procedure(the_procedure_action.bind_from(from, pos),
         return_value, parameters, pos);
   }

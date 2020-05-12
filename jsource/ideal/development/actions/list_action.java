@@ -24,7 +24,7 @@ import ideal.development.types.*;
 public class list_action extends base_action {
   private final readonly_list<action> subactions;
 
-  public list_action(readonly_list<action> subactions, position source) {
+  public list_action(readonly_list<action> subactions, origin source) {
     super(source);
     assert subactions != null;
     this.subactions = subactions;

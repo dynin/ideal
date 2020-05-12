@@ -30,7 +30,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   private boolean specializable;
 
   public supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
-      analyzable the_analyzable, position pos) {
+      analyzable the_analyzable, origin pos) {
     super(pos);
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
@@ -39,7 +39,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   }
 
   private supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
-      type the_type, position pos) {
+      type the_type, origin pos) {
     super(pos);
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;

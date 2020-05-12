@@ -88,7 +88,7 @@ public class analyzer_utilities {
       return;
     }
 
-    position pos = the_procedure;
+    origin pos = the_procedure;
     type target_type = the_procedure.declared_in_type().get_flavored(the_procedure.get_flavor());
 
     action result_action;
@@ -305,7 +305,7 @@ public class analyzer_utilities {
   }
 
   public static analysis_result bind_parameters(action the_action, action_parameters parameters,
-      position pos, analysis_context the_context) {
+      origin pos, analysis_context the_context) {
 
     abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...

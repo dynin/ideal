@@ -35,7 +35,7 @@ public class dispatch_action extends base_action {
     from = null;
   }
 
-  private dispatch_action(dispatch_action primary_dispatch, action from, position the_origin) {
+  private dispatch_action(dispatch_action primary_dispatch, action from, origin the_origin) {
     super(the_origin);
     this.primary_action = primary_dispatch.primary_action;
     this.from_type = primary_dispatch.from_type;
@@ -70,7 +70,7 @@ public class dispatch_action extends base_action {
   }
 
   @Override
-  public action bind_from(action new_from, position the_origin) {
+  public action bind_from(action new_from, origin the_origin) {
     // TODO: may be narrow result_type here.
     if (from != null) {
       new_from = from.bind_from(new_from, the_origin);

@@ -45,7 +45,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   public final principal_type root;
   private final resource_catalog top_catalog;
   public final analysis_context bootstrap_context;
-  private final position root_position;
+  private final origin root_origin;
   private output_counter<notification> notifications;
   private @Nullable resource_catalog output_catalog;
 
@@ -54,7 +54,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     root = core_types.root_type();
     this.top_catalog = top_catalog;
     bootstrap_context = new create_analysis_context(this, language);
-    root_position = semantics.BUILTIN_POSITION; // TODO: use resource id as position
+    root_origin = semantics.BUILTIN_POSITION; // TODO: use resource id as origin
     set_notification_handler((output<notification>) (output) log.log_output);
   }
 
@@ -99,7 +99,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     master_type result = new master_type(type_kinds.block_kind, flavor_profiles.nameonly_profile,
         new special_name(name, new base_string("create_manager")), root, context, null);
     // TODO: create a declaration and call result.process_declaration();
-    action_utilities.add_promotion(context, result, root, root_position);
+    action_utilities.add_promotion(context, result, root, root_origin);
     return result;
   }
 
@@ -121,7 +121,7 @@ public class create_manager implements target_manager, type_bootstrapper {
       analysis_context context) {
     list<construct> constructs = parse(source);
     if (constructs != null) {
-      check(new declaration_list_analyzer(constructs, parent, context, root_position));
+      check(new declaration_list_analyzer(constructs, parent, context, root_origin));
     }
     return constructs;
   }
@@ -136,7 +136,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     process_bootstrap_ops(bootstrap_context);
 
-    action_utilities.add_promotion(bootstrap_context, root, elements, root_position);
+    action_utilities.add_promotion(bootstrap_context, root, elements, root_origin);
 
     java_library.bootstrap_on_demand(this);
   }
@@ -146,7 +146,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     type_union_op the_op = new type_union_op();
     // TODO: remove--this is now handled in common_library init.
     // core_types.union_master_type().set_context(bootstrap_context);
-    bootstrap_context.add(operators, the_op.name(), the_op.to_action(root_position));
+    bootstrap_context.add(operators, the_op.name(), the_op.to_action(root_origin));
   }
 
   private string to_resource_name(action_name name) {
@@ -238,13 +238,13 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   private void add_target(target_value the_target) {
-    bootstrap_context.add(root, the_target.name(), the_target.to_action(root_position));
+    bootstrap_context.add(root, the_target.name(), the_target.to_action(root_origin));
   }
 
   /*
   public void process_project(list<construct> constructs, analysis_context context) {
     declaration_list_analyzer body =
-        new declaration_list_analyzer(constructs, root, context, root_position);
+        new declaration_list_analyzer(constructs, root, context, root_origin);
     check(body);
     if (!has_errors()) {
       ensure_everything_is_analyzed(constructs, context);
@@ -260,7 +260,7 @@ public class create_manager implements target_manager, type_bootstrapper {
       if (the_analyzable == null) {
         new base_notification(
             new base_string("Not analyzed " + the_construct), the_construct).report();
-      } else if (the_analyzable.source_position() != the_construct) {
+      } else if (the_analyzable.deeper_origin() != the_construct) {
         // TODO: enforce 1:1 mapping...
       }
     }

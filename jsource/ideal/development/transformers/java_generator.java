@@ -50,7 +50,7 @@ public class java_generator {
   public void generate_for_type(principal_type the_type) {
     type_declaration the_type_declaration = get_type_declaration(the_type.get_declaration());
     type_declaration_construct the_construct =
-        (type_declaration_construct) the_type_declaration.source_position();
+        (type_declaration_construct) the_type_declaration.deeper_origin();
 
     generate_top_level(the_type, new base_list<construct>(the_construct),
         new empty<import_construct>());
@@ -101,7 +101,7 @@ public class java_generator {
       type_declaration the_declaration = (type_declaration) the_type.get_declaration();
       assert the_declaration != null;
       type_declaration_construct the_declaration_construct =
-          (type_declaration_construct) get_type_declaration(the_declaration).source_position();
+          (type_declaration_construct) get_type_declaration(the_declaration).deeper_origin();
       generate_sources(the_type, the_declaration_construct, all_imports);
     }
   }

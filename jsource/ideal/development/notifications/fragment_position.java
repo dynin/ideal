@@ -12,12 +12,12 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
-public class fragment_position extends debuggable implements deeply_immutable_data, position {
-  public final position begin;
-  public final position main;
-  public final position end;
+public class fragment_position extends debuggable implements deeply_immutable_data, origin {
+  public final origin begin;
+  public final origin main;
+  public final origin end;
 
-  public fragment_position(position begin, position main, position end) {
+  public fragment_position(origin begin, origin main, origin end) {
     this.begin = begin;
     this.main = main;
     this.end = end;
@@ -26,7 +26,7 @@ public class fragment_position extends debuggable implements deeply_immutable_da
     assert end != null;
   }
 
-  public position source_position() {
+  public origin deeper_origin() {
     return main;
   }
 }

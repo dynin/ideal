@@ -29,7 +29,7 @@ public class action_utilities {
 
   private action_utilities() { }
 
-  static final position no_position = new special_position(new base_string("no-position"));
+  static final origin no_origin = new special_position(new base_string("no-origin"));
 
   public static readonly_list<type> lookup_types(analysis_context context, type from,
       action_name name) {
@@ -67,7 +67,7 @@ public class action_utilities {
     return result;
   }
 
-  public static void add_promotion(analysis_context context, type from, type to, position pos) {
+  public static void add_promotion(analysis_context context, type from, type to, origin pos) {
     if (to instanceof principal_type) {
       context.add(from, special_name.PROMOTION, to.to_action(pos));
     } else {
@@ -77,14 +77,14 @@ public class action_utilities {
 
   public static master_type make_type(analysis_context context, kind kind,
       @Nullable flavor_profile the_flavor_profile, action_name name, principal_type parent,
-      @Nullable declaration the_declaration, position pos) {
+      @Nullable declaration the_declaration, origin pos) {
     master_type result = new master_type(kind, the_flavor_profile, name, parent, context,
         the_declaration);
     context.add(parent, name, result.to_action(pos));
     return result;
   }
 
-  public static action to_value(action expression, position source) {
+  public static action to_value(action expression, origin source) {
     type the_type = expression.result().type_bound();
     if (common_library.get_instance().is_reference_type(the_type)) {
       // TODO: check that flavor is readonly or mutable.
@@ -179,7 +179,7 @@ public class action_utilities {
   }
 
   public static error_signal cant_promote(abstract_value from, type target,
-      analysis_context the_context, position pos) {
+      analysis_context the_context, origin pos) {
     return new error_signal(new base_string("Can't promote " + the_context.print_value(from) +
         " to " + the_context.print_value(target)), pos);
   }

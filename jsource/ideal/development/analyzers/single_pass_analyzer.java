@@ -28,7 +28,7 @@ public abstract class single_pass_analyzer extends base_analyzer {
   @dont_display
   private @Nullable analysis_result saved_result;
 
-  public single_pass_analyzer(position source) {
+  public single_pass_analyzer(origin source) {
     super(source);
   }
 

@@ -38,7 +38,7 @@ public class testcase_generator {
       return null;
     }
 
-    position source = the_type_declaration;
+    origin source = the_type_declaration;
     construct runtime_util_name = make_type(
         java_library.get_instance().runtime_util_class(), source);
     construct start_construct = new resolve_construct(runtime_util_name,
@@ -94,7 +94,7 @@ public class testcase_generator {
     return false;
   }
 
-  private static construct make_type(principal_type the_type, position source) {
+  private static construct make_type(principal_type the_type, origin source) {
     immutable_list<simple_name> full_name = type_utilities.get_full_names(the_type);
     assert !full_name.is_empty();
 
@@ -112,7 +112,7 @@ public class testcase_generator {
   }
 
   private static construct make_call(construct main, readonly_list<construct> parameters,
-      position source) {
+      origin source) {
     return new parameter_construct(main,
         new list_construct(parameters, grouping_type.PARENS, source), source);
   }

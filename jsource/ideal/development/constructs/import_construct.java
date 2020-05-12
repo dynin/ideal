@@ -19,7 +19,7 @@ public class import_construct extends base_construct {
   public final construct type;
   public import_construct(readonly_list<annotation_construct> annotations,
                           construct type,
-                          position pos) {
+                          origin pos) {
     super(pos);
     this.annotations = annotations;
     this.type = type;

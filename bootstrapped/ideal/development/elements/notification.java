@@ -8,7 +8,7 @@ import ideal.library.messages.log_message;
 
 public interface notification extends log_message {
   string message();
-  position position();
+  origin origin();
   readonly_list<notification> secondary();
   text_fragment render_text(boolean prefix_with_source);
   void report();

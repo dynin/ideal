@@ -4,7 +4,7 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface token<payload_type extends deeply_immutable_data> extends deeply_immutable_data, position, deeply_immutable_stringable {
+public interface token<payload_type extends deeply_immutable_data> extends deeply_immutable_data, origin, deeply_immutable_stringable {
   token_type type();
   payload_type payload();
 }

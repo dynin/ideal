@@ -70,7 +70,7 @@ public class constrained_analysis_context extends debuggable implements analysis
 
   @Override
   public readonly_list<action> resolve(type from, action_name name, @Nullable action_target target,
-      position pos) {
+      origin pos) {
     return parent.resolve(from, name, target, pos);
   }
 
@@ -95,12 +95,12 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public action promote(action from, type target, position pos) {
+  public action promote(action from, type target, origin pos) {
     return parent.promote(from, target, pos);
   }
 
   @Override
-  public graph<principal_type, position> type_graph() {
+  public graph<principal_type, origin> type_graph() {
     return parent.type_graph();
   }
 

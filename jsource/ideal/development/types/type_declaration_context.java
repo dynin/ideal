@@ -14,7 +14,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
 public interface type_declaration_context extends value {
-  graph<principal_type, position> type_graph();
+  graph<principal_type, origin> type_graph();
   void declare_type(principal_type the_type, declaration_pass pass);
   boolean is_subtype_of(abstract_value the_value, type the_type);
 }

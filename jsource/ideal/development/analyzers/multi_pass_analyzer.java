@@ -22,7 +22,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 
-public abstract class multi_pass_analyzer<C extends position> extends base_analyzer<C> {
+public abstract class multi_pass_analyzer<C extends origin> extends base_analyzer<C> {
 
   protected analysis_pass last_pass;
   private @Nullable error_signal last_error;

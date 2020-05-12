@@ -14,7 +14,7 @@ import ideal.development.elements.*;
 
 public class literal_construct extends base_construct {
   public literal the_literal;
-  public literal_construct(literal the_literal, position pos) {
+  public literal_construct(literal the_literal, origin pos) {
     super(pos);
     this.the_literal = the_literal;
   }

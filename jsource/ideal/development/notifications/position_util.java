@@ -20,29 +20,29 @@ import ideal.development.scanners.*;
 
 public class position_util {
 
-  public static @Nullable source_content get_source(position pos) {
+  public static @Nullable source_content get_source(origin pos) {
     while (pos != null) {
       if (pos instanceof source_content) {
         return (source_content) pos;
       }
-      pos = pos.source_position();
+      pos = pos.deeper_origin();
     }
     return null;
   }
 
-  public static string get_source_prefix(position the_position) {
-    while (the_position != null) {
-      if (the_position instanceof text_position) {
-        text_position in_text = (text_position) the_position;
+  public static string get_source_prefix(origin the_origin) {
+    while (the_origin != null) {
+      if (the_origin instanceof text_position) {
+        text_position in_text = (text_position) the_origin;
         source_content source = in_text.source;;
         int line_number = source.line_number(in_text);
         return new base_string(source.name.to_string().toString(), ":",
             String.valueOf(line_number), ": ");
-      } else if (the_position instanceof source_content) {
-        source_content source = (source_content) the_position;
+      } else if (the_origin instanceof source_content) {
+        source_content source = (source_content) the_origin;
         return new base_string(source.name.to_string(), ": ");
       }
-      the_position = the_position.source_position();
+      the_origin = the_origin.deeper_origin();
     }
     return new base_string("");
   }

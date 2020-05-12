@@ -41,7 +41,7 @@ public class documenter_filter {
   }
 
   private static int handle_doc_comment(readonly_list<token> tokens, int index, list<token> result,
-      position pos) {
+      origin pos) {
     string_writer content = new string_writer();
 
     while (index < tokens.size()) {

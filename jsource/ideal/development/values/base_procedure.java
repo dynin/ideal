@@ -45,7 +45,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   @Override
-  public procedure_value bind_from(action from, position pos) {
+  public procedure_value bind_from(action from, origin pos) {
     if (has_this_argument()) {
       return new procedure_with_this(this, from);
     } else {
@@ -63,7 +63,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
 
   @Override
   public analysis_result bind_parameters(action_parameters params, analysis_context context,
-      position pos) {
+      origin pos) {
 
     readonly_list<action> aparams = params.params();
     // This should never happen because of type checks done before bind_parameters() is called

@@ -22,7 +22,7 @@ public class conditional_construct extends base_construct {
                         construct then_expr,
                         @Nullable construct else_expr,
                         boolean is_statement,
-                        position pos) {
+                        origin pos) {
     super(pos);
     this.cond_expr = cond_expr;
     this.then_expr = then_expr;

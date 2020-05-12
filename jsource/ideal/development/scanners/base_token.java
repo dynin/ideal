@@ -17,9 +17,9 @@ public class base_token<P extends deeply_immutable_data> extends debuggable impl
 
   private final token_type type;
   private final P the_payload;
-  private final position pos;
+  private final origin pos;
 
-  public base_token(token_type type, P the_payload, position pos) {
+  public base_token(token_type type, P the_payload, origin pos) {
     assert the_payload != null;
     this.type = type;
     this.the_payload = the_payload;
@@ -27,7 +27,7 @@ public class base_token<P extends deeply_immutable_data> extends debuggable impl
   }
 
   @Override
-  public position source_position() {
+  public origin deeper_origin() {
     return pos;
   }
 
@@ -43,7 +43,7 @@ public class base_token<P extends deeply_immutable_data> extends debuggable impl
 
   @Override
   public string to_string() {
-    // TODO: display position? "@" pos.to_string().s());
+    // TODO: display origin? "@" pos.to_string().s());
     if (pos instanceof text_position) {
       return new base_string(type.to_string(), ":\"", ((text_position) pos).image());
     } else {

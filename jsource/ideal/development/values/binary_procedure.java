@@ -41,7 +41,7 @@ public abstract class binary_procedure extends base_procedure {
 
   @Override
   public final analysis_result bind_parameters(action_parameters params, analysis_context context,
-      position pos) {
+      origin pos) {
 
     readonly_list<action> aparams = params.params();
     if (!action_utilities.is_valid_procedure_arity(type_bound(), aparams.size())) {
@@ -63,12 +63,12 @@ public abstract class binary_procedure extends base_procedure {
   }
 
   protected analysis_result do_bind_parameters(readonly_list<action> aparams,
-      analysis_context context, position pos) {
+      analysis_context context, origin pos) {
     return bind_binary(aparams.get(0), aparams.get(1), context, pos);
   }
 
   protected analysis_result bind_binary(action first, action second, analysis_context context,
-      position pos) {
+      origin pos) {
     first = context.promote(first, get_argument_type(0), pos);
     second = context.promote(second, get_argument_type(1), pos);
 
@@ -76,7 +76,7 @@ public abstract class binary_procedure extends base_procedure {
   }
 
   protected final action make_action(abstract_value return_value, action first, action second,
-      position pos) {
+      origin pos) {
     list<action> new_params = new base_list<action>();
     new_params.append(first);
     new_params.append(second);

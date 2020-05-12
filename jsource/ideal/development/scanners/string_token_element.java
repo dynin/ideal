@@ -31,7 +31,7 @@ public class string_token_element<P extends deeply_immutable_data> implements sc
       return null;
     }
     int end = begin + the_punctuation.name().size();
-    position pos = source.make_position(begin, end);
+    origin pos = source.make_origin(begin, end);
     return new scan_state(new base_token<P>(the_type, the_payload, pos), end, end);
   }
 }

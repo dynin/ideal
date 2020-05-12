@@ -27,7 +27,7 @@ public class punctuation_element implements scanner_element {
       return null;
     }
     int end = begin + the_punctuation.name().size();
-    position pos = source.make_position(begin, end);
+    origin pos = source.make_origin(begin, end);
     String image = input.substring(begin, end);
     return new scan_state(
         new base_token<string>(the_punctuation, new base_string(image), pos), end, end);

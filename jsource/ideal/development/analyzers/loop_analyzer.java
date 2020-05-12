@@ -30,7 +30,7 @@ public class loop_analyzer extends single_pass_analyzer implements declaration {
   private principal_type inside;
   private @Nullable loop_action the_loop_action;
 
-  public loop_analyzer(analyzable body, position pos) {
+  public loop_analyzer(analyzable body, origin pos) {
     super(pos);
     this.body = body;
   }

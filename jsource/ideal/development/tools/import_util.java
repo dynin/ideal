@@ -46,13 +46,13 @@ public class import_util {
     String name = "java.lang.Object";
     //String name = "java.lang.String";
 
-    position import_pos = new special_position(new base_string("[import]"));
+    origin import_pos = new special_position(new base_string("[import]"));
     type_declaration_construct tc = new import_util().import_type(name, import_pos);
 
     out.write(new base_printer(printer_mode.CURLY).print(tc));
   }
 
-  public type_declaration_construct import_type(String class_name, position pos) {
+  public type_declaration_construct import_type(String class_name, origin pos) {
     Class cl;
     try {
       return import_type(Class.forName(class_name), pos);
@@ -61,7 +61,7 @@ public class import_util {
     }
   }
 
-  public type_declaration_construct import_type(Class cl, position pos) {
+  public type_declaration_construct import_type(Class cl, origin pos) {
     list<annotation_construct> annotations = modifiers_as_list(cl.getModifiers(),
         pos);
     kind kind = cl.isInterface() ? type_kinds.interface_kind:
@@ -78,7 +78,7 @@ public class import_util {
     return result;
   }
 
-  public procedure_construct import_method(Method method, position pos) {
+  public procedure_construct import_method(Method method, origin pos) {
     list<annotation_construct> annotations = modifiers_as_list(
         method.getModifiers(), pos);
     construct ret = get_name(method.getReturnType(), pos);
@@ -96,12 +96,12 @@ public class import_util {
     return result;
   }
 
-  private construct get_name(Class type, position pos) {
+  private construct get_name(Class type, origin pos) {
     return new name_construct(name_utilities.parse_camel_case(
         new base_string(type.getSimpleName())), pos);
   }
 
-  private variable_construct get_var(Class type, int index, position pos) {
+  private variable_construct get_var(Class type, int index, origin pos) {
     list<annotation_construct> annotations = new base_list<annotation_construct>();
     construct var_type = get_name(type, pos);
     simple_name name = simple_name.make(new base_string("val" + index));
@@ -137,7 +137,7 @@ public class import_util {
   };
 
   public static list<annotation_construct> modifiers_as_list(int modifiers,
-      position pos) {
+      origin pos) {
     list<annotation_construct> result = new base_list<annotation_construct>();
 
     for (modifier_mapping mod : all_modifiers) {

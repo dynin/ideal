@@ -30,7 +30,7 @@ public class dereference_action extends base_action {
   public final action from;
 
   private dereference_action(@Nullable action from, type value_type,
-      @Nullable declaration the_declaration, position source) {
+      @Nullable declaration the_declaration, origin source) {
     super(source);
     this.value_type = value_type;
     this.the_declaration = the_declaration;
@@ -38,7 +38,7 @@ public class dereference_action extends base_action {
   }
 
   public dereference_action(type value_type, @Nullable declaration the_declaration,
-      position source) {
+      origin source) {
     this(null, value_type, the_declaration, source);
   }
 
@@ -65,7 +65,7 @@ public class dereference_action extends base_action {
   }
 
   @Override
-  public action bind_from(action new_from, position pos) {
+  public action bind_from(action new_from, origin pos) {
     if (from != null) {
       assert !(from instanceof type_action);
       new_from = from.bind_from(new_from, pos);

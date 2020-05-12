@@ -24,7 +24,7 @@ public class while_construct extends extension_construct {
   public final construct condition;
   public final construct body;
 
-  public while_construct(construct condition, construct body, position pos) {
+  public while_construct(construct condition, construct body, origin pos) {
     super(pos);
     this.condition = condition;
     this.body = body;
@@ -42,7 +42,7 @@ public class while_construct extends extension_construct {
 
   @Override
   public analyzable to_analyzable() {
-    position pos = this;
+    origin pos = this;
 
     analyzable break_statement = new jump_analyzer(jump_type.BREAK_JUMP, pos);
     analyzable if_statement = new conditional_analyzer(base_analyzer.make(condition),

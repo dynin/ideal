@@ -17,16 +17,16 @@ import ideal.development.elements.*;
 public abstract class base_construct extends debuggable implements construct {
 
   @dont_display
-  private final position pos;
+  private final origin pos;
 
   public abstract readonly_list<construct> children();
 
-  public base_construct(position pos) {
+  public base_construct(origin pos) {
     assert pos != null;
     this.pos = pos;
   }
 
-  public position source_position() {
+  public origin deeper_origin() {
     return pos;
   }
 

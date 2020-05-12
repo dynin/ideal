@@ -28,12 +28,12 @@ public abstract class base_analysis_context extends debuggable implements analys
 
   private final base_semantics language;
   private final dictionary<construct, analyzable> eval_bindings;
-  private graph<principal_type, position> the_type_graph;
+  private graph<principal_type, origin> the_type_graph;
 
   protected base_analysis_context(base_semantics language) {
     this.language = language;
     this.eval_bindings = new hash_dictionary<construct, analyzable>();
-    this.the_type_graph = new base_graph<principal_type, position>();
+    this.the_type_graph = new base_graph<principal_type, origin>();
     if (!common_library.is_initialized()) {
       new common_library(this);
     }
@@ -56,7 +56,7 @@ public abstract class base_analysis_context extends debuggable implements analys
 
   @Override
   public readonly_list<action> resolve(type from, action_name name, @Nullable action_target target,
-      position pos) {
+      origin pos) {
     return language.resolve(actions, from, name, target, pos);
   }
 
@@ -85,7 +85,7 @@ public abstract class base_analysis_context extends debuggable implements analys
   }
 
   @Override
-  public action promote(action from, type target, position pos) {
+  public action promote(action from, type target, origin pos) {
     if (from instanceof error_signal) {
       return from;
     }
@@ -103,7 +103,7 @@ public abstract class base_analysis_context extends debuggable implements analys
   }
 
   @Override
-  public graph<principal_type, position> type_graph() {
+  public graph<principal_type, origin> type_graph() {
     return the_type_graph;
   }
 

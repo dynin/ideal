@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 public class instance_variable extends variable_action {
 
   instance_variable(variable_declaration the_declaration, type_flavor reference_flavor,
-      @Nullable action from, position source) {
+      @Nullable action from, origin source) {
     super(the_declaration, reference_flavor, from, source);
   }
 
@@ -43,7 +43,7 @@ public class instance_variable extends variable_action {
 
   @Override
   protected variable_action make_action(variable_declaration the_declaration,
-      @Nullable action from, position source) {
+      @Nullable action from, origin source) {
     return new instance_variable(the_declaration, reference_flavor, from, source);
   }
 }

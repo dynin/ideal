@@ -93,7 +93,7 @@ public class master_type extends base_principal_type {
 
   public type bind_parameters(type_parameters parameters) {
     init_parametrized_map();
-    // TODO: use position.
+    // TODO: use origin.
     parametrized_type result = parametrized_types.get(parameters);
     if (result == null) {
       result = make_parametrized();
@@ -101,7 +101,7 @@ public class master_type extends base_principal_type {
       result.set_parameters(parameters);
       if (primary_type != null) {
         assert the_context != null;
-        graph<principal_type, position> the_type_graph = the_context.type_graph();
+        graph<principal_type, origin> the_type_graph = the_context.type_graph();
         // TODO: do not panic but report a diagnostic
         assert !the_type_graph.introduces_cycle(result, primary_type);
         the_type_graph.add_edge(result, primary_type, semantics.BUILTIN_POSITION);

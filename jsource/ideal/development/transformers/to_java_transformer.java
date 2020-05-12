@@ -76,7 +76,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   public void set_type_context(principal_type main_type, readonly_list<import_construct> imports,
-      position pos) {
+      origin pos) {
     package_type = main_type.get_parent();
 
     assert package_type == core_types.root_type() ||
@@ -133,9 +133,9 @@ public class to_java_transformer extends base_transformer {
         assert the_list_construct.is_simple_grouping();
         c = the_list_construct.elements.first();
       } else {
-        assert c.source_position() instanceof construct : "Source of " + c + " is " +
-            c.source_position() + " for " + the_construct;
-        c = (construct) c.source_position();
+        assert c.deeper_origin() instanceof construct : "Source of " + c + " is " +
+            c.deeper_origin() + " for " + the_construct;
+        c = (construct) c.deeper_origin();
       }
     }
   }
@@ -158,12 +158,12 @@ public class to_java_transformer extends base_transformer {
   @Override
   public Object process_name(name_construct c) {
     action the_action = get_action(c);
-    position source = c;
+    origin source = c;
 
     if (the_action instanceof type_action) {
-      if (the_action.source_position() instanceof type_parameter_analyzer) {
+      if (the_action.deeper_origin() instanceof type_parameter_analyzer) {
         type_parameter_analyzer type_parameter =
-            (type_parameter_analyzer) the_action.source_position();
+            (type_parameter_analyzer) the_action.deeper_origin();
         return new name_construct(type_parameter.short_name(), source);
       }
       if (the_action.result() instanceof principal_type) {
@@ -240,7 +240,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public Object process_resolve(resolve_construct c) {
-    position source = c;
+    origin source = c;
     assert c.name instanceof name_construct;
     name_construct name = (name_construct) c.name;
 
@@ -317,12 +317,12 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct make_parametrized_type(construct main, readonly_list<construct> parameters,
-      position source) {
+      origin source) {
     return new parameter_construct(main,
         new list_construct(parameters, grouping_type.ANGLE_BRACKETS, source), source);
   }
 
-  private construct combine_flavor(type_flavor flavor, construct c, position pos) {
+  private construct combine_flavor(type_flavor flavor, construct c, origin pos) {
     if (c instanceof name_construct) {
       name_construct nc = (name_construct) c;
       return new name_construct(name_utilities.join(flavor.name(), (simple_name) nc.the_name), pos);
@@ -343,13 +343,13 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   protected list<annotation_construct> transform_a(readonly_list<annotation_construct> the_list,
-      position source) {
+      origin source) {
     return transform_annotations(the_list, null, true, source);
   }
 
   private list<annotation_construct> transform_annotations(
       readonly_list<annotation_construct> the_list, @Nullable annotation_set annotations,
-      boolean defaults_to_public, position source) {
+      boolean defaults_to_public, origin source) {
 
     boolean access_specified = false;
     list<annotation_construct> result = new base_list<annotation_construct>();
@@ -442,7 +442,7 @@ public class to_java_transformer extends base_transformer {
     if (the_analyzable.annotations().has(not_yet_implemented_modifier)) {
       return null;
     }
-    position source = c;
+    origin source = c;
 
     list<annotation_construct> annotations = transform_annotations(c.annotations,
         the_analyzable.annotations(), defaults_to_public(the_analyzable.declared_in_type()),
@@ -548,7 +548,7 @@ public class to_java_transformer extends base_transformer {
     return transform_with_mapping(arguments.first(), mapping.MAP_TO_WRAPPER_TYPE);
   }
 
-  private construct make_type_with_mapping(type the_type, position pos, mapping new_mapping) {
+  private construct make_type_with_mapping(type the_type, origin pos, mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
     mapping_strategy = new_mapping;
     construct result = make_type(the_type, pos);
@@ -556,7 +556,7 @@ public class to_java_transformer extends base_transformer {
     return result;
   }
 
-  private construct make_type(type the_type, position pos) {
+  private construct make_type(type the_type, origin pos) {
     principal_type principal = the_type.principal();
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
@@ -602,7 +602,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct make_flavored_and_parametrized_type(principal_type principal,
-      type_flavor flavor, @Nullable list_construct type_parameters, position pos) {
+      type_flavor flavor, @Nullable list_construct type_parameters, origin pos) {
     construct name = new name_construct(make_name(get_simple_name(principal), principal,
         flavor), pos);
 
@@ -645,7 +645,7 @@ public class to_java_transformer extends base_transformer {
     return the_type == java_adapter.java_package() || the_type == java_adapter.javax_package();
   }
 
-  private construct make_full_name(construct name, principal_type the_type, position pos) {
+  private construct make_full_name(construct name, principal_type the_type, origin pos) {
     if (imported_names.contains(the_type)) {
       return name;
     }
@@ -686,7 +686,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private readonly_list<annotation_construct> make_annotations(access_modifier access,
-      position source) {
+      origin source) {
     if (access != local_modifier) {
       return new base_list<annotation_construct>(new modifier_construct(access, source));
     } else {
@@ -696,7 +696,7 @@ public class to_java_transformer extends base_transformer {
 
   // TODO: pass a mutable list of annotations and update it in place; may be use annotation_set.
   private readonly_list<annotation_construct> append_static(
-      readonly_list<annotation_construct> annotations, position source) {
+      readonly_list<annotation_construct> annotations, origin source) {
     // TODO: replace with collection.has()
     for (int i = 0; i < annotations.size(); ++i) {
       annotation_construct the_annotation = annotations.get(i);
@@ -763,7 +763,7 @@ public class to_java_transformer extends base_transformer {
     type_declaration the_declaration = (type_declaration_analyzer) get_analyzable(c);
     assert the_declaration != null;
 
-    position source = c;
+    origin source = c;
 
     readonly_list<annotation_construct> annotations = transform_annotations(c.annotations,
         the_declaration.annotations(), false, source);
@@ -873,7 +873,7 @@ public class to_java_transformer extends base_transformer {
               supertype_list.append(transformed_supertype);
             }
           } else {
-            position pos = supertype_decl;
+            origin pos = supertype_decl;
             if (supertype_decl.subtype_flavor == null &&
                 supertype instanceof principal_type) {
               immutable_list<type_flavor> type_flavors = flavored_bodies.keys().elements();
@@ -1004,7 +1004,7 @@ public class to_java_transformer extends base_transformer {
     return the_kind == class_kind || the_kind == enum_kind;
   }
 
-  private construct change_flavor(construct type_construct, type_flavor flavor, position pos) {
+  private construct change_flavor(construct type_construct, type_flavor flavor, origin pos) {
     if (type_construct instanceof flavor_construct) {
       type_construct = ((flavor_construct) type_construct).expr;
     }
@@ -1015,7 +1015,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private procedure_construct var_to_proc(variable_analyzer the_variable) {
-    position pos = the_variable;
+    origin pos = the_variable;
     type return_type = is_readonly_flavor(the_variable.reference_type().get_flavor()) ?
         the_variable.value_type() : the_variable.reference_type();
     // TODO: should we inherit attotaions from the_variable?
@@ -1057,7 +1057,7 @@ public class to_java_transformer extends base_transformer {
       type_declaration_construct the_declaration,
       boolean is_function, int arity) {
 
-    position pos = the_declaration;
+    origin pos = the_declaration;
 
     readonly_list<annotation_construct> empty_annotations = new empty<annotation_construct>();
 
@@ -1151,7 +1151,7 @@ public class to_java_transformer extends base_transformer {
       return null;
     }
 
-    position source = c;
+    origin source = c;
 
     principal_type declared_in_type = the_variable_analyzer.declared_in_type();
     list<annotation_construct> annotations = transform_annotations(c.annotations,
@@ -1197,7 +1197,7 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  private construct make_procedure_class(construct the_procedure_construct, position source) {
+  private construct make_procedure_class(construct the_procedure_construct, origin source) {
     assert is_procedure_reference(the_procedure_construct);
     procedure_declaration the_procedure =
         (procedure_declaration) get_declaration(the_procedure_construct);
@@ -1263,7 +1263,7 @@ public class to_java_transformer extends base_transformer {
     return false;
   }
 
-  private construct do_explicitly_derefence(construct the_construct, position source) {
+  private construct do_explicitly_derefence(construct the_construct, origin source) {
     construct get_construct = new resolve_construct(the_construct,
         new name_construct(GET_NAME, source), source);
     return new parameter_construct(get_construct,
@@ -1281,7 +1281,7 @@ public class to_java_transformer extends base_transformer {
 
   private variable_construct process_type_parameter(type_parameter_analyzer a,
       variable_construct c) {
-    position pos = a;
+    origin pos = a;
     type type_bound = a.variable_type();
     if (!type_bound.is_subtype_of(library().value_type().get_flavored(any_flavor))) {
       utilities.panic("Type bound is not a value but " + type_bound);
@@ -1307,7 +1307,7 @@ public class to_java_transformer extends base_transformer {
     if (the_construct instanceof name_construct) {
       return the_construct;
     } else {
-      position source = the_construct;
+      origin source = the_construct;
       parameter_construct the_parameter_construct = (parameter_construct) the_construct;
       assert the_parameter_construct.main instanceof name_construct;
       return new parameter_construct(the_parameter_construct.main,
@@ -1337,7 +1337,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public Object process_parameter(parameter_construct c) {
-    position source = c;
+    origin source = c;
 
     action main_action = get_action(c.main);
     construct main = transform(c.main);
@@ -1400,11 +1400,11 @@ public class to_java_transformer extends base_transformer {
     return the_action instanceof dereference_action;
   }
 
-  private construct make_default_return(type the_type, position source) {
+  private construct make_default_return(type the_type, origin source) {
     return new return_construct(make_default_value(the_type, source), source);
   }
 
-  private construct make_default_value(type the_type, position source) {
+  private construct make_default_value(type the_type, origin source) {
     if (the_type == library().immutable_boolean_type()) {
       return new name_construct(library().false_value().short_name(), source);
     } else {
@@ -1415,7 +1415,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public Object process_operator(operator_construct c) {
-    position source = c;
+    origin source = c;
 
     // TODO: handle other assignment operators.
     if (c.the_operator == operator.ASSIGN) {
@@ -1512,7 +1512,7 @@ public class to_java_transformer extends base_transformer {
     return new operator_construct(map_operator(c.the_operator), transform(c.arguments), source);
   }
 
-  public construct transform_cast(construct expression, construct type_construct, position pos) {
+  public construct transform_cast(construct expression, construct type_construct, origin pos) {
     type expression_type = result_value(get_action(expression));
     type the_type = get_type(type_construct);
 
@@ -1559,7 +1559,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public import_construct process_import(import_construct c) {
-    position origin = c;
+    origin origin = c;
 
     list<annotation_construct> annotations = new base_list<annotation_construct>();
     if (c.has_modifier(general_modifier.implicit_modifier))  {
@@ -1577,7 +1577,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public construct process_loop(loop_construct c) {
-    position pos = c;
+    origin pos = c;
     construct true_construct = new name_construct(library().true_value().short_name(), pos);
     return new while_construct(true_construct, transform(c.body), pos);
   }
@@ -1588,7 +1588,7 @@ public class to_java_transformer extends base_transformer {
         get_action(c).result().type_bound() == library().immutable_string_type()) {
       // TODO: handle both string and character literals correctly.
       // TODO: also, convert inline literals into constants.
-      position pos = c;
+      origin pos = c;
       // TODO: use fully qualified type name?
       construct type_name = new name_construct(BASE_STRING_NAME, pos);
       construct alloc = new operator_construct(operator.ALLOCATE, type_name, pos);
@@ -1600,7 +1600,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public construct process_return(return_construct the_construct) {
-    position source = the_construct;
+    origin source = the_construct;
 
     // TODO: should we just force the expression to be either null or empty?
     if (the_construct.the_expression == null ||
@@ -1640,7 +1640,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   public readonly_list<construct> make_headers(type_declaration_construct the_declaration) {
-    position source = the_declaration;
+    origin source = the_declaration;
     list<construct> headers = new base_list<construct>();
 
     headers.append(make_comment(source));
@@ -1665,13 +1665,13 @@ public class to_java_transformer extends base_transformer {
     return headers;
   }
 
-  private import_construct make_import(principal_type the_type, position source) {
+  private import_construct make_import(principal_type the_type, origin source) {
     return new import_construct(new empty<annotation_construct>(), make_type(the_type, source),
         source);
   }
 
   private static construct make_call(construct main, readonly_list<construct> parameters,
-      position source) {
+      origin source) {
     return new parameter_construct(main,
         new list_construct(parameters, grouping_type.PARENS, source), source);
   }
@@ -1702,15 +1702,15 @@ public class to_java_transformer extends base_transformer {
     return false;
   }
 
-  private static construct make_null(position source) {
+  private static construct make_null(origin source) {
     return new name_construct(simple_name.make("null"), source);
   }
 
-  private static construct make_zero(position source) {
+  private static construct make_zero(origin source) {
     return new literal_construct(new integer_literal(0), source);
   }
 
-  private static comment_construct make_comment(position pos) {
+  private static comment_construct make_comment(origin pos) {
     source_content src = position_util.get_source(pos);
     string comment;
     if (src != null) {
@@ -1723,7 +1723,7 @@ public class to_java_transformer extends base_transformer {
         new base_string("// ", comment)), pos);
   }
 
-  private static comment_construct make_newline(position pos) {
+  private static comment_construct make_newline(origin pos) {
     string newline = new base_string("\n");
     return new comment_construct(new comment(comment_type.NEWLINE, newline, newline), pos);
   }

@@ -115,7 +115,7 @@ public class dispatcher extends construct_visitor<analyzable> {
   }
 
   public readonly_list<analyzable> make_supertype_list(
-      supertype_construct the_supertype_construct, position source) {
+      supertype_construct the_supertype_construct, origin source) {
     list<analyzable> result = new base_list<analyzable>();
     readonly_list<construct> supertypes = the_supertype_construct.types;
 

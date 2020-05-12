@@ -19,9 +19,9 @@ import ideal.development.declarations.*;
 
 public abstract class type_action extends debuggable implements action {
 
-  private final position source;
+  private final origin source;
 
-  protected type_action(position source) {
+  protected type_action(origin source) {
     assert source != null;
     this.source = source;
   }
@@ -34,12 +34,12 @@ public abstract class type_action extends debuggable implements action {
   }
 
   @Override
-  public final position source_position() {
+  public final origin deeper_origin() {
     return source;
   }
 
   @Override
-  public action bind_from(action from, position pos) {
+  public action bind_from(action from, origin pos) {
     if (pos == source) {
       return this;
     } else {

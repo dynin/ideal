@@ -18,7 +18,7 @@ import ideal.development.components.*;
 public class template_construct extends extension_construct {
   public final sexpression_construct body;
 
-  public template_construct(sexpression_construct body, position source) {
+  public template_construct(sexpression_construct body, origin source) {
     super(source);
     this.body = body;
   }

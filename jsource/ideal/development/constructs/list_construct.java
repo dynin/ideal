@@ -17,7 +17,7 @@ public class list_construct extends base_construct {
   public final readonly_list<construct> elements;
   public final grouping_type grouping;
 
-  public list_construct(readonly_list<construct> elements, grouping_type grouping, position pos) {
+  public list_construct(readonly_list<construct> elements, grouping_type grouping, origin pos) {
     super(pos);
 
     assert elements != null;

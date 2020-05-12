@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 public class local_variable extends variable_action {
 
   private local_variable(variable_declaration the_declaration, type_flavor reference_flavor,
-      position source) {
+      origin source) {
     super(the_declaration, reference_flavor, null, source);
   }
 
@@ -38,7 +38,7 @@ public class local_variable extends variable_action {
 
   @Override
   protected variable_action make_action(variable_declaration the_declaration,
-      @Nullable action from, position source) {
+      @Nullable action from, origin source) {
     return new local_variable(the_declaration, reference_flavor, source);
   }
 }

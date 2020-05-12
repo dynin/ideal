@@ -38,11 +38,11 @@ public class base_data_value<T> extends debuggable
   }
 
   @Override
-  public final action to_action(position pos) {
+  public final action to_action(origin pos) {
     return new value_action(this, pos);
   }
 
-  public T bind_from(action from, position pos) {
+  public T bind_from(action from, origin pos) {
     return (T) this;
   }
 

@@ -31,7 +31,7 @@ public abstract class variable_action extends base_action implements abstract_va
   public final action from;
 
   protected variable_action(variable_declaration the_declaration, type_flavor reference_flavor,
-      @Nullable action from, position source) {
+      @Nullable action from, origin source) {
     super(source);
     this.the_declaration = the_declaration;
     this.reference_flavor = reference_flavor;
@@ -63,7 +63,7 @@ public abstract class variable_action extends base_action implements abstract_va
   }
 
   @Override
-  public action to_action(position pos) {
+  public action to_action(origin pos) {
     return this;
   }
 
@@ -79,10 +79,10 @@ public abstract class variable_action extends base_action implements abstract_va
   protected abstract variable_context get_context(execution_context context);
 
   protected abstract variable_action make_action(variable_declaration the_declaration,
-      @Nullable action from, position source);
+      @Nullable action from, origin source);
 
   @Override
-  public action bind_from(action new_from, position source) {
+  public action bind_from(action new_from, origin source) {
     if (from != null) {
       new_from = from.bind_from(new_from, source);
     }

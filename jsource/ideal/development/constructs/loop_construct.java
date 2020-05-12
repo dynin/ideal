@@ -15,7 +15,7 @@ import ideal.development.elements.*;
 public class loop_construct extends base_construct {
   public final construct body;
 
-  public loop_construct(construct body, position pos) {
+  public loop_construct(construct body, origin pos) {
     super(pos);
     this.body = body;
   }

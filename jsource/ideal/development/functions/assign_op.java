@@ -38,7 +38,7 @@ public class assign_op extends binary_procedure {
 
   @Override
   protected analysis_result bind_binary(action first, action second, analysis_context context,
-      position pos) {
+      origin pos) {
     list<constraint> constraints = new base_list<constraint>();
 
     if (first instanceof narrow_action) {

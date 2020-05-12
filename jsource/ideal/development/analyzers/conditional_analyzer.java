@@ -34,7 +34,7 @@ public class conditional_analyzer extends single_pass_analyzer {
   }
 
   public conditional_analyzer(analyzable condition, analyzable then_branch,
-      @Nullable analyzable else_branch, position pos) {
+      @Nullable analyzable else_branch, origin pos) {
     super(pos);
     this.condition = condition;
     this.then_branch = then_branch;

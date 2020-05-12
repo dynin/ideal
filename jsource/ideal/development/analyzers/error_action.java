@@ -32,7 +32,7 @@ public class error_action extends error_signal implements action, abstract_value
   }
 
   @Override
-  public action to_action(position pos) {
+  public action to_action(origin pos) {
     return this;
   }
 
@@ -52,7 +52,7 @@ public class error_action extends error_signal implements action, abstract_value
   }
 
   @Override
-  public action bind_from(action from, position pos) {
+  public action bind_from(action from, origin pos) {
     return this;
   }
 }

@@ -32,7 +32,7 @@ public class resolve_analyzer extends single_pass_analyzer {
   private @Nullable action main_candidate;
   private declaration_pass resolve_pass;
 
-  public resolve_analyzer(@Nullable analyzable from, action_name the_name, position source) {
+  public resolve_analyzer(@Nullable analyzable from, action_name the_name, origin source) {
     super(source);
     this.the_name = the_name;
     this.from = from;
@@ -50,7 +50,7 @@ public class resolve_analyzer extends single_pass_analyzer {
     this(null, source.the_name, source);
   }
 
-  public resolve_analyzer(action_name the_name, position source) {
+  public resolve_analyzer(action_name the_name, origin source) {
     this(null, the_name, source);
   }
 

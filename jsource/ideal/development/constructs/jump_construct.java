@@ -15,7 +15,7 @@ import ideal.development.elements.*;
 public class jump_construct extends base_construct {
   public final jump_type the_jump_type;
 
-  public jump_construct(jump_type the_jump_type, position pos) {
+  public jump_construct(jump_type the_jump_type, origin pos) {
     super(pos);
     this.the_jump_type = the_jump_type;
   }

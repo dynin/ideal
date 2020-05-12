@@ -43,7 +43,7 @@ public class printer_target extends type_processor_target {
   @Override
   public void process_type(principal_type the_type) {
     type_declaration_construct the_declaration =
-        (type_declaration_construct) the_type.get_declaration().source_position();
+        (type_declaration_construct) the_type.get_declaration().deeper_origin();
     print_constructs(new base_list<construct>(the_declaration),
         type_utilities.get_full_names(the_type));
   }

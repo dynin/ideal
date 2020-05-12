@@ -23,7 +23,7 @@ import ideal.development.analyzers.*;
 public class please_construct extends extension_construct {
   public final construct the_statement;
 
-  public please_construct(construct the_statement, position pos) {
+  public please_construct(construct the_statement, origin pos) {
     super(pos);
     this.the_statement = the_statement;
   }

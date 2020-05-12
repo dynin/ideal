@@ -32,7 +32,7 @@ public class action_plus_constraints extends debuggable implements analysis_resu
   }
 
   @Override
-  public position source_position() {
+  public origin deeper_origin() {
     return the_action;
   }
 

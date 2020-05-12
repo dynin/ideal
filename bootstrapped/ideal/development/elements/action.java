@@ -5,6 +5,6 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface action extends analysis_result, position, readonly_action, writeonly_action {
+public interface action extends analysis_result, origin, readonly_action, writeonly_action {
   entity_wrapper execute(execution_context context);
 }

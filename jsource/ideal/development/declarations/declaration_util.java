@@ -16,8 +16,8 @@ import ideal.development.elements.*;
 
 public class declaration_util {
 
-  public static @Nullable declaration get_declaration(@Nullable position source) {
-    @Nullable position pos = source;
+  public static @Nullable declaration get_declaration(@Nullable origin source) {
+    @Nullable origin pos = source;
     while (pos != null) {
       if (pos instanceof declaration) {
         return (declaration) pos;
@@ -28,13 +28,13 @@ public class declaration_util {
           return decl;
         }
       }
-      pos = pos.source_position();
+      pos = pos.deeper_origin();
     }
     return null;
   }
 
   public static @Nullable type_declaration get_type_declaration(type the_type) {
-    @Nullable position the_declaration = the_type.principal().get_declaration();
+    @Nullable origin the_declaration = the_type.principal().get_declaration();
     if (the_declaration instanceof type_declaration) {
       return (type_declaration) the_declaration;
     } else {

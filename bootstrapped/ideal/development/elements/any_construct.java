@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface any_construct extends any_data, any_position { }
+public interface any_construct extends any_data, any_origin { }

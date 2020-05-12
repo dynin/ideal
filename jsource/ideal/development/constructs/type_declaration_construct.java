@@ -24,7 +24,7 @@ public class type_declaration_construct extends base_construct {
                                     action_name name,
                                     @Nullable list_construct parameters,
                                     readonly_list<construct> body,
-                                    position pos) {
+                                    origin pos) {
     super(pos);
     this.annotations = annotations;
     this.kind = kind;

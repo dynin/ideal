@@ -37,7 +37,7 @@ public class scanner_engine {
             break;
           }
         }
-        position pos = source.make_position(begin, end);
+        origin pos = source.make_origin(begin, end);
         string image = input.slice(begin, end);
         // TODO: handle newlines specially.
         tokens.append(new base_token<comment>(special_token_type.COMMENT,
@@ -50,7 +50,7 @@ public class scanner_engine {
             break;
           }
         }
-        position pos = source.make_position(begin, end);
+        origin pos = source.make_origin(begin, end);
         string image = input.slice(begin, end);
         simple_name token_as_name = simple_name.make(image);
         token t = new base_token<simple_name>(special_token_type.SIMPLE_NAME, token_as_name, pos);
@@ -83,7 +83,7 @@ public class scanner_engine {
         }
 
         int end = begin + 1;
-        position pos = source.make_position(begin, end);
+        origin pos = source.make_origin(begin, end);
         new base_notification(messages.unrecognized_character, pos).report();
         begin = end;
       }

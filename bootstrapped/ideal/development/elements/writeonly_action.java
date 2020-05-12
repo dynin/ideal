@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface writeonly_action extends writeonly_analysis_result, writeonly_position, any_action { }
+public interface writeonly_action extends writeonly_analysis_result, writeonly_origin, any_action { }

@@ -15,7 +15,7 @@ import ideal.development.elements.*;
 public class resolve_construct extends base_construct {
   public final construct qualifier;
   public final construct name;
-  public resolve_construct(construct qualifier, construct name, position pos) {
+  public resolve_construct(construct qualifier, construct name, origin pos) {
     super(pos);
     this.qualifier = qualifier;
     this.name = name;

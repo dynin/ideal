@@ -43,7 +43,7 @@ public class element_reference extends debuggable implements reference_wrapper<a
   }
 
   private datastore_state get_datastore() {
-    return (datastore_state) value.zone();
+    return value.datastore();
   }
 
   @Override
@@ -88,7 +88,7 @@ public class element_reference extends debuggable implements reference_wrapper<a
       // the index'th element exists in elements.
       elements.at(index).set(new_value);
     }
-    value.zone().mark_modified();
+    value.datastore().mark_modified();
   }
 
   @Override

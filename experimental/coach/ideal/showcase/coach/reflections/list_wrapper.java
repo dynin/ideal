@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.values;
+package ideal.showcase.coach.reflections;
 
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
@@ -19,13 +19,13 @@ public class list_wrapper extends debuggable implements value_wrapper<list<value
 
   private final list<value_wrapper> wrapped;
   private final type bound;
-  private final zone_wrapper the_zone;
+  private final datastore_state the_datastore;
 
-  public list_wrapper(list<value_wrapper> wrapped, type bound, zone_wrapper the_zone) {
+  public list_wrapper(list<value_wrapper> wrapped, type bound, datastore_state the_datastore) {
     this.wrapped = wrapped;
     this.bound = bound;
-    this.the_zone = the_zone;
-    assert wrapped != null && bound != null && the_zone != null;
+    this.the_datastore = the_datastore;
+    assert wrapped != null && bound != null && the_datastore != null;
   }
 
   @Override
@@ -38,8 +38,8 @@ public class list_wrapper extends debuggable implements value_wrapper<list<value
     return bound;
   }
 
-  public zone_wrapper zone() {
-    return the_zone;
+  public datastore_state datastore() {
+    return the_datastore;
   }
 
   @Override

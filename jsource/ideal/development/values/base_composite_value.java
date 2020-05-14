@@ -19,12 +19,10 @@ public class base_composite_value extends debuggable implements composite_wrappe
     any_composite_value {
 
   private final type bound;
-  private final zone_wrapper the_zone;
   private final dictionary<variable_id, value_wrapper> bindings;
 
-  public base_composite_value(type bound, zone_wrapper the_zone) {
+  public base_composite_value(type bound) {
     this.bound = bound;
-    this.the_zone = the_zone;
     bindings = new hash_dictionary<variable_id, value_wrapper>();
   }
 

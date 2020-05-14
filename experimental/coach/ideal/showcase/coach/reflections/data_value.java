@@ -35,7 +35,7 @@ public class data_value extends debuggable implements composite_wrapper {
   data_value(data_type type, datastore_state world) {
     this.type = type;
     this.world = world;
-    this.value = new base_composite_value(type.value_type(), world);
+    this.value = new base_composite_value(type.value_type());
     this.cached_name = null;
 
     readonly_list<variable_id> fields = type.get_fields();

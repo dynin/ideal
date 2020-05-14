@@ -26,7 +26,7 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 
 import javax.annotation.Nullable;
-public class datastore_state extends debuggable implements zone_wrapper {
+public class datastore_state extends debuggable {
   private final datastore_schema schema;
   private int next_id;
   private final dictionary<string, data_value> data;
@@ -71,7 +71,6 @@ public class datastore_state extends debuggable implements zone_wrapper {
     this.version_id = version_id;
   }
 
-  @Override
   public void mark_modified() {
     version_id = null;
   }

@@ -41,13 +41,19 @@
 - [ ] Introduce parameterized subtype refinement
 - [ ] Move regression tests from testdata to tests
 - [ ] Support procedure parameters with default values
-- [ ] Move dont_display annotation to ideal.machine
+- [x] Move dont_display annotation to ideal.machine
 - [ ] Handle more than one target
 - [ ] Update type-flavors doc; move docs to HTML
 - [x] Create should set non-zero exit code on errors
 - [ ] Handle variables overriding supertype variables
-- [x] Support => in variable declarations
-- [x] Implement list initializers
 - [ ] Do not require var modifier in for loop declarations
 - [ ] Implement switch construct
 - [ ] Infer procedure flavors from shortcut declarations
+- [x] Move list wrapper out of development
+- [ ] Replace base_list.new with list initializer
+- [ ] list.slice() should take a range argument
+- [ ] Infer deeply_immutable flavor in list initializer
+- [ ] Rename flavors to flavor
+- [ ] Use list iteration construct in ideal code
+- [ ] Introduce range construction operators
+- [ ] Add grouping_construct, consider retiring list_construct

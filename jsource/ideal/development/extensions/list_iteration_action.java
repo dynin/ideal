@@ -40,17 +40,24 @@ public class list_iteration_action extends base_action<list_iteration_analyzer> 
 
   @Override
   public entity_wrapper execute(execution_context exec_context) {
-    entity_wrapper init_value = source.init_action.execute(exec_context);
-    if (init_value instanceof error_signal) {
-      return init_value;
+    entity_wrapper init_entity = source.init_action.execute(exec_context);
+    if (init_entity instanceof error_signal) {
+      return init_entity;
     }
 
-    if (! (init_value instanceof list_wrapper)) {
+    if (! (init_entity instanceof value_wrapper)) {
       return new panic_value(new base_string("list value expected, got " +
-          init_value.type_bound()));
+          init_entity.type_bound()));
     }
 
-    list<value_wrapper> values = ((list_wrapper) init_value).unwrap();
+    readonly_value init_value = (readonly_value) ((value_wrapper) init_entity).unwrap();
+
+    if (! (init_value instanceof readonly_list)) {
+      return new panic_value(new base_string("list expected, got " +
+          init_entity.type_bound()));
+    }
+
+    readonly_list<value_wrapper> values = (readonly_list) init_value;
 
     for (int i = 0; i < values.size(); ++i) {
       entity_wrapper element = values.get(i);

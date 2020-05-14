@@ -4,11 +4,15 @@ package ideal.runtime.elements;
 
 import ideal.library.elements.*;
 import ideal.machine.elements.runtime_util;
+import ideal.machine.elements.array;
 
 public class base_immutable_list<element_type> extends base_readonly_list<element_type> implements immutable_list<element_type> {
   protected base_immutable_list(final list_state<element_type> state) {
     super(state);
     state.writable = false;
+  }
+  public base_immutable_list(final array<element_type> state) {
+    super(new list_state<element_type>(state));
   }
   public @Override immutable_list<element_type> frozen_copy() {
     return this;

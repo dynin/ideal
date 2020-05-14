@@ -47,14 +47,6 @@ public class parameter_analyzer extends single_pass_analyzer {
     this.parameter_pass = declaration_pass.METHODS_AND_VARIABLES;
   }
 
-  public parameter_analyzer(list_construct source) {
-    super(source);
-    assert !source.is_simple_grouping();
-    main_analyzable = new resolve_analyzer(special_name.SEQUENCE, this);
-    analyzable_parameters = make_list(source.elements);
-    this.parameter_pass = declaration_pass.METHODS_AND_VARIABLES;
-  }
-
   @Override
   protected void do_add_dependence(@Nullable principal_type the_principal, declaration_pass pass) {
     add_dependence(main_analyzable, the_principal, pass);

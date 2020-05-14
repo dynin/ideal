@@ -22,6 +22,11 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
     public list_state() {
       this(parameters.default_size);
     }
+    public list_state(final array<element_type> immutable_elements) {
+      writable = false;
+      the_elements = immutable_elements;
+      size = immutable_elements.size;
+    }
     public void reserve(final int reserve_size) {
       if (the_elements.size >= reserve_size) {
         return;

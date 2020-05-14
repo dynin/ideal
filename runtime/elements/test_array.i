@@ -37,4 +37,12 @@ class test_array {
     assert "foo" == the_array[1];
     assert "bar" == the_array[2];
   }
+
+  testcase test_initializer() {
+    the_array : ["foo", "bar"];
+
+    assert the_array.size == 2;
+    assert the_array[0] == "foo";
+    assert the_array[1] == "bar";
+  }
 }

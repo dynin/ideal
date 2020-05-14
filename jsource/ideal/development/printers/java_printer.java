@@ -174,10 +174,12 @@ public class java_printer extends base_printer {
 
   @Override
   public text_fragment process_parameter(parameter_construct c) {
-    if (c.parameters.grouping != grouping_type.BRACES) {
-      return super.process_parameter(c);
-    } else {
+    if (c.parameters.grouping == grouping_type.BRACES &&
+        c.parameters.elements.is_not_empty() &&
+        c.parameters.elements.first() instanceof procedure_construct) {
       return text_util.join(print(c.main), print_block(c.parameters.elements, true, false));
+    } else {
+      return super.process_parameter(c);
     }
   }
 
@@ -220,5 +222,10 @@ public class java_printer extends base_printer {
   @Override
   public token_type enum_separator_token(boolean last_value) {
     return last_value ? punctuation.SEMICOLON : punctuation.COMMA;
+  }
+
+  @Override
+  boolean wrap_in_space(grouping_type grouping) {
+    return grouping == grouping_type.BRACES;
   }
 }

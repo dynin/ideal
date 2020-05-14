@@ -43,6 +43,14 @@ class base_readonly_list[value element_type] {
       this(parameters.default_size);
     }
 
+    --- Construct a list state from a given array of elements.
+    --- Assumes noone mutates the elements.
+    overload list_state(array[element_type] immutable_elements) {
+      writable = false;
+      the_elements = immutable_elements;
+      size = immutable_elements.size;
+    }
+
     --- Make sure the array is of at least the specified size.
     void reserve(nonnegative reserve_size) {
       if (the_elements.size >= reserve_size) {

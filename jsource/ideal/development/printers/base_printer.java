@@ -232,7 +232,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     if (params.is_empty()) {
       inside_text = text_util.EMPTY_FRAGMENT;
     } else {
+      boolean wrap_in_space = wrap_in_space(grouping);
       list<text_fragment> fragments = new base_list<text_fragment>();
+
+      if (wrap_in_space) {
+        fragments.append(print_space());
+      }
 
       for (int i = 0; i < params.size(); ++i) {
         construct c = params.get(i);
@@ -247,10 +252,19 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
           fragments.append(print_space());
         }
       }
+
+      if (wrap_in_space) {
+        fragments.append(print_space());
+      }
+
       inside_text = text_util.join(fragments);
     }
 
     return print_group(inside_text, grouping);
+  }
+
+  boolean wrap_in_space(grouping_type grouping) {
+    return false;
   }
 
   public text_fragment print_var(variable_construct c) {

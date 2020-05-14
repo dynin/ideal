@@ -44,6 +44,8 @@ public interface messages {
   string error_in_parametrizable =
       new base_string("Error in paramterizable expression");
 
+  string error_in_list_initilizer = new base_string("Error in list initializer");
+
   string ambiguous_access_parametrizable =
       new base_string("Ambiguous access of the parametrizable expression");
 

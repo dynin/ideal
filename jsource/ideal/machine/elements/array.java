@@ -29,6 +29,14 @@ public class array<T> {
     this.size = size;
   }
 
+  // Important: this doesn't create a copy of an array!
+  @SuppressWarnings("unchecked")
+  public array(T[] the_elements) {
+    this.the_elements = the_elements;
+    this.size = the_elements.length;
+  }
+
+  @SuppressWarnings("unchecked")
   public T get(int index) {
     return the_elements[index];
   }

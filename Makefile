@@ -160,6 +160,9 @@ generate_runtime: $(IDEAL_TARGET)
 bootstrap_runtime: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_runtime -output=$(BOOTSTRAPPED_DIR)
 
+ga: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_array
+
 ### Generating other
 
 generate_all: $(IDEAL_TARGET) rm-scratch

@@ -47,7 +47,7 @@
 - [x] Create should set non-zero exit code on errors
 - [ ] Handle variables overriding supertype variables
 - [x] Support => in variable declarations
-- [ ] Implement list initializers
+- [x] Implement list initializers
 - [ ] Do not require var modifier in for loop declarations
 - [ ] Implement switch construct
 - [ ] Infer procedure flavors from shortcut declarations

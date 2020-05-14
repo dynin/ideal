@@ -65,7 +65,7 @@ public class dispatcher extends construct_visitor<analyzable> {
     if (source.is_simple_grouping()) {
       return process(source.elements.first());
     } else {
-      return new parameter_analyzer(source);
+      return new list_initializer_analyzer(source);
     }
   }
 

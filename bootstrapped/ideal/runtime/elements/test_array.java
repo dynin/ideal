@@ -16,6 +16,9 @@ public class test_array {
     ideal.machine.elements.runtime_util.start_test("test_array.test_move");
     test_move();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_array.test_initializer");
+    test_initializer();
+    ideal.machine.elements.runtime_util.end_test();
   }
   public void test_creation() {
     final array<string> the_array = new array<string>(10);
@@ -38,5 +41,11 @@ public class test_array {
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo"), the_array.at(0).get());
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo"), the_array.at(1).get());
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("bar"), the_array.at(2).get());
+  }
+  public void test_initializer() {
+    final immutable_list<string> the_array = new base_immutable_list<string>(new array<string>(new string[]{ new base_string("foo"), new base_string("bar") }));
+    assert the_array.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(the_array.get(0), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(the_array.get(1), new base_string("bar"));
   }
 }

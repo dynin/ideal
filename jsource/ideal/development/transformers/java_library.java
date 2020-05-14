@@ -49,6 +49,7 @@ public class java_library implements value {
   private principal_type machine_elements_namespace;
   private principal_type machine_adapters_namespace;
   private principal_type runtime_util_class;
+  private principal_type array_class;
 
   private principal_type machine_annotations_namespace;
   private principal_type dont_display_type;
@@ -193,6 +194,13 @@ public class java_library implements value {
       runtime_util_class = get_type(machine_elements_namespace(), "runtime_util");
     }
     return runtime_util_class;
+  }
+
+  public principal_type array_class() {
+    if (array_class == null) {
+      array_class = get_type(machine_elements_namespace(), "array");
+    }
+    return array_class;
   }
 
   private principal_type get_namespace(simple_name name, principal_type parent) {

@@ -17,6 +17,7 @@ public class list_construct extends base_construct {
   public final readonly_list<construct> elements;
   public final grouping_type grouping;
 
+  // TODO: handle trailing comma
   public list_construct(readonly_list<construct> elements, grouping_type grouping, origin pos) {
     super(pos);
 

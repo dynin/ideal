@@ -5,14 +5,19 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 import ideal.machine.elements.runtime_util;
+import ideal.machine.elements.array;
 
 class base_immutable_list[value element_type] {
   extends base_readonly_list[element_type];
   implements immutable list[element_type];
 
-  protected base_immutable_list(list_state[element_type] state) {
+  protected overload base_immutable_list(list_state[element_type] state) {
     super(state);
     state.writable = false;
+  }
+
+  public overload base_immutable_list(array[element_type] state) {
+    super(list_state[element_type].new(state));
   }
 
   implement immutable list[element_type] frozen_copy() {

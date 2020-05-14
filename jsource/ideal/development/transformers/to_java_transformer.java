@@ -20,7 +20,7 @@ import ideal.development.modifiers.*;
 import static ideal.development.modifiers.access_modifier.*;
 import static ideal.development.modifiers.general_modifier.*;
 import ideal.development.flavors.*;
-import static ideal.development.flavors.flavors.*;
+import static ideal.development.flavors.flavor.*;
 import ideal.development.names.*;
 import ideal.development.kinds.*;
 import static ideal.development.kinds.type_kinds.*;

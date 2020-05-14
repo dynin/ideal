@@ -53,7 +53,7 @@ public class enum_type {
   }
 
   public type value_type() {
-    return declaration.get_declared_type().get_flavored(flavors.deeply_immutable_flavor);
+    return declaration.get_declared_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public readonly_list<enum_value> get_values() {

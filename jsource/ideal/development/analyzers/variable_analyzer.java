@@ -22,7 +22,7 @@ import ideal.development.kinds.*;
 import ideal.development.values.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
-import static ideal.development.flavors.flavors.*;
+import static ideal.development.flavors.flavor.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
 
@@ -166,7 +166,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     // TODO: add a feature/flag to toggle it.
     if (true) {
       readonly_list<action> shadowed_actions = get_context().resolve(
-          declared_in_type().get_flavored(flavors.mutable_flavor), short_name(), null, this);
+          declared_in_type().get_flavored(flavor.mutable_flavor), short_name(), null, this);
       if (shadowed_actions.size() > 0) {
         for (int i = 0; i < shadowed_actions.size(); ++i) {
           action shadowed = shadowed_actions.get(i);
@@ -192,7 +192,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     declared_as_reference = reference_flavor != null;
     if (!declared_as_reference) {
       // TODO: detect and use deeply_immutable.
-      reference_flavor = is_immutable() ? flavors.immutable_flavor : flavors.mutable_flavor;
+      reference_flavor = is_immutable() ? flavor.immutable_flavor : flavor.mutable_flavor;
     }
     var_reference_type = library().get_reference(reference_flavor, var_value_type);
 

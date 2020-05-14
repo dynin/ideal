@@ -49,7 +49,7 @@ public class data_type implements readonly_data {
   }
 
   public type value_type() {
-    return declaration.get_declared_type().get_flavored(flavors.mutable_flavor);
+    return declaration.get_declared_type().get_flavored(flavor.mutable_flavor);
   }
 
   public string get_short_name() {

@@ -18,7 +18,7 @@ import ideal.development.flavors.*;
 public class singleton_value extends base_data_value {
 
   public singleton_value(principal_type singleton_type) {
-    super(singleton_type.get_flavored(flavors.deeply_immutable_flavor));
+    super(singleton_type.get_flavored(flavor.deeply_immutable_flavor));
     if (singleton_type.get_kind() != type_kinds.singleton_kind) {
       utilities.panic("Not a singleton type: " + singleton_type);
     }

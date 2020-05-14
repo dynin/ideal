@@ -13,17 +13,10 @@ public class base_list_text_node extends debuggable implements list_text_node {
     this.the_nodes = the_nodes.frozen_copy();
   }
   public static list_text_node make(final text_node first, final text_node second) {
-    final list<text_node> result = new base_list<text_node>();
-    result.append(first);
-    result.append(second);
-    return new base_list_text_node(result);
+    return new base_list_text_node(new base_immutable_list<text_node>(new ideal.machine.elements.array<text_node>(new text_node[]{ first, second })));
   }
   public static list_text_node make(final text_node first, final text_node second, final text_node third) {
-    final list<text_node> result = new base_list<text_node>();
-    result.append(first);
-    result.append(second);
-    result.append(third);
-    return new base_list_text_node(result);
+    return new base_list_text_node(new base_immutable_list<text_node>(new ideal.machine.elements.array<text_node>(new text_node[]{ first, second, third })));
   }
   public @Override immutable_list<text_node> nodes() {
     return the_nodes;

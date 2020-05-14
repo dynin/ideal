@@ -51,7 +51,7 @@ public class datastore_schema {
 
     // TODO: reference should be of immutable flavor
     data_id_field = new simple_variable_id(DATA_ID, library.immutable_string_type(),
-        library.get_reference(flavors.immutable_flavor, library.immutable_string_type()));
+        library.get_reference(flavor.immutable_flavor, library.immutable_string_type()));
 
     data_types = new base_list<data_type>();
     enum_types = new base_list<enum_type>();
@@ -105,7 +105,7 @@ public class datastore_schema {
   }
 
   public type get_mutable_reference(type_id value_type) {
-    return library.get_reference(flavors.mutable_flavor, action_utilities.to_type(value_type));
+    return library.get_reference(flavor.mutable_flavor, action_utilities.to_type(value_type));
   }
 
   public variable_id data_id_field() {

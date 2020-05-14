@@ -31,9 +31,9 @@ public class assign_op extends binary_procedure {
   // TODO: this should use any flavor, not readonly.
   public assign_op() {
     super(operator.ASSIGN, false,
-        library().value_type().get_flavored(flavors.any_flavor),
-        library().entity_type().get_flavored(flavors.any_flavor),
-        library().value_type().get_flavored(flavors.any_flavor));
+        library().value_type().get_flavored(flavor.any_flavor),
+        library().entity_type().get_flavored(flavor.any_flavor),
+        library().value_type().get_flavored(flavor.any_flavor));
   }
 
   @Override
@@ -57,7 +57,7 @@ public class assign_op extends binary_procedure {
 
     type value_type = library().get_reference_parameter(reference_type);
 
-    type writable_ref = library().get_reference(flavors.writeonly_flavor, value_type);
+    type writable_ref = library().get_reference(flavor.writeonly_flavor, value_type);
     if (!context.can_promote(first.result(), writable_ref)) {
       return new error_signal(new base_string("Writable reference expected, got ",
           context.print_value(reference_type)), pos);
@@ -68,7 +68,7 @@ public class assign_op extends binary_procedure {
     if (java_library.is_java_type(value_type)) {
       // This causes loading of java adapter, so the check above avoids it unless necessary
       type java_string = java_library.get_instance().string_type().
-          get_flavored(flavors.deeply_immutable_flavor);
+          get_flavored(flavor.deeply_immutable_flavor);
       if (value_type == java_string && !context.can_promote(second.result(), java_string)) {
         value_type = library().immutable_string_type();
       }

@@ -31,10 +31,10 @@ class test_elements {
 
   testcase test_make_element() {
     node0 : base_element.new(text_library.P);
-    -- TODO: drop cast
-    node1 : "foo" as base_string;
+    -- TODO: shouldn't need to specify type
+    text_node node1 : "foo" as base_string;
 
-    nodes : base_list[text_node].new(node0, node1);
+    nodes : [node0, node1];
     element : text_util.make_element(text_library.BODY, nodes);
 
     assert element is base_element;

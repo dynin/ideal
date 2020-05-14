@@ -141,11 +141,11 @@ public class common_library implements value {
   }
 
   public type immutable_void_type() {
-    return void_type().get_flavored(flavors.deeply_immutable_flavor);
+    return void_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public type immutable_boolean_type() {
-    return boolean_type().get_flavored(flavors.deeply_immutable_flavor);
+    return boolean_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public enum_value true_value() {
@@ -167,15 +167,15 @@ public class common_library implements value {
   }
 
   public type immutable_integer_type() {
-    return integer_type().get_flavored(flavors.deeply_immutable_flavor);
+    return integer_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public type immutable_nonnegative_type() {
-    return nonnegative_type().get_flavored(flavors.deeply_immutable_flavor);
+    return nonnegative_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public type immutable_character_type() {
-    return character_type().get_flavored(flavors.deeply_immutable_flavor);
+    return character_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public principal_type string_type() {
@@ -183,7 +183,7 @@ public class common_library implements value {
   }
 
   public type immutable_string_type() {
-    return string_type().get_flavored(flavors.deeply_immutable_flavor);
+    return string_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public master_type stringable_type() {
@@ -207,7 +207,7 @@ public class common_library implements value {
   }
 
   public type immutable_null_type() {
-    return null_type().get_flavored(flavors.deeply_immutable_flavor);
+    return null_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public type get_reference(type_flavor flavor, type value_type) {

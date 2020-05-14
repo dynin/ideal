@@ -50,6 +50,6 @@ public class procedure_util {
   private static type do_make_procedure(boolean is_function, type_parameters parameters) {
     common_library library = common_library.get_instance();
     master_type the_master_type = is_function ? library.function_type() : library.procedure_type();
-    return the_master_type.bind_parameters(parameters).get_flavored(flavors.immutable_flavor);
+    return the_master_type.bind_parameters(parameters).get_flavored(flavor.immutable_flavor);
   }
 }

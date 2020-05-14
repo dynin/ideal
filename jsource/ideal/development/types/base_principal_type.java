@@ -38,7 +38,7 @@ public abstract class base_principal_type extends base_type implements principal
 
   @Override
   public type_flavor get_flavor() {
-    return flavors.nameonly_flavor;
+    return flavor.nameonly_flavor;
   }
 
   @Override
@@ -70,7 +70,7 @@ public abstract class base_principal_type extends base_type implements principal
 
   public void set_flavor_profile(flavor_profile the_flavor_profile) {
     assert this.the_flavor_profile == null;
-    for (type_flavor flavor : flavors.all_flavors) {
+    for (type_flavor flavor : flavor.all_flavors) {
       if (!the_flavor_profile.supports(flavor)) {
         if (((type_flavor_impl) flavor).types.contains_key(this)) {
           utilities.panic("Already used " + flavor + " of " + this);

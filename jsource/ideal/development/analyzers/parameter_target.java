@@ -36,7 +36,7 @@ public class parameter_target extends debuggable implements action_target {
       parameter_list.append(library.entity_type());
       parameter_list.append_all(parameters.to_value_list());
       procedure_type = library.procedure_type().bind_parameters(
-          new type_parameters(parameter_list)).get_flavored(flavors.DEFAULT_FLAVOR);
+          new type_parameters(parameter_list)).get_flavored(flavor.DEFAULT_FLAVOR);
     }
     return procedure_type;
   }

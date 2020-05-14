@@ -29,7 +29,7 @@ public class multiply_assign_op extends binary_procedure {
   public multiply_assign_op() {
     super(operator.MULTIPLY_ASSIGN, false,
         library().immutable_integer_type(),
-        library().get_reference(flavors.readonly_flavor, library().immutable_integer_type()),
+        library().get_reference(flavor.readonly_flavor, library().immutable_integer_type()),
         library().immutable_integer_type());
   }
 

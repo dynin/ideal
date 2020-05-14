@@ -46,6 +46,7 @@ namespace name_utilities {
 --  }
 
   simple_name join(simple_name first, simple_name second) pure {
+    -- TODO: use list.join() once it's implemented
     segments : base_list[string].new();
 
     segments.append_all(first.segments);

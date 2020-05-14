@@ -156,12 +156,12 @@ public class common_scanner extends base_scanner_config {
     add_modifier(variance_modifier.contravariant_modifier);
     add_modifier(variance_modifier.combivariant_modifier);
 
-    add_flavor(flavors.any_flavor);
-    add_flavor(flavors.readonly_flavor);
-    add_flavor(flavors.writeonly_flavor);
-    add_flavor(flavors.mutable_flavor);
-    add_flavor(flavors.immutable_flavor);
-    add_flavor(flavors.deeply_immutable_flavor);
-    add_flavor(flavors.raw_flavor);
+    add_flavor(flavor.any_flavor);
+    add_flavor(flavor.readonly_flavor);
+    add_flavor(flavor.writeonly_flavor);
+    add_flavor(flavor.mutable_flavor);
+    add_flavor(flavor.immutable_flavor);
+    add_flavor(flavor.deeply_immutable_flavor);
+    add_flavor(flavor.raw_flavor);
   }
 }

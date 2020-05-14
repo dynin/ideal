@@ -45,7 +45,7 @@ public class proc_as_ref_action extends base_action {
   }
 
   public type type_bound() {
-    return common_library.get_instance().get_reference(flavors.readonly_flavor, get_return_type());
+    return common_library.get_instance().get_reference(flavor.readonly_flavor, get_return_type());
   }
 
   @Override
@@ -71,7 +71,7 @@ public class proc_as_ref_action extends base_action {
       assert action_utilities.is_of(result, get_return_type());
     }
 
-    type ref_type = common_library.get_instance().get_reference(flavors.readonly_flavor,
+    type ref_type = common_library.get_instance().get_reference(flavor.readonly_flavor,
         action_utilities.to_type(result.type_bound()));
     return new constant_reference<any_value>((value_wrapper) result, ref_type);
   }

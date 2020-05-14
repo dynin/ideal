@@ -29,7 +29,7 @@ public class concatenate_assign_op extends binary_procedure {
   public concatenate_assign_op() {
     super(operator.CONCATENATE_ASSIGN, false,
         library().immutable_string_type(),
-        library().get_reference(flavors.mutable_flavor, library().immutable_string_type()),
+        library().get_reference(flavor.mutable_flavor, library().immutable_string_type()),
         library().immutable_string_type());
   }
 

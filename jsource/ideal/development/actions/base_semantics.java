@@ -208,7 +208,7 @@ public class base_semantics implements semantics {
       }
 
       if (subtype.get_flavor() == specific_type.get_flavor() &&
-          subtype.get_flavor() != flavors.nameonly_flavor &&
+          subtype.get_flavor() != flavor.nameonly_flavor &&
           maybe_master(subtype) == maybe_master(specific_type)) {
         if (check_variance(actions, (parametrized_type) subtype.principal(),
             (parametrized_type) specific_type.principal(), subtype.get_flavor())) {
@@ -479,7 +479,7 @@ public class base_semantics implements semantics {
         // TODO: this should be done in type_declaration_analyzer.
         type procedure_type = library().procedure_type().bind_parameters(
           ((parametrized_type) new_type).get_parameters()).get_flavored(
-            flavors.immutable_flavor);
+            flavor.immutable_flavor);
         process_super_flavors(new_type, null, procedure_type, pos, context);
       }
 
@@ -620,7 +620,7 @@ public class base_semantics implements semantics {
     type param = (type) params.first();
 
     action deref = new dereference_action(param, the_declaration, the_declaration);
-    context.add(new_type.get_flavored(flavors.readonly_flavor), special_name.PROMOTION, deref);
+    context.add(new_type.get_flavored(flavor.readonly_flavor), special_name.PROMOTION, deref);
   }
 
   public string print_value(abstract_value the_value) {

@@ -170,19 +170,19 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       case CONSTRUCTOR:
         // TODO: signal error if flavor is non-null
         assert the_flavor == null;
-        the_flavor = flavors.raw_flavor;
+        the_flavor = flavor.raw_flavor;
         break;
       case STATIC:
         // TODO: signal error if flavor is non-null
         assert the_flavor == null;
-        the_flavor = flavors.nameonly_flavor;
+        the_flavor = flavor.nameonly_flavor;
         break;
       case METHOD:
         if (the_flavor == null) {
           if (is_pure()) {
-            the_flavor = flavors.readonly_flavor;
+            the_flavor = flavor.readonly_flavor;
           } else {
-            the_flavor = flavors.DEFAULT_FLAVOR;
+            the_flavor = flavor.DEFAULT_FLAVOR;
           }
         }
         break;
@@ -237,7 +237,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       // Also: implicit returns for constructors?
       principal_type the_type = declared_in_type();
       assert the_type.get_declaration() instanceof type_declaration;
-      return_type = the_type.get_flavored(flavors.mutable_flavor);
+      return_type = the_type.get_flavored(flavor.mutable_flavor);
     } else {
       // what if return expression is not a type?
       // TODO: expect static types.
@@ -314,7 +314,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     master_type the_procedure_type = is_pure() ? library().function_type() :
         library().procedure_type();
     proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
-        get_flavored(flavors.immutable_flavor);
+        get_flavored(flavor.immutable_flavor);
 
     result_value = new procedure_executor(this);
     analyzer_utilities.add_procedure(this, result_value, get_context());
@@ -332,15 +332,15 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     switch (get_category()) {
       case CONSTRUCTOR:
         if (superclass != null) {
-          add_super_reference(special_name.SUPER_CONSTRUCTOR, superclass, flavors.raw_flavor);
+          add_super_reference(special_name.SUPER_CONSTRUCTOR, superclass, flavor.raw_flavor);
         }
         get_context().add(inside, special_name.THIS_CONSTRUCTOR,
-            make_this_variable(flavors.raw_flavor).get_access().to_action(source));
+            make_this_variable(flavor.raw_flavor).get_access().to_action(source));
 
         // Here comes a subtle point.  If one constructor invokes another using this() call,
         // then it is assumed that all the invariants a met after first constructor executes,
         // and 'this' is of mutable flavor and not of 'raw' flavor.  Needs to be documented.
-        do_declare_this(calls_this_constructor ? flavors.mutable_flavor : flavors.raw_flavor);
+        do_declare_this(calls_this_constructor ? flavor.mutable_flavor : flavor.raw_flavor);
         break;
 
       case METHOD:
@@ -444,7 +444,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     principal_type new_inside = make_block(original_name(), new_parent, this);
     type new_return_type;
     if (get_category() == procedure_category.CONSTRUCTOR) {
-      new_return_type = new_parent.get_flavored(flavors.mutable_flavor);
+      new_return_type = new_parent.get_flavored(flavor.mutable_flavor);
     } else {
       analyzable return_specialized = return_analyzable.specialize(new_context, new_inside);
       abstract_value return_value = analyzer_utilities.to_action(return_specialized).result();
@@ -473,7 +473,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
   private local_variable_declaration make_this_variable(type_flavor this_flavor) {
     origin source = this;
     return new local_variable_declaration(analyzer_utilities.THIS_MODIFIERS, special_name.THIS,
-        inside, flavors.immutable_flavor, declared_in_type().get_flavored(this_flavor), null,
+        inside, flavor.immutable_flavor, declared_in_type().get_flavored(this_flavor), null,
         source);
   }
 
@@ -482,7 +482,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     origin source = this;
     local_variable_declaration super_decl = new local_variable_declaration(
         analyzer_utilities.THIS_MODIFIERS, the_name, inside,
-        flavors.immutable_flavor, superclass.get_flavored(super_flavor), null, source);
+        flavor.immutable_flavor, superclass.get_flavored(super_flavor), null, source);
     get_context().add(inside, the_name, super_decl.get_access().to_action(source));
   }
 

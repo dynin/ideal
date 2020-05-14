@@ -188,7 +188,7 @@ public class action_utilities {
     type the_type = the_supertype.get_supertype();
     type_utilities.prepare(the_type, declaration_pass.TYPES_AND_PROMOTIONS);
     flavor_profile the_profile = the_type.principal().get_flavor_profile();
-    if (the_type.get_flavor() != flavors.nameonly_flavor) {
+    if (the_type.get_flavor() != flavor.nameonly_flavor) {
       the_profile = flavor_profiles.combine(the_profile, the_type.get_flavor().get_profile());
     }
     return the_profile;

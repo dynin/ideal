@@ -18,7 +18,7 @@ import ideal.development.notifications.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
-import static ideal.development.flavors.flavors.*;
+import static ideal.development.flavors.flavor.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.kinds.*;

@@ -29,7 +29,7 @@ public abstract class base_type extends debuggable implements type {
 
   protected static type do_get_flavored(base_principal_type the_type, type_flavor new_flavor) {
     type_flavor_impl the_flavor = (type_flavor_impl) new_flavor;
-    if (the_flavor == flavors.nameonly_flavor) {
+    if (the_flavor == flavor.nameonly_flavor) {
       return the_type;
     }
 

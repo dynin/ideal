@@ -18,7 +18,7 @@ public class flavor_profiles {
   public static flavor_profile nameonly_profile = new base_flavor_profile("nameonly_profile") {
     @Override
     public type_flavor map(type_flavor from) {
-      return flavors.nameonly_flavor;
+      return flavor.nameonly_flavor;
     }
   };
 
@@ -33,8 +33,8 @@ public class flavor_profiles {
       new base_flavor_profile("shallow_mutable_profile") {
     @Override
     public type_flavor map(type_flavor from) {
-      if (from == flavors.immutable_flavor) {
-        return flavors.deeply_immutable_flavor;
+      if (from == flavor.immutable_flavor) {
+        return flavor.deeply_immutable_flavor;
       } else {
         return from;
       }
@@ -44,11 +44,11 @@ public class flavor_profiles {
   public static flavor_profile immutable_profile = new base_flavor_profile("immutable_profile") {
     @Override
     public type_flavor map(type_flavor from) {
-      if (from == flavors.writeonly_flavor ||
-          from == flavors.mutable_flavor ||
-          from == flavors.readonly_flavor ||
-          from == flavors.any_flavor) {
-        return flavors.immutable_flavor;
+      if (from == flavor.writeonly_flavor ||
+          from == flavor.mutable_flavor ||
+          from == flavor.readonly_flavor ||
+          from == flavor.any_flavor) {
+        return flavor.immutable_flavor;
       } else {
         return from;
       }
@@ -59,14 +59,14 @@ public class flavor_profiles {
       new base_flavor_profile("deeply_immutable_profile") {
     @Override
     public type_flavor map(type_flavor from) {
-      if (from == flavors.any_flavor ||
-          from == flavors.readonly_flavor ||
-          from == flavors.writeonly_flavor ||
-          from == flavors.mutable_flavor ||
-          from == flavors.immutable_flavor ||
-          from == flavors.deeply_immutable_flavor) {
-        return flavors.deeply_immutable_flavor;
-      } else if (from == flavors.nameonly_flavor || from == flavors.raw_flavor) {
+      if (from == flavor.any_flavor ||
+          from == flavor.readonly_flavor ||
+          from == flavor.writeonly_flavor ||
+          from == flavor.mutable_flavor ||
+          from == flavor.immutable_flavor ||
+          from == flavor.deeply_immutable_flavor) {
+        return flavor.deeply_immutable_flavor;
+      } else if (from == flavor.nameonly_flavor || from == flavor.raw_flavor) {
         return from;
       } else {
         utilities.panic("Unknown flavor: " + from);

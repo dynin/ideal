@@ -360,7 +360,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         short_name() == common_library.function_name) {
       log.debug("FUN: " + result_type);
       type procedure_supertype = library().procedure_type().bind_parameters(parameter_values).
-          get_flavored(flavors.immutable_flavor);
+          get_flavored(flavor.immutable_flavor);
       assert body != null;
       origin pos = this;
       add_to_body(new supertype_analyzer(procedure_supertype, pos));

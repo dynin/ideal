@@ -34,7 +34,7 @@ public class list_initializer_action extends base_action {
     type_parameters list_parameters = new type_parameters(
         new base_list<abstract_value>(element_type));
     result_type = common_library.get_instance().list_type().bind_parameters(list_parameters).
-        get_flavored(flavors.immutable_flavor);
+        get_flavored(flavor.immutable_flavor);
   }
 
   @Override

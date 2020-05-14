@@ -29,7 +29,7 @@ public abstract class base_flavor_profile extends debuggable implements flavor_p
 
   @Override
   public type_flavor default_flavor() {
-    return map(flavors.DEFAULT_FLAVOR);
+    return map(flavor.DEFAULT_FLAVOR);
   }
 
   @Override
@@ -41,7 +41,7 @@ public abstract class base_flavor_profile extends debuggable implements flavor_p
   public immutable_list<type_flavor> supported_flavors() {
     if (supported_flavors == null) {
       list<type_flavor> filtered_flavors = new base_list<type_flavor>();
-      for (type_flavor flavor : flavors.PRIMARY_FLAVORS) {
+      for (type_flavor flavor : flavor.PRIMARY_FLAVORS) {
         if (this.supports(flavor)) {
           filtered_flavors.append(flavor);
         }

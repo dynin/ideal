@@ -28,7 +28,7 @@ public class cast_action extends base_action {
     this.expression = expression;
     this.the_type = the_type;
     assert the_type.is_subtype_of(
-        common_library.get_instance().value_type().get_flavored(flavors.any_flavor));
+        common_library.get_instance().value_type().get_flavored(flavor.any_flavor));
   }
 
   @Override

@@ -22,7 +22,7 @@ import ideal.development.kinds.*;
 import ideal.development.values.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
-import static ideal.development.flavors.flavors.*;
+import static ideal.development.flavors.flavor.*;
 import ideal.development.declarations.*;
 
 public class specialized_variable extends debuggable implements variable_declaration,

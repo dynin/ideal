@@ -27,7 +27,7 @@ public class type_union_op extends binary_procedure {
 
   public type_union_op() {
     super(operator.GENERAL_OR, true,
-        library().value_type().get_flavored(flavors.any_flavor),
+        library().value_type().get_flavored(flavor.any_flavor),
         core_types.any_type(),
         core_types.any_type());
   }
@@ -53,7 +53,7 @@ public class type_union_op extends binary_procedure {
 
     list<abstract_value> union_parameters = new base_list<abstract_value>();
     union_parameters.append(primary_action.result());
-    union_parameters.append(null_type.get_flavored(flavors.deeply_immutable_flavor));
+    union_parameters.append(null_type.get_flavored(flavor.deeply_immutable_flavor));
 
     return type_utilities.make_union(union_parameters).to_action(the_origin);
   }

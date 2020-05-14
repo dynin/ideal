@@ -89,7 +89,7 @@ public class type_parameter_analyzer extends declaration_analyzer
 
       @Nullable error_signal signal = process_parameter();
       if (signal != null) {
-        var_type = library().value_type().get_flavored(flavors.any_flavor);
+        var_type = library().value_type().get_flavored(flavor.any_flavor);
         maybe_report_error(signal);
       } else {
         assert var_type != null;
@@ -155,7 +155,7 @@ public class type_parameter_analyzer extends declaration_analyzer
   private static type handle_default_any_flavor(type the_type) {
     if (the_type instanceof principal_type) {
       principal_type principal = the_type.principal();
-      return principal.get_flavored(flavors.any_flavor);
+      return principal.get_flavored(flavor.any_flavor);
     } else {
       return the_type;
     }

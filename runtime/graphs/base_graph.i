@@ -73,6 +73,7 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
       return true;
     }
 
+    -- TODO: use list initializer
     considered : base_list[vertice_type].new(from, to);
     visited : hash_set[vertice_type].new();
     visited.add(from);

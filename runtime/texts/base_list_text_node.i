@@ -16,18 +16,11 @@ class base_list_text_node {
   }
 
   public overload static list_text_node make(text_node first, text_node second) {
-    list[text_node] result : base_list[text_node].new();
-    result.append(first);
-    result.append(second);
-    return base_list_text_node.new(result);
+    return base_list_text_node.new([first, second]);
   }
 
   public overload static list_text_node make(text_node first, text_node second, text_node third) {
-    list[text_node] result : base_list[text_node].new();
-    result.append(first);
-    result.append(second);
-    result.append(third);
-    return base_list_text_node.new(result);
+    return base_list_text_node.new([first, second, third]);
   }
 
   override immutable list[text_node] nodes() {

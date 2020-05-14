@@ -53,7 +53,7 @@
 - [ ] Replace base_list.new with list initializer
 - [ ] list.slice() should take a range argument
 - [ ] Infer deeply_immutable flavor in list initializer
-- [ ] Rename flavors to flavor
+- [x] Rename flavors to flavor
 - [ ] Use list iteration construct in ideal code
 - [ ] Introduce range construction operators
 - [ ] Add grouping_construct, consider retiring list_construct

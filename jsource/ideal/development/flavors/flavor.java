@@ -11,7 +11,7 @@ package ideal.development.flavors;
 import ideal.development.elements.*;
 import static ideal.development.flavors.flavor_profiles.*;
 
-public class flavors {
+public class flavor {
   public static final type_flavor nameonly_flavor =
       new type_flavor_impl("nameonly", nameonly_profile);
 
@@ -41,7 +41,7 @@ public class flavors {
     mutable_flavor, raw_flavor, immutable_flavor, deeply_immutable_flavor
   };
 
-  public static final type_flavor DEFAULT_FLAVOR = flavors.mutable_flavor;
+  public static final type_flavor DEFAULT_FLAVOR = mutable_flavor;
 
   public static final type_flavor[] PRIMARY_FLAVORS = {
     any_flavor, readonly_flavor, writeonly_flavor, mutable_flavor,

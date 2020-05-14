@@ -30,13 +30,13 @@ public class allocate_action extends base_action {
 
   @Override
   public abstract_value result() {
-    return the_type.get_flavored(flavors.raw_flavor);
+    return the_type.get_flavored(flavor.raw_flavor);
   }
 
   // TODO: instead of dummy_zone, use a zone derived from the execution_context
   @Override
   public value_wrapper execute(execution_context context) {
-    return new base_composite_value(the_type.get_flavored(flavors.mutable_flavor));
+    return new base_composite_value(the_type.get_flavored(flavor.mutable_flavor));
   }
 
   @Override

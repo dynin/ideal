@@ -586,13 +586,18 @@ public class to_java_transformer extends base_transformer {
         new empty<annotation_construct>(), body, source);
   }
 
-  private type remove_null_type(principal_type the_type) {
+  private type remove_null_type(type the_type) {
     assert type_utilities.is_union(the_type);
+    type_flavor union_flavor = the_type.get_flavor();
     immutable_list<abstract_value> the_values = type_utilities.get_union_parameters(the_type);
     assert the_values.size() == 2;
     type null_type = (type) the_values.get(1);
     assert null_type.principal() == library().null_type();
-    return (type) the_values.first();
+    type result = (type) the_values.first();
+    if (union_flavor != flavor.nameonly_flavor) {
+      result = result.get_flavored(union_flavor);
+    }
+    return result;
   }
 
   private construct remove_null_union(construct the_construct) {
@@ -1238,8 +1243,7 @@ public class to_java_transformer extends base_transformer {
     if (c.type == null) {
       if (type_utilities.is_union(var_type)) {
         annotations.append(new modifier_construct(nullable_modifier, source));
-        type not_null_type = remove_null_type(
-            var_type.principal()).get_flavored(var_type.get_flavor());
+        type not_null_type = remove_null_type(var_type);
         type = make_type_with_mapping(not_null_type, source, mapping.MAP_TO_WRAPPER_TYPE);
       } else {
         type = make_type(var_type, source);

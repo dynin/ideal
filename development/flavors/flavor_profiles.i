@@ -8,11 +8,11 @@ namespace flavor_profiles {
 
   private type_flavor nameonly_map(type_flavor from) pure => flavor.nameonly_flavor;
 
-  flavor_profile nameonly_profile : base_flavor_profile.new("nameonly_profile", nameonly_map);
+  nameonly_profile : base_flavor_profile.new("nameonly_profile", nameonly_map);
 
   private type_flavor mutable_map(type_flavor from) pure => from;
 
-  flavor_profile mutable_profile : base_flavor_profile.new("mutable_profile", mutable_map);
+  mutable_profile : base_flavor_profile.new("mutable_profile", mutable_map);
 
   private type_flavor shallow_mutable_map(type_flavor from) pure {
     if (from == flavor.immutable_flavor) {
@@ -22,7 +22,7 @@ namespace flavor_profiles {
     }
   }
 
-  flavor_profile shallow_mutable_profile : base_flavor_profile.new("shallow_mutable_profile",
+  shallow_mutable_profile : base_flavor_profile.new("shallow_mutable_profile",
       shallow_mutable_map);
 
   private type_flavor immutable_map(type_flavor from) pure {
@@ -36,7 +36,7 @@ namespace flavor_profiles {
     }
   }
 
-  flavor_profile immutable_profile : base_flavor_profile.new("immutable_profile", immutable_map);
+  immutable_profile : base_flavor_profile.new("immutable_profile", immutable_map);
 
   private type_flavor deeply_immutable_map(type_flavor from) pure {
     if (from == flavor.any_flavor ||
@@ -53,7 +53,7 @@ namespace flavor_profiles {
     }
   }
 
-  flavor_profile deeply_immutable_profile :
+  deeply_immutable_profile :
       base_flavor_profile.new("deeply_immutable_profile", deeply_immutable_map);
 
   flavor_profile combine(flavor_profile flavors1, flavor_profile flavors2) {
@@ -86,5 +86,5 @@ namespace flavor_profiles {
     }
   }
 
-  flavor_profile class_profile : base_flavor_profile.new("class_profile", class_map);
+  class_profile : base_flavor_profile.new("class_profile", class_map);
 }

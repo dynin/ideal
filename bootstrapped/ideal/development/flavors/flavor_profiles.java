@@ -12,7 +12,7 @@ public class flavor_profiles {
   private static type_flavor nameonly_map(final type_flavor from) {
     return flavor.nameonly_flavor;
   }
-  public final static flavor_profile nameonly_profile = new base_flavor_profile(new base_string("nameonly_profile"), new function1<type_flavor, type_flavor>() {
+  public final static base_flavor_profile nameonly_profile = new base_flavor_profile(new base_string("nameonly_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
       return nameonly_map(first);
     }
@@ -20,7 +20,7 @@ public class flavor_profiles {
   private static type_flavor mutable_map(final type_flavor from) {
     return from;
   }
-  public final static flavor_profile mutable_profile = new base_flavor_profile(new base_string("mutable_profile"), new function1<type_flavor, type_flavor>() {
+  public final static base_flavor_profile mutable_profile = new base_flavor_profile(new base_string("mutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
       return mutable_map(first);
     }
@@ -32,7 +32,7 @@ public class flavor_profiles {
       return from;
     }
   }
-  public final static flavor_profile shallow_mutable_profile = new base_flavor_profile(new base_string("shallow_mutable_profile"), new function1<type_flavor, type_flavor>() {
+  public final static base_flavor_profile shallow_mutable_profile = new base_flavor_profile(new base_string("shallow_mutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
       return shallow_mutable_map(first);
     }
@@ -44,7 +44,7 @@ public class flavor_profiles {
       return from;
     }
   }
-  public final static flavor_profile immutable_profile = new base_flavor_profile(new base_string("immutable_profile"), new function1<type_flavor, type_flavor>() {
+  public final static base_flavor_profile immutable_profile = new base_flavor_profile(new base_string("immutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
       return immutable_map(first);
     }
@@ -59,7 +59,7 @@ public class flavor_profiles {
       return null;
     }
   }
-  public final static flavor_profile deeply_immutable_profile = new base_flavor_profile(new base_string("deeply_immutable_profile"), new function1<type_flavor, type_flavor>() {
+  public final static base_flavor_profile deeply_immutable_profile = new base_flavor_profile(new base_string("deeply_immutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
       return deeply_immutable_map(first);
     }
@@ -87,7 +87,7 @@ public class flavor_profiles {
       return flavor.DEFAULT_FLAVOR;
     }
   }
-  public final static flavor_profile class_profile = new base_flavor_profile(new base_string("class_profile"), new function1<type_flavor, type_flavor>() {
+  public final static base_flavor_profile class_profile = new base_flavor_profile(new base_string("class_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
       return class_map(first);
     }

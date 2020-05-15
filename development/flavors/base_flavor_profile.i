@@ -28,8 +28,7 @@ class base_flavor_profile {
   }
 
   override immutable list[type_flavor] supported_flavors() {
-    -- TODO: infer the variable type.
-    immutable list[type_flavor] or null result : cached_flavors;
+    result : cached_flavors;
     -- TODO: streamline this with a cached value extension.
     if (result is null) {
       filtered_flavors : base_list[type_flavor].new();

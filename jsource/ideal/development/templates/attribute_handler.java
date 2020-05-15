@@ -52,7 +52,7 @@ public class attribute_handler implements sexpression_handler {
     string attr_start = new base_string(ATTRIBUTE_SEPARATOR, attribute.short_name(),
         ATTRIBUTE_START);
     subactions.append(template.make_appender(attr_start, result));
-    subactions.append_all(template.process_list(arguments));
+    subactions.append_all(template.process_constructs(arguments));
     subactions.append(template.make_appender(ATTRIBUTE_END, result));
 
     result.populate(subactions);

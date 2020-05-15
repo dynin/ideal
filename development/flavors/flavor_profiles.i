@@ -76,15 +76,4 @@ namespace flavor_profiles {
     assert flavors1 == mutable_profile && flavors2 == mutable_profile;
     return mutable_profile;
   }
-
-  -- Used in java transformer; TODO: declare there
-  private type_flavor class_map(type_flavor from) pure {
-    if (from == flavor.nameonly_flavor) {
-      return from;
-    } else {
-      return flavor.DEFAULT_FLAVOR;
-    }
-  }
-
-  class_profile : base_flavor_profile.new("class_profile", class_map);
 }

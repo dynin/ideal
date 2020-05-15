@@ -12,19 +12,19 @@ namespace flavor {
       empty[type_flavor].new());
 
   type_flavor readonly_flavor : type_flavor_impl.new("readonly", flavor_profiles.mutable_profile,
-      base_list[type_flavor].new[any_flavor]);
+      [any_flavor, ]);
 
   type_flavor writeonly_flavor : type_flavor_impl.new("writeonly", flavor_profiles.mutable_profile,
-      base_list[type_flavor].new[any_flavor]);
+      [any_flavor, ]);
 
   type_flavor mutable_flavor : type_flavor_impl.new("mutable", flavor_profiles.mutable_profile,
       [readonly_flavor, writeonly_flavor]);
 
   type_flavor immutable_flavor : type_flavor_impl.new("immutable",
-      flavor_profiles.immutable_profile, base_list[type_flavor].new[readonly_flavor]);
+      flavor_profiles.immutable_profile, [readonly_flavor, ]);
 
   type_flavor deeply_immutable_flavor : type_flavor_impl.new("deeply_immutable",
-      flavor_profiles.deeply_immutable_profile, base_list[type_flavor].new[immutable_flavor]);
+      flavor_profiles.deeply_immutable_profile, [immutable_flavor, ]);
 
   type_flavor raw_flavor : type_flavor_impl.new("raw", flavor_profiles.mutable_profile,
       empty[type_flavor].new());
@@ -36,7 +36,7 @@ namespace flavor {
 
   DEFAULT_FLAVOR : mutable_flavor;
 
-  immutable list[type_flavor] PRIMARY_FLAVORS : [
+  PRIMARY_FLAVORS : [
     any_flavor, readonly_flavor, writeonly_flavor, mutable_flavor,
     immutable_flavor, deeply_immutable_flavor
   ];

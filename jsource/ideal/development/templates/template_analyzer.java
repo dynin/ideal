@@ -124,7 +124,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
     }
   }
 
-  list<analyzable> process_list(readonly_list<construct> constructs) {
+  list<analyzable> process_constructs(readonly_list<construct> constructs) {
     list<analyzable> actions = new base_list<analyzable>();
     for (int i = 0; i < constructs.size(); ++i) {
       actions.append(process_template_expression(constructs.get(i)));

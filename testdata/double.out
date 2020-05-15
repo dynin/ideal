@@ -51,6 +51,7 @@
           }
         ]
         grouping: parens
+        has_trailing_comma: false
       }
     }
   }
@@ -73,6 +74,7 @@
         }
       ]
       grouping: parens
+      has_trailing_comma: false
     }
     post_annotations: [ ]
     body: block_construct {
@@ -93,6 +95,7 @@
                 }
               ]
               grouping: parens
+              has_trailing_comma: false
             }
           }
         }
@@ -118,6 +121,7 @@
         }
       ]
       grouping: parens
+      has_trailing_comma: false
     }
     post_annotations: [ ]
     body: block_construct {
@@ -141,6 +145,7 @@
                 }
               ]
               grouping: parens
+              has_trailing_comma: false
             }
           }
         }
@@ -170,14 +175,17 @@
                     }
                   ]
                   grouping: parens
+                  has_trailing_comma: false
                 }
               }
             ]
             grouping: parens
+            has_trailing_comma: false
           }
         }
       ]
       grouping: parens
+      has_trailing_comma: false
     }
   }
   parameter_construct {
@@ -203,6 +211,7 @@
                     }
                   ]
                   grouping: parens
+                  has_trailing_comma: false
                 }
               }
               name_construct {
@@ -210,10 +219,12 @@
               }
             ]
             grouping: parens
+            has_trailing_comma: false
           }
         }
       ]
       grouping: parens
+      has_trailing_comma: false
     }
   }
   parameter_construct {
@@ -249,10 +260,12 @@
               }
             ]
             grouping: parens
+            has_trailing_comma: false
           }
         }
       ]
       grouping: parens
+      has_trailing_comma: false
     }
   }
   block_construct {
@@ -288,6 +301,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             literal_construct {
@@ -302,6 +316,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
       }
     ]

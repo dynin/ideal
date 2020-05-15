@@ -141,6 +141,7 @@
               }
             ]
             grouping: brackets
+            has_trailing_comma: false
           }
         }
         name: exercises
@@ -194,6 +195,7 @@
               }
             ]
             grouping: brackets
+            has_trailing_comma: false
           }
         }
         name: workouts

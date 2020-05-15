@@ -152,6 +152,7 @@
         }
       ]
       grouping: brackets
+      has_trailing_comma: false
     }
     body: [
       supertype_construct {
@@ -191,6 +192,7 @@
         parameters: list_construct {
           elements: [ ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -215,6 +217,7 @@
                 parameters: list_construct {
                   elements: [ ]
                   grouping: parens
+                  has_trailing_comma: false
                 }
               }
             }
@@ -245,6 +248,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -259,6 +263,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -272,6 +277,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -310,6 +316,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -324,6 +331,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -337,6 +345,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -350,6 +359,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -388,6 +398,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -402,6 +413,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -415,6 +427,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -428,6 +441,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -466,6 +480,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -480,6 +495,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -493,6 +509,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -506,6 +523,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -553,6 +571,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -567,6 +586,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -580,6 +600,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -593,6 +614,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -606,6 +628,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -662,6 +685,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -676,6 +700,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -689,6 +714,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -702,6 +728,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -715,6 +742,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -728,6 +756,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -793,6 +822,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -807,6 +837,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -820,6 +851,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -833,6 +865,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -846,6 +879,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -859,6 +893,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -872,6 +907,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -946,6 +982,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -960,6 +997,7 @@
               parameters: list_construct {
                 elements: [ ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -973,6 +1011,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -986,6 +1025,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -999,6 +1039,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -1012,6 +1053,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -1025,6 +1067,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             parameter_construct {
@@ -1038,6 +1081,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -1056,6 +1100,7 @@
         parameters: list_construct {
           elements: [ ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1074,6 +1119,7 @@
                 parameters: list_construct {
                   elements: [ ]
                   grouping: parens
+                  has_trailing_comma: false
                 }
               }
             }
@@ -1104,6 +1150,7 @@
           parameters: list_construct {
             elements: [ ]
             grouping: parens
+            has_trailing_comma: false
           }
         }
       }
@@ -1155,6 +1202,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1184,6 +1232,7 @@
                         }
                       ]
                       grouping: parens
+                      has_trailing_comma: false
                     }
                   }
                   name_construct {
@@ -1218,6 +1267,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1239,6 +1289,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -1267,6 +1318,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1293,6 +1345,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]
@@ -1330,6 +1383,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1378,6 +1432,7 @@
                         parameters: list_construct {
                           elements: [ ]
                           grouping: parens
+                          has_trailing_comma: false
                         }
                       }
                     ]
@@ -1406,6 +1461,7 @@
                 parameters: list_construct {
                   elements: [ ]
                   grouping: parens
+                  has_trailing_comma: false
                 }
               }
             }
@@ -1479,10 +1535,12 @@
                               }
                             ]
                             grouping: parens
+                            has_trailing_comma: false
                           }
                         }
                       ]
                       grouping: parens
+                      has_trailing_comma: false
                     }
                   }
                 ]
@@ -1519,6 +1577,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1541,10 +1600,12 @@
                       parameters: list_construct {
                         elements: [ ]
                         grouping: parens
+                        has_trailing_comma: false
                       }
                     }
                   ]
                   grouping: parens
+                  has_trailing_comma: false
                 }
               }
             }
@@ -1564,6 +1625,7 @@
         parameters: list_construct {
           elements: [ ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1583,6 +1645,7 @@
                     parameters: list_construct {
                       elements: [ ]
                       grouping: parens
+                      has_trailing_comma: false
                     }
                   }
                 ]
@@ -1597,6 +1660,7 @@
                     parameters: list_construct {
                       elements: [ ]
                       grouping: parens
+                      has_trailing_comma: false
                     }
                   }
                 ]
@@ -1638,6 +1702,7 @@
             }
           ]
           grouping: parens
+          has_trailing_comma: false
         }
         post_annotations: [ ]
         body: block_construct {
@@ -1668,10 +1733,12 @@
                       parameters: list_construct {
                         elements: [ ]
                         grouping: parens
+                        has_trailing_comma: false
                       }
                     }
                   ]
                   grouping: parens
+                  has_trailing_comma: false
                 }
               }
             }
@@ -1691,6 +1758,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
             for_construct {
@@ -1730,6 +1798,7 @@
                     parameters: list_construct {
                       elements: [ ]
                       grouping: parens
+                      has_trailing_comma: false
                     }
                   }
                 ]
@@ -1792,6 +1861,7 @@
                                   }
                                 ]
                                 grouping: parens
+                                has_trailing_comma: false
                               }
                             }
                             name_construct {
@@ -1804,6 +1874,7 @@
                         }
                       ]
                       grouping: parens
+                      has_trailing_comma: false
                     }
                   }
                 ]
@@ -1825,6 +1896,7 @@
                   }
                 ]
                 grouping: parens
+                has_trailing_comma: false
               }
             }
           ]

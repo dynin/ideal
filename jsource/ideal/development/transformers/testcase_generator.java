@@ -78,7 +78,7 @@ public class testcase_generator {
         new modifier_construct(access_modifier.public_modifier, source)),
         new name_construct(common_library.get_instance().void_type().short_name(), source),
         RUN_ALL_TESTS,
-        new list_construct(new empty<construct>(), grouping_type.PARENS, source),
+        new list_construct(new empty<construct>(), grouping_type.PARENS, false, source),
         new empty<annotation_construct>(), new block_construct(test_calls, source), source);
   }
 
@@ -114,6 +114,6 @@ public class testcase_generator {
   private static construct make_call(construct main, readonly_list<construct> parameters,
       origin source) {
     return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.PARENS, source), source);
+        new list_construct(parameters, grouping_type.PARENS, false, source), source);
   }
 }

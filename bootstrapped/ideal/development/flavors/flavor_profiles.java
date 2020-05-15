@@ -80,16 +80,4 @@ public class flavor_profiles {
     assert flavors1 == mutable_profile && flavors2 == mutable_profile;
     return mutable_profile;
   }
-  private static type_flavor class_map(final type_flavor from) {
-    if (from == flavor.nameonly_flavor) {
-      return from;
-    } else {
-      return flavor.DEFAULT_FLAVOR;
-    }
-  }
-  public final static base_flavor_profile class_profile = new base_flavor_profile(new base_string("class_profile"), new function1<type_flavor, type_flavor>() {
-    @Override public type_flavor call(type_flavor first) {
-      return class_map(first);
-    }
-  });
 }

@@ -186,7 +186,8 @@ public class to_javascript_transformer {
     @Nullable construct body = to_body(procedure.get_body_action());
 
     return new procedure_construct(annotations, null, name,
-        new list_construct(parameters, grouping_type.PARENS, pos), post_annotations, body, pos);
+        new list_construct(parameters, grouping_type.PARENS, false, pos),
+        post_annotations, body, pos);
   }
 
   public return_construct to_construct(return_action the_action) {
@@ -223,8 +224,8 @@ public class to_javascript_transformer {
       }
     }
 
-    return new parameter_construct(main, new list_construct(params, grouping_type.PARENS, pos),
-        pos);
+    return new parameter_construct(main, new list_construct(params, grouping_type.PARENS, false,
+        pos), pos);
   }
 
   public construct to_construct(dispatch_action the_action) {
@@ -253,8 +254,8 @@ public class to_javascript_transformer {
       construct field_value = new literal_construct(new quoted_literal(field_name,
           punctuation.SINGLE_QUOTE), pos);
       return new parameter_construct(get_field,
-          new list_construct(new base_list<construct>(field_value), grouping_type.PARENS, pos),
-              pos);
+          new list_construct(new base_list<construct>(field_value), grouping_type.PARENS, false,
+              pos), pos);
     }
   }
 
@@ -293,7 +294,7 @@ public class to_javascript_transformer {
     list<construct> body_constructs = new base_list<construct>();
     construct get_element = new parameter_construct(list_name_construct,
         new list_construct(new base_list<construct>(index_name_construct),
-            grouping_type.BRACKETS, pos), pos);
+            grouping_type.BRACKETS, false, pos), pos);
     variable_construct element_var =
         new variable_construct(annotations, null, loop_var, new empty<annotation_construct>(),
         get_element, pos);

@@ -89,7 +89,7 @@ non terminal list<annotation_construct>  annotations_opt, post_annotations_opt;
 
 non terminal list_construct  parameters;
 non terminal list_construct  parameters_opt;
-non terminal list<construct>  parameter_list_opt;
+non terminal list_construct  parameter_list_opt;
 non terminal construct  parameter;
 
 /* Grammar for s-expression language */
@@ -297,12 +297,12 @@ types ::=       expression:t
         ;
 
 parameters ::=
-                OPEN_PARENTHESIS:o parameter_list_opt:ie CLOSE_PARENTHESIS:c
-                {: RESULT = new list_construct(ie, grouping_type.PARENS,
-                                new fragment_position(o, o, c)); :}
-        |       OPEN_BRACKET:o parameter_list_opt:ie CLOSE_BRACKET:c
-                {: RESULT = new list_construct(ie, grouping_type.BRACKETS,
-                                new fragment_position(o, o, c)); :}
+                OPEN_PARENTHESIS:o parameter_list_opt:pl CLOSE_PARENTHESIS:c
+                {: RESULT = new list_construct(pl.elements, grouping_type.PARENS,
+                    pl.has_trailing_comma, new fragment_position(o, o, c)); :}
+        |       OPEN_BRACKET:o parameter_list_opt:pl CLOSE_BRACKET:c
+                {: RESULT = new list_construct(pl.elements, grouping_type.BRACKETS,
+                    pl.has_trailing_comma, new fragment_position(o, o, c)); :}
         ;
 
 parameters_opt ::=
@@ -316,11 +316,16 @@ parameters_opt ::=
 // [1] is an integer, and [1,] is a one-element list.
 parameter_list_opt ::=
                 /* epsilon */
-                {: RESULT = new base_list<construct>(); :}
+                {: RESULT = new list_construct(new base_list<construct>(), grouping_type.PARENS,
+                    false, parser_util.empty_origin); :}
         |       parameter:p
-                {: RESULT = new base_list<construct>(p); :}
+                {: RESULT = new list_construct(new base_list<construct>(p), grouping_type.PARENS,
+                    false, p); :}
         |       parameter:hd COMMA:cm parameter_list_opt:tl
-                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
+                {: list<construct> the_list = new base_list<construct>(hd);
+                   the_list.append_all(tl.elements);
+                   RESULT = new list_construct(the_list, grouping_type.PARENS,
+                   tl.elements.is_empty(), new fragment_position(hd, cm, tl)); :}
         ;
 
 parameter ::=
@@ -451,7 +456,7 @@ sexpression_element ::=
                 {: RESULT = sexpr; :}
         |       OPEN_BRACE:ob expression:expr CLOSE_BRACE:cb
                 {: RESULT = new list_construct(new base_list<construct>(expr), grouping_type.BRACES,
-                                new fragment_position(ob, ob, cb)); :}
+                                false, new fragment_position(ob, ob, cb)); :}
         ;
 
 sexpression_atom ::=

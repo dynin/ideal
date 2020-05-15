@@ -186,7 +186,8 @@ public class to_java_transformer extends base_transformer {
       if (should_introduce_cast(the_original_type, the_narrowed_type)) {
         result = new operator_construct(operator.AS_OPERATOR, result,
             make_type(the_narrowed_type, source), source);
-        result = new list_construct(new base_list<construct>(result), grouping_type.PARENS, source);
+        result = new list_construct(new base_list<construct>(result), grouping_type.PARENS, false,
+            source);
       }
     }
 
@@ -242,11 +243,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   @Override
-  public @Nullable construct process_list(@Nullable list_construct c) {
-    if (c == null) {
-      return null;
-    }
-
+  public construct process_list(list_construct c) {
     origin the_origin = c;
     analyzable the_analyzable = get_analyzable(c);
     if (the_analyzable instanceof list_initializer_analyzer) {
@@ -255,34 +252,35 @@ public class to_java_transformer extends base_transformer {
       construct type_name = make_type(element_type, the_origin);
       construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
       list_construct empty_brackets = new list_construct(new empty<construct>(),
-          grouping_type.BRACKETS, the_origin);
+          grouping_type.BRACKETS, false, the_origin);
       construct alloc_array = new parameter_construct(alloc, empty_brackets, the_origin);
       // TODO: handle promotions
       list_construct elements = new list_construct(transform(c.elements),
-         grouping_type.BRACES, the_origin);
+         grouping_type.BRACES, false, the_origin);
       construct alloc_call = new parameter_construct(alloc_array, elements, the_origin);
 
       construct array_name = make_type(java_library.array_class(), the_origin);
       list_construct array_params = new list_construct(new base_list<construct>(type_name),
-          grouping_type.ANGLE_BRACKETS, the_origin);
+          grouping_type.ANGLE_BRACKETS, false, the_origin);
       construct param_array = new parameter_construct(array_name, array_params, the_origin);
       construct alloc_array2 = new operator_construct(operator.ALLOCATE, param_array, the_origin);
       list_construct new_array_params = new list_construct(new base_list<construct>(alloc_call),
-          grouping_type.PARENS, the_origin);
+          grouping_type.PARENS, false, the_origin);
       construct array_call = new parameter_construct(alloc_array2, new_array_params, the_origin);
 
       // TODO: import type if needed
       // construct list_name = make_type(java_library.base_immutable_list_class(), the_origin);
       construct list_name = new name_construct(simple_name.make("base_immutable_list"), the_origin);
       list_construct list_params = new list_construct(new base_list<construct>(type_name),
-          grouping_type.ANGLE_BRACKETS, the_origin);
+          grouping_type.ANGLE_BRACKETS, false, the_origin);
       construct param_list = new parameter_construct(list_name, list_params, the_origin);
       construct alloc_list = new operator_construct(operator.ALLOCATE, param_list, the_origin);
       list_construct new_params = new list_construct(new base_list<construct>(array_call),
-          grouping_type.PARENS, the_origin);
+          grouping_type.PARENS, false, the_origin);
       return new parameter_construct(alloc_list, new_params, the_origin);
     } else {
-      return new list_construct(transform(c.elements), c.grouping, the_origin);
+      return new list_construct(transform(c.elements), c.grouping, c.has_trailing_comma,
+          the_origin);
     }
   }
 
@@ -290,7 +288,7 @@ public class to_java_transformer extends base_transformer {
     if (c == null) {
       return null;
     } else {
-      return new list_construct(transform(c.elements), c.grouping, c);
+      return new list_construct(transform(c.elements), c.grouping, c.has_trailing_comma, c);
     }
   }
 
@@ -375,7 +373,7 @@ public class to_java_transformer extends base_transformer {
   private construct make_parametrized_type(construct main, readonly_list<construct> parameters,
       origin source) {
     return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.ANGLE_BRACKETS, source), source);
+        new list_construct(parameters, grouping_type.ANGLE_BRACKETS, false, source), source);
   }
 
   private construct combine_flavor(type_flavor flavor, construct c, origin pos) {
@@ -582,7 +580,7 @@ public class to_java_transformer extends base_transformer {
 
     // Note: the flavor is always missing.
     return new procedure_construct(annotations, ret, name,
-        new list_construct(parameters, grouping_type.PARENS, source),
+        new list_construct(parameters, grouping_type.PARENS, false, source),
         new empty<annotation_construct>(), body, source);
   }
 
@@ -880,7 +878,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     boolean concrete_mode = is_concrete_kind(the_kind);
-    flavor_profile profile = the_kind == class_kind ? flavor_profiles.class_profile :
+    flavor_profile profile = the_kind == class_kind ? class_profile :
         declared_type.get_flavor_profile();
 
     // TODO: implement namespaces
@@ -1104,7 +1102,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private list_construct make_parens(origin the_origin) {
-    return new list_construct(new base_list<construct>(), grouping_type.PARENS, the_origin);
+    return new list_construct(new base_list<construct>(), grouping_type.PARENS, false, the_origin);
   }
 
   private Object make_procedure_declarations(readonly_list<annotation_construct> annotations,
@@ -1161,7 +1159,7 @@ public class to_java_transformer extends base_transformer {
     if (is_function) {
       construct superprocedure = new parameter_construct(
           new name_construct(make_procedure_name(false, arity), pos),
-          new list_construct(supertype_parameters, grouping_type.ANGLE_BRACKETS, pos), pos);
+          new list_construct(supertype_parameters, grouping_type.ANGLE_BRACKETS, false, pos), pos);
       extends_types.append(superprocedure);
     }
 
@@ -1186,13 +1184,13 @@ public class to_java_transformer extends base_transformer {
 
     if (!is_function) {
       type_body.append(new procedure_construct(empty_annotations, return_construct,
-          CALL_NAME, new list_construct(call_parameters, grouping_type.PARENS, pos),
+          CALL_NAME, new list_construct(call_parameters, grouping_type.PARENS, false, pos),
           empty_annotations, null, pos));
     }
 
     simple_name type_name = make_procedure_name(is_function, arity);
     return new type_declaration_construct(annotations, interface_kind, type_name,
-        new list_construct(type_parameters, grouping_type.ANGLE_BRACKETS, pos),
+        new list_construct(type_parameters, grouping_type.ANGLE_BRACKETS, false, pos),
         type_body, pos);
   }
 
@@ -1299,7 +1297,7 @@ public class to_java_transformer extends base_transformer {
     construct the_call_body = new return_construct(
         new parameter_construct(
             the_procedure_construct,
-            new list_construct(call_arguments, grouping_type.PARENS, source),
+            new list_construct(call_arguments, grouping_type.PARENS, false, source),
             source),
         source);
 
@@ -1307,13 +1305,13 @@ public class to_java_transformer extends base_transformer {
         annotations,
         make_type(the_procedure.get_return_type(), source),
         CALL_NAME,
-        new list_construct(declaration_arguments, grouping_type.PARENS, source),
+        new list_construct(declaration_arguments, grouping_type.PARENS, false, source),
         new empty<annotation_construct>(),
         new block_construct(new base_list<construct>(the_call_body), source),
         source);
 
     return new parameter_construct(with_parens,
-        new list_construct(new base_list<construct>(the_call), grouping_type.BRACES, source),
+        new list_construct(new base_list<construct>(the_call), grouping_type.BRACES, false, source),
         source);
   }
 
@@ -1339,7 +1337,7 @@ public class to_java_transformer extends base_transformer {
     construct get_construct = new resolve_construct(the_construct,
         new name_construct(GET_NAME, source), source);
     return new parameter_construct(get_construct,
-        new list_construct(new empty<construct>(), grouping_type.PARENS, source), source);
+        new list_construct(new empty<construct>(), grouping_type.PARENS, false, source), source);
   }
 
   private boolean is_procedure_with_no_body(@Nullable declaration the_declaration) {
@@ -1384,7 +1382,7 @@ public class to_java_transformer extends base_transformer {
       assert the_parameter_construct.main instanceof name_construct;
       return new parameter_construct(the_parameter_construct.main,
           new list_construct(transform(the_parameter_construct.parameters.elements),
-              grouping_type.PARENS, source), source);
+              grouping_type.PARENS, false, source), source);
     }
   }
 
@@ -1446,7 +1444,7 @@ public class to_java_transformer extends base_transformer {
 
     parameter_construct transformed = new parameter_construct(main,
         new list_construct(parameters,
-            is_type ? grouping_type.ANGLE_BRACKETS : grouping_type.PARENS, source), source);
+            is_type ? grouping_type.ANGLE_BRACKETS : grouping_type.PARENS, false, source), source);
     if (the_action.result() == core_types.unreachable_type()) {
       parameter_analyzer the_analyzable = (parameter_analyzer) get_analyzable(c);
       @Nullable procedure_declaration the_procedure =
@@ -1745,7 +1743,7 @@ public class to_java_transformer extends base_transformer {
   private static construct make_call(construct main, readonly_list<construct> parameters,
       origin source) {
     return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.PARENS, source), source);
+        new list_construct(parameters, grouping_type.PARENS, false, source), source);
   }
 
   // TODO: use list.has()
@@ -1800,6 +1798,17 @@ public class to_java_transformer extends base_transformer {
     return new comment_construct(new comment(comment_type.NEWLINE, newline, newline), pos);
   }
 
+  public final static base_flavor_profile class_profile =
+    new base_flavor_profile(new base_string("class_profile"),
+        new function1<type_flavor, type_flavor>() {
+      @Override public type_flavor call(type_flavor first) {
+        if (first == flavor.nameonly_flavor) {
+          return first;
+        } else {
+          return flavor.DEFAULT_FLAVOR;
+        }
+      }
+    });
 /*
   public static flavor_profile class_profile = new base_flavor_profile("class_profile") {
     @Override

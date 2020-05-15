@@ -90,7 +90,7 @@ public class import_util {
     }
 
     procedure_construct result = new procedure_construct(annotations, ret, name,
-        new list_construct(params, grouping_type.PARENS, pos),
+        new list_construct(params, grouping_type.PARENS, false, pos),
         new empty<annotation_construct>(), null, pos);
 
     return result;

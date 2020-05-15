@@ -113,19 +113,24 @@ public class base_transformer extends construct_visitor<Object>
     return new procedure_construct(transform_a(c.annotations, c),
       transform(c.ret),
       c.name,
-      (list_construct) process_list(c.parameters), // TODO: process_list() should return list
+      transform_list(c.parameters),
       transform_a(c.post_annotations, c),
       transform(c.body),
       c);
   }
 
-  @Override
-  public Object process_list(@Nullable list_construct c) {
-    if (c == null) {
+  public @Nullable list_construct transform_list(@Nullable list_construct the_construct) {
+    if (the_construct == null) {
       return null;
     } else {
-      return new list_construct(transform(c.elements), c.grouping, c);
+      return new list_construct(transform(the_construct.elements), the_construct.grouping,
+          the_construct.has_trailing_comma, the_construct);
     }
+  }
+
+  @Override
+  public Object process_list(list_construct c) {
+    return new list_construct(transform(c.elements), c.grouping, c.has_trailing_comma, c);
   }
 
   @Override
@@ -160,7 +165,7 @@ public class base_transformer extends construct_visitor<Object>
   @Override
   public Object process_parameter(parameter_construct c) {
     return new parameter_construct(transform(c.main),
-        (list_construct) process_list(c.parameters), // TODO: process_list() should return list
+        transform_list(c.parameters),
         c);
   }
 
@@ -185,7 +190,7 @@ public class base_transformer extends construct_visitor<Object>
     return new type_declaration_construct(transform_a(c.annotations, c),
       c.kind,
       c.name,
-      (list_construct) process_list(c.parameters), // TODO: process_list() should return list
+      transform_list(c.parameters),
       transform(c.body),
       c);
   }

@@ -56,6 +56,5 @@
 - [x] Rename flavors to flavor
 - [ ] Use list iteration construct in ideal code
 - [ ] Introduce range construction operators
-- [ ] Add grouping_construct, consider retiring list_construct
-- [ ] Add one-element list initializer
-- [ ] Implement list iteration for ideal types
+- [x] Add one-element list initializer
+- [ ] Implement list iteration for ideal list types

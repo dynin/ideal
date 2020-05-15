@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface flavor_profile extends readonly_flavor_profile, writeonly_flavor_profile { }
+public interface flavor_profile extends reference_equality, readonly_flavor_profile, writeonly_flavor_profile { }

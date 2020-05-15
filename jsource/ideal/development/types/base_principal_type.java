@@ -70,7 +70,9 @@ public abstract class base_principal_type extends base_type implements principal
 
   public void set_flavor_profile(flavor_profile the_flavor_profile) {
     assert this.the_flavor_profile == null;
-    for (type_flavor flavor : flavor.all_flavors) {
+    readonly_list<type_flavor> all_flavors = flavor.all_flavors;
+    for (int i = 0; i < all_flavors.size(); ++i) {
+      type_flavor flavor = all_flavors.get(i);
       if (!the_flavor_profile.supports(flavor)) {
         if (((type_flavor_impl) flavor).types.contains_key(this)) {
           utilities.panic("Already used " + flavor + " of " + this);

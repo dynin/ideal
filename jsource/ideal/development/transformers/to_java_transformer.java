@@ -805,6 +805,8 @@ public class to_java_transformer extends base_transformer {
         result.append(proc_decl);
       } else if (decl instanceof import_construct) {
         // Skip imports: they should have been declared at the top level.
+      } else if (decl instanceof empty_construct) {
+        // Skip empty constructs
       } else {
         utilities.panic("Unexpected declaration in a namespace: " + decl);
       }
@@ -873,7 +875,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     boolean concrete_mode = is_concrete_kind(the_kind);
-    flavor_profile profile = the_kind == class_kind ? class_profile :
+    flavor_profile profile = the_kind == class_kind ? flavor_profiles.class_profile :
         declared_type.get_flavor_profile();
 
     // TODO: implement namespaces
@@ -1794,6 +1796,7 @@ public class to_java_transformer extends base_transformer {
     return new comment_construct(new comment(comment_type.NEWLINE, newline, newline), pos);
   }
 
+/*
   public static flavor_profile class_profile = new base_flavor_profile("class_profile") {
     @Override
     public type_flavor map(type_flavor from) {
@@ -1803,5 +1806,5 @@ public class to_java_transformer extends base_transformer {
         return DEFAULT_FLAVOR;
       }
     }
-  };
+  };*/
 }

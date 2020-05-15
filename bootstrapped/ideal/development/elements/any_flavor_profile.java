@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface any_flavor_profile { }
+public interface any_flavor_profile extends any_reference_equality { }

@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_flavor_profile extends immutable_flavor_profile { }
+public interface deeply_immutable_flavor_profile extends deeply_immutable_reference_equality, immutable_flavor_profile { }

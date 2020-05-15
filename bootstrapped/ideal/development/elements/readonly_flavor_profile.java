@@ -4,7 +4,7 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface readonly_flavor_profile extends readonly_data, any_flavor_profile {
+public interface readonly_flavor_profile extends readonly_data, readonly_reference_equality, any_flavor_profile {
   type_flavor default_flavor();
   boolean supports(type_flavor flavor);
   type_flavor map(type_flavor from);

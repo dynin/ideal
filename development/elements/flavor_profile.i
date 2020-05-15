@@ -8,7 +8,7 @@
 --- For example, for namespaces, everything is mapped to |flavors.nameonly_flavor|.
 --- For enums, |flavors.mutable_flavor| is mapped to |flavors.deeply_immutable_flavor|.
 interface flavor_profile {
-  extends readonly data;
+  extends readonly data, reference_equality;
 
   type_flavor default_flavor;
   boolean supports(type_flavor flavor) pure;

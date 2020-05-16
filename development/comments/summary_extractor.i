@@ -38,6 +38,7 @@ class summary_extractor {
   private string process_list(immutable list[text_node] nodes) {
     result : string_writer.new();
 
+    -- TODO: use list iteration construct
     for (var nonnegative i : 0; i < nodes.size; i += 1) {
       s : process(nodes[i]);
       result.write_all(s);

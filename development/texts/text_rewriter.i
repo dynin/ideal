@@ -34,11 +34,10 @@ abstract class text_rewriter {
   }
 
   protected override text_fragment process_nodes(list_text_node nodes) {
-    source : nodes.nodes;
     result : base_list[text_fragment].new();
 
-    for (var nonnegative i : 0; i < source.size; i += 1) {
-      result.append(process(source[i]));
+    for (source : nodes.nodes) {
+      result.append(process(source));
     }
 
     return text_util.join(result);

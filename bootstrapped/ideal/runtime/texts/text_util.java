@@ -38,8 +38,12 @@ public class text_util {
   }
   public static text_fragment join(final readonly_list<text_fragment> fragments) {
     final base_list<text_node> nodes = new base_list<text_node>();
-    for (int i = 0; i < fragments.size(); i += 1) {
-      append(nodes, fragments.get(i));
+    {
+      final readonly_list<text_fragment> fragment_list = fragments;
+      for (int fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
+        final text_fragment fragment = fragment_list.get(fragment_index);
+        append(nodes, fragment);
+      }
     }
     return to_fragment(nodes);
   }

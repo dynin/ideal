@@ -216,7 +216,7 @@ test_development td: $(IDEAL_TARGET) rm-scratch
 tdc:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
 
-bootstrap_development bootdev: $(IDEAL_TARGET)
+bootstrap_development bootdev devboot: $(IDEAL_TARGET)
 	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(BOOTSTRAPPED_DIR)
 
@@ -292,7 +292,8 @@ buildall: $(IDEAL_TARGET)
 
 jdoc: build
 	$(MKDIR) $(BUILD_DIR)/javadoc
-	$(JAVADOC) $(BOOTSTRAPPED_JAVA) $(MACHINE_JAVA) $(DEVELOPMENT_JAVA)
+	$(JAVADOC) $(BOOTSTRAPPED_JAVA) $(MACHINE_JAVA) $(BOOTSTRAPPED_DEVELOPMENT) \
+              $(DEVELOPMENT_JAVA)
 
 grammar:
 	cd $(PARSER_DIR) ; \

@@ -18,8 +18,12 @@ public class output_transformer<source_type, destination_type> implements output
   }
   public @Override void write_all(final readonly_list<source_type> values) {
     final base_list<destination_type> transformed_values = new base_list<destination_type>();
-    for (int i = 0; i < values.size(); i += 1) {
-      transformed_values.append(the_function.call(values.get(i)));
+    {
+      final readonly_list<source_type> value_list = values;
+      for (int value_index = 0; value_index < value_list.size(); value_index += 1) {
+        final source_type value = value_list.get(value_index);
+        transformed_values.append(the_function.call(value));
+      }
     }
     the_output.write_all(transformed_values);
   }

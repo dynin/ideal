@@ -48,10 +48,13 @@ public class base_graph<vertice_type extends readonly_data, edge_type extends re
     if (edge_set == null) {
       return new empty<vertice_type>();
     }
-    final immutable_list<base_graph.edge<vertice_type, edge_type>> edge_list = edge_set.elements();
     final hash_set<vertice_type> adjacent_vertices = new hash_set<vertice_type>();
-    for (int i = 0; i < edge_list.size(); i += 1) {
-      adjacent_vertices.add(edge_list.get(i).to);
+    {
+      final readonly_list<base_graph.edge<vertice_type, edge_type>> edge_list = edge_set.elements();
+      for (int edge_index = 0; edge_index < edge_list.size(); edge_index += 1) {
+        final base_graph.edge<vertice_type, edge_type> edge = edge_list.get(edge_index);
+        adjacent_vertices.add(edge.to);
+      }
     }
     return adjacent_vertices.frozen_copy();
   }
@@ -59,21 +62,27 @@ public class base_graph<vertice_type extends readonly_data, edge_type extends re
     if (equivalence.call(from, to)) {
       return true;
     }
-    final base_list<vertice_type> considered = new base_list<vertice_type>(from, to);
+    final list<vertice_type> considered = new base_list<vertice_type>(from, to);
     final hash_set<vertice_type> visited = new hash_set<vertice_type>();
     visited.add(from);
     visited.add(to);
-    for (int i = 0; i < considered.size(); i += 1) {
-      final immutable_list<vertice_type> outgoing = adjacent(considered.at(i).get()).elements();
-      for (int j = 0; j < outgoing.size(); j += 1) {
-        final vertice_type target_vertice = outgoing.get(j);
-        if (visited.contains(target_vertice)) {
-          if (equivalence.call(target_vertice, from)) {
-            return true;
+    {
+      final readonly_list<vertice_type> considered_vertice_list = considered;
+      for (int considered_vertice_index = 0; considered_vertice_index < considered_vertice_list.size(); considered_vertice_index += 1) {
+        final vertice_type considered_vertice = considered_vertice_list.get(considered_vertice_index);
+        {
+          final readonly_list<vertice_type> target_vertice_list = adjacent(considered_vertice).elements();
+          for (int target_vertice_index = 0; target_vertice_index < target_vertice_list.size(); target_vertice_index += 1) {
+            final vertice_type target_vertice = target_vertice_list.get(target_vertice_index);
+            if (visited.contains(target_vertice)) {
+              if (equivalence.call(target_vertice, from)) {
+                return true;
+              }
+            } else {
+              considered.append(target_vertice);
+              visited.add(target_vertice);
+            }
           }
-        } else {
-          considered.append(target_vertice);
-          visited.add(target_vertice);
         }
       }
     }

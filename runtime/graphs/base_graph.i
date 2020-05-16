@@ -60,10 +60,9 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
       -- TODO: define an empty set.
       return empty[vertice_type].new();
     }
-    edge_list : edge_set.elements;
     adjacent_vertices : hash_set[vertice_type].new();
-    for (var nonnegative i : 0; i < edge_list.size; i += 1) {
-      adjacent_vertices.add(edge_list[i].to);
+    for (edge : edge_set.elements) {
+      adjacent_vertices.add(edge.to);
     }
     return adjacent_vertices.frozen_copy();
   }
@@ -73,16 +72,14 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
       return true;
     }
 
-    -- TODO: use list initializer
-    considered : base_list[vertice_type].new(from, to);
+    -- TODO: infer this; use list initializer
+    list[vertice_type] considered : base_list[vertice_type].new(from, to);
     visited : hash_set[vertice_type].new();
     visited.add(from);
     visited.add(to);
 
-    for (var nonnegative i : 0; i < considered.size; i += 1) {
-      outgoing : adjacent(considered[i]).elements;
-      for (var nonnegative j : 0; j < outgoing.size; j += 1) {
-        target_vertice : outgoing[j];
+    for (considered_vertice : considered) {
+      for (target_vertice : adjacent(considered_vertice).elements) {
         if (visited.contains(target_vertice)) {
           if (equivalence(target_vertice, from)) {
             return true;

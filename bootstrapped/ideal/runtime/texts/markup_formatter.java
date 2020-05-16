@@ -100,14 +100,16 @@ public class markup_formatter extends text_formatter {
     write_string(CLOSE_SELF_CLOSING_TAG);
   }
   private void write_tag_attributes(final readonly_dictionary<attribute_id, string> attributes) {
-    final immutable_list<dictionary.entry<attribute_id, string>> attributes_list = attributes.elements();
-    for (int i = 0; i < attributes_list.size(); i += 1) {
-      final dictionary.entry<attribute_id, string> attribute = attributes_list.get(i);
-      write_string(ATTRIBUTE_SEPARATOR);
-      write_escaped(attribute.key().short_name());
-      write_string(ATTRIBUTE_START);
-      write_escaped(attribute.value());
-      write_string(ATTRIBUTE_END);
+    {
+      final readonly_list<dictionary.entry<attribute_id, string>> attribute_list = attributes.elements();
+      for (int attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
+        final dictionary.entry<attribute_id, string> attribute = attribute_list.get(attribute_index);
+        write_string(ATTRIBUTE_SEPARATOR);
+        write_escaped(attribute.key().short_name());
+        write_string(ATTRIBUTE_START);
+        write_escaped(attribute.value());
+        write_string(ATTRIBUTE_END);
+      }
     }
   }
   private void write_escaped(final string s) {

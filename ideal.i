@@ -23,7 +23,7 @@ target generate_library: generate_java(ideal.library);
 
 target generate_runtime: generate_java(ideal.runtime);
 
-target generate_array: generate_java(ideal.runtime.elements.test_array);
+target generate_array: generate_java(ideal.development.flavors.base_flavor_profile);
 
 target generate_texts: generate_java(ideal.runtime.texts);
 

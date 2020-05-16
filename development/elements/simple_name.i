@@ -34,6 +34,7 @@ class simple_name {
     } else {
       -- TODO: use list[string].join();
       the_writer : string_writer.new();
+      -- TODO: use range operator
       for (var nonnegative i : 0; i < segments.size; i += 1) {
         the_writer.write_all(segments[i]);
         if (i != segments.size - 1) {
@@ -67,8 +68,8 @@ class simple_name {
     segments_list : the_pattern.split(base_string.new(name));
     -- TODO: this won't be needed when string will be a type alias
     segments : base_list[string].new();
-    for (var nonnegative i : 0; i < segments_list.size; i += 1) {
-      segments.append(base_string.from_list(segments_list[i]));
+    for (segment : segments_list) {
+      segments.append(base_string.from_list(segment));
     }
     return make_from_segments(segments.frozen_copy());
   }

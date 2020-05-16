@@ -58,4 +58,9 @@ public class package_construct extends extension_construct {
   public boolean is_terminated() {
     return false;
   }
+
+  @Override
+  public construct transform(transformer t) {
+    return this;
+  }
 }

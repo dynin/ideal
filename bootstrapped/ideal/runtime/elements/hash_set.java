@@ -32,9 +32,12 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
   public @Override void add_all(final readonly_collection<element_type> the_collection) {
     copy_on_write();
     state.reserve(size() + the_collection.size());
-    final immutable_list<element_type> new_elements = the_collection.elements();
-    for (int i = 0; i < new_elements.size(); i += 1) {
-      do_add(new_elements.get(i));
+    {
+      final readonly_list<element_type> the_element_list = the_collection.elements();
+      for (int the_element_index = 0; the_element_index < the_element_list.size(); the_element_index += 1) {
+        final element_type the_element = the_element_list.get(the_element_index);
+        do_add(the_element);
+      }
     }
   }
   private void do_add(final element_type the_value) {

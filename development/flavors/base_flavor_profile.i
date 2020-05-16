@@ -32,10 +32,7 @@ class base_flavor_profile {
     -- TODO: streamline this with a cached value extension.
     if (result is null) {
       filtered_flavors : base_list[type_flavor].new();
-      primary_flavors : flavor.PRIMARY_FLAVORS;
---      for (the_flavor : flavor.PRIMARY_FLAVORS) {
-      for (var nonnegative i : 0; i < primary_flavors.size; i += 1) {
-        the_flavor : primary_flavors[i];
+      for (the_flavor : flavor.PRIMARY_FLAVORS) {
         if (this.supports(the_flavor)) {
           filtered_flavors.append(the_flavor);
         }

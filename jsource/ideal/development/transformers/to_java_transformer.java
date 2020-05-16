@@ -59,6 +59,7 @@ public class to_java_transformer extends base_transformer {
   private static simple_name CONCATENATE_NAME = simple_name.make("concatenate");
 
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
+  private static simple_name LIST_NAME = simple_name.make("list");
 
   public to_java_transformer(java_library java_library, analysis_context context) {
     this.java_library = java_library;
@@ -1701,7 +1702,116 @@ public class to_java_transformer extends base_transformer {
       return transform(((please_construct) the_construct).the_statement);
     }
 
+    if (the_construct instanceof list_iteration_construct) {
+      return rewrite_list_iteration((list_iteration_construct) the_construct);
+    }
+
     return super.process_extension(the_construct);
+  }
+
+  construct rewrite_list_iteration(list_iteration_construct the_construct) {
+    origin the_origin = the_construct;
+    list_iteration_analyzer the_analyzer = (list_iteration_analyzer) get_analyzable(the_construct);
+
+    construct element_type = make_type(the_analyzer.get_element_type(), the_origin);
+    list<annotation_construct> final_annotation = new base_list<annotation_construct>();
+    final_annotation.append(new modifier_construct(final_modifier, the_origin));
+    master_type list_type = library().list_type();
+    simple_name list_type_name = name_utilities.join(readonly_flavor.name(),
+        (simple_name) list_type.short_name());
+
+    construct list_type_construct = new parameter_construct(
+        new name_construct(list_type_name, the_origin),
+        new list_construct(new base_list<construct>(element_type),
+            grouping_type.ANGLE_BRACKETS, false, the_origin),
+        the_origin);
+    simple_name element_name = (simple_name) the_construct.var_decl.name;
+    simple_name list_name = name_utilities.join(element_name, LIST_NAME);
+    simple_name index_name = name_utilities.join(element_name, simple_name.make("index"));
+    construct init_construct = transform(the_construct.var_decl.init);
+
+    construct list_declaration_construct = new variable_construct(
+        final_annotation,
+        list_type_construct,
+        list_name,
+        new empty<annotation_construct>(),
+        init_construct,
+        the_origin);
+
+    construct for_init_construct = new variable_construct(
+        new empty<annotation_construct>(),
+        make_type(java_library.int_type(), the_origin),
+        index_name,
+        new empty<annotation_construct>(),
+        new literal_construct(new integer_literal(0), the_origin),
+        the_origin);
+
+    construct for_condition = new operator_construct(
+        operator.LESS,
+        new name_construct(index_name, the_origin),
+        new parameter_construct(
+            new resolve_construct(
+                new name_construct(list_name, the_origin),
+                new name_construct(simple_name.make("size"), the_origin),
+                the_origin
+            ),
+            new list_construct(
+                new empty<construct>(),
+                grouping_type.PARENS,
+                false,
+                the_origin
+            ),
+            the_origin
+        ),
+        the_origin);
+
+    construct for_update = new operator_construct(
+        operator.ADD_ASSIGN,
+        new name_construct(index_name, the_origin),
+        new literal_construct(new integer_literal(1), the_origin),
+        the_origin);
+
+    construct element_declaration_construct = new variable_construct(
+        final_annotation,
+        element_type,
+        element_name,
+        new empty<annotation_construct>(),
+        new parameter_construct(
+            new resolve_construct(
+                new name_construct(list_name, the_origin),
+                new name_construct(GET_NAME, the_origin),
+                the_origin
+            ),
+            new list_construct(
+                new base_list<construct>(
+                    new name_construct(index_name, the_origin)
+                ),
+                grouping_type.PARENS,
+                false,
+                the_origin
+            ),
+            the_origin
+        ),
+        the_origin);
+
+    construct body_construct = transform(the_construct.body);
+    list<construct> body_constructs = new base_list<construct>(element_declaration_construct);
+    if (body_construct instanceof block_construct) {
+      body_constructs.append_all(((block_construct) body_construct).body);
+    } else {
+      body_constructs.append(body_construct);
+    }
+
+    construct for_loop_construct = new for_construct(
+        for_init_construct,
+        for_condition,
+        for_update,
+        new block_construct(body_constructs, the_origin),
+        the_origin);
+
+    readonly_list<construct> block_constructs = new base_list<construct>(
+        list_declaration_construct, for_loop_construct);
+    return new block_construct(block_constructs, the_origin);
   }
 
   private simple_name get_simple_name(construct c) {
@@ -1809,15 +1919,4 @@ public class to_java_transformer extends base_transformer {
         }
       }
     });
-/*
-  public static flavor_profile class_profile = new base_flavor_profile("class_profile") {
-    @Override
-    public type_flavor map(type_flavor from) {
-      if (from == nameonly_flavor) {
-        return from;
-      } else {
-        return DEFAULT_FLAVOR;
-      }
-    }
-  };*/
 }

@@ -28,10 +28,13 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
     return t;
   }
   protected @Override text_fragment process_nodes(final list_text_node nodes) {
-    final immutable_list<text_node> source = nodes.nodes();
     final base_list<text_fragment> result = new base_list<text_fragment>();
-    for (int i = 0; i < source.size(); i += 1) {
-      result.append(process(source.get(i)));
+    {
+      final readonly_list<text_node> source_list = nodes.nodes();
+      for (int source_index = 0; source_index < source_list.size(); source_index += 1) {
+        final text_node source = source_list.get(source_index);
+        result.append(process(source));
+      }
     }
     return text_util.join(result);
   }

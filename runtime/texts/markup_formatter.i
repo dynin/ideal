@@ -115,9 +115,7 @@ class markup_formatter {
   }
 
   private void write_tag_attributes(readonly dictionary[attribute_id, string] attributes) {
-    attributes_list : attributes.elements;
-    for (var nonnegative i : 0; i < attributes_list.size; i += 1) {
-      attribute : attributes_list[i];
+    for (attribute : attributes.elements) {
       write_string(ATTRIBUTE_SEPARATOR);
       write_escaped(attribute.key.short_name);
       write_string(ATTRIBUTE_START);

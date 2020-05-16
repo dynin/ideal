@@ -27,7 +27,5 @@ public abstract class extension_construct extends base_construct {
 
   public abstract boolean is_terminated();
 
-  public construct transform(transformer t) {
-    return this;
-  }
+  public abstract construct transform(transformer t);
 }

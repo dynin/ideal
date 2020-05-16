@@ -42,4 +42,9 @@ public class template_construct extends extension_construct {
   public boolean is_terminated() {
     return true;
   }
+
+  @Override
+  public construct transform(transformer t) {
+    return this;
+  }
 }

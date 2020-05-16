@@ -57,4 +57,4 @@
 - [ ] Use list iteration construct in ideal code
 - [ ] Introduce range construction operators
 - [x] Add one-element list initializer
-- [ ] Implement list iteration for ideal list types
+- [x] Implement list iteration for ideal list types

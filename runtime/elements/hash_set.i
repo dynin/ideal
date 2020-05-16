@@ -47,10 +47,8 @@ public class hash_set[readonly value element_type] {
     copy_on_write();
     -- This may grow the hashtable more than needed...
     state.reserve(size + the_collection.size);
-    new_elements : the_collection.elements;
-    -- TODO: replace with foreach loop
-    for (var nonnegative i : 0; i < new_elements.size; i += 1) {
-      do_add(new_elements[i]);
+    for (the_element : the_collection.elements) {
+      do_add(the_element);
     }
   }
 

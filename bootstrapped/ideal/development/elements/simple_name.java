@@ -50,8 +50,12 @@ public class simple_name extends debuggable implements action_name, displayable 
     assert name.length() > 0;
     final immutable_list<immutable_list<Character>> segments_list = the_pattern.split(new base_string(name));
     final base_list<string> segments = new base_list<string>();
-    for (int i = 0; i < segments_list.size(); i += 1) {
-      segments.append(base_string.from_list(segments_list.get(i)));
+    {
+      final readonly_list<immutable_list<Character>> segment_list = segments_list;
+      for (int segment_index = 0; segment_index < segment_list.size(); segment_index += 1) {
+        final immutable_list<Character> segment = segment_list.get(segment_index);
+        segments.append(base_string.from_list(segment));
+      }
     }
     return make_from_segments(segments.frozen_copy());
   }

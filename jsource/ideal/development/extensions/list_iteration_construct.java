@@ -63,4 +63,10 @@ public class list_iteration_construct extends extension_construct {
   public boolean is_terminated() {
     return true;
   }
+
+  @Override
+  public construct transform(transformer the_transformer) {
+    return new list_iteration_construct((variable_construct) the_transformer.transform(var_decl),
+        the_transformer.transform(body), this);
+  }
 }

@@ -31,11 +31,13 @@ public class base_flavor_profile extends debuggable implements flavor_profile, r
     final @Nullable immutable_list<type_flavor> result = cached_flavors;
     if (result == null) {
       final base_list<type_flavor> filtered_flavors = new base_list<type_flavor>();
-      final immutable_list<type_flavor> primary_flavors = flavor.PRIMARY_FLAVORS;
-      for (int i = 0; i < primary_flavors.size(); i += 1) {
-        final type_flavor the_flavor = primary_flavors.get(i);
-        if (this.supports(the_flavor)) {
-          filtered_flavors.append(the_flavor);
+      {
+        final readonly_list<type_flavor> the_flavor_list = flavor.PRIMARY_FLAVORS;
+        for (int the_flavor_index = 0; the_flavor_index < the_flavor_list.size(); the_flavor_index += 1) {
+          final type_flavor the_flavor = the_flavor_list.get(the_flavor_index);
+          if (this.supports(the_flavor)) {
+            filtered_flavors.append(the_flavor);
+          }
         }
       }
       final immutable_list<type_flavor> new_result = filtered_flavors.frozen_copy();

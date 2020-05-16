@@ -26,8 +26,8 @@ class output_transformer[any value source_type, any value destination_type] {
   override void write_all(readonly list[source_type] values) {
     -- TODO: use list.map()
     transformed_values : base_list[destination_type].new();
-    for (var nonnegative i : 0; i < values.size; i += 1) {
-      transformed_values.append(the_function(values[i]));
+    for (value : values) {
+      transformed_values.append(the_function(value));
     }
     the_output.write_all(transformed_values);
   }

@@ -31,8 +31,8 @@ abstract class text_formatter {
   }
 
   override void write_all(readonly list[text_fragment] fragments) {
-    for (var nonnegative i : 0; i < fragments.size; i += 1) {
-      process(fragments[i]);
+    for (fragment : fragments) {
+      process(fragment);
     }
   }
 

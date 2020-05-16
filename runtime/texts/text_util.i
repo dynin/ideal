@@ -58,8 +58,8 @@ namespace text_util {
   overload text_fragment join(readonly list[text_fragment] fragments) {
     nodes : base_list[text_node].new();
 
-    for (var nonnegative i : 0; i < fragments.size; i += 1) {
-      append(nodes, fragments[i]);
+    for (fragment : fragments) {
+      append(nodes, fragment);
     }
 
     return to_fragment(nodes);

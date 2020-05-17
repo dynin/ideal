@@ -41,7 +41,7 @@ public class import_util {
     output<text_fragment> out = new plain_formatter(standard_channels.stdout);
 
     create_manager cm = new create_manager(filesystem.CURRENT_CATALOG);
-    cm.process_bootstrap();
+    cm.process_bootstrap(true);
 
     String name = "java.lang.Object";
     //String name = "java.lang.String";

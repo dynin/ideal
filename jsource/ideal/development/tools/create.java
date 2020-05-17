@@ -35,7 +35,6 @@ import ideal.development.transformers.*;
 import ideal.development.printers.*;
 import ideal.development.declarations.*;
 import ideal.development.functions.*;
-import ideal.development.targets.*;
 import ideal.development.extensions.*;
 import ideal.development.targets.*;
 
@@ -94,13 +93,8 @@ class create {
 
     readonly_set<simple_name> extensions = find_use_constructs(constructs);
 
-    if (false && extensions.contains(CLEAN_SLATE)) {
-      cm.process_type_operators();
-    } else {
-      create_util.progress("BOOTSTRAP");
-      cm.process_bootstrap();
-      test_library.init(cm.bootstrap_context, cm.root);
-    }
+    create_util.progress("BOOTSTRAP");
+    cm.process_bootstrap(!extensions.contains(CLEAN_SLATE));
 
     cm.process_targets();
 

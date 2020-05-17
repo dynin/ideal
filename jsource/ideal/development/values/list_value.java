@@ -18,12 +18,14 @@ import ideal.development.names.*;
 
 import javax.annotation.Nullable;
 
-public class base_data_value<T> extends debuggable
-    implements abstract_value, value_wrapper<T>, stringable {
+public class list_value extends debuggable
+    implements value_wrapper<any_list<value_wrapper>>, stringable {
 
+  any_list<value_wrapper> list_value;
   private type bound;
 
-  public base_data_value(type bound) {
+  public list_value(any_list<value_wrapper> list_value, type bound) {
+    this.list_value = list_value;
     this.bound = bound;
   }
 
@@ -33,20 +35,7 @@ public class base_data_value<T> extends debuggable
   }
 
   @Override
-  public T unwrap() {
-    return (T) this;
-  }
-
-  @Override
-  public final action to_action(origin pos) {
-    return new value_action(this, pos);
-  }
-
-  public base_data_value bind_from(action from, origin pos) {
-    return this;
-  }
-
-  public @Nullable declaration get_declaration() {
-    return null;
+  public any_list<value_wrapper> unwrap() {
+    return list_value;
   }
 }

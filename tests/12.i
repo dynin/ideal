@@ -57,6 +57,7 @@ class new_type {
   string get_state() => "state: " ++ field;
 }
 println(new_type.new("hey!").get_state());
+elements : [ 42, 68 ];
 
 class sub_type {
   extends new_type;

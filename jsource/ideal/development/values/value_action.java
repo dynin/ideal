@@ -31,7 +31,7 @@ public class value_action<T extends base_data_value> extends base_value_action<T
 
   @Override
   public action bind_from(action from, origin pos) {
-    return ((abstract_value) the_value.bind_from(from, pos)).to_action(pos);
+    return the_value.bind_from(from, pos).to_action(pos);
   }
 
   @Override

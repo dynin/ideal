@@ -37,7 +37,8 @@ JAVAC = $(JDK_DIR)/bin/javac $(JAVAC_OPTS)
 JAVAC_HERMETIC_OPTS = $(JAVAC_SOURCE_OPTS) -classpath $(THIRD_PARTY_JARS) -d $(CLASSES_DIR)
 JAVAC_HERMETIC = $(JDK_DIR)/bin/javac $(JAVAC_HERMETIC_OPTS)
 JAVAC_LINT_OPT = -Xlint:unchecked
-JAVADOC = $(JDK_DIR)/bin/javadoc -d $(JAVADOC_DIR)
+JAVADOC = $(JDK_DIR)/bin/javadoc -classpath $(THIRD_PARTY_JARS) \
+        -sourcepath $(GENERATED_DIR) -d $(JAVADOC_DIR)
 
 PARSER_DIR = $(GENERATED_DIR)/ideal/development/symbols
 PARSER2SRC_DIR = ../../../../..
@@ -71,15 +72,22 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/characters/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/library/texts/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/library/resources/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/library/patterns/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/library/messages/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/library/reflections/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/library/graphs/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/elements/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/patterns/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/texts/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/reflections/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/channels/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/resources/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/graphs/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java
 
 MACHINE_JAVA = \
     $(JSOURCE_DIR)/ideal/machine/elements/*.java \
+    $(JSOURCE_DIR)/ideal/machine/annotations/*.java \
     $(JSOURCE_DIR)/ideal/machine/channels/*.java \
     $(JSOURCE_DIR)/ideal/machine/characters/*.java \
     $(JSOURCE_DIR)/ideal/machine/resources/*.java
@@ -89,6 +97,7 @@ PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
 BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/elements/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/texts/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/development/names/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/components/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/comments/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/flavors/*.java
@@ -290,8 +299,8 @@ $(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(DEVELOPMENT_TARGE
 buildall: $(IDEAL_TARGET)
 	cd experimental/coach ; make
 
-jdoc: build
-	$(MKDIR) $(BUILD_DIR)/javadoc
+jdoc: $(IDEAL_TARGET)
+	$(MKDIR) $(JAVADOC_DIR)
 	$(JAVADOC) $(BOOTSTRAPPED_JAVA) $(MACHINE_JAVA) $(BOOTSTRAPPED_DEVELOPMENT) \
               $(DEVELOPMENT_JAVA)
 

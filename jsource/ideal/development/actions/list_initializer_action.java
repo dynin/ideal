@@ -44,8 +44,24 @@ public class list_initializer_action extends base_action {
 
   @Override
   public entity_wrapper execute(execution_context the_context) {
-    // TODO: instantiate a typed list...
-    utilities.panic("list_initializer_action not implemented");
-    return null;
+    // TODO: introduce list parameters
+    list<value_wrapper> elements = new base_list<value_wrapper>();
+
+    for (int i = 0; i < parameter_actions.size(); ++i) {
+      entity_wrapper param_entity = parameter_actions.get(i).execute(the_context);
+      if (param_entity instanceof error_signal) {
+        return param_entity;
+      }
+
+      if (!(param_entity instanceof value_wrapper)) {
+        return new panic_value(new base_string("value expected, got " + param_entity.type_bound()));
+      }
+
+      // TODO: check that it matches the type
+
+      elements.append((value_wrapper) param_entity);
+    }
+
+    return new list_value(elements.frozen_copy(), result_type);
   }
 }

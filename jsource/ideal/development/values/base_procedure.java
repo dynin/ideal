@@ -45,7 +45,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   @Override
-  public procedure_value bind_from(action from, origin pos) {
+  public base_data_value bind_from(action from, origin pos) {
     if (has_this_argument()) {
       return new procedure_with_this(this, from);
     } else {

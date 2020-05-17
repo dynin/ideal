@@ -126,7 +126,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     return constructs;
   }
 
-  public void process_bootstrap() {
+  public void process_bootstrap(boolean load_library) {
     // TODO: resolve interdependency.
     process_type_operators();
 
@@ -136,9 +136,12 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     process_bootstrap_ops(bootstrap_context);
 
-    action_utilities.add_promotion(bootstrap_context, root, elements, root_origin);
-
     java_library.bootstrap_on_demand(this);
+
+    if (load_library) {
+      action_utilities.add_promotion(bootstrap_context, root, elements, root_origin);
+      test_library.init(bootstrap_context, root);
+    }
   }
 
   public void process_type_operators() {
@@ -189,10 +192,8 @@ public class create_manager implements target_manager, type_bootstrapper {
     the_analyzable.analyze();
   }
 
-  public void process_bootstrap_if_needed() {
-    if (!language.library().is_bootstrapped()) {
-      process_bootstrap();
-    }
+  public boolean is_bootstrapped() {
+    return language.library().is_bootstrapped();
   }
 
   private void process_bootstrap_ops(analysis_context context) {

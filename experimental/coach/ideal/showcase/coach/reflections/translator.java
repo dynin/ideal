@@ -30,7 +30,9 @@ public class translator {
 
   public translator(resource_catalog resources) {
     creator = new create_manager(resources);
-    creator.process_bootstrap_if_needed();
+    if (!creator.is_bootstrapped()) {
+      creator.process_bootstrap(true);
+    }
   }
 
   public translation_result translate_source(source_content source, string name,

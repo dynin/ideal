@@ -33,6 +33,8 @@ public class common_library implements value {
 
   public static final simple_name to_string_name = simple_name.make(new base_string("to_string"));
 
+  public static final simple_name size_name = simple_name.make("size");
+
   private static common_library instance;
 
   private analysis_context context;

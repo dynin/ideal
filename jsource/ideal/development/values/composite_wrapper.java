@@ -15,6 +15,6 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.actions.*;
 
-public interface composite_wrapper extends value_wrapper<any_composite_value>, variable_context,
-    stringable {
+public interface composite_wrapper<T extends any_composite_value>
+    extends value_wrapper<T>, variable_context, stringable {
 }

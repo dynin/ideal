@@ -57,7 +57,7 @@ public class list_initializer_action extends base_action {
         return new panic_value(new base_string("value expected, got " + param_entity.type_bound()));
       }
 
-      // TODO: check that it matches the type
+      assert action_utilities.is_of(param_entity, element_type);
 
       elements.append((value_wrapper) param_entity);
     }

@@ -15,11 +15,11 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.declarations.*;
 import ideal.development.names.*;
+import ideal.development.actions.*;
 
 import javax.annotation.Nullable;
 
-public class list_value extends debuggable
-    implements value_wrapper<any_list<value_wrapper>>, stringable {
+public class list_value extends debuggable implements composite_wrapper<any_list<value_wrapper>> {
 
   any_list<value_wrapper> list_value;
   private type bound;
@@ -37,5 +37,21 @@ public class list_value extends debuggable
   @Override
   public any_list<value_wrapper> unwrap() {
     return list_value;
+  }
+
+  @Override
+  public value_wrapper get_var(variable_id key) {
+    if (key.short_name() == common_library.size_name) {
+      return new integer_value(((readonly_list) list_value).size(),
+          common_library.get_instance().immutable_nonnegative_type());
+    }
+
+    utilities.panic("Failing list_value.get_var() for " + key);
+    return null;
+  }
+
+  @Override
+  public void put_var(variable_id key, value_wrapper value) {
+    utilities.panic("Failing list_value.put_var() for " + key);
   }
 }

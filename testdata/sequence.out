@@ -1173,8 +1173,15 @@
             alpha_name: logical_not
           }
           arguments: [
-            name_construct {
-              the_name: empty
+            parameter_construct {
+              main: name_construct {
+                the_name: empty
+              }
+              parameters: list_construct {
+                elements: [ ]
+                grouping: parens
+                has_trailing_comma: false
+              }
             }
           ]
         }
@@ -1959,9 +1966,6 @@ testdata/sequence.i:117: Lookup failed: no display_writer in sequence._display
                                               ^^^^^^^^^^^^^^^
 testdata/sequence.i:117: Lookup failed: no display_context in sequence._display
 ============ BODY_CHECK
-  public boolean is_not_empty => !empty;
-                                  ^^^^^
-testdata/sequence.i:85: Argument #0: expected deeply_immutable boolean, found immutable procedure[deeply_immutable boolean]
     list.addAll(s.list);
                 -^----
 testdata/sequence.i:94: Lookup failed: no list in immutable reference[mutable sequence]
@@ -2053,7 +2057,7 @@ public class sequence[readonly_data element] {
     return list.size();
   }
   public boolean empty => list.isEmpty();
-  public boolean is_not_empty => !empty;
+  public boolean is_not_empty => !empty();
   public element get(int index) {
     return list.get(index) as element;
   }

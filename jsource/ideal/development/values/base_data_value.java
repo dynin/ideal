@@ -38,7 +38,7 @@ public class base_data_value<T> extends debuggable
   }
 
   @Override
-  public final action to_action(origin pos) {
+  public action to_action(origin pos) {
     return new value_action(this, pos);
   }
 

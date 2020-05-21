@@ -1,0 +1,27 @@
+Variable:
+
+foo : expression();
+
+Use : instead of = for initialization.
+Type usually can inferred.
+Immutable (final) by default; to make mutable (variable), add var modifier:
+var integer index : 0;
+
+Brackets:
+
+You can use () and [] interchangeably for procedure calls, groupings, and
+parametrized type declarations.  (Although they must be matched).
+
+By convention, [] are used for paramterized types and collection access/initializer.
+
+List initializers are expressed as [ foo, bar, baz ].  To create a one-element list,
+use a trailing comma as in [ foo, ].  (Just [ foo ] is equivalent to ( foo ) and
+is a grouping construct. )
+
+new()
+
+as; is; is_not
+
+supertypes
+
+flavors

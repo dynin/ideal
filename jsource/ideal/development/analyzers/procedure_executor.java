@@ -29,7 +29,7 @@ import ideal.development.declarations.*;
 public class procedure_executor extends base_procedure {
   public final procedure_declaration the_declaration;
 
-  procedure_executor(procedure_declaration the_declaration) {
+  public procedure_executor(procedure_declaration the_declaration) {
     super(the_declaration.short_name(), the_declaration.get_procedure_type());
     this.the_declaration = the_declaration;
   }

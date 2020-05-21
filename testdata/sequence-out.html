@@ -46,9 +46,6 @@ testdata/sequence.i:117: Lookup failed: no display_writer in sequence._display
   public void _display(display_writer writer, display_context options) {
                                               ^^^^^^^^^^^^^^^
 testdata/sequence.i:117: Lookup failed: no display_context in sequence._display
-  public boolean is_not_empty => !empty;
-                                  ^^^^^
-testdata/sequence.i:85: Argument #0: expected deeply_immutable boolean, found immutable procedure[deeply_immutable boolean]
     list.addAll(s.list);
                 -^----
 testdata/sequence.i:94: Lookup failed: no list in immutable reference[mutable sequence]
@@ -280,7 +277,7 @@ testdata/sequence.i:120: Lookup failed: no int in sequence._display
          public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>empty</span> =&gt; list &bull; isEmpty()
         </div>
         <div class='procedure-declaration'>
-         public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>is not empty</span> =&gt; !empty
+         public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>is not empty</span> =&gt; !empty()
         </div>
         <div class='procedure-declaration'>
          public element <span class='procedure-declaration-name'>get</span>(int <span class='var-declaration-name'>index</span>)

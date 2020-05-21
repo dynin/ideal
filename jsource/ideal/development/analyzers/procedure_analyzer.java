@@ -35,13 +35,13 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
   private list<type> proc_args;
   private type return_type;
   private type proc_type;
-  private procedure_executor result_value;
   private @Nullable type_flavor the_flavor;
   private @Nullable analyzable body;
   private @Nullable analyzable return_analyzable;
   private @Nullable readonly_list<declaration> overriden;
   private @Nullable local_variable_declaration this_decl;
   private boolean calls_this_constructor;
+  private @Nullable action procedure_action;
 
   public procedure_analyzer(procedure_construct source) {
     super(source);
@@ -89,6 +89,11 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
   public @Nullable analyzable get_body() {
     return body;
+  }
+
+  @Override
+  public @Nullable action procedure_action() {
+    return procedure_action;
   }
 
   @Override
@@ -316,8 +321,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
         get_flavored(flavor.immutable_flavor);
 
-    result_value = new procedure_executor(this);
-    analyzer_utilities.add_procedure(this, result_value, get_context());
+    procedure_action = analyzer_utilities.add_procedure(this, get_context());
 
     return null;
   }
@@ -338,7 +342,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
             make_this_variable(flavor.raw_flavor).get_access().to_action(source));
 
         // Here comes a subtle point.  If one constructor invokes another using this() call,
-        // then it is assumed that all the invariants a met after first constructor executes,
+        // then it is assumed that all the invariants are met after first constructor executes,
         // and 'this' is of mutable flavor and not of 'raw' flavor.  Needs to be documented.
         do_declare_this(calls_this_constructor ? flavor.mutable_flavor : flavor.raw_flavor);
         break;
@@ -423,7 +427,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     return superclasses.is_empty() ? null : superclasses.first();
   }
 
-  private void do_declare_this(type_flavor this_flavor) {
+  private local_variable_declaration do_declare_this(type_flavor this_flavor) {
     assert this_decl == null;
     local_variable_declaration this_variable = make_this_variable(this_flavor);
     this_decl = this_variable;
@@ -433,6 +437,8 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
     // TODO: we should do this automatically when instantiating reference.
     type_utilities.prepare(this_action.result(), declaration_pass.METHODS_AND_VARIABLES);
+
+    return this_variable;
   }
 
   @Override
@@ -458,8 +464,10 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     for (int i = 0; i < parameter_variables.size(); ++i) {
       new_parameters.append(parameter_variables.get(i).specialize(new_context, new_inside));
     }
+    variable_declaration this_declaration = this_decl != null ?
+        this_decl.specialize(new_context, new_parent) : null;
     specialized_procedure result = new specialized_procedure(this, new_return_type, new_parent,
-        new_parameters);
+        new_parameters, this_declaration);
     result.add(get_context());
     return result;
   }
@@ -488,7 +496,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
   @Override
   protected action do_get_result() {
-    return result_value.to_action(this);
+    return procedure_action;
   }
 
   @Override

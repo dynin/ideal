@@ -82,7 +82,7 @@ public class sequence[readonly_data element] {
 
   public boolean empty => list.isEmpty();
 
-  public boolean is_not_empty => !empty;
+  public boolean is_not_empty => !empty();
 
   public element get(int index) {
     return list.get(index) as element;

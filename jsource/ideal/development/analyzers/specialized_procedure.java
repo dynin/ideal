@@ -31,16 +31,19 @@ public class specialized_procedure extends debuggable implements procedure_decla
   private final type return_type;
   private final principal_type parent_type;
   private final readonly_list<variable_declaration> parameter_variables;
+  private final variable_declaration this_declaration;
   private final readonly_list<type> argument_types;
   private final type procedure_type;
-  private procedure_executor result_value;
+  private @Nullable action procedure_action;
 
   public specialized_procedure(procedure_declaration main, type return_type,
-      principal_type parent_type, readonly_list<variable_declaration> parameter_variables) {
+      principal_type parent_type, readonly_list<variable_declaration> parameter_variables,
+      variable_declaration this_declaration) {
     this.main = main;
     this.return_type = return_type;
     this.parent_type = parent_type;
     this.parameter_variables = parameter_variables;
+    this.this_declaration = this_declaration;
 
     assert main.get_category() != procedure_category.STATIC;
 
@@ -60,8 +63,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
   }
 
   public void add(analysis_context context) {
-    result_value = new procedure_executor(this);
-    analyzer_utilities.add_procedure(this, result_value, context);
+    procedure_action = analyzer_utilities.add_procedure(this, context);
   }
 
   public procedure_declaration get_main() {
@@ -134,7 +136,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
   public analysis_result analyze() {
     // TODO: do not panic
     utilities.panic("specialized_procedure.analyze() not implemented");
-    return result_value.to_action(this);
+    return null;
   }
 
   @Override
@@ -154,9 +156,13 @@ public class specialized_procedure extends debuggable implements procedure_decla
   }
 
   @Override
+  public @Nullable action procedure_action() {
+    return procedure_action;
+  }
+
+  @Override
   public variable_declaration get_this_declaration() {
-    utilities.panic("specialized_procedure.get_this_declaration() not implemented");
-    return null;
+    return this_declaration;
   }
 
   @Override
@@ -166,6 +172,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
 
   @Override
   public string to_string() {
-    return utilities.describe(this, short_name());
+    return utilities.describe(this, new base_string(parent_type.short_name().toString(), ".",
+        short_name().toString()));
   }
 }

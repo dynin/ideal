@@ -185,6 +185,11 @@ public class specialized_type_declaration extends debuggable implements type_dec
     return main_declaration;
   }
 
+  @Override
+  public string to_string() {
+    return utilities.describe(this, short_name());
+  }
+
   private static boolean ENABLE_SHALLOW = false;
 
   private static final simple_name list_name = simple_name.make("list");

@@ -58,7 +58,7 @@ class new_type {
 }
 println(new_type.new("hey!").get_state());
 elements : [ 42, 68 ];
-println("size: " ++ elements.size);
+--println("size: " ++ elements.size ++ " second: " ++ elements[1]);
 
 class sub_type {
   extends new_type;
@@ -100,3 +100,20 @@ void test_assignment() {
     println(test_string.size);
   }
 }
+class A {
+  A() {}
+  void method(integer value) {
+    println(value ++ ": A");
+  }
+}
+class B {
+  extends A;
+  B() {}
+  override void method(integer value) {
+    println(value ++ ": B");
+  }
+}
+A.new().method(1);
+B.new().method(2);
+A foo : B.new();
+foo.method(3);

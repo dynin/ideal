@@ -35,6 +35,7 @@ public class base_execution_context extends debuggable
   }
 
   public void put_var(variable_id key, value_wrapper value) {
+    assert key != null;
     var_bindings.put(key, value);
   }
 

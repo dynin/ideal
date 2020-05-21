@@ -77,8 +77,21 @@ public class local_variable_declaration extends base_action implements variable_
   @Override
   public local_variable_declaration specialize(specialization_context context,
       principal_type new_parent) {
-    utilities.panic("local_variable_declaration.specialize() not implemented");
-    return null;
+    @Nullable principal_type parent_type = (principal_type) context.lookup(this.parent_type);
+    if (parent_type == null) {
+      parent_type = this.parent_type;
+    }
+
+    @Nullable principal_type variable_principal = var_type.principal();
+    type var_type;
+    if (variable_principal != null) {
+      var_type = variable_principal.get_flavored(this.var_type.get_flavor());
+    } else {
+      var_type = this.var_type;
+    }
+
+    return new local_variable_declaration(annotations, name,
+        parent_type, reference_flavor, var_type, init_action, this);
   }
 
   @Override

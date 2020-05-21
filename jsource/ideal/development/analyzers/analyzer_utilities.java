@@ -81,21 +81,21 @@ public class analyzer_utilities {
          the_procedure.annotations().has(general_modifier.implement_modifier));
   }
 
-  public static void add_procedure(procedure_declaration the_procedure,
-      procedure_executor result_value, analysis_context the_context) {
+  public static @Nullable action add_procedure(procedure_declaration the_procedure,
+      analysis_context the_context) {
 
     if (the_procedure.annotations().has(general_modifier.not_yet_implemented_modifier)) {
-      return;
+      return null;
     }
 
-    origin pos = the_procedure;
+    origin the_origin = the_procedure;
     type target_type = the_procedure.declared_in_type().get_flavored(the_procedure.get_flavor());
 
     action result_action;
     if (the_procedure.overrides_variable()) {
       // TODO: can this cast ever fail?
-      result_action = (action) result_value.bind_parameters(new action_parameters(),
-          the_context, pos);
+      result_action = (action) new procedure_executor(the_procedure).
+          bind_parameters(new action_parameters(), the_context, the_origin);
       readonly_list<declaration> overriden = the_procedure.get_overriden();
       for (int i = 0; i < overriden.size(); ++i) {
         if (overriden.get(i) instanceof variable_declaration) {
@@ -106,11 +106,50 @@ public class analyzer_utilities {
           }
         }
       }
+    } else if (the_procedure.get_category() == procedure_category.METHOD) {
+      readonly_list<declaration> overriden_list = the_procedure.get_overriden();
+      set<dispatch_action2> dispatches = new hash_set<dispatch_action2>();
+      for (int i = 0; i < overriden_list.size(); ++i) {
+        if (! (overriden_list.get(i) instanceof procedure_declaration)) {
+          // TODO: handle this case
+          // System.out.println(the_procedure + " DECLARES " + overriden_list.get(i));
+          continue;
+        }
+        procedure_declaration overriden = (procedure_declaration) overriden_list.get(i);
+        action procedure_action = overriden.procedure_action();
+        if (procedure_action == null) {
+          continue;
+        }
+        if (!(procedure_action instanceof dispatch_action2)) {
+          // TODO: handle this case
+          // System.out.println(the_procedure + " OVERRIDES " + procedure_action);
+          continue;
+        }
+        dispatch_action2 the_dispatch = (dispatch_action2) overriden.procedure_action();
+        assert !the_dispatch.handles_type(target_type);
+        dispatches.add(the_dispatch);
+      }
+
+      if (dispatches.is_empty()) {
+        result_action = new dispatch_action2(the_procedure);
+      } else {
+        readonly_list<dispatch_action2> dispatches_list = dispatches.elements();
+        result_action = null;  // To make javac happy
+        for (int i = 0; i < dispatches_list.size(); ++i) {
+          dispatch_action2 the_dispatch = dispatches_list.get(i);
+          the_dispatch.add_handler(target_type, the_procedure);
+          // TODO: what of there is more than one dispatch?
+          // Which one should we pick then?
+          result_action = the_dispatch.bind_from(target_type.to_action(the_origin), the_origin);
+        }
+      }
     } else {
-      result_action = result_value.to_action(pos);
+      result_action = new procedure_executor(the_procedure).to_action(the_origin);
     }
 
     the_context.add(target_type, the_procedure.short_name(), result_action);
+
+    return result_action;
   }
 
   public static boolean is_immutable(variable_declaration the_variable_declaration) {
@@ -305,7 +344,7 @@ public class analyzer_utilities {
   }
 
   public static analysis_result bind_parameters(action the_action, action_parameters parameters,
-      origin pos, analysis_context the_context) {
+      origin the_origin, analysis_context the_context) {
 
     abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...
@@ -313,24 +352,24 @@ public class analyzer_utilities {
 
     type the_type = action_result.type_bound();
     if (the_type instanceof master_type && ((master_type) the_type).is_parametrizable()) {
-      return bind_type_parameters((master_type) the_type, parameters).to_action(pos);
+      return bind_type_parameters((master_type) the_type, parameters).to_action(the_origin);
     }
 
     if (action_result instanceof procedure_value) {
-      return ((procedure_value) action_result).bind_parameters(parameters, the_context, pos);
+      return ((procedure_value) action_result).bind_parameters(parameters, the_context, the_origin);
     }
 
     type procedure_type = the_context.find_supertype(action_result, procedure_type_target.instance);
     assert procedure_type != null;
     assert procedure_type.principal().get_kind() == type_kinds.procedure_kind;
 
-    action the_procedure = the_context.promote(the_action, procedure_type, pos);
+    action the_procedure = the_context.promote(the_action, procedure_type, the_origin);
     assert the_procedure != null;
     // TODO: actually, if this happens, just return the error.
     assert !(the_procedure instanceof error_signal);
 
     abstract_value return_type = action_utilities.get_procedure_return(procedure_type);
-    return new bound_procedure(the_procedure, return_type, parameters, pos);
+    return new bound_procedure(the_procedure, return_type, parameters, the_origin);
   }
 
   private static type bind_type_parameters(master_type the_type, action_parameters parameters) {

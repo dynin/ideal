@@ -29,6 +29,7 @@ public interface procedure_declaration extends declaration {
   boolean overrides_variable();
   readonly_list<declaration> get_overriden();
   procedure_declaration specialize(specialization_context context, principal_type new_parent);
+  @Nullable action procedure_action();
   @Nullable action get_body_action();
   variable_declaration get_this_declaration();
 }

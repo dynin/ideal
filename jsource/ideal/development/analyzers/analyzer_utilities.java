@@ -90,6 +90,7 @@ public class analyzer_utilities {
 
     origin the_origin = the_procedure;
     type target_type = the_procedure.declared_in_type().get_flavored(the_procedure.get_flavor());
+    action executor_action = new procedure_executor(the_procedure).to_action(the_origin);
 
     action result_action;
     if (the_procedure.overrides_variable()) {
@@ -108,7 +109,7 @@ public class analyzer_utilities {
       }
     } else if (the_procedure.get_category() == procedure_category.METHOD) {
       readonly_list<declaration> overriden_list = the_procedure.get_overriden();
-      set<dispatch_action2> dispatches = new hash_set<dispatch_action2>();
+      set<dispatch_action> dispatches = new hash_set<dispatch_action>();
       for (int i = 0; i < overriden_list.size(); ++i) {
         if (! (overriden_list.get(i) instanceof procedure_declaration)) {
           // TODO: handle this case
@@ -120,31 +121,31 @@ public class analyzer_utilities {
         if (procedure_action == null) {
           continue;
         }
-        if (!(procedure_action instanceof dispatch_action2)) {
+        if (!(procedure_action instanceof dispatch_action)) {
           // TODO: handle this case
           // System.out.println(the_procedure + " OVERRIDES " + procedure_action);
           continue;
         }
-        dispatch_action2 the_dispatch = (dispatch_action2) overriden.procedure_action();
+        dispatch_action the_dispatch = (dispatch_action) overriden.procedure_action();
         assert !the_dispatch.handles_type(target_type);
         dispatches.add(the_dispatch);
       }
 
       if (dispatches.is_empty()) {
-        result_action = new dispatch_action2(the_procedure);
+        result_action = new dispatch_action(executor_action, target_type);
       } else {
-        readonly_list<dispatch_action2> dispatches_list = dispatches.elements();
+        readonly_list<dispatch_action> dispatches_list = dispatches.elements();
         result_action = null;  // To make javac happy
         for (int i = 0; i < dispatches_list.size(); ++i) {
-          dispatch_action2 the_dispatch = dispatches_list.get(i);
-          the_dispatch.add_handler(target_type, the_procedure);
+          dispatch_action the_dispatch = dispatches_list.get(i);
+          the_dispatch.add_handler(target_type, executor_action);
           // TODO: what of there is more than one dispatch?
           // Which one should we pick then?
           result_action = the_dispatch.bind_from(target_type.to_action(the_origin), the_origin);
         }
       }
     } else {
-      result_action = new procedure_executor(the_procedure).to_action(the_origin);
+      result_action = executor_action;
     }
 
     the_context.add(target_type, the_procedure.short_name(), result_action);
@@ -178,8 +179,8 @@ public class analyzer_utilities {
 
     // All instance variables can be read
     type flavored_from = parent_type.get_flavored(dispatch_flavor);
-    dispatch_action the_dispatch = new dispatch_action(flavored_from,
-        new instance_variable(the_variable, dispatch_flavor));
+    dispatch_action the_dispatch = new dispatch_action(
+        new instance_variable(the_variable, dispatch_flavor), flavored_from);
     the_context.add(flavored_from, the_name, the_dispatch);
 
     if (the_variable.reference_type().get_flavor() == mutable_flavor &&

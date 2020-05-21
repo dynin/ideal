@@ -19,77 +19,84 @@ import ideal.development.elements.*;
 import ideal.development.types.*;
 import ideal.development.declarations.*;
 import ideal.development.values.*;
-public class dispatch_action extends base_action {
+import ideal.development.analyzers.*;
+
+public class dispatch_action extends base_action implements action {
 
   private final action primary_action;
-  private final type from_type;
   private final dictionary<type, action> vtable;
-  @Nullable private final action from;
+  private final action from;
 
-  public dispatch_action(type from_type, action primary_action) {
+  public dispatch_action(action primary_action, type from_type) {
     super(primary_action);
     this.primary_action = primary_action;
-    this.from_type = from_type;
     vtable = new list_dictionary<type, action>();
     vtable.put(from_type, primary_action);
     from = null;
   }
 
-  private dispatch_action(dispatch_action primary_dispatch, action from, origin the_origin) {
+  private dispatch_action(dispatch_action the_dispatch, action from, origin the_origin) {
     super(the_origin);
-    this.primary_action = primary_dispatch.primary_action;
-    this.from_type = primary_dispatch.from_type;
-    vtable = primary_dispatch.vtable;
+    this.primary_action = the_dispatch.primary_action;
+    vtable = the_dispatch.vtable;
     assert from != null;
     this.from = from;
+  }
+
+  public declaration get_declaration() {
+    return primary_action.get_declaration();
   }
 
   public boolean handles_type(type the_type) {
     return vtable.contains_key(the_type);
   }
 
-  public void add_handler(type the_type, action the_action) {
+  public void add_handler(type the_type, action new_action) {
     if (vtable.contains_key(the_type)) {
       utilities.panic("Duplicate handler in " + this + " for " + the_type);
     }
     assert !vtable.contains_key(the_type);
-    vtable.put(the_type, the_action);
-  }
-
-  public action get_primary() {
-    return primary_action;
+    vtable.put(the_type, new_action);
   }
 
   public @Nullable action get_from() {
     return from;
   }
 
-  @Override
-  public abstract_value result() {
-    return primary_action.result();
+  public action get_primary() {
+    return primary_action;
   }
 
   @Override
-  public action bind_from(action new_from, origin the_origin) {
+  public type result() {
+    if (from != null) {
+      // TODO: implement full resolution logic
+      @Nullable action resolved_action = vtable.get(from.result().type_bound());
+      if (resolved_action != null) {
+        return resolved_action.result().type_bound();
+      }
+    }
+
+    return primary_action.result().type_bound();
+  }
+
+  @Override
+  public dispatch_action bind_from(action new_from, origin the_origin) {
     // TODO: may be narrow result_type here.
     if (from != null) {
       new_from = from.bind_from(new_from, the_origin);
     }
+
     return new dispatch_action(this, new_from, the_origin);
   }
 
   @Override
-  public @Nullable declaration get_declaration() {
-    return declaration_util.get_declaration(primary_action);
-  }
-
-  @Override
-  public entity_wrapper execute(execution_context the_context) {
+  public entity_wrapper execute(execution_context the_execution_context) {
     if (from == null) {
       utilities.panic("Unbound 'this' in " + primary_action);
     }
 
-    entity_wrapper this_entity = from.execute(the_context);
+    entity_wrapper this_entity = from.execute(the_execution_context);
     if (this_entity instanceof jump_wrapper) {
       return this_entity;
     }
@@ -119,12 +126,14 @@ public class dispatch_action extends base_action {
       }
       if (best == null) {
         // TODO: should never happen.
-        utilities.panic("Can't resolve for " + this_type + ", expected " + from_type);
+        utilities.panic("Can't resolve " + primary_action + " for " + this_type);
       }
       // TODO: update vtable.
       resolved_action = best.value();
     }
-    return resolved_action.bind_from(from, this).execute(the_context);
+
+    return resolved_action.bind_from(new entity_action(this_entity, this), this).
+        execute(the_execution_context);
   }
 
   @Override

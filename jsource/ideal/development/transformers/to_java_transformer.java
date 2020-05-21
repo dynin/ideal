@@ -50,7 +50,6 @@ public class to_java_transformer extends base_transformer {
   private mapping mapping_strategy;
   private principal_type package_type;
 
-  private static simple_name GET_NAME = simple_name.make("get");
   private static simple_name SET_NAME = simple_name.make("set");
   private static simple_name VALUE_NAME = simple_name.make("value");
   private static simple_name CALL_NAME = simple_name.make("call");
@@ -1336,7 +1335,7 @@ public class to_java_transformer extends base_transformer {
 
   private construct do_explicitly_derefence(construct the_construct, origin source) {
     construct get_construct = new resolve_construct(the_construct,
-        new name_construct(GET_NAME, source), source);
+        new name_construct(common_library.get_name, source), source);
     return new parameter_construct(get_construct,
         new list_construct(new empty<construct>(), grouping_type.PARENS, false, source), source);
   }
@@ -1779,7 +1778,7 @@ public class to_java_transformer extends base_transformer {
         new parameter_construct(
             new resolve_construct(
                 new name_construct(list_name, the_origin),
-                new name_construct(GET_NAME, the_origin),
+                new name_construct(common_library.get_name, the_origin),
                 the_origin
             ),
             new list_construct(

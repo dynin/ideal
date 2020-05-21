@@ -122,9 +122,36 @@ public class action_utilities {
     return (base_execution_context) the_context;
   }
 
+  private static entity_wrapper try_execute_native(procedure_declaration the_procedure,
+      @Nullable value_wrapper this_argument, readonly_list<entity_wrapper> arguments,
+      execution_context the_context) {
+    principal_type declared_in_type = the_procedure.declared_in_type();
+    if (declared_in_type instanceof parametrized_type &&
+        ((parametrized_type) declared_in_type).get_master() ==
+            common_library.get_instance().list_type()) {
+      if (the_procedure.original_name() == common_library.get_name) {
+        assert this_argument instanceof list_value;
+        readonly_list<value_wrapper> unwrapped_list =
+            (readonly_list<value_wrapper>) this_argument.unwrap();
+        assert arguments.size() == 1;
+        Integer index = (Integer) ((value_wrapper) arguments.first()).unwrap();
+        value_wrapper element = unwrapped_list.get(index);
+        return new constant_reference(element, element.type_bound());
+      }
+    }
+    return null;
+  }
+
   public static entity_wrapper execute_procedure(procedure_declaration the_procedure,
       @Nullable value_wrapper this_argument, readonly_list<entity_wrapper> arguments,
       execution_context the_context) {
+
+    entity_wrapper result = try_execute_native(the_procedure, this_argument,
+        arguments, the_context);
+
+    if (result != null) {
+      return result;
+    }
 
     base_execution_context new_context = action_utilities.get_context(the_context).
         make_child(the_procedure.original_name());
@@ -147,7 +174,7 @@ public class action_utilities {
 
     action body_action = the_procedure.get_body_action();
     assert body_action != null;
-    entity_wrapper result = body_action.execute(new_context);
+    result = body_action.execute(new_context);
 
     // TODO: uniformly hanlde jump_wrappers; do stack trace.
     if (result instanceof panic_value) {

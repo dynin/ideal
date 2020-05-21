@@ -58,7 +58,8 @@ class new_type {
 }
 println(new_type.new("hey!").get_state());
 elements : [ 42, 68 ];
---println("size: " ++ elements.size ++ " second: " ++ elements[1]);
+println("size: " ++ elements.size);
+println("first: " ++ elements[0] ++ " second: " ++ elements[1]);
 
 class sub_type {
   extends new_type;

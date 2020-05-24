@@ -94,10 +94,11 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
     }
 
     local_variable_declaration decl = new local_variable_declaration(annotations, var_name,
-        loop_block, flavor.readonly_flavor, element_type, null, this);
+        flavor.readonly_flavor, element_type, null, this);
+    init_context(decl);
+    decl.analyze();
 
     element_var = decl.get_access();
-    get_context().add(loop_block, var_name, element_var.to_action(this));
 
     error = find_error(init);
     if (error != null) {

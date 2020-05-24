@@ -338,8 +338,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
         if (superclass != null) {
           add_super_reference(special_name.SUPER_CONSTRUCTOR, superclass, flavor.raw_flavor);
         }
-        get_context().add(inside, special_name.THIS_CONSTRUCTOR,
-            make_this_variable(flavor.raw_flavor).get_access().to_action(source));
+        make_this_variable(special_name.THIS_CONSTRUCTOR, flavor.raw_flavor);
 
         // Here comes a subtle point.  If one constructor invokes another using this() call,
         // then it is assumed that all the invariants are met after first constructor executes,
@@ -429,10 +428,9 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
   private local_variable_declaration do_declare_this(type_flavor this_flavor) {
     assert this_decl == null;
-    local_variable_declaration this_variable = make_this_variable(this_flavor);
+    local_variable_declaration this_variable = make_this_variable(special_name.THIS, this_flavor);
     this_decl = this_variable;
     action this_action = this_variable.get_access().to_action(this);
-    get_context().add(inside, special_name.THIS, this_action);
     get_context().add(inside, special_name.PROMOTION, this_action);
 
     // TODO: we should do this automatically when instantiating reference.
@@ -478,20 +476,26 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     return this_decl;
   }
 
-  private local_variable_declaration make_this_variable(type_flavor this_flavor) {
-    origin source = this;
-    return new local_variable_declaration(analyzer_utilities.THIS_MODIFIERS, special_name.THIS,
-        inside, flavor.immutable_flavor, declared_in_type().get_flavored(this_flavor), null,
-        source);
+  private local_variable_declaration make_this_variable(action_name the_name,
+      type_flavor this_flavor) {
+    origin the_origin = this;
+    local_variable_declaration result = new local_variable_declaration(
+        analyzer_utilities.THIS_MODIFIERS, the_name, flavor.immutable_flavor,
+        declared_in_type().get_flavored(this_flavor), null,
+        the_origin);
+    init_context(result);
+    result.analyze();
+    return result;
   }
 
   private void add_super_reference(special_name the_name, type superclass,
       type_flavor super_flavor) {
-    origin source = this;
+    origin the_origin = this;
     local_variable_declaration super_decl = new local_variable_declaration(
-        analyzer_utilities.THIS_MODIFIERS, the_name, inside,
-        flavor.immutable_flavor, superclass.get_flavored(super_flavor), null, source);
-    get_context().add(inside, the_name, super_decl.get_access().to_action(source));
+        analyzer_utilities.THIS_MODIFIERS, the_name,
+        flavor.immutable_flavor, superclass.get_flavored(super_flavor), null, the_origin);
+    init_context(super_decl);
+    super_decl.analyze();
   }
 
   @Override

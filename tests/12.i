@@ -61,6 +61,10 @@ elements : [ 42, 68 ];
 println("size: " ++ elements.size);
 println("first: " ++ elements[0] ++ " second: " ++ elements[1]);
 
+for (element : elements) {
+  println("element: " ++ element);
+}
+
 class sub_type {
   extends new_type;
   sub_type(string v2) {

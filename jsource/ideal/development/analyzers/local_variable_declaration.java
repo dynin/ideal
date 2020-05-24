@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.actions;
+package ideal.development.analyzers;
 
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
@@ -21,32 +21,32 @@ import ideal.development.flavors.*;
 import ideal.development.modifiers.*;
 import ideal.development.notifications.*;
 import ideal.development.names.*;
+import ideal.development.actions.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
 
-public class local_variable_declaration extends base_action implements variable_declaration,
-    analyzable {
+public class local_variable_declaration extends single_pass_analyzer
+    implements variable_declaration {
 
   private final annotation_set annotations;
   private final action_name name;
-  private final principal_type parent_type;
   private final type_flavor reference_flavor;
   private final type var_type;
   private final @Nullable action init_action;
   private final local_variable variable_action;
+  private boolean has_been_added;
 
   // TODO: drop context
   public local_variable_declaration(annotation_set annotations, action_name name,
-      principal_type parent_type, type_flavor reference_flavor, type var_type,
-      @Nullable action init_action, origin source) {
+      type_flavor reference_flavor, type var_type, @Nullable action init_action, origin source) {
     super(source);
     this.annotations = annotations;
     this.name = name;
-    this.parent_type = parent_type;
     this.reference_flavor = reference_flavor;
     this.var_type = var_type;
     this.init_action = init_action;
     this.variable_action = new local_variable(this, reference_flavor);
+    this.has_been_added = false;
   }
 
   @Override
@@ -70,16 +70,11 @@ public class local_variable_declaration extends base_action implements variable_
   }
 
   @Override
-  public principal_type declared_in_type() {
-    return parent_type;
-  }
-
-  @Override
   public local_variable_declaration specialize(specialization_context context,
       principal_type new_parent) {
-    @Nullable principal_type parent_type = (principal_type) context.lookup(this.parent_type);
+    @Nullable principal_type parent_type = (principal_type) context.lookup(this.declared_in_type());
     if (parent_type == null) {
-      parent_type = this.parent_type;
+      parent_type = this.declared_in_type();
     }
 
     @Nullable principal_type variable_principal = var_type.principal();
@@ -90,8 +85,10 @@ public class local_variable_declaration extends base_action implements variable_
       var_type = this.var_type;
     }
 
-    return new local_variable_declaration(annotations, name,
-        parent_type, reference_flavor, var_type, init_action, this);
+    local_variable_declaration result = new local_variable_declaration(annotations, name,
+        reference_flavor, var_type, init_action, this);
+    result.set_context(parent_type, get_context());
+    return result;
   }
 
   @Override
@@ -115,30 +112,16 @@ public class local_variable_declaration extends base_action implements variable_
   }
 
   @Override
-  public action analyze() {
+  public action do_single_pass_analysis() {
     assert variable_action != null;
+    origin the_origin = this;
+
+    get_context().add(declared_in_type(), name, variable_action.to_action(the_origin));
+
     if (init_action == null) {
-      return common_library.get_instance().void_instance().to_action(this);
+      return common_library.get_instance().void_instance().to_action(the_origin);
     } else {
       return new variable_initializer(variable_action, init_action);
-    }
-  }
-
-  // TODO: factor this out into variable_init_action.
-  @Override
-  public abstract_value result() {
-    return common_library.get_instance().void_instance();
-  }
-
-  @Override
-  public entity_wrapper execute(execution_context context) {
-    if (init_action != null) {
-      entity_wrapper result = init_action.execute(context);
-      assert result instanceof value_wrapper;
-      get_access().execute(context).init((value_wrapper) result);
-      return result;
-    } else {
-      return common_library.do_get_undefined_instance();
     }
   }
 

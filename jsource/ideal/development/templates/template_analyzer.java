@@ -25,6 +25,7 @@ import ideal.development.names.*;
 import ideal.development.values.*;
 import ideal.development.analyzers.*;
 import ideal.development.declarations.*;
+import ideal.development.analyzers.*;
 import ideal.development.functions.*;
 
 public class template_analyzer extends single_pass_analyzer implements declaration {
@@ -62,7 +63,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
     origin pos = this;
     template_block = make_block(BLOCK_NAME, this);
     local_variable_declaration result_decl = new local_variable_declaration(
-        analyzer_utilities.LOCAL_MODIFIERS, RESULT_NAME, template_block,
+        analyzer_utilities.LOCAL_MODIFIERS, RESULT_NAME,
         flavor.mutable_flavor, library().immutable_string_type(),
         make_string_value(new base_string("")).to_action(pos), pos);
     result_access = analyzable_action.from_value(result_decl.get_access(), pos);

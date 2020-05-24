@@ -41,6 +41,8 @@ class summary_extractor {
     -- TODO: use list iteration construct
     for (var nonnegative i : 0; i < nodes.size; i += 1) {
       s : process(nodes[i]);
+--    for (node : nodes) {
+--      s : process(node);
       result.write_all(s);
 
       if (s.is_not_empty && s.last == dot) {

@@ -57,12 +57,12 @@ class new_type {
   string get_state() => "state: " ++ field;
 }
 println(new_type.new("hey!").get_state());
-elements : [ 42, 68 ];
+elements : [ 42, 68, 18 ];
 println("size: " ++ elements.size);
 println("first: " ++ elements[0] ++ " second: " ++ elements[1]);
 
 for (element : elements) {
-  println("element: " ++ element);
+  println("  element: " ++ element);
 }
 
 class sub_type {

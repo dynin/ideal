@@ -25,7 +25,10 @@ package operators {
   boolean not_equal_to(readonly equality_comparable first,
       readonly equality_comparable second) pure;
 
-  boolean less(readonly comparable first, readonly comparable second) pure;
+  -- TODO: less operator should take arguments of type comparable,
+  -- as defined below.
+  -- boolean less(readonly comparable first, readonly comparable second) pure;
+  boolean less(integer first, integer second) pure;
   boolean greater(readonly comparable first, readonly comparable second) pure;
   boolean less_equal(readonly comparable first, readonly comparable second) pure;
   boolean greater_equal(readonly comparable first, readonly comparable second) pure;

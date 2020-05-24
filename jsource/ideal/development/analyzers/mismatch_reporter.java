@@ -75,15 +75,18 @@ public class mismatch_reporter {
       analysis_context context, origin source) {
 
     type failed_procedure_type = candidate.result().type_bound();
+    if (!action_utilities.is_procedure_type(failed_procedure_type)) {
+      return new error_signal(messages.expression_not_parametrizable, source);
+    }
+
     assert action_utilities.is_procedure_type(failed_procedure_type);
-    // return new error_signal(messages.expression_not_parametrizable, this);
 
     immutable_list<action> supplied_arguments = the_parameter_target.parameters.params();
 
     if (!action_utilities.is_valid_procedure_arity(failed_procedure_type,
         supplied_arguments.size())) {
       return new error_signal(new base_string(supplied_arguments.size() +
-          " parameters not supported"), source);
+          " parameter(s) not supported"), source);
     }
 
     for (int i = 0; i < supplied_arguments.size(); ++i) {

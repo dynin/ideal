@@ -20,10 +20,11 @@ import ideal.development.names.*;
 
 public class multiply_op extends base_number_op {
   public multiply_op() {
-    super(operator.MULTIPLY);
+    super(operator.MULTIPLY, library().immutable_integer_type());
   }
 
-  protected int apply(int first, int second) {
+  @Override
+  protected Integer apply(int first, int second) {
     return first * second;
   }
 }

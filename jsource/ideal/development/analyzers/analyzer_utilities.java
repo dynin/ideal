@@ -30,11 +30,11 @@ public class analyzer_utilities {
 
   private analyzer_utilities() { }
 
-  public static final annotation_set LOCAL_MODIFIERS =
-      new base_annotation_set(access_modifier.local_modifier,
+  public static final annotation_set PRIVATE_MODIFIERS =
+      new base_annotation_set(access_modifier.private_modifier,
           new hash_set<modifier_kind>(), null);
 
-  public static final annotation_set THIS_MODIFIERS =
+  public static final annotation_set PRIVATE_FINAL_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
           make_singleton(general_modifier.final_modifier), null);
 

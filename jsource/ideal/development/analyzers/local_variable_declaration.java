@@ -32,21 +32,18 @@ public class local_variable_declaration extends single_pass_analyzer
   private final action_name name;
   private final type_flavor reference_flavor;
   private final type var_type;
-  private final @Nullable action init_action;
-  private final local_variable variable_action;
-  private boolean has_been_added;
+  private final @Nullable analyzable init_analyzable;
+  private @Nullable action init_action;
+  private local_variable variable_action;
 
-  // TODO: drop context
   public local_variable_declaration(annotation_set annotations, action_name name,
-      type_flavor reference_flavor, type var_type, @Nullable action init_action, origin source) {
+      type_flavor reference_flavor, type var_type, analyzable init_analyzable, origin source) {
     super(source);
     this.annotations = annotations;
     this.name = name;
     this.reference_flavor = reference_flavor;
     this.var_type = var_type;
-    this.init_action = init_action;
-    this.variable_action = new local_variable(this, reference_flavor);
-    this.has_been_added = false;
+    this.init_analyzable = init_analyzable;
   }
 
   @Override
@@ -78,15 +75,16 @@ public class local_variable_declaration extends single_pass_analyzer
     }
 
     @Nullable principal_type variable_principal = var_type.principal();
-    type var_type;
+    type new_var_type;
     if (variable_principal != null) {
-      var_type = variable_principal.get_flavored(this.var_type.get_flavor());
+      new_var_type = variable_principal.get_flavored(this.var_type.get_flavor());
     } else {
-      var_type = this.var_type;
+      new_var_type = this.var_type;
     }
 
+    // TODO: do we need to specialize init_analyzable?
     local_variable_declaration result = new local_variable_declaration(annotations, name,
-        reference_flavor, var_type, init_action, this);
+        reference_flavor, new_var_type, init_analyzable, this);
     result.set_context(parent_type, get_context());
     return result;
   }
@@ -103,25 +101,49 @@ public class local_variable_declaration extends single_pass_analyzer
 
   @Override
   public @Nullable action get_init() {
+    if (init_analyzable != null) {
+      assert init_action != null;
+    }
+
     return init_action;
   }
 
   // TODO: Break circular dependency.
   public local_variable get_access() {
+    if (variable_action == null) {
+      variable_action = new local_variable(this, reference_flavor);
+    }
     return variable_action;
   }
 
+  public action dereference_access() {
+    origin the_origin = this;
+    return new dereference_action(var_type, null, the_origin).bind_from(get_access(), the_origin);
+  }
+
   @Override
-  public action do_single_pass_analysis() {
-    assert variable_action != null;
+  public analysis_result do_single_pass_analysis() {
     origin the_origin = this;
 
-    get_context().add(declared_in_type(), name, variable_action.to_action(the_origin));
+    if (init_analyzable != null) {
+      error_signal result = find_error(init_analyzable);
+      if (result != null) {
+        return result;
+      }
+      init_action = action_not_error(init_analyzable);
+      if (!get_context().can_promote(init_action.result(), var_type)) {
+        return action_utilities.cant_promote(init_action.result(), var_type,
+              get_context(), the_origin);
+      }
+      init_action = get_context().promote(init_action, var_type, the_origin);
+    }
+
+    get_context().add(declared_in_type(), name, get_access().to_action(the_origin));
 
     if (init_action == null) {
       return common_library.get_instance().void_instance().to_action(the_origin);
     } else {
-      return new variable_initializer(variable_action, init_action);
+      return new variable_initializer(get_access(), init_action);
     }
   }
 

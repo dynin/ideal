@@ -480,22 +480,20 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       type_flavor this_flavor) {
     origin the_origin = this;
     local_variable_declaration result = new local_variable_declaration(
-        analyzer_utilities.THIS_MODIFIERS, the_name, flavor.immutable_flavor,
+        analyzer_utilities.PRIVATE_FINAL_MODIFIERS, the_name, flavor.immutable_flavor,
         declared_in_type().get_flavored(this_flavor), null,
         the_origin);
-    init_context(result);
-    result.analyze();
+    analyze_and_ignore_errors(result, analysis_pass.BODY_CHECK);
     return result;
   }
 
   private void add_super_reference(special_name the_name, type superclass,
       type_flavor super_flavor) {
     origin the_origin = this;
-    local_variable_declaration super_decl = new local_variable_declaration(
-        analyzer_utilities.THIS_MODIFIERS, the_name,
+    local_variable_declaration super_declaration = new local_variable_declaration(
+        analyzer_utilities.PRIVATE_FINAL_MODIFIERS, the_name,
         flavor.immutable_flavor, superclass.get_flavored(super_flavor), null, the_origin);
-    init_context(super_decl);
-    super_decl.analyze();
+    analyze_and_ignore_errors(super_declaration, analysis_pass.BODY_CHECK);
   }
 
   @Override

@@ -136,7 +136,9 @@ public class action_utilities {
         assert arguments.size() == 1;
         Integer index = (Integer) ((value_wrapper) arguments.first()).unwrap();
         value_wrapper element = unwrapped_list.get(index);
-        return new constant_reference(element, element.type_bound());
+        type ref_type = common_library.get_instance().get_reference(
+            flavor.readonly_flavor, to_type(element.type_bound()));
+        return new constant_reference(element, ref_type);
       }
     }
     return null;

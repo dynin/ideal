@@ -25,19 +25,21 @@ import ideal.development.declarations.*;
 
 public class analyzable_action implements analyzable {
   private final action the_action;
-  private final origin pos;
 
-  public analyzable_action(action the_action, origin pos) {
+  public analyzable_action(action the_action) {
     if (the_action instanceof analyzable) {
       // TODO: may be do a static method that enforces this?
       utilities.panic("Don't wrap " + the_action);
     }
     this.the_action = the_action;
-    this.pos = pos;
   }
 
-  public static analyzable_action from_value(abstract_value value, origin pos) {
-    return new analyzable_action(value.to_action(pos), pos);
+  public static analyzable_action from_value(abstract_value value, origin the_origin) {
+    return new analyzable_action(value.to_action(the_origin));
+  }
+
+  public static analyzable_action nothing(origin the_origin) {
+    return from_value(common_library.get_instance().void_instance(), the_origin);
   }
 
   @Override
@@ -52,11 +54,7 @@ public class analyzable_action implements analyzable {
 
   @Override
   public origin deeper_origin() {
-    return pos;
-  }
-
-  public static analyzable_action nothing(origin pos) {
-    return from_value(common_library.get_instance().void_instance(), pos);
+    return the_action;
   }
 
   @Override

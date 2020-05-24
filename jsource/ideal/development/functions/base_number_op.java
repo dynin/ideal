@@ -27,9 +27,9 @@ import ideal.development.notifications.*;
 
 public abstract class base_number_op extends binary_procedure {
 
-  public base_number_op(operator the_operator) {
-    super(the_operator, true, library().immutable_integer_type(),
-        library().immutable_integer_type(), library().immutable_integer_type());
+  public base_number_op(operator the_operator, type return_type) {
+    super(the_operator, true, return_type, library().immutable_integer_type(),
+        library().immutable_integer_type());
   }
 
   private action promote_to_integer(action argument, analysis_context context, origin pos) {
@@ -51,8 +51,13 @@ public abstract class base_number_op extends binary_procedure {
     second = promote_to_integer(second, context, pos);
     all_nonnegative &= (second.result() == library().immutable_nonnegative_type());
 
-    type result = all_nonnegative ? library().immutable_nonnegative_type() :
-        library().immutable_integer_type();
+    type result;
+    if (return_value() == library().immutable_boolean_type()) {
+      result = library().immutable_boolean_type();
+    } else {
+      result = all_nonnegative ? library().immutable_nonnegative_type() :
+          library().immutable_integer_type();
+    }
     return make_action(result, first, second, pos);
   }
 
@@ -77,11 +82,18 @@ public abstract class base_number_op extends binary_procedure {
       return null;
     }
 
-    int result = apply(first_value, second_value);
+    Object result = apply(first_value, second_value);
 
-    return new integer_value(result, (result > 0) ? library().immutable_nonnegative_type() :
-        library().immutable_integer_type());
+    if (result instanceof Integer) {
+      int integer_result = (Integer) result;
+      return new integer_value(integer_result,
+          (integer_result > 0) ? library().immutable_nonnegative_type() :
+              library().immutable_integer_type());
+    } else {
+      boolean boolean_result = (Boolean) result;
+      return boolean_result ? library().true_value() : library().false_value();
+    }
   }
 
-  protected abstract int apply(int first, int second);
+  protected abstract Object apply(int first, int second);
 }

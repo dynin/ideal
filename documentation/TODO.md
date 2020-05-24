@@ -58,3 +58,4 @@
 - [ ] Introduce range construction operators
 - [x] Add one-element list initializer
 - [x] Implement list iteration for ideal list types
+- [ ] Retire declaration.has_errors()

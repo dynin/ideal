@@ -30,6 +30,9 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
 
   private static final action_name BLOCK_NAME =
       new special_name(new base_string("iterate"), new base_string("list_iteration_analyzer"));
+  private static simple_name LIST_NAME = simple_name.make("list");
+  private static simple_name INDEX_NAME = simple_name.make("index");
+  private static simple_name GET_NAME = simple_name.make("get");
 
   public final annotation_set annotations;
   public final action_name var_name;
@@ -51,7 +54,7 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
     assert source.var_decl.init != null;
     assert source.var_decl.annotations.is_empty();
 
-    annotations = analyzer_utilities.LOCAL_MODIFIERS;
+    annotations = analyzer_utilities.PRIVATE_MODIFIERS;
     var_name = source.var_decl.name;
     init = make(source.var_decl.init);
     body = make(source.body);
@@ -93,24 +96,93 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
       return new error_signal(new base_string("List type expected"), init);
     }
 
-    local_variable_declaration decl = new local_variable_declaration(annotations, var_name,
-        flavor.readonly_flavor, element_type, null, this);
-    init_context(decl);
-    decl.analyze();
+    return rewrite_as_for_loop();
+  }
 
-    element_var = decl.get_access();
+  private analysis_result rewrite_as_for_loop() {
+    origin the_origin = this;
+    common_library library = common_library.get_instance();
 
-    error = find_error(init);
-    if (error != null) {
-      return error;
+    if (! (var_name instanceof simple_name)) {
+      return new error_signal(new base_string("Simple name expected"), this);
     }
+    simple_name element_name = (simple_name) var_name;
+    simple_name list_name = name_utilities.join(element_name, LIST_NAME);
+    simple_name index_name = name_utilities.join(element_name, INDEX_NAME);
 
-    error = find_error(body);
-    if (error != null) {
-      return error;
-    }
+    type list_type = library().list_type().bind_parameters(
+        new type_parameters(new base_list<abstract_value>(element_type))).get_flavored(
+        flavor.readonly_flavor);
 
-    return new list_iteration_action(this);
+    local_variable_declaration list_declaration =
+        new local_variable_declaration(analyzer_utilities.PRIVATE_FINAL_MODIFIERS, list_name,
+        flavor.immutable_flavor, list_type, new analyzable_action(init_action), the_origin);
+
+    local_variable_declaration index_declaration = new local_variable_declaration(
+        analyzer_utilities.PRIVATE_MODIFIERS, index_name,
+        flavor.mutable_flavor, library.immutable_nonnegative_type(), new analyzable_action(
+        new integer_value(0, library.immutable_nonnegative_type()).to_action(the_origin)),
+        the_origin);
+
+    analyzable index_condition = new parameter_analyzer(
+        new resolve_analyzer(operator.LESS, the_origin),
+        new base_list<analyzable>(
+          new analyzable_action(index_declaration.dereference_access()),
+          new resolve_analyzer(
+            new analyzable_action(list_declaration.dereference_access()),
+            common_library.size_name,
+            the_origin
+          )
+        ),
+        the_origin
+      );
+
+    analyzable index_increment = new parameter_analyzer(
+        new resolve_analyzer(operator.ADD_ASSIGN, the_origin),
+        new base_list<analyzable>(
+          new analyzable_action(index_declaration.get_access()),
+          new analyzable_action(
+            new integer_value(1, library.immutable_nonnegative_type()).to_action(the_origin)
+          )
+        ),
+        the_origin
+      );
+
+    analyzable element_get = new parameter_analyzer(
+        //new analyzable_action(list_declaration.get_access()),
+        // TODO: list_declaration.get_access() should work.
+        new resolve_analyzer(list_name, the_origin),
+        new base_list<analyzable>(
+            new analyzable_action(index_declaration.dereference_access())
+        ),
+        the_origin
+      );
+
+    local_variable_declaration element_declaration = new local_variable_declaration(
+        annotations, element_name, flavor.immutable_flavor, element_type, element_get, the_origin);
+
+    // TODO: do not introduce an extra block if the body already has one
+    statement_list_analyzer body_statements = new statement_list_analyzer(
+        new base_list<analyzable>(element_declaration, body), the_origin);
+
+    block_analyzer body_block = new block_analyzer(body_statements, the_origin);
+
+    for_analyzer for_statement = new for_analyzer(
+        index_declaration,
+        index_condition,
+        index_increment,
+        body_block,
+        the_origin);
+
+    block_analyzer expanded = new block_analyzer(
+        new statement_list_analyzer(
+            new base_list<analyzable>(list_declaration, for_statement),
+            the_origin
+        ),
+        the_origin);
+
+    init_context(expanded);
+    return expanded.analyze();
   }
 
   public action body_action() {

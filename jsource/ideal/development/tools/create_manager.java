@@ -203,10 +203,13 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(new cast_op());
     add_operator(new assign_op());
     add_operator(new add_op());
+    add_operator(new add_assign_op());
     add_operator(new multiply_op());
     add_operator(new multiply_assign_op());
     add_operator(new concatenate_op());
     add_operator(new concatenate_assign_op());
+    add_operator(new less_op());
+
     // TODO: this is not used.
     //add_operator(new escape_fn(context));
 
@@ -217,7 +220,6 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(operator.EQUAL_TO);
     add_operator(operator.NOT_EQUAL_TO);
 
-    add_operator(operator.LESS);
     add_operator(operator.GREATER);
     add_operator(operator.LESS_EQUAL);
     add_operator(operator.GREATER_EQUAL);
@@ -226,7 +228,6 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(operator.LOGICAL_OR);
     add_operator(operator.LOGICAL_NOT);
 
-    add_operator(operator.ADD_ASSIGN);
     add_operator(operator.SUBTRACT_ASSIGN);
   }
 
@@ -323,11 +324,23 @@ public class create_manager implements target_manager, type_bootstrapper {
     }
 
     if (operator_procedure != null) {
-      if (actions.size() != 1) {
-        utilities.panic("Can't process operator " + symbol);
+      if (actions.size() == 0) {
+        utilities.panic("Can't find operator " + symbol);
       }
-      action the_action = operator_procedure.to_action(actions.first());
-      bootstrap_context.add(parent, the_operator, the_action);
+      boolean added = false;
+      for (int i = 0; i < actions.size(); ++i) {
+        action the_action = actions.get(i);
+        if (actions.size() == 1 ||
+            the_action.result().type_bound() == operator_procedure.type_bound()) {
+          the_action = operator_procedure.to_action(the_action);
+          added = true;
+        }
+        bootstrap_context.add(parent, the_operator, the_action);
+      }
+
+      if (!added) {
+        utilities.panic("Can't find matching operator " + symbol);
+      }
     } else {
       for (int i = 0; i < actions.size(); ++i) {
         bootstrap_context.add(parent, the_operator, actions.get(i));

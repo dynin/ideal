@@ -61,7 +61,8 @@ public class conditional_analyzer extends single_pass_analyzer {
 
     type boolean_type = library().immutable_boolean_type();
     if (!get_context().can_promote(condition_action.result(), boolean_type)) {
-      return new error_signal(new base_string("Boolean value expected"), condition_action);
+      return new error_signal(new base_string("Boolean value expected, got " +
+          condition_action.result()), condition_action);
     }
     condition_action = get_context().promote(condition_action, boolean_type, this);
     // TODO: this check is redundant.

@@ -18,13 +18,13 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
-public class add_op extends base_number_op {
-  public add_op() {
-    super(operator.ADD, library().immutable_integer_type());
+public class less_op extends base_number_op {
+  public less_op() {
+    super(operator.LESS, library().immutable_boolean_type());
   }
 
   @Override
-  protected Integer apply(int first, int second) {
-    return first + second;
+  protected Boolean apply(int first, int second) {
+    return first < second;
   }
 }

@@ -232,7 +232,7 @@ public class resolve_analyzer extends single_pass_analyzer {
         return analyzable_action.from_value(specialized, this);
       }
     }
-    return new analyzable_action(the_action, this);
+    return new analyzable_action(the_action);
   }
 
   @Override

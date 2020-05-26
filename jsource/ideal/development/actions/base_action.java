@@ -16,17 +16,17 @@ import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 
-public abstract class base_action<S extends origin> extends debuggable implements action {
-  public final S source;
+public abstract class base_action extends debuggable implements action {
+  private final origin the_origin;
 
-  public base_action(S source) {
-    assert source != null;
-    this.source = source;
+  public base_action(origin the_origin) {
+    assert the_origin != null;
+    this.the_origin = the_origin;
   }
 
   @Override
-  public final S deeper_origin() {
-    return source;
+  public final origin deeper_origin() {
+    return the_origin;
   }
 
   // TODO: subtypes may override this.
@@ -36,7 +36,7 @@ public abstract class base_action<S extends origin> extends debuggable implement
   }
 
   @Override
-  public action bind_from(action from, origin pos) {
+  public action bind_from(action from, origin the_origin) {
     // TODO: subtypes should override this to update the source origin.
     return this;
   }

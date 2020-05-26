@@ -14,6 +14,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.constructs.*;
 import ideal.development.components.*;
+import ideal.development.extensions.*;
 
 public class template_construct extends extension_construct {
   public final sexpression_construct body;
@@ -29,13 +30,13 @@ public class template_construct extends extension_construct {
   }
 
   @Override
-  public analyzable to_analyzable() {
+  public extension_analyzer to_analyzable() {
     return new template_analyzer(this);
   }
 
   @Override
   public text_fragment print(printer p) {
-    return p.print_line(new base_string("#(...temlate...)"));
+    return p.print_line(new base_string("#(...template...)"));
   }
 
   @Override

@@ -41,7 +41,7 @@ public class list_iteration_construct extends extension_construct {
   }
 
   @Override
-  public analyzable to_analyzable() {
+  public extension_analyzer to_analyzable() {
     return new list_iteration_analyzer(this);
   }
 

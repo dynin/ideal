@@ -28,7 +28,7 @@ import ideal.development.declarations.*;
 import ideal.development.analyzers.*;
 import ideal.development.functions.*;
 
-public class template_analyzer extends single_pass_analyzer implements declaration {
+public class template_analyzer extends extension_analyzer implements declaration {
 
   private static final action_name BLOCK_NAME =
       new special_name(new base_string("template"), new base_string("template_analyzer"));
@@ -54,7 +54,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
   }
 
   @Override
-  public analysis_result do_single_pass_analysis() {
+  public analyzable expand() {
     if (escaper == null) {
       // TODO: move to library...
       escaper = new escape_fn(ESCAPE_NAME);
@@ -75,12 +75,7 @@ public class template_analyzer extends single_pass_analyzer implements declarati
     body_actions.append(body_action);
     body_actions.append(new return_analyzer(result_access, pos));
 
-    analyzable result = new statement_list_analyzer(body_actions, pos);
-    if (has_errors(result)) {
-      // Unexpected...
-      utilities.panic("Error in template.");
-    }
-    return result.analyze();
+    return new statement_list_analyzer(body_actions, pos);
   }
 
   public analyzable sexpr_to_analyzable(sexpression_construct sexpr) {

@@ -48,7 +48,7 @@ public class for_construct extends extension_construct {
   }
 
   @Override
-  public analyzable to_analyzable() {
+  public extension_analyzer to_analyzable() {
     return new for_analyzer(
         base_analyzer.make(init),
         base_analyzer.make(condition),

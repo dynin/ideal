@@ -130,7 +130,8 @@ public class action_utilities {
         ((parametrized_type) declared_in_type).get_master() ==
             common_library.get_instance().list_type()) {
       if (the_procedure.original_name() == common_library.get_name) {
-        assert this_argument instanceof list_value;
+        // TODO: implement a type_bound check here instead of instanceof
+        // assert this_argument instanceof list_value;
         readonly_list<value_wrapper> unwrapped_list =
             (readonly_list<value_wrapper>) this_argument.unwrap();
         assert arguments.size() == 1;

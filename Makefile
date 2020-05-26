@@ -255,6 +255,9 @@ import: $(IDEAL_TARGET)
 coach: $(IDEAL_TARGET)
 	make -C experimental/coach coach
 
+runserver: $(IDEAL_TARGET)
+	make -C experimental/coach runserver
+
 hello: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(HELLO)
 

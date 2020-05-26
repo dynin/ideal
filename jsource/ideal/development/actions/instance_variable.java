@@ -37,6 +37,13 @@ public class instance_variable extends variable_action {
   protected variable_context get_context(execution_context context) {
     assert from != null;
     entity_wrapper the_value = from.execute(context);
+    if (!(the_value instanceof composite_wrapper)) {
+      // TODO: use list_wrapper here explicitly
+      assert the_value instanceof value_wrapper;
+      assert the_declaration.short_name() == common_library.size_name;
+      readonly_list the_list = (readonly_list) ((value_wrapper) the_value).unwrap();
+      return new list_context(the_list);
+    }
     assert the_value instanceof composite_wrapper;
     return (composite_wrapper) the_value;
   }

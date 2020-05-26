@@ -60,3 +60,4 @@
 - [x] Implement list iteration for ideal list types
 - [ ] Implement punctuation_type.to_string
 - [x] Make template_analyzer extend extension_analyzer
+- [x] Add has_error to declaration.

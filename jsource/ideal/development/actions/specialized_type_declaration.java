@@ -74,6 +74,11 @@ public class specialized_type_declaration extends debuggable implements type_dec
   }
 
   @Override
+  public boolean has_errors() {
+    return false;
+  }
+
+  @Override
   public void process_declaration(declaration_pass pass) {
     assert pass != null && pass != declaration_pass.NONE;
     if (false) {

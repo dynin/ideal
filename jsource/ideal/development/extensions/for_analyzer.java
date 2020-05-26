@@ -20,7 +20,7 @@ import ideal.development.constructs.*;
 import ideal.development.values.*;
 import ideal.development.analyzers.*;
 
-public class for_analyzer extends single_pass_analyzer {
+public class for_analyzer extends extension_analyzer {
   public analyzable init;
   public analyzable condition;
   public analyzable update;
@@ -35,7 +35,8 @@ public class for_analyzer extends single_pass_analyzer {
     this.body = body;
   }
 
-  public analyzable to_analyzable() {
+  @Override
+  public analyzable expand() {
     origin the_origin = this;
 
     analyzable body_and_update = new statement_list_analyzer(
@@ -46,11 +47,5 @@ public class for_analyzer extends single_pass_analyzer {
     analyzable loop_statement = new loop_analyzer(if_statement, the_origin);
     return new block_analyzer(new statement_list_analyzer(
         new base_list<analyzable>(init, loop_statement), the_origin), the_origin);
-  }
-
-  protected analysis_result do_single_pass_analysis() {
-    analyzable expanded = to_analyzable();
-    init_context(expanded);
-    return expanded.analyze();
   }
 }

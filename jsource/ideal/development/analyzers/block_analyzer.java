@@ -49,6 +49,10 @@ public class block_analyzer extends single_pass_analyzer implements declaration 
     return BLOCK_NAME;
   }
 
+  public analyzable get_body() {
+    return body;
+  }
+
   @Override
   protected analysis_result do_single_pass_analysis() {
     if (inside == null) {

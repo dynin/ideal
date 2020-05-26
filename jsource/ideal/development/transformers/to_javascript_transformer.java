@@ -35,10 +35,12 @@ public class to_javascript_transformer {
   private static final simple_name METHOD_PREFIX = simple_name.make("method");
   private static final simple_name GET_FIELD = simple_name.make("get_field");
   private static final simple_name THIS_DATA = simple_name.make("this_data");
+  /*
   private static final simple_name LENGTH = simple_name.make("length");
   private static final simple_name ELEMENTS = simple_name.make("elements");
   private static final string LIST_PREFIX = new base_string("list");
   private static final string INDEX_PREFIX = new base_string("index");
+  */
 
   private int name_index = 0;
   private dictionary<variable_declaration, simple_name> var_names =
@@ -69,10 +71,12 @@ public class to_javascript_transformer {
       return to_construct((dereference_action) the_action);
     } else if (the_action instanceof return_action) {
       return to_construct((return_action) the_action);
-    } else if (the_action instanceof list_iteration_action) {
-      return to_construct((list_iteration_action) the_action);
+    } else if (the_action instanceof extension_action) {
+      return to_construct((extension_action) the_action);
     } else if (the_action instanceof promotion_action) {
       return to_construct((promotion_action) the_action);
+    } else if (the_action instanceof list_action) {
+      return to_construct((list_action) the_action);
     }
 
     return signal(new error_signal(new base_string("Unimplemented: " + the_action), the_action));
@@ -88,6 +92,14 @@ public class to_javascript_transformer {
       return null;
     } else {
       return to_construct_action(the_action);
+    }
+  }
+
+  public @Nullable construct to_construct_analyzer(@Nullable analyzable the_analyzable) {
+    if (the_analyzable == null) {
+      return null;
+    } else {
+      return to_construct_action((action) the_analyzable.analyze());
     }
   }
 
@@ -205,11 +217,31 @@ public class to_javascript_transformer {
   }
 
   public construct to_construct(bound_procedure bp) {
-    // TODO: handle other procedure value.
-    procedure_value proc = (procedure_value) bp.the_procedure_action.result();
     origin pos = bp;
+    action proc_action = bp.the_procedure_action;
+    procedure_value proc;
+    if (proc_action instanceof value_action) {
+      value_wrapper the_value = ((value_action) proc_action).the_value;
+      proc = (base_procedure) the_value;
+      //return to_construct((value_action) proc_action);
+    } else if (proc_action instanceof procedure_value) {
+      // TODO: handle other procedure value.
+      proc = (procedure_value) proc_action;
+    } else if (proc_action instanceof dispatch_action) {
+      // TODO: handle other procedure value.
+      action primary = ((dispatch_action) proc_action).get_primary();
+      value_wrapper the_value = ((value_action) primary).the_value;
+      proc = (base_procedure) the_value;
+    } else {
+      return signal(new error_signal(
+          new base_string("Unsupported procedure: " + proc_action), pos));
+    }
 
     action_name the_name = proc.name();
+    if (the_name == special_name.IMPLICIT_CALL) {
+      the_name = simple_name.make("get");
+    }
+
     list<construct> params = to_param_list(bp.parameters.params());
 
     if (the_name instanceof operator) {
@@ -265,6 +297,33 @@ public class to_javascript_transformer {
     return new name_construct(process_name(decl), pos);
   }
 
+  public construct to_construct(extension_action the_extension_action) {
+    action extended_action = the_extension_action.extended_action;
+    extension_analyzer analyzer = the_extension_action.get_extension();
+    origin the_origin = the_extension_action;
+
+    if (analyzer instanceof list_iteration_analyzer) {
+      return to_construct_action(extended_action);
+    } else if (analyzer instanceof for_analyzer) {
+      for_analyzer the_for_analyzer = (for_analyzer) analyzer;
+      return new for_construct(
+          to_construct_analyzer(the_for_analyzer.init),
+          to_construct_analyzer(the_for_analyzer.condition),
+          to_construct_analyzer(the_for_analyzer.update),
+          to_construct_analyzer(the_for_analyzer.body),
+          the_origin);
+    } else {
+      return signal(new error_signal(
+          new base_string("Unknown extension: " + analyzer), the_origin));
+    }
+  }
+
+  public construct to_construct(list_action the_list_action) {
+    origin the_origin = the_list_action;
+    return new block_construct(to_param_list(the_list_action.elements()), the_origin);
+  }
+
+  /*
   public construct to_construct(list_iteration_action iteration_action) {
     list_iteration_analyzer iteration = iteration_action.source;
     origin pos = iteration_action;
@@ -310,6 +369,7 @@ public class to_javascript_transformer {
 
     return new block_construct(iteration_body, pos);
   }
+  */
 
   private type immutable_string_type() {
     return common_library.get_instance().immutable_string_type();
@@ -331,9 +391,13 @@ public class to_javascript_transformer {
     if (the_value instanceof string_value) {
       return new literal_construct(
           new quoted_literal(((string_value) the_value).unwrap(), punctuation.SINGLE_QUOTE), pos);
-    } else {
-      return signal(new error_signal(new base_string("Unsupported value: " + the_value), pos));
+    } else if (the_value instanceof integer_value) {
+      return new literal_construct(
+          new integer_literal(((integer_value) the_value).unwrap()), pos);
     }
+
+    return signal(new error_signal(new base_string("Unsupported value: " + the_value.getClass()),
+          pos));
   }
 
   public construct to_construct(promotion_action the_action) {

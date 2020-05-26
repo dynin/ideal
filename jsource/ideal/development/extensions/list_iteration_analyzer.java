@@ -26,7 +26,7 @@ import ideal.development.values.*;
 import ideal.development.declarations.*;
 import ideal.development.analyzers.*;
 
-public class list_iteration_analyzer extends single_pass_analyzer implements declaration {
+public class list_iteration_analyzer extends extension_analyzer implements declaration {
 
   private static final action_name BLOCK_NAME =
       new special_name(new base_string("iterate"), new base_string("list_iteration_analyzer"));
@@ -36,11 +36,10 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
 
   public final annotation_set annotations;
   public final action_name var_name;
+  private final analyzable var_type;
   private final analyzable init;
   @dont_display
   public final analyzable body;
-  @dont_display
-  protected local_variable element_var;
   @dont_display
   private principal_type loop_block;
   @dont_display
@@ -50,11 +49,10 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
   public list_iteration_analyzer(list_iteration_construct source) {
     super(source);
     // TODO: return error_signals if these fail
-    assert source.var_decl.type == null;
-    assert source.var_decl.init != null;
     assert source.var_decl.annotations.is_empty();
 
     annotations = analyzer_utilities.PRIVATE_MODIFIERS;
+    var_type = (source.var_decl.type != null) ? make(source.var_decl.type) : null;
     var_name = source.var_decl.name;
     init = make(source.var_decl.init);
     body = make(source.body);
@@ -64,6 +62,7 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
       analyzable body, origin source) {
     super(source);
     this.annotations = annotations;
+    this.var_type = null;
     this.var_name = var_name;
     this.init = init;
     this.body = body;
@@ -81,7 +80,13 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
   }
 
   @Override
-  protected analysis_result do_single_pass_analysis() {
+  public analyzable expand() {
+    // TODO: support specifying element type
+    if (var_type != null) {
+      return new error_signal(new base_string("Element type not expected, it is inferred"),
+          var_type);
+    }
+
     loop_block = make_block(BLOCK_NAME, this);
 
     @Nullable error_signal error = find_error(init);
@@ -99,7 +104,7 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
     return rewrite_as_for_loop();
   }
 
-  private analysis_result rewrite_as_for_loop() {
+  private analyzable rewrite_as_for_loop() {
     origin the_origin = this;
     common_library library = common_library.get_instance();
 
@@ -149,7 +154,7 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
       );
 
     analyzable element_get = new parameter_analyzer(
-        //new analyzable_action(list_declaration.get_access()),
+        //new analyzable_action(list_declaration.dereference_access()),
         // TODO: list_declaration.get_access() should work.
         new resolve_analyzer(list_name, the_origin),
         new base_list<analyzable>(
@@ -161,9 +166,13 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
     local_variable_declaration element_declaration = new local_variable_declaration(
         annotations, element_name, flavor.immutable_flavor, element_type, element_get, the_origin);
 
-    // TODO: do not introduce an extra block if the body already has one
-    statement_list_analyzer body_statements = new statement_list_analyzer(
-        new base_list<analyzable>(element_declaration, body), the_origin);
+    list<analyzable> body_list = new base_list<analyzable>(element_declaration);
+    if (body instanceof block_analyzer) {
+      body_list.append(((block_analyzer) body).get_body());
+    } else {
+      body_list.append(body);
+    }
+    statement_list_analyzer body_statements = new statement_list_analyzer(body_list, the_origin);
 
     block_analyzer body_block = new block_analyzer(body_statements, the_origin);
 
@@ -174,15 +183,12 @@ public class list_iteration_analyzer extends single_pass_analyzer implements dec
         body_block,
         the_origin);
 
-    block_analyzer expanded = new block_analyzer(
+    return new block_analyzer(
         new statement_list_analyzer(
             new base_list<analyzable>(list_declaration, for_statement),
             the_origin
         ),
         the_origin);
-
-    init_context(expanded);
-    return expanded.analyze();
   }
 
   public action body_action() {

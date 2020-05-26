@@ -49,16 +49,12 @@ public class for_construct extends extension_construct {
 
   @Override
   public analyzable to_analyzable() {
-    origin pos = this;
-
-    analyzable body_and_update = new statement_list_analyzer(
-        new base_list<analyzable>(base_analyzer.make(body), base_analyzer.make(update)), pos);
-    analyzable break_statement = new jump_analyzer(jump_type.BREAK_JUMP, pos);
-    analyzable if_statement = new conditional_analyzer(base_analyzer.make(condition),
-        body_and_update, break_statement, pos);
-    analyzable loop_statement = new loop_analyzer(if_statement, pos);
-    return new block_analyzer(new statement_list_analyzer(
-        new base_list<analyzable>(base_analyzer.make(init), loop_statement), pos), pos);
+    return new for_analyzer(
+        base_analyzer.make(init),
+        base_analyzer.make(condition),
+        base_analyzer.make(update),
+        base_analyzer.make(body),
+        this);
   }
 
   @Override

@@ -252,6 +252,9 @@ document_all: $(IDEAL_TARGET)
 import: $(IDEAL_TARGET)
 	$(CREATE) -debug-import
 
+coach: $(IDEAL_TARGET)
+	make -C experimental/coach coach
+
 hello: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(HELLO)
 

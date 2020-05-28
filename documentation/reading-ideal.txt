@@ -22,6 +22,10 @@ new()
 
 as; is; is_not
 
-supertypes
+supertypes: declared using declarations in the type declration body, such as
+class string {
+  extends data;
+  By convention, the first constructs in type declarations should be supertypes.
+
 
 flavors

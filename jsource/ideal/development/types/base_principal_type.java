@@ -62,7 +62,10 @@ public abstract class base_principal_type extends base_type implements principal
       if (get_kind() == type_kinds.procedure_kind || get_kind() == type_kinds.reference_kind) {
         the_flavor_profile = default_flavor_profile();
       } else {
-        utilities.panic("No profile for " + this);
+        // We used to panic here
+        // utilities.panic("No profile for " + this);
+        // TODO: does this ever create a problem?
+        the_flavor_profile = default_flavor_profile();
       }
     }
     return do_get_flavored(this, the_flavor_profile.map(flavor));

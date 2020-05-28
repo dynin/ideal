@@ -806,6 +806,9 @@ public class to_java_transformer extends base_transformer {
         proc_decl = new procedure_construct(annotations, proc_decl.ret, proc_decl.name,
               proc_params, new empty<annotation_construct>(), proc_decl.body, proc_decl);
         result.append(proc_decl);
+      } else if (decl instanceof block_construct) {
+        // TODO: make sure this is a static block...
+        result.append_all(transform1(decl));
       } else if (decl instanceof import_construct) {
         // Skip imports: they should have been declared at the top level.
       } else if (decl instanceof empty_construct) {

@@ -26,9 +26,6 @@ class special_name {
   -- Used to a name the return pseudo-variable
   static final special_name RETURN : special_name.new(keywords.RETURN);
 
-  -- Used in a list constructor; (1, 2) gets exposed as <list>(1, 2)
-  static final action_name SEQUENCE : special_name.new("list");
-
   final string name;
 
   overload special_name(token_type the_token_name) {

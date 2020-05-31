@@ -8,7 +8,7 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
-public class operator_type implements identifier, readonly_displayable {
+public class operator_type extends debuggable implements identifier, readonly_displayable {
   public final string name;
   public final int arity;
   private operator_type(final string name, final int arity) {

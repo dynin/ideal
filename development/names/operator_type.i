@@ -8,6 +8,7 @@
 --- TODO: convert to enum.
 class operator_type {
   implements identifier, readonly displayable;
+  extends debuggable;
 
   final string name;
   final nonnegative arity;
@@ -19,7 +20,7 @@ class operator_type {
 
   override string to_string => name;
 
-  override string display() => to_string;
+  override string display() => to_string();
 
   static operator_type PREFIX : operator_type.new("prefix", 1);
 

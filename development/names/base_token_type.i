@@ -7,6 +7,7 @@
 --- Generic token type.
 class base_token_type {
   implements token_type, readonly displayable;
+  extends debuggable;
 
   private final string the_name;
   dont_display private final integer the_symbol;

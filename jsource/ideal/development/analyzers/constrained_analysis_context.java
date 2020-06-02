@@ -90,6 +90,11 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
+  public type find_supertype_procedure(abstract_value the_value) {
+    return parent.find_supertype_procedure(the_value);
+  }
+
+  @Override
   public boolean can_promote(abstract_value from, type target) {
     return parent.can_promote(from, target);
   }

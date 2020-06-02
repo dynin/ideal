@@ -325,7 +325,7 @@ public class analyzer_utilities {
       return ((procedure_value) the_value).is_parametrizable(parameters, the_context);
     }
 
-    type procedure_type = the_context.find_supertype(the_value, procedure_type_target.instance);
+    type procedure_type = the_context.find_supertype_procedure(the_value);
     if (procedure_type == null) {
       return false;
     }
@@ -388,7 +388,7 @@ public class analyzer_utilities {
       return ((procedure_value) action_result).bind_parameters(parameters, the_context, the_origin);
     }
 
-    type procedure_type = the_context.find_supertype(action_result, procedure_type_target.instance);
+    type procedure_type = the_context.find_supertype_procedure(action_result);
     assert procedure_type != null;
     assert procedure_type.principal().get_kind() == type_kinds.procedure_kind;
 

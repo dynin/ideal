@@ -37,6 +37,8 @@ public interface analysis_context extends type_declaration_context, value_printe
 
   @Nullable type find_supertype(abstract_value the_value, action_target target);
 
+  @Nullable type find_supertype_procedure(abstract_value the_value);
+
   action promote(action from, type target, origin pos);
 
   graph<principal_type, origin> type_graph();

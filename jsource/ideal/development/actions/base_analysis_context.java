@@ -75,6 +75,11 @@ public abstract class base_analysis_context extends debuggable implements analys
     return language.find_supertype(actions, the_value, target);
   }
 
+  @Override
+  public type find_supertype_procedure(abstract_value the_value) {
+    return language.find_supertype_procedure(actions, the_value);
+  }
+
   private @Nullable action find_promotion(abstract_value from, type target) {
     return language.find_promotion(actions, from, new specific_type_target(target));
   }

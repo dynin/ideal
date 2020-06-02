@@ -253,6 +253,46 @@ public class base_semantics implements semantics {
   }
 
   @Nullable
+  public type find_supertype_procedure(action_table actions, abstract_value the_value) {
+    type subtype = the_value.type_bound();
+
+    if (action_utilities.is_procedure_type(subtype)) {
+      return subtype;
+    }
+
+    if (type_utilities.is_union(subtype)) {
+      immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(subtype);
+      for (int i = 0; i < parameters.size(); ++i) {
+        if (find_supertype_procedure(actions, parameters.get(i)) == null) {
+          return null;
+        }
+      }
+      return subtype;
+    }
+
+    supertype_set supertypes = supertype_set.make(subtype, actions);
+
+    // TODO: use filter.
+    immutable_list<type> supertypes_list =  supertypes.members.elements();
+    list<type> candidates = new base_list<type>();
+    for (int i = 0; i < supertypes_list.size(); ++i) {
+      type candidate = supertypes_list.get(i);
+      if (action_utilities.is_procedure_type(candidate)) {
+        candidates.append(candidate);
+      }
+    }
+
+    if (candidates.size() > 1) {
+      // TODO: unexpected--can just return null here...
+      utilities.panic("Too many supertypes");
+    } else if (candidates.size() == 1) {
+      return candidates.first();
+    }
+
+    return null;
+  }
+
+  @Nullable
   public action find_promotion(action_table actions, abstract_value the_value,
       action_target target) {
 

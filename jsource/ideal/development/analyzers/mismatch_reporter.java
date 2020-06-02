@@ -42,16 +42,13 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_not_matching(readonly_list<action> candidates,
-      action_target the_action_target, analysis_context context, origin source) {
-
-    assert the_action_target instanceof parameter_target;
-    parameter_target the_parameter_target = (parameter_target) the_action_target;
+      action_parameters the_action_parameters, analysis_context context, origin source) {
 
     //dump_dependencies(context.type_graph());
     assert candidates.is_not_empty();
 
     readonly_list<action> filtered_candidates = filter_by_arity(candidates,
-        the_parameter_target.arity());
+        the_action_parameters.arity());
 
     if (filtered_candidates.is_empty()) {
       return new error_signal(new base_notification(
@@ -62,16 +59,16 @@ public class mismatch_reporter {
     if (filtered_candidates.size() > 1) {
       notification no_matching = new base_notification(
           new base_string("Can't find matching declaration for " +
-              print_parameters(the_parameter_target, context) + " parameters"),
+              print_parameters(the_action_parameters, context) + " parameters"),
           source, notification_util.to_notifications(filtered_candidates, context));
       return new error_signal(no_matching, false);
     }
 
     assert filtered_candidates.size() == 1;
-    return signal_mismatch(filtered_candidates.first(), the_parameter_target, context, source);
+    return signal_mismatch(filtered_candidates.first(), the_action_parameters, context, source);
   }
 
-  static error_signal signal_mismatch(action candidate, parameter_target the_parameter_target,
+  static error_signal signal_mismatch(action candidate, action_parameters the_action_parameters,
       analysis_context context, origin source) {
 
     type failed_procedure_type = candidate.result().type_bound();
@@ -81,7 +78,7 @@ public class mismatch_reporter {
 
     assert action_utilities.is_procedure_type(failed_procedure_type);
 
-    immutable_list<action> supplied_arguments = the_parameter_target.parameters.params();
+    immutable_list<action> supplied_arguments = the_action_parameters.params();
 
     if (!action_utilities.is_valid_procedure_arity(failed_procedure_type,
         supplied_arguments.size())) {
@@ -121,19 +118,19 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_lookup_failure(action_name the_name, type from_type,
-      action_target the_action_target, value_printer printer, origin source) {
+      action_parameters the_action_parameters, value_printer printer, origin source) {
     base_string error_message = new base_string(new base_string("Lookup failed: no "),
         the_name.to_string(), new base_string(" in "), printer.print_value(from_type));
-    if (the_action_target != null) {
+    if (the_action_parameters != null) {
       error_message = new base_string(error_message, ", target parameters ",
-          print_parameters((parameter_target) the_action_target, printer));
+          print_parameters(the_action_parameters, printer));
     }
     return new error_signal(error_message, source);
   }
 
-  private static string print_parameters(parameter_target the_parameter_target,
+  private static string print_parameters(action_parameters the_action_parameters,
       value_printer printer) {
-    immutable_list<action> parameters = the_parameter_target.parameters.params();
+    immutable_list<action> parameters = the_action_parameters.params();
     StringBuilder s = new StringBuilder();
     boolean first = true;
     s.append('(');

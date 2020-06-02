@@ -1,6 +1,6 @@
   inform("Hello, world!");
   ^^^^^^
-testdata/hello.i:8: Lookup failed: no inform in main, target parameters (deeply_immutable string)
+testdata/hello.i:8: Lookup failed: no inform in main
 void main() {
   inform("Hello, world!");
 }

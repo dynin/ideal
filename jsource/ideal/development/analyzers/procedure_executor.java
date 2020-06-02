@@ -36,12 +36,16 @@ public class procedure_executor extends base_procedure {
 
   @Override
   public boolean has_this_argument() {
-    return the_declaration.get_category() != procedure_category.STATIC;
+    return get_category() != procedure_category.STATIC;
   }
 
   @Override
   public declaration get_declaration() {
     return the_declaration;
+  }
+
+  public procedure_category get_category() {
+    return the_declaration.get_category();
   }
 
   @Override

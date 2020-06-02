@@ -115,6 +115,9 @@ public class resolve_analyzer extends single_pass_analyzer {
   private analysis_result do_resolve(@Nullable action_target the_action_target) {
     type from_type;
 
+    // !!!
+    the_action_target = null;
+
     if (from != null) {
       if (has_errors(from)) {
         return new error_signal(messages.error_in_source, from, this);
@@ -149,7 +152,7 @@ public class resolve_analyzer extends single_pass_analyzer {
         error_signal suppressed_error = new error_signal(messages.suppressed, error, this);
         add_error(parent(), the_name, suppressed_error);
       } else {
-        error = mismatch_reporter.signal_lookup_failure(the_name, from_type, the_action_target,
+        error = mismatch_reporter.signal_lookup_failure(the_name, from_type, null,
             get_context(), this);
       }
       return error;
@@ -162,10 +165,6 @@ public class resolve_analyzer extends single_pass_analyzer {
       if (HIDE_DECLARATIONS) {
         declarations = null;
       } else {
-        if (the_action_target != null) {
-          return mismatch_reporter.signal_not_matching(all_resolved, the_action_target,
-              get_context(), this);
-        }
         // TODO: fix this by introducing a stable order
         declarations = notification_util.to_notifications(all_resolved, get_context());
       }
@@ -180,8 +179,9 @@ public class resolve_analyzer extends single_pass_analyzer {
       main_candidate = main_candidate.bind_from(action_not_error(from), this);
     }
 
-    action result;
+    action result = main_candidate;
 
+    /*
     if (main_candidate instanceof error_signal ||
         the_name == special_name.IMPLICIT_CALL ||
         the_action_target == null ||
@@ -205,6 +205,7 @@ public class resolve_analyzer extends single_pass_analyzer {
 
       result = implicit_results.first().bind_from(main_candidate, this);
     }
+    */
 
     type_utilities.prepare(result.result(), resolve_pass);
 

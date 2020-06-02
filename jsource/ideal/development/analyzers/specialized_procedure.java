@@ -63,7 +63,22 @@ public class specialized_procedure extends debuggable implements procedure_decla
   }
 
   public void add(analysis_context context) {
-    procedure_action = analyzer_utilities.add_procedure(this, context);
+    type from_type = declared_in_type().get_flavored(get_flavor());
+    @Nullable overloaded_procedure the_overloaded_procedure = null;
+    readonly_list<action> overloaded_actions = context.lookup(from_type, short_name());
+    for (int i = 0; i < overloaded_actions.size(); ++i) {
+      action overloaded_action = overloaded_actions.get(i);
+      if (overloaded_action instanceof value_action &&
+          ((value_action) overloaded_action).the_value instanceof overloaded_procedure) {
+        // TODO: signal error instead
+        assert the_overloaded_procedure == null;
+        the_overloaded_procedure =
+            (overloaded_procedure) ((value_action) overloaded_action).the_value;
+        continue;
+      }
+    }
+
+    procedure_action = analyzer_utilities.add_procedure(this, the_overloaded_procedure, context);
   }
 
   public procedure_declaration get_main() {

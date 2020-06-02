@@ -42,7 +42,7 @@ public class action_table implements value {
     }
 
     public int hash(action_key the_key) {
-      return System.identityHashCode(the_key.from) + System.identityHashCode(the_key.name);
+      return System.identityHashCode(the_key.from) + 37 * System.identityHashCode(the_key.name);
     }
   };
 

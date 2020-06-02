@@ -131,6 +131,9 @@ default: print_elements
 analyze_library: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_library
 
+analyze_runtime: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_runtime
+
 analyze_all: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_all
 

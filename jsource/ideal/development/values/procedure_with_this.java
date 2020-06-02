@@ -55,6 +55,11 @@ public class procedure_with_this extends base_data_value<procedure_value>
   }
 
   @Override
+  public boolean is_parametrizable(action_parameters parameters, analysis_context context) {
+    return the_procedure.is_parametrizable(parameters, context);
+  }
+
+  @Override
   public analysis_result bind_parameters(action_parameters params, analysis_context context,
       origin pos) {
     analysis_result bound_procedure = the_procedure.bind_parameters(params, context, pos);

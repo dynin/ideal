@@ -62,6 +62,26 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   @Override
+  public boolean is_parametrizable(action_parameters parameters, analysis_context context) {
+    readonly_list<action> parameter_list = parameters.params();
+    if (!action_utilities.is_valid_procedure_arity(type_bound(), parameter_list.size())) {
+      return false;
+    }
+
+    for (int i = 0; i < parameter_list.size(); ++i) {
+      action parameter = parameter_list.get(i);
+      if (parameter instanceof error_signal) {
+        return false;
+      }
+      if (!context.can_promote(parameter.result(), get_argument_type(i))) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  @Override
   public analysis_result bind_parameters(action_parameters params, analysis_context context,
       origin pos) {
 

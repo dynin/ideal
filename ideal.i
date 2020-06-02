@@ -15,6 +15,8 @@ namespace ideal {
 
 target analyze_library: analyze(ideal.library);
 
+target analyze_runtime: analyze(ideal.runtime);
+
 target analyze_all: analyze(ideal);
 
 target print_elements: print_source(ideal.library.elements);
@@ -32,6 +34,7 @@ target generate_reflections: generate_java(ideal.runtime.reflections);
 target generate_development: generate_java(ideal.development);
 
 target generate_all: generate_java(ideal.library, ideal.runtime);
+--target generate_all: generate_java(ideal.runtime.channels.output_transformer);
 
 target document_elements: print_documentation(ideal.library.elements);
 

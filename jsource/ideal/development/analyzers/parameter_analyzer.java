@@ -26,7 +26,7 @@ public class parameter_analyzer extends single_pass_analyzer {
   public final analyzable main_analyzable;
   public final readonly_list<analyzable> analyzable_parameters;
 
-  private @Nullable action main_action;
+  public @Nullable action main_action;
   private declaration_pass parameter_pass;
 
   public parameter_analyzer(analyzable main, readonly_list<analyzable> params, origin pos) {
@@ -79,22 +79,45 @@ public class parameter_analyzer extends single_pass_analyzer {
       return new error_signal(messages.error_in_parametrizable, error, this);
     }
     action_parameters aparams = new action_parameters(param_actions);
-    parameter_target the_parameter_target = new parameter_target(aparams, get_context());
+    //parameter_target the_parameter_target = new parameter_target(aparams, get_context());
 
-    @Nullable error_signal main_error = find_error(main_analyzable, the_parameter_target);
+    @Nullable error_signal main_error = find_error(main_analyzable, /*the_parameter_target*/null);
     if (main_error != null) {
       return new error_signal(messages.error_in_parametrizable, main_error, this);
     }
 
     action main_action = action_not_error(main_analyzable);
-    if (!analyzer_utilities.is_parametrizable(main_action.result(), aparams.to_type_parameters(),
+    if (!analyzer_utilities.is_parametrizable(main_action.result(), aparams, get_context())) {
+      type result_type = main_action.result().type_bound();
+      type_utilities.prepare(result_type, parameter_pass);
+      readonly_list<action> implicit_results = get_context().resolve(
+          result_type, special_name.IMPLICIT_CALL, /*the_parameter_target*/ null, this);
+
+      if (implicit_results.is_empty()) {
+      //  return mismatch_reporter.signal_not_matching(all_resolved, aparams, get_context(), this);
+        return mismatch_reporter.signal_mismatch(main_action, aparams, get_context(), this);
+      }
+
+      if (implicit_results.size() > 1) {
+        return mismatch_reporter.signal_not_matching(implicit_results, aparams, get_context(),
+            this);
+      }
+
+      if (implicit_results.size() == 1) {
+        action implicit_action = implicit_results.first().bind_from(main_action, this);
+        if (!analyzer_utilities.is_parametrizable(implicit_action.result(), aparams,
             get_context())) {
-      return mismatch_reporter.signal_mismatch(main_action, the_parameter_target, get_context(),
-        this);
+          return mismatch_reporter.signal_mismatch(implicit_action, aparams, get_context(),
+            this);
+        }
+        main_action = implicit_action;
+      } else {
+        return mismatch_reporter.signal_mismatch(main_action, aparams, get_context(), this);
+      }
     }
 
-    analysis_result result = analyzer_utilities.bind_parameters(main_action, aparams, this,
-        get_context());
+    analysis_result result = analyzer_utilities.bind_parameters(main_action, aparams,
+        get_context(), this);
 
     if (result instanceof action) {
       type result_type = ((action) result).result().type_bound();

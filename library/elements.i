@@ -51,8 +51,8 @@ package elements {
   reference_kind reference[combivariant any value value_type] {
     subtypes entity;
 
-    value_type get() pure;
-    void set(value_type new_value) writeonly;
+    explicit value_type get() pure;
+    explicit void set(value_type new_value) writeonly;
   }
 
   --- <div>Data is a value that can be fully represented by bits.

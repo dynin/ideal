@@ -274,16 +274,28 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
     // Handle overloading
     type from_type = declared_in_type().get_flavored(get_flavor());
+    @Nullable overloaded_procedure the_overloaded_procedure = null;
     readonly_list<action> overloaded_actions = get_context().lookup(from_type, short_name());
     for (int i = 0; i < overloaded_actions.size(); ++i) {
-      declaration overloaded_declaration = overloaded_actions.get(i).get_declaration();
+      action overloaded_action = overloaded_actions.get(i);
+      if (overloaded_action instanceof value_action &&
+          ((value_action) overloaded_action).the_value instanceof overloaded_procedure) {
+        // TODO: signal error instead
+        assert the_overloaded_procedure == null;
+        the_overloaded_procedure =
+            (overloaded_procedure) ((value_action) overloaded_action).the_value;
+        continue;
+      }
+      declaration overloaded_declaration = overloaded_action.get_declaration();
       if (overloaded_declaration instanceof procedure_declaration) {
         procedure_declaration other_procedure = (procedure_declaration) overloaded_declaration;
-        if (annotations().has(general_modifier.overload_modifier) &&
-            other_procedure.annotations().has(general_modifier.overload_modifier)) {
+        /*
+        if (analyzer_utilities.is_overloaded(this) &&
+            analyzer_utilities.is_overloaded(other_procedure)) {
           // TODO: detect unused overload modifiers.
           continue;
         }
+        */
         // To fix, add overloaded modifier
         notification original_notification = new base_notification(
           "Original declaration", other_procedure);
@@ -321,7 +333,8 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
         get_flavored(flavor.immutable_flavor);
 
-    procedure_action = analyzer_utilities.add_procedure(this, get_context());
+    procedure_action = analyzer_utilities.add_procedure(this, the_overloaded_procedure,
+        get_context());
 
     return null;
   }

@@ -1971,22 +1971,19 @@ testdata/sequence.i:117: Lookup failed: no display_context in sequence._display
 testdata/sequence.i:94: Lookup failed: no list in immutable reference[mutable sequence]
     assert begin >= 0 && end <= size();
                                 ^^^^
-testdata/sequence.i:97: Lookup failed: no size in sequence.subsequence, target parameters ()
+testdata/sequence.i:97: Lookup failed: no size in sequence.subsequence
     sequence result : sequence.new();
-                      --------^---
-testdata/sequence.i:98: Can't find declarations with matching arity
-  public class sequence[readonly_data element] {
-               ^^^^^^^^
-  testdata/sequence.i:17: (declaration #0: raw sequence)
+                      ------------^-
+testdata/sequence.i:98: Expression not parametrizable
     for (int i : begin; i < end; i += 1) {
          ^^^
 testdata/sequence.i:100: Lookup failed: no int in sequence.subsequence
     return subsequence(begin, size());
                               ^^^^
-testdata/sequence.i:106: Lookup failed: no size in sequence.subsequence, target parameters ()
+testdata/sequence.i:106: Lookup failed: no size in sequence.subsequence
     identifier id : display_function.name(getClass());
                                           ^^^^^^^^
-testdata/sequence.i:118: Lookup failed: no getClass in sequence._display, target parameters ()
+testdata/sequence.i:118: Lookup failed: no getClass in sequence._display
     for (int i : 0; i < list.size(); i += 1) {
          ^^^
 testdata/sequence.i:120: Lookup failed: no int in sequence._display

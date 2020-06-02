@@ -81,16 +81,37 @@ public class analyzer_utilities {
          the_procedure.annotations().has(general_modifier.implement_modifier));
   }
 
+  public static boolean is_overloaded(procedure_declaration the_procedure) {
+    return the_procedure.annotations().has(general_modifier.overload_modifier);
+  }
+
   public static @Nullable action add_procedure(procedure_declaration the_procedure,
+      @Nullable overloaded_procedure the_overloaded_procedure,
       analysis_context the_context) {
 
     if (the_procedure.annotations().has(general_modifier.not_yet_implemented_modifier)) {
       return null;
     }
 
+    boolean is_explicit = the_procedure.annotations().has(general_modifier.explicit_modifier);
     origin the_origin = the_procedure;
-    type target_type = the_procedure.declared_in_type().get_flavored(the_procedure.get_flavor());
-    action executor_action = new procedure_executor(the_procedure).to_action(the_origin);
+    final type target_type =
+        the_procedure.declared_in_type().get_flavored(the_procedure.get_flavor());
+    procedure_executor the_executor = new procedure_executor(the_procedure);
+    action executor_action = the_executor.to_action(the_origin);
+
+    if (is_overloaded(the_procedure)) {
+      if (the_overloaded_procedure != null) {
+        the_overloaded_procedure.add(the_executor);
+      } else {
+        the_overloaded_procedure = new overloaded_procedure(the_executor);
+        action the_action = the_overloaded_procedure.to_action(the_origin);
+        if (!is_explicit) {
+          the_context.add(target_type, the_procedure.short_name(), the_action);
+        }
+      }
+      return executor_action;
+    }
 
     action result_action;
     if (the_procedure.overrides_variable()) {
@@ -148,7 +169,9 @@ public class analyzer_utilities {
       result_action = executor_action;
     }
 
-    the_context.add(target_type, the_procedure.short_name(), result_action);
+    if (!is_explicit) {
+      the_context.add(target_type, the_procedure.short_name(), result_action);
+    }
 
     return result_action;
   }
@@ -290,12 +313,16 @@ public class analyzer_utilities {
     return filtered_constraints;
   }
 
-  public static boolean is_parametrizable(abstract_value the_value, type_parameters parameters,
+  public static boolean is_parametrizable(abstract_value the_value, action_parameters parameters,
       analysis_context the_context) {
     type the_type = the_value.type_bound();
     if (the_type instanceof master_type && ((master_type) the_type).is_parametrizable()) {
       // TODO: more checks...
       return true;
+    }
+
+    if (the_value instanceof procedure_value) {
+      return ((procedure_value) the_value).is_parametrizable(parameters, the_context);
     }
 
     type procedure_type = the_context.find_supertype(the_value, procedure_type_target.instance);
@@ -310,7 +337,7 @@ public class analyzer_utilities {
       return false;
     }
 
-    immutable_list<abstract_value> supplied_arguments = parameters.internal_access();
+    immutable_list<abstract_value> supplied_arguments = parameters.to_value_list();
 
     if (!action_utilities.is_valid_procedure_arity(procedure_type, supplied_arguments.size())) {
       return false;
@@ -345,18 +372,19 @@ public class analyzer_utilities {
   }
 
   public static analysis_result bind_parameters(action the_action, action_parameters parameters,
-      origin the_origin, analysis_context the_context) {
+      analysis_context the_context, origin the_origin) {
 
     abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...
-    assert is_parametrizable(action_result, parameters.to_type_parameters(), the_context);
+    assert is_parametrizable(action_result, parameters, the_context);
 
     type the_type = action_result.type_bound();
     if (the_type instanceof master_type && ((master_type) the_type).is_parametrizable()) {
       return bind_type_parameters((master_type) the_type, parameters).to_action(the_origin);
     }
 
-    if (action_result instanceof procedure_value) {
+    if (action_result instanceof procedure_value &&
+        ((procedure_value) action_result).is_parametrizable(parameters, the_context)) {
       return ((procedure_value) action_result).bind_parameters(parameters, the_context, the_origin);
     }
 

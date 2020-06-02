@@ -203,7 +203,8 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(new cast_op());
     add_operator(new assign_op());
     add_operator(new add_op());
-    add_operator(new add_assign_op());
+    // TODO: restore add_operator(new add_assign_op());
+    add_operator(operator.ADD_ASSIGN);
     add_operator(new multiply_op());
     add_operator(new multiply_assign_op());
     add_operator(new concatenate_op());

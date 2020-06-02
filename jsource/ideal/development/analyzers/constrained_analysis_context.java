@@ -85,11 +85,6 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public type find_supertype(abstract_value the_value, action_target target) {
-    return parent.find_supertype(the_value, target);
-  }
-
-  @Override
   public type find_supertype_procedure(abstract_value the_value) {
     return parent.find_supertype_procedure(the_value);
   }

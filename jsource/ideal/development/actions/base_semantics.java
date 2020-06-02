@@ -91,10 +91,13 @@ public class base_semantics implements semantics {
       if (target != null &&
           !target.matches(action_result) &&
           !(action_result instanceof error_signal)) {
+        utilities.panic("Non-null target");
+          /*
         @Nullable action promoted = find_promotion(actions, action_result, target);
         if (promoted != null) {
           return new base_list<action>(promoted.bind_from(the_action, pos));
         }
+        */
       }
     }
 
@@ -165,55 +168,46 @@ public class base_semantics implements semantics {
   }
 
   boolean is_subtype_of(action_table actions, abstract_value the_value, type the_type) {
-    return find_supertype(actions, the_value, new specific_type_target(the_type)) != null;
+    return find_supertype(actions, the_value, the_type) != null;
   }
 
   @Nullable
-  public type find_supertype(action_table actions, abstract_value the_value,
-      action_target target) {
+  public type find_supertype(action_table actions, abstract_value the_value, type target) {
 
     type subtype = the_value.type_bound();
-    @Nullable type specific_type = null;
-    if (target instanceof specific_type_target) {
-      specific_type = ((specific_type_target) target).target_type;
+
+    if (subtype == target) {
+      return subtype;
     }
 
-    if (target.matches(the_value)) {
-      return specific_type != null ? specific_type : subtype;
+    // Unreachable type can pretend to be anything.
+    if (subtype == core_types.unreachable_type()) {
+      return target;
     }
 
-    if (specific_type != null) {
-      // Unreachable type can pretend to be anything.
-      if (subtype == core_types.unreachable_type()) {
-        return specific_type;
-      }
+    // TODO: switch to using type_identifiers.
+    if (target == core_types.any_type()) {
+      return subtype;
+    }
 
-      // TODO: switch to using type_identifiers.
-      if (specific_type == core_types.any_type()) {
-        return subtype;
-      }
-
-      if (type_utilities.is_union(specific_type)) {
-        immutable_list<abstract_value> parameters =
-            type_utilities.get_union_parameters(specific_type);
-        for (int i = 0; i < parameters.size(); ++i) {
-          type candidate_target = parameters.get(i).type_bound();
-          type result = find_supertype(actions, the_value,
-              new specific_type_target(candidate_target));
-          if (result != null) {
-            return result;
-          }
+    if (type_utilities.is_union(target)) {
+      immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(target);
+      for (int i = 0; i < parameters.size(); ++i) {
+        type candidate_target = parameters.get(i).type_bound();
+        type result = find_supertype(actions, the_value, candidate_target);
+        if (result != null) {
+          return result;
         }
-        return null;
       }
+      return null;
+    }
 
-      if (subtype.get_flavor() == specific_type.get_flavor() &&
-          subtype.get_flavor() != flavor.nameonly_flavor &&
-          maybe_master(subtype) == maybe_master(specific_type)) {
-        if (check_variance(actions, (parametrized_type) subtype.principal(),
-            (parametrized_type) specific_type.principal(), subtype.get_flavor())) {
-          return specific_type;
-        }
+    if (subtype.get_flavor() == target.get_flavor() &&
+        subtype.get_flavor() != flavor.nameonly_flavor &&
+        maybe_master(subtype) == maybe_master(target)) {
+      if (check_variance(actions, (parametrized_type) subtype.principal(),
+          (parametrized_type) target.principal(), subtype.get_flavor())) {
+        return target;
       }
     }
 
@@ -228,28 +222,7 @@ public class base_semantics implements semantics {
     }
 
     supertype_set supertypes = supertype_set.make(subtype, actions);
-
-    if (specific_type != null) {
-      return supertypes.contains(specific_type) ? specific_type : null;
-    } else {
-      // TODO: use filter.
-      immutable_list<type> supertypes_list =  supertypes.members.elements();
-      list<type> candidates = new base_list<type>();
-      for (int i = 0; i < supertypes_list.size(); ++i) {
-        type candidate = supertypes_list.get(i);
-        if (target.matches(candidate)) {
-          candidates.append(candidate);
-        }
-      }
-      if (candidates.size() > 1) {
-        // TODO: unexpected--can just return null here...
-        utilities.panic("Too many supertypes");
-      } else if (candidates.size() == 1) {
-        return candidates.first();
-      }
-    }
-
-    return null;
+    return supertypes.contains(target) ? target : null;
   }
 
   @Nullable
@@ -293,17 +266,12 @@ public class base_semantics implements semantics {
   }
 
   @Nullable
-  public action find_promotion(action_table actions, abstract_value the_value,
-      action_target target) {
+  public action find_promotion(action_table actions, abstract_value the_value, type target) {
 
     type subtype = the_value.type_bound();
-    @Nullable type specific_type = null;
-    if (target instanceof specific_type_target) {
-      specific_type = ((specific_type_target) target).target_type;
-    }
 
-    if (target.matches(the_value)) {
-      return new promotion_action(specific_type != null ? specific_type : subtype);
+    if (subtype == target) {
+      return new promotion_action(subtype);
     }
 
     type the_supertype = find_supertype(actions, the_value, target);
@@ -312,50 +280,32 @@ public class base_semantics implements semantics {
     }
 
     // Anything can be promoted to the 'void' value.
-    if (specific_type == library().immutable_void_type()) {
+    if (target == library().immutable_void_type()) {
       return library().void_instance().to_action(action_utilities.no_origin);
     }
 
     transitive_set promotions = transitive_set.make(subtype, actions);
 
-    if (specific_type != null) {
-      @Nullable type_and_action result = promotions.members.get(specific_type);
-      if (result != null) {
-        return result.get_action();
+    @Nullable type_and_action result = promotions.members.get(target);
+    if (result != null) {
+      return result.get_action();
+    }
+    // TODO: use filter().
+    readonly_list<dictionary.entry<type, type_and_action>> promotions_list =
+        promotions.members.elements();
+    list<type_and_action> candidates = new base_list<type_and_action>();
+    for (int i = 0; i < promotions_list.size(); ++i) {
+      dictionary.entry<type, type_and_action> entry = promotions_list.get(i);
+      if (is_subtype_of(actions, entry.key(), target)) {
+        candidates.append(entry.value());
       }
-      // TODO: use filter().
-      readonly_list<dictionary.entry<type, type_and_action>> promotions_list =
-          promotions.members.elements();
-      list<type_and_action> candidates = new base_list<type_and_action>();
-      for (int i = 0; i < promotions_list.size(); ++i) {
-        dictionary.entry<type, type_and_action> entry = promotions_list.get(i);
-        if (is_subtype_of(actions, entry.key(), specific_type)) {
-          candidates.append(entry.value());
-        }
-      }
-      readonly_list<action> best = select_best(actions, candidates);
-      if (best.size() == 1) {
-        return best.first();
-      }
-      if (best.size() > 1) {
-        utilities.panic("Multiple subtypes");
-      }
-    } else {
-      // TODO: use filter().
-      readonly_list<dictionary.entry<type, type_and_action>> promotions_list =
-          promotions.members.elements();
-      list<type_and_action> candidates = new base_list<type_and_action>();
-      for (int i = 0; i < promotions_list.size(); ++i) {
-        dictionary.entry<type, type_and_action> entry = promotions_list.get(i);
-        if (target.matches(entry.key())) {
-          candidates.append(entry.value());
-        }
-      }
-      readonly_list<action> best = select_best(actions, candidates);
-
-      if (best.size() == 1) {
-        return best.first();
-      }
+    }
+    readonly_list<action> best = select_best(actions, candidates);
+    if (best.size() == 1) {
+      return best.first();
+    }
+    if (best.size() > 1) {
+      utilities.panic("Multiple subtypes");
     }
 
     return null;

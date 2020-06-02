@@ -76,23 +76,9 @@ public class resolve_analyzer extends single_pass_analyzer {
     }
   }
 
-  public analysis_result resolve(@Nullable action_target the_action_target) {
-    if (has_saved_result()) {
-      return analyze();
-    } else {
-      analysis_result result = do_resolve_and_narrow(the_action_target);
-      set_saved_result(result);
-      return result;
-    }
-  }
-
   @Override
   protected analysis_result do_single_pass_analysis() {
-    return do_resolve_and_narrow(null);
-  }
-
-  private analysis_result do_resolve_and_narrow(@Nullable action_target the_action_target) {
-    analysis_result result = do_resolve(the_action_target);
+    analysis_result result = do_resolve();
 
     if (! (result instanceof error_signal)) {
       @Nullable declaration the_declaration = declaration_util.get_declaration(result);
@@ -112,11 +98,8 @@ public class resolve_analyzer extends single_pass_analyzer {
     return result;
   }
 
-  private analysis_result do_resolve(@Nullable action_target the_action_target) {
+  private analysis_result do_resolve() {
     type from_type;
-
-    // !!!
-    the_action_target = null;
 
     if (from != null) {
       if (has_errors(from)) {
@@ -142,8 +125,7 @@ public class resolve_analyzer extends single_pass_analyzer {
       ((type_announcement) the_declaration).load_type();
     }
 
-    readonly_list<action> all_resolved = get_context().resolve(from_type, the_name,
-        the_action_target, this);
+    readonly_list<action> all_resolved = get_context().resolve(from_type, the_name, null, this);
 
     if (all_resolved.is_empty()) {
       error_signal error;
@@ -179,37 +161,9 @@ public class resolve_analyzer extends single_pass_analyzer {
       main_candidate = main_candidate.bind_from(action_not_error(from), this);
     }
 
-    action result = main_candidate;
+    type_utilities.prepare(main_candidate.result(), resolve_pass);
 
-    /*
-    if (main_candidate instanceof error_signal ||
-        the_name == special_name.IMPLICIT_CALL ||
-        the_action_target == null ||
-        the_action_target.matches(main_candidate.result())) {
-      result = main_candidate;
-    } else {
-      type result_type = main_candidate.result().type_bound();
-      type_utilities.prepare(result_type, resolve_pass);
-      readonly_list<action> implicit_results = get_context().resolve(
-          result_type, special_name.IMPLICIT_CALL, the_action_target, this);
-
-      if (implicit_results.is_empty()) {
-        return mismatch_reporter.signal_not_matching(all_resolved, the_action_target,
-            get_context(), this);
-      }
-
-      if (implicit_results.size() > 1) {
-        return mismatch_reporter.signal_not_matching(implicit_results, the_action_target,
-            get_context(), this);
-      }
-
-      result = implicit_results.first().bind_from(main_candidate, this);
-    }
-    */
-
-    type_utilities.prepare(result.result(), resolve_pass);
-
-    return result;
+    return main_candidate;
   }
 
   public @Nullable action get_main_candidate() {

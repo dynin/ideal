@@ -79,9 +79,8 @@ public class parameter_analyzer extends single_pass_analyzer {
       return new error_signal(messages.error_in_parametrizable, error, this);
     }
     action_parameters aparams = new action_parameters(param_actions);
-    //parameter_target the_parameter_target = new parameter_target(aparams, get_context());
 
-    @Nullable error_signal main_error = find_error(main_analyzable, /*the_parameter_target*/null);
+    @Nullable error_signal main_error = find_error(main_analyzable);
     if (main_error != null) {
       return new error_signal(messages.error_in_parametrizable, main_error, this);
     }
@@ -91,10 +90,9 @@ public class parameter_analyzer extends single_pass_analyzer {
       type result_type = main_action.result().type_bound();
       type_utilities.prepare(result_type, parameter_pass);
       readonly_list<action> implicit_results = get_context().resolve(
-          result_type, special_name.IMPLICIT_CALL, /*the_parameter_target*/ null, main_analyzable);
+          result_type, special_name.IMPLICIT_CALL, null, main_analyzable);
 
       if (implicit_results.is_empty()) {
-      //  return mismatch_reporter.signal_not_matching(all_resolved, aparams, get_context(), this);
         return mismatch_reporter.signal_mismatch(main_action, aparams, get_context(), this);
       }
 

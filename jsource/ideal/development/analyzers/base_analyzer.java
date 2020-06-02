@@ -185,22 +185,6 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     }
   }
 
-  protected @Nullable error_signal find_error(analyzable the_analyzable,
-      action_target the_action_target) {
-
-    if (the_analyzable instanceof resolve_analyzer) {
-      init_context(the_analyzable);
-      analysis_result the_result = ((resolve_analyzer) the_analyzable).resolve(the_action_target);
-      if (the_result instanceof error_signal) {
-        return (error_signal) the_result;
-      } else {
-        return null;
-      }
-    } else {
-      return find_error(the_analyzable);
-    }
-  }
-
   protected action action_not_error(analyzable the_analyzable) {
     init_context(the_analyzable);
     analysis_result result = the_analyzable.analyze();

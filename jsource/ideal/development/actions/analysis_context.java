@@ -26,8 +26,7 @@ public interface analysis_context extends type_declaration_context, value_printe
 
   void add(type from, action_name name, action the_action);
 
-  readonly_list<action> resolve(type from, action_name name, @Nullable action_target target,
-      origin pos);
+  readonly_list<action> resolve(type from, action_name name, origin pos);
 
   boolean can_promote(abstract_value from, type target);
 

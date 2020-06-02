@@ -69,9 +69,8 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public readonly_list<action> resolve(type from, action_name name, @Nullable action_target target,
-      origin pos) {
-    return parent.resolve(from, name, target, pos);
+  public readonly_list<action> resolve(type from, action_name name, origin pos) {
+    return parent.resolve(from, name, pos);
   }
 
   @Override

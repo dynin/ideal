@@ -166,7 +166,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     // TODO: add a feature/flag to toggle it.
     if (true) {
       readonly_list<action> shadowed_actions = get_context().resolve(
-          declared_in_type().get_flavored(flavor.mutable_flavor), short_name(), null, this);
+          declared_in_type().get_flavored(flavor.mutable_flavor), short_name(), this);
       if (shadowed_actions.size() > 0) {
         for (int i = 0; i < shadowed_actions.size(); ++i) {
           action shadowed = shadowed_actions.get(i);

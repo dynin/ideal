@@ -40,7 +40,7 @@ public class base_semantics implements semantics {
   }
 
   public readonly_list<action> resolve(action_table actions, type from, action_name name,
-      @Nullable action_target target, origin pos) {
+      origin pos) {
 
     assert name != special_name.PROMOTION;
 
@@ -72,47 +72,10 @@ public class base_semantics implements semantics {
       return new empty<action>();
     }
 
-    readonly_list<type_and_action> filtered;
-    if (target != null) {
-      filtered = filter(candidates, target);
-      if (filtered.is_empty()) {
-        filtered = candidates;
-      }
-    } else {
-      filtered = candidates;
-    }
-
-    readonly_list<action> the_best = select_best(actions, filtered);
+    readonly_list<action> the_best = select_best(actions, candidates);
     assert the_best.is_not_empty();
 
-    if (the_best.size() == 1) {
-      action the_action = the_best.first();
-      abstract_value action_result = the_action.result();
-      if (target != null &&
-          !target.matches(action_result) &&
-          !(action_result instanceof error_signal)) {
-        utilities.panic("Non-null target");
-          /*
-        @Nullable action promoted = find_promotion(actions, action_result, target);
-        if (promoted != null) {
-          return new base_list<action>(promoted.bind_from(the_action, pos));
-        }
-        */
-      }
-    }
-
     return the_best;
-  }
-
-  private readonly_list<type_and_action> filter(readonly_list<type_and_action> candidates,
-      action_target target) {
-    list<type_and_action> filtered = new base_list<type_and_action>();
-    for (int i = 0; i < candidates.size(); ++i) {
-      if (target.matches(candidates.get(i).result())) {
-        filtered.append(candidates.get(i));
-      }
-    }
-    return filtered;
   }
 
   private readonly_list<action> select_best(action_table actions,

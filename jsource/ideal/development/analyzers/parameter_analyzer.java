@@ -89,8 +89,8 @@ public class parameter_analyzer extends single_pass_analyzer {
     if (!analyzer_utilities.is_parametrizable(main_action.result(), aparams, get_context())) {
       type result_type = main_action.result().type_bound();
       type_utilities.prepare(result_type, parameter_pass);
-      readonly_list<action> implicit_results = get_context().resolve(
-          result_type, special_name.IMPLICIT_CALL, null, main_analyzable);
+      readonly_list<action> implicit_results = get_context().resolve(result_type,
+          special_name.IMPLICIT_CALL, main_analyzable);
 
       if (implicit_results.is_empty()) {
         return mismatch_reporter.signal_mismatch(main_action, aparams, get_context(), this);

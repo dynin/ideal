@@ -55,9 +55,8 @@ public abstract class base_analysis_context extends debuggable implements analys
   }
 
   @Override
-  public readonly_list<action> resolve(type from, action_name name, @Nullable action_target target,
-      origin pos) {
-    return language.resolve(actions, from, name, target, pos);
+  public readonly_list<action> resolve(type from, action_name name, origin pos) {
+    return language.resolve(actions, from, name, pos);
   }
 
   @Override

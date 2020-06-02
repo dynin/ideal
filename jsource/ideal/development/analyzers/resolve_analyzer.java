@@ -125,7 +125,7 @@ public class resolve_analyzer extends single_pass_analyzer {
       ((type_announcement) the_declaration).load_type();
     }
 
-    readonly_list<action> all_resolved = get_context().resolve(from_type, the_name, null, this);
+    readonly_list<action> all_resolved = get_context().resolve(from_type, the_name, this);
 
     if (all_resolved.is_empty()) {
       error_signal error;

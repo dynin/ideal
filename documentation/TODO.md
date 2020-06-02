@@ -59,4 +59,4 @@
 - [x] Add one-element list initializer
 - [x] Implement list iteration for ideal list types
 - [x] Implement punctuation_type.to_string
-- [x] Make template_analyzer extend extension_analyzer
+- [x] Retire action_target

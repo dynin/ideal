@@ -85,7 +85,7 @@ void test_loop() {
 void test_assignment() {
   var nonnegative non : 1;
   non += 2;
-  var nonnegative may : 3;
+  var integer may : 3;
   may += 2;
   integer test : 4;
   assert test is nonnegative;

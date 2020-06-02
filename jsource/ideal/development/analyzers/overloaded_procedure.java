@@ -27,37 +27,34 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 
 public class overloaded_procedure extends base_procedure {
-  private final list<procedure_executor> procedures;
+  private final list<procedure_value> procedures;
 
-  public overloaded_procedure(procedure_executor the_executor) {
-    super(the_executor.name(), the_executor.type_bound());
-    procedures = new base_list<procedure_executor>(the_executor);
+  public overloaded_procedure(procedure_value the_procedure) {
+    super(the_procedure.name(), the_procedure.type_bound());
+    procedures = new base_list<procedure_value>(the_procedure);
   }
 
-  readonly_list<procedure_executor> procedures() {
+  readonly_list<procedure_value> procedures() {
     return procedures;
   }
 
-  public void add(procedure_executor the_executor) {
-    procedures.append(the_executor);
+  public void add(procedure_value the_procedure) {
+    procedures.append(the_procedure);
+    assert the_procedure.has_this_argument() == first().has_this_argument();
   }
 
-  private procedure_executor first() {
+  private procedure_value first() {
     return procedures.first();
   }
 
   @Override
   public boolean has_this_argument() {
-    return get_category() != procedure_category.STATIC;
+    return first().has_this_argument();
   }
 
   @Override
   public declaration get_declaration() {
     return first().get_declaration();
-  }
-
-  public procedure_category get_category() {
-    return first().get_category();
   }
 
   @Override

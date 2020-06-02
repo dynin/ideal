@@ -26,12 +26,12 @@ import ideal.development.values.*;
 
 // TODO: handle (possibly negative) integer types
 public class add_assign_op extends binary_procedure {
+  private final type integral_type;
 
-  public add_assign_op() {
-    super(operator.ADD_ASSIGN, false,
-        library().immutable_nonnegative_type(),
-        library().get_reference(flavor.mutable_flavor, library().immutable_nonnegative_type()),
-        library().immutable_nonnegative_type());
+  public add_assign_op(type integral_type) {
+    super(operator.ADD_ASSIGN, false, integral_type,
+        library().get_reference(flavor.mutable_flavor, integral_type), integral_type);
+    this.integral_type = integral_type;
   }
 
   @Override
@@ -43,8 +43,7 @@ public class add_assign_op extends binary_procedure {
     integer_value lhs = (integer_value) ref.get();
     integer_value rhs = (integer_value) second;
 
-    integer_value result = new integer_value(lhs.unwrap() + rhs.unwrap(),
-        library().immutable_nonnegative_type());
+    integer_value result = new integer_value(lhs.unwrap() + rhs.unwrap(), integral_type);
     ref.set(result);
 
     return result;

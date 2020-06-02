@@ -203,8 +203,12 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(new cast_op());
     add_operator(new assign_op());
     add_operator(new add_op());
-    // TODO: restore add_operator(new add_assign_op());
-    add_operator(operator.ADD_ASSIGN);
+
+    overloaded_procedure add_assign = new overloaded_procedure(
+        new add_assign_op(library().immutable_nonnegative_type()));
+    add_assign.add(new add_assign_op(library().immutable_integer_type()));
+
+    add_operator(add_assign);
     add_operator(new multiply_op());
     add_operator(new multiply_assign_op());
     add_operator(new concatenate_op());
@@ -324,28 +328,15 @@ public class create_manager implements target_manager, type_bootstrapper {
       utilities.panic("Operator not found: " + symbol);
     }
 
-    if (operator_procedure != null) {
-      if (actions.size() == 0) {
-        utilities.panic("Can't find operator " + symbol);
-      }
-      boolean added = false;
-      for (int i = 0; i < actions.size(); ++i) {
-        action the_action = actions.get(i);
-        if (actions.size() == 1 ||
-            the_action.result().type_bound() == operator_procedure.type_bound()) {
-          the_action = operator_procedure.to_action(the_action);
-          added = true;
-        }
-        bootstrap_context.add(parent, the_operator, the_action);
-      }
+    if (actions.size() > 1) {
+      utilities.panic("Duplicate operator " + symbol);
+    }
 
-      if (!added) {
-        utilities.panic("Can't find matching operator " + symbol);
-      }
+    action the_action = actions.first();
+    if (operator_procedure != null) {
+      bootstrap_context.add(parent, the_operator, operator_procedure.to_action(the_action));
     } else {
-      for (int i = 0; i < actions.size(); ++i) {
-        bootstrap_context.add(parent, the_operator, actions.get(i));
-      }
+      bootstrap_context.add(parent, the_operator, the_action);
     }
   }
 

@@ -207,8 +207,8 @@ public class create_manager implements target_manager, type_bootstrapper {
     overloaded_procedure add_assign = new overloaded_procedure(
         new add_assign_op(library().immutable_nonnegative_type()));
     add_assign.add(new add_assign_op(library().immutable_integer_type()));
-
     add_operator(add_assign);
+
     add_operator(new multiply_op());
     add_operator(new multiply_assign_op());
     add_operator(new concatenate_op());

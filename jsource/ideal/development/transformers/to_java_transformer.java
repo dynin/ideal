@@ -1440,7 +1440,7 @@ public class to_java_transformer extends base_transformer {
         }
       }
       // TODO: better way to detect procedure variables?
-      if (is_procedure_variable(get_action(c.main))) {
+      if (is_procedure_variable(the_declaration)) {
         main = new resolve_construct(main, new name_construct(CALL_NAME, source), source);
       }
     }
@@ -1466,11 +1466,9 @@ public class to_java_transformer extends base_transformer {
   }
 
   // TODO: better way to detect procedure variables?
-  private boolean is_procedure_variable(action the_action) {
-    while (the_action instanceof promotion_action) {
-      the_action = ((promotion_action) the_action).get_action();
-    }
-    return the_action instanceof dereference_action;
+  private boolean is_procedure_variable(@Nullable declaration the_declaration) {
+    return the_declaration instanceof type_declaration &&
+        library().is_reference_type(((type_declaration) the_declaration).get_declared_type());
   }
 
   private construct make_default_return(type the_type, origin source) {

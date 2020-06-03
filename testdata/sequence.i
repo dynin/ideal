@@ -7,7 +7,7 @@
 import java.util.List;
 import java.util.ArrayList;
 
-implicit import ideal.library;
+--implicit import ideal.library;
 implicit import ideal.concepts;
 implicit import ideal.constructs;
 import ideal.concepts.type;

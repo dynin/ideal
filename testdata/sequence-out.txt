@@ -69,7 +69,6 @@ testdata/sequence.i:118: Lookup failed: no getClass in sequence._display
 testdata/sequence.i:120: Lookup failed: no int in sequence._display
 import java.util.List;
 import java.util.ArrayList;
-implicit import ideal.library;
 implicit import ideal.concepts;
 implicit import ideal.constructs;
 import ideal.concepts.type;

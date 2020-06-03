@@ -92,11 +92,12 @@ class create {
     }
 
     readonly_set<simple_name> extensions = find_use_constructs(constructs);
-
-    create_util.progress("BOOTSTRAP");
-    cm.process_bootstrap(!extensions.contains(CLEAN_SLATE));
+    boolean clean_slate = extensions.contains(CLEAN_SLATE);
 
     cm.process_targets();
+
+    create_util.progress("BOOTSTRAP");
+    cm.process_bootstrap(!clean_slate);
 
     if (output_name != null) {
       cm.set_output_catalog(

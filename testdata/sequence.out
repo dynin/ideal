@@ -4,6 +4,7 @@
 ============ BOOTSTRAP
 ==== Loading library/elements.i
 ==== Loading library/operators.i
+==== Loading ideal.i
 ============ DISPLAY
 [
   import_construct {
@@ -35,21 +36,6 @@
       }
       name: name_construct {
         the_name: ArrayList
-      }
-    }
-  }
-  import_construct {
-    annotations: [
-      modifier_construct {
-        the_kind: <implicit>
-      }
-    ]
-    type: resolve_construct {
-      qualifier: name_construct {
-        the_name: ideal
-      }
-      name: name_construct {
-        the_name: library
       }
     }
   }
@@ -1989,7 +1975,6 @@ testdata/sequence.i:118: Lookup failed: no getClass in sequence._display
 testdata/sequence.i:120: Lookup failed: no int in sequence._display
 import java.util.List;
 import java.util.ArrayList;
-implicit import ideal.library;
 implicit import ideal.concepts;
 implicit import ideal.constructs;
 import ideal.concepts.type;

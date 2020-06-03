@@ -139,6 +139,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     java_library.bootstrap_on_demand(this);
 
     if (load_library) {
+      bootstrap_ideal_namespace();
       action_utilities.add_promotion(bootstrap_context, root, elements, root_origin);
       test_library.init(bootstrap_context, root);
     }
@@ -181,6 +182,23 @@ public class create_manager implements target_manager, type_bootstrapper {
     check(new type_declaration_analyzer(the_declaration, the_type.get_parent(), bootstrap_context));
     assert the_type.get_declaration() != null;
     assert bootstrap_context.get_analyzable(the_declaration) != null;
+
+    if (has_errors()) {
+      utilities.panic("Errors bootstrapping " + the_type.short_name());
+    }
+  }
+
+  public void bootstrap_ideal_namespace() {
+    principal_type the_type = library().ideal_namespace();
+    assert the_type.get_declaration() == null;
+
+    source_content type_source = load_source(top_catalog, to_resource_name(the_type.short_name()));
+    list<construct> constructs = parse(type_source);
+    assert constructs != null;
+
+    declaration_list_analyzer body =
+        new declaration_list_analyzer(constructs, root, bootstrap_context, root_origin);
+    body.multi_pass_analysis(analysis_pass.TARGET_DECL);
 
     if (has_errors()) {
       utilities.panic("Errors bootstrapping " + the_type.short_name());

@@ -4,6 +4,7 @@
 ============ BOOTSTRAP
 ==== Loading library/elements.i
 ==== Loading library/operators.i
+==== Loading ideal.i
 ============ DISPLAY
 [
   procedure_construct {

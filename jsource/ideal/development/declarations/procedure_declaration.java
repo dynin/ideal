@@ -31,5 +31,5 @@ public interface procedure_declaration extends declaration {
   procedure_declaration specialize(specialization_context context, principal_type new_parent);
   @Nullable action procedure_action();
   @Nullable action get_body_action();
-  variable_declaration get_this_declaration();
+  @Nullable variable_declaration get_this_declaration();
 }

@@ -484,8 +484,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
   }
 
   @Override
-  public variable_declaration get_this_declaration() {
-    assert this_decl != null;
+  public @Nullable variable_declaration get_this_declaration() {
     return this_decl;
   }
 

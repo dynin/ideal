@@ -41,13 +41,11 @@ public class while_construct extends extension_construct {
   }
 
   @Override
-  public analyzable to_analyzable() {
-    origin pos = this;
-
-    analyzable break_statement = new jump_analyzer(jump_type.BREAK_JUMP, pos);
-    analyzable if_statement = new conditional_analyzer(base_analyzer.make(condition),
-        base_analyzer.make(body), break_statement, pos);
-    return new loop_analyzer(if_statement, pos);
+  public extension_analyzer to_analyzable() {
+    return new while_analyzer(
+        base_analyzer.make(condition),
+        base_analyzer.make(body),
+        this);
   }
 
   @Override

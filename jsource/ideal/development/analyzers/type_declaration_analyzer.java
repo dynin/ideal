@@ -304,6 +304,9 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       if (result_type.get_pass().is_before(declaration_pass.METHODS_AND_VARIABLES)) {
         assert !declaration_analysis_in_progress;
+        if (get_kind() == type_kinds.enum_kind) {
+          add_enum_members();
+        }
         declaration_analysis_in_progress = true;
         result_type.process_declaration(declaration_pass.METHODS_AND_VARIABLES);
         declaration_analysis_in_progress = false;
@@ -324,8 +327,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     } else if (pass == declaration_pass.METHODS_AND_VARIABLES) {
       //if (!has_processed(analysis_pass.METHOD_AND_VARIABLE_DECL)) {
       // TODO: this needs to be fixed.
-      if (!in_progress)
-      {
+      if (!in_progress) {
         multi_pass_analysis(analysis_pass.METHOD_AND_VARIABLE_DECL);
       } else {
         if (DEBUG.in_progress_declaration) {
@@ -366,6 +368,32 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       add_to_body(new supertype_analyzer(procedure_supertype, pos));
     }
     */
+  }
+
+  private void add_enum_members() {
+    simple_name ordinal_name = simple_name.make("ordinal");
+    simple_name name_name = simple_name.make("name");
+    origin the_origin = this;
+
+    field_declaration ordinal_declaration = new field_declaration(
+        analyzer_utilities.PUBLIC_MODIFIERS, ordinal_name,
+        variable_category.INSTANCE, flavor.readonly_flavor,
+        flavor.deeply_immutable_flavor, library().immutable_integer_type(),
+        the_origin);
+
+    if (has_errors(ordinal_declaration)) {
+      utilities.panic("Error in ordinal field declaration");
+    }
+
+    field_declaration name_declaration = new field_declaration(
+        analyzer_utilities.PUBLIC_MODIFIERS, name_name,
+        variable_category.INSTANCE, flavor.readonly_flavor,
+        flavor.deeply_immutable_flavor, library().immutable_string_type(),
+        the_origin);
+
+    if (has_errors(name_declaration)) {
+      utilities.panic("Error in name field declaration");
+    }
   }
 
   // TODO: move this error-explaining component

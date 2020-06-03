@@ -165,7 +165,7 @@ circle: $(IDEAL_TARGET) $(CIRCLE)
 	$(CREATE) $(FLAGS_RUN) -input=$(CIRCLE)
 
 enum: $(IDEAL_TARGET)
-	$(CREATE) $(FLAGS_RUN) -input=tests/declaration_pass.i
+	$(CREATE) $(FLAGS_RUN) -input=tests/declaration_pass.i -target=generate_enum
 
 ### Generating runtime
 

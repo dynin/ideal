@@ -79,7 +79,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       set_annotations(new base_annotation_set(access_modifier.public_modifier,
           new hash_set<modifier_kind>(), null));
       // TODO: ordinal should be correctly computed.
-      enum_value the_value = new enum_value(this, 0, value_type());
+      enum_value the_value = new enum_value(this, ordinal, value_type());
       get_context().add(declared_in_type(), short_name(), the_value.to_action(this));
       // TODO: handle autoimport of boolean enums.
       get_context().add(declared_in_type().get_parent(), short_name(), the_value.to_action(this));

@@ -30,6 +30,10 @@ public class analyzer_utilities {
 
   private analyzer_utilities() { }
 
+  public static final annotation_set PUBLIC_MODIFIERS =
+      new base_annotation_set(access_modifier.public_modifier,
+          new hash_set<modifier_kind>(), null);
+
   public static final annotation_set PRIVATE_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
           new hash_set<modifier_kind>(), null);

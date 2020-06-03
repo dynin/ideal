@@ -37,8 +37,8 @@ public class local_variable_declaration extends single_pass_analyzer
   private local_variable variable_action;
 
   public local_variable_declaration(annotation_set annotations, action_name name,
-      type_flavor reference_flavor, type var_type, analyzable init_analyzable, origin source) {
-    super(source);
+      type_flavor reference_flavor, type var_type, analyzable init_analyzable, origin the_origin) {
+    super(the_origin);
     this.annotations = annotations;
     this.name = name;
     this.reference_flavor = reference_flavor;

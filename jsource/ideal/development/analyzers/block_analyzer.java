@@ -19,24 +19,30 @@ import ideal.development.types.*;
 import ideal.development.kinds.*;
 import ideal.development.flavors.*;
 import ideal.development.notifications.*;
+import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 
-public class block_analyzer extends single_pass_analyzer implements declaration {
+public class block_analyzer extends declaration_analyzer<origin>
+    implements block_declaration {
 
   private static final special_name BLOCK_NAME =
       new special_name(new base_string("{"), new base_string("block_analyzer"));
 
+  private readonly_list<annotation_construct> annotations;
   private final analyzable body;
   private principal_type inside;
 
+  public block_analyzer(block_construct source) {
+    super(source);
+    annotations = source.annotations;
+    body = new statement_list_analyzer(make_list(source.body), this);
+  }
+
+  // TODO: introduce an optional annotations parameter
   public block_analyzer(analyzable body, origin pos) {
     super(pos);
     this.body = body;
-  }
-
-  public block_analyzer(block_construct source) {
-    super(source);
-    body = new statement_list_analyzer(make_list(source.body), this);
+    annotations = new empty<annotation_construct>();
   }
 
   @Override
@@ -49,12 +55,21 @@ public class block_analyzer extends single_pass_analyzer implements declaration 
     return BLOCK_NAME;
   }
 
+  @Override
   public analyzable get_body() {
     return body;
   }
 
   @Override
-  protected analysis_result do_single_pass_analysis() {
+  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+    if (pass != analysis_pass.BODY_CHECK) {
+      return null;
+    }
+
+    if (annotations != null) {
+      process_annotations(annotations, access_modifier.private_modifier);
+    }
+
     if (inside == null) {
       inside = make_block(BLOCK_NAME, this);
     }
@@ -62,6 +77,12 @@ public class block_analyzer extends single_pass_analyzer implements declaration 
     if (find_error(body) != null) {
       return new error_signal(messages.error_in_block, body, this);
     }
+
+    return null;
+  }
+
+  @Override
+  protected analysis_result do_get_result() {
     return body.analyze();
   }
 }

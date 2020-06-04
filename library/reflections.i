@@ -36,7 +36,7 @@ package reflections {
   }
 
   interface variable_id {
-    extends identifier;
+    subtypes stringable, equality_comparable;
 
     identifier short_name;
     type_id value_type;

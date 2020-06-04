@@ -105,7 +105,6 @@ BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/declarations/*.java
 
 DEVELOPMENT_JAVA = \
-    $(JSOURCE_DIR)/ideal/development/declarations/*.java \
     $(JSOURCE_DIR)/ideal/development/constructs/*.java \
     $(JSOURCE_DIR)/ideal/development/kinds/*.java \
     $(JSOURCE_DIR)/ideal/development/types/*.java \

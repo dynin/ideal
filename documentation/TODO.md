@@ -61,3 +61,4 @@
 - [x] Implement punctuation_type.to_string
 - [x] Retire action_target
 - [ ] Introduce mixins
+- [ ] Introduce skip

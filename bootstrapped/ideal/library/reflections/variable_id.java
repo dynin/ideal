@@ -4,8 +4,4 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface variable_id extends identifier {
-  identifier short_name();
-  type_id value_type();
-  type_id reference_type();
-}
+public interface variable_id extends stringable, equality_comparable, readonly_variable_id, writeonly_variable_id { }

@@ -68,7 +68,12 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   }
 
   @Override
-  public @Nullable action get_init() {
+  public @Nullable analyzable initializer() {
+    return null;
+  }
+
+  @Override
+  public @Nullable action init_action() {
     return null;
   }
 

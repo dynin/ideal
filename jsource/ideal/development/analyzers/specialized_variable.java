@@ -32,10 +32,10 @@ public class specialized_variable extends debuggable implements variable_declara
   private final principal_type parent_type;
   private final type value_type;
   private final type reference_type;
-  private final @Nullable action init;
+  private final @Nullable analyzable init;
 
   public specialized_variable(variable_analyzer main, principal_type parent_type,
-      type value_type, type reference_type, @Nullable action init) {
+      type value_type, type reference_type, @Nullable analyzable init) {
     this.main = main;
     this.parent_type = parent_type;
     this.value_type = value_type;
@@ -113,8 +113,17 @@ public class specialized_variable extends debuggable implements variable_declara
   }
 
   @Override
-  public @Nullable action get_init() {
+  public @Nullable analyzable initializer() {
     return init;
+  }
+
+  @Override
+  public @Nullable action init_action() {
+    if (init == null) {
+      return null;
+    }
+
+    return (action) init.analyze();
   }
 
   @Override

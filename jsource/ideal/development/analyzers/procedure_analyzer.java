@@ -87,6 +87,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     return parameter_variables;
   }
 
+  @Override
   public @Nullable analyzable get_body() {
     return body;
   }
@@ -475,10 +476,20 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     for (int i = 0; i < parameter_variables.size(); ++i) {
       new_parameters.append(parameter_variables.get(i).specialize(new_context, new_inside));
     }
+
+    @Nullable analyzable new_body = body;
+    // TODO: specialize body.
+    if (false && body != null) {
+      @Nullable error_signal body_error = find_error(body);
+      if (body_error == null) {
+        new_body = body.specialize(new_context, new_inside);
+      }
+    }
+
     variable_declaration this_declaration = this_decl != null ?
         this_decl.specialize(new_context, new_parent) : null;
     specialized_procedure result = new specialized_procedure(this, new_return_type, new_parent,
-        new_parameters, this_declaration);
+        new_parameters, new_body, this_declaration);
     result.add(get_context());
     return result;
   }

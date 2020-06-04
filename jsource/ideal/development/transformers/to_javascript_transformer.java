@@ -142,7 +142,7 @@ public class to_javascript_transformer {
   }
 
   public variable_construct to_construct(variable_declaration variable) {
-    return make_variable(variable, variable.get_init(), variable);
+    return make_variable(variable, variable.init_action(), variable);
   }
 
   public variable_construct make_variable(variable_declaration variable, @Nullable action init,

@@ -28,8 +28,13 @@ public abstract class single_pass_analyzer extends base_analyzer {
   @dont_display
   private @Nullable analysis_result saved_result;
 
-  public single_pass_analyzer(origin source) {
-    super(source);
+  public single_pass_analyzer(origin the_origin) {
+    super(the_origin);
+  }
+
+  protected single_pass_analyzer(origin the_origin, @Nullable principal_type parent,
+      @Nullable analysis_context context) {
+    super(the_origin, parent, context);
   }
 
   public principal_type declared_in_type() {

@@ -31,6 +31,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
   private final type return_type;
   private final principal_type parent_type;
   private final readonly_list<variable_declaration> parameter_variables;
+  private final @Nullable analyzable body;
   private final variable_declaration this_declaration;
   private final readonly_list<type> argument_types;
   private final type procedure_type;
@@ -38,11 +39,12 @@ public class specialized_procedure extends debuggable implements procedure_decla
 
   public specialized_procedure(procedure_declaration main, type return_type,
       principal_type parent_type, readonly_list<variable_declaration> parameter_variables,
-      variable_declaration this_declaration) {
+      @Nullable analyzable body, variable_declaration this_declaration) {
     this.main = main;
     this.return_type = return_type;
     this.parent_type = parent_type;
     this.parameter_variables = parameter_variables;
+    this.body = body;
     this.this_declaration = this_declaration;
 
     assert main.get_category() != procedure_category.STATIC;
@@ -162,6 +164,11 @@ public class specialized_procedure extends debuggable implements procedure_decla
   @Override
   public readonly_list<declaration> get_overriden() {
     return main.get_overriden();
+  }
+
+  @Override
+  public @Nullable analyzable get_body() {
+    return body;
   }
 
   @Override

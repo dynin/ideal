@@ -341,6 +341,9 @@ testall: wipeout buildall test
 	bin/regression.sh
 	bin/doc-regression.sh
 
+wc:
+	wc -l `find library runtime  development -name \*i`
+
 # Targets for profiling
 AGENT_PATH = $(THIRD_PARTY_DIR)/yjp-12.0.6/bin/linux-x86-32/libyjpagent.so
 JAVA_PROFILING_OPT = -agentpath:$(AGENT_PATH)=tracing

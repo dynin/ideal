@@ -20,5 +20,6 @@ public interface readonly_variable_declaration extends readonly_declaration, rea
   principal_type declared_in_type();
   type value_type();
   type reference_type();
-  @Nullable action get_init();
+  @Nullable analyzable initializer();
+  @Nullable action init_action();
 }

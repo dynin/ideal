@@ -99,7 +99,12 @@ public class field_declaration extends single_pass_analyzer
   }
 
   @Override
-  public @Nullable action get_init() {
+  public @Nullable analyzable initializer() {
+    return null;
+  }
+
+  @Override
+  public @Nullable action init_action() {
     return null;
   }
 

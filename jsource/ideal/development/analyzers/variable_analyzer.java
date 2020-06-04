@@ -77,7 +77,12 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
   }
 
   @Override
-  public @Nullable action get_init() {
+  public @Nullable analyzable initializer() {
+    return init;
+  }
+
+  @Override
+  public @Nullable action init_action() {
     if (init_action != null) {
       return init_action;
     } else {
@@ -240,9 +245,9 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     assert get_category() == variable_category.LOCAL ||
         get_category() == variable_category.INSTANCE;
 
-    @Nullable action new_init = null;
+    @Nullable analyzable new_init = null;
     if (init != null) {
-      new_init = analyzer_utilities.to_action(init.specialize(new_context, new_parent));
+      new_init = init.specialize(new_context, new_parent);
     }
 
     // TODO: signal errors instead of asserts.
@@ -252,7 +257,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
           variable_type.specialize(new_context, new_parent));
     } else {
       assert new_init != null;
-      new_value_action = new_init;
+      new_value_action = analyzer_utilities.to_action(new_init);
     }
 
     // TODO: handle errors better.

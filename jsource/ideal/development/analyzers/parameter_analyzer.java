@@ -126,7 +126,12 @@ public class parameter_analyzer extends single_pass_analyzer {
   }
 
   @Override
-  public parameter_analyzer specialize(specialization_context context, principal_type new_parent) {
+  public analyzable specialize(specialization_context context, principal_type new_parent) {
+    @Nullable error_signal main_error = find_error(main_analyzable);
+    if (main_error != null) {
+      return main_error;
+    }
+
     analyzable new_main = main_analyzable.specialize(context, new_parent);
     list<analyzable> new_parameters = new base_list<analyzable>();
 

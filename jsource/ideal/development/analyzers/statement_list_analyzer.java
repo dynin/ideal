@@ -26,14 +26,20 @@ import ideal.development.types.*;
 public class statement_list_analyzer extends single_pass_analyzer {
   private readonly_list<analyzable> the_elements;
 
-  public statement_list_analyzer(readonly_list<analyzable> the_elements, origin pos) {
-    super(pos);
+  public statement_list_analyzer(readonly_list<analyzable> the_elements, origin the_origin) {
+    super(the_origin);
     this.the_elements = the_elements;
   }
 
-  public statement_list_analyzer(origin pos) {
-    super(pos);
+  public statement_list_analyzer(origin the_origin) {
+    super(the_origin);
     the_elements = null;
+  }
+
+  protected statement_list_analyzer(readonly_list<analyzable> the_elements, origin the_origin,
+      @Nullable principal_type parent, @Nullable analysis_context context) {
+    super(the_origin, parent, context);
+    this.the_elements = the_elements;
   }
 
   public void populate(readonly_list<analyzable> the_elements) {
@@ -94,6 +100,30 @@ public class statement_list_analyzer extends single_pass_analyzer {
       return error;
     } else {
       return new list_action(actions, this);
+    }
+  }
+
+  @Override
+  public analyzable specialize(specialization_context context, principal_type new_parent) {
+    if (has_errors()) {
+      return this;
+    }
+
+    list<analyzable> new_elements = new base_list<analyzable>();
+    boolean same = true;
+    for (int i = 0; i < the_elements.size(); ++i) {
+      analyzable element = the_elements.get(i);
+      analyzable new_element = element.specialize(context, new_parent);
+      if (new_element != element) {
+        same = false;
+      }
+      new_elements.append(new_element);
+    }
+
+    if (same) {
+      return this;
+    } else {
+      return new statement_list_analyzer(new_elements, this, new_parent, get_context());
     }
   }
 }

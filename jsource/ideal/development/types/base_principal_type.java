@@ -14,6 +14,7 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.flavors.*;
 import ideal.development.kinds.*;
+import ideal.development.declarations.*;
 import ideal.machine.annotations.dont_display;
 
 import javax.annotation.Nullable;

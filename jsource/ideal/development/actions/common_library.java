@@ -19,6 +19,7 @@ import static ideal.development.kinds.type_kinds.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import static ideal.development.flavors.flavor_profiles.*;
+import ideal.development.declarations.*;
 import ideal.development.values.*;
 
 public class common_library implements value {

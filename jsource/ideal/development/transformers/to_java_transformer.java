@@ -348,6 +348,9 @@ public class to_java_transformer extends base_transformer {
           parent_kind != namespace_kind) {
         return true;
       }
+      if (parent_kind == enum_kind && the_variable instanceof field_declaration) {
+        return true;
+      }
     } else if (the_declaration instanceof procedure_declaration) {
       procedure_declaration the_procedure = (procedure_declaration) the_declaration;
       return the_procedure.overrides_variable();

@@ -11,8 +11,6 @@ package ideal.development.declarations;
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
-// TODO: remove this dependency.
-import ideal.development.types.declaration_pass;
 
 public interface type_declaration extends declaration {
   kind get_kind();

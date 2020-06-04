@@ -1,7 +1,3 @@
-implicit import ideal.library.elements;
-implicit import ideal.runtime.elements;
-implicit import ideal.runtime.logs;
-
 enum declaration_pass {
   implements deeply_immutable data, stringable, readonly displayable;
 
@@ -17,14 +13,11 @@ enum declaration_pass {
     return this.ordinal > other.ordinal;
   }
 
---  static declaration_pass last() {
---    return values()[values().length - 1];
---  }
-
-  override string to_string => name;
+  -- TODO: fix hack to handle Java strings
+  override string to_string => "" ++ name;
 
   override string display() => to_string;
+
+  -- TODO: static declaration_pass last() => values()[values().length - 1];
+  static declaration_pass last => declaration_pass.METHODS_AND_VARIABLES;
 }
-
-target generate_enum: generate_java(declaration_pass);
-

@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.kinds.*;
+import ideal.development.declarations.*;
 
 public class type_utilities {
 

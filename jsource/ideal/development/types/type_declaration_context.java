@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import ideal.library.graphs.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
+import ideal.development.declarations.*;
 
 public interface type_declaration_context extends value {
   graph<principal_type, origin> type_graph();

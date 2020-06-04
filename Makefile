@@ -101,7 +101,8 @@ BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/components/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/comments/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/flavors/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/development/modifiers/*.java
+    $(BOOTSTRAPPED_DIR)/ideal/development/modifiers/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/development/declarations/*.java
 
 DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/declarations/*.java \
@@ -163,9 +164,6 @@ dir: $(IDEAL_TARGET) $(ONETWO)
 
 circle: $(IDEAL_TARGET) $(CIRCLE)
 	$(CREATE) $(FLAGS_RUN) -input=$(CIRCLE)
-
-enum: $(IDEAL_TARGET)
-	$(CREATE) $(FLAGS_RUN) -input=tests/declaration_pass.i -target=generate_enum
 
 ### Generating runtime
 

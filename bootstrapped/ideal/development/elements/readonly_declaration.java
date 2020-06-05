@@ -4,7 +4,7 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface readonly_declaration extends readonly_origin, any_declaration {
+public interface readonly_declaration extends readonly_analyzable_or_declaration, any_declaration {
   principal_type declared_in_type();
   boolean has_errors();
 }

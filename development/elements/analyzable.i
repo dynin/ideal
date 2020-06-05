@@ -8,7 +8,7 @@
 --- The analisys may require some context, such as the parent frame;
 --- see |ideal.development.analyzers.base_analyzer| for details.
 interface analyzable {
-  extends origin;
+  extends analyzable_or_declaration;
 
    --- Convert this object into an action.
    --- If there is an error this method returns an |error_signal|.

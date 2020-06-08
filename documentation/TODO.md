@@ -63,3 +63,5 @@
 - [ ] Introduce mixins
 - [ ] Introduce skip
 - [ ] Implement C-style comments
+- [ ] Handle instance variable implementing interfaces.
+- [ ] Add static modifier to import of namespaces.

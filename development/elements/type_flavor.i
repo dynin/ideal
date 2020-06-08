@@ -8,7 +8,7 @@
 interface type_flavor {
   extends modifier_kind, identifier, reference_equality;
 
-  simple_name name;
+  override simple_name name;
   flavor_profile get_profile;
   immutable list[type_flavor] get_superflavors;
 }

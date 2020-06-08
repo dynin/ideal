@@ -14,4 +14,5 @@ namespace development {
   package flavors;
   package modifiers;
   package declarations;
+  package kinds;
 }

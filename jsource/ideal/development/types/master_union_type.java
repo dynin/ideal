@@ -16,7 +16,6 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
-import ideal.development.actions.*;
 
 public class master_union_type extends master_type {
 

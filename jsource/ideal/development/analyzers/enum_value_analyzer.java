@@ -28,8 +28,9 @@ import ideal.development.declarations.*;
 public class enum_value_analyzer extends declaration_analyzer implements variable_declaration {
 
   private final action_name the_name;
-  private final @Nullable list_construct parameters;
+  public final @Nullable list_construct parameters;
   private final int ordinal;
+  readonly_list<analyzable> the_constructor_parameters;
 
   public enum_value_analyzer(construct the_construct, int ordinal) {
     super(the_construct);
@@ -67,6 +68,10 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     return library().get_reference(flavor.deeply_immutable_flavor, value_type());
   }
 
+  public @Nullable readonly_list<analyzable> constructor_parameters() {
+    return the_constructor_parameters;
+  }
+
   @Override
   public @Nullable analyzable initializer() {
     return null;
@@ -94,8 +99,9 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       origin pos = this;
       analyzable allocate = new analyzable_action(new allocate_action(declared_in_type(), pos));
       analyzable ctor_expression = new resolve_analyzer(allocate, special_name.IMPLICIT_CALL, pos);
-      readonly_list<analyzable> ctor_params = make_list(parameters.elements);
-      analyzable ctor_call = new parameter_analyzer(ctor_expression, ctor_params, pos);
+      the_constructor_parameters = make_list(parameters.elements);
+      analyzable ctor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters,
+          pos);
       analyze_and_ignore_errors(ctor_call, pass);
     }
 

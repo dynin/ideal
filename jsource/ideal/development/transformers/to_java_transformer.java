@@ -1642,8 +1642,9 @@ public class to_java_transformer extends base_transformer {
       action the_action = get_action(c.type);
       if (the_action instanceof type_action) {
         principal_type the_principal = ((type_action) the_action).get_type().principal();
-        // Used before: the_principal.get_kind().is_namespace()
-        if (the_principal.get_parent().get_kind() == type_kinds.package_kind) {
+        kind the_kind = the_principal.get_kind();
+        if ((the_kind.is_namespace() || the_kind == type_kinds.class_kind) &&
+            (the_principal.get_parent().get_kind() == type_kinds.package_kind)) {
           annotations.append(new modifier_construct(static_modifier, origin));
         }
       }

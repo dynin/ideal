@@ -54,7 +54,7 @@ public class template_analyzer extends extension_analyzer implements declaration
   }
 
   @Override
-  public analyzable expand() {
+  public analyzable do_expand() {
     if (escaper == null) {
       // TODO: move to library...
       escaper = new escape_fn(ESCAPE_NAME);

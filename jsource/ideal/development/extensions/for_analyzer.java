@@ -36,7 +36,7 @@ public class for_analyzer extends extension_analyzer {
   }
 
   @Override
-  public analyzable expand() {
+  public analyzable do_expand() {
     origin the_origin = this;
 
     analyzable body_and_update = new statement_list_analyzer(

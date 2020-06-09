@@ -22,8 +22,8 @@ import ideal.development.declarations.*;
 
 public class flavor_analyzer extends single_pass_analyzer {
 
-  private final type_flavor flavor;
-  private final analyzable expression;
+  public final type_flavor flavor;
+  public final analyzable expression;
   // TODO: do we need flavor_pass?
   private declaration_pass flavor_pass;
 

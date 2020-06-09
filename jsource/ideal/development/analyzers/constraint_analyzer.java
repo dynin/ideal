@@ -20,7 +20,7 @@ import ideal.development.notifications.*;
 
 public class constraint_analyzer extends single_pass_analyzer {
 
-  private final analyzable expression;
+  public final analyzable expression;
 
   public constraint_analyzer(constraint_construct source) {
     super(source);

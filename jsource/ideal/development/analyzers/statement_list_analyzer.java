@@ -48,6 +48,10 @@ public class statement_list_analyzer extends single_pass_analyzer {
     this.the_elements = the_elements;
   }
 
+  public readonly_list<analyzable> elements() {
+    return the_elements;
+  }
+
   @Override
   protected analysis_result do_single_pass_analysis() {
     list<action> actions = new base_list<action>();

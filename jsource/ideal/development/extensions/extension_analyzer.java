@@ -23,12 +23,21 @@ import ideal.development.notifications.*;
 import javax.annotation.Nullable;
 
 public abstract class extension_analyzer extends single_pass_analyzer {
+  private analyzable expanded;
 
   public extension_analyzer(origin the_origin) {
     super(the_origin);
   }
 
-  public abstract analyzable expand();
+  public abstract analyzable do_expand();
+
+  public final analyzable expand() {
+    if (expanded == null) {
+      expanded = do_expand();
+    }
+
+    return expanded;
+  }
 
   protected analysis_result do_single_pass_analysis() {
     analyzable expanded = expand();

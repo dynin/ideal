@@ -38,6 +38,10 @@ public class declaration_list_analyzer extends multi_pass_analyzer {
     the_elements = make_list(constructs);
   }
 
+  public readonly_list<analyzable> elements() {
+    return the_elements;
+  }
+
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
     error_signal error = null;

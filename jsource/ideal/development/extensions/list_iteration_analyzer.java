@@ -80,7 +80,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
   }
 
   @Override
-  public analyzable expand() {
+  public analyzable do_expand() {
     // TODO: support specifying element type
     if (var_type != null) {
       return new error_signal(new base_string("Element type not expected, it is inferred"),

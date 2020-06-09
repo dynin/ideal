@@ -22,16 +22,16 @@ import javax.annotation.Nullable;
 public class base_annotation_set extends debuggable implements annotation_set {
 
   private final access_modifier access_level;
-  private final immutable_set<modifier_kind> modifiers;
+  private final immutable_set<modifier_kind> the_modifiers;
   private final @Nullable documentation the_documentation;
 
   public base_annotation_set(access_modifier access_level,
-      readonly_set<modifier_kind> modifiers,
+      readonly_set<modifier_kind> the_modifiers,
       @Nullable documentation the_documentation) {
     assert access_level != null;
 
     this.access_level = access_level;
-    this.modifiers = modifiers.frozen_copy();
+    this.the_modifiers = the_modifiers.frozen_copy();
     this.the_documentation = the_documentation;
   }
 
@@ -43,7 +43,7 @@ public class base_annotation_set extends debuggable implements annotation_set {
   @Override
   public boolean has(modifier_kind the_kind) {
     assert the_kind != null;
-    return modifiers.contains(the_kind);
+    return the_modifiers.contains(the_kind);
   }
 
   @Override
@@ -51,7 +51,11 @@ public class base_annotation_set extends debuggable implements annotation_set {
     return the_documentation;
   }
 
+  public readonly_list<modifier_kind> modifiers() {
+    return the_modifiers.elements();
+  }
+
   public base_annotation_set update_documentation(@Nullable documentation new_documentation) {
-    return new base_annotation_set(access_level, modifiers, new_documentation);
+    return new base_annotation_set(access_level, the_modifiers, new_documentation);
   }
 }

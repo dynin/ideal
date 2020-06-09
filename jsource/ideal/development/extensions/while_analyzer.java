@@ -31,7 +31,7 @@ public class while_analyzer extends extension_analyzer {
   }
 
   @Override
-  public analyzable expand() {
+  public analyzable do_expand() {
     origin the_origin = this;
 
     analyzable break_statement = new jump_analyzer(jump_type.BREAK_JUMP, the_origin);

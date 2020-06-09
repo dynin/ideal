@@ -22,9 +22,9 @@ import ideal.development.flavors.*;
 
 public class conditional_analyzer extends single_pass_analyzer {
 
-  private final analyzable condition;
-  private final analyzable then_branch;
-  private final @Nullable analyzable else_branch;
+  public final analyzable condition;
+  public final analyzable then_branch;
+  public final @Nullable analyzable else_branch;
 
   public conditional_analyzer(conditional_construct source) {
     super(source);

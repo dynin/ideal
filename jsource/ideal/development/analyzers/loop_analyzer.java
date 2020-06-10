@@ -26,7 +26,7 @@ public class loop_analyzer extends single_pass_analyzer implements declaration {
   private static final special_name LOOP_NAME =
       new special_name(new base_string("loop"), new base_string("loop_analyzer"));
 
-  private final analyzable body;
+  public final analyzable body;
   private principal_type inside;
   private @Nullable loop_action the_loop_action;
 

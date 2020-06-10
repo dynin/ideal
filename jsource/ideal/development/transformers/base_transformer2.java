@@ -13,9 +13,17 @@ import javax.annotation.Nullable;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
+import ideal.development.actions.*;
 import ideal.development.declarations.*;
 import ideal.development.constructs.*;
 import ideal.development.analyzers.*;
+import ideal.development.names.*;
+import ideal.development.flavors.*;
+import ideal.development.types.*;
+import ideal.development.kinds.*;
+import static ideal.development.flavors.flavor.*;
+import static ideal.development.kinds.type_kinds.*;
+import static ideal.development.kinds.subtype_tags.*;
 import ideal.development.notifications.error_signal;
 import ideal.development.extensions.extension_analyzer;
 import ideal.development.targets.target_declaration;
@@ -29,6 +37,10 @@ public class base_transformer2 extends analyzable_visitor<Object> {
 
     construct new_construct = (construct) process(the_analyzable);
     return new_construct;
+  }
+
+  protected common_library library() {
+    return common_library.get_instance();
   }
 
 /*
@@ -169,31 +181,122 @@ public class base_transformer2 extends analyzable_visitor<Object> {
   }
 
   public construct process_import(import_analyzer the_import) {
-    return process_default(the_import);
+    origin the_origin = the_import;
+    return new import_construct(to_annotations(the_import.annotations(), the_origin),
+        transform(the_import.type_analyzable), the_origin);
   }
 
   public construct process_jump(jump_analyzer the_jump) {
-    return process_default(the_jump);
+    origin the_origin = the_jump;
+    return new jump_construct(the_jump.the_jump_type, the_origin);
   }
 
   public construct process_list_initializer(list_initializer_analyzer the_list_initializer) {
-    return process_default(the_list_initializer);
+    origin the_origin = the_list_initializer;
+    grouping_type grouping = grouping_type.PARENS;
+    boolean has_trailing_comma = the_list_initializer.analyzable_parameters.size() == 1;
+    return new list_construct(transform_list(the_list_initializer.analyzable_parameters),
+        grouping, has_trailing_comma, the_origin);
   }
 
   public construct process_literal(literal_analyzer the_literal) {
-    return process_default(the_literal);
+    origin the_origin = the_literal;
+    return new literal_construct(the_literal.the_literal, the_origin);
   }
 
   public construct process_loop(loop_analyzer the_loop) {
-    return process_default(the_loop);
+    origin the_origin = the_loop;
+    return new loop_construct(transform(the_loop), the_origin);
   }
 
   public construct process_parameter(parameter_analyzer the_parameter) {
-    return process_default(the_parameter);
+    origin the_origin = the_parameter;
+    grouping_type grouping = grouping_type.PARENS;
+    boolean has_trailing_comma = false;
+    construct the_construct = get_construct(the_parameter);
+    if (the_construct instanceof parameter_construct) {
+      grouping = ((parameter_construct) the_construct).parameters.grouping;
+      has_trailing_comma = ((parameter_construct) the_construct).parameters.has_trailing_comma;
+    }
+    return new parameter_construct(transform(the_parameter.main_analyzable),
+        new list_construct(transform_list(the_parameter.analyzable_parameters),
+            grouping, has_trailing_comma, the_origin), the_origin);
+  }
+
+  protected simple_name get_simple_name(principal_type the_type) {
+    if (type_utilities.is_union(the_type)) {
+      the_type = remove_null_type(the_type).principal();
+    }
+
+    if (the_type.short_name() instanceof simple_name) {
+      return (simple_name) the_type.short_name();
+    }
+
+    assert the_type.get_parent() != null;
+    return get_simple_name(the_type.get_parent());
+  }
+
+
+  protected type remove_null_type(type the_type) {
+    assert type_utilities.is_union(the_type);
+    type_flavor union_flavor = the_type.get_flavor();
+    immutable_list<abstract_value> the_values = type_utilities.get_union_parameters(the_type);
+    assert the_values.size() == 2;
+    type null_type = (type) the_values.get(1);
+    assert null_type.principal() == library().null_type();
+    type result = (type) the_values.first();
+    if (union_flavor != flavor.nameonly_flavor) {
+      result = result.get_flavored(union_flavor);
+    }
+    return result;
+  }
+
+  protected simple_name make_name(simple_name type_name, principal_type the_type,
+      type_flavor flavor) {
+    if (flavor == nameonly_flavor || flavor == the_type.get_flavor_profile().default_flavor()) {
+      return type_name;
+    } else {
+      return name_utilities.join(flavor.name(), type_name);
+    }
+  }
+
+  private construct make_full_name(construct name, principal_type the_type, origin the_origin) {
+    @Nullable principal_type parent = the_type.get_parent();
+    if (parent == null) {
+      return name;
+    }
+
+    if (! (parent.short_name() instanceof simple_name)) {
+      utilities.panic("Full name of " + the_type + ", parent " + parent);
+    }
+
+    construct parent_name = new name_construct(parent.short_name(), the_origin);
+    return make_full_name(new resolve_construct(parent_name, name, the_origin), parent, the_origin);
+  }
+
+  protected construct make_type(type the_type, origin the_origin) {
+    principal_type principal = the_type.principal();
+
+    if (type_utilities.is_union(principal)) {
+      principal = remove_null_type(principal).principal();
+    }
+
+    construct name = new name_construct(make_name(get_simple_name(principal), principal,
+        the_type.get_flavor()), the_origin);
+    return make_full_name(name, principal, the_origin);
   }
 
   public construct process_procedure(procedure_declaration the_procedure) {
-    return process_default(the_procedure);
+    origin the_origin = the_procedure;
+    grouping_type grouping = grouping_type.PARENS;
+    boolean has_trailing_comma = false;
+    list_construct parameters = new list_construct(
+        transform_list(the_procedure.get_parameter_variables()),
+            grouping, has_trailing_comma, the_origin);
+    return new procedure_construct(to_annotations(the_procedure.annotations(), the_origin),
+        make_type(the_procedure.get_return_type(), the_origin), the_procedure.original_name(),
+        parameters, new empty<annotation_construct>(),
+        transform(the_procedure.get_body()), the_origin);
   }
 
   public construct process_resolve(resolve_analyzer the_resolve) {

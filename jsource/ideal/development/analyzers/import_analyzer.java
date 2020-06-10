@@ -21,7 +21,7 @@ import ideal.development.modifiers.*;
 
 public class import_analyzer extends declaration_analyzer<import_construct> {
 
-  private final analyzable type_analyzable;
+  public final analyzable type_analyzable;
   private @Nullable action_name the_name;
 
   public import_analyzer(import_construct source) {

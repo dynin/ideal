@@ -340,18 +340,39 @@ public class base_transformer2 extends analyzable_visitor<Object> {
 
   public construct process_type(type_declaration the_type) {
     origin the_origin = the_type;
-    /*
-    return new type_declaration(to_annotations(the_type.annotations(), the_origin),
-        the_type.get_kind(), the_type.short_name(), 
-        */
-    return process_default(the_type);
+    @Nullable list_construct parameters = null;
+    if (the_type.get_parameters() != null)  {
+      parameters = new list_construct(transform_list(the_type.get_parameters()),
+          grouping_type.PARENS, false, the_origin);
+    }
+    return new type_declaration_construct(to_annotations(the_type.annotations(), the_origin),
+        the_type.get_kind(), the_type.short_name(), parameters,
+        transform_list(the_type.get_signature()), the_origin);
   }
 
   public construct process_type_parameter(type_parameter_declaration the_type_parameter) {
-    return process_default(the_type_parameter);
+    origin the_origin = the_type_parameter;
+    construct the_type;
+    if (the_type_parameter.variable_type() != null) {
+      the_type = make_type(the_type_parameter.variable_type(), the_origin);
+    } else {
+      the_type = null;
+    }
+    return new variable_construct(to_annotations(the_type_parameter.annotations(), the_origin),
+        the_type, the_type_parameter.short_name(), new empty<annotation_construct>(), null,
+        the_origin);
   }
 
   public construct process_variable(variable_declaration the_variable) {
-    return process_default(the_variable);
+    origin the_origin = the_variable;
+    construct the_type;
+    if (the_variable.value_type() != null) {
+      the_type = make_type(the_variable.value_type(), the_origin);
+    } else {
+      the_type = null;
+    }
+    return new variable_construct(to_annotations(the_variable.annotations(), the_origin),
+        the_type, the_variable.short_name(), new empty<annotation_construct>(),
+        transform(the_variable.initializer()), the_origin);
   }
 }

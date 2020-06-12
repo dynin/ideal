@@ -36,6 +36,8 @@ target generate_development: generate_java(ideal.development);
 target generate_all: generate_java(ideal.library, ideal.runtime);
 --target generate_all: generate_java(ideal.runtime.channels.output_transformer);
 
+target print_declarations: generate_java(ideal.development.declarations.type_declaration);
+
 target document_elements: print_documentation(ideal.library.elements);
 
 target document_library: print_documentation(ideal.library);

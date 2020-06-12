@@ -123,6 +123,11 @@ public class type_parameter_analyzer extends declaration_analyzer
   }
 
   @Override
+  public @Nullable readonly_list<type_parameter_declaration> get_parameters() {
+    return null;
+  }
+
+  @Override
   public readonly_list<declaration> get_signature() {
     if (signature == null) {
       signature = new base_list<declaration>();

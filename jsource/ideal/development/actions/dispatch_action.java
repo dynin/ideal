@@ -127,8 +127,8 @@ public class dispatch_action extends base_action implements action {
         // TODO: should never happen.
         utilities.panic("Can't resolve " + primary_action + " for " + this_type);
       }
-      // TODO: update vtable.
       resolved_action = best.value();
+      vtable.put(this_type, resolved_action);
     }
 
     return resolved_action.bind_from(new entity_action(this_entity, this), this).

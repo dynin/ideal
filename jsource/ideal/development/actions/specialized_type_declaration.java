@@ -181,6 +181,12 @@ public class specialized_type_declaration extends debuggable implements type_dec
   }
 
   @Override
+  public @Nullable readonly_list<type_parameter_declaration> get_parameters() {
+    utilities.panic("specialized_type_declaration.get_parameters()");
+    return null;
+  }
+
+  @Override
   public readonly_list<declaration> get_signature() {
     return signature;
   }

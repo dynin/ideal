@@ -21,6 +21,7 @@ import ideal.development.names.*;
 import ideal.development.flavors.*;
 import ideal.development.types.*;
 import ideal.development.kinds.*;
+import ideal.development.targets.*;
 import static ideal.development.flavors.flavor.*;
 import static ideal.development.kinds.type_kinds.*;
 import static ideal.development.kinds.subtype_tags.*;
@@ -300,30 +301,49 @@ public class base_transformer2 extends analyzable_visitor<Object> {
   }
 
   public construct process_resolve(resolve_analyzer the_resolve) {
-    return process_default(the_resolve);
+    origin the_origin = the_resolve;
+    return new resolve_construct(transform(the_resolve.get_from()),
+        new name_construct(the_resolve.short_name(), the_origin), the_origin);
   }
 
   public construct process_return(return_analyzer the_return) {
-    return process_default(the_return);
+    origin the_origin = the_return;
+    return new return_construct(transform(the_return.the_expression), the_return);
   }
 
   public construct process_statement_list(statement_list_analyzer the_statement_list) {
+    utilities.panic("base_transformer2.process_statement_list()");
     return process_default(the_statement_list);
   }
 
   public construct process_supertype(supertype_declaration the_supertype) {
-    return process_default(the_supertype);
+    origin the_origin = the_supertype;
+    // TODO: add annotation support
+    return new supertype_construct(new empty<annotation_construct>(),
+        the_supertype.subtype_flavor(), the_supertype.tag(),
+        new base_list<construct>(transform(the_supertype.supertype_analyzable())), the_origin);
   }
 
   public construct process_target(target_declaration the_target) {
-    return process_default(the_target);
+    origin the_origin = the_target;
+    return new target_construct(the_target.short_name(),
+        transform(the_target.get_expression()), the_origin);
   }
 
   public construct process_type_announcement(type_announcement the_type_announcement) {
-    return process_default(the_type_announcement);
+    origin the_origin = the_type_announcement;
+    // TODO: skip annotations?
+    return new type_announcement_construct(
+        to_annotations(the_type_announcement.annotations(), the_origin),
+        the_type_announcement.get_kind(), the_type_announcement.short_name(), the_origin);
   }
 
   public construct process_type(type_declaration the_type) {
+    origin the_origin = the_type;
+    /*
+    return new type_declaration(to_annotations(the_type.annotations(), the_origin),
+        the_type.get_kind(), the_type.short_name(), 
+        */
     return process_default(the_type);
   }
 

@@ -23,6 +23,7 @@ import ideal.development.declarations.*;
 
 public class supertype_analyzer extends declaration_analyzer implements supertype_declaration {
 
+  // TODO: add annotation support
   private final @Nullable type_flavor subtype_flavor;
   private final subtype_tag tag;
   private final analyzable the_analyzable;
@@ -55,6 +56,10 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   @Override
   public subtype_tag tag() {
     return tag;
+  }
+
+  public analyzable supertype_analyzable() {
+    return the_analyzable;
   }
 
   @Override

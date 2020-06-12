@@ -18,12 +18,16 @@ import ideal.runtime.logs.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.resources.*;
 import ideal.development.elements.*;
+import ideal.development.declarations.*;
 import ideal.development.constructs.*;
 import ideal.development.actions.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.printers.*;
 import ideal.development.transformers.*;
+
+import ideal.machine.elements.runtime_util;
+import ideal.machine.channels.standard_channels;
 
 import javax.annotation.Nullable;
 
@@ -42,9 +46,19 @@ public class printer_target extends type_processor_target {
 
   @Override
   public void process_type(principal_type the_type) {
-    type_declaration_construct the_declaration =
-        (type_declaration_construct) the_type.get_declaration().deeper_origin();
-    print_constructs(new base_list<construct>(the_declaration),
+    construct declaration_construct = (construct) the_type.get_declaration().deeper_origin();
+    if (declaration_construct instanceof type_announcement_construct) {
+      declaration_construct =
+          (construct) ((type_announcement) the_type.get_declaration()).get_type_declaration().
+              deeper_origin();
+    }
+
+    if (false) {
+      output<text_fragment> out = new plain_formatter(standard_channels.stdout);
+      out.write(runtime_util.display(declaration_construct));
+    }
+
+    print_constructs(new base_list<construct>(declaration_construct),
         type_utilities.get_full_names(the_type));
   }
 

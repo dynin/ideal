@@ -187,6 +187,11 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   }
 
   @Override
+  public @Nullable readonly_list<type_parameter_declaration> get_parameters() {
+    return type_declaration.get_parameters();
+  }
+
+  @Override
   public readonly_list<declaration> get_signature() {
     return type_declaration.get_signature();
   }

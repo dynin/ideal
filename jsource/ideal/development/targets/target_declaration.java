@@ -36,6 +36,10 @@ public class target_declaration extends declaration_analyzer<target_construct> {
     return source.name;
   }
 
+  public analyzable get_expression() {
+    return expression;
+  }
+
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
     analyze_and_ignore_errors(expression, pass);

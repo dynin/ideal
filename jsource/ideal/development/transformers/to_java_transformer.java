@@ -624,6 +624,8 @@ public class to_java_transformer extends base_transformer {
 
   private construct make_type(type the_type, origin pos) {
     principal_type principal = the_type.principal();
+    type_flavor the_flavor = the_type.get_flavor();
+
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
         @Nullable principal_type mapped = java_library.map_to_primitive(principal);
@@ -645,10 +647,13 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (type_utilities.is_union(principal)) {
-      principal = remove_null_type(principal).principal();
+      type removed_null = remove_null_type(principal);
+      principal = removed_null.principal();
+      the_flavor = removed_null.get_flavor();
     }
+
     construct name = new name_construct(make_name(get_simple_name(principal), principal,
-        the_type.get_flavor()), pos);
+        the_flavor), pos);
     name = make_full_name(name, principal, pos);
 
     if (principal instanceof parametrized_type) {

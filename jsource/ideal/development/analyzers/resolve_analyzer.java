@@ -63,6 +63,10 @@ public class resolve_analyzer extends single_pass_analyzer {
     return from != null;
   }
 
+  public @Nullable analyzable get_from() {
+    return from;
+  }
+
   @Override
   protected void do_add_dependence(@Nullable principal_type the_principal, declaration_pass pass) {
     this.resolve_pass = pass;

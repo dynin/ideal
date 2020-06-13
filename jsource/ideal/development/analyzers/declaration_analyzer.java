@@ -38,6 +38,9 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
   }
 
   public annotation_set annotations() {
+    if (the_annotation_set == null) {
+      utilities.panic("annotation_set uninitialized in " + this);
+    }
     assert the_annotation_set != null;
     return the_annotation_set;
   }

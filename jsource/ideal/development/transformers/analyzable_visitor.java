@@ -104,16 +104,18 @@ public abstract class analyzable_visitor<T> implements value {
       return process_target((target_declaration) the_analyzable);
     }
 
+    // NOTE: this is before type_declaration
     if (the_analyzable instanceof type_announcement) {
       return process_type_announcement((type_announcement) the_analyzable);
     }
 
-    if (the_analyzable instanceof type_declaration) {
-      return process_type((type_declaration) the_analyzable);
-    }
-
+    // NOTE: this is before type_declaration
     if (the_analyzable instanceof type_parameter_declaration) {
       return process_type_parameter((type_parameter_declaration) the_analyzable);
+    }
+
+    if (the_analyzable instanceof type_declaration) {
+      return process_type((type_declaration) the_analyzable);
     }
 
     if (the_analyzable instanceof variable_declaration) {

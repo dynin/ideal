@@ -27,6 +27,7 @@ import ideal.development.declarations.*;
 public class type_parameter_analyzer extends declaration_analyzer
     implements type_parameter_declaration {
 
+  private final readonly_list<annotation_construct> annotations;
   private final @Nullable analyzable parameter_analyzable;
   private final action_name the_name;
   private @Nullable type var_type;
@@ -36,14 +37,15 @@ public class type_parameter_analyzer extends declaration_analyzer
 
   public type_parameter_analyzer(variable_construct source) {
     super(source);
-    // TODO: process modifiers here...
-    //process_modifiers(source.modifiers, access_modifier.public_modifier);
+    annotations = source.annotations;
+    assert source.post_annotations.is_empty();
     parameter_analyzable = make(source.type);
     the_name = source.name;
   }
 
   public type_parameter_analyzer(action_name the_name, origin source) {
     super(source);
+    annotations = new empty<annotation_construct>();
     this.parameter_analyzable = null;
     this.the_name = the_name;
   }
@@ -74,6 +76,7 @@ public class type_parameter_analyzer extends declaration_analyzer
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
+      process_annotations(annotations, access_modifier.public_modifier);
       // TODO: enforce that varargs_modifier is the only modifier that was
       //  specified, and public wasn't overriden
 

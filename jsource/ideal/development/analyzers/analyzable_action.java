@@ -23,8 +23,8 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 
-public class analyzable_action implements analyzable {
-  private final action the_action;
+public class analyzable_action extends debuggable implements analyzable {
+  public final action the_action;
 
   public analyzable_action(action the_action) {
     if (the_action instanceof analyzable) {

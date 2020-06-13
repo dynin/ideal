@@ -27,4 +27,9 @@ public class modifier_construct extends base_construct
   public readonly_list<construct> children() {
     return new empty<construct>();
   }
+
+  @Override
+  public string to_string() {
+    return utilities.describe(this, the_kind);
+  }
 }

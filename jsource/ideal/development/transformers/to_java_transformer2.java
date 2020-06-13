@@ -231,15 +231,18 @@ public class to_java_transformer2 extends base_transformer2 {
 
     return true;
   }
+  */
 
-  private construct transform_with_mapping(construct the_construct, mapping new_mapping) {
+  private construct transform_with_mapping(analyzable_or_declaration the_analyzable,
+      mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
     mapping_strategy = new_mapping;
-    construct result = transform(the_construct);
+    construct result = transform(the_analyzable);
     mapping_strategy = old_mapping_strategy;
     return result;
   }
 
+/*
   private readonly_list<construct> transform_with_mapping(
       readonly_list<? extends construct> constructs, mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
@@ -621,7 +624,7 @@ public class to_java_transformer2 extends base_transformer2 {
     assert null_construct instanceof name_construct;
     assert utilities.eq(((name_construct) null_construct).the_name,
         library().null_type().short_name());
-    // SHOULD BE: return transform_with_mapping(arguments.first(), mapping.MAP_TO_WRAPPER_TYPE);
+    // TODO!! return transform_with_mapping(arguments.first(), mapping.MAP_TO_WRAPPER_TYPE);
     return arguments.first();
   }
 
@@ -779,7 +782,6 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
-  /*
   // TODO: pass a mutable list of annotations and update it in place; may be use annotation_set.
   private readonly_list<annotation_construct> append_static(
       readonly_list<annotation_construct> annotations, origin source) {
@@ -798,6 +800,7 @@ public class to_java_transformer2 extends base_transformer2 {
     return new_annotations;
   }
 
+  /*
   private readonly_list<construct> transform_static(readonly_list<construct> body_constructs) {
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < body_constructs.size(); ++i) {
@@ -842,6 +845,7 @@ public class to_java_transformer2 extends base_transformer2 {
     }
     return result;
   }
+  */
 
   private boolean skip_type_declaration(principal_type the_type) {
     if (java_library.is_mapped(the_type) || the_type.is_subtype_of(library().null_type())) {
@@ -853,42 +857,37 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   @Override
-  public Object process_type_declaration(type_declaration_construct c) {
-    type_declaration the_declaration = (type_declaration_analyzer) get_analyzable(c);
-    assert the_declaration != null;
+  public Object process_type(type_declaration the_type_declaration) {
+    origin the_origin = the_type_declaration;
+    readonly_list<annotation_construct> annotations = to_annotations(
+        the_type_declaration.annotations(), false, the_origin);
 
-    origin source = c;
-
-    readonly_list<annotation_construct> annotations = transform_annotations(c.annotations,
-        the_declaration.annotations(), false, source);
-
-    kind the_kind = c.kind;
-    principal_type declared_in_type = the_declaration.declared_in_type();
+    kind the_kind = the_type_declaration.get_kind();
+    principal_type declared_in_type = the_type_declaration.declared_in_type();
 
     if (the_kind.is_namespace()) {
-      assert !c.has_parameters();
-      assert c.body != null;
+      assert the_type_declaration.get_parameters() != null;
       if (declared_in_type != package_type) {
-        annotations = append_static(annotations, source);
+        annotations = append_static(annotations, the_origin);
       }
       // TODO: add a private constructor
       return new type_declaration_construct(
         annotations,
         class_kind,
-        c.name,
+        the_type_declaration.short_name(),
         null,
-        transform_static(c.body),
-        source);
+        transform_list(the_type_declaration.get_signature()), // TODO!! transform_static(c.body),
+        the_origin);
     }
 
     if (the_kind == procedure_kind) {
-      return make_procedure_declarations(annotations, c);
+      return make_procedure_declarations(annotations, the_type_declaration);
     }
 
-    principal_type declared_type = the_declaration.get_declared_type();
+    principal_type declared_type = the_type_declaration.get_declared_type();
 
     if (false) { // Looks like this never happens.  TODO: retire this
-      if (declared_type.get_declaration() != the_declaration) {
+      if (declared_type.get_declaration() != the_type_declaration) {
         // This happens when specializes declaration, e.g. for collection[data]
         return null;
       }
@@ -900,7 +899,7 @@ public class to_java_transformer2 extends base_transformer2 {
 
     if (declared_in_type.get_kind() == class_kind) {
       // Introduce inner type.
-      annotations = append_static(annotations, source);
+      annotations = append_static(annotations, the_origin);
     }
 
     boolean concrete_mode = is_concrete_kind(the_kind);
@@ -910,15 +909,14 @@ public class to_java_transformer2 extends base_transformer2 {
     // TODO: implement namespaces
     assert profile != flavor_profiles.nameonly_profile;
 
-    simple_name type_name = (simple_name) c.name;
+    simple_name type_name = (simple_name) the_type_declaration.short_name();
 
     @Nullable list_construct type_parameters = null;
 
-    if (c.has_parameters()) {
-      type_parameters = process_parameters(c.parameters);
+    if (the_type_declaration.get_parameters() != null) {
+      type_parameters = new list_construct(transform_list(the_type_declaration.get_parameters()),
+          grouping_type.ANGLE_BRACKETS, false, the_origin);
     }
-
-    assert c.body != null;
 
     dictionary<type_flavor, list<construct>> flavored_bodies =
         new list_dictionary<type_flavor, list<construct>>();
@@ -935,110 +933,107 @@ public class to_java_transformer2 extends base_transformer2 {
 
     if (concrete_mode) {
       @Nullable procedure_construct run_tests =
-          testcase_generator.process_testcases(the_declaration);
+          testcase_generator.process_testcases(the_type_declaration);
       if (run_tests != null) {
         flavored_bodies.get(profile.default_flavor()).append(run_tests);
       }
     }
 
-    readonly_list<construct> body = c.body;
+    readonly_list<declaration> body = the_type_declaration.get_signature();
 
     for (int i = 0; i < body.size(); ++i) {
-      construct decl = body.get(i);
-      if (decl instanceof supertype_construct) {
-        supertype_construct supertype_decl = (supertype_construct) decl;
-        readonly_list<construct> super_list = supertype_decl.types;
-        for (int j = 0; j < super_list.size(); ++j) {
-          construct supertype_construct = super_list.get(j);
-          type supertype = get_type(supertype_construct);
-          kind supertype_kind = supertype.principal().get_kind();
-          if (concrete_mode) {
-            construct transformed_supertype = transform_with_mapping(supertype_construct,
-                mapping.NO_MAPPING);
-            if (supertype_kind == class_kind) {
-              if (superclass != null) {
-                // TODO: do not panic!
-                utilities.panic("Oh no. Two superclasses!");
+      declaration decl = body.get(i);
+      if (decl instanceof supertype_declaration) {
+        supertype_declaration supertype_decl = (supertype_declaration) decl;
+        type supertype = supertype_decl.get_supertype();
+        kind supertype_kind = supertype.principal().get_kind();
+        if (concrete_mode) {
+          construct transformed_supertype = transform_with_mapping(
+              supertype_decl.supertype_analyzable(), mapping.NO_MAPPING);
+          if (supertype_kind == class_kind) {
+            if (superclass != null) {
+              // TODO: do not panic!
+              utilities.panic("Oh no. Two superclasses!");
+            }
+            superclass = transformed_supertype;
+          } else {
+            list<construct> supertype_list = supertype_lists.get(profile.default_flavor());
+            assert supertype_list != null;
+            supertype_list.append(transformed_supertype);
+          }
+        } else {
+          origin the_origin2 = supertype_decl;
+          if (supertype_decl.subtype_flavor() == null &&
+              supertype instanceof principal_type) {
+            immutable_list<type_flavor> type_flavors = flavored_bodies.keys().elements();
+            for (int k = 0; k < type_flavors.size(); ++k) {
+              type_flavor flavor = type_flavors.get(k);
+              flavor_profile supertype_profile = supertype.principal().get_flavor_profile();
+              // TODO: iterate over supertype_lists?
+              if (supertype_profile.supports(flavor)) {
+                construct flavored_supertype;
+                if (flavor == supertype_profile.default_flavor()) {
+                  flavored_supertype = transform_with_mapping(supertype_decl.supertype_analyzable(),
+                      mapping.MAP_TO_WRAPPER_TYPE);
+                } else {
+                  flavored_supertype = make_type(supertype.get_flavored(flavor), the_origin2);
+                }
+                list<construct> supertype_list = supertype_lists.get(flavor);
+                assert supertype_list != null;
+                supertype_list.append(flavored_supertype);
               }
-              superclass = transformed_supertype;
-            } else {
-              list<construct> supertype_list = supertype_lists.get(profile.default_flavor());
-              assert supertype_list != null;
-              supertype_list.append(transformed_supertype);
             }
           } else {
-            origin pos = supertype_decl;
-            if (supertype_decl.subtype_flavor == null &&
-                supertype instanceof principal_type) {
-              immutable_list<type_flavor> type_flavors = flavored_bodies.keys().elements();
-              for (int k = 0; k < type_flavors.size(); ++k) {
-                type_flavor flavor = type_flavors.get(k);
-                flavor_profile supertype_profile = supertype.principal().get_flavor_profile();
-                // TODO: iterate over supertype_lists?
-                if (supertype_profile.supports(flavor)) {
-                  construct flavored_supertype;
-                  if (flavor == supertype_profile.default_flavor()) {
-                    flavored_supertype = transform_with_mapping(supertype_construct,
-                        mapping.MAP_TO_WRAPPER_TYPE);
-                  } else {
-                    flavored_supertype = change_flavor(supertype_construct, flavor, pos);
-                  }
-                  list<construct> supertype_list = supertype_lists.get(flavor);
-                  assert supertype_list != null;
-                  supertype_list.append(flavored_supertype);
-                }
-              }
-            } else {
-              type_flavor subtype_flavor = supertype_decl.subtype_flavor;
-              if (subtype_flavor == null) {
-                subtype_flavor = supertype.get_flavor();
-              }
-              construct flavored_supertype = transform_with_mapping(supertype_construct,
-                  mapping.MAP_TO_WRAPPER_TYPE);
-              list<construct> supertype_list = supertype_lists.get(profile.map(subtype_flavor));
-              assert supertype_list != null;
-              supertype_list.append(flavored_supertype);
+            type_flavor subtype_flavor = supertype_decl.subtype_flavor();
+            if (subtype_flavor == null) {
+              subtype_flavor = supertype.get_flavor();
             }
+            construct flavored_supertype = transform_with_mapping(
+                supertype_decl.supertype_analyzable(), mapping.MAP_TO_WRAPPER_TYPE);
+            list<construct> supertype_list = supertype_lists.get(profile.map(subtype_flavor));
+            assert supertype_list != null;
+            supertype_list.append(flavored_supertype);
           }
         }
-      } else if (decl instanceof procedure_construct) {
-        procedure_construct proc_decl = (procedure_construct) transform(decl);
-        if (proc_decl == null) {
+      } else if (decl instanceof procedure_declaration) {
+        procedure_declaration proc_decl = (procedure_declaration) decl;
+        @Nullable procedure_construct proc_construct = (procedure_construct) transform(proc_decl);
+        if (proc_construct == null) {
           continue;
         }
-        procedure_analyzer the_analyzable = (procedure_analyzer) get_analyzable(decl);
-        type_flavor flavor = the_analyzable.get_flavor();
+        type_flavor flavor = proc_decl.get_flavor();
         if (flavor == nameonly_flavor || flavor == raw_flavor) {
           flavor = profile.default_flavor();
         } else {
           flavor = profile.map(flavor);
         }
-        flavored_bodies.get(flavor).append(proc_decl);
-      } else if (decl instanceof variable_construct) {
-        variable_construct var_decl = (variable_construct) transform(decl);
-        if (var_decl == null) {
+        flavored_bodies.get(flavor).append(proc_construct);
+      } else if (the_kind == enum_kind && decl instanceof enum_value_analyzer) {
+        flavored_bodies.get(profile.default_flavor()).append(
+            process_enum_value((enum_value_analyzer) decl));
+      } else if (decl instanceof variable_declaration) {
+        variable_declaration var_decl = (variable_declaration) decl;
+        @Nullable variable_construct var_construct = (variable_construct) transform(decl);
+        if (var_construct == null) {
           continue;
         }
-        variable_analyzer the_variable = (variable_analyzer) get_analyzable(var_decl);
-        if (concrete_mode || the_variable.annotations().has(static_modifier)) {
-          flavored_bodies.get(profile.default_flavor()).append(var_decl);
+        if (concrete_mode || var_decl.annotations().has(static_modifier)) {
+          flavored_bodies.get(profile.default_flavor()).append(var_construct);
         } else {
-          procedure_construct proc_decl = var_to_proc(the_variable);
-          type_flavor target_flavor = the_variable.reference_type().get_flavor();
+          procedure_construct proc_decl = var_to_proc(var_decl);
+          type_flavor target_flavor = var_decl.reference_type().get_flavor();
           if (is_readonly_flavor(target_flavor)) {
             target_flavor = readonly_flavor;
           }
           flavored_bodies.get(profile.map(target_flavor)).append(proc_decl);
         }
-      } else if (decl instanceof type_declaration_construct) {
+      } else if (decl instanceof type_declaration) {
         flavored_bodies.get(profile.default_flavor()).append_all(transform1(decl));
       } else if (decl instanceof import_construct) {
         // Skip imports: they should have been declared at the top level.
       } else if (decl instanceof block_construct) {
         // TODO: make sure this is a static block...
         flavored_bodies.get(profile.default_flavor()).append_all(transform1(decl));
-      } else if (the_kind == enum_kind && enum_util.can_be_enum_value(decl)) {
-        flavored_bodies.get(profile.default_flavor()).append(transform_enum_value(decl));
       } else {
         utilities.panic("Unknown declaration: " + decl);
       }
@@ -1059,14 +1054,14 @@ public class to_java_transformer2 extends base_transformer2 {
         type_flavor superflavor = superflavors.get(j);
         if (profile.supports(superflavor)) {
           supertype_list.append(make_flavored_and_parametrized_type(declared_type, superflavor,
-              type_parameters, source));
+              type_parameters, the_origin));
         }
       }
 
       if (supertype_list.is_not_empty()) {
         subtype_tag the_subtype_tag = concrete_mode ? implements_tag : extends_tag;
         flavored_body.prepend(new supertype_construct(new empty<annotation_construct>(),
-            null, the_subtype_tag, supertype_list, source));
+            null, the_subtype_tag, supertype_list, the_origin));
       }
 
       simple_name flavored_name;
@@ -1074,7 +1069,7 @@ public class to_java_transformer2 extends base_transformer2 {
         flavored_name = type_name;
         if (superclass != null) {
           flavored_body.prepend(new supertype_construct(new empty<annotation_construct>(), null,
-              extends_tag, new base_list<construct>(superclass), source));
+              extends_tag, new base_list<construct>(superclass), the_origin));
         }
       } else {
         flavored_name = make_name(type_name, declared_type, flavor);
@@ -1082,12 +1077,11 @@ public class to_java_transformer2 extends base_transformer2 {
 
       type_decls.append(new type_declaration_construct(annotations,
           concrete_mode ? the_kind : interface_kind, flavored_name, type_parameters,
-          flavored_body, source));
+          flavored_body, the_origin));
     }
 
     return type_decls;
   }
-  */
 
   private static boolean is_readonly_flavor(type_flavor the_flavor) {
     return the_flavor == readonly_flavor ||
@@ -1109,8 +1103,9 @@ public class to_java_transformer2 extends base_transformer2 {
     }
     return type_construct;
   }
+  */
 
-  private procedure_construct var_to_proc(variable_analyzer the_variable) {
+  private procedure_construct var_to_proc(variable_declaration the_variable) {
     origin pos = the_variable;
     type return_type = is_readonly_flavor(the_variable.reference_type().get_flavor()) ?
         the_variable.value_type() : the_variable.reference_type();
@@ -1128,16 +1123,14 @@ public class to_java_transformer2 extends base_transformer2 {
         null,
         pos);
   }
-  */
 
   private list_construct make_parens(origin the_origin) {
     return new list_construct(new base_list<construct>(), grouping_type.PARENS, false, the_origin);
   }
 
-  /*
   private Object make_procedure_declarations(readonly_list<annotation_construct> annotations,
-      type_declaration_construct the_declaration) {
-    action_name the_name = the_declaration.name;
+      type_declaration the_type_declaration) {
+    action_name the_name = the_type_declaration.short_name();
     boolean is_function;
     if (utilities.eq(the_name, common_library.procedure_name)) {
       is_function = false;
@@ -1149,26 +1142,26 @@ public class to_java_transformer2 extends base_transformer2 {
     }
 
     list<construct> result = new base_list<construct>();
-    result.append(make_procedure_construct(annotations, the_declaration, is_function, 1));
-    result.append(make_procedure_construct(annotations, the_declaration, is_function, 2));
+    result.append(make_procedure_construct(annotations, the_type_declaration, is_function, 1));
+    result.append(make_procedure_construct(annotations, the_type_declaration, is_function, 2));
     return result;
   }
 
   private type_declaration_construct make_procedure_construct(
       readonly_list<annotation_construct> annotations,
-      type_declaration_construct the_declaration,
+      type_declaration the_type_declaration,
       boolean is_function, int arity) {
 
-    origin pos = the_declaration;
+    origin the_origin = the_type_declaration;
 
     readonly_list<annotation_construct> empty_annotations = new empty<annotation_construct>();
 
     simple_name return_name = simple_name.make("R");
-    construct return_construct = new name_construct(return_name, pos);
+    construct return_construct = new name_construct(return_name, the_origin);
 
     list<construct> type_parameters = new base_list<construct>();
     type_parameters.append(new variable_construct(empty_annotations, null, return_name,
-        empty_annotations, null, pos));
+        empty_annotations, null, the_origin));
 
     list<construct> call_parameters = new base_list<construct>();
 
@@ -1178,52 +1171,50 @@ public class to_java_transformer2 extends base_transformer2 {
     for (int i = 0; i < arity; ++i) {
       simple_name argument_type = simple_name.make("A" + i);
       type_parameters.append(new variable_construct(empty_annotations, null, argument_type,
-          empty_annotations, null, pos));
-      supertype_parameters.append(new name_construct(argument_type, pos));
+          empty_annotations, null, the_origin));
+      supertype_parameters.append(new name_construct(argument_type, the_origin));
       simple_name argument_name = name_utilities.make_numbered_name(i);
       call_parameters.append(new variable_construct(empty_annotations,
-          new name_construct(argument_type, pos), argument_name, empty_annotations, null, pos));
+          new name_construct(argument_type, the_origin), argument_name, empty_annotations, null,
+          the_origin));
     }
 
     list<construct> extends_types = new base_list<construct>();
     if (is_function) {
       construct superprocedure = new parameter_construct(
-          new name_construct(make_procedure_name(false, arity), pos),
-          new list_construct(supertype_parameters, grouping_type.ANGLE_BRACKETS, false, pos), pos);
+          new name_construct(make_procedure_name(false, arity), the_origin),
+          new list_construct(supertype_parameters, grouping_type.ANGLE_BRACKETS, false, the_origin),
+          the_origin);
       extends_types.append(superprocedure);
     }
 
-    readonly_list<construct> body = the_declaration.body;
+    readonly_list<declaration> body = the_type_declaration.get_signature();
     for (int i = 0; i < body.size(); ++i) {
-      construct the_construct = body.get(i);
-      if (the_construct instanceof supertype_construct) {
-        readonly_list<construct> super_list = ((supertype_construct) the_construct).types;
-        for (int j = 0; j < super_list.size(); ++j) {
-          construct supertype_construct = super_list.get(j);
-          type supertype = get_type(supertype_construct);
-          if (supertype.principal().get_kind() != procedure_kind) {
-            extends_types.append(transform(supertype_construct));
-          }
+      declaration decl = body.get(i);
+      if (decl instanceof supertype_declaration) {
+        supertype_declaration supertype_decl = (supertype_declaration) decl;
+        type supertype = supertype_decl.get_supertype();
+        if (supertype.principal().get_kind() != procedure_kind) {
+          extends_types.append(transform(supertype_decl.supertype_analyzable()));
         }
       }
     }
 
     list<construct> type_body = new base_list<construct>();
     type_body.append(new supertype_construct(new empty<annotation_construct>(), null,
-        extends_tag, extends_types, pos));
+        extends_tag, extends_types, the_origin));
 
     if (!is_function) {
       type_body.append(new procedure_construct(empty_annotations, return_construct,
-          CALL_NAME, new list_construct(call_parameters, grouping_type.PARENS, false, pos),
-          empty_annotations, null, pos));
+          CALL_NAME, new list_construct(call_parameters, grouping_type.PARENS, false, the_origin),
+          empty_annotations, null, the_origin));
     }
 
     simple_name type_name = make_procedure_name(is_function, arity);
     return new type_declaration_construct(annotations, interface_kind, type_name,
-        new list_construct(type_parameters, grouping_type.ANGLE_BRACKETS, false, pos),
-        type_body, pos);
+        new list_construct(type_parameters, grouping_type.ANGLE_BRACKETS, false, the_origin),
+        type_body, the_origin);
   }
-  */
 
   private simple_name make_procedure_name(boolean is_function, int arity) {
     simple_name base_name = is_function ? common_library.function_name :
@@ -1404,6 +1395,7 @@ public class to_java_transformer2 extends base_transformer2 {
         new empty<annotation_construct>(), null, pos);
   }
 
+  // TODO: retire.
   private construct transform_enum_value(construct the_construct) {
     assert enum_util.can_be_enum_value(the_construct);
     if (the_construct instanceof name_construct) {
@@ -1438,8 +1430,8 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   @Override
-  public Object process_parameter(parameter_construct c) {
-    origin source = c;
+  public construct process_parameter(parameter_analyzer the_parameter) {
+    origin the_origin = the_parameter;
 
     action main_action = get_action(c.main);
     construct main = transform(c.main);
@@ -1455,7 +1447,7 @@ public class to_java_transformer2 extends base_transformer2 {
         name_construct procedure_type_name = (name_construct) c.main;
         simple_name base_name = (simple_name) procedure_type_name.the_name;
         int arity = parameters.size() - 1;
-        main = new name_construct(make_procedure_name(base_name, arity), source);
+        main = new name_construct(make_procedure_name(base_name, arity), the_origin);
       }
     } else {
       parameters = transform_parameters(c.parameters.elements);
@@ -1464,19 +1456,20 @@ public class to_java_transformer2 extends base_transformer2 {
         procedure_declaration proc_decl = (procedure_declaration) the_declaration;
         if (proc_decl.get_category() != procedure_category.CONSTRUCTOR &&
             proc_decl.annotations().has(implicit_modifier) && parameters.size() == 1) {
-          main = new resolve_construct(main, new name_construct(proc_decl.original_name(), source),
-              source);
+          main = new resolve_construct(main, new name_construct(proc_decl.original_name(),
+              the_origin), the_origin);
         }
       }
       // TODO: better way to detect procedure variables?
       if (is_procedure_variable(the_declaration)) {
-        main = new resolve_construct(main, new name_construct(CALL_NAME, source), source);
+        main = new resolve_construct(main, new name_construct(CALL_NAME, the_origin), the_origin);
       }
     }
 
     parameter_construct transformed = new parameter_construct(main,
         new list_construct(parameters,
-            is_type ? grouping_type.ANGLE_BRACKETS : grouping_type.PARENS, false, source), source);
+            is_type ? grouping_type.ANGLE_BRACKETS : grouping_type.PARENS, false, the_origin),
+            the_origin);
     if (the_action.result() == core_types.unreachable_type()) {
       parameter_analyzer the_analyzable = (parameter_analyzer) get_analyzable(c);
       @Nullable procedure_declaration the_procedure =
@@ -1487,7 +1480,7 @@ public class to_java_transformer2 extends base_transformer2 {
           return_type != library().immutable_void_type()) {
         list<construct> result = new base_list<construct>();
         result.append(transformed);
-        result.append(make_default_return(return_type, source));
+        result.append(make_default_return(return_type, the_origin));
         return result;
       }
     }
@@ -2076,6 +2069,7 @@ public class to_java_transformer2 extends base_transformer2 {
     // TODO: report error
     return process_default(the_declaration_list);
   }
+  */
 
   public construct process_enum_value(enum_value_analyzer the_enum_value) {
     origin the_origin = the_enum_value;
@@ -2094,6 +2088,7 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
+/*
   public construct process_error_signal(error_signal the_error_signal) {
     return process_default(the_error_signal);
   }

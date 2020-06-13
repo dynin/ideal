@@ -23,7 +23,7 @@ target print_elements: print_source(ideal.library.elements);
 
 target generate_library: generate_java(ideal.library);
 
-target generate_library2: generate_java2(ideal.library);
+target generate_library2: generate_java(ideal.library);
 
 target generate_runtime: generate_java(ideal.runtime);
 

@@ -351,7 +351,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
         the_type_announcement.get_kind(), the_type_announcement.short_name(), the_origin);
   }
 
-  public construct process_type(type_declaration the_type) {
+  public Object process_type(type_declaration the_type) {
     origin the_origin = the_type;
     @Nullable list_construct parameters = null;
     if (the_type.get_parameters() != null)  {

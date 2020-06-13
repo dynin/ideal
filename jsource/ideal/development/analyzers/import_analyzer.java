@@ -69,7 +69,7 @@ public class import_analyzer extends declaration_analyzer<import_construct> {
     return null;
   }
 
-  private boolean is_implicit() {
+  public boolean is_implicit() {
     return annotations().has(general_modifier.implicit_modifier);
   }
 
@@ -77,7 +77,7 @@ public class import_analyzer extends declaration_analyzer<import_construct> {
     return get_action_name(source.type);
   }
 
-  private type resolve_type() {
+  public type get_type() {
     if (!has_errors(type_analyzable)) {
       action the_action = action_not_error(type_analyzable);
       if (the_action instanceof type_action) {
@@ -115,7 +115,7 @@ public class import_analyzer extends declaration_analyzer<import_construct> {
     @Override
     public type get_type() {
       if (the_type == null) {
-        the_type = the_import.resolve_type();
+        the_type = the_import.get_type();
         assert the_type != null;
       }
       return the_type;

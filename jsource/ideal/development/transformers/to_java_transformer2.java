@@ -91,18 +91,18 @@ public class to_java_transformer2 extends base_transformer2 {
     }
 
     if (imports.is_not_empty()) {
-      /*
       list<construct> import_headers = new base_list<construct>();
 
       // TODO: refactor as a filter
       for (int i = 0; i < imports.size(); ++i) {
-        import_construct the_import = process_import(imports.get(i));
-        principal_type imported_type = (principal_type) get_type(the_import.type);
+        import_analyzer the_analyzable = (import_analyzer) context.get_analyzable(imports.get(i));
+        import_construct the_import = process_import(the_analyzable);
+        principal_type imported_type = (principal_type) the_analyzable.get_type();
         if (imported_type == java_library.builtins_package() ||
             imported_type.get_parent() == java_library.builtins_package()) {
           continue;
         }
-        if (the_import.has_modifier(general_modifier.implicit_modifier)) {
+        if (the_analyzable.is_implicit()) {
           implicit_names.add(imported_type);
         } else {
           imported_names.add(imported_type);
@@ -114,7 +114,6 @@ public class to_java_transformer2 extends base_transformer2 {
         common_headers.append_all(import_headers);
         common_headers.append(make_newline(pos));
       }
-      */
     }
   }
 
@@ -1657,29 +1656,27 @@ public class to_java_transformer2 extends base_transformer2 {
     type the_type = result_value(get_action(the_construct));
     return the_type.principal() == java_library.string_type();
   }
+  */
 
   @Override
-  public import_construct process_import(import_construct c) {
-    origin origin = c;
-
+  public import_construct process_import(import_analyzer the_import) {
+    origin the_origin = the_import;
     list<annotation_construct> annotations = new base_list<annotation_construct>();
-    if (c.has_modifier(general_modifier.implicit_modifier))  {
-      annotations.append(new modifier_construct(implicit_modifier, origin));
+    if (the_import.is_implicit())  {
+      annotations.append(new modifier_construct(implicit_modifier, the_origin));
 
-      action the_action = get_action(c.type);
-      if (the_action instanceof type_action) {
-        principal_type the_principal = ((type_action) the_action).get_type().principal();
-        kind the_kind = the_principal.get_kind();
-        if ((the_kind.is_namespace() || the_kind == type_kinds.class_kind) &&
-            (the_principal.get_parent().get_kind() == type_kinds.package_kind)) {
-          annotations.append(new modifier_construct(static_modifier, origin));
-        }
+      principal_type the_principal = the_import.get_type().principal();
+      kind the_kind = the_principal.get_kind();
+      if ((the_kind.is_namespace() || the_kind == type_kinds.class_kind) &&
+          (the_principal.get_parent().get_kind() == type_kinds.package_kind)) {
+        annotations.append(new modifier_construct(static_modifier, the_origin));
       }
     }
 
-    return new import_construct(annotations, transform(c.type), origin);
+    return new import_construct(annotations, transform(the_import.type_analyzable), the_origin);
   }
 
+  /*
   @Override
   public construct process_loop(loop_construct c) {
     origin pos = c;
@@ -2108,12 +2105,6 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_flavor(flavor_analyzer the_flavor) {
     origin the_origin = the_flavor;
     return new flavor_construct(the_flavor.flavor, transform(the_flavor.expression), the_origin);
-  }
-
-  public construct process_import(import_analyzer the_import) {
-    origin the_origin = the_import;
-    return new import_construct(to_annotations(the_import.annotations(), the_origin),
-        transform(the_import.type_analyzable), the_origin);
   }
 
   public construct process_jump(jump_analyzer the_jump) {

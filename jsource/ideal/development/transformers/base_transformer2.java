@@ -190,7 +190,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
     return new flavor_construct(the_flavor.flavor, transform(the_flavor.expression), the_origin);
   }
 
-  public construct process_import(import_analyzer the_import) {
+  public import_construct process_import(import_analyzer the_import) {
     origin the_origin = the_import;
     return new import_construct(to_annotations(the_import.annotations(), true, the_origin),
         transform(the_import.type_analyzable), the_origin);

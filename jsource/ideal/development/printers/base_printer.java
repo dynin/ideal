@@ -211,7 +211,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   public text_fragment process_error(construct c) {
-    return print_line(print_word(name_utilities.in_brackets(utilities.describe(c))));
+    return print_line(print_word(
+        name_utilities.in_brackets(new base_string("print_error: " + utilities.describe(c)))));
   }
 
   @Override

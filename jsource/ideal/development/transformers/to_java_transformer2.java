@@ -372,17 +372,19 @@ public class to_java_transformer2 extends base_transformer2 {
   private boolean has_override(annotation_set the_annotations) {
     return the_annotations.has(override_modifier) || the_annotations.has(implement_modifier);
   }
+  */
 
   @Override
-  public Object process_flavor(flavor_construct c) {
-    type flavored = get_type(c);
-    if (flavored.get_flavor() != flavored.principal().get_flavor_profile().default_flavor()) {
-      return combine_flavor(c.flavor, transform(c.expr), c);
+  public construct process_flavor(flavor_analyzer the_flavor) {
+    origin the_origin = the_flavor;
+    type flavored_type = the_flavor.flavored_type;
+    if (flavored_type.get_flavor() !=
+        flavored_type.principal().get_flavor_profile().default_flavor()) {
+      return make_type(flavored_type, the_origin);
     } else {
-      return transform(c.expr);
+      return transform(the_flavor.expression);
     }
   }
-  */
 
   private construct make_parametrized_type(construct main, readonly_list<construct> parameters,
       origin source) {
@@ -391,25 +393,6 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   /*
-  private construct combine_flavor(type_flavor flavor, construct c, origin pos) {
-    if (c instanceof name_construct) {
-      name_construct nc = (name_construct) c;
-      return new name_construct(name_utilities.join(flavor.name(), (simple_name) nc.the_name), pos);
-    } else if (c instanceof parameter_construct) {
-      parameter_construct pc = (parameter_construct) c;
-      construct main = combine_flavor(flavor, pc.main, pos);
-      return make_parametrized_type(main,
-          transform_with_mapping(pc.parameters.elements, mapping.MAP_TO_WRAPPER_TYPE), pos);
-    } else if (c instanceof resolve_construct) {
-      resolve_construct rc = (resolve_construct) c;
-      construct new_name = combine_flavor(flavor, rc.name, pos);
-      return new resolve_construct(rc.qualifier, new_name, pos);
-    } else {
-      utilities.panic("Can't handle flavored " + c);
-      return null;
-    }
-  }
-
   @Override
   protected list<annotation_construct> transform_a(readonly_list<annotation_construct> the_list,
       origin source) {
@@ -1008,7 +991,8 @@ public class to_java_transformer2 extends base_transformer2 {
           flavor = profile.map(flavor);
         }
         flavored_bodies.get(flavor).append(proc_construct);
-      } else if (the_kind == enum_kind && decl instanceof enum_value_analyzer) {
+      } else if (decl instanceof enum_value_analyzer) {
+        assert the_kind == enum_kind;
         flavored_bodies.get(profile.default_flavor()).append(
             process_enum_value((enum_value_analyzer) decl));
       } else if (decl instanceof variable_declaration) {
@@ -1092,18 +1076,6 @@ public class to_java_transformer2 extends base_transformer2 {
   private static boolean is_concrete_kind(kind the_kind) {
     return the_kind == class_kind || the_kind == enum_kind;
   }
-
-  /*
-  private construct change_flavor(construct type_construct, type_flavor flavor, origin pos) {
-    if (type_construct instanceof flavor_construct) {
-      type_construct = ((flavor_construct) type_construct).expr;
-    }
-    if (flavor != nameonly_flavor) {
-      type_construct = combine_flavor(flavor, type_construct, pos);
-    }
-    return type_construct;
-  }
-  */
 
   private procedure_construct var_to_proc(variable_declaration the_variable) {
     origin pos = the_variable;
@@ -1393,21 +1365,6 @@ public class to_java_transformer2 extends base_transformer2 {
     }
     return new variable_construct(new empty<annotation_construct>(), type_construct, c.name,
         new empty<annotation_construct>(), null, pos);
-  }
-
-  // TODO: retire.
-  private construct transform_enum_value(construct the_construct) {
-    assert enum_util.can_be_enum_value(the_construct);
-    if (the_construct instanceof name_construct) {
-      return the_construct;
-    } else {
-      origin source = the_construct;
-      parameter_construct the_parameter_construct = (parameter_construct) the_construct;
-      assert the_parameter_construct.main instanceof name_construct;
-      return new parameter_construct(the_parameter_construct.main,
-          new list_construct(transform(the_parameter_construct.parameters.elements),
-              grouping_type.PARENS, false, source), source);
-    }
   }
 
   private construct transform_and_maybe_rewrite(construct the_construct) {
@@ -2095,11 +2052,6 @@ public class to_java_transformer2 extends base_transformer2 {
 
   public construct process_extension(extension_analyzer the_extension) {
     return transform(the_extension.expand());
-  }
-
-  public construct process_flavor(flavor_analyzer the_flavor) {
-    origin the_origin = the_flavor;
-    return new flavor_construct(the_flavor.flavor, transform(the_flavor.expression), the_origin);
   }
 
   public construct process_jump(jump_analyzer the_jump) {

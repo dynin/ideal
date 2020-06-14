@@ -24,6 +24,7 @@ public class flavor_analyzer extends single_pass_analyzer {
 
   public final type_flavor flavor;
   public final analyzable expression;
+  public type flavored_type;
   // TODO: do we need flavor_pass?
   private declaration_pass flavor_pass;
 
@@ -61,7 +62,7 @@ public class flavor_analyzer extends single_pass_analyzer {
 
     type the_type = ((type_action) expr_action).get_type();
     type_utilities.prepare(the_type, declaration_pass.TYPES_AND_PROMOTIONS);
-    type flavored_type = the_type.get_flavored(flavor);
+    flavored_type = the_type.get_flavored(flavor);
     return flavored_type.to_action(this);
   }
 

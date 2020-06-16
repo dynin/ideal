@@ -149,7 +149,13 @@ public class to_java_transformer2 extends base_transformer2 {
       c = (construct) c.deeper_origin();
     }
   }
+  */
 
+  protected action get_action(analyzable a) {
+    return analyzer_utilities.to_action(a);
+  }
+
+  /*
   protected action get_action(construct c) {
     return analyzer_utilities.to_action(get_analyzable(c));
   }
@@ -242,16 +248,16 @@ public class to_java_transformer2 extends base_transformer2 {
     return result;
   }
 
-/*
   private readonly_list<construct> transform_with_mapping(
-      readonly_list<? extends construct> constructs, mapping new_mapping) {
+      readonly_list<? extends analyzable_or_declaration> the_analyzables, mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
     mapping_strategy = new_mapping;
-    readonly_list<construct> result = transform(constructs);
+    readonly_list<construct> result = transform_list(the_analyzables);
     mapping_strategy = old_mapping_strategy;
     return result;
   }
 
+/*
   @Override
   public construct process_list(list_construct c) {
     origin the_origin = c;
@@ -298,36 +304,42 @@ public class to_java_transformer2 extends base_transformer2 {
     if (c == null) {
       return null;
     } else {
-      return new list_construct(transform(c.elements), c.grouping, c.has_trailing_comma, c);
+      return new list_construct(transform(c.elements), grouping_type.PARENS, false, c);
     }
   }
 
   @Override
-  public Object process_resolve(resolve_construct c) {
-    origin source = c;
-    assert c.name instanceof name_construct;
-    name_construct name = (name_construct) c.name;
+  public construct process_resolve(resolve_analyzer the_resolve) {
+    origin the_origin = the_resolve;
+    return new resolve_construct(transform(the_resolve.get_from()),
+        new name_construct(the_resolve.short_name(), the_origin), the_origin);
+
+    origin the_origin = the_resolve;
+    name_construct name = new name_construct(the_resolve.the_name, the_origin);
 
     // Convert missing.instance to null literal
-    if (context.can_promote(get_action(c).result(), library().immutable_null_type())) {
-      return make_null(source);
+    if (context.can_promote(get_action(the_resolve).result(), library().immutable_null_type())) {
+      return make_null(the_origin);
     }
 
-    type result_type = get_action(c).result().type_bound();
+    type result_type = get_action(the_resolve).result().type_bound();
     if (is_top_package(result_type)) {
       return name;
     }
 
     // Note: we do not transform the name!
-    construct qualifier = transform_and_maybe_rewrite(c.qualifier);
+    // TODO!! construct qualifier = transform_and_maybe_rewrite(c.qualifier);
+    construct qualifier = transform(the_resolve.get_from());
 
-    if (name.the_name == special_name.NEW) {
-      return new operator_construct(operator.ALLOCATE, qualifier, source);
+    if (the_resolve.the_name == special_name.NEW) {
+      return new operator_construct(operator.ALLOCATE, qualifier, the_origin);
     }
 
-    return maybe_call(new resolve_construct(qualifier, name, source), c);
+    // TODO!! return maybe_call(new resolve_construct(qualifier, name, the_origin), the_origin);
+    return new resolve_construct(qualifier, name, the_origin);
   }
 
+  /*
   private construct maybe_call(construct new_construct, construct source) {
     analyzable the_analyzable = get_analyzable(source);
     @Nullable declaration the_declaration;
@@ -1200,12 +1212,6 @@ public class to_java_transformer2 extends base_transformer2 {
 
   /*
   @Override
-  public Object process_supertype(supertype_construct c) {
-    utilities.panic("Unexpected supertype_construct");
-    return null;
-  }
-
-  @Override
   public Object process_variable(variable_construct c) {
     analyzable the_analyzable = get_analyzable(c);
 
@@ -1366,49 +1372,60 @@ public class to_java_transformer2 extends base_transformer2 {
     return new variable_construct(new empty<annotation_construct>(), type_construct, c.name,
         new empty<annotation_construct>(), null, pos);
   }
+  */
 
-  private construct transform_and_maybe_rewrite(construct the_construct) {
-    construct transformed = transform(the_construct);
+  private construct transform_and_maybe_rewrite(analyzable the_analyzable) {
+    construct transformed = transform(the_analyzable);
+    /* TODO: expose
     if (is_explicit_reference(the_construct)) {
       return do_explicitly_derefence(transformed, the_construct);
     } else if (is_procedure_reference(the_construct)) {
       return make_procedure_class(transformed, the_construct);
     } else {
       return transformed;
-    }
+    }*/
+    return transformed;
   }
 
-  private list<construct> transform_parameters(readonly_list<construct> constructs) {
+  private list<construct> transform_parameters(readonly_list<analyzable> analyzables) {
     list<construct> result = new base_list<construct>();
-    for (int i = 0; i < constructs.size(); ++i) {
-      result.append(transform_and_maybe_rewrite(constructs.get(i)));
+    for (int i = 0; i < analyzables.size(); ++i) {
+      result.append(transform_and_maybe_rewrite(analyzables.get(i)));
     }
     return result;
   }
 
   @Override
-  public construct process_parameter(parameter_analyzer the_parameter) {
+  public Object process_parameter(parameter_analyzer the_parameter) {
     origin the_origin = the_parameter;
 
-    action main_action = get_action(c.main);
-    construct main = transform(c.main);
+    analyzable main_analyzable = the_parameter.main_analyzable;
+    construct main_construct = get_construct(main_analyzable);
+    if (main_construct instanceof operator_construct) {
+      return process_operator((operator_construct) main_construct,
+          the_parameter.analyzable_parameters, the_origin);
+    }
 
-    action the_action = get_action(c);
+    action main_action = get_action(main_analyzable);
+    construct main = transform(main_analyzable);
+
+    action the_action = get_action(the_parameter);
     boolean is_type = the_action instanceof type_action;
     readonly_list<construct> parameters;
 
     if (is_type) {
-      parameters = transform_with_mapping(c.parameters.elements, mapping.MAP_TO_WRAPPER_TYPE);
+      parameters = transform_with_mapping(the_parameter.analyzable_parameters,
+          mapping.MAP_TO_WRAPPER_TYPE);
       if (main_action.result().type_bound().principal().get_kind() == procedure_kind) {
         // TODO: handle resolve_construct here.
-        name_construct procedure_type_name = (name_construct) c.main;
+        name_construct procedure_type_name = (name_construct) main_construct;
         simple_name base_name = (simple_name) procedure_type_name.the_name;
         int arity = parameters.size() - 1;
         main = new name_construct(make_procedure_name(base_name, arity), the_origin);
       }
     } else {
-      parameters = transform_parameters(c.parameters.elements);
-      @Nullable declaration the_declaration = get_declaration(c);
+      parameters = transform_parameters(the_parameter.analyzable_parameters);
+      @Nullable declaration the_declaration = declaration_util.get_declaration(the_parameter);
       if (the_declaration instanceof procedure_declaration) {
         procedure_declaration proc_decl = (procedure_declaration) the_declaration;
         if (proc_decl.get_category() != procedure_category.CONSTRUCTOR &&
@@ -1428,9 +1445,8 @@ public class to_java_transformer2 extends base_transformer2 {
             is_type ? grouping_type.ANGLE_BRACKETS : grouping_type.PARENS, false, the_origin),
             the_origin);
     if (the_action.result() == core_types.unreachable_type()) {
-      parameter_analyzer the_analyzable = (parameter_analyzer) get_analyzable(c);
       @Nullable procedure_declaration the_procedure =
-          analyzer_utilities.get_enclosing_procedure(the_analyzable);
+          analyzer_utilities.get_enclosing_procedure(the_parameter);
       assert the_procedure != null;
       type return_type = the_procedure.get_return_type();
       if (return_type != core_types.unreachable_type() &&
@@ -1441,7 +1457,22 @@ public class to_java_transformer2 extends base_transformer2 {
         return result;
       }
     }
+
     return transformed;
+  }
+
+  public construct process_operator(operator_construct the_construct,
+      readonly_list<analyzable> analyzable_parameters,
+      origin the_origin) {
+    if (the_construct.the_operator == operator.GENERAL_OR) {
+      if (mapping_strategy == mapping.MAP_TO_WRAPPER_TYPE) {
+        return remove_null_union(the_construct);
+      }
+      utilities.panic("Unexpected 'or' operator " + the_construct);
+    }
+
+    return new operator_construct(map_operator(the_construct.the_operator),
+        transform_list(analyzable_parameters), the_origin);
   }
 
   // TODO: better way to detect procedure variables?
@@ -1463,6 +1494,7 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
+  /*
   @Override
   public Object process_operator(operator_construct c) {
     origin source = c;
@@ -1591,6 +1623,7 @@ public class to_java_transformer2 extends base_transformer2 {
     return new operator_construct(operator.AS_OPERATOR,
         new base_list<construct>(transformed_expression, transformed_type), pos);
   }
+  */
 
   public operator map_operator(operator the_operator) {
     if (the_operator == operator.CONCATENATE) {
@@ -1602,6 +1635,7 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
+  /*
   private boolean is_string_type(construct the_construct) {
     type the_type = result_value(get_action(the_construct));
     return the_type.principal() == java_library.string_type();
@@ -2119,15 +2153,14 @@ public class to_java_transformer2 extends base_transformer2 {
     utilities.panic("base_transformer2.process_statement_list()");
     return process_default(the_statement_list);
   }
+  */
 
   public construct process_supertype(supertype_declaration the_supertype) {
-    origin the_origin = the_supertype;
-    // TODO: add annotation support
-    return new supertype_construct(new empty<annotation_construct>(),
-        the_supertype.subtype_flavor(), the_supertype.tag(),
-        new base_list<construct>(transform(the_supertype.supertype_analyzable())), the_origin);
+    utilities.panic("Unexpected supertype_declaration");
+    return null;
   }
 
+/*
   public construct process_target(target_declaration the_target) {
     origin the_origin = the_target;
     return new target_construct(the_target.short_name(),

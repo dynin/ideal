@@ -219,7 +219,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
     return new loop_construct(transform(the_loop), the_origin);
   }
 
-  public construct process_parameter(parameter_analyzer the_parameter) {
+  public Object process_parameter(parameter_analyzer the_parameter) {
     origin the_origin = the_parameter;
     grouping_type grouping = grouping_type.PARENS;
     boolean has_trailing_comma = false;

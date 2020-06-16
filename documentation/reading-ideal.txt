@@ -3,9 +3,9 @@ Variable:
 foo : expression();
 
 Use : instead of = for initialization.
-Type usually can inferred.
+Type usually can be inferred.
 Immutable (final) by default; to make mutable (variable), add var modifier:
-var integer index : 0;
+var string name : "foo";
 
 Brackets:
 

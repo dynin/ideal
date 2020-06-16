@@ -86,24 +86,28 @@ public class base_transformer2 extends analyzable_visitor<Object> {
   protected list<annotation_construct> to_annotations(annotation_set annotations,
       boolean skip_access, origin the_origin) {
     list<annotation_construct> result = new base_list<annotation_construct>();
-    if (!skip_access && is_modifier_supported(annotations.access_level())) {
-      result.append(new modifier_construct(annotations.access_level(), the_origin));
+    if (!skip_access) {
+      @Nullable modifier_kind processed = process_modifier(annotations.access_level());
+      if (processed != null) {
+        result.append(new modifier_construct(processed, the_origin));
+      }
     }
 
     readonly_list<modifier_kind> modifiers = ((base_annotation_set) annotations).modifiers();
     for (int i = 0; i < modifiers.size(); ++i) {
       // TODO: handle parametrized modifiers
       modifier_kind the_modifier_kind = modifiers.get(i);
-      if (is_modifier_supported(the_modifier_kind)) {
-        result.append(new modifier_construct(the_modifier_kind, the_origin));
+      @Nullable modifier_kind processed = process_modifier(the_modifier_kind);
+      if (processed != null) {
+        result.append(new modifier_construct(processed, the_origin));
       }
     }
 
     return result;
   }
 
-  protected boolean is_modifier_supported(modifier_kind the_modifier_kind) {
-    return true;
+  protected modifier_kind process_modifier(modifier_kind the_modifier_kind) {
+    return the_modifier_kind;
   }
 
   protected @Nullable construct get_construct(@Nullable analyzable_or_declaration the_analyzable) {

@@ -122,8 +122,14 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   @Override
-  protected boolean is_modifier_supported(modifier_kind the_modifier_kind) {
-    return general_modifier.supported_by_java.contains(the_modifier_kind);
+  protected modifier_kind process_modifier(modifier_kind the_modifier_kind) {
+    if (the_modifier_kind == implement_modifier) {
+      return override_modifier;
+    } else if (general_modifier.supported_by_java.contains(the_modifier_kind)) {
+      return the_modifier_kind;
+    } else {
+      return null;
+    }
   }
 
 /*
@@ -248,7 +254,7 @@ public class to_java_transformer2 extends base_transformer2 {
     return result;
   }
 
-  private readonly_list<construct> transform_with_mapping(
+  private readonly_list<construct> transform_list_with_mapping(
       readonly_list<? extends analyzable_or_declaration> the_analyzables, mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
     mapping_strategy = new_mapping;
@@ -311,31 +317,35 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
-  /*
   @Override
   public construct process_resolve(resolve_analyzer the_resolve) {
     origin the_origin = the_resolve;
-    return new resolve_construct(transform(the_resolve.get_from()),
-        new name_construct(the_resolve.short_name(), the_origin), the_origin);
 
-    origin the_origin = the_resolve;
-    name_construct name = new name_construct(the_resolve.the_name, the_origin);
+    action the_action = get_action(the_resolve);
+    if (the_action instanceof type_action) {
+      return make_type(((type_action) the_action).get_type(), the_origin);
+    }
+
+    name_construct name = new name_construct(the_resolve.short_name(), the_origin);
 
     // Convert missing.instance to null literal
-    if (context.can_promote(get_action(the_resolve).result(), library().immutable_null_type())) {
+    if (context.can_promote(the_action.result(), library().immutable_null_type())) {
       return make_null(the_origin);
     }
 
-    type result_type = get_action(the_resolve).result().type_bound();
+    type result_type = the_action.result().type_bound();
     if (is_top_package(result_type)) {
       return name;
     }
 
-    // Note: we do not transform the name!
-    // TODO!! construct qualifier = transform_and_maybe_rewrite(c.qualifier);
-    construct qualifier = transform(the_resolve.get_from());
+    if (the_resolve.get_from() == null) {
+      return name;
+    }
 
-    if (the_resolve.the_name == special_name.NEW) {
+    // Note: we do not transform the name!
+    construct qualifier = transform_and_maybe_rewrite(the_resolve.get_from());
+
+    if (the_resolve.short_name() == special_name.NEW) {
       return new operator_construct(operator.ALLOCATE, qualifier, the_origin);
     }
 
@@ -573,20 +583,6 @@ public class to_java_transformer2 extends base_transformer2 {
     return result;
   }
 
-  protected construct remove_null_union(construct the_construct) {
-    // TODO: make this more robust, don't panic on errors.
-    operator_construct op_construct = (operator_construct) the_construct;
-    assert op_construct.the_operator == operator.GENERAL_OR;
-    readonly_list<construct> arguments = op_construct.arguments;
-    assert arguments.size() == 2;
-    construct null_construct = arguments.get(1);
-    assert null_construct instanceof name_construct;
-    assert utilities.eq(((name_construct) null_construct).the_name,
-        library().null_type().short_name());
-    // TODO!! return transform_with_mapping(arguments.first(), mapping.MAP_TO_WRAPPER_TYPE);
-    return arguments.first();
-  }
-
   protected construct make_type_with_mapping(type the_type, origin pos, mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
     mapping_strategy = new_mapping;
@@ -675,7 +671,7 @@ public class to_java_transformer2 extends base_transformer2 {
 
     if (the_type.short_name() instanceof simple_name) {
       simple_name the_name = (simple_name) the_type.short_name();
-      if (the_type.get_kind() == procedure_kind) {
+      if (the_type.get_kind() == procedure_kind && the_type instanceof parametrized_type) {
         int arity = ((parametrized_type) the_type).get_parameters().internal_access().size() - 1;
         return make_procedure_name(the_name, arity);
       } else {
@@ -873,7 +869,9 @@ public class to_java_transformer2 extends base_transformer2 {
     @Nullable list_construct type_parameters = null;
 
     if (the_type_declaration.get_parameters() != null) {
-      type_parameters = new list_construct(transform_list(the_type_declaration.get_parameters()),
+      type_parameters = new list_construct(
+          transform_list_with_mapping(the_type_declaration.get_parameters(),
+              mapping.MAP_TO_WRAPPER_TYPE),
           grouping_type.ANGLE_BRACKETS, false, the_origin);
     }
 
@@ -935,7 +933,8 @@ public class to_java_transformer2 extends base_transformer2 {
                   flavored_supertype = transform_with_mapping(supertype_decl.supertype_analyzable(),
                       mapping.MAP_TO_WRAPPER_TYPE);
                 } else {
-                  flavored_supertype = make_type(supertype.get_flavored(flavor), the_origin2);
+                  flavored_supertype = make_type_with_mapping(supertype.get_flavored(flavor),
+                      the_origin2, mapping.MAP_TO_WRAPPER_TYPE);
                 }
                 list<construct> supertype_list = supertype_lists.get(flavor);
                 assert supertype_list != null;
@@ -1356,20 +1355,19 @@ public class to_java_transformer2 extends base_transformer2 {
     analyzable main_analyzable = the_parameter.main_analyzable;
     construct main_construct = get_construct(main_analyzable);
     if (main_construct instanceof operator_construct) {
-      return process_operator((operator_construct) main_construct,
+      return process_operator(the_parameter, (operator_construct) main_construct,
           the_parameter.analyzable_parameters, the_origin);
     }
 
-    action main_action = get_action(main_analyzable);
-    construct main = transform(main_analyzable);
-
     action the_action = get_action(the_parameter);
     boolean is_type = the_action instanceof type_action;
+    construct main = transform(main_analyzable);
     readonly_list<construct> parameters;
 
     if (is_type) {
-      parameters = transform_with_mapping(the_parameter.analyzable_parameters,
+      parameters = transform_list_with_mapping(the_parameter.analyzable_parameters,
           mapping.MAP_TO_WRAPPER_TYPE);
+      action main_action = get_action(main_analyzable);
       if (main_action.result().type_bound().principal().get_kind() == procedure_kind) {
         // TODO: handle resolve_construct here.
         name_construct procedure_type_name = (name_construct) main_construct;
@@ -1415,12 +1413,13 @@ public class to_java_transformer2 extends base_transformer2 {
     return transformed;
   }
 
-  public construct process_operator(operator_construct the_construct,
-      readonly_list<analyzable> analyzable_parameters,
+  public construct process_operator(parameter_analyzer the_parameter,
+      operator_construct the_construct, readonly_list<analyzable> analyzable_parameters,
       origin the_origin) {
     if (the_construct.the_operator == operator.GENERAL_OR) {
-      if (mapping_strategy == mapping.MAP_TO_WRAPPER_TYPE) {
-        return remove_null_union(the_construct);
+      action the_action = get_action(the_parameter);
+      if (the_action instanceof type_action && mapping_strategy == mapping.MAP_TO_WRAPPER_TYPE) {
+        return make_type(remove_null_type(((type_action) the_action).get_type()), the_origin);
       }
       utilities.panic("Unexpected 'or' operator " + the_construct);
     }
@@ -2065,20 +2064,6 @@ public class to_java_transformer2 extends base_transformer2 {
     return new loop_construct(transform(the_loop), the_origin);
   }
 
-  public construct process_parameter(parameter_analyzer the_parameter) {
-    origin the_origin = the_parameter;
-    grouping_type grouping = grouping_type.PARENS;
-    boolean has_trailing_comma = false;
-    construct the_construct = get_construct(the_parameter);
-    if (the_construct instanceof parameter_construct) {
-      grouping = ((parameter_construct) the_construct).parameters.grouping;
-      has_trailing_comma = ((parameter_construct) the_construct).parameters.has_trailing_comma;
-    }
-    return new parameter_construct(transform(the_parameter.main_analyzable),
-        new list_construct(transform_list(the_parameter.analyzable_parameters),
-            grouping, has_trailing_comma, the_origin), the_origin);
-  }
-
   public construct process_procedure(procedure_declaration the_procedure) {
     origin the_origin = the_procedure;
     grouping_type grouping = grouping_type.PARENS;
@@ -2090,12 +2075,6 @@ public class to_java_transformer2 extends base_transformer2 {
         make_type(the_procedure.get_return_type(), the_origin), the_procedure.original_name(),
         parameters, new empty<annotation_construct>(),
         transform(the_procedure.get_body()), the_origin);
-  }
-
-  public construct process_resolve(resolve_analyzer the_resolve) {
-    origin the_origin = the_resolve;
-    return new resolve_construct(transform(the_resolve.get_from()),
-        new name_construct(the_resolve.short_name(), the_origin), the_origin);
   }
 
   public construct process_return(return_analyzer the_return) {

@@ -73,6 +73,11 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   }
 
   @Override
+  public @Nullable analyzable get_type_analyzable() {
+    return analyzable_action.from(value_type(), this);
+  }
+
+  @Override
   public @Nullable analyzable initializer() {
     return null;
   }

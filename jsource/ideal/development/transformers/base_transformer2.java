@@ -83,7 +83,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
     return result;
   }
 
-  protected readonly_list<annotation_construct> to_annotations(annotation_set annotations,
+  protected list<annotation_construct> to_annotations(annotation_set annotations,
       boolean skip_access, origin the_origin) {
     list<annotation_construct> result = new base_list<annotation_construct>();
     if (!skip_access && is_modifier_supported(annotations.access_level())) {

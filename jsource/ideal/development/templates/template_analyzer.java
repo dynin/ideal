@@ -66,7 +66,7 @@ public class template_analyzer extends extension_analyzer implements declaration
         analyzer_utilities.PRIVATE_MODIFIERS, RESULT_NAME,
         flavor.mutable_flavor, library().immutable_string_type(),
         new analyzable_action(make_string_value(new base_string("")).to_action(pos)), pos);
-    result_access = analyzable_action.from_value(result_decl.get_access(), pos);
+    result_access = analyzable_action.from(result_decl.get_access(), pos);
 
     analyzable body_action = sexpr_to_analyzable(body);
 
@@ -163,7 +163,7 @@ public class template_analyzer extends extension_analyzer implements declaration
     // TODO: if it's a string_value, escape the constant at compile time...
     // (it is a good idea to make this optimization generic)
     list<analyzable> escape_params = new base_list<analyzable>(string_analyzable);
-    return new parameter_analyzer(analyzable_action.from_value(escaper, pos), escape_params, pos);
+    return new parameter_analyzer(analyzable_action.from(escaper, pos), escape_params, pos);
   }
 
   analyzable make_appender(analyzable string_analyzable, origin pos) {
@@ -173,7 +173,7 @@ public class template_analyzer extends extension_analyzer implements declaration
   }
 
   analyzable make_appender(string s, origin pos) {
-    analyzable string_analyzable = analyzable_action.from_value(make_string_value(s), pos);
+    analyzable string_analyzable = analyzable_action.from(make_string_value(s), pos);
     return make_appender(string_analyzable, pos);
   }
 

@@ -353,7 +353,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       assert body != null;
       origin pos = this;
       add_to_body(new supertype_analyzer(null, subtype_tags.subtypes_tag,
-          analyzable_action.from_value(default_supertype, pos), pos));
+          analyzable_action.from(default_supertype, pos), pos));
     }
 
     /*

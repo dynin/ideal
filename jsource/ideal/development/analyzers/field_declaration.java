@@ -99,6 +99,11 @@ public class field_declaration extends single_pass_analyzer
   }
 
   @Override
+  public @Nullable analyzable get_type_analyzable() {
+    return analyzable_action.from(var_type, this);
+  }
+
+  @Override
   public @Nullable analyzable initializer() {
     return null;
   }

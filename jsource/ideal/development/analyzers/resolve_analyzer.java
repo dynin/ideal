@@ -188,7 +188,7 @@ public class resolve_analyzer extends single_pass_analyzer {
       master_type param_type = (master_type) parameter_decl.get_declared_type();
       @Nullable abstract_value specialized = context.lookup(param_type);
       if (specialized != null) {
-        return analyzable_action.from_value(specialized, this);
+        return analyzable_action.from(specialized, this);
       }
     }
     return new analyzable_action(the_action);

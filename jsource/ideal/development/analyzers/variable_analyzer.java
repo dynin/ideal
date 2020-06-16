@@ -77,6 +77,11 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
   }
 
   @Override
+  public @Nullable analyzable get_type_analyzable() {
+    return variable_type;
+  }
+
+  @Override
   public @Nullable analyzable initializer() {
     return init;
   }
@@ -250,6 +255,11 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
       new_init = init.specialize(new_context, new_parent);
     }
 
+    @Nullable analyzable type_analyzable = null;
+    if (init != null) {
+      type_analyzable = variable_type.specialize(new_context, new_parent);
+    }
+
     // TODO: signal errors instead of asserts.
     action new_value_action;
     if (variable_type != null) {
@@ -276,7 +286,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     type new_reference_type = library().get_reference(reference_flavor, new_value_type);
 
     specialized_variable new_variable = new specialized_variable(this, new_parent, new_value_type,
-        new_reference_type, new_init);
+        new_reference_type, type_analyzable, new_init);
     new_variable.add(get_context());
     return new_variable;
   }

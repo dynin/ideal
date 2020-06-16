@@ -44,7 +44,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     super(pos);
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
-    this.the_analyzable = analyzable_action.from_value(the_type, pos);
+    this.the_analyzable = analyzable_action.from(the_type, pos);
     specializable = false;
   }
 

@@ -34,12 +34,12 @@ public class analyzable_action extends debuggable implements analyzable {
     this.the_action = the_action;
   }
 
-  public static analyzable_action from_value(abstract_value value, origin the_origin) {
+  public static analyzable_action from(abstract_value value, origin the_origin) {
     return new analyzable_action(value.to_action(the_origin));
   }
 
   public static analyzable_action nothing(origin the_origin) {
-    return from_value(common_library.get_instance().void_instance(), the_origin);
+    return from(common_library.get_instance().void_instance(), the_origin);
   }
 
   @Override

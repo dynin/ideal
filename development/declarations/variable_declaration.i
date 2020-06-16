@@ -15,6 +15,7 @@ interface variable_declaration {
   --- Get (flavored) variable type.
   override type value_type;
   override type reference_type;
+  analyzable or null get_type_analyzable;
   analyzable or null initializer;
   action or null init_action;
   variable_declaration specialize(specialization_context context, principal_type new_parent);

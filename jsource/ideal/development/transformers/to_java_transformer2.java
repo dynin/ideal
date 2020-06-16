@@ -405,48 +405,6 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   /*
-  @Override
-  protected list<annotation_construct> transform_a(readonly_list<annotation_construct> the_list,
-      origin source) {
-    return transform_annotations(the_list, null, true, source);
-  }
-
-  private list<annotation_construct> transform_annotations(
-      readonly_list<annotation_construct> the_list, @Nullable annotation_set annotations,
-      boolean defaults_to_public, origin source) {
-
-    boolean access_specified = false;
-    list<annotation_construct> result = new base_list<annotation_construct>();
-    for (int i = 0; i < the_list.size(); ++i) {
-      annotation_construct the_annotation = the_list.get(i);
-      if (the_annotation instanceof modifier_construct) {
-        modifier_construct the_modifier = (modifier_construct) the_annotation;
-        modifier_kind the_kind = the_modifier.the_kind;
-        assert the_kind != null;
-
-        if (the_kind instanceof access_modifier) {
-          access_specified = true;
-          if (the_kind == local_modifier) {
-            continue;
-          }
-        }
-        if (!filter_modifier(the_kind)) {
-          continue;
-        }
-        result.append(transform(the_modifier));
-      } else {
-        assert the_annotation instanceof comment_construct;
-        result.append(transform(the_annotation));
-      }
-    }
-    if (!access_specified && annotations != null && annotations.access_level() != local_modifier) {
-      if (annotations.access_level() != public_modifier || !defaults_to_public) {
-        result.prepend(new modifier_construct(annotations.access_level(), source));
-      }
-    }
-    return result;
-  }
-
   private boolean filter_modifier(modifier_kind the_kind) {
     return supported_by_java.contains(the_kind) || the_kind == implement_modifier;
   }
@@ -494,12 +452,14 @@ public class to_java_transformer2 extends base_transformer2 {
 
     return false;
   }
+  */
 
-  private boolean defaults_to_public(principal_type declared_in_type) {
+  private boolean skip_access(principal_type declared_in_type) {
     kind the_kind = declared_in_type.get_kind();
     return the_kind != class_kind && the_kind != enum_kind;
   }
 
+  /*
   @Override
   public Object process_procedure(procedure_construct c) {
     procedure_analyzer the_analyzable = (procedure_analyzer) get_analyzable(c);
@@ -509,7 +469,7 @@ public class to_java_transformer2 extends base_transformer2 {
     origin source = c;
 
     list<annotation_construct> annotations = transform_annotations(c.annotations,
-        the_analyzable.annotations(), defaults_to_public(the_analyzable.declared_in_type()),
+        the_analyzable.annotations(), skip_access(the_analyzable.declared_in_type()),
         source);
     @Nullable construct ret;
     action_name name = c.name;
@@ -1210,55 +1170,49 @@ public class to_java_transformer2 extends base_transformer2 {
     return simple_name.make(new base_string(base_name.to_string(), String.valueOf(arity)));
   }
 
-  /*
   @Override
-  public Object process_variable(variable_construct c) {
-    analyzable the_analyzable = get_analyzable(c);
+  public construct process_variable(variable_declaration the_variable) {
+    origin the_origin = the_variable;
 
-    if (the_analyzable instanceof type_parameter_analyzer) {
-      return process_type_parameter((type_parameter_analyzer) the_analyzable, c);
-    }
-
-    variable_analyzer the_variable_analyzer = (variable_analyzer) the_analyzable;
-    if (the_variable_analyzer.annotations().has(not_yet_implemented_modifier)) {
+    if (the_variable.annotations().has(not_yet_implemented_modifier)) {
       return null;
     }
 
-    origin source = c;
+    principal_type declared_in_type = the_variable.declared_in_type();
+    list<annotation_construct> annotations = to_annotations(the_variable.annotations(),
+        skip_access(declared_in_type), the_origin);
 
-    principal_type declared_in_type = the_variable_analyzer.declared_in_type();
-    list<annotation_construct> annotations = transform_annotations(c.annotations,
-        the_variable_analyzer.annotations(), defaults_to_public(declared_in_type), source);
-
-    boolean is_mutable = the_variable_analyzer.reference_type().get_flavor() == mutable_flavor;
+    boolean is_mutable = the_variable.reference_type().get_flavor() == mutable_flavor;
     if (!is_mutable &&
-        !the_variable_analyzer.annotations().has(final_modifier) &&
+        !the_variable.annotations().has(final_modifier) &&
         !is_procedure_with_no_body(declared_in_type.get_declaration())) {
-      annotations.append(new modifier_construct(final_modifier, source));
+      annotations.append(new modifier_construct(final_modifier, the_origin));
     }
 
-    type var_type = the_variable_analyzer.value_type();
+    type var_type = the_variable.value_type();
     construct type;
-    if (c.type == null) {
+    if (the_variable.get_type_analyzable() == null) {
       if (type_utilities.is_union(var_type)) {
-        annotations.append(new modifier_construct(nullable_modifier, source));
+        annotations.append(new modifier_construct(nullable_modifier, the_origin));
         type not_null_type = remove_null_type(var_type);
-        type = make_type_with_mapping(not_null_type, source, mapping.MAP_TO_WRAPPER_TYPE);
+        type = make_type_with_mapping(not_null_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
       } else {
-        type = make_type(var_type, source);
+        type = make_type(var_type, the_origin);
       }
     } else if (type_utilities.is_union(var_type)) {
-      annotations.append(new modifier_construct(nullable_modifier, source));
-      type = remove_null_union(c.type);
+      annotations.append(new modifier_construct(nullable_modifier, the_origin));
+      type = make_type(remove_null_type(var_type), the_origin);
     } else {
-      type = transform(c.type);
+      type = transform(the_variable.get_type_analyzable());
     }
 
-    @Nullable construct init = c.init != null ? transform_and_maybe_rewrite(c.init) : null;
-    return new variable_construct(annotations, type, c.name, new empty<annotation_construct>(),
-        init, source);
+    @Nullable construct init = the_variable.initializer() != null ?
+        transform_and_maybe_rewrite(the_variable.initializer()) : null;
+    return new variable_construct(annotations, type, the_variable.short_name(),
+        new empty<annotation_construct>(), init, the_origin);
   }
 
+  /*
   private boolean is_procedure_reference(construct the_construct) {
     if (the_construct instanceof name_construct || the_construct instanceof resolve_construct) {
       declaration the_declaration = get_declaration(the_construct);
@@ -1340,6 +1294,7 @@ public class to_java_transformer2 extends base_transformer2 {
     return new parameter_construct(get_construct,
         new list_construct(new empty<construct>(), grouping_type.PARENS, false, source), source);
   }
+  */
 
   private boolean is_procedure_with_no_body(@Nullable declaration the_declaration) {
     return the_declaration instanceof procedure_declaration &&
@@ -1350,29 +1305,24 @@ public class to_java_transformer2 extends base_transformer2 {
     return the_type == library().value_type() || the_type == library().equality_comparable_type();
   }
 
-  private variable_construct process_type_parameter(type_parameter_analyzer a,
-      variable_construct c) {
-    origin pos = a;
-    type type_bound = a.variable_type();
+  @Override
+  public construct process_type_parameter(type_parameter_declaration the_type_parameter) {
+    origin the_origin = the_type_parameter;
+    type type_bound = the_type_parameter.variable_type();
     if (!type_bound.is_subtype_of(library().value_type().get_flavored(any_flavor))) {
       utilities.panic("Type bound is not a value but " + type_bound);
     }
     @Nullable construct type_construct;
-    if (should_omit_type_bound(type_bound.principal())) {
+    if (should_omit_type_bound(type_bound.principal()) ||
+        the_type_parameter.get_type_analyzable() == null) {
       type_construct = null;
     } else {
-      if (c.type != null) {
-        type_construct = transform_with_mapping(c.type, mapping.MAP_TO_WRAPPER_TYPE);
-      } else {
-        // TODO: should we panic here? Probably not.
-        utilities.panic("No type in " + c);
-        type_construct = make_type(type_bound, pos);
-      }
+      type_construct = transform_with_mapping(the_type_parameter.get_type_analyzable(),
+          mapping.MAP_TO_WRAPPER_TYPE);
     }
-    return new variable_construct(new empty<annotation_construct>(), type_construct, c.name,
-        new empty<annotation_construct>(), null, pos);
+    return new variable_construct(new empty<annotation_construct>(), type_construct,
+        the_type_parameter.short_name(), new empty<annotation_construct>(), null, the_origin);
   }
-  */
 
   private construct transform_and_maybe_rewrite(analyzable the_analyzable) {
     construct transformed = transform(the_analyzable);
@@ -2187,6 +2137,7 @@ public class to_java_transformer2 extends base_transformer2 {
         transform_list(the_type.get_signature()), the_origin);
   }
 
+  /*
   public construct process_type_parameter(type_parameter_declaration the_type_parameter) {
     origin the_origin = the_type_parameter;
     construct the_type;

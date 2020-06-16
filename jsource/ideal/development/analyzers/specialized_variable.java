@@ -32,14 +32,17 @@ public class specialized_variable extends debuggable implements variable_declara
   private final principal_type parent_type;
   private final type value_type;
   private final type reference_type;
+  private final @Nullable analyzable type_analyzable;
   private final @Nullable analyzable init;
 
   public specialized_variable(variable_analyzer main, principal_type parent_type,
-      type value_type, type reference_type, @Nullable analyzable init) {
+      type value_type, type reference_type, @Nullable analyzable type_analyzable,
+      @Nullable analyzable init) {
     this.main = main;
     this.parent_type = parent_type;
     this.value_type = value_type;
     this.reference_type = reference_type;
+    this.type_analyzable = type_analyzable;
     this.init = init;
 
     assert get_category() == variable_category.LOCAL ||
@@ -110,6 +113,11 @@ public class specialized_variable extends debuggable implements variable_declara
   @Override
   public type reference_type() {
     return reference_type;
+  }
+
+  @Override
+  public @Nullable analyzable get_type_analyzable() {
+    return type_analyzable;
   }
 
   @Override

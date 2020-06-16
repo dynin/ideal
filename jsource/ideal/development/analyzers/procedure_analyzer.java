@@ -251,7 +251,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
         return_analyzable = make(source.ret);
         add_dependence(return_analyzable, null, declaration_pass.TYPES_AND_PROMOTIONS);
       } else {
-        return_analyzable = analyzable_action.from_value(library().void_type(), this);
+        return_analyzable = analyzable_action.from(library().void_type(), this);
       }
       @Nullable error_signal return_error = find_error(return_analyzable);
       if (return_error != null) {

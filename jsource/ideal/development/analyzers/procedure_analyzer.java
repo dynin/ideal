@@ -88,6 +88,11 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
   }
 
   @Override
+  public @Nullable analyzable get_return() {
+    return return_analyzable;
+  }
+
+  @Override
   public @Nullable analyzable get_body() {
     return body;
   }
@@ -460,11 +465,14 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     type_declaration the_declaration = (type_declaration) declared_in_type().get_declaration();
 
     principal_type new_inside = make_block(original_name(), new_parent, this);
+    analyzable return_specialized;
     type new_return_type;
     if (get_category() == procedure_category.CONSTRUCTOR) {
+      return_specialized = null;
       new_return_type = new_parent.get_flavored(flavor.mutable_flavor);
     } else {
-      analyzable return_specialized = return_analyzable.specialize(new_context, new_inside);
+      // TODO: what if return_analyzable is null?
+      return_specialized = return_analyzable.specialize(new_context, new_inside);
       abstract_value return_value = analyzer_utilities.to_action(return_specialized).result();
       if (return_value instanceof error_signal) {
         new_return_type = return_value.type_bound();
@@ -489,7 +497,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     variable_declaration this_declaration = this_decl != null ?
         this_decl.specialize(new_context, new_parent) : null;
     specialized_procedure result = new specialized_procedure(this, new_return_type, new_parent,
-        new_parameters, new_body, this_declaration);
+        new_parameters, return_specialized, new_body, this_declaration);
     result.add(get_context());
     return result;
   }

@@ -299,15 +299,19 @@ public class to_java_transformer2 extends base_transformer2 {
           the_origin);
     }
   }
+  */
 
-  public @Nullable list_construct process_parameters(@Nullable list_construct c) {
-    if (c == null) {
+  public @Nullable list_construct process_parameters(
+      @Nullable readonly_list<variable_declaration> the_parameters, origin the_origin) {
+    if (the_parameters == null) {
       return null;
     } else {
-      return new list_construct(transform(c.elements), grouping_type.PARENS, false, c);
+      return new list_construct(transform_list(the_parameters), grouping_type.PARENS, false,
+          the_origin);
     }
   }
 
+  /*
   @Override
   public construct process_resolve(resolve_analyzer the_resolve) {
     origin the_origin = the_resolve;
@@ -417,6 +421,7 @@ public class to_java_transformer2 extends base_transformer2 {
       return the_modifier;
     }
   }
+  */
 
   private boolean should_use_wrapper_in_return(procedure_declaration the_declaration) {
     readonly_list<declaration> overriden = the_declaration.get_overriden();
@@ -452,35 +457,33 @@ public class to_java_transformer2 extends base_transformer2 {
 
     return false;
   }
-  */
 
   private boolean skip_access(principal_type declared_in_type) {
     kind the_kind = declared_in_type.get_kind();
     return the_kind != class_kind && the_kind != enum_kind;
   }
 
-  /*
   @Override
-  public Object process_procedure(procedure_construct c) {
-    procedure_analyzer the_analyzable = (procedure_analyzer) get_analyzable(c);
-    if (the_analyzable.annotations().has(not_yet_implemented_modifier)) {
+  public construct process_procedure(procedure_declaration the_procedure) {
+    origin the_origin = the_procedure;
+
+    if (the_procedure.annotations().has(not_yet_implemented_modifier)) {
       return null;
     }
-    origin source = c;
 
-    list<annotation_construct> annotations = transform_annotations(c.annotations,
-        the_analyzable.annotations(), skip_access(the_analyzable.declared_in_type()),
-        source);
-    @Nullable construct ret;
-    action_name name = c.name;
-    @Nullable list_construct the_list_construct = process_parameters(c.parameters);
+    list<annotation_construct> annotations = to_annotations(the_procedure.annotations(),
+        skip_access(the_procedure.declared_in_type()), the_origin);
+
+    action_name name = the_procedure.original_name();
+    @Nullable list_construct the_list_construct = process_parameters(
+        the_procedure.get_parameter_variables(), the_origin);
     if (the_list_construct == null) {
-      the_list_construct = make_parens(source);
+      the_list_construct = make_parens(the_origin);
     }
     readonly_list<construct> parameters = the_list_construct.elements;
     @Nullable readonly_list<construct> body_statements = null;
 
-    construct transformed_body = transform(c.body);
+    construct transformed_body = transform(the_procedure.get_body());
     if (transformed_body != null) {
       if (transformed_body instanceof block_construct) {
         body_statements = ((block_construct) transformed_body).body;
@@ -488,24 +491,26 @@ public class to_java_transformer2 extends base_transformer2 {
         body_statements = new base_list<construct>(transformed_body);
       } else {
         // TODO: do not add return to ctors and void functions
-        body_statements = new base_list<construct>(new return_construct(transformed_body, source));
+        body_statements = new base_list<construct>(
+            new return_construct(transformed_body, the_origin));
       }
     }
 
-    if (c.ret == null) {
-      if (the_analyzable.get_category() == procedure_category.CONSTRUCTOR) {
+    @Nullable construct ret;
+    if (the_procedure.get_return() == null) {
+      if (the_procedure.get_category() == procedure_category.CONSTRUCTOR) {
         ret = null;
       } else {
-        ret = make_type(the_analyzable.get_return_type(), source);
+        ret = make_type(the_procedure.get_return_type(), the_origin);
       }
     } else {
-      type return_type = the_analyzable.get_return_type();
+      type return_type = the_procedure.get_return_type();
       if (type_utilities.is_union(return_type)) {
-        annotations.append(new modifier_construct(nullable_modifier, source));
-        ret = remove_null_union(c.ret);
+        annotations.append(new modifier_construct(nullable_modifier, the_origin));
+        ret = make_type(remove_null_type(return_type), the_origin);
       } else if (library().is_reference_type(return_type)) {
         type_flavor ref_flavor = return_type.get_flavor();
-        ret = transform(c.ret);
+        ret = transform(the_procedure.get_return());
         if (ref_flavor != mutable_flavor) {
           if (ret instanceof flavor_construct) {
             ret = ((flavor_construct) ret).expr;
@@ -519,41 +524,40 @@ public class to_java_transformer2 extends base_transformer2 {
             list<construct> new_parameters = new base_list<construct>(parameters);
             new_parameters.append(
                 new variable_construct(new empty<annotation_construct>(), ret, VALUE_NAME,
-                    new empty<annotation_construct>(), null, source));
+                    new empty<annotation_construct>(), null, the_origin));
             parameters = new_parameters;
-            ret = make_type(library().void_type(), source);
+            ret = make_type(library().void_type(), the_origin);
           }
         }
       } else {
-        if (should_use_wrapper_in_return(the_analyzable)) {
-          ret = transform_with_mapping(c.ret, mapping.MAP_TO_WRAPPER_TYPE);
+        if (should_use_wrapper_in_return(the_procedure)) {
+          ret = transform_with_mapping(the_procedure.get_return(), mapping.MAP_TO_WRAPPER_TYPE);
           // Note: if Java return type is 'Void' (with the capital V),
           // then we may need to insert "return null" to keep javac happy.
-          if (the_analyzable.get_return_type() == library().immutable_void_type() &&
+          if (the_procedure.get_return_type() == library().immutable_void_type() &&
               body_statements != null &&
-              the_analyzable.get_body_action().result() != core_types.unreachable_type()) {
+              the_procedure.get_body_action().result() != core_types.unreachable_type()) {
             list<construct> new_body = new base_list<construct>();
             new_body.append_all(body_statements);
-            new_body.append(make_default_return(return_type, source));
+            new_body.append(make_default_return(return_type, the_origin));
             body_statements = new_body;
           }
         } else {
-          ret = transform(c.ret);
+          ret = transform(the_procedure.get_return());
         }
       }
     }
 
     construct body = null;
     if (body_statements != null) {
-      body = new block_construct(body_statements, source);
+      body = new block_construct(body_statements, the_origin);
     }
 
     // Note: the flavor is always missing.
     return new procedure_construct(annotations, ret, name,
-        new list_construct(parameters, grouping_type.PARENS, false, source),
-        new empty<annotation_construct>(), body, source);
+        new list_construct(parameters, grouping_type.PARENS, false, the_origin),
+        new empty<annotation_construct>(), body, the_origin);
   }
-  */
 
   protected type remove_null_type(type the_type) {
     assert type_utilities.is_union(the_type);

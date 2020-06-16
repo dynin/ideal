@@ -21,6 +21,7 @@ interface procedure_declaration {
   boolean overrides_variable;
   readonly list[declaration] get_overriden;
   action or null procedure_action;
+  analyzable or null get_return;
   analyzable or null get_body;
   action or null get_body_action;
   variable_declaration or null get_this_declaration;

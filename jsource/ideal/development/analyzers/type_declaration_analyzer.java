@@ -346,14 +346,16 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         !get_kind().is_namespace() &&
         result_type != library().entity_type() &&
         result_type != library().value_type()) {
-
+      origin the_origin = this;
+      readonly_list<annotation_construct> super_annotations =
+          new base_list<annotation_construct>(new modifier_construct(
+              general_modifier.synthetic_modifier, the_origin));
       // TODO: move default supertype to semantics
       principal_type default_supertype = library().value_type();
 
       assert body != null;
-      origin pos = this;
-      add_to_body(new supertype_analyzer(null, subtype_tags.subtypes_tag,
-          analyzable_action.from(default_supertype, pos), pos));
+      add_to_body(new supertype_analyzer(super_annotations, null, subtype_tags.subtypes_tag,
+          default_supertype, the_origin));
     }
 
     /*

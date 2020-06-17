@@ -17,13 +17,14 @@ import ideal.development.actions.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.names.*;
+import ideal.development.modifiers.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 
 public class supertype_analyzer extends declaration_analyzer implements supertype_declaration {
 
-  // TODO: add annotation support
+  private final readonly_list<annotation_construct> annotations;
   private final @Nullable type_flavor subtype_flavor;
   private final subtype_tag tag;
   private final analyzable the_analyzable;
@@ -31,20 +32,22 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   private boolean specializable;
 
   public supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
-      analyzable the_analyzable, origin pos) {
-    super(pos);
+      analyzable the_analyzable, origin the_origin) {
+    super(the_origin);
+    this.annotations = new empty<annotation_construct>();
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
     this.the_analyzable = the_analyzable;
     specializable = true;
   }
 
-  private supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
-      type the_type, origin pos) {
-    super(pos);
+  public supertype_analyzer(readonly_list<annotation_construct> annotations,
+      type_flavor subtype_flavor, subtype_tag tag, type the_type, origin the_origin) {
+    super(the_origin);
+    this.annotations = annotations;
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
-    this.the_analyzable = analyzable_action.from(the_type, pos);
+    this.the_analyzable = analyzable_action.from(the_type, the_origin);
     specializable = false;
   }
 
@@ -66,6 +69,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
+      process_annotations(annotations, access_modifier.public_modifier);
       add_dependence(the_analyzable, declared_in_type(), declaration_pass.NONE);
 
     } else if (pass == analysis_pass.SUPERTYPE_DECL) {

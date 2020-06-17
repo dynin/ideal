@@ -8,6 +8,7 @@
 interface supertype_declaration {
   extends declaration;
 
+  annotation_set annotations;
   type_flavor subtype_flavor;
   subtype_tag tag;
   analyzable supertype_analyzable;

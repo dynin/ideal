@@ -21,6 +21,8 @@ namespace general_modifier {
 
   modifier_kind not_yet_implemented_modifier : base_modifier_kind.new("not_yet_implemented");
 
+  modifier_kind synthetic_modifier : base_modifier_kind.new("synthetic");
+
   modifier_kind varargs_modifier : base_modifier_kind.new("varargs");
 
   modifier_kind override_modifier : base_modifier_kind.new("override");

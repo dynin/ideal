@@ -143,8 +143,8 @@ print_elements: $(IDEAL_TARGET)
 generate_library: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_library
 
-generate_library2: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_library2
+generate_runtime2: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_runtime2
 
 bootstrap_library: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)

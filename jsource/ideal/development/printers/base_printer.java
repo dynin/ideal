@@ -524,6 +524,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     } else if (name == special_name.NEW) {
       // TODO: handle new as operator?
       return print_word(keywords.NEW);
+    } else if (name == special_name.THIS_CONSTRUCTOR) {
+      // TODO!!! fix to_java_transformer2 not to generate this
+      return print_word(keywords.THIS);
+    } else if (name == special_name.SUPER_CONSTRUCTOR) {
+      // TODO!!! fix to_java_transformer2 not to generate this
+      return print_word(keywords.SUPER);
     } else {
       utilities.panic("unknown special name: " + name);
       return null;

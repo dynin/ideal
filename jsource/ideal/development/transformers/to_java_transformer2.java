@@ -493,16 +493,21 @@ public class to_java_transformer2 extends base_transformer2 {
     readonly_list<construct> parameters = the_list_construct.elements;
     @Nullable readonly_list<construct> body_statements = null;
 
-    construct transformed_body = transform(the_procedure.get_body());
-    if (transformed_body != null) {
-      if (transformed_body instanceof block_construct) {
-        body_statements = ((block_construct) transformed_body).body;
-      } else if (transformed_body instanceof return_construct) {
-        body_statements = new base_list<construct>(transformed_body);
+    if (the_procedure.get_body() != null) {
+      readonly_list<construct> body_constructs = transform1(the_procedure.get_body());
+      if (body_constructs.size() == 1) {
+        construct transformed_body = body_constructs.get(0);
+        if (transformed_body instanceof block_construct) {
+          body_statements = ((block_construct) transformed_body).body;
+        } else if (transformed_body instanceof return_construct) {
+          body_statements = new base_list<construct>(transformed_body);
+        } else {
+          // TODO: do not add return to ctors and void functions
+          body_statements = new base_list<construct>(
+              new return_construct(transformed_body, the_origin));
+        }
       } else {
-        // TODO: do not add return to ctors and void functions
-        body_statements = new base_list<construct>(
-            new return_construct(transformed_body, the_origin));
+        body_statements = body_constructs;
       }
     }
 
@@ -821,7 +826,7 @@ public class to_java_transformer2 extends base_transformer2 {
     principal_type declared_in_type = the_type_declaration.declared_in_type();
 
     if (the_kind.is_namespace()) {
-      assert the_type_declaration.get_parameters() != null;
+      assert the_type_declaration.get_parameters() == null;
       if (declared_in_type != package_type) {
         annotations = append_static(annotations, the_origin);
       }
@@ -992,9 +997,9 @@ public class to_java_transformer2 extends base_transformer2 {
         }
       } else if (decl instanceof type_declaration) {
         flavored_bodies.get(profile.default_flavor()).append_all(transform1(decl));
-      } else if (decl instanceof import_construct) {
+      } else if (decl instanceof import_analyzer) {
         // Skip imports: they should have been declared at the top level.
-      } else if (decl instanceof block_construct) {
+      } else if (decl instanceof block_declaration) {
         // TODO: make sure this is a static block...
         flavored_bodies.get(profile.default_flavor()).append_all(transform1(decl));
       } else {
@@ -1617,30 +1622,34 @@ public class to_java_transformer2 extends base_transformer2 {
     return new import_construct(annotations, transform(the_import.type_analyzable), the_origin);
   }
 
-  /*
   @Override
-  public construct process_loop(loop_construct c) {
-    origin pos = c;
-    construct true_construct = new name_construct(library().true_value().short_name(), pos);
-    return new while_construct(true_construct, transform(c.body), pos);
+  public construct process_loop(loop_analyzer the_loop) {
+    origin the_origin = the_loop;
+    construct true_construct = new name_construct(library().true_value().short_name(), the_origin);
+    return new while_construct(true_construct, transform(the_loop.body), the_origin);
   }
 
   @Override
-  public construct process_literal(literal_construct c) {
-    if (c.the_literal instanceof quoted_literal &&
-        get_action(c).result().type_bound() == library().immutable_string_type()) {
+  public construct process_literal(literal_analyzer the_literal_analyzer) {
+    origin the_origin = the_literal_analyzer;
+    literal the_literal = the_literal_analyzer.the_literal;
+    literal_construct the_literal_construct = new literal_construct(the_literal, the_origin);
+
+    if (the_literal instanceof quoted_literal &&
+        get_action(the_literal_analyzer).result().type_bound() == 
+            library().immutable_string_type()) {
       // TODO: handle both string and character literals correctly.
       // TODO: also, convert inline literals into constants.
-      origin pos = c;
       // TODO: use fully qualified type name?
-      construct type_name = new name_construct(BASE_STRING_NAME, pos);
-      construct alloc = new operator_construct(operator.ALLOCATE, type_name, pos);
-      return make_call(alloc, new base_list<construct>(c), pos);
+      construct type_name = new name_construct(BASE_STRING_NAME, the_origin);
+      construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
+      return make_call(alloc, new base_list<construct>(the_literal_construct), the_origin);
     }
 
-    return c;
+    return the_literal_construct;
   }
 
+  /*
   @Override
   public construct process_return(return_construct the_construct) {
     origin source = the_construct;
@@ -1979,12 +1988,46 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_analyzable_action(analyzable_action the_analyzable_action) {
     origin the_origin = the_analyzable_action;
     action the_action = the_analyzable_action.the_action;
+    return process_action(the_action, the_origin);
+  }
+
+  public construct process_action(action the_action, origin the_origin) {
     if (the_action instanceof type_action) {
       return make_type(((type_action) the_action).get_type(), the_origin);
     }
 
-    utilities.panic("processing analyzable_action " + the_analyzable_action);
-    return process_default(the_analyzable_action);
+    if (the_action instanceof value_action) {
+      base_data_value the_value = (base_data_value) ((value_action) the_action).the_value;
+      if (the_value instanceof singleton_value) {
+        principal_type singleton_type = the_value.type_bound().principal();
+        construct type_construct = make_type(singleton_type, the_origin);
+        construct name_construct = new name_construct(type_kinds.INSTANCE_NAME, the_origin);
+        return new resolve_construct(type_construct, name_construct, the_origin);
+      } else if (the_value instanceof integer_value) {
+        integer_value the_integer_value = (integer_value) the_value;
+        return new literal_construct(new integer_literal(the_integer_value.unwrap()), the_origin);
+      }
+      utilities.panic("processing action value " + the_value);
+    }
+
+    if (the_action instanceof dereference_action) {
+      dereference_action deref_action = (dereference_action) the_action;
+      return process_action(deref_action.from, the_origin);
+    }
+
+    if (the_action instanceof dispatch_action) {
+      dispatch_action the_dispatch_action = (dispatch_action) the_action;
+      return process_action(the_dispatch_action.get_primary(), the_origin);
+    }
+
+    if (the_action instanceof variable_action) {
+      variable_action the_variable_action = (variable_action) the_action;
+      // TODO: handle from
+      return new name_construct(the_variable_action.short_name(), the_origin);
+    }
+
+    utilities.panic("processing action " + the_action);
+    return null;
   }
 
 /*
@@ -2061,11 +2104,6 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_literal(literal_analyzer the_literal) {
     origin the_origin = the_literal;
     return new literal_construct(the_literal.the_literal, the_origin);
-  }
-
-  public construct process_loop(loop_analyzer the_loop) {
-    origin the_origin = the_loop;
-    return new loop_construct(transform(the_loop), the_origin);
   }
 
   public construct process_procedure(procedure_declaration the_procedure) {

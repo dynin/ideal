@@ -29,7 +29,6 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   private final subtype_tag tag;
   private final analyzable the_analyzable;
   private @Nullable type the_supertype;
-  private boolean specializable;
 
   public supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
       analyzable the_analyzable, origin the_origin) {
@@ -38,7 +37,6 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
     this.the_analyzable = the_analyzable;
-    specializable = true;
   }
 
   public supertype_analyzer(readonly_list<annotation_construct> annotations,
@@ -48,7 +46,6 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
     this.the_analyzable = analyzable_action.from(the_type, the_origin);
-    specializable = false;
   }
 
   @Override
@@ -107,7 +104,6 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
   @Override
   public supertype_analyzer specialize(specialization_context context, principal_type new_parent) {
-    assert specializable;
     assert new_parent != declared_in_type();
     analyzable specialized = the_analyzable.specialize(context, new_parent);
     supertype_analyzer result = new supertype_analyzer(subtype_flavor, tag, specialized, this);

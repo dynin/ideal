@@ -40,6 +40,20 @@ public class base_transformer2 extends analyzable_visitor<Object> {
     return new_construct;
   }
 
+  // TODO!! figure out when we need this
+  public construct transform_x(@Nullable analyzable_or_declaration the_analyzable) {
+    if (the_analyzable == null) {
+      return null;
+    }
+
+    if (the_analyzable instanceof statement_list_analyzer) {
+      return new block_construct(transform1(the_analyzable), the_analyzable);
+    }
+
+    construct new_construct = (construct) process(the_analyzable);
+    return new_construct;
+  }
+
   protected common_library library() {
     return common_library.get_instance();
   }
@@ -67,8 +81,15 @@ public class base_transformer2 extends analyzable_visitor<Object> {
 
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < the_analyzables.size(); ++i) {
-      if (the_analyzables.get(i) != null) {
-        Object transformed = process(the_analyzables.get(i));
+      analyzable_or_declaration the_analyzable = the_analyzables.get(i);
+      if (the_analyzable == null) {
+        continue;
+      }
+
+      if (the_analyzable instanceof statement_list_analyzer) {
+        result.append_all(transform_list(((statement_list_analyzer) the_analyzable).elements()));
+      } else {
+        Object transformed = process(the_analyzable);
         if (transformed instanceof construct) {
           result.append((construct) transformed);
         } else if (transformed instanceof readonly_list/*<construct>*/) {
@@ -150,7 +171,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
     }
 
     return new conditional_construct(transform(the_conditional.condition),
-        transform(the_conditional.then_branch), transform(the_conditional.else_branch),
+        transform_x(the_conditional.then_branch), transform_x(the_conditional.else_branch),
         is_statement, the_origin);
   }
 
@@ -220,7 +241,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
 
   public construct process_loop(loop_analyzer the_loop) {
     origin the_origin = the_loop;
-    return new loop_construct(transform(the_loop), the_origin);
+    return new loop_construct(transform(the_loop.body), the_origin);
   }
 
   public Object process_parameter(parameter_analyzer the_parameter) {

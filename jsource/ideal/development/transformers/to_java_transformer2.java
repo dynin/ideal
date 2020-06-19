@@ -477,12 +477,19 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_procedure(procedure_declaration the_procedure) {
     origin the_origin = the_procedure;
 
+    list<annotation_construct> annotations = to_annotations(the_procedure.annotations(),
+        skip_access(the_procedure.declared_in_type()), the_origin);
+
+    return process_procedure(the_procedure, annotations);
+  }
+
+  public construct process_procedure(procedure_declaration the_procedure,
+      list<annotation_construct> annotations) {
+    origin the_origin = the_procedure;
+
     if (the_procedure.annotations().has(not_yet_implemented_modifier)) {
       return null;
     }
-
-    list<annotation_construct> annotations = to_annotations(the_procedure.annotations(),
-        skip_access(the_procedure.declared_in_type()), the_origin);
 
     action_name name = the_procedure.original_name();
     @Nullable list_construct the_list_construct = process_parameters(
@@ -764,70 +771,52 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
-  // TODO: pass a mutable list of annotations and update it in place; may be use annotation_set.
-  private readonly_list<annotation_construct> append_static(
-      readonly_list<annotation_construct> annotations, origin source) {
+  private void append_static(list<annotation_construct> annotations, origin the_origin) {
     // TODO: replace with collection.has()
     for (int i = 0; i < annotations.size(); ++i) {
       annotation_construct the_annotation = annotations.get(i);
       if (the_annotation instanceof modifier_construct &&
           ((modifier_construct) the_annotation).the_kind == static_modifier) {
-        return annotations;
+        return;
       }
     }
 
-    list<annotation_construct> new_annotations = new base_list<annotation_construct>(annotations);
     // TODO: should modifier list be sorted?...
-    new_annotations.append(new modifier_construct(static_modifier, source));
-    return new_annotations;
+    annotations.append(new modifier_construct(static_modifier, the_origin));
   }
 
-  /*
-  private readonly_list<construct> transform_static(readonly_list<construct> body_constructs) {
+  private readonly_list<construct> transform_static(readonly_list<declaration> declarations) {
     list<construct> result = new base_list<construct>();
-    for (int i = 0; i < body_constructs.size(); ++i) {
-      construct decl = body_constructs.get(i);
-      if (decl instanceof variable_construct) {
-        variable_construct var_decl = (variable_construct) transform(decl);
-        variable_declaration the_declaration = (variable_declaration) get_analyzable(decl);
-        readonly_list<annotation_construct> annotations =
-            transform_annotations(var_decl.annotations, the_declaration.annotations(),
-                false, the_declaration);
-        annotations = append_static(annotations, var_decl);
-        var_decl = new variable_construct(annotations, var_decl.type, var_decl.name,
-            new empty<annotation_construct>(), var_decl.init, var_decl);
-        result.append(var_decl);
-      } else if (decl instanceof procedure_construct) {
-        procedure_construct proc_decl = (procedure_construct) transform(decl);
-        procedure_declaration the_declaration = (procedure_declaration) get_analyzable(decl);
-        assert the_declaration != null;
-        readonly_list<annotation_construct> annotations =
-            transform_annotations(proc_decl.annotations, the_declaration.annotations(),
-                false, the_declaration);
-        if (the_declaration.get_category() != procedure_category.CONSTRUCTOR) {
-          annotations = append_static(annotations, proc_decl);
+    for (int i = 0; i < declarations.size(); ++i) {
+      declaration decl = declarations.get(i);
+      origin the_origin = decl;
+      if (decl instanceof variable_declaration) {
+        variable_declaration the_variable = (variable_declaration) decl;
+        list<annotation_construct> annotations = to_annotations(the_variable.annotations(),
+            false, the_origin);
+        append_static(annotations, the_origin);
+        // TODO: do we need to handle null?
+        result.append(process_variable(the_variable, annotations));
+      } else if (decl instanceof procedure_declaration) {
+        procedure_declaration the_procedure = (procedure_declaration) decl;
+        list<annotation_construct> annotations = to_annotations(the_procedure.annotations(),
+            false, the_origin);
+        if (the_procedure.get_category() != procedure_category.CONSTRUCTOR) {
+          append_static(annotations, the_origin);
         }
-        list_construct proc_params = proc_decl.parameters;
-        if (proc_params == null) {
-          proc_params = make_parens(proc_decl);
-        }
-        proc_decl = new procedure_construct(annotations, proc_decl.ret, proc_decl.name,
-              proc_params, new empty<annotation_construct>(), proc_decl.body, proc_decl);
-        result.append(proc_decl);
-      } else if (decl instanceof block_construct) {
+        result.append(process_procedure(the_procedure, annotations));
+      } else if (decl instanceof block_analyzer) {
         // TODO: make sure this is a static block...
         result.append_all(transform1(decl));
-      } else if (decl instanceof import_construct) {
+      } else if (decl instanceof import_analyzer) {
         // Skip imports: they should have been declared at the top level.
-      } else if (decl instanceof empty_construct) {
-        // Skip empty constructs
       } else {
         utilities.panic("Unexpected declaration in a namespace: " + decl);
       }
     }
+
     return result;
   }
-  */
 
   private boolean skip_type_declaration(principal_type the_type) {
     if (java_library.is_mapped(the_type) || the_type.is_subtype_of(library().null_type())) {
@@ -841,7 +830,7 @@ public class to_java_transformer2 extends base_transformer2 {
   @Override
   public Object process_type(type_declaration the_type_declaration) {
     origin the_origin = the_type_declaration;
-    readonly_list<annotation_construct> annotations = to_annotations(
+    list<annotation_construct> annotations = to_annotations(
         the_type_declaration.annotations(), false, the_origin);
 
     kind the_kind = the_type_declaration.get_kind();
@@ -850,7 +839,7 @@ public class to_java_transformer2 extends base_transformer2 {
     if (the_kind.is_namespace()) {
       assert the_type_declaration.get_parameters() == null;
       if (declared_in_type != package_type) {
-        annotations = append_static(annotations, the_origin);
+        append_static(annotations, the_origin);
       }
       // TODO: add a private constructor
       return new type_declaration_construct(
@@ -858,7 +847,7 @@ public class to_java_transformer2 extends base_transformer2 {
         class_kind,
         the_type_declaration.short_name(),
         null,
-        transform_list(the_type_declaration.get_signature()), // TODO!! transform_static(c.body),
+        transform_static(the_type_declaration.get_signature()),
         the_origin);
     }
 
@@ -881,7 +870,7 @@ public class to_java_transformer2 extends base_transformer2 {
 
     if (declared_in_type.get_kind() == class_kind) {
       // Introduce inner type.
-      annotations = append_static(annotations, the_origin);
+      append_static(annotations, the_origin);
     }
 
     boolean concrete_mode = is_concrete_kind(the_kind);
@@ -1208,13 +1197,22 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_variable(variable_declaration the_variable) {
     origin the_origin = the_variable;
 
+    principal_type declared_in_type = the_variable.declared_in_type();
+    list<annotation_construct> annotations = to_annotations(the_variable.annotations(),
+        skip_access(declared_in_type), the_origin);
+
+    return process_variable(the_variable, annotations);
+  }
+
+  public construct process_variable(variable_declaration the_variable,
+      list<annotation_construct> annotations) {
+    origin the_origin = the_variable;
+
     if (the_variable.annotations().has(not_yet_implemented_modifier)) {
       return null;
     }
 
     principal_type declared_in_type = the_variable.declared_in_type();
-    list<annotation_construct> annotations = to_annotations(the_variable.annotations(),
-        skip_access(declared_in_type), the_origin);
 
     boolean is_mutable = the_variable.reference_type().get_flavor() == mutable_flavor;
     if (!is_mutable &&
@@ -2127,19 +2125,6 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_literal(literal_analyzer the_literal) {
     origin the_origin = the_literal;
     return new literal_construct(the_literal.the_literal, the_origin);
-  }
-
-  public construct process_procedure(procedure_declaration the_procedure) {
-    origin the_origin = the_procedure;
-    grouping_type grouping = grouping_type.PARENS;
-    boolean has_trailing_comma = false;
-    list_construct parameters = new list_construct(
-        transform_list(the_procedure.get_parameter_variables()),
-            grouping, has_trailing_comma, the_origin);
-    return new procedure_construct(to_annotations(the_procedure.annotations(), the_origin),
-        make_type(the_procedure.get_return_type(), the_origin), the_procedure.original_name(),
-        parameters, new empty<annotation_construct>(),
-        transform(the_procedure.get_body()), the_origin);
   }
 
   public construct process_return(return_analyzer the_return) {

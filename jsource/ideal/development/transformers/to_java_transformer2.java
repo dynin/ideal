@@ -723,6 +723,28 @@ public class to_java_transformer2 extends base_transformer2 {
     return make_full_name(new resolve_construct(parent_name, name, pos), parent, pos);
   }
 
+  protected construct make_imported_type(principal_type the_type, origin the_origin) {
+    construct name = new name_construct(get_simple_name(the_type), the_origin);
+    name = make_imported_full_name(name, the_type, the_origin);
+
+    return name;
+  }
+
+  protected construct make_imported_full_name(construct name, principal_type the_type,
+      origin the_origin) {
+    @Nullable principal_type parent = the_type.get_parent();
+    if (parent == null) {
+      return name;
+    }
+
+    if (! (parent.short_name() instanceof simple_name)) {
+      utilities.panic("Full name of " + the_type + ", parent " + parent);
+    }
+
+    construct parent_name = new name_construct(parent.short_name(), the_origin);
+    return make_full_name(new resolve_construct(parent_name, name, the_origin), parent, the_origin);
+  }
+
   @Override
   protected simple_name make_name(simple_name type_name, principal_type the_type,
       type_flavor flavor) {
@@ -1619,7 +1641,8 @@ public class to_java_transformer2 extends base_transformer2 {
       }
     }
 
-    return new import_construct(annotations, transform(the_import.type_analyzable), the_origin);
+    return new import_construct(annotations,
+        make_imported_type((principal_type) the_import.get_type(), the_origin), the_origin);
   }
 
   @Override

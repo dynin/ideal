@@ -348,14 +348,13 @@ public class to_java_transformer2 extends base_transformer2 {
     if (the_resolve.short_name() == special_name.NEW) {
       return new operator_construct(operator.ALLOCATE, qualifier, the_origin);
     }
-
-    // TODO!! return maybe_call(new resolve_construct(qualifier, name, the_origin), the_origin);
-    return new resolve_construct(qualifier, name, the_origin);
+    return maybe_call(the_resolve, new resolve_construct(qualifier, name, the_origin),
+        the_origin);
   }
 
-  /*
-  private construct maybe_call(construct new_construct, construct source) {
-    analyzable the_analyzable = get_analyzable(source);
+  // TODO: should analyzable be resolve_analyzer?
+  private construct maybe_call(analyzable the_analyzable, construct new_construct,
+      origin the_origin) {
     @Nullable declaration the_declaration;
     if (the_analyzable instanceof resolve_analyzer) {
       resolve_analyzer the_resolve_analyzer = (resolve_analyzer) the_analyzable;
@@ -365,7 +364,7 @@ public class to_java_transformer2 extends base_transformer2 {
       the_declaration = declaration_util.get_declaration(the_analyzable);
     }
     if (the_declaration != null && should_call_as_procedure(the_declaration)) {
-      return make_call(new_construct, new empty<construct>(), source);
+      return make_call(new_construct, new empty<construct>(), the_origin);
     } else {
       return new_construct;
     }
@@ -398,7 +397,6 @@ public class to_java_transformer2 extends base_transformer2 {
   private boolean has_override(annotation_set the_annotations) {
     return the_annotations.has(override_modifier) || the_annotations.has(implement_modifier);
   }
-  */
 
   @Override
   public construct process_flavor(flavor_analyzer the_flavor) {
@@ -510,8 +508,12 @@ public class to_java_transformer2 extends base_transformer2 {
           body_statements = new base_list<construct>(transformed_body);
         } else {
           // TODO: do not add return to ctors and void functions
-          body_statements = new base_list<construct>(
-              new return_construct(transformed_body, the_origin));
+          if (the_procedure.get_category() != procedure_category.CONSTRUCTOR) {
+            body_statements = new base_list<construct>(
+                new return_construct(transformed_body, the_origin));
+          } else {
+            body_statements = new base_list<construct>(transformed_body);
+          }
         }
       } else {
         body_statements = body_constructs;
@@ -1670,33 +1672,30 @@ public class to_java_transformer2 extends base_transformer2 {
     return the_literal_construct;
   }
 
-  /*
   @Override
-  public construct process_return(return_construct the_construct) {
-    origin source = the_construct;
+  public construct process_return(return_analyzer the_return) {
+    origin the_origin = the_return;
 
-    // TODO: should we just force the expression to be either null or empty?
-    if (the_construct.the_expression == null ||
-        the_construct.the_expression instanceof empty_construct) {
-      @Nullable procedure_declaration the_procedure =
-          ((return_analyzer) get_analyzable(the_construct)).the_procedure;
+    if (the_return.the_expression == null ||
+        the_return.return_type().principal() == library().void_type()) {
+      @Nullable procedure_declaration the_procedure = the_return.the_procedure;
       // We rewrite return constructs of procedures that return 'Void' with capital 'V'
       if (the_procedure != null && should_use_wrapper_in_return(the_procedure)) {
-        return new return_construct(make_null(source), source);
+        return new return_construct(make_null(the_origin), the_origin);
       }
-      return the_construct;
-    } else {
-      return_analyzer the_return = (return_analyzer) get_analyzable(the_construct);
-      construct the_expression;
-      if (library().is_reference_type(the_return.return_type())) {
-        the_expression = transform(the_construct.the_expression);
-      } else {
-        the_expression = transform_and_maybe_rewrite(the_construct.the_expression);
-      }
-      return new return_construct(the_expression, source);
+      return new return_construct(null, the_origin);
     }
+
+    construct the_expression;
+    if (library().is_reference_type(the_return.return_type())) {
+      the_expression = transform(the_return.the_expression);
+    } else {
+      the_expression = transform_and_maybe_rewrite(the_return.the_expression);
+    }
+    return new return_construct(the_expression, the_origin);
   }
 
+  /*
   @Override
   public Object process_extension(extension_construct the_construct) {
     if (the_construct instanceof please_construct) {
@@ -2125,11 +2124,6 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_literal(literal_analyzer the_literal) {
     origin the_origin = the_literal;
     return new literal_construct(the_literal.the_literal, the_origin);
-  }
-
-  public construct process_return(return_analyzer the_return) {
-    origin the_origin = the_return;
-    return new return_construct(transform(the_return.the_expression), the_return);
   }
 
   public construct process_statement_list(statement_list_analyzer the_statement_list) {

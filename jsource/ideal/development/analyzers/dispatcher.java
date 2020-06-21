@@ -15,6 +15,7 @@ import ideal.development.elements.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
+import ideal.development.extensions.grouping_analyzer;
 
 public class dispatcher extends construct_visitor<analyzable> {
 
@@ -63,7 +64,7 @@ public class dispatcher extends construct_visitor<analyzable> {
   @Override
   public analyzable process_list(list_construct source) {
     if (source.is_simple_grouping()) {
-      return process(source.elements.first());
+      return new grouping_analyzer(process(source.elements.first()), source);
     } else {
       return new list_initializer_analyzer(source);
     }

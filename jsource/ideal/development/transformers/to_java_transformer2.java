@@ -2103,11 +2103,24 @@ public class to_java_transformer2 extends base_transformer2 {
   public construct process_error_signal(error_signal the_error_signal) {
     return process_default(the_error_signal);
   }
+  */
 
-  public construct process_extension(extension_analyzer the_extension) {
-    return transform(the_extension.expand());
+  public construct process_grouping(grouping_analyzer the_grouping) {
+    origin the_origin = the_grouping;
+    return new list_construct(new base_list<construct>(transform(the_grouping.expression)),
+        grouping_type.PARENS, false, the_origin);
   }
 
+  @Override
+  public construct process_extension(extension_analyzer the_extension) {
+    if (the_extension instanceof grouping_analyzer) {
+      return process_grouping((grouping_analyzer) the_extension);
+    } else {
+      return transform(the_extension.expand());
+    }
+  }
+
+  /*
   public construct process_jump(jump_analyzer the_jump) {
     origin the_origin = the_jump;
     return new jump_construct(the_jump.the_jump_type, the_origin);

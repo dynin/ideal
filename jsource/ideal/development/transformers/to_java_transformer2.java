@@ -157,8 +157,19 @@ public class to_java_transformer2 extends base_transformer2 {
   }
   */
 
-  protected action get_action(analyzable a) {
-    return analyzer_utilities.to_action(a);
+  protected action get_action(analyzable the_analyzable) {
+    return analyzer_utilities.to_action(the_analyzable);
+  }
+
+  // TODO: detailed errors instead of asserts?
+  protected type get_type(analyzable the_analyzable) {
+    action the_action = get_action(the_analyzable);
+    assert the_action instanceof type_action : "Action: " + the_action;
+    return ((type_action) the_action).get_type();
+  }
+
+  private @Nullable declaration get_declaration(analyzable the_analyzable) {
+    return declaration_util.get_declaration(get_action(the_analyzable));
   }
 
   /*
@@ -338,8 +349,9 @@ public class to_java_transformer2 extends base_transformer2 {
       return name;
     }
 
-    if (the_resolve.get_from() == null) {
-      return name;
+    if (!the_resolve.has_from()) {
+      //return name;
+      return maybe_call(the_resolve, name, the_origin);
     }
 
     // Note: we do not transform the name!
@@ -358,10 +370,9 @@ public class to_java_transformer2 extends base_transformer2 {
     @Nullable declaration the_declaration;
     if (the_analyzable instanceof resolve_analyzer) {
       resolve_analyzer the_resolve_analyzer = (resolve_analyzer) the_analyzable;
-      the_declaration = declaration_util.get_declaration(
-          the_resolve_analyzer.get_main_candidate());
+      the_declaration = declaration_util.get_declaration(the_resolve_analyzer.get_main_candidate());
     } else {
-      the_declaration = declaration_util.get_declaration(the_analyzable);
+      the_declaration = get_declaration(the_analyzable);
     }
     if (the_declaration != null && should_call_as_procedure(the_declaration)) {
       return make_call(new_construct, new empty<construct>(), the_origin);
@@ -1303,10 +1314,11 @@ public class to_java_transformer2 extends base_transformer2 {
         new list_construct(new base_list<construct>(the_call), grouping_type.BRACES, false, source),
         source);
   }
+  */
 
-  private boolean is_explicit_reference(construct the_construct) {
+  private boolean is_explicit_reference(analyzable the_analyzable) {
     // TODO: this needs to be fixed/cleaned up.
-    declaration the_declaration = get_declaration(the_construct);
+    declaration the_declaration = get_declaration(the_analyzable);
     if (the_declaration instanceof variable_declaration) {
       variable_declaration the_variable = (variable_declaration) the_declaration;
       if (the_variable.reference_type().get_flavor() == mutable_flavor) {
@@ -1328,7 +1340,6 @@ public class to_java_transformer2 extends base_transformer2 {
     return new parameter_construct(get_construct,
         new list_construct(new empty<construct>(), grouping_type.PARENS, false, source), source);
   }
-  */
 
   private boolean is_procedure_with_no_body(@Nullable declaration the_declaration) {
     return the_declaration instanceof procedure_declaration &&
@@ -1359,15 +1370,18 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   private construct transform_and_maybe_rewrite(analyzable the_analyzable) {
+    origin the_origin = the_analyzable;
     construct transformed = transform(the_analyzable);
-    /* TODO: expose
-    if (is_explicit_reference(the_construct)) {
-      return do_explicitly_derefence(transformed, the_construct);
-    } else if (is_procedure_reference(the_construct)) {
+    if (is_explicit_reference(the_analyzable)) {
+      return do_explicitly_derefence(transformed, the_origin);
+    }
+    /*
+    else if (is_procedure_reference(the_construct)) {
       return make_procedure_class(transformed, the_construct);
     } else {
       return transformed;
-    }*/
+    }
+    */
     return transformed;
   }
 
@@ -1384,10 +1398,12 @@ public class to_java_transformer2 extends base_transformer2 {
     origin the_origin = the_parameter;
 
     analyzable main_analyzable = the_parameter.main_analyzable;
-    construct main_construct = get_construct(main_analyzable);
-    if (main_construct instanceof operator_construct) {
-      return process_operator(the_parameter, (operator_construct) main_construct,
-          the_parameter.analyzable_parameters, the_origin);
+    if (main_analyzable instanceof resolve_analyzer) {
+      resolve_analyzer the_resolve_analyzer = (resolve_analyzer) main_analyzable;
+      if (the_resolve_analyzer.short_name() instanceof operator) {
+        return process_operator(the_parameter, (operator) the_resolve_analyzer.short_name(),
+            the_parameter.analyzable_parameters);
+      }
     }
 
     action the_action = get_action(the_parameter);
@@ -1401,14 +1417,14 @@ public class to_java_transformer2 extends base_transformer2 {
       action main_action = get_action(main_analyzable);
       if (main_action.result().type_bound().principal().get_kind() == procedure_kind) {
         // TODO: handle resolve_construct here.
-        name_construct procedure_type_name = (name_construct) main_construct;
+        name_construct procedure_type_name = (name_construct) get_construct(main_analyzable);
         simple_name base_name = (simple_name) procedure_type_name.the_name;
         int arity = parameters.size() - 1;
         main = new name_construct(make_procedure_name(base_name, arity), the_origin);
       }
     } else {
       parameters = transform_parameters(the_parameter.analyzable_parameters);
-      @Nullable declaration the_declaration = declaration_util.get_declaration(the_parameter);
+      @Nullable declaration the_declaration = get_declaration(the_parameter);
       if (the_declaration instanceof procedure_declaration) {
         procedure_declaration proc_decl = (procedure_declaration) the_declaration;
         if (proc_decl.get_category() != procedure_category.CONSTRUCTOR &&
@@ -1444,21 +1460,6 @@ public class to_java_transformer2 extends base_transformer2 {
     return transformed;
   }
 
-  public construct process_operator(parameter_analyzer the_parameter,
-      operator_construct the_construct, readonly_list<analyzable> analyzable_parameters,
-      origin the_origin) {
-    if (the_construct.the_operator == operator.GENERAL_OR) {
-      action the_action = get_action(the_parameter);
-      if (the_action instanceof type_action && mapping_strategy == mapping.MAP_TO_WRAPPER_TYPE) {
-        return make_type(remove_null_type(((type_action) the_action).get_type()), the_origin);
-      }
-      utilities.panic("Unexpected 'or' operator " + the_construct);
-    }
-
-    return new operator_construct(map_operator(the_construct.the_operator),
-        transform_list(analyzable_parameters), the_origin);
-  }
-
   // TODO: better way to detect procedure variables?
   private boolean is_procedure_variable(@Nullable declaration the_declaration) {
     return the_declaration instanceof type_declaration &&
@@ -1478,65 +1479,66 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
-  /*
-  @Override
-  public Object process_operator(operator_construct c) {
-    origin source = c;
+  public construct process_operator(parameter_analyzer the_parameter,
+      operator the_operator, readonly_list<analyzable> arguments) {
+    origin the_origin = the_parameter;
 
     // TODO: handle other assignment operators.
-    if (c.the_operator == operator.ASSIGN) {
-      construct lhs = c.arguments.first();
-      construct rhs = transform_and_maybe_rewrite(c.arguments.get(1));
-      if (lhs instanceof parameter_construct) {
-        parameter_construct lhs2 = (parameter_construct) lhs;
-        readonly_list<construct> plhs = lhs2.parameters.elements;
+    if (the_operator == operator.ASSIGN) {
+      analyzable lhs = arguments.get(0);
+      construct rhs = transform_and_maybe_rewrite(arguments.get(1));
+      if (lhs instanceof parameter_analyzer) {
+        parameter_analyzer lhs2 = (parameter_analyzer) lhs;
+        readonly_list<analyzable> plhs = lhs2.analyzable_parameters;
         @Nullable declaration the_declaration = get_declaration(lhs2);
         if (the_declaration instanceof procedure_declaration) {
           procedure_declaration proc_decl = (procedure_declaration) the_declaration;
           if (proc_decl.annotations().has(implicit_modifier) && plhs.size() == 1) {
-            construct main = transform(lhs2.main);
+            construct main = transform(lhs2.main_analyzable);
             readonly_list<construct> set_params =
                 new base_list<construct>(transform(plhs.first()), rhs);
-            construct set = new resolve_construct(main, new name_construct(SET_NAME, source),
-                source);
-            return make_call(set, set_params, source);
+            construct set = new resolve_construct(main, new name_construct(SET_NAME, the_origin),
+                the_origin);
+            return make_call(set, set_params, the_origin);
           }
         }
       }
       if (is_explicit_reference(lhs)) {
         construct main = transform(lhs);
         readonly_list<construct> set_params = new base_list<construct>(rhs);
-        construct set = new resolve_construct(main, new name_construct(SET_NAME, source), source);
-        return make_call(set, set_params, source);
+        construct set = new resolve_construct(main, new name_construct(SET_NAME, the_origin),
+            the_origin);
+        return make_call(set, set_params, the_origin);
       }
       // TODO: this should be generic...
-      lhs = transform(lhs);
-      base_list<construct> arguments = new base_list<construct>(lhs, rhs);
-      return new operator_construct(operator.ASSIGN, arguments, source);
-    } else if (c.the_operator == operator.AS_OPERATOR) {
-      return transform_cast(c.arguments.get(0), c.arguments.get(1), c);
-    } else if (c.the_operator == operator.IS_OPERATOR) {
-      construct expression = c.arguments.get(0);
-      construct the_type_construct = c.arguments.get(1);
-      type the_type = get_type(the_type_construct);
+      base_list<construct> arguments_constructs = new base_list<construct>(transform(lhs), rhs);
+      return new operator_construct(operator.ASSIGN, arguments_constructs, the_origin);
+    }
+    /*else if (the_operator == operator.AS_OPERATOR) {
+      return transform_cast(arguments.get(0), arguments.get(1), c);
+    } */
+    else if (the_operator == operator.IS_OPERATOR) {
+      construct expression = transform(arguments.get(0));
+      type the_type = get_type(arguments.get(1));
 
       if (the_type == library().null_type()) {
-        return new operator_construct(operator.EQUAL_TO, transform(expression),
-            make_null(the_type_construct), source);
+        return new operator_construct(operator.EQUAL_TO, expression, make_null(the_origin),
+            the_origin);
       } else if (the_type == library().nonnegative_type()) {
-        return new operator_construct(operator.GREATER_EQUAL, transform(expression),
-            make_zero(source), source);
+        return new operator_construct(operator.GREATER_EQUAL, expression, make_zero(the_origin),
+            the_origin);
       }
-    } else if (c.the_operator == operator.IS_NOT_OPERATOR) {
-      construct expression = c.arguments.get(0);
-      construct the_type = c.arguments.get(1);
+    }
+    /*else if (the_operator == operator.IS_NOT_OPERATOR) {
+      construct expression = arguments.get(0);
+      construct the_type = arguments.get(1);
 
       if (get_type(the_type) == library().null_type()) {
         return new operator_construct(operator.NOT_EQUAL_TO, transform(expression),
-            make_null(the_type), source);
+            make_null(the_type), the_origin);
       }
       // TODO: convert is_not to instanceof
-    } else if (c.the_operator == operator.EQUAL_TO) {
+    } else if (the_operator == operator.EQUAL_TO) {
       action first = ((bound_procedure) get_action(c)).parameters.params().get(0);
       if (first instanceof promotion_action) {
         first = ((promotion_action) first).get_action();
@@ -1557,27 +1559,31 @@ public class to_java_transformer2 extends base_transformer2 {
 
       if (!is_primitive && !is_reference_equality) {
         construct values_equal = new resolve_construct(make_type(java_library.runtime_util_class(),
-            source), new name_construct(OBJECTS_EQUAL_NAME, source), source);
-        return make_call(values_equal, transform_parameters(c.arguments), source);
+            the_origin), new name_construct(OBJECTS_EQUAL_NAME, the_origin), the_origin);
+        return make_call(values_equal, transform_parameters(arguments), the_origin);
       }
-    } else if (c.the_operator == operator.NOT_EQUAL_TO) {
+    } else if (the_operator == operator.NOT_EQUAL_TO) {
       // TODO: convert into an equivalence function call if the argument is not a primitive.
-    } else if (c.the_operator == operator.CONCATENATE) {
-      if (!is_string_type(c.arguments.get(0)) || !is_string_type(c.arguments.get(1))) {
+    } else if (the_operator == operator.CONCATENATE) {
+      if (!is_string_type(arguments.get(0)) || !is_string_type(c.arguments.get(1))) {
         construct concatenation = new resolve_construct(make_type(java_library.runtime_util_class(),
-            source), new name_construct(CONCATENATE_NAME, source), source);
-        return make_call(concatenation, transform(c.arguments), source);
+            the_origin), new name_construct(CONCATENATE_NAME, the_origin), the_origin);
+        return make_call(concatenation, transform(arguments), the_origin);
       }
-    } else if (c.the_operator == operator.GENERAL_OR) {
-      if (mapping_strategy == mapping.MAP_TO_WRAPPER_TYPE) {
-        return remove_null_union(c);
+    } */
+    else if (the_operator == operator.GENERAL_OR) {
+      action the_action = get_action(the_parameter);
+      if (the_action instanceof type_action && mapping_strategy == mapping.MAP_TO_WRAPPER_TYPE) {
+        return make_type(remove_null_type(((type_action) the_action).get_type()), the_origin);
       }
-      utilities.panic("Unexpected 'or' operator" + c);
+      utilities.panic("Unexpected 'or' operator " + the_parameter);
     }
 
-    return new operator_construct(map_operator(c.the_operator), transform(c.arguments), source);
+    return new operator_construct(map_operator(the_operator), transform_list(arguments),
+        the_origin);
   }
 
+  /*
   public construct transform_cast(construct expression, construct type_construct, origin pos) {
     type expression_type = result_value(get_action(expression));
     type the_type = get_type(type_construct);

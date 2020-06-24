@@ -48,6 +48,7 @@ public class to_java_transformer2 extends base_transformer2 {
   private set<principal_type> implicit_names;
   private set<principal_type> imported_names;
   private mapping mapping_strategy;
+  private principal_type main_type;
   private principal_type package_type;
 
   private static simple_name SET_NAME = simple_name.make("set");
@@ -77,6 +78,12 @@ public class to_java_transformer2 extends base_transformer2 {
 
   public void set_type_context(principal_type main_type, readonly_list<import_construct> imports,
       origin pos) {
+    if (main_type instanceof parametrized_type) {
+      this.main_type = ((parametrized_type) main_type).get_master();
+    } else {
+      this.main_type = main_type;
+    }
+
     package_type = main_type.get_parent();
 
     assert package_type == core_types.root_type() ||
@@ -519,7 +526,8 @@ public class to_java_transformer2 extends base_transformer2 {
           body_statements = new base_list<construct>(transformed_body);
         } else {
           // TODO: do not add return to ctors and void functions
-          if (the_procedure.get_category() != procedure_category.CONSTRUCTOR) {
+          if (the_procedure.get_category() != procedure_category.CONSTRUCTOR &&
+              the_procedure.get_return_type().principal() != library().void_type()) {
             body_statements = new base_list<construct>(
                 new return_construct(transformed_body, the_origin));
           } else {
@@ -569,7 +577,7 @@ public class to_java_transformer2 extends base_transformer2 {
           ret = transform_with_mapping(the_procedure.get_return(), mapping.MAP_TO_WRAPPER_TYPE);
           // Note: if Java return type is 'Void' (with the capital V),
           // then we may need to insert "return null" to keep javac happy.
-          if (the_procedure.get_return_type() == library().immutable_void_type() &&
+          if (the_procedure.get_return_type().principal() == library().void_type() &&
               body_statements != null &&
               the_procedure.get_body_action().result() != core_types.unreachable_type()) {
             list<construct> new_body = new base_list<construct>();
@@ -712,14 +720,16 @@ public class to_java_transformer2 extends base_transformer2 {
     return the_type == java_library.java_package() || the_type == java_library.javax_package();
   }
 
-  protected construct make_full_name(construct name, principal_type the_type, origin pos) {
-    if (imported_names.contains(the_type)) {
+  protected construct make_full_name(construct name, principal_type the_type, origin the_origin) {
+    if (imported_names.contains(the_type) || the_type == main_type) {
       return name;
     }
 
-    if (the_type instanceof parametrized_type &&
-        imported_names.contains(((parametrized_type) the_type).get_master())) {
-      return name;
+    if (the_type instanceof parametrized_type) {
+      master_type the_master_type = ((parametrized_type) the_type).get_master();
+      if (imported_names.contains(the_master_type) || the_master_type == main_type) {
+        return name;
+      }
     }
 
     if (the_type.get_declaration() instanceof type_parameter_declaration) {
@@ -731,7 +741,7 @@ public class to_java_transformer2 extends base_transformer2 {
     }
 
     @Nullable principal_type parent = the_type.get_parent();
-    if (parent == null || implicit_names.contains(parent)) {
+    if (parent == null || implicit_names.contains(parent) || parent == main_type) {
       return name;
     }
 
@@ -739,8 +749,8 @@ public class to_java_transformer2 extends base_transformer2 {
       utilities.panic("Full name of " + the_type + ", parent " + parent);
     }
 
-    construct parent_name = new name_construct(parent.short_name(), pos);
-    return make_full_name(new resolve_construct(parent_name, name, pos), parent, pos);
+    construct parent_name = new name_construct(parent.short_name(), the_origin);
+    return make_full_name(new resolve_construct(parent_name, name, the_origin), parent, the_origin);
   }
 
   protected construct make_imported_type(principal_type the_type, origin the_origin) {
@@ -1086,22 +1096,22 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   private procedure_construct var_to_proc(variable_declaration the_variable) {
-    origin pos = the_variable;
+    origin the_origin = the_variable;
     type return_type = is_readonly_flavor(the_variable.reference_type().get_flavor()) ?
         the_variable.value_type() : the_variable.reference_type();
     // TODO: should we inherit attotaions from the_variable?
     list<annotation_construct> annotations = new base_list<annotation_construct>();
     if (type_utilities.is_union(return_type)) {
-      annotations.append(new modifier_construct(nullable_modifier, pos));
+      annotations.append(new modifier_construct(nullable_modifier, the_origin));
       // make_type() strips null from union type
     }
     return new procedure_construct(annotations,
-        make_type(return_type, pos),
+        make_type(return_type, the_origin),
         the_variable.short_name(),
-        make_parens(pos),
+        make_parens(the_origin),
         new empty<annotation_construct>(),
         null,
-        pos);
+        the_origin);
   }
 
   private list_construct make_parens(origin the_origin) {

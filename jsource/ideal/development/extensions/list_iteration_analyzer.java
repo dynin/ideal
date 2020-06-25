@@ -37,7 +37,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
   public final annotation_set annotations;
   public final action_name var_name;
   private final analyzable var_type;
-  private final analyzable init;
+  public final analyzable init;
   @dont_display
   public final analyzable body;
   @dont_display

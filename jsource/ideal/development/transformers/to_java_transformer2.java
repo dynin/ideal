@@ -512,29 +512,25 @@ public class to_java_transformer2 extends base_transformer2 {
     @Nullable readonly_list<construct> body_statements = null;
 
     if (the_procedure.get_body() != null) {
-      boolean add_return = the_procedure.get_category() != procedure_category.CONSTRUCTOR &&
-          the_procedure.get_return_type().principal() != library().void_type() &&
-          the_procedure.get_body_action().result().type_bound() != core_types.unreachable_type();
-      readonly_list<construct> body_constructs = transform1(the_procedure.get_body());
+      boolean is_constructor = the_procedure.get_category() == procedure_category.CONSTRUCTOR;
+      boolean void_return = the_procedure.get_return_type().principal() == library().void_type();
+      boolean unreachable_result =
+          the_procedure.get_body_action().result().type_bound() == core_types.unreachable_type();
 
-      if (body_constructs.size() == 1) {
-        construct transformed_body = body_constructs.get(0);
-        if (transformed_body instanceof block_construct) {
-          body_statements = ((block_construct) transformed_body).body;
-        } else if (transformed_body instanceof return_construct) {
-          body_statements = new base_list<construct>(transformed_body);
-        } else {
-          boolean rrr = should_use_wrapper_in_return(the_procedure);
-          if (add_return) {
-            body_statements = new base_list<construct>(
-                new return_construct(transformed_body, the_origin));
-          } else {
-            body_statements = new base_list<construct>(transformed_body);
-          }
+      boolean add_return = !is_constructor && !unreachable_result && void_return &&
+          should_use_wrapper_in_return(the_procedure);
+
+      list<construct> body = transform1(the_procedure.get_body());
+      if (add_return) {
+        body.append(new return_construct(make_null(the_origin), the_origin));
+      } else if (body.size() == 1) {
+        // TODO: use analyzables instead of constructs here
+        construct body_construct = body.first();
+        if (!is_constructor && !void_return && !unreachable_result) {
+          body = new base_list<construct>(new return_construct(body_construct, the_origin));
         }
-      } else {
-        body_statements = body_constructs;
       }
+      body_statements = body;
     }
 
     @Nullable construct ret;
@@ -1508,11 +1504,9 @@ public class to_java_transformer2 extends base_transformer2 {
       // TODO: this should be generic...
       base_list<construct> arguments_constructs = new base_list<construct>(transform(lhs), rhs);
       return new operator_construct(operator.ASSIGN, arguments_constructs, the_origin);
-    }
-    /*else if (the_operator == operator.AS_OPERATOR) {
-      return transform_cast(arguments.get(0), arguments.get(1), c);
-    } */
-    else if (the_operator == operator.IS_OPERATOR) {
+    } else if (the_operator == operator.AS_OPERATOR) {
+      return transform_cast(arguments.get(0), arguments.get(1), the_origin);
+    } else if (the_operator == operator.IS_OPERATOR) {
       construct expression = transform(arguments.get(0));
       type the_type = get_type(arguments.get(1));
 
@@ -1568,13 +1562,13 @@ public class to_java_transformer2 extends base_transformer2 {
         the_origin);
   }
 
-  /*
-  public construct transform_cast(construct expression, construct type_construct, origin pos) {
+  public construct transform_cast(analyzable expression, analyzable type_analyzable,
+      origin the_origin) {
     type expression_type = result_type(get_action(expression));
-    type the_type = get_type(type_construct);
+    type the_type = get_type(type_analyzable);
 
     construct transformed_expression = transform(expression);
-    construct transformed_type = transform(type_construct);
+    construct transformed_type = transform(type_analyzable);
 
     if (the_type == library().nonnegative_type() &&
         expression_type == library().immutable_integer_type()) {
@@ -1592,13 +1586,13 @@ public class to_java_transformer2 extends base_transformer2 {
       master_type the_master = ((parametrized_type) type_principal).get_master();
       type intermediate_type = the_master.get_flavored(the_type.get_flavor());
       transformed_expression = new operator_construct(operator.AS_OPERATOR,
-        new base_list<construct>(transformed_expression, make_type(intermediate_type, pos)), pos);
+        new base_list<construct>(transformed_expression, make_type(intermediate_type, the_origin)),
+            the_origin);
     }
 
     return new operator_construct(operator.AS_OPERATOR,
-        new base_list<construct>(transformed_expression, transformed_type), pos);
+        new base_list<construct>(transformed_expression, transformed_type), the_origin);
   }
-  */
 
   public operator map_operator(operator the_operator) {
     if (the_operator == operator.CONCATENATE) {
@@ -1699,10 +1693,10 @@ public class to_java_transformer2 extends base_transformer2 {
 
     return super.process_extension(the_construct);
   }
+  */
 
-  construct rewrite_list_iteration(list_iteration_construct the_construct) {
-    origin the_origin = the_construct;
-    list_iteration_analyzer the_analyzer = (list_iteration_analyzer) get_analyzable(the_construct);
+  construct process_list_iteration(list_iteration_analyzer the_analyzer) {
+    origin the_origin = the_analyzer;
 
     construct element_type = make_type(the_analyzer.get_element_type(), the_origin);
     list<annotation_construct> final_annotation = new base_list<annotation_construct>();
@@ -1716,10 +1710,10 @@ public class to_java_transformer2 extends base_transformer2 {
         new list_construct(new base_list<construct>(element_type),
             grouping_type.ANGLE_BRACKETS, false, the_origin),
         the_origin);
-    simple_name element_name = (simple_name) the_construct.var_decl.name;
+    simple_name element_name = (simple_name) the_analyzer.var_name;
     simple_name list_name = name_utilities.join(element_name, LIST_NAME);
     simple_name index_name = name_utilities.join(element_name, simple_name.make("index"));
-    construct init_construct = transform(the_construct.var_decl.init);
+    construct init_construct = transform(the_analyzer.init);
 
     construct list_declaration_construct = new variable_construct(
         final_annotation,
@@ -1785,7 +1779,7 @@ public class to_java_transformer2 extends base_transformer2 {
         ),
         the_origin);
 
-    construct body_construct = transform(the_construct.body);
+    construct body_construct = transform(the_analyzer.body);
     list<construct> body_constructs = new base_list<construct>(element_declaration_construct);
     if (body_construct instanceof block_construct) {
       body_constructs.append_all(((block_construct) body_construct).body);
@@ -1804,7 +1798,6 @@ public class to_java_transformer2 extends base_transformer2 {
         list_declaration_construct, for_loop_construct);
     return new block_construct(block_constructs, the_origin);
   }
-  */
 
   private simple_name get_simple_name(construct c) {
     name_construct identifier = (name_construct) c;
@@ -1843,9 +1836,9 @@ public class to_java_transformer2 extends base_transformer2 {
   }
 
   private static construct make_call(construct main, readonly_list<construct> parameters,
-      origin source) {
+      origin the_origin) {
     return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.PARENS, false, source), source);
+        new list_construct(parameters, grouping_type.PARENS, false, the_origin), the_origin);
   }
 
   // TODO: use list.has()
@@ -2016,6 +2009,9 @@ public class to_java_transformer2 extends base_transformer2 {
       } else if (the_value instanceof integer_value) {
         integer_value the_integer_value = (integer_value) the_value;
         return new literal_construct(new integer_literal(the_integer_value.unwrap()), the_origin);
+      } else if (the_value instanceof base_procedure) {
+        base_procedure the_procedure = (base_procedure) the_value;
+        return new name_construct(the_procedure.name(), the_origin);
       }
       utilities.panic("processing action value " + the_value);
     }
@@ -2025,9 +2021,38 @@ public class to_java_transformer2 extends base_transformer2 {
       return process_action(deref_action.from, the_origin);
     }
 
+    if (the_action instanceof promotion_action) {
+      promotion_action the_promotion_action = (promotion_action) the_action;
+      return process_action(the_promotion_action.get_action(), the_origin);
+    }
+
+    if (the_action instanceof narrow_action) {
+      narrow_action the_narrow_action = (narrow_action) the_action;
+      return process_action(the_narrow_action.expression, the_origin);
+    }
+
     if (the_action instanceof dispatch_action) {
       dispatch_action the_dispatch_action = (dispatch_action) the_action;
-      return process_action(the_dispatch_action.get_primary(), the_origin);
+      action primary = the_dispatch_action.get_primary();
+      if (the_dispatch_action.get_from() != null) {
+        action from = the_dispatch_action.get_from();
+        construct from_construct = process_action(from, the_origin);
+        if (from instanceof type_action) {
+          // TODO: handle type_action
+        } else if (primary instanceof variable_action) {
+          variable_action the_variable_action = (variable_action) primary;
+          construct result = new resolve_construct(from_construct,
+              new name_construct(the_variable_action.short_name(), the_origin), the_origin);
+          declaration the_declaration = declaration_util.get_declaration(the_variable_action);
+          if (the_declaration != null && should_call_as_procedure(the_declaration)) {
+            result = make_call(result, new empty<construct>(), the_origin);
+          }
+          return result;
+        } else {
+          utilities.panic("processing dispatch action " + the_dispatch_action.get_from());
+        }
+      }
+      return process_action(primary, the_origin);
     }
 
     if (the_action instanceof variable_action) {
@@ -2036,8 +2061,26 @@ public class to_java_transformer2 extends base_transformer2 {
       return new name_construct(the_variable_action.short_name(), the_origin);
     }
 
+    if (the_action instanceof bound_procedure) {
+      bound_procedure the_bound_procedure = (bound_procedure) the_action;
+      readonly_list<construct> parameters =
+          process_action_parameters(the_bound_procedure.parameters, the_origin);
+      return make_call(process_action(the_bound_procedure.the_procedure_action, the_origin),
+          parameters, the_origin);
+    }
+
     utilities.panic("processing action " + the_action);
     return null;
+  }
+
+  public readonly_list<construct> process_action_parameters(action_parameters the_parameters,
+      origin the_origin) {
+    list<construct> result = new base_list<construct>();
+    readonly_list<action> parameters_list = the_parameters.params();
+    for (int i = 0; i < parameters_list.size(); ++i) {
+      result.append(process_action(parameters_list.get(i), the_origin));
+    }
+    return result;
   }
 
 /*
@@ -2127,6 +2170,10 @@ public class to_java_transformer2 extends base_transformer2 {
       return process_while((while_analyzer) the_extension);
     } else if (the_extension instanceof for_analyzer) {
       return process_for((for_analyzer) the_extension);
+      /*
+    } else if (the_extension instanceof list_iteration_analyzer) {
+      return process_list_iteration((list_iteration_analyzer) the_extension);
+      */
     } else {
       return transform(the_extension.expand());
     }
@@ -2189,7 +2236,6 @@ public class to_java_transformer2 extends base_transformer2 {
         transform_list(the_type.get_signature()), the_origin);
   }
 
-  /*
   public construct process_type_parameter(type_parameter_declaration the_type_parameter) {
     origin the_origin = the_type_parameter;
     construct the_type;

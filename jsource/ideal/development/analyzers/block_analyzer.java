@@ -66,9 +66,8 @@ public class block_analyzer extends declaration_analyzer<origin>
       return null;
     }
 
-    if (annotations != null) {
-      process_annotations(annotations, access_modifier.private_modifier);
-    }
+    assert annotations != null;
+    process_annotations(annotations, access_modifier.private_modifier);
 
     if (inside == null) {
       inside = make_block(BLOCK_NAME, this);

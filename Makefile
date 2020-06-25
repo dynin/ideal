@@ -164,6 +164,10 @@ t3: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_runtime2 -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/*/*java
 
+t4: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development2 -output=$(SCRATCH_DIR)
+	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
+
 ### Running sample code
 
 1: $(IDEAL_TARGET) $(ONE)

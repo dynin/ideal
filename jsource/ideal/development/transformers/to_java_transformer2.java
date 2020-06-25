@@ -2058,7 +2058,13 @@ public class to_java_transformer2 extends base_transformer2 {
     if (the_action instanceof variable_action) {
       variable_action the_variable_action = (variable_action) the_action;
       // TODO: handle from
-      return new name_construct(the_variable_action.short_name(), the_origin);
+      name_construct name = new name_construct(the_variable_action.short_name(), the_origin);
+      if (the_variable_action instanceof static_variable) {
+        return new resolve_construct(
+            make_type(the_variable_action.the_declaration.declared_in_type(), the_origin),
+            name, the_origin);
+      }
+      return name;
     }
 
     if (the_action instanceof bound_procedure) {

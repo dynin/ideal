@@ -257,12 +257,10 @@ public class create_manager implements target_manager, type_bootstrapper {
   /** Introduce target declarations. */
   public void process_targets() {
     add_target(new analyze_target(simple_name.make(new base_string("analyze")), this));
-    add_target(new java_generator_target2(
+    add_target(new java_generator_target(
         simple_name.make(new base_string("generate_java")), this));
     add_target(new printer_target(simple_name.make(new base_string("print_source")), this));
     add_target(new publish_target(simple_name.make(new base_string("print_documentation")), this));
-    add_target(new java_generator_target2(
-        simple_name.make(new base_string("generate_java2")), this));
   }
 
   private void add_target(target_value the_target) {

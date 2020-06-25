@@ -29,7 +29,7 @@ import ideal.development.notifications.error_signal;
 import ideal.development.extensions.extension_analyzer;
 import ideal.development.targets.target_declaration;
 
-public class base_transformer2 extends analyzable_visitor<Object> {
+public class base_transformer extends analyzable_visitor<Object> {
 
   public construct transform(@Nullable analyzable_or_declaration the_analyzable) {
     if (the_analyzable == null) {
@@ -147,7 +147,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
 
   @Override
   public construct process_default(analyzable_or_declaration the_analyzable) {
-    utilities.panic("base_transformer2.process_default()");
+    utilities.panic("base_transformer.process_default()");
     return null;
   }
 
@@ -350,7 +350,7 @@ public class base_transformer2 extends analyzable_visitor<Object> {
   }
 
   public construct process_statement_list(statement_list_analyzer the_statement_list) {
-    utilities.panic("base_transformer2.process_statement_list()");
+    utilities.panic("base_transformer.process_statement_list()");
     return process_default(the_statement_list);
   }
 

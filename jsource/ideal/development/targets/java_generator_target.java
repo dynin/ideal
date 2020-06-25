@@ -19,17 +19,17 @@ import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.transformers.*;
 
-public class java_generator_target2 extends type_processor_target {
+public class java_generator_target extends type_processor_target {
 
-  private @Nullable java_generator2 generator;
+  private @Nullable java_generator generator;
 
-  public java_generator_target2(simple_name the_name, target_manager the_manager) {
+  public java_generator_target(simple_name the_name, target_manager the_manager) {
     super(the_name, the_manager);
   }
 
   @Override
   public void setup(analysis_context the_context) {
-    generator = new java_generator2(java_library.get_instance(), the_context,
+    generator = new java_generator(java_library.get_instance(), the_context,
         new content_writer(the_manager.output_catalog(), null));
   }
 

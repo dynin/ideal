@@ -143,30 +143,12 @@ print_elements: $(IDEAL_TARGET)
 generate_library: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_library
 
-generate_library2: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_library2
-
-generate_runtime2: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_runtime2
-
 bootstrap_library: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(BOOTSTRAPPED_DIR)
 
 test_library: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java
-
-t2: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library2 -output=$(SCRATCH_DIR)
-	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java
-
-t3: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_runtime2 -output=$(SCRATCH_DIR)
-	$(JAVAC) $(SCRATCH_DIR)/ideal/runtime/*/*java
-
-t4: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development2 -output=$(SCRATCH_DIR)
-	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
 
 ### Running sample code
 

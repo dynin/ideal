@@ -21,10 +21,10 @@ public class base_graph<vertice_type extends readonly_data, edge_type extends re
     }
   }
   protected final equivalence_relation<vertice_type> equivalence;
-  private final dictionary<vertice_type, set<edge<vertice_type, edge_type>>> all_edges;
+  private final dictionary<vertice_type, set<base_graph.edge<vertice_type, edge_type>>> all_edges;
   public base_graph(final equivalence_relation<vertice_type> equivalence) {
     this.equivalence = equivalence;
-    this.all_edges = new hash_dictionary<vertice_type, set<edge<vertice_type, edge_type>>>();
+    this.all_edges = new hash_dictionary<vertice_type, set<base_graph.edge<vertice_type, edge_type>>>();
   }
   public base_graph() {
     this((equivalence_relation<vertice_type>) (readonly_value) runtime_util.default_equivalence);
@@ -33,12 +33,12 @@ public class base_graph<vertice_type extends readonly_data, edge_type extends re
     return all_edges.keys();
   }
   public @Override void add_edge(final vertice_type from, final vertice_type to, final edge_type the_source) {
-    final base_graph.edge<vertice_type, edge_type> new_edge = new edge<vertice_type, edge_type>(from, to, the_source);
+    final base_graph.edge<vertice_type, edge_type> new_edge = new base_graph.edge<vertice_type, edge_type>(from, to, the_source);
     final @Nullable set<base_graph.edge<vertice_type, edge_type>> outgoing_edges = all_edges.get(from);
     if (outgoing_edges != null) {
       outgoing_edges.add(new_edge);
     } else {
-      final hash_set<base_graph.edge<vertice_type, edge_type>> new_outgoing_edges = new hash_set<edge<vertice_type, edge_type>>();
+      final hash_set<base_graph.edge<vertice_type, edge_type>> new_outgoing_edges = new hash_set<base_graph.edge<vertice_type, edge_type>>();
       new_outgoing_edges.add(new_edge);
       all_edges.put(from, new_outgoing_edges);
     }

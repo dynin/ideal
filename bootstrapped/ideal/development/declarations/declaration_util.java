@@ -14,7 +14,7 @@ import ideal.development.modifiers.*;
 import javax.annotation.Nullable;
 
 public class declaration_util {
-  public @Nullable static declaration get_declaration(final @Nullable origin the_origin) {
+  public static @Nullable declaration get_declaration(final @Nullable origin the_origin) {
     @Nullable origin current_origin = the_origin;
     while (current_origin != null) {
       if (current_origin instanceof declaration) {
@@ -30,7 +30,7 @@ public class declaration_util {
     }
     return null;
   }
-  public @Nullable static type_declaration get_type_declaration(final type the_type) {
+  public static @Nullable type_declaration get_type_declaration(final type the_type) {
     final @Nullable declaration the_declaration = the_type.principal().get_declaration();
     if (the_declaration instanceof type_declaration) {
       return ((type_declaration) the_declaration);

@@ -11,7 +11,7 @@ import ideal.machine.channels.string_writer;
 import javax.annotation.Nullable;
 
 public class text_util {
-  public final static text_fragment EMPTY_FRAGMENT = new base_list_text_node(new empty<text_node>());
+  public static final text_fragment EMPTY_FRAGMENT = new base_list_text_node(new empty<text_node>());
   public static boolean is_indent(final text_element element) {
     return element.get_id() == text_library.INDENT;
   }

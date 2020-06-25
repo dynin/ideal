@@ -34,15 +34,15 @@ public class test_runtime_util {
     public final int i;
     public final string s;
   }
-  private final test1 v1;
-  private final test1 v2;
-  private final test1 v3;
-  private final test1 v4;
+  private final test_runtime_util.test1 v1;
+  private final test_runtime_util.test1 v2;
+  private final test_runtime_util.test1 v3;
+  private final test_runtime_util.test1 v4;
   public test_runtime_util() {
-    v1 = new test1(98, new base_string("asdf"));
-    v2 = new test1(98, new base_string("asdf"));
-    v3 = new test1(99, new base_string("asdf"));
-    v4 = new test1(98, new base_string("asdfghj"));
+    v1 = new test_runtime_util.test1(98, new base_string("asdf"));
+    v2 = new test_runtime_util.test1(98, new base_string("asdf"));
+    v3 = new test_runtime_util.test1(99, new base_string("asdf"));
+    v4 = new test_runtime_util.test1(98, new base_string("asdfghj"));
   }
   public void test_class_name() {
     assert runtime_util.values_equal(runtime_util.short_class_name(this), new base_string("test_runtime_util"));

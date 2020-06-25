@@ -61,10 +61,10 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
   }
   public @Override void clear() {
     if (is_not_empty()) {
-      state = new list_state<element_type>();
+      state = new base_readonly_list.list_state<element_type>();
     }
   }
-  private list_state<element_type> writable_state() {
+  private base_readonly_list.list_state<element_type> writable_state() {
     if (!state.writable) {
       state = state.copy();
       assert state.writable;

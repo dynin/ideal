@@ -28,7 +28,7 @@ public class base_resource_identifier extends debuggable implements resource_ide
     return the_resource_store.exists(path);
   }
   public @Override resource<string> access_string(final @Nullable access_option options) {
-    return new string_resource(this, options);
+    return new base_resource_identifier.string_resource(this, options);
   }
   public @Override resource_catalog access_catalog() {
     return new base_resource_catalog(the_resource_store, path);

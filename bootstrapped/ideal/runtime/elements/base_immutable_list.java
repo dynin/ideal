@@ -7,12 +7,12 @@ import ideal.machine.elements.runtime_util;
 import ideal.machine.elements.array;
 
 public class base_immutable_list<element_type> extends base_readonly_list<element_type> implements immutable_list<element_type> {
-  protected base_immutable_list(final list_state<element_type> state) {
+  protected base_immutable_list(final base_readonly_list.list_state<element_type> state) {
     super(state);
     state.writable = false;
   }
   public base_immutable_list(final array<element_type> state) {
-    super(new list_state<element_type>(state));
+    super(new base_readonly_list.list_state<element_type>(state));
   }
   public @Override immutable_list<element_type> frozen_copy() {
     return this;
@@ -21,7 +21,7 @@ public class base_immutable_list<element_type> extends base_readonly_list<elemen
     if (size() <= 1) {
       return this;
     }
-    final base_readonly_list.list_state<element_type> reversed = new list_state<element_type>(size());
+    final base_readonly_list.list_state<element_type> reversed = new base_readonly_list.list_state<element_type>(size());
     for (int i = 0; i < size(); i += 1) {
       final int new_index = size() - 1 - i;
       assert new_index >= 0;

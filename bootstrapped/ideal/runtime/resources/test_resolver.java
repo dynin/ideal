@@ -46,8 +46,8 @@ public class test_resolver {
     public @Override void write_string(final immutable_list<string> path, final string new_value) { }
     public @Override void make_catalog(final immutable_list<string> path) { }
   }
-  public static final resource_catalog CURRENT = new test_store(resource_util.CURRENT_CATALOG, true).top();
-  public static final resource_catalog ROOT = new test_store(resource_util.ROOT_CATALOG, false).top();
+  public static final resource_catalog CURRENT = new test_resolver.test_store(resource_util.CURRENT_CATALOG, true).top();
+  public static final resource_catalog ROOT = new test_resolver.test_store(resource_util.ROOT_CATALOG, false).top();
   public void test_file_catalogs() {
     assert ideal.machine.elements.runtime_util.values_equal(CURRENT.get_id().to_string(), new base_string("."));
     assert ideal.machine.elements.runtime_util.values_equal(ROOT.get_id().to_string(), new base_string("/"));

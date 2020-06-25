@@ -45,7 +45,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
     final int index = state.bucket_index(hash);
     @Nullable base_hash_set.hash_cell<element_type> entry = state.the_buckets.at(index).get();
     if (entry == null) {
-      state.the_buckets.set(index, new hash_cell<element_type>(the_value, hash));
+      state.the_buckets.set(index, new base_hash_set.hash_cell<element_type>(the_value, hash));
       state.size += 1;
       return;
     }
@@ -55,7 +55,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
       }
       final @Nullable base_hash_set.hash_cell<element_type> next = entry.next;
       if (next == null) {
-        entry.next = new hash_cell<element_type>(the_value, hash);
+        entry.next = new base_hash_set.hash_cell<element_type>(the_value, hash);
         state.size += 1;
         return;
       } else {

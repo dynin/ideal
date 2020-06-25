@@ -9,13 +9,13 @@ import javax.annotation.Nullable;
 
 public abstract class base_hash_set<element_type> implements readonly_set<element_type> {
   public static class parameters {
-    public final static int default_size = 16;
+    public static final int default_size = 16;
   }
   protected static class hash_cell<element_type> {
     protected final element_type the_value;
     protected final int the_hash;
-    protected @Nullable hash_cell<element_type> next;
-    public hash_cell(final element_type the_value, final int the_hash, final @Nullable hash_cell<element_type> next) {
+    protected @Nullable base_hash_set.hash_cell<element_type> next;
+    public hash_cell(final element_type the_value, final int the_hash, final @Nullable base_hash_set.hash_cell<element_type> next) {
       this.the_value = the_value;
       this.the_hash = the_hash;
       this.next = next;
@@ -26,19 +26,19 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
   }
   protected static class set_state<element_type> {
     public boolean writable;
-    public array<hash_cell<element_type>> the_buckets;
+    public array<base_hash_set.hash_cell<element_type>> the_buckets;
     public int size;
     public set_state(final int initial_size) {
       writable = true;
-      the_buckets = new array<hash_cell<element_type>>(initial_size);
+      the_buckets = new array<base_hash_set.hash_cell<element_type>>(initial_size);
       size = 0;
     }
     public set_state() {
-      this(parameters.default_size);
+      this(base_hash_set.parameters.default_size);
     }
     protected void clear() {
       if (size != 0) {
-        the_buckets = new array<hash_cell<element_type>>(parameters.default_size);
+        the_buckets = new array<base_hash_set.hash_cell<element_type>>(base_hash_set.parameters.default_size);
         size = 0;
       }
     }
@@ -51,7 +51,7 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
         new_size = reserve_size;
       }
       final array<base_hash_set.hash_cell<element_type>> old_buckets = the_buckets;
-      the_buckets = new array<hash_cell<element_type>>(new_size);
+      the_buckets = new array<base_hash_set.hash_cell<element_type>>(new_size);
       for (int i = 0; i < old_buckets.size; i += 1) {
         @Nullable base_hash_set.hash_cell<element_type> bucket = old_buckets.at(i).get();
         while (bucket != null) {
@@ -70,12 +70,12 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
       assert index >= 0;
       return index;
     }
-    protected set_state<element_type> copy() {
-      final base_hash_set.set_state<element_type> result = new set_state<element_type>(the_buckets.size);
+    protected base_hash_set.set_state<element_type> copy() {
+      final base_hash_set.set_state<element_type> result = new base_hash_set.set_state<element_type>(the_buckets.size);
       for (int i = 0; i < the_buckets.size; i += 1) {
         @Nullable base_hash_set.hash_cell<element_type> bucket = the_buckets.at(i).get();
         while (bucket != null) {
-          final base_hash_set.hash_cell<element_type> new_cell = new hash_cell<element_type>(bucket.the_value, bucket.the_hash, result.the_buckets.at(i).get());
+          final base_hash_set.hash_cell<element_type> new_cell = new base_hash_set.hash_cell<element_type>(bucket.the_value, bucket.the_hash, result.the_buckets.at(i).get());
           result.the_buckets.set(i, new_cell);
           bucket = bucket.next;
         }
@@ -85,12 +85,12 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
     }
   }
   protected final equivalence_with_hash<element_type> equivalence;
-  protected set_state<element_type> state;
+  protected base_hash_set.set_state<element_type> state;
   protected base_hash_set(final equivalence_with_hash<element_type> equivalence) {
     this.equivalence = equivalence;
-    this.state = new set_state<element_type>();
+    this.state = new base_hash_set.set_state<element_type>();
   }
-  protected base_hash_set(final equivalence_with_hash<element_type> equivalence, final set_state<element_type> state) {
+  protected base_hash_set(final equivalence_with_hash<element_type> equivalence, final base_hash_set.set_state<element_type> state) {
     this.equivalence = equivalence;
     this.state = state;
   }

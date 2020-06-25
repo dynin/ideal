@@ -33,7 +33,7 @@ public class test_display {
     }
   }
   public void test_simple_display() {
-    final test_display.my_data data_object = new my_data(new base_string("aaa"), new base_string("bbb"), 68);
+    final test_display.my_data data_object = new test_display.my_data(new base_string("aaa"), new base_string("bbb"), 68);
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
     the_formatter.write(runtime_util.display(data_object));
@@ -50,7 +50,7 @@ public class test_display {
     }
   }
   public void test_display_with_annotations() {
-    final test_display.my_data2 data_object = new my_data2(new base_string("aaa"), null, 68);
+    final test_display.my_data2 data_object = new test_display.my_data2(new base_string("aaa"), null, 68);
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
     the_formatter.write(runtime_util.display(data_object));

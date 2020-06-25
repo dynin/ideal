@@ -10,8 +10,8 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
   protected static class entry_cell<key_type, value_type> implements dictionary.entry<key_type, value_type> {
     private final key_type the_key;
     private value_type the_value;
-    protected @Nullable entry_cell<key_type, value_type> next;
-    public entry_cell(final key_type the_key, final value_type the_value, final @Nullable entry_cell<key_type, value_type> next) {
+    protected @Nullable base_list_dictionary.entry_cell<key_type, value_type> next;
+    public entry_cell(final key_type the_key, final value_type the_value, final @Nullable base_list_dictionary.entry_cell<key_type, value_type> next) {
       this.the_key = the_key;
       this.the_value = the_value;
       this.next = next;
@@ -31,7 +31,7 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
   }
   protected final equivalence_relation<key_type> equivalence;
   protected int the_size;
-  protected @Nullable entry_cell<key_type, value_type> entries;
+  protected @Nullable base_list_dictionary.entry_cell<key_type, value_type> entries;
   protected base_list_dictionary(final equivalence_relation<key_type> equivalence) {
     this.equivalence = equivalence;
     the_size = 0;
@@ -40,22 +40,22 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
   protected base_list_dictionary(final key_type key, final value_type value, final equivalence_relation<key_type> equivalence) {
     this.equivalence = equivalence;
     the_size = 1;
-    entries = new entry_cell<key_type, value_type>(key, value);
+    entries = new base_list_dictionary.entry_cell<key_type, value_type>(key, value);
   }
   protected base_list_dictionary(final base_list_dictionary<key_type, value_type> original) {
     this.equivalence = original.equivalence;
     the_size = original.the_size;
     entries = duplicate(original.entries);
   }
-  private @Nullable entry_cell<key_type, value_type> duplicate(final @Nullable entry_cell<key_type, value_type> original) {
+  private @Nullable base_list_dictionary.entry_cell<key_type, value_type> duplicate(final @Nullable base_list_dictionary.entry_cell<key_type, value_type> original) {
     if (original == null) {
       return original;
     }
-    final base_list_dictionary.entry_cell<key_type, value_type> copy = new entry_cell<key_type, value_type>(original.key(), original.value());
+    final base_list_dictionary.entry_cell<key_type, value_type> copy = new base_list_dictionary.entry_cell<key_type, value_type>(original.key(), original.value());
     base_list_dictionary.entry_cell<key_type, value_type> current = copy;
     @Nullable base_list_dictionary.entry_cell<key_type, value_type> tail = original.next;
     while (tail != null) {
-      final base_list_dictionary.entry_cell<key_type, value_type> cell_copy = new entry_cell<key_type, value_type>(tail.key(), tail.value());
+      final base_list_dictionary.entry_cell<key_type, value_type> cell_copy = new base_list_dictionary.entry_cell<key_type, value_type>(tail.key(), tail.value());
       current.next = cell_copy;
       current = cell_copy;
       tail = tail.next;

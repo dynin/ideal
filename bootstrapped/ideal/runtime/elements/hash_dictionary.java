@@ -31,7 +31,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
     final int index = state.bucket_index(hash);
     @Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = state.the_buckets.at(index).get();
     if (entry == null) {
-      state.the_buckets.set(index, new hash_cell<key_type, value_type>(key, hash, value));
+      state.the_buckets.set(index, new base_hash_dictionary.hash_cell<key_type, value_type>(key, hash, value));
       state.size += 1;
       return null;
     }
@@ -43,7 +43,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
       }
       final @Nullable base_hash_dictionary.hash_cell<key_type, value_type> next = entry.next;
       if (next == null) {
-        entry.next = new hash_cell<key_type, value_type>(key, hash, value);
+        entry.next = new base_hash_dictionary.hash_cell<key_type, value_type>(key, hash, value);
         state.size += 1;
         return null;
       } else {

@@ -27,7 +27,7 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
   public @Override @Nullable value_type put(final key_type key, final value_type value) {
     @Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = entries;
     if (entry == null) {
-      entries = new entry_cell<key_type, value_type>(key, value);
+      entries = new base_list_dictionary.entry_cell<key_type, value_type>(key, value);
       the_size = 1;
       return null;
     }
@@ -39,7 +39,7 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
       }
       final @Nullable base_list_dictionary.entry_cell<key_type, value_type> next = entry.next;
       if (next == null) {
-        entry.next = new entry_cell<key_type, value_type>(key, value);
+        entry.next = new base_list_dictionary.entry_cell<key_type, value_type>(key, value);
         the_size += 1;
         return null;
       } else {

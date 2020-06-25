@@ -9,13 +9,13 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class special_token_type {
-  public final static base_token_type SIMPLE_NAME = new base_token_type(new base_string("<simple-name>"), base_symbols.SIMPLE_NAME);
-  public final static base_token_type SPECIAL_NAME = new base_token_type(new base_string("<special-name>"), base_symbols.SPECIAL_NAME);
-  public final static base_token_type KIND = new base_token_type(new base_string("<kind>"), base_symbols.KIND);
-  public final static base_token_type MODIFIER_KIND = new base_token_type(new base_string("<modifier-kind>"), base_symbols.MODIFIER_KIND);
-  public final static base_token_type SUBTYPE_TAG = new base_token_type(new base_string("<subtype-tag>"), base_symbols.SUBTYPE_TAG);
-  public final static base_token_type FLAVOR = new base_token_type(new base_string("<flavor>"), base_symbols.FLAVOR);
-  public final static base_token_type JUMP = new base_token_type(new base_string("<jump>"), base_symbols.JUMP);
-  public final static base_token_type LITERAL = new base_token_type(new base_string("<literal>"), base_symbols.LITERAL);
-  public final static base_token_type COMMENT = new base_token_type(new base_string("<comment>"), base_symbols.COMMENT);
+  public static final base_token_type SIMPLE_NAME = new base_token_type(new base_string("<simple-name>"), base_symbols.SIMPLE_NAME);
+  public static final base_token_type SPECIAL_NAME = new base_token_type(new base_string("<special-name>"), base_symbols.SPECIAL_NAME);
+  public static final base_token_type KIND = new base_token_type(new base_string("<kind>"), base_symbols.KIND);
+  public static final base_token_type MODIFIER_KIND = new base_token_type(new base_string("<modifier-kind>"), base_symbols.MODIFIER_KIND);
+  public static final base_token_type SUBTYPE_TAG = new base_token_type(new base_string("<subtype-tag>"), base_symbols.SUBTYPE_TAG);
+  public static final base_token_type FLAVOR = new base_token_type(new base_string("<flavor>"), base_symbols.FLAVOR);
+  public static final base_token_type JUMP = new base_token_type(new base_string("<jump>"), base_symbols.JUMP);
+  public static final base_token_type LITERAL = new base_token_type(new base_string("<literal>"), base_symbols.LITERAL);
+  public static final base_token_type COMMENT = new base_token_type(new base_string("<comment>"), base_symbols.COMMENT);
 }

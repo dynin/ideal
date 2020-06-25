@@ -8,7 +8,7 @@ import ideal.machine.elements.array;
 
 public class base_readonly_list<element_type> implements readonly_list<element_type> {
   public static class parameters {
-    public final static int default_size = 16;
+    public static final int default_size = 16;
   }
   protected static class list_state<element_type> {
     public boolean writable;
@@ -20,7 +20,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
       size = 0;
     }
     public list_state() {
-      this(parameters.default_size);
+      this(base_readonly_list.parameters.default_size);
     }
     public list_state(final array<element_type> immutable_elements) {
       writable = false;
@@ -75,18 +75,18 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
       size = new_size;
       the_elements.scrub(size, length);
     }
-    public list_state<element_type> copy() {
-      final base_readonly_list.list_state<element_type> new_state = new list_state<element_type>(size);
+    public base_readonly_list.list_state<element_type> copy() {
+      final base_readonly_list.list_state<element_type> new_state = new base_readonly_list.list_state<element_type>(size);
       the_elements.copy(0, new_state.the_elements, 0, size);
       new_state.size = size;
       return new_state;
     }
   }
-  protected list_state<element_type> state;
+  protected base_readonly_list.list_state<element_type> state;
   protected base_readonly_list() {
-    state = new list_state<element_type>();
+    state = new base_readonly_list.list_state<element_type>();
   }
-  protected base_readonly_list(final list_state<element_type> state) {
+  protected base_readonly_list(final base_readonly_list.list_state<element_type> state) {
     this.state = state;
   }
   public @Override int size() {
@@ -122,7 +122,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
     assert begin >= 0 && end <= size();
     final int length = end - begin;
     assert length >= 0;
-    final base_readonly_list.list_state<element_type> slice_state = new list_state<element_type>(length);
+    final base_readonly_list.list_state<element_type> slice_state = new base_readonly_list.list_state<element_type>(length);
     slice_state.size = length;
     state.the_elements.copy(begin, slice_state.the_elements, 0, length);
     return new base_immutable_list<element_type>(slice_state);

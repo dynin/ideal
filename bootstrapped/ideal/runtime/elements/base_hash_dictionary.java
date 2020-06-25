@@ -9,14 +9,14 @@ import javax.annotation.Nullable;
 
 public abstract class base_hash_dictionary<key_type, value_type> implements readonly_dictionary<key_type, value_type> {
   public static class parameters {
-    public final static int default_size = 16;
+    public static final int default_size = 16;
   }
   protected static class hash_cell<key_type, value_type> implements dictionary.entry<key_type, value_type> {
     private final key_type the_key;
     protected final int the_key_hash;
     private value_type the_value;
-    protected @Nullable hash_cell<key_type, value_type> next;
-    public hash_cell(final key_type the_key, final int the_key_hash, final value_type the_value, final @Nullable hash_cell<key_type, value_type> next) {
+    protected @Nullable base_hash_dictionary.hash_cell<key_type, value_type> next;
+    public hash_cell(final key_type the_key, final int the_key_hash, final value_type the_value, final @Nullable base_hash_dictionary.hash_cell<key_type, value_type> next) {
       this.the_key = the_key;
       this.the_key_hash = the_key_hash;
       this.the_value = the_value;
@@ -37,19 +37,19 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
   }
   protected static class dictionary_state<key_type, value_type> {
     public boolean writable;
-    public array<hash_cell<key_type, value_type>> the_buckets;
+    public array<base_hash_dictionary.hash_cell<key_type, value_type>> the_buckets;
     public int size;
     public dictionary_state(final int initial_size) {
       writable = true;
-      the_buckets = new array<hash_cell<key_type, value_type>>(initial_size);
+      the_buckets = new array<base_hash_dictionary.hash_cell<key_type, value_type>>(initial_size);
       size = 0;
     }
     public dictionary_state() {
-      this(parameters.default_size);
+      this(base_hash_dictionary.parameters.default_size);
     }
     protected void clear() {
       if (size != 0) {
-        the_buckets = new array<hash_cell<key_type, value_type>>(parameters.default_size);
+        the_buckets = new array<base_hash_dictionary.hash_cell<key_type, value_type>>(base_hash_dictionary.parameters.default_size);
         size = 0;
       }
     }
@@ -62,7 +62,7 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
         new_size = reserve_size;
       }
       final array<base_hash_dictionary.hash_cell<key_type, value_type>> old_buckets = the_buckets;
-      the_buckets = new array<hash_cell<key_type, value_type>>(new_size);
+      the_buckets = new array<base_hash_dictionary.hash_cell<key_type, value_type>>(new_size);
       for (int i = 0; i < old_buckets.size; i += 1) {
         @Nullable base_hash_dictionary.hash_cell<key_type, value_type> bucket = old_buckets.at(i).get();
         while (bucket != null) {
@@ -81,12 +81,12 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
       assert index >= 0;
       return index;
     }
-    protected dictionary_state<key_type, value_type> copy() {
-      final base_hash_dictionary.dictionary_state<key_type, value_type> result = new dictionary_state<key_type, value_type>(the_buckets.size);
+    protected base_hash_dictionary.dictionary_state<key_type, value_type> copy() {
+      final base_hash_dictionary.dictionary_state<key_type, value_type> result = new base_hash_dictionary.dictionary_state<key_type, value_type>(the_buckets.size);
       for (int i = 0; i < the_buckets.size; i += 1) {
         @Nullable base_hash_dictionary.hash_cell<key_type, value_type> bucket = the_buckets.at(i).get();
         while (bucket != null) {
-          final base_hash_dictionary.hash_cell<key_type, value_type> new_cell = new hash_cell<key_type, value_type>(bucket.key(), bucket.the_key_hash, bucket.value(), result.the_buckets.at(i).get());
+          final base_hash_dictionary.hash_cell<key_type, value_type> new_cell = new base_hash_dictionary.hash_cell<key_type, value_type>(bucket.key(), bucket.the_key_hash, bucket.value(), result.the_buckets.at(i).get());
           result.the_buckets.set(i, new_cell);
           bucket = bucket.next;
         }
@@ -96,12 +96,12 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
     }
   }
   protected final equivalence_with_hash<key_type> equivalence;
-  protected dictionary_state<key_type, value_type> state;
+  protected base_hash_dictionary.dictionary_state<key_type, value_type> state;
   protected base_hash_dictionary(final equivalence_with_hash<key_type> equivalence) {
     this.equivalence = equivalence;
-    this.state = new dictionary_state<key_type, value_type>();
+    this.state = new base_hash_dictionary.dictionary_state<key_type, value_type>();
   }
-  protected base_hash_dictionary(final equivalence_with_hash<key_type> equivalence, final dictionary_state<key_type, value_type> state) {
+  protected base_hash_dictionary(final equivalence_with_hash<key_type> equivalence, final base_hash_dictionary.dictionary_state<key_type, value_type> state) {
     this.equivalence = equivalence;
     this.state = state;
   }
@@ -129,7 +129,7 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
   public @Override immutable_dictionary<key_type, value_type> frozen_copy() {
     return new immutable_hash_dictionary<key_type, value_type>(equivalence, state);
   }
-  private @Nullable hash_cell<key_type, value_type> bucket(final int hash) {
+  private @Nullable base_hash_dictionary.hash_cell<key_type, value_type> bucket(final int hash) {
     return state.the_buckets.at(state.bucket_index(hash)).get();
   }
   public @Override @Nullable value_type get(final key_type key) {

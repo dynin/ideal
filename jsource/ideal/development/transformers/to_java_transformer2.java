@@ -139,31 +139,6 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
-/*
-  protected analyzable get_analyzable(construct the_construct) {
-    construct c = the_construct;
-    while (true) {
-      @Nullable analyzable a = context.get_analyzable(c);
-      if (a != null) {
-        return a;
-      }
-      // TODO: get rid of this hack.
-      if (c instanceof list_construct) {
-        list_construct the_list_construct = (list_construct) c;
-        if (the_list_construct.is_simple_grouping()) {
-          assert the_list_construct.is_simple_grouping();
-          c = the_list_construct.elements.first();
-          continue;
-        }
-      }
-
-      assert c.deeper_origin() instanceof construct : "Source of " + c + " is " +
-          c.deeper_origin() + " for " + the_construct;
-      c = (construct) c.deeper_origin();
-    }
-  }
-  */
-
   protected action get_action(analyzable the_analyzable) {
     return analyzer_utilities.to_action(the_analyzable);
   }
@@ -1695,110 +1670,6 @@ public class to_java_transformer2 extends base_transformer2 {
   }
   */
 
-  construct process_list_iteration(list_iteration_analyzer the_analyzer) {
-    origin the_origin = the_analyzer;
-
-    construct element_type = make_type(the_analyzer.get_element_type(), the_origin);
-    list<annotation_construct> final_annotation = new base_list<annotation_construct>();
-    final_annotation.append(new modifier_construct(final_modifier, the_origin));
-    master_type list_type = library().list_type();
-    simple_name list_type_name = name_utilities.join(readonly_flavor.name(),
-        (simple_name) list_type.short_name());
-
-    construct list_type_construct = new parameter_construct(
-        new name_construct(list_type_name, the_origin),
-        new list_construct(new base_list<construct>(element_type),
-            grouping_type.ANGLE_BRACKETS, false, the_origin),
-        the_origin);
-    simple_name element_name = (simple_name) the_analyzer.var_name;
-    simple_name list_name = name_utilities.join(element_name, LIST_NAME);
-    simple_name index_name = name_utilities.join(element_name, simple_name.make("index"));
-    construct init_construct = transform(the_analyzer.init);
-
-    construct list_declaration_construct = new variable_construct(
-        final_annotation,
-        list_type_construct,
-        list_name,
-        new empty<annotation_construct>(),
-        init_construct,
-        the_origin);
-
-    construct for_init_construct = new variable_construct(
-        new empty<annotation_construct>(),
-        make_type(java_library.int_type(), the_origin),
-        index_name,
-        new empty<annotation_construct>(),
-        new literal_construct(new integer_literal(0), the_origin),
-        the_origin);
-
-    construct for_condition = new operator_construct(
-        operator.LESS,
-        new name_construct(index_name, the_origin),
-        new parameter_construct(
-            new resolve_construct(
-                new name_construct(list_name, the_origin),
-                new name_construct(simple_name.make("size"), the_origin),
-                the_origin
-            ),
-            new list_construct(
-                new empty<construct>(),
-                grouping_type.PARENS,
-                false,
-                the_origin
-            ),
-            the_origin
-        ),
-        the_origin);
-
-    construct for_update = new operator_construct(
-        operator.ADD_ASSIGN,
-        new name_construct(index_name, the_origin),
-        new literal_construct(new integer_literal(1), the_origin),
-        the_origin);
-
-    construct element_declaration_construct = new variable_construct(
-        final_annotation,
-        element_type,
-        element_name,
-        new empty<annotation_construct>(),
-        new parameter_construct(
-            new resolve_construct(
-                new name_construct(list_name, the_origin),
-                new name_construct(common_library.get_name, the_origin),
-                the_origin
-            ),
-            new list_construct(
-                new base_list<construct>(
-                    new name_construct(index_name, the_origin)
-                ),
-                grouping_type.PARENS,
-                false,
-                the_origin
-            ),
-            the_origin
-        ),
-        the_origin);
-
-    construct body_construct = transform(the_analyzer.body);
-    list<construct> body_constructs = new base_list<construct>(element_declaration_construct);
-    if (body_construct instanceof block_construct) {
-      body_constructs.append_all(((block_construct) body_construct).body);
-    } else {
-      body_constructs.append(body_construct);
-    }
-
-    construct for_loop_construct = new for_construct(
-        for_init_construct,
-        for_condition,
-        for_update,
-        new block_construct(body_constructs, the_origin),
-        the_origin);
-
-    readonly_list<construct> block_constructs = new base_list<construct>(
-        list_declaration_construct, for_loop_construct);
-    return new block_construct(block_constructs, the_origin);
-  }
-
   private simple_name get_simple_name(construct c) {
     name_construct identifier = (name_construct) c;
     return (simple_name) identifier.the_name;
@@ -2138,12 +2009,6 @@ public class to_java_transformer2 extends base_transformer2 {
     }
   }
 
-/*
-  public construct process_error_signal(error_signal the_error_signal) {
-    return process_default(the_error_signal);
-  }
-  */
-
   public construct process_grouping(grouping_analyzer the_grouping) {
     origin the_origin = the_grouping;
     return new list_construct(new base_list<construct>(transform(the_grouping.expression)),
@@ -2176,10 +2041,6 @@ public class to_java_transformer2 extends base_transformer2 {
       return process_while((while_analyzer) the_extension);
     } else if (the_extension instanceof for_analyzer) {
       return process_for((for_analyzer) the_extension);
-      /*
-    } else if (the_extension instanceof list_iteration_analyzer) {
-      return process_list_iteration((list_iteration_analyzer) the_extension);
-      */
     } else {
       return transform(the_extension.expand());
     }

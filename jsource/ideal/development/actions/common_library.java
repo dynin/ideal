@@ -57,6 +57,7 @@ public class common_library implements value {
   private principal_type CHARACTER_TYPE;
   private principal_type STRING_TYPE;
   private principal_type NULL_TYPE;
+  private principal_type MISSING_TYPE;
 
   private master_type REFERENCE_TYPE;
   private master_type PROCEDURE_TYPE;
@@ -92,6 +93,7 @@ public class common_library implements value {
     NONNEGATIVE_TYPE = get_type("nonnegative", datatype_kind, deeply_immutable_profile);
     STRING_TYPE = get_type("string", datatype_kind, deeply_immutable_profile);
     NULL_TYPE = get_type("null", interface_kind, deeply_immutable_profile);
+    MISSING_TYPE = get_type("missing", singleton_kind, deeply_immutable_profile);
 
     REFERENCE_TYPE = get_type("reference", reference_kind, mutable_profile);
     PROCEDURE_TYPE = get_type(procedure_name, procedure_kind, immutable_profile);
@@ -212,6 +214,14 @@ public class common_library implements value {
 
   public type immutable_null_type() {
     return null_type().get_flavored(flavor.deeply_immutable_flavor);
+  }
+
+  public principal_type missing_type() {
+    return MISSING_TYPE;
+  }
+
+  public type immutable_missing_type() {
+    return missing_type().get_flavored(flavor.deeply_immutable_flavor);
   }
 
   public type get_reference(type_flavor flavor, type value_type) {

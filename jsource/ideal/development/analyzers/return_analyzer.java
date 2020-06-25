@@ -79,4 +79,9 @@ public class return_analyzer extends single_pass_analyzer {
     assert return_type != null;
     return return_type;
   }
+
+  @Override
+  public string to_string() {
+    return utilities.describe(this, the_expression);
+  }
 }

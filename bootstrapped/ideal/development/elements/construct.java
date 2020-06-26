@@ -6,5 +6,6 @@ import ideal.library.elements.*;
 
 public interface construct extends data, origin, readonly_construct, writeonly_construct {
   readonly_list<construct> children();
+  boolean has(predicate<construct> the_predicate);
   origin deeper_origin();
 }

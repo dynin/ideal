@@ -48,7 +48,6 @@ public class to_java_transformer extends base_transformer {
   private set<principal_type> implicit_names;
   private set<principal_type> imported_names;
   private mapping mapping_strategy;
-  private principal_type main_type;
   private principal_type package_type;
 
   private static simple_name SET_NAME = simple_name.make("set");
@@ -77,23 +76,17 @@ public class to_java_transformer extends base_transformer {
   }
 
   public void set_type_context(principal_type main_type, readonly_list<import_construct> imports,
-      origin pos) {
-    if (main_type instanceof parametrized_type) {
-      this.main_type = ((parametrized_type) main_type).get_master();
-    } else {
-      this.main_type = main_type;
-    }
-
+      origin the_origin) {
     package_type = main_type.get_parent();
 
     assert package_type == core_types.root_type() ||
         package_type.short_name() instanceof simple_name;
 
-    common_headers.append(make_newline(pos));
+    common_headers.append(make_newline(the_origin));
 
     if (package_type != core_types.root_type()) {
-      common_headers.append(new package_construct(make_type(package_type, pos), pos));
-      common_headers.append(make_newline(pos));
+      common_headers.append(new package_construct(make_type(package_type, the_origin), the_origin));
+      common_headers.append(make_newline(the_origin));
       implicit_names.add(package_type);
     }
 
@@ -119,7 +112,7 @@ public class to_java_transformer extends base_transformer {
 
       if (import_headers.is_not_empty()) {
         common_headers.append_all(import_headers);
-        common_headers.append(make_newline(pos));
+        common_headers.append(make_newline(the_origin));
       }
     }
   }
@@ -173,18 +166,18 @@ public class to_java_transformer extends base_transformer {
   @Override
   public Object process_name(name_construct c) {
     action the_action = get_action(c);
-    origin source = c;
+    origin the_origin = c;
 
     if (the_action instanceof type_action) {
       if (the_action.deeper_origin() instanceof type_parameter_analyzer) {
         type_parameter_analyzer type_parameter =
             (type_parameter_analyzer) the_action.deeper_origin();
-        return new name_construct(type_parameter.short_name(), source);
+        return new name_construct(type_parameter.short_name(), the_origin);
       }
       if (the_action.result() instanceof principal_type) {
         principal_type the_type = (principal_type) the_action.result();
         if (java_library.is_mapped(the_type)) {
-          return make_type(the_type, source);
+          return make_type(the_type, the_origin);
         }
       }
     }
@@ -197,9 +190,9 @@ public class to_java_transformer extends base_transformer {
       type the_narrowed_type = the_narrow_action.the_type;
       if (should_introduce_cast(the_original_type, the_narrowed_type)) {
         result = new operator_construct(operator.AS_OPERATOR, result,
-            make_type(the_narrowed_type, result_type), source);
+            make_type(the_narrowed_type, result_type), the_origin);
         result = new list_construct(new base_list<construct>(result), grouping_type.PARENS, false,
-            source);
+            the_origin);
       }
     }
 
@@ -421,9 +414,10 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct make_parametrized_type(construct main, readonly_list<construct> parameters,
-      origin source) {
+      origin the_origin) {
     return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.ANGLE_BRACKETS, false, source), source);
+        new list_construct(parameters, grouping_type.ANGLE_BRACKETS, false, the_origin),
+        the_origin);
   }
 
   private boolean should_use_wrapper_in_return(procedure_declaration the_declaration) {
@@ -525,7 +519,7 @@ public class to_java_transformer extends base_transformer {
     } else {
       type return_type = the_procedure.get_return_type();
       if (type_utilities.is_union(return_type)) {
-        annotations.append(new modifier_construct(nullable_modifier, the_origin));
+        annotations.append(make_nullable(the_origin));
         ret = make_type(remove_null_type(return_type), the_origin);
       } else if (library().is_reference_type(return_type)) {
         type_flavor ref_flavor = return_type.get_flavor();
@@ -570,6 +564,10 @@ public class to_java_transformer extends base_transformer {
         new empty<annotation_construct>(), body, the_origin);
   }
 
+  modifier_construct make_nullable(origin the_origin) {
+    return new modifier_construct(nullable_modifier, the_origin);
+  }
+
   protected type remove_null_type(type the_type) {
     assert type_utilities.is_union(the_type);
     type_flavor union_flavor = the_type.get_flavor();
@@ -584,16 +582,17 @@ public class to_java_transformer extends base_transformer {
     return result;
   }
 
-  protected construct make_type_with_mapping(type the_type, origin pos, mapping new_mapping) {
+  protected construct make_type_with_mapping(type the_type, origin the_origin,
+      mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
     mapping_strategy = new_mapping;
-    construct result = make_type(the_type, pos);
+    construct result = make_type(the_type, the_origin);
     mapping_strategy = old_mapping_strategy;
     return result;
   }
 
   @Override
-  protected construct make_type(type the_type, origin pos) {
+  protected construct make_type(type the_type, origin the_origin) {
     principal_type principal = the_type.principal();
     type_flavor the_flavor = the_type.get_flavor();
 
@@ -607,7 +606,7 @@ public class to_java_transformer extends base_transformer {
       case MAP_TO_WRAPPER_TYPE:
         @Nullable simple_name mapped_name = java_library.map_to_wrapper(principal);
         if (mapped_name != null) {
-          return new name_construct(mapped_name, pos);
+          return new name_construct(mapped_name, the_origin);
         }
         break;
       case NO_MAPPING:
@@ -624,8 +623,8 @@ public class to_java_transformer extends base_transformer {
     }
 
     construct name = new name_construct(make_name(get_simple_name(principal), principal,
-        the_flavor), pos);
-    name = make_full_name(name, principal, pos);
+        the_flavor), the_origin);
+    name = make_full_name(name, principal, the_origin);
 
     if (principal instanceof parametrized_type) {
       immutable_list<abstract_value> type_params =
@@ -635,30 +634,31 @@ public class to_java_transformer extends base_transformer {
         abstract_value av = type_params.get(i);
         assert av instanceof type;
         type the_param_type = (type) av;
-        params.append(make_type_with_mapping(the_param_type, pos, mapping.MAP_TO_WRAPPER_TYPE));
+        params.append(make_type_with_mapping(the_param_type, the_origin,
+            mapping.MAP_TO_WRAPPER_TYPE));
       }
-      return make_parametrized_type(name, params, pos);
+      return make_parametrized_type(name, params, the_origin);
     } else {
       return name;
     }
   }
 
   protected construct make_flavored_and_parametrized_type(principal_type principal,
-      type_flavor flavor, @Nullable list_construct type_parameters, origin pos) {
+      type_flavor flavor, @Nullable list_construct type_parameters, origin the_origin) {
     construct name = new name_construct(make_name(get_simple_name(principal), principal,
-        flavor), pos);
+        flavor), the_origin);
 
     if (type_parameters != null) {
       list<construct> parameters = new base_list<construct>();
       for (int i = 0; i < type_parameters.elements.size(); ++i) {
         construct parameter = type_parameters.elements.get(i);
         if (parameter instanceof variable_construct) {
-          parameters.append(new name_construct(((variable_construct) parameter).name, pos));
+          parameters.append(new name_construct(((variable_construct) parameter).name, the_origin));
         } else {
           parameters.append(parameter);
         }
       }
-      return make_parametrized_type(name, parameters, pos);
+      return make_parametrized_type(name, parameters, the_origin);
     } else {
       return name;
     }
@@ -754,9 +754,9 @@ public class to_java_transformer extends base_transformer {
   }
 
   protected readonly_list<annotation_construct> make_annotations(access_modifier access,
-      origin source) {
+      origin the_origin) {
     if (access != local_modifier) {
-      return new base_list<annotation_construct>(new modifier_construct(access, source));
+      return new base_list<annotation_construct>(new modifier_construct(access, the_origin));
     } else {
       return new empty<annotation_construct>();
     }
@@ -1070,7 +1070,7 @@ public class to_java_transformer extends base_transformer {
     // TODO: should we inherit attotaions from the_variable?
     list<annotation_construct> annotations = new base_list<annotation_construct>();
     if (type_utilities.is_union(return_type)) {
-      annotations.append(new modifier_construct(nullable_modifier, the_origin));
+      annotations.append(make_nullable(the_origin));
       // make_type() strips null from union type
     }
     return new procedure_construct(annotations,
@@ -1216,14 +1216,14 @@ public class to_java_transformer extends base_transformer {
     construct type;
     if (the_variable.get_type_analyzable() == null) {
       if (type_utilities.is_union(var_type)) {
-        annotations.append(new modifier_construct(nullable_modifier, the_origin));
+        annotations.append(make_nullable(the_origin));
         type not_null_type = remove_null_type(var_type);
         type = make_type_with_mapping(not_null_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
       } else {
         type = make_type(var_type, the_origin);
       }
     } else if (type_utilities.is_union(var_type)) {
-      annotations.append(new modifier_construct(nullable_modifier, the_origin));
+      annotations.append(make_nullable(the_origin));
       type = make_type(remove_null_type(var_type), the_origin);
     } else {
       type = transform(the_variable.get_type_analyzable());
@@ -1311,11 +1311,12 @@ public class to_java_transformer extends base_transformer {
     return false;
   }
 
-  private construct do_explicitly_derefence(construct the_construct, origin source) {
+  private construct do_explicitly_derefence(construct the_construct, origin the_origin) {
     construct get_construct = new resolve_construct(the_construct,
-        new name_construct(common_library.get_name, source), source);
+        new name_construct(common_library.get_name, the_origin), the_origin);
     return new parameter_construct(get_construct,
-        new list_construct(new empty<construct>(), grouping_type.PARENS, false, source), source);
+        new list_construct(new empty<construct>(), grouping_type.PARENS, false, the_origin),
+        the_origin);
   }
 
   private boolean is_procedure_with_no_body(@Nullable declaration the_declaration) {
@@ -1439,16 +1440,16 @@ public class to_java_transformer extends base_transformer {
         library().is_reference_type(((type_declaration) the_declaration).get_declared_type());
   }
 
-  private construct make_default_return(type the_type, origin source) {
-    return new return_construct(make_default_value(the_type, source), source);
+  private construct make_default_return(type the_type, origin the_origin) {
+    return new return_construct(make_default_value(the_type, the_origin), the_origin);
   }
 
-  private construct make_default_value(type the_type, origin source) {
+  private construct make_default_value(type the_type, origin the_origin) {
     if (the_type == library().immutable_boolean_type()) {
-      return new name_construct(library().false_value().short_name(), source);
+      return new name_construct(library().false_value().short_name(), the_origin);
     } else {
       // TODO: handle other non-Object types
-      return make_null(source);
+      return make_null(the_origin);
     }
   }
 
@@ -1683,34 +1684,43 @@ public class to_java_transformer extends base_transformer {
   }
 
   public readonly_list<construct> make_headers(type_declaration_construct the_declaration) {
-    origin source = the_declaration;
+    origin the_origin = the_declaration;
     list<construct> headers = new base_list<construct>();
 
-    headers.append(make_comment(source));
+    headers.append(make_comment(the_origin));
     headers.append_all(common_headers);
     boolean add_newline = false;
 
-    if (has_nullable(the_declaration)) {
+    if (the_declaration.has(modifier_of_type(nullable_modifier))) {
       // TODO: kill empty line after common imports but before nullable import?
-      headers.append(make_import(java_library.nullable_type(), source));
+      headers.append(make_import(java_library.nullable_type(), the_origin));
       add_newline = true;
     }
 
-    if (has_dont_display(the_declaration)) {
-      headers.append(make_import(java_library.dont_display_type(), source));
+    if (the_declaration.has(modifier_of_type(dont_display_modifier))) {
+      headers.append(make_import(java_library.dont_display_type(), the_origin));
       add_newline = true;
     }
 
     if (add_newline) {
-      headers.append(make_newline(source));
+      headers.append(make_newline(the_origin));
     }
 
     return headers;
   }
 
-  private import_construct make_import(principal_type the_type, origin source) {
-    return new import_construct(new empty<annotation_construct>(), make_type(the_type, source),
-        source);
+  private predicate<construct> modifier_of_type(modifier_kind the_modifier_kind) {
+    return new predicate<construct>() {
+      public @Override Boolean call(construct the_construct) {
+        return the_construct instanceof modifier_construct &&
+            ((modifier_construct) the_construct).the_kind == the_modifier_kind; 
+      }
+    };
+  }
+
+  private import_construct make_import(principal_type the_type, origin the_origin) {
+    return new import_construct(new empty<annotation_construct>(), make_type(the_type, the_origin),
+        the_origin);
   }
 
   private static construct make_call(construct main, readonly_list<construct> parameters,
@@ -1719,42 +1729,16 @@ public class to_java_transformer extends base_transformer {
         new list_construct(parameters, grouping_type.PARENS, false, the_origin), the_origin);
   }
 
-  // TODO: use list.has()
-  private boolean has_nullable(construct root_construct) {
-    readonly_list<construct> flattened = base_construct.flatten(root_construct);
-    for (int i = 0; i < flattened.size(); ++i) {
-      construct the_construct = flattened.get(i);
-      if (the_construct instanceof modifier_construct &&
-          ((modifier_construct) the_construct).the_kind == nullable_modifier) {
-        return true;
-      }
-    }
-    return false;
+  private static construct make_null(origin the_origin) {
+    return new name_construct(simple_name.make("null"), the_origin);
   }
 
-  // TODO: use list.has()
-  private boolean has_dont_display(construct root_construct) {
-    readonly_list<construct> flattened = base_construct.flatten(root_construct);
-    for (int i = 0; i < flattened.size(); ++i) {
-      construct the_construct = flattened.get(i);
-      if (the_construct instanceof modifier_construct &&
-          ((modifier_construct) the_construct).the_kind == dont_display_modifier) {
-        return true;
-      }
-    }
-    return false;
+  private static construct make_zero(origin the_origin) {
+    return new literal_construct(new integer_literal(0), the_origin);
   }
 
-  private static construct make_null(origin source) {
-    return new name_construct(simple_name.make("null"), source);
-  }
-
-  private static construct make_zero(origin source) {
-    return new literal_construct(new integer_literal(0), source);
-  }
-
-  private static comment_construct make_comment(origin pos) {
-    source_content src = position_util.get_source(pos);
+  private static comment_construct make_comment(origin the_origin) {
+    source_content src = position_util.get_source(the_origin);
     string comment;
     if (src != null) {
       comment = new base_string("Autogenerated from ", src.name.to_string());
@@ -1763,12 +1747,12 @@ public class to_java_transformer extends base_transformer {
     }
 
     return new comment_construct(new comment(comment_type.LINE_COMMENT, comment,
-        new base_string("// ", comment)), pos);
+        new base_string("// ", comment)), the_origin);
   }
 
-  private static comment_construct make_newline(origin pos) {
+  private static comment_construct make_newline(origin the_origin) {
     string newline = new base_string("\n");
-    return new comment_construct(new comment(comment_type.NEWLINE, newline, newline), pos);
+    return new comment_construct(new comment(comment_type.NEWLINE, newline, newline), the_origin);
   }
 
   public final static base_flavor_profile class_profile =
@@ -2122,17 +2106,5 @@ public class to_java_transformer extends base_transformer {
         the_type, the_type_parameter.short_name(), new empty<annotation_construct>(), null,
         the_origin);
   }
-
-  public construct process_variable(variable_declaration the_variable) {
-    origin the_origin = the_variable;
-    construct the_type;
-    if (the_variable.value_type() != null) {
-      the_type = make_type(the_variable.value_type(), the_origin);
-    } else {
-      the_type = null;
-    }
-    return new variable_construct(to_annotations(the_variable.annotations(), the_origin),
-        the_type, the_variable.short_name(), new empty<annotation_construct>(),
-        transform(the_variable.initializer()), the_origin);
-  }*/
+  */
 }

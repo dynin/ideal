@@ -57,4 +57,19 @@ public abstract class base_construct extends debuggable implements construct {
     result.append(c);
     traverse_constructs(c.children(), result);
   }
+
+  public boolean has(predicate<construct> the_predicate) {
+    if (the_predicate.call(this)) {
+      return true;
+    }
+
+    readonly_list<construct> the_children = children();
+    for (int i = 0; i < the_children.size(); ++i) {
+      if (the_children.get(i).has(the_predicate)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

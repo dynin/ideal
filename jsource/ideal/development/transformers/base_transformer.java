@@ -40,20 +40,6 @@ public class base_transformer extends analyzable_visitor<Object> {
     return new_construct;
   }
 
-  // TODO!! figure out when we need this
-  public construct transform_x(@Nullable analyzable_or_declaration the_analyzable) {
-    if (the_analyzable == null) {
-      return null;
-    }
-
-    if (the_analyzable instanceof statement_list_analyzer) {
-      return new block_construct(transform1(the_analyzable), the_analyzable);
-    }
-
-    construct new_construct = (construct) process(the_analyzable);
-    return new_construct;
-  }
-
   protected common_library library() {
     return common_library.get_instance();
   }
@@ -171,7 +157,7 @@ public class base_transformer extends analyzable_visitor<Object> {
     }
 
     return new conditional_construct(transform(the_conditional.condition),
-        transform_x(the_conditional.then_branch), transform_x(the_conditional.else_branch),
+        transform(the_conditional.then_branch), transform(the_conditional.else_branch),
         is_statement, the_origin);
   }
 

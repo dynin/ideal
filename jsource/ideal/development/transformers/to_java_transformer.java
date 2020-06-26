@@ -148,21 +148,6 @@ public class to_java_transformer extends base_transformer {
   }
 
   /*
-  protected action get_action(construct c) {
-    return analyzer_utilities.to_action(get_analyzable(c));
-  }
-
-  // TODO: detailed errors instead of asserts?
-  protected type get_type(construct c) {
-    action the_action = get_action(c);
-    assert the_action instanceof type_action : "Action: " + the_action;
-    return ((type_action) the_action).get_type();
-  }
-
-  private @Nullable declaration get_declaration(construct c) {
-    return declaration_util.get_declaration(get_action(c));
-  }
-
   @Override
   public Object process_name(name_construct c) {
     action the_action = get_action(c);
@@ -1767,89 +1752,6 @@ public class to_java_transformer extends base_transformer {
       }
     });
 
-  /*
-  public construct transform(@Nullable analyzable_or_declaration the_analyzable) {
-    if (the_analyzable == null) {
-      return null;
-    }
-
-    construct new_construct = (construct) process(the_analyzable);
-    return new_construct;
-  }
-
-  protected common_library library() {
-    return common_library.get_instance();
-  }
-
-  public list<construct> transform1(analyzable_or_declaration the_analyzable) {
-    if (the_analyzable instanceof statement_list_analyzer) {
-      return transform_list(((statement_list_analyzer) the_analyzable).elements());
-    } else if (the_analyzable instanceof declaration_list_analyzer) {
-      return transform_list(((declaration_list_analyzer) the_analyzable).elements());
-    } else {
-      return transform_list(new base_list<analyzable_or_declaration>(the_analyzable));
-    }
-  }
-
-  public list<construct> transform_list(
-      @Nullable readonly_list<? extends analyzable_or_declaration> the_analyzables) {
-    if (the_analyzables == null) {
-      return null;
-    }
-
-    list<construct> result = new base_list<construct>();
-    for (int i = 0; i < the_analyzables.size(); ++i) {
-      if (the_analyzables.get(i) != null) {
-        Object transformed = process(the_analyzables.get(i));
-        if (transformed instanceof construct) {
-          result.append((construct) transformed);
-        } else if (transformed instanceof readonly_list) {
-          result.append_all((readonly_list<construct>) transformed);
-        } else if (transformed == null) {
-          // nothing
-        } else {
-          utilities.panic("Unknown result of transform " + transformed);
-        }
-      }
-    }
-    return result;
-  }
-
-  protected readonly_list<annotation_construct> to_annotations(annotation_set annotations,
-      origin the_origin) {
-    list<annotation_construct> result = new base_list<annotation_construct>();
-    result.append(new modifier_construct(annotations.access_level(), the_origin));
-
-    readonly_list<modifier_kind> modifiers = ((base_annotation_set) annotations).modifiers();
-    for (int i = 0; i < modifiers.size(); ++i) {
-      // TODO: handle parametrized modifiers
-      result.append(new modifier_construct(modifiers.get(i), the_origin));
-    }
-
-    return result;
-  }
-
-  protected @Nullable construct get_construct(@Nullable analyzable_or_declaration the_analyzable) {
-    @Nullable origin the_origin = the_analyzable;
-
-    while (the_origin != null) {
-      if (the_origin instanceof construct) {
-        return (construct) the_origin;
-      }
-
-      the_origin = the_origin.deeper_origin();
-    }
-
-    return null;
-  }
-
-  @Override
-  public construct process_default(analyzable_or_declaration the_analyzable) {
-    utilities.panic("base_transformer.process_default()");
-    return null;
-  }
-  */
-
   public construct process_analyzable_action(analyzable_action the_analyzable_action) {
     origin the_origin = the_analyzable_action;
     action the_action = the_analyzable_action.the_action;
@@ -1951,38 +1853,6 @@ public class to_java_transformer extends base_transformer {
     return result;
   }
 
-/*
-  public construct process_block(block_declaration the_block) {
-    origin the_origin = the_block;
-    return new block_construct(to_annotations(the_block.annotations(), the_origin),
-        transform1(the_block.get_body()), the_origin);
-  }
-
-  public construct process_conditional(conditional_analyzer the_conditional) {
-    origin the_origin = the_conditional;
-    // TODO: infer is_statement from conditional_analyzer
-    boolean is_statement = true;
-    construct the_construct = get_construct(the_conditional);
-    if (the_construct instanceof conditional_construct) {
-      is_statement = ((conditional_construct) the_construct).is_statement;
-    }
-
-    return new conditional_construct(transform(the_conditional.condition),
-        transform(the_conditional.then_branch), transform(the_conditional.else_branch),
-        is_statement, the_origin);
-  }
-
-  public construct process_constraint(constraint_analyzer the_constraint) {
-    origin the_origin = the_constraint;
-    return new constraint_construct(transform(the_constraint.expression), the_origin);
-  }
-
-  public construct process_declaration_list(declaration_list_analyzer the_declaration_list) {
-    // TODO: report error
-    return process_default(the_declaration_list);
-  }
-  */
-
   public construct process_enum_value(enum_value_analyzer the_enum_value) {
     origin the_origin = the_enum_value;
     name_construct the_name = new name_construct(the_enum_value.short_name(), the_origin);
@@ -2037,74 +1907,8 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  /*
-  public construct process_jump(jump_analyzer the_jump) {
-    origin the_origin = the_jump;
-    return new jump_construct(the_jump.the_jump_type, the_origin);
-  }
-
-  public construct process_list_initializer(list_initializer_analyzer the_list_initializer) {
-    origin the_origin = the_list_initializer;
-    grouping_type grouping = grouping_type.PARENS;
-    boolean has_trailing_comma = the_list_initializer.analyzable_parameters.size() == 1;
-    return new list_construct(transform_list(the_list_initializer.analyzable_parameters),
-        grouping, has_trailing_comma, the_origin);
-  }
-
-  public construct process_literal(literal_analyzer the_literal) {
-    origin the_origin = the_literal;
-    return new literal_construct(the_literal.the_literal, the_origin);
-  }
-
-  public construct process_statement_list(statement_list_analyzer the_statement_list) {
-    utilities.panic("base_transformer.process_statement_list()");
-    return process_default(the_statement_list);
-  }
-  */
-
   public construct process_supertype(supertype_declaration the_supertype) {
     utilities.panic("Unexpected supertype_declaration");
     return null;
   }
-
-/*
-  public construct process_target(target_declaration the_target) {
-    origin the_origin = the_target;
-    return new target_construct(the_target.short_name(),
-        transform(the_target.get_expression()), the_origin);
-  }
-
-  public construct process_type_announcement(type_announcement the_type_announcement) {
-    origin the_origin = the_type_announcement;
-    // TODO: skip annotations?
-    return new type_announcement_construct(
-        to_annotations(the_type_announcement.annotations(), the_origin),
-        the_type_announcement.get_kind(), the_type_announcement.short_name(), the_origin);
-  }
-
-  public construct process_type(type_declaration the_type) {
-    origin the_origin = the_type;
-    @Nullable list_construct parameters = null;
-    if (the_type.get_parameters() != null)  {
-      parameters = new list_construct(transform_list(the_type.get_parameters()),
-          grouping_type.PARENS, false, the_origin);
-    }
-    return new type_declaration_construct(to_annotations(the_type.annotations(), the_origin),
-        the_type.get_kind(), the_type.short_name(), parameters,
-        transform_list(the_type.get_signature()), the_origin);
-  }
-
-  public construct process_type_parameter(type_parameter_declaration the_type_parameter) {
-    origin the_origin = the_type_parameter;
-    construct the_type;
-    if (the_type_parameter.variable_type() != null) {
-      the_type = make_type(the_type_parameter.variable_type(), the_origin);
-    } else {
-      the_type = null;
-    }
-    return new variable_construct(to_annotations(the_type_parameter.annotations(), the_origin),
-        the_type, the_type_parameter.short_name(), new empty<annotation_construct>(), null,
-        the_origin);
-  }
-  */
 }

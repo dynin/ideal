@@ -279,7 +279,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
   protected void ensure_everything_is_analyzed(list<construct> constructs,
       analysis_context context) {
-    readonly_list<construct> flattened = base_construct.flatten(constructs);
+    readonly_list<construct> flattened = ...flatten(constructs);
     for (int i = 0; i < flattened.size(); ++i) {
       construct the_construct = flattened.get(i);
       @Nullable analyzable the_analyzable = context.get_analyzable(the_construct);

@@ -181,9 +181,8 @@ class create {
   // TODO: use filter()
   private readonly_set<simple_name> find_use_constructs(readonly_list<construct> constructs) {
     set<simple_name> extensions = new hash_set<simple_name>();
-    readonly_list<construct> flattened = base_construct.flatten(constructs);
-    for (int i = 0; i < flattened.size(); ++i) {
-      construct c = flattened.get(i);
+    for (int i = 0; i < constructs.size(); ++i) {
+      construct c = constructs.get(i);
       if (c instanceof use_construct) {
         use_construct uc = (use_construct) c;
         assert uc.name instanceof simple_name;

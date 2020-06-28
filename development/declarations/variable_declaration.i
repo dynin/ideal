@@ -15,6 +15,7 @@ interface variable_declaration {
   --- Get (flavored) variable type.
   override type value_type;
   override type reference_type;
+  boolean declared_as_reference;
   analyzable or null get_type_analyzable;
   analyzable or null initializer;
   action or null init_action;

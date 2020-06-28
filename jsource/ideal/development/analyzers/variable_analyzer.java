@@ -26,12 +26,15 @@ import static ideal.development.flavors.flavor.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
 
-public class variable_analyzer extends declaration_analyzer<variable_construct>
+public class variable_analyzer extends declaration_analyzer
     implements variable_declaration {
 
+  private final @Nullable readonly_list<annotation_construct> variable_annotations;
+  private final @Nullable analyzable variable_type;
+  private final action_name name;
+  private final @Nullable readonly_list<annotation_construct> post_annotations;
+  private final @Nullable analyzable init;
   private @Nullable variable_category category;
-  private @Nullable analyzable variable_type;
-  private @Nullable analyzable init;
   private @Nullable type var_value_type;
   private @Nullable type var_reference_type;
   private variable_action the_variable_action;
@@ -40,17 +43,35 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
 
   public variable_analyzer(variable_construct source) {
     super(source);
+    variable_annotations = source.annotations;
     if (source.type != null) {
       variable_type = make(source.type);
+    } else {
+      variable_type = null;
     }
+    name = source.name;
+    post_annotations = source.post_annotations;
     if (source.init != null) {
       init = make(source.init);
+    } else {
+      init = null;
     }
+  }
+
+  public variable_analyzer(annotation_set annotations, @Nullable analyzable variable_type,
+      action_name name, @Nullable analyzable init, origin the_origin) {
+    super(the_origin);
+    set_annotations(annotations);
+    variable_annotations = null;
+    this.variable_type = variable_type;
+    this.name = name;
+    post_annotations = null;
+    this.init = init;
   }
 
   @Override
   public action_name short_name() {
-    return source.name;
+    return name;
   }
 
   @Override
@@ -72,6 +93,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     return var_reference_type;
   }
 
+  @Override
   public boolean declared_as_reference() {
     return declared_as_reference;
   }
@@ -104,7 +126,10 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
       assert short_name() instanceof simple_name;
 
       // TODO: select default access modifier based on the frame
-      process_annotations(source.annotations, language().get_default_variable_access(outer_kind()));
+      if (variable_annotations != null) {
+        process_annotations(variable_annotations,
+            language().get_default_variable_access(outer_kind()));
+      }
 
       if (outer_kind() == type_kinds.block_kind) {
         category = variable_category.LOCAL;
@@ -195,11 +220,11 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     if (library().is_reference_type(var_value_type)) {
       return report_error(new error_signal(
           new base_string("Reference type not allowed in the variable declaration"),
-          source.type != null ? source.type : this));
+          variable_type != null ? variable_type : this));
     }
 
     var_value_type = analyzer_utilities.handle_default_flavor(var_value_type);
-    @Nullable type_flavor reference_flavor = process_flavor(source.post_annotations);
+    @Nullable type_flavor reference_flavor = process_flavor(post_annotations);
     declared_as_reference = reference_flavor != null;
     if (!declared_as_reference) {
       // TODO: detect and use deeply_immutable.
@@ -286,7 +311,7 @@ public class variable_analyzer extends declaration_analyzer<variable_construct>
     type new_reference_type = library().get_reference(reference_flavor, new_value_type);
 
     specialized_variable new_variable = new specialized_variable(this, new_parent, new_value_type,
-        new_reference_type, type_analyzable, new_init);
+        new_reference_type, declared_as_reference, type_analyzable, new_init);
     new_variable.add(get_context());
     return new_variable;
   }

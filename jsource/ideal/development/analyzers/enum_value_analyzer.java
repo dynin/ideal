@@ -68,6 +68,11 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     return library().get_reference(flavor.deeply_immutable_flavor, value_type());
   }
 
+  @Override
+  public boolean declared_as_reference() {
+    return false;
+  }
+
   public @Nullable readonly_list<analyzable> constructor_parameters() {
     return the_constructor_parameters;
   }

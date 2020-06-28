@@ -130,7 +130,10 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
   }
 
   protected @Nullable type_flavor process_flavor(
-      readonly_list<annotation_construct> post_annotations) {
+      @Nullable readonly_list<annotation_construct> post_annotations) {
+    if (post_annotations == null) {
+      return null;
+    }
 
     // TODO: handle duplicate or out-of-context annotations
     for (int i = 0; i < post_annotations.size(); ++i) {

@@ -25,13 +25,19 @@ import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 
-public class procedure_analyzer extends declaration_analyzer<procedure_construct>
+public class procedure_analyzer extends declaration_analyzer
     implements procedure_declaration {
 
+  private final @Nullable readonly_list<annotation_construct> annotations;
+  private final @Nullable analyzable ret;
+  private final simple_name original_name;
+  private final @Nullable list_construct parameters_construct;
+  private final @Nullable readonly_list<annotation_construct> post_annotations;
+  private final @Nullable analyzable original_body;
   private action_name name;
   private procedure_category category;
   private master_type inside;
-  private list<variable_declaration> parameter_variables;
+  private readonly_list<variable_declaration> parameter_variables;
   private list<type> proc_args;
   private type return_type;
   private type proc_type;
@@ -45,9 +51,36 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
   public procedure_analyzer(procedure_construct source) {
     super(source);
+    annotations = source.annotations;
+    if (source.ret != null) {
+      ret = make(source.ret);
+    } else {
+      ret = null;
+    }
 
     // TODO: handle namespace in the name...
-    assert source.name instanceof simple_name;
+    original_name = (simple_name) source.name;
+    parameters_construct = source.parameters;
+    post_annotations = source.post_annotations;
+    if (source.body != null) {
+      original_body = make(source.body);
+    } else {
+      original_body = null;
+    }
+  }
+
+  public procedure_analyzer(annotation_set annotations, @Nullable analyzable ret,
+      simple_name original_name, readonly_list<variable_declaration> parameter_variables,
+      @Nullable analyzable original_body, origin the_origin) {
+    super(the_origin);
+    set_annotations(annotations);
+    this.annotations = null;
+    this.ret = ret;
+    this.original_name = original_name;
+    this.parameters_construct = null;
+    this.parameter_variables = parameter_variables;
+    this.post_annotations = null;
+    this.original_body = original_body;
   }
 
   @Override
@@ -69,7 +102,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
   @Override
   public simple_name original_name() {
-    return (simple_name) source.name;
+    return original_name;
   }
 
   @Override
@@ -122,15 +155,15 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
 
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       list<annotation_construct> joined_annotations = new base_list<annotation_construct>();
-      joined_annotations.append_all(source.annotations);
-      joined_annotations.append_all(source.post_annotations);
+      joined_annotations.append_all(annotations);
+      joined_annotations.append_all(post_annotations);
       // TODO: if not specified, inherit access modifier from the overriden method
       process_annotations(joined_annotations,
           language().get_default_procedure_access(outer_kind()));
-      the_flavor = process_flavor(source.post_annotations);
+      the_flavor = process_flavor(post_annotations);
 
       assert category == null;
-      if (source.ret == null && !annotations().has(general_modifier.testcase_modifier)) {
+      if (ret == null && !annotations().has(general_modifier.testcase_modifier)) {
         category = procedure_category.CONSTRUCTOR;
       } else if (is_static_declaration()) {
         category = procedure_category.STATIC;
@@ -138,12 +171,17 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
         category = procedure_category.METHOD;
       }
 
-      if (source.body != null) {
+      if (original_body != null) {
         readonly_list<analyzable> body_statements;
-        if (source.body instanceof block_construct) {
-          body_statements = make_list(((block_construct) source.body).body);
+        if (original_body instanceof block_analyzer) {
+          analyzable inside_body = ((block_analyzer) original_body).get_body();
+          if (inside_body instanceof statement_list_analyzer) {
+            body_statements = ((statement_list_analyzer) inside_body).elements();
+          } else {
+            body_statements = new base_list<analyzable>(original_body);
+          }
         } else {
-          body_statements = new base_list<analyzable>(make(source.body));
+          body_statements = new base_list<analyzable>(original_body);
         }
         if (category == procedure_category.CONSTRUCTOR) {
           body_statements = rewrite_ctor_body(body_statements);
@@ -163,6 +201,44 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     return null;
   }
 
+  private @Nullable error_signal process_parameters(readonly_list<construct> parameters) {
+    list<variable_declaration> result = new base_list<variable_declaration>();
+    error_signal arg_error = null;
+
+    for (int i = 0; i < parameters.size(); ++i) {
+      construct the_parameter = parameters.get(i);
+      variable_analyzer the_argument;
+      if (the_parameter instanceof variable_construct) {
+        the_argument = new variable_analyzer((variable_construct) the_parameter);
+      } else if (the_parameter instanceof name_construct) {
+        action_name the_name = ((name_construct) the_parameter).the_name;
+        // TODO: 'this' should be immutable.
+        the_argument = new variable_analyzer(analyzer_utilities.PUBLIC_MODIFIERS,
+            null, the_name, null, the_parameter);
+      } else {
+        error_signal new_error = new error_signal(new base_string("Variable expected"),
+            the_parameter);
+        handle_error(new_error);
+        if (arg_error == null) {
+          arg_error = new_error;
+        }
+        continue;
+      }
+      result.append(the_argument);
+      @Nullable error_signal new_error = find_error(the_argument);
+      if (new_error != null) {
+        new_error = new error_signal(messages.error_in_fn_param, new_error, source);
+        handle_error(new_error);
+        if (arg_error == null) {
+          arg_error = new_error;
+        }
+      }
+    }
+
+    parameter_variables = result;
+    return arg_error;
+  }
+
   private @Nullable error_signal process_declaration() {
     if (get_category() == procedure_category.CONSTRUCTOR) {
       name = special_name.IMPLICIT_CALL;
@@ -170,7 +246,7 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       if (annotations().has(general_modifier.implicit_modifier)) {
         name = special_name.IMPLICIT_CALL;
       } else {
-        name = source.name;
+        name = original_name;
         // TODO: signal error
         assert name instanceof simple_name;
       }
@@ -199,48 +275,26 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
         break;
     }
 
-    readonly_list<construct> parameters;
-    if (source.parameters != null) {
-      parameters = source.parameters.elements;
-    } else {
-      parameters = new empty<construct>();
-    }
-    parameter_variables = new base_list<variable_declaration>();
-    proc_args = new base_list<type>();
-
-    error_signal arg_error = null;
-    for (int i = 0; i < parameters.size(); ++i) {
-      construct the_parameter = parameters.get(i);
-      variable_analyzer the_argument;
-      if (the_parameter instanceof variable_construct) {
-        the_argument = new variable_analyzer((variable_construct) the_parameter);
-      } else if (the_parameter instanceof name_construct) {
-        action_name the_name = ((name_construct) the_parameter).the_name;
-        // TODO: construct variable_analyzer directly.
-        // TODO: 'this' should be immutable.
-        the_argument = new variable_analyzer(
-            new variable_construct(new empty<annotation_construct>(), null,
-                the_name, new empty<annotation_construct>(), null, the_parameter));
-      } else {
-        arg_error = new error_signal(new base_string("Variable expected"), the_parameter);
-        continue;
-      }
-      parameter_variables.append(the_argument);
-      @Nullable error_signal ae = find_error(the_argument);
-      if (ae != null) {
-        arg_error = new error_signal(messages.error_in_fn_param, ae, source);
-      } else {
-        if (the_argument.declared_as_reference()) {
-          proc_args.append(the_argument.reference_type());
-        } else {
-          proc_args.append(the_argument.value_type());
+    if (parameter_variables == null) {
+      if (parameters_construct != null) {
+        error_signal parameters_error = process_parameters(parameters_construct.elements);
+        if (parameters_error != null) {
+          add_error(declared_in_type(), name, parameters_error);
+          return parameters_error;
         }
+      } else {
+        parameter_variables = new empty<variable_declaration>();
       }
     }
 
-    if (arg_error != null) {
-      add_error(declared_in_type(), name, arg_error);
-      return arg_error;
+    proc_args = new base_list<type>();
+    for (int i = 0; i < parameter_variables.size(); ++i) {
+      variable_declaration the_argument = parameter_variables.get(i);
+      if (the_argument.declared_as_reference()) {
+        proc_args.append(the_argument.reference_type());
+      } else {
+        proc_args.append(the_argument.value_type());
+      }
     }
 
     if (get_category() == procedure_category.CONSTRUCTOR) {
@@ -252,8 +306,8 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
     } else {
       // what if return expression is not a type?
       // TODO: expect static types.
-      if (source.ret != null) {
-        return_analyzable = make(source.ret);
+      if (ret != null) {
+        return_analyzable = ret;
         add_dependence(return_analyzable, null, declaration_pass.TYPES_AND_PROMOTIONS);
       } else {
         return_analyzable = analyzable_action.from(library().void_type(), this);
@@ -261,12 +315,12 @@ public class procedure_analyzer extends declaration_analyzer<procedure_construct
       @Nullable error_signal return_error = find_error(return_analyzable);
       if (return_error != null) {
         return new error_signal(new base_string("Error in return declaration"),
-            return_error, source.ret);
+            return_error, ret);
       }
 
       action return_action = action_not_error(return_analyzable);
       if (! (return_action instanceof type_action)) {
-        return new error_signal(messages.type_expected, source.ret);
+        return new error_signal(messages.type_expected, ret);
       }
 
       if (annotations().has(general_modifier.noreturn_modifier)) {

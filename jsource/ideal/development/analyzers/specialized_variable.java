@@ -32,16 +32,18 @@ public class specialized_variable extends debuggable implements variable_declara
   private final principal_type parent_type;
   private final type value_type;
   private final type reference_type;
+  private final boolean declared_as_reference;
   private final @Nullable analyzable type_analyzable;
   private final @Nullable analyzable init;
 
   public specialized_variable(variable_analyzer main, principal_type parent_type,
-      type value_type, type reference_type, @Nullable analyzable type_analyzable,
-      @Nullable analyzable init) {
+      type value_type, type reference_type, boolean declared_as_reference,
+      @Nullable analyzable type_analyzable, @Nullable analyzable init) {
     this.main = main;
     this.parent_type = parent_type;
     this.value_type = value_type;
     this.reference_type = reference_type;
+    this.declared_as_reference = declared_as_reference;
     this.type_analyzable = type_analyzable;
     this.init = init;
 
@@ -113,6 +115,11 @@ public class specialized_variable extends debuggable implements variable_declara
   @Override
   public type reference_type() {
     return reference_type;
+  }
+
+  @Override
+  public boolean declared_as_reference() {
+    return declared_as_reference;
   }
 
   @Override

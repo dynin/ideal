@@ -40,7 +40,7 @@ public class import_analyzer extends declaration_analyzer<import_construct> {
       } else {
         the_name = short_name();
         if (the_name == null) {
-          return new error_signal(messages.name_expected, source.type);
+          return new error_signal(messages.name_expected, type_analyzable);
         }
         get_context().add(parent(), the_name, new import_type_action(this));
       }
@@ -57,7 +57,7 @@ public class import_analyzer extends declaration_analyzer<import_construct> {
       action the_action = action_not_error(type_analyzable);
       if (! (the_action instanceof type_action)) {
         // TODO: add an action?
-        return new error_signal(messages.type_expected, source.type);
+        return new error_signal(messages.type_expected, type_analyzable);
       }
 
       if (is_implicit()) { // TODO: refactor code

@@ -46,6 +46,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   private final resource_catalog top_catalog;
   public final analysis_context bootstrap_context;
   private final origin root_origin;
+  private final scanner_config scanner;
   private output_counter<notification> notifications;
   private @Nullable resource_catalog output_catalog;
 
@@ -55,6 +56,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     this.top_catalog = top_catalog;
     bootstrap_context = new create_analysis_context(this, language);
     root_origin = semantics.BUILTIN_POSITION; // TODO: use resource id as origin
+    scanner = new common_scanner();
     set_notification_handler((output<notification>) (output) log.log_output);
   }
 
@@ -110,7 +112,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   public list<construct> parse(source_content source) {
-    readonly_list<token> tokens = new common_scanner().scan(source);
+    readonly_list<token> tokens = scanner.scan(source);
 
     tokens = documenter_filter.transform(tokens);
 

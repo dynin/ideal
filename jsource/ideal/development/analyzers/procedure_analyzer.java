@@ -150,6 +150,10 @@ public class procedure_analyzer extends declaration_analyzer
     return annotations().has(general_modifier.pure_modifier);
   }
 
+  public @Nullable readonly_list<annotation_construct> annotations_list() {
+    return annotations;
+  }
+
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 

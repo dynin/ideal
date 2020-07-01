@@ -27,7 +27,7 @@ class base_flavor_profile {
     return map(flavor) == flavor;
   }
 
-  override immutable list[type_flavor] supported_flavors() {
+  override cache immutable list[type_flavor] supported_flavors() {
     result : cached_flavors;
     -- TODO: streamline this with a cached value extension.
     if (result is null) {

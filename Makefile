@@ -150,6 +150,9 @@ test_library: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java
 
+generate_cache: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_cache
+
 ### Running sample code
 
 1: $(IDEAL_TARGET) $(ONE)

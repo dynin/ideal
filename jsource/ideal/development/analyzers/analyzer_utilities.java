@@ -30,6 +30,9 @@ public class analyzer_utilities {
 
   private analyzer_utilities() { }
 
+  public static final origin UNINITIALIZED_POSITION =
+      new special_position(new base_string("[uninitialized]"));
+
   public static final annotation_set PUBLIC_MODIFIERS =
       new base_annotation_set(access_modifier.public_modifier,
           new hash_set<modifier_kind>(), null);

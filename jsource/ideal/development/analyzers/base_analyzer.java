@@ -50,7 +50,7 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
   }
 
   @Override
-  public final origin deeper_origin() {
+  public origin deeper_origin() {
     return source;
   }
 

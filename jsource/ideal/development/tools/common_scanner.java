@@ -18,6 +18,7 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.names.*;
+import ideal.development.analyzers.*;
 
 public class common_scanner extends base_scanner_config {
 
@@ -164,5 +165,8 @@ public class common_scanner extends base_scanner_config {
     add_flavor(flavor.immutable_flavor);
     add_flavor(flavor.deeply_immutable_flavor);
     add_flavor(flavor.raw_flavor);
+
+    // TODO: process a list of extensions
+    new cache_extension().register_syntax_extension(this);
   }
 }

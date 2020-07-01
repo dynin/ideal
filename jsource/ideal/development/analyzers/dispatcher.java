@@ -16,6 +16,8 @@ import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.extensions.grouping_analyzer;
+import javax.annotation.Nullable;
+
 
 public class dispatcher extends construct_visitor<analyzable> {
 
@@ -58,7 +60,23 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_procedure(procedure_construct source) {
-    return new procedure_analyzer(source);
+    procedure_analyzer result = new procedure_analyzer(source);
+    // TODO: switch to using annotation set.
+    // TODO: handle more than one extension on the same procedure_analyzer.
+    @Nullable readonly_list<annotation_construct> annotations = result.annotations_list();
+    if (result != null) {
+      for (int i = 0; i < annotations.size(); ++i) {
+        annotation_construct annotation = annotations.get(i);
+        if (annotation instanceof modifier_construct) {
+          modifier_kind the_kind = ((modifier_construct) annotation).the_kind;
+          if (the_kind instanceof extension_modifier_kind) {
+            return ((extension_modifier_kind) the_kind).make_extension(result);
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   @Override

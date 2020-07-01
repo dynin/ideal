@@ -113,9 +113,11 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     list<declaration> types = new base_list<declaration>();
 
     for (int i = 0; i < body.size(); ++i) {
-      analyzable a = body.get(i);
-      if (a instanceof declaration) {
-        types.append((declaration) a);
+      analyzable the_analyzable = body.get(i);
+      if (the_analyzable instanceof declaration) {
+        types.append((declaration) the_analyzable);
+      } else if (the_analyzable instanceof declaration_extension) {
+        types.append_all(((declaration_extension) the_analyzable).expanded_declarations());
       }
     }
 

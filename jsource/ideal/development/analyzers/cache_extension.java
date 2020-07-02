@@ -34,6 +34,8 @@ public class cache_extension extends declaration_extension {
   @Override
   protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,
       analysis_pass pass) {
-    return new error_signal(new base_string("Cache extension is a work in progress"), this);
+    analyze_and_ignore_errors(the_procedure, pass);
+    return null;
+    //return new error_signal(new base_string("Cache extension is a work in progress"), this);
   }
 }

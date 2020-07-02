@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
+import ideal.machine.annotations.dont_display;
 import ideal.development.elements.*;
 import ideal.development.actions.*;
 import ideal.development.constructs.*;
@@ -29,7 +30,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       new list_dictionary<Class, declaration_extension>();
 
   private final extension_modifier_kind the_modifier_kind;
-  private final Class this_class;
+  @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
 
   public declaration_extension(String modifier_kind_name) {

@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
+import ideal.machine.annotations.dont_display;
 import ideal.development.elements.*;
 import ideal.development.comments.*;
 import ideal.development.actions.*;
@@ -28,26 +29,26 @@ import ideal.development.declarations.*;
 public class procedure_analyzer extends declaration_analyzer
     implements procedure_declaration {
 
-  private final @Nullable readonly_list<annotation_construct> annotations;
-  private final @Nullable analyzable ret;
+  @dont_display private final @Nullable readonly_list<annotation_construct> annotations;
+  @dont_display private final @Nullable analyzable ret;
   private final simple_name original_name;
-  private final @Nullable list_construct parameters_construct;
-  private final @Nullable readonly_list<annotation_construct> post_annotations;
-  private final @Nullable analyzable original_body;
-  private action_name name;
+  @dont_display private final @Nullable list_construct parameters_construct;
+  @dont_display private final @Nullable readonly_list<annotation_construct> post_annotations;
+  @dont_display private final @Nullable analyzable original_body;
+  @dont_display private action_name name;
   private procedure_category category;
-  private master_type inside;
-  private readonly_list<variable_declaration> parameter_variables;
-  private list<type> proc_args;
-  private type return_type;
-  private type proc_type;
-  private @Nullable type_flavor the_flavor;
-  private @Nullable analyzable body;
-  private @Nullable analyzable return_analyzable;
-  private @Nullable readonly_list<declaration> overriden;
-  private @Nullable local_variable_declaration this_decl;
-  private boolean calls_this_constructor;
-  private @Nullable action procedure_action;
+  @dont_display private master_type inside;
+  @dont_display private readonly_list<variable_declaration> parameter_variables;
+  @dont_display private list<type> proc_args;
+  @dont_display private type return_type;
+  @dont_display private type proc_type;
+  @dont_display private @Nullable type_flavor the_flavor;
+  @dont_display private @Nullable analyzable body;
+  @dont_display private @Nullable analyzable return_analyzable;
+  @dont_display private @Nullable readonly_list<declaration> overriden;
+  @dont_display private @Nullable local_variable_declaration this_decl;
+  @dont_display private boolean calls_this_constructor;
+  @dont_display private @Nullable action procedure_action;
 
   public procedure_analyzer(procedure_construct source) {
     super(source);
@@ -157,7 +158,7 @@ public class procedure_analyzer extends declaration_analyzer
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 
-    if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
+    if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
       list<annotation_construct> joined_annotations = new base_list<annotation_construct>();
       joined_annotations.append_all(annotations);
       joined_annotations.append_all(post_annotations);
@@ -194,6 +195,8 @@ public class procedure_analyzer extends declaration_analyzer
       }
 
       return process_declaration();
+    } else if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
+      return process_over_declarations();
     } else if (pass == analysis_pass.BODY_CHECK) {
       // TODO:...check that it's |void_type|
       if (body != null) {
@@ -336,9 +339,24 @@ public class procedure_analyzer extends declaration_analyzer
       }
     }
 
+    // TODO: bind...
+    list<abstract_value> proc_params = new base_list<abstract_value>();
+    proc_params.append(return_type);
+    // TODO: this cast is redundant.
+    proc_params.append_all((list<abstract_value>)(list) proc_args);
+    // TODO: use procedure_util...
+    master_type the_procedure_type = is_pure() ? library().function_type() :
+        library().procedure_type();
+    proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
+        get_flavored(flavor.immutable_flavor);
+
+    return null;
+  }
+
+  private @Nullable error_signal process_over_declarations() {
     // Handle overloading
-    type from_type = declared_in_type().get_flavored(get_flavor());
     @Nullable overloaded_procedure the_overloaded_procedure = null;
+    type from_type = declared_in_type().get_flavored(get_flavor());
     readonly_list<action> overloaded_actions = get_context().lookup(from_type, short_name());
     for (int i = 0; i < overloaded_actions.size(); ++i) {
       action overloaded_action = overloaded_actions.get(i);
@@ -385,17 +403,6 @@ public class procedure_analyzer extends declaration_analyzer
       // static methods/constructors...
       overriden = new empty<declaration>();
     }
-
-    // TODO: bind...
-    list<abstract_value> proc_params = new base_list<abstract_value>();
-    proc_params.append(return_type);
-    // TODO: this cast is redundant.
-    proc_params.append_all((list<abstract_value>)(list) proc_args);
-    // TODO: use procedure_util...
-    master_type the_procedure_type = is_pure() ? library().function_type() :
-        library().procedure_type();
-    proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
-        get_flavored(flavor.immutable_flavor);
 
     procedure_action = analyzer_utilities.add_procedure(this, the_overloaded_procedure,
         get_context());

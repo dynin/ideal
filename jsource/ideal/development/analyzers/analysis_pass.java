@@ -20,6 +20,7 @@ public enum analysis_pass implements deeply_immutable_data, stringable {
   TYPE_DECL,
   IMPORT_AND_TYPE_VAR_DECL,
   SUPERTYPE_DECL,
+  PREPARE_METHOD_AND_VARIABLE,
   METHOD_AND_VARIABLE_DECL,
   BODY_CHECK;
 

@@ -2658,6 +2658,7 @@ testdata/bootstrap.i:255: Primary type already defined
   testdata/bootstrap.i:227: This is the primary
 ============ IMPORT_AND_TYPE_VAR_DECL
 ============ SUPERTYPE_DECL
+============ PREPARE_METHOD_AND_VARIABLE
 ============ METHOD_AND_VARIABLE_DECL
 ============ BODY_CHECK
 concept entity { }

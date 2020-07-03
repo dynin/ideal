@@ -159,12 +159,15 @@ public class procedure_analyzer extends declaration_analyzer
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
-      list<annotation_construct> joined_annotations = new base_list<annotation_construct>();
-      joined_annotations.append_all(annotations);
-      joined_annotations.append_all(post_annotations);
-      // TODO: if not specified, inherit access modifier from the overriden method
-      process_annotations(joined_annotations,
-          language().get_default_procedure_access(outer_kind()));
+      // TODO: implement flavor support when constructing procedure_analyzer from analyzables
+      if (annotations != null) {
+        list<annotation_construct> joined_annotations = new base_list<annotation_construct>();
+        joined_annotations.append_all(annotations);
+        joined_annotations.append_all(post_annotations);
+        // TODO: if not specified, inherit access modifier from the overriden method
+        process_annotations(joined_annotations,
+            language().get_default_procedure_access(outer_kind()));
+      }
       the_flavor = process_flavor(post_annotations);
 
       assert category == null;
@@ -196,10 +199,13 @@ public class procedure_analyzer extends declaration_analyzer
 
       return process_declaration();
     } else if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
-      return process_over_declarations();
+      // TODO: add error to context
+      if (!has_errors()) {
+        return process_over_declarations();
+      }
     } else if (pass == analysis_pass.BODY_CHECK) {
       // TODO:...check that it's |void_type|
-      if (body != null) {
+      if (!has_errors() && body != null) {
         declare_this_and_super();
         analyze_and_ignore_errors(body, pass);
       }

@@ -377,7 +377,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       block_construct bc = (block_construct) c;
       return print_block(bc.body, true, end_line);
     } else {
-      return base_element.make(text_library.INDENT, print(c));
+      return base_element.make(text_library.INDENT, print_statement(c));
     }
   }
 

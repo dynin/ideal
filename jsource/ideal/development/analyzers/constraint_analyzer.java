@@ -27,6 +27,11 @@ public class constraint_analyzer extends single_pass_analyzer {
     expression = make(source.expr);
   }
 
+  public constraint_analyzer(analyzable expression, origin the_origin) {
+    super(the_origin);
+    this.expression = expression;
+  }
+
   @Override
   protected analysis_result do_single_pass_analysis() {
     if (has_errors(expression)) {

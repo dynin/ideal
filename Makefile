@@ -60,6 +60,7 @@ FLAGS_RUN = -debug-progress -run
 TEST_DIR = tests
 ONETWO = $(TEST_DIR)/12.i
 ONE = $(TEST_DIR)/1.i
+TESTCACHE = $(TEST_DIR)/cache.i
 DIRECTORY = $(TEST_DIR)/directory.i
 
 SHOWCASE_DIR = showcase
@@ -166,6 +167,9 @@ dir: $(IDEAL_TARGET) $(ONETWO)
 
 circle: $(IDEAL_TARGET) $(CIRCLE)
 	$(CREATE) $(FLAGS_RUN) -input=$(CIRCLE)
+
+tc: $(IDEAL_TARGET) $(TESTCACHE)
+	$(CREATE) $(FLAGS_RUN) -input=$(TESTCACHE)
 
 ### Generating runtime
 

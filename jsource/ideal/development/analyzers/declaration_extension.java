@@ -26,12 +26,15 @@ import ideal.development.scanners.*;
 
 public class declaration_extension extends multi_pass_analyzer implements syntax_extension {
 
+  private static final simple_name generated_name = simple_name.make("generated");
+
   private static dictionary<Class, declaration_extension> extension_registry =
       new list_dictionary<Class, declaration_extension>();
 
   private final extension_modifier_kind the_modifier_kind;
   @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
+  private @Nullable readonly_list<declaration> expanded_declarations;
 
   public declaration_extension(String modifier_kind_name) {
     super(analyzer_utilities.UNINITIALIZED_POSITION);
@@ -69,12 +72,34 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     this.the_declaration = the_declaration;
   }
 
-  public readonly_list<declaration> expanded_declarations() {
-    return new base_list<declaration>(get_declaration());
+  public void set_expanded_declarations(readonly_list<declaration> expanded_declarations) {
+    this.expanded_declarations = expanded_declarations;
+    for (int i = 0; i < expanded_declarations.size(); ++i) {
+      // TODO: handle the case when the element is not a declaration_analyzer
+      analyze_and_ignore_errors((declaration_analyzer) expanded_declarations.get(i), last_pass);
+    }
+  }
+
+  public readonly_list<declaration> expand_declarations() {
+    if (has_errors()) {
+      return new empty<declaration>();
+    } else if (expanded_declarations != null) {
+      return expanded_declarations;
+    } else {
+      return new base_list<declaration>(get_declaration());
+    }
   }
 
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
     if (has_errors()) {
+      return null;
+    }
+
+    if (expanded_declarations != null) {
+      for (int i = 0; i < expanded_declarations.size(); ++i) {
+        // TODO: handle the case when the element is not a declaration_analyzer
+        analyze_and_ignore_errors((declaration_analyzer) expanded_declarations.get(i), pass);
+      }
       return null;
     }
 
@@ -88,6 +113,15 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     }
 
     return null;
+  }
+
+  public simple_name generated_name(simple_name name) {
+    return name_utilities.join(generated_name, name);
+  }
+
+  public analyzable_action to_analyzable(abstract_value the_abstract_value) {
+    origin the_origin = this;
+    return analyzable_action.from(the_abstract_value, the_origin);
   }
 
   protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,

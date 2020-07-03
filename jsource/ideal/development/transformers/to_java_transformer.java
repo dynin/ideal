@@ -1477,11 +1477,10 @@ public class to_java_transformer extends base_transformer {
     } else if (the_operator == operator.IS_OPERATOR) {
       construct expression = transform(arguments.get(0));
       type the_type = get_type(arguments.get(1));
-
-      if (the_type == library().null_type()) {
+      if (the_type.principal() == library().null_type()) {
         return new operator_construct(operator.EQUAL_TO, expression, make_null(the_origin),
             the_origin);
-      } else if (the_type == library().nonnegative_type()) {
+      } else if (the_type.principal() == library().nonnegative_type()) {
         return new operator_construct(operator.GREATER_EQUAL, expression, make_zero(the_origin),
             the_origin);
       }
@@ -1489,7 +1488,7 @@ public class to_java_transformer extends base_transformer {
       construct expression = transform(arguments.get(0));
       type the_type = get_type(arguments.get(1));
 
-      if (the_type == library().null_type()) {
+      if (the_type.principal() == library().null_type()) {
         return new operator_construct(operator.NOT_EQUAL_TO, expression, make_null(the_origin),
             the_origin);
       }
@@ -1767,6 +1766,10 @@ public class to_java_transformer extends base_transformer {
       base_data_value the_value = (base_data_value) ((value_action) the_action).the_value;
       if (the_value instanceof singleton_value) {
         principal_type singleton_type = the_value.type_bound().principal();
+        // Convert missing.instance to null literal
+        if (is_null_subtype(singleton_type)) {
+          return make_null(the_origin);
+        }
         construct type_construct = make_type(singleton_type, the_origin);
         construct name_construct = new name_construct(type_kinds.INSTANCE_NAME, the_origin);
         return new resolve_construct(type_construct, name_construct, the_origin);

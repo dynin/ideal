@@ -41,6 +41,10 @@ public class analyzer_utilities {
       new base_annotation_set(access_modifier.private_modifier,
           new hash_set<modifier_kind>(), null);
 
+  public static final annotation_set PRIVATE_VAR_MODIFIERS =
+      new base_annotation_set(access_modifier.private_modifier,
+          make_singleton(general_modifier.var_modifier), null);
+
   public static final annotation_set PRIVATE_FINAL_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
           make_singleton(general_modifier.final_modifier), null);

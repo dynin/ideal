@@ -69,6 +69,7 @@ public class common_library implements value {
 
   private singleton_value VOID_INSTANCE;
   private singleton_value UNDEFINED_INSTANCE;
+  private singleton_value MISSING_INSTANCE;
 
   private enum_value FALSE_VALUE;
   private enum_value TRUE_VALUE;
@@ -105,6 +106,7 @@ public class common_library implements value {
 
     VOID_INSTANCE = new singleton_value(VOID_TYPE);
     UNDEFINED_INSTANCE = new singleton_value(UNDEFINED_TYPE);
+    MISSING_INSTANCE = new singleton_value(MISSING_TYPE);
 
     assert instance == null;
     instance = this;
@@ -258,6 +260,10 @@ public class common_library implements value {
 
   public singleton_value undefined_instance() {
     return UNDEFINED_INSTANCE;
+  }
+
+  public singleton_value missing_instance() {
+    return MISSING_INSTANCE;
   }
 
   public principal_type ideal_namespace() {

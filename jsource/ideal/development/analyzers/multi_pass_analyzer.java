@@ -100,6 +100,10 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
     return do_analyze(a, pass) != null;
   }
 
+  protected @Nullable error_signal find_error(analyzable a, analysis_pass pass) {
+    return do_analyze(a, pass);
+  }
+
   private @Nullable error_signal do_analyze(analyzable a, analysis_pass pass) {
     if (a instanceof base_analyzer) {
       init_context(a);

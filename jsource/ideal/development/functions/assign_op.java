@@ -39,12 +39,11 @@ public class assign_op extends binary_procedure {
   @Override
   protected analysis_result bind_binary(action first, action second, analysis_context context,
       origin pos) {
-    list<constraint> constraints = new base_list<constraint>();
 
-    if (first instanceof narrow_action) {
-      narrow_action narrowed_variable = (narrow_action) first;
-      constraints.append(new constraint(narrowed_variable.the_declaration,
-          narrowed_variable.the_declaration.reference_type(), constraint_type.ALWAYS));
+    boolean first_narrowed = first instanceof narrow_action;
+    narrow_action narrowed_variable = first_narrowed ? (narrow_action) first : null;
+
+    if (first_narrowed) {
       first = narrowed_variable.expression;
     }
 
@@ -78,6 +77,12 @@ public class assign_op extends binary_procedure {
       return action_utilities.cant_promote(second.result(), value_type, context, pos);
     }
     action the_value = context.promote(second, value_type, pos);
+
+    list<constraint> constraints = new base_list<constraint>();
+    if (first_narrowed) {
+      constraints.append(new constraint(narrowed_variable.the_declaration, second.result(),
+          constraint_type.ALWAYS));
+    }
 
     return action_plus_constraints.make_result(make_action(value_type, left, the_value, pos),
         constraints);

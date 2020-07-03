@@ -27,8 +27,9 @@ public class cast_action extends base_action {
     super(source);
     this.expression = expression;
     this.the_type = the_type;
-    assert the_type.is_subtype_of(
-        common_library.get_instance().value_type().get_flavored(flavor.any_flavor));
+    if (the_type != library().immutable_void_type()) {
+      assert the_type.is_subtype_of(library().value_type().get_flavored(flavor.any_flavor));
+    }
   }
 
   @Override
@@ -41,6 +42,10 @@ public class cast_action extends base_action {
     entity_wrapper expression_result = expression.execute(the_context);
     assert expression_result instanceof value_wrapper;
 
+    if (the_type == library().immutable_void_type()) {
+      return library().void_instance();
+    }
+
     if (action_utilities.is_of(expression_result, the_type)) {
       return expression_result;
     } else {
@@ -52,5 +57,9 @@ public class cast_action extends base_action {
   @Override
   public string to_string() {
     return new base_string("cast " + expression + " to " + the_type);
+  }
+
+  private static common_library library() {
+    return common_library.get_instance();
   }
 }

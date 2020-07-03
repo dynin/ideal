@@ -48,7 +48,13 @@ public class promotion_action extends base_action {
   @Override
   public entity_wrapper execute(execution_context context) {
     assert the_action != null;
-    return the_action.execute(context);
+    entity_wrapper result = the_action.execute(context);
+
+    if (the_type == library().immutable_void_type()) {
+      result = library().void_instance();
+    }
+
+    return result;
   }
 
   @Override
@@ -80,6 +86,10 @@ public class promotion_action extends base_action {
     // TODO: verify that from.result() is a subtype of the_type
     // TODO: collapse chained promotion_actions
     return new promotion_action(the_type, from, source);
+  }
+
+  private static common_library library() {
+    return common_library.get_instance();
   }
 
   @Override

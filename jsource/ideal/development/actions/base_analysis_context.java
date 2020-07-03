@@ -26,6 +26,9 @@ public abstract class base_analysis_context extends debuggable implements analys
 
   private static action_table actions = new action_table();
 
+  private immutable_dictionary<declaration, abstract_value> empty_constraints =
+      new list_dictionary<declaration, abstract_value>().frozen_copy();
+
   private final base_semantics language;
   private final dictionary<construct, analyzable> eval_bindings;
   private graph<principal_type, origin> the_type_graph;
@@ -122,7 +125,7 @@ public abstract class base_analysis_context extends debuggable implements analys
   }
 
   @Override
-  public @Nullable abstract_value lookup_constraint(declaration the_declaration) {
-    return null;
+  public immutable_dictionary<declaration, abstract_value> constraints() {
+    return empty_constraints;
   }
 }

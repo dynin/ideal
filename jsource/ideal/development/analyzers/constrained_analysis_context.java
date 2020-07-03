@@ -42,9 +42,18 @@ public class constrained_analysis_context extends debuggable implements analysis
 
     dictionary<declaration, abstract_value> constraint_dictionary =
         new list_dictionary<declaration, abstract_value>();
+
+    // TODO: implement dictionary.copy() or dictionary.add_all()
+    readonly_list<dictionary.entry<declaration, abstract_value>> parent_constraints =
+        parent.constraints().elements();
+    for (int i = 0; i < parent_constraints.size(); ++i) {
+      dictionary.entry<declaration, abstract_value> the_constraint = parent_constraints.get(i);
+      constraint_dictionary.put(the_constraint.key(), the_constraint.value());
+    }
+
     for (int i = 0; i < the_constraints.size(); ++i) {
       constraint the_constraint = the_constraints.get(i);
-      // TODO: check that constraint isn't is trivial
+      // TODO: check that constraint isn't trivial
       //  and is either part of the declaration or part of the context.
       constraint_dictionary.put(the_constraint.the_declaration, the_constraint.the_value);
     }
@@ -125,12 +134,7 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public @Nullable abstract_value lookup_constraint(declaration the_declaration) {
-    @Nullable abstract_value result = constraint_bindings.get(the_declaration);
-    if (result != null) {
-      return result;
-    } else {
-      return parent.lookup_constraint(the_declaration);
-    }
+  public immutable_dictionary<declaration, abstract_value> constraints() {
+    return constraint_bindings;
   }
 }

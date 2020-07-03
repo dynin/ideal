@@ -87,7 +87,7 @@ public class resolve_analyzer extends single_pass_analyzer {
     if (! (result instanceof error_signal)) {
       @Nullable declaration the_declaration = declaration_util.get_declaration(result);
       if (the_declaration != null) {
-        @Nullable abstract_value narrowed = get_context().lookup_constraint(the_declaration);
+        @Nullable abstract_value narrowed = get_context().constraints().get(the_declaration);
         if (narrowed != null) {
           variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
           if (narrowed.type_bound() != the_variable_declaration.reference_type()) {

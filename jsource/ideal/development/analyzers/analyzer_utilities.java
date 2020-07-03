@@ -308,7 +308,7 @@ public class analyzer_utilities {
     }
   }
 
-  public static readonly_list<constraint> always_by_type(immutable_list<constraint> the_constraints,
+  public static list<constraint> always_by_type(immutable_list<constraint> the_constraints,
       constraint_type filter) {
     list<constraint> filtered_constraints = new base_list<constraint>();
     for (int i = 0; i < the_constraints.size(); ++i) {

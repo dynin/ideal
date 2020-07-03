@@ -63,6 +63,6 @@ public class variable_wrapper extends debuggable implements reference_wrapper {
 
   @Override
   public string to_string() {
-    return utilities.describe(this, the_action.short_name());
+    return utilities.describe(this, the_action);
   }
 }

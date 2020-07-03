@@ -44,7 +44,7 @@ public interface analysis_context extends type_declaration_context, value_printe
 
   void put_analyzable(construct c, analyzable a);
 
-  @Nullable abstract_value lookup_constraint(declaration the_declaration);
+  immutable_dictionary<declaration, abstract_value> constraints();
 
   @Nullable readonly_list<construct> load_type_body(type_announcement_construct the_announcement);
 }

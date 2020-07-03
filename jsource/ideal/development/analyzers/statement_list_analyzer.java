@@ -56,6 +56,7 @@ public class statement_list_analyzer extends single_pass_analyzer {
   protected analysis_result do_single_pass_analysis() {
     list<action> actions = new base_list<action>();
     analysis_context current_context = get_context();
+    list<constraint> constraint_collection = new base_list<constraint>();
     error_signal error = null;
 
     // TODO: should we stop on first error here?
@@ -84,6 +85,7 @@ public class statement_list_analyzer extends single_pass_analyzer {
           constraint the_constraint = the_constraints.get(j);
           if (the_constraint.the_constraint_type == constraint_type.ALWAYS) {
             always_constraints.append(the_constraint);
+            constraint_collection.append(the_constraint);
           }
         }
         current_context = constrained_analysis_context.combine(current_context, always_constraints);
@@ -102,9 +104,15 @@ public class statement_list_analyzer extends single_pass_analyzer {
 
     if (error != null) {
       return error;
-    } else {
-      return new list_action(actions, this);
     }
+
+    action result = new list_action(actions, this);
+    if (constraint_collection.is_empty()) {
+      return result;
+    } else {
+      return action_plus_constraints.make_result(result, constraint_collection);
+    }
+
   }
 
   @Override

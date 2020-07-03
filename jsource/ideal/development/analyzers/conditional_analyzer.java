@@ -74,14 +74,18 @@ public class conditional_analyzer extends single_pass_analyzer {
       return new error_signal(messages.error_in_conditional, (error_signal) analyzed_then, this);
     }
     action then_action;
+    immutable_list<constraint> then_constraints;
     if (analyzed_then instanceof action) {
       then_action = (action) analyzed_then;
+      then_constraints = new empty<constraint>();
     } else {
-      then_action = ((action_plus_constraints) analyzed_then).the_action;
+      action_plus_constraints then_result = (action_plus_constraints) analyzed_then;
+      then_action = then_result.the_action;
+      then_constraints = then_result.the_constraints;
     }
 
     action else_action;
-    readonly_list<constraint> resulting_constraints = new base_list<constraint>();
+    immutable_list<constraint> else_constraints = new empty<constraint>();
     if (else_branch != null) {
       analysis_result analyzed_else = analyze_with_constraints(else_branch, new_constraints,
           constraint_type.ON_FALSE);
@@ -91,17 +95,36 @@ public class conditional_analyzer extends single_pass_analyzer {
       if (analyzed_else instanceof action) {
         else_action = (action) analyzed_else;
       } else {
-        else_action = ((action_plus_constraints) analyzed_else).the_action;
+        action_plus_constraints else_result = (action_plus_constraints) analyzed_else;
+        else_action = else_result.the_action;
+        else_constraints = else_result.the_constraints;
       }
     } else {
-      if (then_action.result() == core_types.unreachable_type()) {
-        resulting_constraints = analyzer_utilities.always_by_type(new_constraints,
-            constraint_type.ON_FALSE);
-      }
       else_action = library().void_instance().to_action(this);
     }
 
     @Nullable type result_type = unify(then_action, else_action, get_context());
+
+    list<constraint> resulting_constraints = new base_list<constraint>();
+    if (result_type != core_types.unreachable_type()) {
+      if (else_action.result() == core_types.unreachable_type()) {
+        resulting_constraints = analyzer_utilities.always_by_type(new_constraints,
+            constraint_type.ON_TRUE);
+        resulting_constraints.append_all(then_constraints);
+      } else if (then_action.result() == core_types.unreachable_type()) {
+        resulting_constraints = analyzer_utilities.always_by_type(new_constraints,
+            constraint_type.ON_FALSE);
+        resulting_constraints.append_all(else_constraints);
+      } else {
+        list<constraint> first = analyzer_utilities.always_by_type(new_constraints,
+            constraint_type.ON_TRUE);
+        first.append_all(then_constraints);
+        list<constraint> second = analyzer_utilities.always_by_type(new_constraints,
+            constraint_type.ON_FALSE);
+        second.append_all(else_constraints);
+        resulting_constraints.append_all(unify_constraint(first, second));
+      }
+    }
 
     if (result_type == null) {
       return new error_signal(
@@ -140,6 +163,34 @@ public class conditional_analyzer extends single_pass_analyzer {
     }
 
     return null;
+  }
+
+  private readonly_list<constraint> unify_constraint(readonly_list<constraint> first,
+      readonly_list<constraint> second) {
+    list<constraint> result = new base_list<constraint>();
+    set<declaration> processed = new hash_set<declaration>();
+
+    for (int i = first.size() - 1; i >=0; --i) {
+      constraint first_constraint = first.get(i);
+      declaration the_declaration = first_constraint.the_declaration;
+      if (processed.contains(the_declaration)) {
+        continue;
+      }
+      processed.add(the_declaration);
+      for (int j = second.size() - 1; j >=0; --j) {
+        constraint second_constraint = second.get(j);
+        if (second_constraint.the_declaration == the_declaration) {
+          // TODO: smarter unification of abstract values.
+          if (first_constraint.the_value == second_constraint.the_value) {
+            result.append(new constraint(the_declaration, first_constraint.the_value,
+                constraint_type.ALWAYS));
+            continue;
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   private analysis_result analyze_with_constraints(analyzable the_analyzable,

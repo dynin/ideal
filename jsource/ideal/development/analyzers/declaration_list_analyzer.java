@@ -23,7 +23,7 @@ import ideal.development.types.*;
 /**
  * Analyze a sequence (list) of actions.  Unlike |block_analyzer|, no frame is created.
  */
-public class declaration_list_analyzer extends multi_pass_analyzer {
+public class declaration_list_analyzer extends multi_pass_analyzer implements declaration {
   private readonly_list<analyzable> the_elements;
 
   public declaration_list_analyzer(readonly_list<analyzable> the_elements, origin pos) {
@@ -40,6 +40,23 @@ public class declaration_list_analyzer extends multi_pass_analyzer {
 
   public readonly_list<analyzable> elements() {
     return the_elements;
+  }
+
+  public readonly_list<declaration> declarations() {
+    // TODO: use list.filter()
+    list<declaration> result = new base_list<declaration>();
+    for (int i = 0; i < the_elements.size(); ++i) {
+      analyzable element = the_elements.get(i);
+      if (element instanceof declaration) {
+        result.append((declaration) element);
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public principal_type declared_in_type() {
+    return parent();
   }
 
   @Override

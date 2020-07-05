@@ -39,6 +39,7 @@ public class extension_modifier_kind extends base_modifier_kind {
     } catch (IllegalAccessException e) {
       utilities.panic(e.toString());
     }
+    // TODO: drop extension modifier from modifiers
     instance.set_declaration(the_declaration);
     return instance;
   }

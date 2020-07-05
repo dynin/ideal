@@ -114,10 +114,16 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     for (int i = 0; i < body.size(); ++i) {
       analyzable the_analyzable = body.get(i);
-      if (the_analyzable instanceof declaration) {
-        types.append((declaration) the_analyzable);
-      } else if (the_analyzable instanceof declaration_extension) {
-        types.append_all(((declaration_extension) the_analyzable).expand_declarations());
+      declaration the_declaration = null;
+      if (the_analyzable instanceof declaration_extension) {
+        the_declaration = ((declaration_extension) the_analyzable).expand();
+      } else if (the_analyzable instanceof declaration) {
+        the_declaration = (declaration) the_analyzable;
+      }
+      if (the_declaration instanceof declaration_list_analyzer) {
+        types.append_all(((declaration_list_analyzer) the_declaration).declarations());
+      } else if (the_declaration != null) {
+        types.append(the_declaration);
       }
     }
 

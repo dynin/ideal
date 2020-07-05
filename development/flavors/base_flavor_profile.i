@@ -10,7 +10,6 @@ class base_flavor_profile {
 
   private final string name;
   private final function[type_flavor, type_flavor] flavor_map;
-  private var immutable list[type_flavor] or null cached_flavors;
 
   base_flavor_profile(string name, function[type_flavor, type_flavor] flavor_map) {
     this.name = name;
@@ -28,21 +27,13 @@ class base_flavor_profile {
   }
 
   override cache immutable list[type_flavor] supported_flavors() {
-    result : cached_flavors;
-    -- TODO: streamline this with a cached value extension.
-    if (result is null) {
-      filtered_flavors : base_list[type_flavor].new();
-      for (the_flavor : flavor.PRIMARY_FLAVORS) {
-        if (this.supports(the_flavor)) {
-          filtered_flavors.append(the_flavor);
-        }
+    filtered_flavors : base_list[type_flavor].new();
+    for (the_flavor : flavor.PRIMARY_FLAVORS) {
+      if (this.supports(the_flavor)) {
+        filtered_flavors.append(the_flavor);
       }
-      new_result : filtered_flavors.frozen_copy();
-      cached_flavors = new_result;
-      return new_result;
-    } else {
-      return result;
     }
+    return filtered_flavors.frozen_copy();
   }
 
   override string to_string => name;

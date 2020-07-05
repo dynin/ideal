@@ -138,9 +138,10 @@ public class procedure_analyzer extends declaration_analyzer
 
   @Override
   public @Nullable action get_body_action() {
+    if (has_errors() || (body != null && has_errors(body))) {
+      return null;
+    }
     if (body != null) {
-      // TODO: should we return null on error?
-      assert !has_errors(body);
       return action_not_error(body);
     } else {
       return null;

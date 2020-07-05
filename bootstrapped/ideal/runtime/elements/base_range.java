@@ -64,8 +64,9 @@ public class base_range implements range {
   public @Override immutable_list<Integer> reverse() {
     final base_list<Integer> result = new base_list<Integer>();
     for (int value = the_end - 1; value >= the_begin; value -= 1) {
-      assert value >= 0;
-      result.append(value);
+      final int nonnegative_value = value;
+      assert nonnegative_value >= 0;
+      result.append(nonnegative_value);
     }
     return result.frozen_copy();
   }

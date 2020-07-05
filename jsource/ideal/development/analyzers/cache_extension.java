@@ -32,7 +32,7 @@ import ideal.development.modifiers.*;
  * this extension produces
  * <code>
  * private var string or null generated_foo_cache;
- * cache string foo() {
+ * string foo() {
  *   var result : generated_foo_cache;
  *   if (result is null) {
  *     result = generated_foo_compute();
@@ -44,6 +44,10 @@ import ideal.development.modifiers.*;
  *   return perform_expensive_operation();
  * }
  * </code>
+ * For a real-world example, see |supported_flavors()| in
+ * https://github.com/dynin/ideal/blob/master/development/flavors/base_flavor_profile.i
+ * and the Java code it generates in
+ * https://github.com/dynin/ideal/blob/master/bootstrapped/ideal/development/flavors/base_flavor_profile.java
  */
 public class cache_extension extends declaration_extension {
 
@@ -98,19 +102,8 @@ public class cache_extension extends declaration_extension {
     // Generate the procedure that encapsulates caching logic
     variable_analyzer result = new variable_analyzer(analyzer_utilities.PRIVATE_VAR_MODIFIERS,
         null, result_name, new resolve_analyzer(generated_field_name, the_origin), the_origin);
-    constraint_analyzer assert_result = new constraint_analyzer(
-        new parameter_analyzer(
-            new resolve_analyzer(operator.IS_NOT_OPERATOR, the_origin),
-            new base_list<analyzable>(new resolve_analyzer(result_name, the_origin),
-                to_analyzable(library().immutable_null_type())), the_origin),
-        the_origin);
     return_analyzer return_result = new return_analyzer(
         new resolve_analyzer(result_name, the_origin), the_origin);
-/*   if (result is null) {
- *     result = generated_foo_compute();
- *     generated_foo_cache = result;
- *   }
- */
     analyzable condition = new parameter_analyzer(
         new resolve_analyzer(operator.IS_OPERATOR, the_origin),
         new base_list<analyzable>(new resolve_analyzer(result_name, the_origin),
@@ -127,20 +120,37 @@ public class cache_extension extends declaration_extension {
         ),
         the_origin
     );
-    analyzable if_statement = new conditional_analyzer(condition, assign_result, null, the_origin);
+    analyzable assign_cache = new parameter_analyzer(
+        new resolve_analyzer(operator.ASSIGN, the_origin),
+        new base_list<analyzable>(
+            new resolve_analyzer(generated_field_name, the_origin),
+            new resolve_analyzer(result_name, the_origin)
+        ),
+        the_origin
+    );
+    analyzable then_block = new block_analyzer(
+        new statement_list_analyzer(new base_list<analyzable>(
+            assign_result, assign_cache), the_origin),
+        the_origin);
+    analyzable if_statement = new conditional_analyzer(condition, then_block, null, the_origin);
     block_analyzer caching_body = new block_analyzer(new statement_list_analyzer(
-        new base_list<analyzable>(result, if_statement, assert_result, return_result),
+        new base_list<analyzable>(result, if_statement, return_result),
         the_origin), the_origin);
 
     procedure_analyzer caching_procedure = new procedure_analyzer(
-        analyzer_utilities.PRIVATE_MODIFIERS,
-    //the_procedure.annotations(),
-        to_analyzable(return_type), generated_procedure_name, new empty<variable_declaration>(),
+        the_procedure.annotations(), to_analyzable(return_type),
+        procedure_name, new empty<variable_declaration>(),
         caching_body, the_origin);
 
-    readonly_list<declaration> expanded_declarations = new base_list<declaration>(
-        field, caching_procedure, the_procedure);
-    set_expanded_declarations(expanded_declarations);
+    procedure_analyzer compute_procedure = new procedure_analyzer(
+        analyzer_utilities.PRIVATE_MODIFIERS, to_analyzable(return_type), generated_procedure_name,
+        new empty<variable_declaration>(), the_procedure.get_body(), the_origin);
+
+
+    declaration_list_analyzer the_declaration_list = new declaration_list_analyzer(
+        new base_list<analyzable>(field, caching_procedure, compute_procedure), the_origin);
+
+    set_expanded(the_declaration_list);
 
     return null;
   }

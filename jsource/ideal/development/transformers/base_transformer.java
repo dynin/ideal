@@ -138,7 +138,18 @@ public class base_transformer extends analyzable_visitor<Object> {
   }
 
   public construct process_analyzable_action(analyzable_action the_analyzable_action) {
-    return process_default(the_analyzable_action);
+    origin the_origin = the_analyzable_action;
+    action the_action = the_analyzable_action.the_action;
+    return process_action(the_action, the_origin);
+  }
+
+  public construct process_action(action the_action, origin the_origin) {
+    if (the_action instanceof type_action) {
+      return make_type(((type_action) the_action).get_type(), the_origin);
+    }
+
+    utilities.panic("processing action " + the_action);
+    return null;
   }
 
   public construct process_block(block_declaration the_block) {
@@ -283,7 +294,7 @@ public class base_transformer extends analyzable_visitor<Object> {
 
   private construct make_full_name(construct name, principal_type the_type, origin the_origin) {
     @Nullable principal_type parent = the_type.get_parent();
-    if (parent == null) {
+    if (parent == null || parent == core_types.root_type()) {
       return name;
     }
 
@@ -315,7 +326,7 @@ public class base_transformer extends analyzable_visitor<Object> {
         transform_list(the_procedure.get_parameter_variables()),
             grouping, has_trailing_comma, the_origin);
     return new procedure_construct(to_annotations(the_procedure.annotations(), false, the_origin),
-        make_type(the_procedure.get_return_type(), the_origin), the_procedure.original_name(),
+        transform(the_procedure.get_return()), the_procedure.original_name(),
         parameters, new empty<annotation_construct>(),
         transform(the_procedure.get_body()), the_origin);
   }
@@ -390,7 +401,8 @@ public class base_transformer extends analyzable_visitor<Object> {
 
   public construct process_variable(variable_declaration the_variable) {
     origin the_origin = the_variable;
-    construct the_type;
+    construct the_type = transform(the_variable.get_type_analyzable());
+    /*
     if (the_variable.value_type() != null) {
       the_type = make_type(the_variable.value_type(), the_origin);
     } else {
@@ -399,6 +411,8 @@ public class base_transformer extends analyzable_visitor<Object> {
     variable_category category = the_variable.get_category();
     boolean skip_access = category == variable_category.LOCAL ||
         category == variable_category.ENUM_VALUE;
+    */
+    boolean skip_access = false;
     return new variable_construct(to_annotations(the_variable.annotations(), skip_access,
         the_origin), the_type, the_variable.short_name(), new empty<annotation_construct>(),
         transform(the_variable.initializer()), the_origin);

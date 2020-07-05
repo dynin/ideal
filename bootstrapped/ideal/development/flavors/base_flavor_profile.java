@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 public class base_flavor_profile extends debuggable implements flavor_profile, readonly_displayable {
   private final string name;
   private final function1<type_flavor, type_flavor> flavor_map;
-  private @Nullable immutable_list<type_flavor> cached_flavors;
   public base_flavor_profile(final string name, final function1<type_flavor, type_flavor> flavor_map) {
     this.name = name;
     this.flavor_map = flavor_map;
@@ -27,25 +26,27 @@ public class base_flavor_profile extends debuggable implements flavor_profile, r
   public @Override boolean supports(final type_flavor flavor) {
     return map(flavor) == flavor;
   }
+  private @Nullable immutable_list<type_flavor> generated_supported_flavors_cache;
   public @Override immutable_list<type_flavor> supported_flavors() {
-    final @Nullable immutable_list<type_flavor> result = cached_flavors;
+    @Nullable immutable_list<type_flavor> result = generated_supported_flavors_cache;
     if (result == null) {
-      final base_list<type_flavor> filtered_flavors = new base_list<type_flavor>();
-      {
-        final readonly_list<type_flavor> the_flavor_list = flavor.PRIMARY_FLAVORS;
-        for (int the_flavor_index = 0; the_flavor_index < the_flavor_list.size(); the_flavor_index += 1) {
-          final type_flavor the_flavor = the_flavor_list.get(the_flavor_index);
-          if (this.supports(the_flavor)) {
-            filtered_flavors.append(the_flavor);
-          }
+      result = generated_supported_flavors_compute();
+      generated_supported_flavors_cache = result;
+    }
+    return result;
+  }
+  private immutable_list<type_flavor> generated_supported_flavors_compute() {
+    final base_list<type_flavor> filtered_flavors = new base_list<type_flavor>();
+    {
+      final readonly_list<type_flavor> the_flavor_list = flavor.PRIMARY_FLAVORS;
+      for (int the_flavor_index = 0; the_flavor_index < the_flavor_list.size(); the_flavor_index += 1) {
+        final type_flavor the_flavor = the_flavor_list.get(the_flavor_index);
+        if (this.supports(the_flavor)) {
+          filtered_flavors.append(the_flavor);
         }
       }
-      final immutable_list<type_flavor> new_result = filtered_flavors.frozen_copy();
-      cached_flavors = new_result;
-      return new_result;
-    } else {
-      return result;
     }
+    return filtered_flavors.frozen_copy();
   }
   public @Override string to_string() {
     return name;

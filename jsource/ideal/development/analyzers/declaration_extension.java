@@ -9,9 +9,16 @@
 package ideal.development.analyzers;
 
 import ideal.library.elements.*;
+import ideal.library.texts.*;
+import ideal.library.channels.*;
 import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
+import ideal.runtime.resources.*;
+import ideal.runtime.texts.*;
+import ideal.machine.elements.runtime_util;
+import ideal.machine.channels.standard_channels;
+import ideal.machine.resources.filesystem;
 import ideal.machine.annotations.dont_display;
 import ideal.development.elements.*;
 import ideal.development.actions.*;
@@ -23,10 +30,12 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.scanners.*;
+import ideal.development.transformers.*;
+import ideal.development.printers.*;
 
 public class declaration_extension extends multi_pass_analyzer implements syntax_extension {
 
-  private static final simple_name generated_name = simple_name.make("generated");
+  private static final simple_name generated_prefix = simple_name.make("generated");
 
   private static dictionary<Class, declaration_extension> extension_registry =
       new list_dictionary<Class, declaration_extension>();
@@ -34,7 +43,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   private final extension_modifier_kind the_modifier_kind;
   @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
-  private @Nullable readonly_list<declaration> expanded_declarations;
+  private @Nullable analyzable expanded;
 
   public declaration_extension(String modifier_kind_name) {
     super(analyzer_utilities.UNINITIALIZED_POSITION);
@@ -72,21 +81,20 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     this.the_declaration = the_declaration;
   }
 
-  public void set_expanded_declarations(readonly_list<declaration> expanded_declarations) {
-    this.expanded_declarations = expanded_declarations;
-    for (int i = 0; i < expanded_declarations.size(); ++i) {
-      // TODO: handle the case when the element is not a declaration_analyzer
-      analyze_and_ignore_errors((declaration_analyzer) expanded_declarations.get(i), last_pass);
-    }
+  public void set_expanded(analyzable expanded) {
+    assert this.expanded == null;
+    this.expanded = expanded;
+    analyze_and_ignore_errors(expanded, last_pass);
+    // System.out.println("D " + expanded_declarations.get(i) + " P " + last_pass);
   }
 
-  public readonly_list<declaration> expand_declarations() {
+  public @Nullable declaration expand() {
     if (has_errors()) {
-      return new empty<declaration>();
-    } else if (expanded_declarations != null) {
-      return expanded_declarations;
+      return null;
+    } else if (expanded instanceof declaration) {
+      return (declaration) expanded;
     } else {
-      return new base_list<declaration>(get_declaration());
+      return get_declaration();
     }
   }
 
@@ -95,11 +103,12 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       return null;
     }
 
-    if (expanded_declarations != null) {
-      for (int i = 0; i < expanded_declarations.size(); ++i) {
-        // TODO: handle the case when the element is not a declaration_analyzer
-        analyze_and_ignore_errors((declaration_analyzer) expanded_declarations.get(i), pass);
+    if (expanded != null) {
+      analyze_and_ignore_errors(expanded, pass);
+      if (pass == analysis_pass.BODY_CHECK) {
+        display_code(expanded);
       }
+
       return null;
     }
 
@@ -116,7 +125,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   }
 
   public simple_name generated_name(simple_name name) {
-    return name_utilities.join(generated_name, name);
+    return name_utilities.join(generated_prefix, name);
   }
 
   public analyzable_action to_analyzable(abstract_value the_abstract_value) {
@@ -131,5 +140,13 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   protected analysis_result do_get_result() {
     return library().void_instance().to_action(this);
+  }
+
+  protected void display_code(analyzable code) {
+    readonly_list<construct> constructs = new to_java_transformer(java_library.get_instance(),
+        get_context()).transform1(code);
+    output<text_fragment> out = new plain_formatter(standard_channels.stdout);
+    //out.write(runtime_util.display(constructs));
+    out.write(new java_printer(printer_mode.CURLY).print_statements(constructs));
   }
 }

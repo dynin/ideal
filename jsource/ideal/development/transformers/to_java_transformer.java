@@ -455,6 +455,11 @@ public class to_java_transformer extends base_transformer {
     return process_procedure(the_procedure, annotations);
   }
 
+  private boolean is_unreachable_result(procedure_declaration the_procedure) {
+    return the_procedure.get_body_action() != null &&
+        the_procedure.get_body_action().result().type_bound() == core_types.unreachable_type();
+  }
+
   public construct process_procedure(procedure_declaration the_procedure,
       list<annotation_construct> annotations) {
     origin the_origin = the_procedure;
@@ -475,8 +480,7 @@ public class to_java_transformer extends base_transformer {
     if (the_procedure.get_body() != null) {
       boolean is_constructor = the_procedure.get_category() == procedure_category.CONSTRUCTOR;
       boolean void_return = the_procedure.get_return_type().principal() == library().void_type();
-      boolean unreachable_result =
-          the_procedure.get_body_action().result().type_bound() == core_types.unreachable_type();
+      boolean unreachable_result = is_unreachable_result(the_procedure);
 
       boolean add_return = !is_constructor && !unreachable_result && void_return &&
           should_use_wrapper_in_return(the_procedure);

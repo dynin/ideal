@@ -142,11 +142,12 @@ public class cache_extension extends declaration_extension {
         procedure_name, new empty<variable_declaration>(),
         caching_body, the_origin);
 
+    // The compute procedure is just renamed original procedure made private
     procedure_analyzer compute_procedure = new procedure_analyzer(
         analyzer_utilities.PRIVATE_MODIFIERS, to_analyzable(return_type), generated_procedure_name,
         new empty<variable_declaration>(), the_procedure.get_body(), the_origin);
 
-
+    // We replace the original declaration with three: one field and two procedures
     declaration_list_analyzer the_declaration_list = new declaration_list_analyzer(
         new base_list<analyzable>(field, caching_procedure, compute_procedure), the_origin);
 

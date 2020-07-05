@@ -85,7 +85,6 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     assert this.expanded == null;
     this.expanded = expanded;
     analyze_and_ignore_errors(expanded, last_pass);
-    // System.out.println("D " + expanded_declarations.get(i) + " P " + last_pass);
   }
 
   public @Nullable declaration expand() {
@@ -146,7 +145,9 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     readonly_list<construct> constructs = new to_java_transformer(java_library.get_instance(),
         get_context()).transform1(code);
     output<text_fragment> out = new plain_formatter(standard_channels.stdout);
-    //out.write(runtime_util.display(constructs));
+    if (false) {
+      out.write(runtime_util.display(constructs));
+    }
     out.write(new java_printer(printer_mode.CURLY).print_statements(constructs));
   }
 }

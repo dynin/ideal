@@ -79,7 +79,7 @@ class base_range {
     -- TODO: implement reverse_range.
     result : base_list[nonnegative].new();
     for (var value : the_end - 1; value >= the_begin; value -= 1) {
-      -- TODO: fix this ugliness, perhaps by making rage a list[integer].
+      -- TODO: fix this ugliness, perhaps by making range a list[integer].
       nonnegative_value : value;
       assert nonnegative_value is nonnegative;
       result.append(nonnegative_value);

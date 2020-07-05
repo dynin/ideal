@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.analyzers;
+package ideal.development.extensions;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
@@ -21,6 +21,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
+import ideal.development.analyzers.*;
 
 /**
  * Implement procedure result caching (memoization.)  For example, given the declaration

@@ -94,7 +94,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
       return error;
     }
 
-    init_action = action_utilities.to_value(action_not_error(init), this);
+    init_action = analyzer_utilities.to_value(action_not_error(init), get_context(), this);
     type should_be_list_type = init_action.result().type_bound();
     element_type = element_type_of_list(should_be_list_type);
     if (element_type == null) {

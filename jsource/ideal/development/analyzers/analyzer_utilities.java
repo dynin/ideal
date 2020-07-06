@@ -313,6 +313,59 @@ public class analyzer_utilities {
     }
   }
 
+  public static @Nullable type unify(action first, action second, analysis_context the_context) {
+    type first_type = first.result().type_bound();
+    type second_type = second.result().type_bound();
+
+    if (first_type == second_type) {
+      return first_type;
+    } else if (the_context.can_promote(first, second_type)) {
+      return second_type;
+    } else if (the_context.can_promote(second, first_type)) {
+      return first_type;
+    }
+
+    type immutable_void_type = common_library.get_instance().immutable_void_type();
+    if (the_context.can_promote(first, immutable_void_type) &&
+        the_context.can_promote(second, immutable_void_type)) {
+      return immutable_void_type;
+    }
+
+    return null;
+  }
+
+  public static action to_value(action expression, analysis_context the_context,
+      origin the_origin) {
+    type the_type = expression.result().type_bound();
+    if (common_library.get_instance().is_reference_type(the_type)) {
+      // TODO: check that flavor is readonly or mutable.
+      type value_type = common_library.get_instance().get_reference_parameter(the_type);
+      // TODO: replace this with a promotion lookup.
+      action dereference = new dereference_action(value_type, null, the_origin).bind_from(
+          expression, the_origin);
+      // TODO: handle narrowing
+      if (false) {
+        @Nullable declaration the_declaration = declaration_util.get_declaration(expression);
+        if (the_declaration != null) {
+          @Nullable abstract_value narrowed = the_context.constraints().get(the_declaration);
+          if (narrowed != null) {
+            variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
+            System.out.println("RT0 " + the_variable_declaration.reference_type() +
+                " NT " + narrowed.type_bound());
+            if (narrowed.type_bound() != the_variable_declaration.reference_type()) {
+              return new narrow_action(dereference, narrowed.type_bound(),
+                  the_variable_declaration, the_origin);
+            }
+          }
+        }
+      }
+
+      return dereference;
+    } else {
+      return expression;
+    }
+  }
+
   public static list<constraint> always_by_type(immutable_list<constraint> the_constraints,
       constraint_type filter) {
     list<constraint> filtered_constraints = new base_list<constraint>();
@@ -353,14 +406,14 @@ public class analyzer_utilities {
       return false;
     }
 
-    immutable_list<abstract_value> supplied_arguments = parameters.to_value_list();
+    immutable_list<action> argument_actions = parameters.params();
 
-    if (!action_utilities.is_valid_procedure_arity(procedure_type, supplied_arguments.size())) {
+    if (!action_utilities.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
       return false;
     }
 
-    for (int i = 0; i < supplied_arguments.size(); ++i) {
-      if (!the_context.can_promote(supplied_arguments.get(i),
+    for (int i = 0; i < argument_actions.size(); ++i) {
+      if (!the_context.can_promote(argument_actions.get(i),
           action_utilities.get_procedure_argument(procedure_type, i).type_bound())) {
         return false;
       }

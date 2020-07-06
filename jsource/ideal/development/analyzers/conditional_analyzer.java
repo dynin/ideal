@@ -60,7 +60,7 @@ public class conditional_analyzer extends single_pass_analyzer {
     }
 
     type boolean_type = library().immutable_boolean_type();
-    if (!get_context().can_promote(condition_action.result(), boolean_type)) {
+    if (!get_context().can_promote(condition_action, boolean_type)) {
       return new error_signal(new base_string("Boolean value expected, got " +
           condition_action.result()), condition_action);
     }
@@ -103,7 +103,7 @@ public class conditional_analyzer extends single_pass_analyzer {
       else_action = library().void_instance().to_action(this);
     }
 
-    @Nullable type result_type = unify(then_action, else_action, get_context());
+    @Nullable type result_type = analyzer_utilities.unify(then_action, else_action, get_context());
 
     list<constraint> resulting_constraints = new base_list<constraint>();
     if (result_type != core_types.unreachable_type()) {
@@ -141,28 +141,6 @@ public class conditional_analyzer extends single_pass_analyzer {
     return action_plus_constraints.make_result(
         new conditional_action(condition_action, then_action, else_action, result_type, this),
         resulting_constraints);
-  }
-
-  // TODO: move this to analyzer_utilities...
-  private @Nullable type unify(action first, action second, analysis_context the_context) {
-    type first_type = first.result().type_bound();
-    type second_type = second.result().type_bound();
-
-    if (first_type == second_type) {
-      return first_type;
-    } else if (the_context.can_promote(first_type, second_type)) {
-      return second_type;
-    } else if (the_context.can_promote(second_type, first_type)) {
-      return first_type;
-    }
-
-    type immutable_void_type = library().immutable_void_type();
-    if (the_context.can_promote(first_type, immutable_void_type) &&
-        the_context.can_promote(second_type, immutable_void_type)) {
-      return immutable_void_type;
-    }
-
-    return null;
   }
 
   private readonly_list<constraint> unify_constraint(readonly_list<constraint> first,

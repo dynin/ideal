@@ -82,8 +82,8 @@ public abstract class base_analysis_context extends debuggable implements analys
   }
 
   @Override
-  public boolean can_promote(abstract_value from, type target) {
-    return find_promotion(from, target) != null;
+  public boolean can_promote(action from, type target) {
+    return find_promotion(from.result(), target) != null;
   }
 
   @Override

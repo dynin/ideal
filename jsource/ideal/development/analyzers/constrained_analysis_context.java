@@ -98,7 +98,7 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public boolean can_promote(abstract_value from, type target) {
+  public boolean can_promote(action from, type target) {
     return parent.can_promote(from, target);
   }
 

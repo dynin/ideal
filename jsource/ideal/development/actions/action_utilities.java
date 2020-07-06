@@ -84,18 +84,6 @@ public class action_utilities {
     return result;
   }
 
-  public static action to_value(action expression, origin source) {
-    type the_type = expression.result().type_bound();
-    if (common_library.get_instance().is_reference_type(the_type)) {
-      // TODO: check that flavor is readonly or mutable.
-      type value_type = common_library.get_instance().get_reference_parameter(the_type);
-      // TODO: replace this with a promotion lookup.
-      return new dereference_action(value_type, null, source).bind_from(expression, source);
-    } else {
-      return expression;
-    }
-  }
-
   public static boolean is_procedure_type(type the_type) {
     return the_type.principal().get_kind() == type_kinds.procedure_kind;
   }

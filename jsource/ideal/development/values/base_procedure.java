@@ -73,7 +73,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
       if (parameter instanceof error_signal) {
         return false;
       }
-      if (!context.can_promote(parameter.result(), get_argument_type(i))) {
+      if (!context.can_promote(parameter, get_argument_type(i))) {
         return false;
       }
     }
@@ -99,7 +99,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
         return param;
       }
       type target = get_argument_type(i);
-      if (context.can_promote(param.result(), target)) {
+      if (context.can_promote(param, target)) {
         promoted_params.append(context.promote(param, target, pos));
       } else {
         return action_utilities.cant_promote(param.result(), target, context, pos);

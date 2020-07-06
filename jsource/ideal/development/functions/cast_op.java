@@ -38,7 +38,7 @@ public class cast_op extends binary_procedure {
   @Override
   protected analysis_result bind_binary(action first, action second, analysis_context context,
       origin pos) {
-    first = action_utilities.to_value(first, pos);
+    first = analyzer_utilities.to_value(first, context, pos);
     if (first instanceof error_signal) {
       return first;
     }

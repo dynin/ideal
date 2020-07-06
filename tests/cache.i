@@ -38,3 +38,23 @@ println(instance.bar());
 println(instance.bar());
 println(instance.foo());
 println(instance.foo());
+
+import ideal.runtime.elements.base_list;
+
+immutable list[nonnegative] reverse() {
+  nonnegative the_begin : 6;
+  nonnegative the_end : 8;
+  result : base_list[nonnegative].new();
+  for (var integer value : the_end - 1; value >= the_begin; value -= 1) {
+    assert value is nonnegative;
+    result.append(value);
+--    nonnegative_value : value;
+--    assert nonnegative_value is nonnegative;
+--    result.append(nonnegative_value);
+  }
+  return result.frozen_copy();
+}
+
+--for (element : reverse()) {
+--  println(":" ++ element);
+--}

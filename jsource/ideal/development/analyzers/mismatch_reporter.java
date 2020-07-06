@@ -87,11 +87,12 @@ public class mismatch_reporter {
     }
 
     for (int i = 0; i < supplied_arguments.size(); ++i) {
-      abstract_value supplied_value = supplied_arguments.get(i).result();
+      action supplied_action = supplied_arguments.get(i);
+      abstract_value supplied_value = supplied_action.result();
       type declared_type = action_utilities.get_procedure_argument(
           failed_procedure_type, i).type_bound();
 
-      if (!context.can_promote(supplied_value, declared_type)) {
+      if (!context.can_promote(supplied_action, declared_type)) {
         return new error_signal(new base_string("Argument #" + i + ": expected " +
             context.print_value(declared_type) + ", found " +
             context.print_value(supplied_value)),

@@ -156,7 +156,7 @@ public class variable_analyzer extends declaration_analyzer
           return report_error(new error_signal(messages.error_in_initializer, init, this));
         }
         init_action = action_not_error(init);
-        if (!get_context().can_promote(init_action.result(), value_type())) {
+        if (!get_context().can_promote(init_action, value_type())) {
           return action_utilities.cant_promote(init_action.result(), value_type(),
               get_context(), this);
         }
@@ -189,7 +189,7 @@ public class variable_analyzer extends declaration_analyzer
         if (has_errors(init)) {
           return report_error(new error_signal(messages.error_in_initializer, init, this));
         }
-        init_action = action_utilities.to_value(action_not_error(init), init);
+        init_action = analyzer_utilities.to_value(action_not_error(init), get_context(), init);
         var_value_type = init_action.result().type_bound();
       } else {
         return report_error(new error_signal(messages.var_type_missing, source));

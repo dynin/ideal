@@ -55,7 +55,7 @@ public abstract class binary_procedure extends base_procedure {
         return param;
       }
       type target = get_argument_type(i);
-      if (!context.can_promote(param.result(), target)) {
+      if (!context.can_promote(param, target)) {
         return new error_signal(new base_string("Promotion error"), pos);
       }
     }

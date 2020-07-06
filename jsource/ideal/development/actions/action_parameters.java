@@ -39,7 +39,7 @@ public class action_parameters extends debuggable
     return params.size();
   }
 
-  public immutable_list<abstract_value> to_value_list() {
+  private immutable_list<abstract_value> to_value_list() {
     list<abstract_value> value_list = new base_list<abstract_value>();
     for (int i = 0; i < params.size(); ++i) {
       value_list.append(params.get(i).result());

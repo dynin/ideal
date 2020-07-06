@@ -19,6 +19,7 @@ import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.names.*;
 import ideal.development.analyzers.*;
+import ideal.development.extensions.*;
 
 public class common_scanner extends base_scanner_config {
 

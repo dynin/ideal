@@ -49,24 +49,6 @@ testdata/sequence.i:117: Lookup failed: no display_context in sequence._display
     list.addAll(s.list);
                 -^----
 testdata/sequence.i:94: Lookup failed: no list in immutable reference[mutable sequence]
-    assert begin >= 0 && end <= size();
-                                ^^^^
-testdata/sequence.i:97: Lookup failed: no size in sequence.subsequence
-    sequence result : sequence.new();
-                      ------------^-
-testdata/sequence.i:98: Expression not parametrizable
-    for (int i : begin; i < end; i += 1) {
-         ^^^
-testdata/sequence.i:100: Lookup failed: no int in sequence.subsequence
-    return subsequence(begin, size());
-                              ^^^^
-testdata/sequence.i:106: Lookup failed: no size in sequence.subsequence
-    identifier id : display_function.name(getClass());
-                                          ^^^^^^^^
-testdata/sequence.i:118: Lookup failed: no getClass in sequence._display
-    for (int i : 0; i < list.size(); i += 1) {
-         ^^^
-testdata/sequence.i:120: Lookup failed: no int in sequence._display
 <html>
   <head>
     <title>
@@ -304,7 +286,7 @@ testdata/sequence.i:120: Lookup failed: no int in sequence._display
              assert begin &gt;= 0 &amp;&amp; end &lt;= size()
             </div>
             <div>
-             <a href='sequence.html'>sequence</a> <span class='var-declaration-name'>result</span> : <a href='sequence.html'>sequence</a> &bull; <a href='sequence.html'>new</a>()
+             sequence <span class='var-declaration-name'>result</span> : sequence &bull; new()
             </div>
            for int <span class='var-declaration-name'>i</span> : begin; i &lt; end; i += 1
             <div class='indent'>
@@ -346,7 +328,7 @@ testdata/sequence.i:120: Lookup failed: no int in sequence._display
          public void <span class='procedure-declaration-name'> display</span>(display writer <span class='var-declaration-name'>writer</span>, display context <span class='var-declaration-name'>options</span>)
           <div class='indent'>
             <div>
-             <a href='ideal/library/elements/identifier.html'>identifier</a> <span class='var-declaration-name'>id</span> : display function &bull; name(getClass())
+             identifier <span class='var-declaration-name'>id</span> : display function &bull; name(getClass())
             </div>
             <div>
              writer &bull; start list(id)

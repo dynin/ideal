@@ -42,6 +42,7 @@ public class list_initializer_analyzer extends single_pass_analyzer {
   protected analysis_result do_single_pass_analysis() {
     parameter_actions = new base_list<action>();
     error_signal error = null;
+    action result_action = null;
 
     for (int i = 0; i < analyzable_parameters.size(); ++i) {
       analyzable param = analyzable_parameters.get(i);
@@ -50,25 +51,26 @@ public class list_initializer_analyzer extends single_pass_analyzer {
         if (error == null) {
           error = arg_error;
         }
+        continue;
+      }
+      action the_action = analyzer_utilities.to_value(action_not_error(param), get_context(), this);
+      if (result_action == null) {
+        result_action = the_action;
       } else {
-        action the_action = action_not_error(param);
-        action value_action = action_utilities.to_value(the_action, this);
-        type param_type = value_action.result().type_bound();
-        if (element_type == null) {
-          element_type = param_type;
+        if (get_context().can_promote(the_action, result_action.result().type_bound())) {
+          // Keep result action
+        } else if (get_context().can_promote(result_action, the_action.result().type_bound())) {
+          result_action = the_action;
         } else {
-          element_type = unify(element_type, param_type);
-          if (element_type == null) {
-            error_signal unify_error = new error_signal(
-                new base_string("Can't figure out element type"), this);
-            maybe_report_error(unify_error);
-            if (error == null) {
-              error = unify_error;
-            }
+          error_signal unify_error = new error_signal(
+              new base_string("Can't figure out element type"), this);
+          maybe_report_error(unify_error);
+          if (error == null) {
+            error = unify_error;
           }
         }
-        parameter_actions.append(the_action);
       }
+      parameter_actions.append(the_action);
     }
 
     if (error != null) {
@@ -76,7 +78,8 @@ public class list_initializer_analyzer extends single_pass_analyzer {
     }
 
     // TODO: handle empty list
-    assert element_type != null;
+    assert result_action != null;
+    element_type = result_action.result().type_bound();
 
     for (int i = 0; i < parameter_actions.size(); ++i) {
       parameter_actions.at(i).set(get_context().promote(parameter_actions.get(i),
@@ -84,19 +87,6 @@ public class list_initializer_analyzer extends single_pass_analyzer {
     }
 
     return new list_initializer_action(element_type, parameter_actions, this);
-  }
-
-  // TODO: move this to analyzer_utilities, unify with conditional_analyzer...
-  private @Nullable type unify(type first, type second) {
-    if (first == second) {
-      return first;
-    } else if (get_context().can_promote(first, second)) {
-      return second;
-    } else if (get_context().can_promote(second, first)) {
-      return first;
-    }
-
-    return null;
   }
 
 /*

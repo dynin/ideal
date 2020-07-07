@@ -463,11 +463,6 @@ public class to_java_transformer extends base_transformer {
   public construct process_procedure(procedure_declaration the_procedure,
       list<annotation_construct> annotations) {
     origin the_origin = the_procedure;
-
-    if (the_procedure.annotations().has(not_yet_implemented_modifier)) {
-      return null;
-    }
-
     action_name name = the_procedure.original_name();
     @Nullable list_construct the_list_construct = process_parameters(
         the_procedure.get_parameter_variables(), the_origin);
@@ -1187,11 +1182,6 @@ public class to_java_transformer extends base_transformer {
   public construct process_variable(variable_declaration the_variable,
       list<annotation_construct> annotations) {
     origin the_origin = the_variable;
-
-    if (the_variable.annotations().has(not_yet_implemented_modifier)) {
-      return null;
-    }
-
     principal_type declared_in_type = the_variable.declared_in_type();
 
     boolean is_mutable = the_variable.reference_type().get_flavor() == mutable_flavor;

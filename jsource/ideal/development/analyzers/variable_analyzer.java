@@ -69,6 +69,10 @@ public class variable_analyzer extends declaration_analyzer
     this.init = init;
   }
 
+  public @Nullable readonly_list<annotation_construct> annotations_list() {
+    return variable_annotations;
+  }
+
   @Override
   public action_name short_name() {
     return name;

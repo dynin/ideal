@@ -144,9 +144,6 @@ public class common_scanner extends base_scanner_config {
     add_modifier(general_modifier.var_modifier);
     add_modifier(general_modifier.pure_modifier);
 
-    // TODO: should this be in the common syntax?
-    add_modifier(general_modifier.not_yet_implemented_modifier);
-
     add_modifier(general_modifier.implement_modifier);
     add_modifier(general_modifier.override_modifier);
     add_modifier(general_modifier.overload_modifier);
@@ -169,5 +166,6 @@ public class common_scanner extends base_scanner_config {
 
     // TODO: process a list of extensions
     new cache_extension().register_syntax_extension(this);
+    new not_yet_implemented_extension().register_syntax_extension(this);
   }
 }

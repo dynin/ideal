@@ -87,11 +87,11 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     analyze_and_ignore_errors(expanded, last_pass);
   }
 
-  public @Nullable declaration expand() {
+  public @Nullable analyzable_or_declaration expand() {
     if (has_errors()) {
       return null;
-    } else if (expanded instanceof declaration) {
-      return (declaration) expanded;
+    } else if (expanded != null) {
+      return expanded;
     } else {
       return get_declaration();
     }
@@ -104,16 +104,14 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
     if (expanded != null) {
       analyze_and_ignore_errors(expanded, pass);
-      if (pass == analysis_pass.BODY_CHECK) {
-        display_code(expanded);
-      }
-
       return null;
     }
 
     assert the_declaration != null;
     if (the_declaration instanceof procedure_analyzer) {
       return process_procedure((procedure_analyzer) the_declaration, pass);
+    } else if (the_declaration instanceof variable_analyzer) {
+      return process_variable((variable_analyzer) the_declaration, pass);
     }
 
     if (has_errors(get_declaration(), pass)) {
@@ -134,7 +132,12 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,
       analysis_pass pass) {
-    return new error_signal(new base_string("Extension doesn't support procedure"), this);
+    return new error_signal(new base_string("Extension doesn't support a procedure"), this);
+  }
+
+  protected @Nullable error_signal process_variable(variable_analyzer the_variable,
+      analysis_pass pass) {
+    return new error_signal(new base_string("Extension doesn't support a variable"), this);
   }
 
   protected analysis_result do_get_result() {

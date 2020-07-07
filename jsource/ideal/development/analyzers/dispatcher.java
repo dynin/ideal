@@ -164,7 +164,23 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_variable(variable_construct source) {
-    return new variable_analyzer(source);
+    variable_analyzer result = new variable_analyzer(source);
+    // TODO: switch to using annotation set.
+    // TODO: handle more than one extension on the same variable_analyzer.
+    @Nullable readonly_list<annotation_construct> annotations = result.annotations_list();
+    if (result != null) {
+      for (int i = 0; i < annotations.size(); ++i) {
+        annotation_construct annotation = annotations.get(i);
+        if (annotation instanceof modifier_construct) {
+          modifier_kind the_kind = ((modifier_construct) annotation).the_kind;
+          if (the_kind instanceof extension_modifier_kind) {
+            return ((extension_modifier_kind) the_kind).make_extension(result);
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   @Override

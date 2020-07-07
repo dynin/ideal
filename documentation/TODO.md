@@ -65,3 +65,4 @@
 - [ ] Implement C-style comments
 - [ ] Handle instance variable implementing interfaces.
 - [ ] Add static modifier to import of namespaces.
+- [ ] Origin of an extension should be the extension modifier.

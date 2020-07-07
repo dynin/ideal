@@ -16,7 +16,6 @@ public class general_modifier {
   public static final modifier_kind abstract_modifier = new base_modifier_kind(new base_string("abstract"));
   public static final modifier_kind implicit_modifier = new base_modifier_kind(new base_string("implicit"));
   public static final modifier_kind explicit_modifier = new base_modifier_kind(new base_string("explicit"));
-  public static final modifier_kind not_yet_implemented_modifier = new base_modifier_kind(new base_string("not_yet_implemented"));
   public static final modifier_kind synthetic_modifier = new base_modifier_kind(new base_string("synthetic"));
   public static final modifier_kind varargs_modifier = new base_modifier_kind(new base_string("varargs"));
   public static final modifier_kind override_modifier = new base_modifier_kind(new base_string("override"));

@@ -100,10 +100,6 @@ public class analyzer_utilities {
       @Nullable overloaded_procedure the_overloaded_procedure,
       analysis_context the_context) {
 
-    if (the_procedure.annotations().has(general_modifier.not_yet_implemented_modifier)) {
-      return null;
-    }
-
     boolean is_explicit = the_procedure.annotations().has(general_modifier.explicit_modifier);
     origin the_origin = the_procedure;
     final type target_type =
@@ -341,8 +337,7 @@ public class analyzer_utilities {
       // TODO: check that flavor is readonly or mutable.
       type value_type = common_library.get_instance().get_reference_parameter(the_type);
       // TODO: replace this with a promotion lookup.
-      action dereference = new dereference_action(value_type, null, the_origin).bind_from(
-          expression, the_origin);
+      action dereference = the_context.promote(expression, value_type, the_origin);
       // TODO: handle narrowing
       if (false) {
         @Nullable declaration the_declaration = declaration_util.get_declaration(expression);

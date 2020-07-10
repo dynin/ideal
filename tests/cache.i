@@ -1,4 +1,12 @@
 
+
+var nonnegative size : 40;
+void foo(nonnegative arg) {
+  println(arg);
+}
+foo(1 + 2);
+size += 2;
+foo(size);
 class testcache {
   var integer index;
   private var string or null generated_foo_cache;

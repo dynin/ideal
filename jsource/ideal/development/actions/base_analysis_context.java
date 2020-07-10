@@ -77,13 +77,33 @@ public abstract class base_analysis_context extends debuggable implements analys
     return language.find_supertype_procedure(actions, the_value);
   }
 
-  private @Nullable action find_promotion(abstract_value from, type target) {
+  public @Nullable action find_promotion(action from, type target,
+      @Nullable immutable_dictionary<declaration, abstract_value> constraint_bindings) {
+
+    if (constraint_bindings != null) {
+      @Nullable declaration the_declaration = declaration_util.get_declaration(from);
+      if (the_declaration != null) {
+        @Nullable abstract_value narrowed = constraint_bindings.get(the_declaration);
+        if (narrowed != null) {
+          origin the_origin = from;
+          variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
+          type narrowed_type = narrowed.type_bound();
+          narrow_action the_action = new narrow_action(from, narrowed_type,
+              the_variable_declaration, the_origin);
+          @Nullable action result = find_promotion(the_action, target, null);
+          if (result != null) {
+            return result;
+          }
+        }
+      }
+    }
+
     return language.find_promotion(actions, from, target);
   }
 
   @Override
   public boolean can_promote(action from, type target) {
-    return find_promotion(from.result(), target) != null;
+    return find_promotion(from, target, null) != null;
   }
 
   @Override
@@ -92,7 +112,7 @@ public abstract class base_analysis_context extends debuggable implements analys
       return from;
     }
 
-    @Nullable action result = find_promotion(from.result(), target);
+    @Nullable action result = find_promotion(from, target, null);
 
     if (result != null) {
       return result.bind_from(from, pos);

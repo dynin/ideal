@@ -82,36 +82,19 @@ public class resolve_analyzer extends single_pass_analyzer {
 
   @Override
   protected analysis_result do_single_pass_analysis() {
-    analysis_result result = do_resolve();
-
-    if (! (result instanceof error_signal)) {
-      @Nullable declaration the_declaration = declaration_util.get_declaration(result);
-      if (the_declaration != null) {
-        @Nullable abstract_value narrowed = get_context().constraints().get(the_declaration);
-        if (narrowed != null) {
-          variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
-          if (narrowed.type_bound() != the_variable_declaration.reference_type()) {
-            action variable_access = (action) result;
-            return new narrow_action(variable_access, narrowed.type_bound(),
-                the_variable_declaration, this);
-          }
-        }
-      }
-    }
-
-    return result;
-  }
-
-  private analysis_result do_resolve() {
+    origin the_origin = this;
     type from_type;
+    action from_action;
 
     if (from != null) {
       if (has_errors(from)) {
-        return new error_signal(messages.error_in_source, from, this);
+        return new error_signal(messages.error_in_source, from, the_origin);
       }
-      from_type = action_not_error(from).result().type_bound();
+      from_action = analyzer_utilities.to_value(action_not_error(from), get_context(), the_origin);
+      from_type = from_action.result().type_bound();
     } else {
       assert the_name != null;
+      from_action = null;
       from_type = (the_name instanceof operator) ? library().operators_package() : parent();
     }
 
@@ -129,17 +112,17 @@ public class resolve_analyzer extends single_pass_analyzer {
       ((type_announcement) the_declaration).load_type();
     }
 
-    readonly_list<action> all_resolved = get_context().resolve(from_type, the_name, this);
+    readonly_list<action> all_resolved = get_context().resolve(from_type, the_name, the_origin);
 
     if (all_resolved.is_empty()) {
       error_signal error;
       if (from == null && CURE_UNDECLARED) {
         error = new error_signal(messages.symbol_lookup_suppress, this);
-        error_signal suppressed_error = new error_signal(messages.suppressed, error, this);
+        error_signal suppressed_error = new error_signal(messages.suppressed, error, the_origin);
         add_error(parent(), the_name, suppressed_error);
       } else {
         error = mismatch_reporter.signal_lookup_failure(the_name, from_type, null,
-            get_context(), this);
+            get_context(), the_origin);
       }
       return error;
     }
@@ -160,9 +143,10 @@ public class resolve_analyzer extends single_pass_analyzer {
 
     assert all_resolved.size() == 1;
     main_candidate = all_resolved.first();
+
     if (from != null) {
       // TODO: don't convert from to action twice...
-      main_candidate = main_candidate.bind_from(action_not_error(from), this);
+      main_candidate = main_candidate.bind_from(from_action, the_origin);
     }
 
     type_utilities.prepare(main_candidate.result(), resolve_pass);

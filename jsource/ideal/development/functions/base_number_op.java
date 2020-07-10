@@ -46,9 +46,9 @@ public abstract class base_number_op extends binary_procedure {
     boolean all_nonnegative = true;
 
     first = promote_to_integer(first, context, pos);
-    all_nonnegative &= (first.result() == library().immutable_nonnegative_type());
+    all_nonnegative &= (first.result().type_bound() == library().immutable_nonnegative_type());
     second = promote_to_integer(second, context, pos);
-    all_nonnegative &= (second.result() == library().immutable_nonnegative_type());
+    all_nonnegative &= (second.result().type_bound() == library().immutable_nonnegative_type());
 
     type result;
     if (return_value() == library().immutable_boolean_type()) {

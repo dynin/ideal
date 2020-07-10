@@ -27,6 +27,7 @@ public class constraint extends debuggable implements readonly_data, stringable 
   @Override
   public string to_string() {
     //return utilities.describe(this, the_declaration);
-    return new base_string(the_declaration.to_string(), " => ", the_value.to_string());
+    return new base_string(the_declaration.to_string(), new base_string(" => "),
+        the_value.to_string(), new base_string(" (" + the_constraint_type + ")"));
   }
 }

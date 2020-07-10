@@ -54,6 +54,12 @@ public class promotion_action extends base_action {
       result = library().void_instance();
     }
 
+    if (result instanceof reference_wrapper &&
+        !library().is_reference_type(the_type)) {
+      result = ((reference_wrapper) result).get();
+      // TODO: verify that type matches
+    }
+
     return result;
   }
 

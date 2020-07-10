@@ -43,8 +43,9 @@ public class conditional_analyzer extends single_pass_analyzer {
 
   @Override
   protected analysis_result do_single_pass_analysis() {
+    origin the_origin = this;
     if (has_errors(condition)) {
-      return new error_signal(messages.error_in_conditional, condition, this);
+      return new error_signal(messages.error_in_conditional, condition, the_origin);
     }
 
     analysis_result condition_result = condition.analyze();
@@ -64,14 +65,15 @@ public class conditional_analyzer extends single_pass_analyzer {
       return new error_signal(new base_string("Boolean value expected, got " +
           condition_action.result()), condition_action);
     }
-    condition_action = get_context().promote(condition_action, boolean_type, this);
+    condition_action = get_context().promote(condition_action, boolean_type, the_origin);
     // TODO: this check is redundant.
     assert !(condition_action instanceof error_signal);
 
     analysis_result analyzed_then = analyze_with_constraints(then_branch, new_constraints,
         constraint_type.ON_TRUE);
     if (analyzed_then instanceof error_signal) {
-      return new error_signal(messages.error_in_conditional, (error_signal) analyzed_then, this);
+      return new error_signal(messages.error_in_conditional, (error_signal) analyzed_then,
+          the_origin);
     }
     action then_action;
     immutable_list<constraint> then_constraints;
@@ -90,7 +92,8 @@ public class conditional_analyzer extends single_pass_analyzer {
       analysis_result analyzed_else = analyze_with_constraints(else_branch, new_constraints,
           constraint_type.ON_FALSE);
       if (analyzed_else instanceof error_signal) {
-        return new error_signal(messages.error_in_conditional, (error_signal) analyzed_else, this);
+        return new error_signal(messages.error_in_conditional, (error_signal) analyzed_else,
+            the_origin);
       }
       if (analyzed_else instanceof action) {
         else_action = (action) analyzed_else;
@@ -100,8 +103,11 @@ public class conditional_analyzer extends single_pass_analyzer {
         else_constraints = else_result.the_constraints;
       }
     } else {
-      else_action = library().void_instance().to_action(this);
+      else_action = library().void_instance().to_action(the_origin);
     }
+
+    then_action = analyzer_utilities.to_value(then_action, get_context(), the_origin);
+    else_action = analyzer_utilities.to_value(else_action, get_context(), the_origin);
 
     @Nullable type result_type = analyzer_utilities.unify(then_action, else_action, get_context());
 
@@ -129,17 +135,17 @@ public class conditional_analyzer extends single_pass_analyzer {
     if (result_type == null) {
       return new error_signal(
           new base_string("Can't unify " + then_action.result() + " and " + else_action.result()),
-          this);
+          the_origin);
     }
 
-    then_action = get_context().promote(then_action, result_type, this);
-    else_action = get_context().promote(else_action, result_type, this);
+    then_action = get_context().promote(then_action, result_type, the_origin);
+    else_action = get_context().promote(else_action, result_type, the_origin);
 
     assert !(then_action instanceof error_signal);
     assert !(else_action instanceof error_signal);
 
     return action_plus_constraints.make_result(
-        new conditional_action(condition_action, then_action, else_action, result_type, this),
+        new conditional_action(condition_action, then_action, else_action, result_type, the_origin),
         resulting_constraints);
   }
 
@@ -177,5 +183,12 @@ public class conditional_analyzer extends single_pass_analyzer {
         analyzer_utilities.always_by_type(the_constraints, filter));
     special_init_context(the_analyzable, new_context);
     return the_analyzable.analyze();
+  }
+
+  private void dump_constraints(String name, readonly_list<constraint> constraints) {
+    System.out.println(name + ": " + this);
+    for (int i = 0; i < constraints.size(); ++i) {
+      System.out.println("  " + constraints.get(i));
+    }
   }
 }

@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import ideal.library.graphs.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
+import ideal.machine.channels.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
 import ideal.development.names.*;
@@ -25,10 +26,10 @@ import ideal.development.notifications.*;
 
 public class constrained_analysis_context extends debuggable implements analysis_context {
 
-  private final analysis_context parent;
+  private final base_analysis_context parent;
   private final immutable_dictionary<declaration, abstract_value> constraint_bindings;
 
-  public constrained_analysis_context(analysis_context parent,
+  public constrained_analysis_context(base_analysis_context parent,
       immutable_dictionary<declaration, abstract_value> constraint_bindings) {
     this.parent = parent;
     this.constraint_bindings = constraint_bindings;
@@ -38,6 +39,13 @@ public class constrained_analysis_context extends debuggable implements analysis
       readonly_list<constraint> the_constraints) {
     if (the_constraints.is_empty()) {
       return parent;
+    }
+
+    base_analysis_context new_parent;
+    if (parent instanceof base_analysis_context) {
+      new_parent = (base_analysis_context) parent;
+    } else {
+      new_parent = ((constrained_analysis_context) parent).parent;
     }
 
     dictionary<declaration, abstract_value> constraint_dictionary =
@@ -59,7 +67,7 @@ public class constrained_analysis_context extends debuggable implements analysis
     }
 
     assert constraint_dictionary.is_not_empty();
-    return new constrained_analysis_context(parent, constraint_dictionary.frozen_copy());
+    return new constrained_analysis_context(new_parent, constraint_dictionary.frozen_copy());
   }
 
   @Override
@@ -99,12 +107,26 @@ public class constrained_analysis_context extends debuggable implements analysis
 
   @Override
   public boolean can_promote(action from, type target) {
-    return parent.can_promote(from, target);
+    return parent.find_promotion(from, target, constraint_bindings) != null;
   }
 
   @Override
   public action promote(action from, type target, origin pos) {
-    return parent.promote(from, target, pos);
+    // TODO: share the code with base_analysis_context
+    if (from instanceof error_signal) {
+      return from;
+    }
+
+    @Nullable action result = parent.find_promotion(from, target, constraint_bindings);
+
+    if (result != null) {
+      return result.bind_from(from, pos);
+    } else {
+      error_signal signal = action_utilities.cant_promote(from.result(), target, this, pos);
+      //return new error_action(signal);
+      utilities.panic(signal.to_string());
+      return null;
+    }
   }
 
   @Override
@@ -136,5 +158,22 @@ public class constrained_analysis_context extends debuggable implements analysis
   @Override
   public immutable_dictionary<declaration, abstract_value> constraints() {
     return constraint_bindings;
+  }
+
+  @Override
+  public string to_string() {
+    string_writer content = new string_writer();
+    content.write_all(new base_string("context {"));
+    readonly_list<dictionary.entry<declaration, abstract_value>> constraints =
+        constraints().elements();
+    for (int i = 0; i < constraints.size(); ++i) {
+      dictionary.entry<declaration, abstract_value> the_constraint = constraints.get(i);
+      content.write_all(the_constraint.key().to_string());
+      content.write_all(new base_string(": "));
+      content.write_all(the_constraint.value().to_string());
+      content.write_all(new base_string(", "));
+    }
+    content.write_all(new base_string("}"));
+    return content.elements();
   }
 }

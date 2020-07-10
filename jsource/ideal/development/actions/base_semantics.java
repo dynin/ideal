@@ -229,17 +229,17 @@ public class base_semantics implements semantics {
   }
 
   @Nullable
-  public action find_promotion(action_table actions, abstract_value the_value, type target) {
-
+  public action find_promotion(action_table actions, action from, type target) {
+    abstract_value the_value = from.result();
     type subtype = the_value.type_bound();
 
     if (subtype == target) {
-      return new promotion_action(subtype);
+      return from; //new promotion_action(subtype);
     }
 
     type the_supertype = find_supertype(actions, the_value, target);
     if (the_supertype != null) {
-      return new promotion_action(the_supertype);
+      return from; //new promotion_action(the_supertype);
     }
 
     // Anything can be promoted to the 'void' value.

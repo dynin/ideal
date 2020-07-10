@@ -337,25 +337,7 @@ public class analyzer_utilities {
       // TODO: check that flavor is readonly or mutable.
       type value_type = common_library.get_instance().get_reference_parameter(the_type);
       // TODO: replace this with a promotion lookup.
-      action dereference = the_context.promote(expression, value_type, the_origin);
-      // TODO: handle narrowing
-      if (false) {
-        @Nullable declaration the_declaration = declaration_util.get_declaration(expression);
-        if (the_declaration != null) {
-          @Nullable abstract_value narrowed = the_context.constraints().get(the_declaration);
-          if (narrowed != null) {
-            variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
-            System.out.println("RT0 " + the_variable_declaration.reference_type() +
-                " NT " + narrowed.type_bound());
-            if (narrowed.type_bound() != the_variable_declaration.reference_type()) {
-              return new narrow_action(dereference, narrowed.type_bound(),
-                  the_variable_declaration, the_origin);
-            }
-          }
-        }
-      }
-
-      return dereference;
+      return the_context.promote(expression, value_type, the_origin);
     } else {
       return expression;
     }

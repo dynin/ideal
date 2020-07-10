@@ -79,6 +79,6 @@ public class loop_action extends base_action {
 
   @Override
   public string to_string() {
-    return new base_string("loop: ", body.to_string());
+    return utilities.describe(this, body);
   }
 }

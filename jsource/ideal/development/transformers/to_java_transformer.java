@@ -314,31 +314,31 @@ public class to_java_transformer extends base_transformer {
 
     if (!the_resolve.has_from()) {
       result = maybe_call(the_resolve, result, the_origin);
+    } else {
+      // Note: we do not transform the name!
+      construct qualifier = transform_and_maybe_rewrite(the_resolve.get_from());
 
-      if (the_action instanceof narrow_action) {
-        narrow_action the_narrow_action = (narrow_action) the_action;
-        type the_original_type = result_type(the_narrow_action.expression);
-        type the_narrowed_type = the_narrow_action.the_type;
-        if (should_introduce_cast(the_original_type, the_narrowed_type)) {
-          result = new operator_construct(operator.AS_OPERATOR, result,
-              make_type(the_narrowed_type, the_origin), the_origin);
-          result = new list_construct(new base_list<construct>(result), grouping_type.PARENS, false,
-              the_origin);
-        }
+      if (the_resolve.short_name() == special_name.NEW) {
+        return new operator_construct(operator.ALLOCATE, qualifier, the_origin);
       }
 
-      return result;
+      result = maybe_call(the_resolve, new resolve_construct(qualifier, result, the_origin),
+          the_origin);
     }
 
-    // Note: we do not transform the name!
-    construct qualifier = transform_and_maybe_rewrite(the_resolve.get_from());
-
-    if (the_resolve.short_name() == special_name.NEW) {
-      return new operator_construct(operator.ALLOCATE, qualifier, the_origin);
+    if (the_action instanceof narrow_action) {
+      narrow_action the_narrow_action = (narrow_action) the_action;
+      type the_original_type = result_type(the_narrow_action.expression);
+      type the_narrowed_type = the_narrow_action.the_type;
+      if (should_introduce_cast(the_original_type, the_narrowed_type)) {
+        result = new operator_construct(operator.AS_OPERATOR, result,
+            make_type(the_narrowed_type, the_origin), the_origin);
+        result = new list_construct(new base_list<construct>(result), grouping_type.PARENS, false,
+            the_origin);
+      }
     }
 
-    return maybe_call(the_resolve, new resolve_construct(qualifier, result, the_origin),
-        the_origin);
+    return result;
   }
 
   // TODO: should analyzable be resolve_analyzer?

@@ -17,12 +17,14 @@ import ideal.runtime.texts.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
+import ideal.development.declarations.*;
 import ideal.development.actions.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.analyzers.*;
 import ideal.development.flavors.*;
+import ideal.development.analyzers.*;
 import ideal.development.notifications.*;
 import ideal.development.transformers.*;
 
@@ -38,20 +40,13 @@ public class assign_op extends binary_procedure {
 
   @Override
   protected analysis_result bind_binary(action first, action second, analysis_context context,
-      origin pos) {
-
-    boolean first_narrowed = first instanceof narrow_action;
-    narrow_action narrowed_variable = first_narrowed ? (narrow_action) first : null;
-
-    if (first_narrowed) {
-      first = narrowed_variable.expression;
-    }
+      origin the_origin) {
 
     type reference_type = first.result().type_bound();
     if (!library().is_reference_type(reference_type)) {
       // TODO: check that this is a writable reference.
       return new error_signal(new base_string("Reference expected, got ",
-          context.print_value(reference_type)), pos);
+          context.print_value(reference_type)), the_origin);
     }
 
     type value_type = library().get_reference_parameter(reference_type);
@@ -59,9 +54,9 @@ public class assign_op extends binary_procedure {
     type writable_ref = library().get_reference(flavor.writeonly_flavor, value_type);
     if (!context.can_promote(first, writable_ref)) {
       return new error_signal(new base_string("Writable reference expected, got ",
-          context.print_value(reference_type)), pos);
+          context.print_value(reference_type)), the_origin);
     }
-    action left = context.promote(first, writable_ref, pos);
+    action left = context.promote(first, writable_ref, the_origin);
 
     // TODO: this is used in base_string.i; remove once string handling is improved.
     if (java_library.is_java_type(value_type)) {
@@ -73,19 +68,28 @@ public class assign_op extends binary_procedure {
       }
     }
 
+    second = analyzer_utilities.to_value(second, context, the_origin);
     if (!context.can_promote(second, value_type)) {
-      return action_utilities.cant_promote(second.result(), value_type, context, pos);
+      return action_utilities.cant_promote(second.result(), value_type, context, the_origin);
     }
-    action the_value = context.promote(second, value_type, pos);
-
-    list<constraint> constraints = new base_list<constraint>();
-    if (first_narrowed) {
-      constraints.append(new constraint(narrowed_variable.the_declaration, second.result(),
-          constraint_type.ALWAYS));
+    constraint the_constraint = null;
+    if (second.result() != value_type) {
+      declaration left_declaration = declaration_util.get_declaration(first);
+      if (left_declaration instanceof variable_declaration &&
+          ((variable_declaration) left_declaration).get_category() == variable_category.LOCAL) {
+        the_constraint = new constraint(left_declaration, second.result(), constraint_type.ALWAYS);
+      }
     }
 
-    return action_plus_constraints.make_result(make_action(value_type, left, the_value, pos),
-        constraints);
+    action right = context.promote(second, value_type, the_origin);
+    action result_action = make_action(value_type, left, right, the_origin);
+
+    if (the_constraint != null) {
+      return action_plus_constraints.make_result(result_action,
+          new base_list<constraint>(the_constraint));
+    } else {
+      return result_action;
+    }
   }
 
   @Override

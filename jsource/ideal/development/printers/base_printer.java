@@ -525,8 +525,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       // TODO: handle new as operator?
       return print_word(keywords.NEW);
     } else {
-      utilities.panic("unknown special name: " + name);
-      return null;
+      return print_word("ERROR:" + name);
+      //utilities.panic("unknown special name: " + name);
+      //return null;
     }
   }
 

@@ -162,6 +162,9 @@ generate_cache: $(IDEAL_TARGET)
 12: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -input=$(ONETWO)
 
+gt: $(IDEAL_TARGET)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_test
+
 dir: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -input=$(DIRECTORY)
 

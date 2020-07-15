@@ -76,6 +76,6 @@ public class dereference_action extends base_action {
 
   @Override
   public string to_string() {
-    return utilities.describe(this, value_type);
+    return utilities.describe(this, from);
   }
 }

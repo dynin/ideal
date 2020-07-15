@@ -169,7 +169,8 @@ public class analyzer_utilities {
           the_dispatch.add_handler(target_type, executor_action);
           // TODO: what of there is more than one dispatch?
           // Which one should we pick then?
-          result_action = the_dispatch.bind_from(target_type.to_action(the_origin), the_origin);
+          // TODO: retiring .bind_from(target_type.to_action(the_origin), the_origin);
+          result_action = the_dispatch;
         }
       }
     } else {

@@ -21,7 +21,7 @@ import ideal.development.values.*;
 import ideal.development.flavors.*;
 
 public class allocate_action extends base_action {
-  private final principal_type the_type;
+  public final principal_type the_type;
 
   public allocate_action(principal_type the_type, origin source) {
     super(source);

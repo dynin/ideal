@@ -45,6 +45,6 @@ public class quoted_literal extends debuggable implements literal<string> {
       replaceAll("\\\\", "\\\\").
       replaceAll("'", "\\\\'").
       replaceAll("\"", "\\\\\"").
-      replaceAll("\n", "\\\\\n"));
+      replaceAll("\n", "\\\\n"));
   }
 }

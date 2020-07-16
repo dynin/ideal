@@ -1695,6 +1695,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   public construct process_value(base_data_value the_value, origin the_origin) {
+    //System.out.println("PV: " + the_value);
     if (the_value instanceof singleton_value) {
       principal_type singleton_type = the_value.type_bound().principal();
       // Convert missing.instance to null literal
@@ -1717,7 +1718,18 @@ public class to_java_transformer extends base_transformer {
           punctuation.DOUBLE_QUOTE), the_origin);
     } else if (the_value instanceof base_procedure) {
       base_procedure the_procedure = (base_procedure) the_value;
-      return new name_construct(map_name(the_procedure.name()), the_origin);
+      construct the_name_construct =
+          new name_construct(map_name(the_procedure.name()), the_origin);
+      procedure_declaration the_procedure_declaration =
+          (procedure_declaration) the_procedure.get_declaration();
+    //System.out.println("PROC: " + the_procedure_declaration);
+      if (the_procedure_declaration == null) {
+        return the_name_construct;
+      } else {
+        return new resolve_construct(
+            make_type(the_procedure_declaration.declared_in_type(), the_origin),
+            the_name_construct, the_origin);
+      }
     } else if (the_value instanceof procedure_with_this) {
       procedure_with_this the_procedure_with_this = (procedure_with_this) the_value;
       action_name the_action_name = the_procedure_with_this.name();
@@ -1737,6 +1749,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   public construct process_action(action the_action, origin the_origin) {
+    //System.out.println("PA: " + the_action);
     if (the_action instanceof type_action) {
       return make_type(((type_action) the_action).get_type(), the_origin);
     }
@@ -1865,10 +1878,10 @@ public class to_java_transformer extends base_transformer {
 
   private construct process_bound_procedure(bound_procedure the_bound_procedure,
       origin the_origin) {
+    //System.out.println("\n===TBP: " + the_bound_procedure);
     action the_procedure_action = the_bound_procedure.the_procedure_action;
-    construct main = process_action(the_procedure_action, the_origin);
-    readonly_list<construct> parameters =
-        process_action_parameters(the_bound_procedure.parameters, the_origin);
+    construct main;
+    readonly_list<construct> parameters;
     procedure_value the_procedure = null;
     @Nullable declaration the_declaration = get_procedure_declaration(the_procedure_action);
 
@@ -1879,50 +1892,31 @@ public class to_java_transformer extends base_transformer {
       the_procedure = (procedure_value) the_value;
       action_name the_name = the_procedure.name();
       if (the_name instanceof operator) {
+        // TODO: use process_operator()
+        parameters = process_action_parameters(the_bound_procedure.parameters, the_origin);
         return new operator_construct(map_operator((operator) the_name), parameters,
             the_origin);
       }
+      main = process_value(the_value, the_origin);
+      /*
       if (the_procedure instanceof procedure_with_this) {
         procedure_with_this the_procedure_with_this = (procedure_with_this) the_value;
         main = process_action(the_procedure_with_this.this_action, the_origin);
-        /*
-        if (the_name == special_name.IMPLICIT_CALL) {
-          return this_construct;
-        }
-        */
+        main = new resolve_construct(main, new name_construct(the_name, the_origin), the_origin);
+      } else {
+        main = process_action(the_procedure_action, the_origin);
       }
+      */
     } else {
+      main = process_action(the_procedure_action, the_origin);
+      /*
       if (the_procedure_action instanceof dispatch_action) {
         dispatch_action da = (dispatch_action) the_procedure_action;
       }
+      */
     }
 
-      /* else if (the_value instanceof procedure_with_this) {
-        procedure_with_this the_procedure_with_this = (procedure_with_this) the_value;
-        construct this_construct = process_action(the_procedure_with_this.this_action, the_origin);
-        action_name the_name = the_procedure_with_this.name();
-        if (the_procedure_with_this.get_declaration() instanceof procedure_declaration) {
-          the_name = ((procedure_declaration) the_procedure_with_this.get_declaration())
-              .original_name();
-        }
-        if (the_name == special_name.IMPLICIT_CALL) {
-          main = this_construct;
-        } else {
-          construct the_name_construct = new name_construct(map_name(the_name), the_origin);
-          main = new resolve_construct(this_construct, the_name_construct, the_origin);
-        }
-      }
-    }
-
-    else if (the_procedure_action instanceof dispatch_action ||
-               the_procedure_action instanceof promotion_action ||
-               the_procedure_action instanceof dereference_action) {
-      // Ok to treat as main action
-      the_declaration = declaration_util.get_declaration(the_procedure_action);
-    } else {
-      utilities.panic("process_bound_procedure: " + the_procedure_action);
-    }
-    */
+    parameters = process_action_parameters(the_bound_procedure.parameters, the_origin);
 
     if (the_declaration instanceof procedure_declaration) {
       procedure_declaration proc_decl = (procedure_declaration) the_declaration;

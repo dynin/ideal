@@ -1541,21 +1541,8 @@ public class to_java_transformer extends base_transformer {
   @Override
   public construct process_literal(literal_analyzer the_literal_analyzer) {
     origin the_origin = the_literal_analyzer;
-    literal the_literal = the_literal_analyzer.the_literal;
-    literal_construct the_literal_construct = new literal_construct(the_literal, the_origin);
-
-    if (the_literal instanceof quoted_literal &&
-        get_action(the_literal_analyzer).result().type_bound() ==
-            library().immutable_string_type()) {
-      // TODO: handle both string and character literals correctly.
-      // TODO: also, convert inline literals into constants.
-      // TODO: use fully qualified type name?
-      construct type_name = new name_construct(BASE_STRING_NAME, the_origin);
-      construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
-      return make_call(alloc, new base_list<construct>(the_literal_construct), the_origin);
-    }
-
-    return the_literal_construct;
+    action the_action = get_action(the_literal_analyzer);
+    return process_action(the_action, the_origin);
   }
 
   @Override
@@ -1694,7 +1681,7 @@ public class to_java_transformer extends base_transformer {
     return process_action(the_action, the_origin);
   }
 
-  public construct process_value(base_data_value the_value, origin the_origin) {
+  public construct process_value(base_data_value the_value, action the_action, origin the_origin) {
     //System.out.println("PV: " + the_value);
     if (the_value instanceof singleton_value) {
       principal_type singleton_type = the_value.type_bound().principal();
@@ -1714,8 +1701,20 @@ public class to_java_transformer extends base_transformer {
       return new name_construct(the_enum_value.short_name(), the_origin);
     } else if (the_value instanceof string_value) {
       string_value the_string_value = (string_value) the_value;
-      return new literal_construct(new quoted_literal(the_string_value.unwrap(),
-          punctuation.DOUBLE_QUOTE), the_origin);
+      type the_type = the_action.result().type_bound();
+      punctuation_type literal_type = (the_type == library().immutable_character_type()) ?
+          punctuation.SINGLE_QUOTE : punctuation.DOUBLE_QUOTE;
+      construct result = new literal_construct(new quoted_literal(the_string_value.unwrap(),
+          literal_type), the_origin);
+      if (the_type == library().immutable_string_type()) {
+        // TODO: handle both string and character literals correctly.
+        // TODO: also, convert inline literals into constants.
+        // TODO: use fully qualified type name?
+        construct type_name = new name_construct(BASE_STRING_NAME, the_origin);
+        construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
+        result = make_call(alloc, new base_list<construct>(result), the_origin);
+      }
+      return result;
     } else if (the_value instanceof base_procedure) {
       base_procedure the_procedure = (base_procedure) the_value;
       construct the_name_construct =
@@ -1756,7 +1755,7 @@ public class to_java_transformer extends base_transformer {
 
     if (the_action instanceof value_action) {
       base_data_value the_value = (base_data_value) ((value_action) the_action).the_value;
-      return process_value(the_value, the_origin);
+      return process_value(the_value, the_action, the_origin);
     }
 
     if (the_action instanceof dereference_action) {
@@ -1897,7 +1896,7 @@ public class to_java_transformer extends base_transformer {
         return new operator_construct(map_operator((operator) the_name), parameters,
             the_origin);
       }
-      main = process_value(the_value, the_origin);
+      main = process_value(the_value, the_bound_procedure, the_origin);
       /*
       if (the_procedure instanceof procedure_with_this) {
         procedure_with_this the_procedure_with_this = (procedure_with_this) the_value;

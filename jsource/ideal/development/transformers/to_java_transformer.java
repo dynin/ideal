@@ -143,6 +143,11 @@ public class to_java_transformer extends base_transformer {
     return ((type_action) the_action).get_type();
   }
 
+  protected type get_type(action the_action) {
+    assert the_action instanceof type_action : "Action: " + the_action;
+    return ((type_action) the_action).get_type();
+  }
+
   private @Nullable declaration get_declaration(analyzable the_analyzable) {
     return declaration_util.get_declaration(get_action(the_analyzable));
   }
@@ -1310,10 +1315,10 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  private list<construct> transform_parameters(readonly_list<analyzable> analyzables) {
+  private list<construct> transform_parameters(readonly_list<action> actions) {
     list<construct> result = new base_list<construct>();
-    for (int i = 0; i < analyzables.size(); ++i) {
-      result.append(transform_and_maybe_rewrite(analyzables.get(i)));
+    for (int i = 0; i < actions.size(); ++i) {
+      result.append(transform_and_maybe_rewrite_action(actions.get(i)));
     }
     return result;
   }
@@ -1321,39 +1326,49 @@ public class to_java_transformer extends base_transformer {
   @Override
   public Object process_parameter(parameter_analyzer the_parameter) {
     origin the_origin = the_parameter;
+    action the_action = get_action(the_parameter);
 
-    analyzable main_analyzable = the_parameter.main_analyzable;
-    if (main_analyzable instanceof resolve_analyzer) {
-      resolve_analyzer the_resolve_analyzer = (resolve_analyzer) main_analyzable;
-      if (the_resolve_analyzer.short_name() instanceof operator) {
-        return process_operator(the_parameter, (operator) the_resolve_analyzer.short_name(),
-            the_parameter.analyzable_parameters);
+    if (the_action instanceof bound_procedure) {
+      return process_bound_procedure((bound_procedure) the_action, the_origin);
+    } else if (the_action instanceof cast_action) {
+      return process_cast((cast_action) the_action, the_origin);
+    } else if (the_action instanceof dereference_action) {
+      // TODO: generate code
+      dereference_action deref_action = (dereference_action) the_action;
+      return process_action(deref_action.from, the_origin);
+    } else if (the_action instanceof is_action) {
+      // TODO: transform
+      return transform_action(((is_action) the_action).expression);
+    } else {
+      if (!(the_action instanceof type_action)) {
+        utilities.panic("param " + the_action.getClass() + " : " + the_action);
       }
+      assert the_action instanceof type_action;
     }
 
-    action the_action = get_action(the_parameter);
-    boolean is_type = the_action instanceof type_action;
+    return make_type(((type_action) the_action).get_type(), the_origin);
+    /*
+    analyzable main_analyzable = the_parameter.main_analyzable;
     construct main = transform(main_analyzable);
-    readonly_list<construct> parameters;
-
-    if (is_type) {
-      parameters = transform_list_with_mapping(the_parameter.analyzable_parameters,
-          mapping.MAP_TO_WRAPPER_TYPE);
-      action main_action = get_action(main_analyzable);
-      if (main_action.result().type_bound().principal().get_kind() == procedure_kind) {
+    readonly_list<construct> parameters =
+        transform_list_with_mapping(the_parameter.analyzable_parameters,
+            mapping.MAP_TO_WRAPPER_TYPE);
+    action main_action = get_action(main_analyzable);
+    if (main_action.result().type_bound().principal().get_kind() == procedure_kind) {
+      construct the_construct = get_construct(main_analyzable);
+      if (the_construct instanceof name_construct) {
         // TODO: handle resolve_construct here.
-        name_construct procedure_type_name = (name_construct) get_construct(main_analyzable);
+        name_construct procedure_type_name = (name_construct) the_construct;
         simple_name base_name = (simple_name) procedure_type_name.the_name;
         int arity = parameters.size() - 1;
         main = new name_construct(make_procedure_name(base_name, arity), the_origin);
       }
-    } else {
-      return process_bound_procedure((bound_procedure) the_action, the_origin);
     }
 
     return new parameter_construct(main,
         new list_construct(parameters, grouping_type.ANGLE_BRACKETS, false, the_origin),
             the_origin);
+    */
   }
 
   // TODO: better way to detect procedure variables?
@@ -1375,30 +1390,31 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  public construct process_operator(parameter_analyzer the_parameter,
-      operator the_operator, readonly_list<analyzable> arguments) {
-    origin the_origin = the_parameter;
+  public construct process_operator(bound_procedure the_bound_procedure, operator the_operator) {
+    origin the_origin = the_bound_procedure;
+    readonly_list<action> arguments = the_bound_procedure.parameters.params();
 
     // TODO: handle other assignment operators.
     if (the_operator == operator.ASSIGN) {
-      analyzable lhs = arguments.get(0);
-      construct rhs = transform_and_maybe_rewrite(arguments.get(1));
-      if (lhs instanceof parameter_analyzer) {
-        parameter_analyzer lhs2 = (parameter_analyzer) lhs;
-        readonly_list<analyzable> plhs = lhs2.analyzable_parameters;
-        @Nullable declaration the_declaration = get_declaration(lhs2);
+      action lhs = arguments.get(0);
+      construct rhs = transform_and_maybe_rewrite_action(arguments.get(1));
+      if (lhs instanceof bound_procedure) {
+        bound_procedure lhs2 = (bound_procedure) lhs;
+        readonly_list<action> plhs = lhs2.parameters.params();
+        @Nullable declaration the_declaration = declaration_util.get_declaration(lhs2);
         if (the_declaration instanceof procedure_declaration) {
           procedure_declaration proc_decl = (procedure_declaration) the_declaration;
           if (proc_decl.annotations().has(implicit_modifier) && plhs.size() == 1) {
-            construct main = transform(lhs2.main_analyzable);
+            construct main = transform_action(lhs2.the_procedure_action);
             readonly_list<construct> set_params =
-                new base_list<construct>(transform(plhs.first()), rhs);
+                new base_list<construct>(transform_action(plhs.first()), rhs);
             construct set = new resolve_construct(main, new name_construct(SET_NAME, the_origin),
                 the_origin);
             return make_call(set, set_params, the_origin);
           }
         }
       }
+      /*
       if (is_explicit_reference(lhs)) {
         construct main = transform(lhs);
         readonly_list<construct> set_params = new base_list<construct>(rhs);
@@ -1406,13 +1422,15 @@ public class to_java_transformer extends base_transformer {
             the_origin);
         return make_call(set, set_params, the_origin);
       }
+      */
       // TODO: this should be generic...
-      base_list<construct> arguments_constructs = new base_list<construct>(transform(lhs), rhs);
+      base_list<construct> arguments_constructs =
+          new base_list<construct>(transform_action(lhs), rhs);
       return new operator_construct(operator.ASSIGN, arguments_constructs, the_origin);
     } else if (the_operator == operator.AS_OPERATOR) {
       return transform_cast(arguments.get(0), arguments.get(1), the_origin);
     } else if (the_operator == operator.IS_OPERATOR) {
-      construct expression = transform(arguments.get(0));
+      construct expression = transform_action(arguments.get(0));
       type the_type = get_type(arguments.get(1));
       if (the_type.principal() == library().null_type()) {
         return new operator_construct(operator.EQUAL_TO, expression, make_null(the_origin),
@@ -1422,7 +1440,7 @@ public class to_java_transformer extends base_transformer {
             the_origin);
       }
     } else if (the_operator == operator.IS_NOT_OPERATOR) {
-      construct expression = transform(arguments.get(0));
+      construct expression = transform_action(arguments.get(0));
       type the_type = get_type(arguments.get(1));
 
       if (the_type.principal() == library().null_type()) {
@@ -1431,8 +1449,8 @@ public class to_java_transformer extends base_transformer {
       }
       // TODO: convert is_not to instanceof
     } else if (the_operator == operator.EQUAL_TO) {
-      type first_type = result_type(get_action(arguments.get(0)));
-      type second_type = result_type(get_action(arguments.get(1)));
+      type first_type = result_type(arguments.get(0));
+      type second_type = result_type(arguments.get(1));
 
       boolean is_primitive = java_library.is_mapped(first_type.principal()) ||
           java_library.is_mapped(second_type.principal());
@@ -1451,27 +1469,27 @@ public class to_java_transformer extends base_transformer {
       if (!is_string_type(arguments.get(0)) || !is_string_type(arguments.get(1))) {
         construct concatenation = new resolve_construct(make_type(java_library.runtime_util_class(),
             the_origin), new name_construct(CONCATENATE_NAME, the_origin), the_origin);
-        return make_call(concatenation, transform_list(arguments), the_origin);
+        return make_call(concatenation, transform_parameters(arguments), the_origin);
       }
-    } else if (the_operator == operator.GENERAL_OR) {
+    }
+    /*else if (the_operator == operator.GENERAL_OR) {
       action the_action = get_action(the_parameter);
       if (the_action instanceof type_action && mapping_strategy == mapping.MAP_TO_WRAPPER_TYPE) {
         return make_type(remove_null_type(((type_action) the_action).get_type()), the_origin);
       }
       utilities.panic("Unexpected 'or' operator " + the_parameter);
-    }
+    }*/
 
-    return new operator_construct(map_operator(the_operator), transform_list(arguments),
+    return new operator_construct(map_operator(the_operator), transform_parameters(arguments),
         the_origin);
   }
 
-  public construct transform_cast(analyzable expression, analyzable type_analyzable,
-      origin the_origin) {
-    type expression_type = result_type(get_action(expression));
+  public construct transform_cast(action expression, action type_analyzable, origin the_origin) {
+    type expression_type = result_type(expression);
     type the_type = get_type(type_analyzable);
 
-    construct transformed_expression = transform(expression);
-    construct transformed_type = transform(type_analyzable);
+    construct transformed_expression = transform_action(expression);
+    construct transformed_type = transform_action(type_analyzable);
 
     if (the_type == library().nonnegative_type() &&
         expression_type == library().immutable_integer_type()) {
@@ -1507,9 +1525,8 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  private boolean is_string_type(analyzable the_analyzable) {
-    type the_type = result_type(get_action(the_analyzable));
-    return the_type.principal() == java_library.string_type();
+  private boolean is_string_type(action the_action) {
+    return result_type(the_action).principal() == java_library.string_type();
   }
 
   @Override
@@ -1747,6 +1764,18 @@ public class to_java_transformer extends base_transformer {
     return null;
   }
 
+  public construct transform_action(action the_action) {
+    origin the_origin = the_action;
+    return process_action(the_action, the_origin);
+  }
+
+  private construct transform_and_maybe_rewrite_action(action the_action) {
+    origin the_origin = the_action;
+    construct transformed = transform_action(the_action);
+    // TODO: handle derefs etc.
+    return transformed;
+  }
+
   public construct process_action(action the_action, origin the_origin) {
     //System.out.println("PA: " + the_action);
     if (the_action instanceof type_action) {
@@ -1841,17 +1870,26 @@ public class to_java_transformer extends base_transformer {
       return transform(((extension_action) the_action).get_extension());
     }
 
-    // TODO: actual cast.
     if (the_action instanceof cast_action) {
-      return process_action(((cast_action) the_action).expression, the_origin);
+      return process_cast((cast_action) the_action, the_origin);
     }
 
     if (the_action instanceof list_initializer_action) {
       return process_list_initializer((list_initializer_analyzer) the_action.deeper_origin());
     }
 
-    utilities.panic("processing action " + the_action);
+    if (the_action instanceof is_action) {
+      // TODO: transform
+      return process_action(((is_action) the_action).expression, the_origin);
+    }
+
+    utilities.panic("processing action " + the_action.getClass() + ": " + the_action);
     return null;
+  }
+
+  private construct process_cast(cast_action the_cast_action, origin the_origin) {
+    // TODO: actual cast.
+    return process_action(the_cast_action.expression, the_origin);
   }
 
   private declaration get_procedure_declaration(action the_procedure_action) {
@@ -1891,10 +1929,8 @@ public class to_java_transformer extends base_transformer {
       the_procedure = (procedure_value) the_value;
       action_name the_name = the_procedure.name();
       if (the_name instanceof operator) {
-        // TODO: use process_operator()
-        parameters = process_action_parameters(the_bound_procedure.parameters, the_origin);
-        return new operator_construct(map_operator((operator) the_name), parameters,
-            the_origin);
+        operator the_operator = (operator) the_name;
+        return process_operator(the_bound_procedure, the_operator);
       }
       main = process_value(the_value, the_bound_procedure, the_origin);
       /*
@@ -1955,6 +1991,15 @@ public class to_java_transformer extends base_transformer {
     */
 
     return transformed;
+  }
+
+  public readonly_list<construct> process_action_list(readonly_list<action> action_list) {
+    list<construct> result = new base_list<construct>();
+    // TODO: use list.map()
+    for (int i = 0; i < action_list.size(); ++i) {
+      result.append(transform_action(action_list.get(i)));
+    }
+    return result;
   }
 
   public readonly_list<construct> process_action_parameters(action_parameters the_parameters,

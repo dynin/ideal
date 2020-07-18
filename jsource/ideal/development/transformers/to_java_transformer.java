@@ -1327,7 +1327,9 @@ public class to_java_transformer extends base_transformer {
   public Object process_parameter(parameter_analyzer the_parameter) {
     origin the_origin = the_parameter;
     action the_action = get_action(the_parameter);
+    return process_action(the_action, the_origin);
 
+    /*
     if (the_action instanceof bound_procedure) {
       return process_bound_procedure((bound_procedure) the_action, the_origin);
     } else if (the_action instanceof cast_action) {
@@ -1347,6 +1349,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     return make_type(((type_action) the_action).get_type(), the_origin);
+    */
     /*
     analyzable main_analyzable = the_parameter.main_analyzable;
     construct main = transform(main_analyzable);
@@ -1777,7 +1780,6 @@ public class to_java_transformer extends base_transformer {
   }
 
   public construct process_action(action the_action, origin the_origin) {
-    //System.out.println("PA: " + the_action);
     if (the_action instanceof type_action) {
       return make_type(((type_action) the_action).get_type(), the_origin);
     }

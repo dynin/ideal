@@ -354,11 +354,14 @@ public class create_manager implements target_manager, type_bootstrapper {
     }
 
     action the_action = actions.first();
-    if (operator_procedure != null) {
-      bootstrap_context.add(parent, the_operator, operator_procedure.to_action(the_action));
-    } else {
-      bootstrap_context.add(parent, the_operator, the_action);
+    if (operator_procedure == null) {
+      procedure_executor the_procedure_executor =
+          (procedure_executor) ((value_action) the_action).the_value;
+      operator_procedure = new procedure_executor(the_procedure_executor.the_declaration,
+          the_operator);
     }
+
+    bootstrap_context.add(parent, the_operator, operator_procedure.to_action(the_action));
   }
 
   public static @Nullable type_declaration_analyzer get_declaration(list<construct> constructs,

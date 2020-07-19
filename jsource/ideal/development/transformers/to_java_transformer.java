@@ -1431,26 +1431,11 @@ public class to_java_transformer extends base_transformer {
           new base_list<construct>(transform_action(lhs), rhs);
       return new operator_construct(operator.ASSIGN, arguments_constructs, the_origin);
     } else if (the_operator == operator.AS_OPERATOR) {
-      return transform_cast(arguments.get(0), arguments.get(1), the_origin);
+      return transform_cast(arguments.get(0), get_type(arguments.get(1)), the_origin);
     } else if (the_operator == operator.IS_OPERATOR) {
-      construct expression = transform_action(arguments.get(0));
-      type the_type = get_type(arguments.get(1));
-      if (the_type.principal() == library().null_type()) {
-        return new operator_construct(operator.EQUAL_TO, expression, make_null(the_origin),
-            the_origin);
-      } else if (the_type.principal() == library().nonnegative_type()) {
-        return new operator_construct(operator.GREATER_EQUAL, expression, make_zero(the_origin),
-            the_origin);
-      }
+      return transform_is(false, arguments.get(0), get_type(arguments.get(1)), the_origin);
     } else if (the_operator == operator.IS_NOT_OPERATOR) {
-      construct expression = transform_action(arguments.get(0));
-      type the_type = get_type(arguments.get(1));
-
-      if (the_type.principal() == library().null_type()) {
-        return new operator_construct(operator.NOT_EQUAL_TO, expression, make_null(the_origin),
-            the_origin);
-      }
-      // TODO: convert is_not to instanceof
+      return transform_is(true, arguments.get(0), get_type(arguments.get(1)), the_origin);
     } else if (the_operator == operator.EQUAL_TO) {
       type first_type = result_type(arguments.get(0));
       type second_type = result_type(arguments.get(1));
@@ -1487,12 +1472,11 @@ public class to_java_transformer extends base_transformer {
         the_origin);
   }
 
-  public construct transform_cast(action expression, action type_analyzable, origin the_origin) {
+  public construct transform_cast(action expression, type the_type, origin the_origin) {
     type expression_type = result_type(expression);
-    type the_type = get_type(type_analyzable);
 
     construct transformed_expression = transform_action(expression);
-    construct transformed_type = transform_action(type_analyzable);
+    construct transformed_type = make_type(the_type, the_origin);
 
     if (the_type == library().nonnegative_type() &&
         expression_type == library().immutable_integer_type()) {
@@ -1529,7 +1513,17 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean is_string_type(action the_action) {
-    return result_type(the_action).principal() == java_library.string_type();
+    boolean result = result_type(the_action).principal() == java_library.string_type();
+    if (result) {
+      return true;
+    }
+
+    if (the_action instanceof promotion_action) {
+      the_action = ((promotion_action) the_action).get_action();
+      return result_type(the_action).principal() == java_library.string_type();
+    }
+
+    return false;
   }
 
   @Override
@@ -1881,8 +1875,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (the_action instanceof is_action) {
-      // TODO: transform
-      return process_action(((is_action) the_action).expression, the_origin);
+      return process_is_operator((is_action) the_action, the_origin);
     }
 
     utilities.panic("processing action " + the_action.getClass() + ": " + the_action);
@@ -1890,8 +1883,37 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct process_cast(cast_action the_cast_action, origin the_origin) {
-    // TODO: actual cast.
-    return process_action(the_cast_action.expression, the_origin);
+    return transform_cast(the_cast_action.expression, the_cast_action.the_type, the_origin);
+  }
+
+  private construct process_is_operator(is_action the_is_action, origin the_origin) {
+    return transform_is(the_is_action.negated, the_is_action.expression, the_is_action.the_type,
+        the_origin);
+  }
+
+  private construct transform_is(boolean negated, action the_action, type the_type,
+      origin the_origin) {
+    construct expression = transform_action(the_action);
+
+    if (the_type.principal() == library().null_type()) {
+      return new operator_construct(negated ? operator.NOT_EQUAL_TO : operator.EQUAL_TO,
+          expression, make_null(the_origin), the_origin);
+    }
+
+    if (the_type.principal() == library().nonnegative_type()) {
+      // TODO: handle is_not
+      assert !negated;
+      return new operator_construct(operator.GREATER_EQUAL, expression, make_zero(the_origin),
+          the_origin);
+    }
+
+    construct result = new operator_construct(operator.IS_OPERATOR, expression,
+        make_type(the_type, the_origin), the_origin);
+    if (negated) {
+      return new operator_construct(operator.LOGICAL_NOT, result, the_origin);
+    } else {
+      return result;
+    }
   }
 
   private declaration get_procedure_declaration(action the_procedure_action) {

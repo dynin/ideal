@@ -16,6 +16,7 @@ import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.notifications.*;
+import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 
@@ -29,6 +30,10 @@ public class is_action extends base_action {
     this.expression = expression;
     this.the_type = the_type;
     this.negated = negated;
+  }
+
+  public operator get_operator() {
+    return negated ? operator.IS_NOT_OPERATOR : operator.IS_OPERATOR;
   }
 
   @Override

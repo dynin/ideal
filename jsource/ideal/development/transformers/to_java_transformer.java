@@ -1191,20 +1191,22 @@ public class to_java_transformer extends base_transformer {
         new empty<annotation_construct>(), init, the_origin);
   }
 
-  private boolean is_procedure_reference(analyzable the_analyzable) {
-    if (the_analyzable instanceof resolve_analyzer) {
-      declaration the_declaration = get_declaration(the_analyzable);
-      return the_declaration instanceof procedure_declaration &&
-          !should_call_as_procedure(the_declaration);
-    } else {
-      return false;
+  private boolean is_procedure_reference(action the_action) {
+    if (the_action instanceof value_action) {
+      Object the_value = ((value_action) the_action).the_value;
+      if (the_value instanceof base_data_value) {
+        declaration the_declaration = ((base_data_value) the_value).get_declaration();;
+        return the_declaration instanceof procedure_declaration &&
+            !should_call_as_procedure(the_declaration);
+      }
     }
+    return false;
   }
 
-  private construct make_procedure_class(analyzable the_procedure_analyzable, origin the_origin) {
-    assert is_procedure_reference(the_procedure_analyzable);
+  private construct make_procedure_class(action the_action, origin the_origin) {
+    assert is_procedure_reference(the_action);
     procedure_declaration the_procedure =
-        (procedure_declaration) get_declaration(the_procedure_analyzable);
+        (procedure_declaration) declaration_util.get_declaration(the_action);
 
     construct procedure_type = make_type(the_procedure.get_procedure_type(), the_origin);
     construct new_construct = new operator_construct(operator.ALLOCATE, procedure_type, the_origin);
@@ -1230,7 +1232,7 @@ public class to_java_transformer extends base_transformer {
 
     construct the_call_body = new return_construct(
         new parameter_construct(
-            transform(the_procedure_analyzable),
+            transform_action(the_action),
             new list_construct(call_arguments, grouping_type.PARENS, false, the_origin),
             the_origin),
         the_origin);
@@ -1249,9 +1251,9 @@ public class to_java_transformer extends base_transformer {
             the_origin), the_origin);
   }
 
-  private boolean is_explicit_reference(analyzable the_analyzable) {
+  private boolean is_explicit_reference(action the_action) {
     // TODO: this needs to be fixed/cleaned up.
-    declaration the_declaration = get_declaration(the_analyzable);
+    declaration the_declaration = declaration_util.get_declaration(the_action);
     if (the_declaration instanceof variable_declaration) {
       variable_declaration the_variable = (variable_declaration) the_declaration;
       if (the_variable.reference_type().get_flavor() == mutable_flavor) {
@@ -1306,10 +1308,10 @@ public class to_java_transformer extends base_transformer {
   private construct transform_and_maybe_rewrite(analyzable the_analyzable) {
     origin the_origin = the_analyzable;
     construct transformed = transform(the_analyzable);
-    if (is_explicit_reference(the_analyzable)) {
+    if (is_explicit_reference(get_action(the_analyzable))) {
       return do_explicitly_derefence(transformed, the_origin);
-    } else if (is_procedure_reference(the_analyzable)) {
-      return make_procedure_class(the_analyzable, the_origin);
+    } else if (is_procedure_reference(get_action(the_analyzable))) {
+      return make_procedure_class(get_action(the_analyzable), the_origin);
     } else {
       return transformed;
     }
@@ -1417,15 +1419,13 @@ public class to_java_transformer extends base_transformer {
           }
         }
       }
-      /*
       if (is_explicit_reference(lhs)) {
-        construct main = transform(lhs);
+        construct main = transform_action(lhs);
         readonly_list<construct> set_params = new base_list<construct>(rhs);
         construct set = new resolve_construct(main, new name_construct(SET_NAME, the_origin),
             the_origin);
         return make_call(set, set_params, the_origin);
       }
-      */
       // TODO: this should be generic...
       base_list<construct> arguments_constructs =
           new base_list<construct>(transform_action(lhs), rhs);
@@ -1769,8 +1769,13 @@ public class to_java_transformer extends base_transformer {
   private construct transform_and_maybe_rewrite_action(action the_action) {
     origin the_origin = the_action;
     construct transformed = transform_action(the_action);
-    // TODO: handle derefs etc.
-    return transformed;
+    if (is_explicit_reference(the_action)) {
+      return do_explicitly_derefence(transformed, the_origin);
+    } else if (is_procedure_reference(the_action)) {
+      return make_procedure_class(the_action, the_origin);
+    } else {
+      return transformed;
+    }
   }
 
   public construct process_action(action the_action, origin the_origin) {
@@ -1979,7 +1984,7 @@ public class to_java_transformer extends base_transformer {
       */
     }
 
-    parameters = process_action_parameters(the_bound_procedure.parameters, the_origin);
+    parameters = transform_parameters(the_bound_procedure.parameters.params());
 
     if (the_declaration instanceof procedure_declaration) {
       procedure_declaration proc_decl = (procedure_declaration) the_declaration;
@@ -2026,16 +2031,6 @@ public class to_java_transformer extends base_transformer {
     // TODO: use list.map()
     for (int i = 0; i < action_list.size(); ++i) {
       result.append(transform_action(action_list.get(i)));
-    }
-    return result;
-  }
-
-  public readonly_list<construct> process_action_parameters(action_parameters the_parameters,
-      origin the_origin) {
-    list<construct> result = new base_list<construct>();
-    readonly_list<action> parameters_list = the_parameters.params();
-    for (int i = 0; i < parameters_list.size(); ++i) {
-      result.append(process_action(parameters_list.get(i), the_origin));
     }
     return result;
   }

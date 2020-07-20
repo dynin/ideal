@@ -252,46 +252,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public construct process_resolve(resolve_analyzer the_resolve) {
-    origin the_origin = the_resolve;
-
-    action the_action = get_action(the_resolve);
-    if (the_action instanceof type_action) {
-      return make_type(((type_action) the_action).get_type(), the_origin);
-    }
-
-    type result_type = the_action.result().type_bound();
-
-    // Convert missing.instance to null literal
-    if (is_null_subtype(result_type)) {
-      return make_null(the_origin);
-    }
-
-    action_name the_name = map_name(the_resolve.short_name());
-    construct result = new name_construct(the_name, the_origin);
-
-    if (is_top_package(result_type)) {
-      return result;
-    }
-
-    if (!the_resolve.has_from()) {
-      result = maybe_call(the_resolve, result, the_origin);
-    } else {
-      // Note: we do not transform the name!
-      construct qualifier = transform_and_maybe_rewrite(the_resolve.get_from());
-
-      if (the_resolve.short_name() == special_name.NEW) {
-        return new operator_construct(operator.ALLOCATE, qualifier, the_origin);
-      }
-
-      result = maybe_call(the_resolve, new resolve_construct(qualifier, result, the_origin),
-          the_origin);
-    }
-
-    if (the_action instanceof narrow_action) {
-      result = process_narrow_action((narrow_action) the_action, result, the_origin);
-    }
-
-    return result;
+    return transform_action(get_action(the_resolve));
   }
 
   private action_name map_name(action_name the_name) {
@@ -1185,8 +1146,8 @@ public class to_java_transformer extends base_transformer {
       type = transform(the_variable.get_type_analyzable());
     }
 
-    @Nullable construct init = the_variable.initializer() != null ?
-        transform_and_maybe_rewrite(the_variable.initializer()) : null;
+    @Nullable construct init = the_variable.init_action() != null ?
+        transform_and_maybe_rewrite_action(the_variable.init_action()) : null;
     return new variable_construct(annotations, type, the_variable.short_name(),
         new empty<annotation_construct>(), init, the_origin);
   }
@@ -1305,18 +1266,6 @@ public class to_java_transformer extends base_transformer {
         the_type_parameter.short_name(), new empty<annotation_construct>(), null, the_origin);
   }
 
-  private construct transform_and_maybe_rewrite(analyzable the_analyzable) {
-    origin the_origin = the_analyzable;
-    construct transformed = transform(the_analyzable);
-    if (is_explicit_reference(get_action(the_analyzable))) {
-      return do_explicitly_derefence(transformed, the_origin);
-    } else if (is_procedure_reference(get_action(the_analyzable))) {
-      return make_procedure_class(get_action(the_analyzable), the_origin);
-    } else {
-      return transformed;
-    }
-  }
-
   private list<construct> transform_parameters(readonly_list<action> actions) {
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < actions.size(); ++i) {
@@ -1327,31 +1276,8 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public Object process_parameter(parameter_analyzer the_parameter) {
-    origin the_origin = the_parameter;
-    action the_action = get_action(the_parameter);
-    return process_action(the_action, the_origin);
+    return transform_action(get_action(the_parameter));
 
-    /*
-    if (the_action instanceof bound_procedure) {
-      return process_bound_procedure((bound_procedure) the_action, the_origin);
-    } else if (the_action instanceof cast_action) {
-      return process_cast((cast_action) the_action, the_origin);
-    } else if (the_action instanceof dereference_action) {
-      // TODO: generate code
-      dereference_action deref_action = (dereference_action) the_action;
-      return process_action(deref_action.from, the_origin);
-    } else if (the_action instanceof is_action) {
-      // TODO: transform
-      return transform_action(((is_action) the_action).expression);
-    } else {
-      if (!(the_action instanceof type_action)) {
-        utilities.panic("param " + the_action.getClass() + " : " + the_action);
-      }
-      assert the_action instanceof type_action;
-    }
-
-    return make_type(((type_action) the_action).get_type(), the_origin);
-    */
     /*
     analyzable main_analyzable = the_parameter.main_analyzable;
     construct main = transform(main_analyzable);
@@ -1554,9 +1480,7 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public construct process_literal(literal_analyzer the_literal_analyzer) {
-    origin the_origin = the_literal_analyzer;
-    action the_action = get_action(the_literal_analyzer);
-    return process_action(the_action, the_origin);
+    return transform_action(get_action(the_literal_analyzer));
   }
 
   @Override
@@ -1575,9 +1499,9 @@ public class to_java_transformer extends base_transformer {
 
     construct the_expression;
     if (library().is_reference_type(the_return.return_type())) {
-      the_expression = transform(the_return.the_expression);
+      the_expression = transform_action(the_return.return_expression());
     } else {
-      the_expression = transform_and_maybe_rewrite(the_return.the_expression);
+      the_expression = transform_and_maybe_rewrite_action(the_return.return_expression());
     }
 
     return new return_construct(the_expression, the_origin);
@@ -1690,9 +1614,7 @@ public class to_java_transformer extends base_transformer {
     });
 
   public construct process_analyzable_action(analyzable_action the_analyzable_action) {
-    origin the_origin = the_analyzable_action;
-    action the_action = the_analyzable_action.the_action;
-    return process_action(the_action, the_origin);
+    return transform_action(the_analyzable_action.the_action);
   }
 
   public construct process_value(base_data_value the_value, action the_action, origin the_origin) {

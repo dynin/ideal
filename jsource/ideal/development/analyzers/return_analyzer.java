@@ -25,6 +25,7 @@ public class return_analyzer extends single_pass_analyzer {
   public final @Nullable analyzable the_expression;
   public @Nullable procedure_declaration the_procedure;
   private @Nullable type return_type;
+  private @Nullable action return_expr;
 
   public return_analyzer(return_construct source) {
     super(source);
@@ -63,7 +64,7 @@ public class return_analyzer extends single_pass_analyzer {
       return_type = library().get_reference_parameter(return_type);
     }
 
-    action return_expr = action_not_error(the_expression);
+    return_expr = action_not_error(the_expression);
     type_utilities.prepare(return_expr.result(), declaration_pass.METHODS_AND_VARIABLES);
 
     if (!get_context().can_promote(return_expr, return_type)) {
@@ -78,6 +79,11 @@ public class return_analyzer extends single_pass_analyzer {
   public type return_type() {
     assert return_type != null;
     return return_type;
+  }
+
+  public action return_expression() {
+    assert return_expr != null;
+    return return_expr;
   }
 
   @Override

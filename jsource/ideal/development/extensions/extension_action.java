@@ -39,4 +39,9 @@ public class extension_action extends base_action {
   public entity_wrapper execute(execution_context context) {
     return extended_action.execute(context);
   }
+
+  @Override
+  public string to_string() {
+    return utilities.describe(this, extended_action);
+  }
 }

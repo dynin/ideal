@@ -1214,7 +1214,7 @@ public class to_java_transformer extends base_transformer {
 
   private boolean is_explicit_reference(action the_action) {
     // TODO: this needs to be fixed/cleaned up.
-    declaration the_declaration = declaration_util.get_declaration(the_action);
+    declaration the_declaration = get_procedure_declaration(the_action);
     if (the_declaration instanceof variable_declaration) {
       variable_declaration the_variable = (variable_declaration) the_declaration;
       if (the_variable.reference_type().get_flavor() == mutable_flavor) {
@@ -1633,8 +1633,13 @@ public class to_java_transformer extends base_transformer {
       return new literal_construct(new integer_literal(the_integer_value.unwrap()), the_origin);
     } else if (the_value instanceof enum_value) {
       enum_value the_enum_value = (enum_value) the_value;
-      // TODO: introduce type resolve_construct?
-      return new name_construct(the_enum_value.short_name(), the_origin);
+      construct the_name_construct = new name_construct(the_enum_value.short_name(), the_origin);
+      if (the_enum_value.type_bound() == library().immutable_boolean_type()) {
+        return the_name_construct;
+      } else {
+        return new resolve_construct(make_type(the_enum_value.type_bound(), the_origin),
+            the_name_construct, the_origin);
+      }
     } else if (the_value instanceof string_value) {
       string_value the_string_value = (string_value) the_value;
       type the_type = the_action.result().type_bound();
@@ -1851,9 +1856,7 @@ public class to_java_transformer extends base_transformer {
     if (the_procedure_action instanceof value_action) {
       base_data_value the_value =
           (base_data_value) ((value_action) the_procedure_action).the_value;
-      assert the_value instanceof procedure_value;
-      procedure_value the_procedure = (procedure_value) the_value;
-      return the_procedure.get_declaration();
+      return the_value.get_declaration();
     } else if (the_procedure_action instanceof dispatch_action) {
       return get_procedure_declaration(((dispatch_action) the_procedure_action).get_primary());
     } else if (the_procedure_action instanceof promotion_action) {
@@ -1862,9 +1865,12 @@ public class to_java_transformer extends base_transformer {
       return get_procedure_declaration(((dereference_action) the_procedure_action).from);
     } else if (the_procedure_action instanceof variable_action) {
       return ((variable_action) the_procedure_action).get_declaration();
+    } else if (the_procedure_action instanceof bound_procedure) {
+      return ((bound_procedure) the_procedure_action).get_declaration();
     } else {
-      utilities.panic("get_procedure_declaration failure: " + the_procedure_action);
+      //System.out.println("get_procedure_declaration: " + the_procedure_action.getClass());
       return null;
+      //utilities.panic("get_procedure_declaration failure: " + the_procedure_action);
     }
   }
 

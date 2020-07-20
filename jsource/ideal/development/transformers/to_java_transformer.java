@@ -1848,6 +1848,10 @@ public class to_java_transformer extends base_transformer {
         return new resolve_construct(
             make_type(the_variable_action.the_declaration.declared_in_type(), the_origin),
             name, the_origin);
+      } else if (the_variable_action instanceof instance_variable) {
+        assert the_variable_action.from != null;
+        construct from = transform_action(the_variable_action.from);
+        return new resolve_construct(from, name, the_origin);
       }
       return name;
     }
@@ -1992,7 +1996,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     // TODO: better way to detect procedure variables?
-    if (is_procedure_variable(the_declaration)) {
+    if (is_procedure_variable(declaration_util.get_declaration(the_procedure_action))) {
       main = new resolve_construct(main, new name_construct(CALL_NAME, the_origin), the_origin);
     }
 

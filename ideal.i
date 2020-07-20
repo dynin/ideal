@@ -25,7 +25,7 @@ target generate_library: generate_java(ideal.library);
 
 target generate_runtime: generate_java(ideal.runtime);
 
-target generate_test: generate_java(ideal.runtime.elements.base_string);
+target generate_test: generate_java(ideal.runtime.channels.output_transformer);
 --target generate_test: generate_java(ideal.runtime.elements.test_list);
 
 target generate_array: generate_java(ideal.development.flavors.base_flavor_profile);

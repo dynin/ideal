@@ -1353,8 +1353,7 @@ public class to_java_transformer extends base_transformer {
       boolean is_primitive = java_library.is_mapped(first_type.principal()) ||
           java_library.is_mapped(second_type.principal());
       boolean is_reference_equality =
-          first_type.is_subtype_of(library().reference_equality_type().get_flavored(any_flavor)) ||
-          second_type.is_subtype_of(library().reference_equality_type().get_flavored(any_flavor));
+          is_reference_equality(arguments.get(0)) || is_reference_equality(arguments.get(1));
 
       if (!is_primitive && !is_reference_equality) {
         construct values_equal = new resolve_construct(make_type(java_library.runtime_util_class(),
@@ -1431,6 +1430,21 @@ public class to_java_transformer extends base_transformer {
     if (the_action instanceof promotion_action) {
       the_action = ((promotion_action) the_action).get_action();
       return result_type(the_action).principal() == java_library.string_type();
+    }
+
+    return false;
+  }
+
+  private boolean is_reference_equality(action the_action) {
+    type reference_equality = library().reference_equality_type().get_flavored(any_flavor);
+    boolean result = result_type(the_action).is_subtype_of(reference_equality);
+    if (result) {
+      return true;
+    }
+
+    if (the_action instanceof promotion_action) {
+      the_action = ((promotion_action) the_action).get_action();
+      return result_type(the_action).is_subtype_of(reference_equality);
     }
 
     return false;

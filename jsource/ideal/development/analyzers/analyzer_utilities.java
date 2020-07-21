@@ -421,8 +421,7 @@ public class analyzer_utilities {
   public static analysis_result bind_parameters(action the_action, action_parameters parameters,
       analysis_context the_context, origin the_origin) {
 
-    abstract_value action_result = (the_action instanceof base_procedure) ?
-        ((base_procedure) the_action) : the_action.result();
+    abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...
     assert is_parametrizable(action_result, parameters, the_context);
 

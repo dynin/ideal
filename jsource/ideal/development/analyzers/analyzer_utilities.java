@@ -421,7 +421,8 @@ public class analyzer_utilities {
   public static analysis_result bind_parameters(action the_action, action_parameters parameters,
       analysis_context the_context, origin the_origin) {
 
-    abstract_value action_result = the_action.result();
+    abstract_value action_result = (the_action instanceof base_procedure) ?
+        ((base_procedure) the_action) : the_action.result();
     // TODO: this is redundant, drop...
     assert is_parametrizable(action_result, parameters, the_context);
 
@@ -444,8 +445,23 @@ public class analyzer_utilities {
     // TODO: actually, if this happens, just return the error.
     assert !(the_procedure instanceof error_signal);
 
+    immutable_list<action> argument_actions = parameters.params();
+
+    if (!action_utilities.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
+      utilities.panic("Invalid procedure arity: " + procedure_type);
+    }
+
+    list<action> promoted_parameters = new base_list<action>();
+
+    for (int i = 0; i < argument_actions.size(); ++i) {
+      promoted_parameters.append(the_context.promote(argument_actions.get(i),
+          action_utilities.get_procedure_argument(procedure_type, i).type_bound(),
+          the_origin));
+    }
+
     abstract_value return_type = action_utilities.get_procedure_return(procedure_type);
-    return new bound_procedure(the_procedure, return_type, parameters, the_origin);
+    return new bound_procedure(the_procedure, return_type,
+        new action_parameters(promoted_parameters), the_origin);
   }
 
   private static type bind_type_parameters(master_type the_type, action_parameters parameters) {

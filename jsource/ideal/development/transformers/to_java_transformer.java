@@ -49,6 +49,7 @@ public class to_java_transformer extends base_transformer {
   private set<principal_type> imported_names;
   private mapping mapping_strategy;
   private principal_type package_type;
+  private @Nullable procedure_declaration the_enclosing_procedure;
 
   private static simple_name SET_NAME = simple_name.make("set");
   private static simple_name VALUE_NAME = simple_name.make("value");
@@ -418,7 +419,9 @@ public class to_java_transformer extends base_transformer {
       boolean add_return = !is_constructor && !unreachable_result && void_return &&
           should_use_wrapper_in_return(the_procedure);
 
+      the_enclosing_procedure = the_procedure;
       list<construct> body = transform1(the_procedure.get_body());
+      the_enclosing_procedure = null;
       if (add_return) {
         body.append(new return_construct(make_null(the_origin), the_origin));
       } else if (body.size() == 1) {
@@ -1879,9 +1882,7 @@ public class to_java_transformer extends base_transformer {
     //System.out.println("\n===TBP: " + the_bound_procedure);
     action the_procedure_action = the_bound_procedure.the_procedure_action;
     construct main;
-    readonly_list<construct> parameters;
     procedure_value the_procedure = null;
-    @Nullable declaration the_declaration = get_procedure_declaration(the_procedure_action);
 
     if (the_procedure_action instanceof value_action) {
       base_data_value the_value =
@@ -1912,7 +1913,10 @@ public class to_java_transformer extends base_transformer {
       */
     }
 
-    parameters = transform_parameters(the_bound_procedure.parameters.params());
+    readonly_list<construct> parameters =
+        transform_parameters(the_bound_procedure.parameters.params());
+
+    @Nullable declaration the_declaration = get_procedure_declaration(the_procedure_action);
 
     if (the_declaration instanceof procedure_declaration) {
       procedure_declaration proc_decl = (procedure_declaration) the_declaration;
@@ -1935,21 +1939,20 @@ public class to_java_transformer extends base_transformer {
 
     construct transformed = make_call(main, parameters, the_origin);
 
-    /*
-    if (the_procedure_action.result().type_bound() == core_types.unreachable_type()) {
-      @Nullable procedure_declaration the_encosing_procedure =
-          analyzer_utilities.get_enclosing_procedure(the_parameter);
-      assert the_encosing_procedure != null;
-      type return_type = the_encosing_procedure.get_return_type();
+    type procedure_return_type = the_procedure_action.result().type_bound();
+    if (action_utilities.is_procedure_type(procedure_return_type) &&
+        action_utilities.get_procedure_return(procedure_return_type) ==
+            core_types.unreachable_type()) {
+      assert the_enclosing_procedure != null;
+      type return_type = the_enclosing_procedure.get_return_type();
       if (return_type != core_types.unreachable_type() &&
           return_type != library().immutable_void_type()) {
-        list<construct> result = new base_list<construct>();
-        result.append(transformed);
-        result.append(make_default_return(return_type, the_origin));
-        return result;
+        list<construct> statements = new base_list<construct>();
+        statements.append(transformed);
+        statements.append(make_default_return(return_type, the_origin));
+        return new block_construct(statements, the_origin);
       }
     }
-    */
 
     return transformed;
   }

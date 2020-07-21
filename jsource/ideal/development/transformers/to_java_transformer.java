@@ -137,20 +137,9 @@ public class to_java_transformer extends base_transformer {
     return analyzer_utilities.to_action(the_analyzable);
   }
 
-  // TODO: detailed errors instead of asserts?
-  protected type get_type(analyzable the_analyzable) {
-    action the_action = get_action(the_analyzable);
-    assert the_action instanceof type_action : "Action: " + the_action;
-    return ((type_action) the_action).get_type();
-  }
-
   protected type get_type(action the_action) {
     assert the_action instanceof type_action : "Action: " + the_action;
     return ((type_action) the_action).get_type();
-  }
-
-  private @Nullable declaration get_declaration(analyzable the_analyzable) {
-    return declaration_util.get_declaration(get_action(the_analyzable));
   }
 
   private type result_type(action the_action) {
@@ -280,20 +269,12 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  // TODO: should analyzable be resolve_analyzer?
-  private construct maybe_call(analyzable the_analyzable, construct new_construct,
-      origin the_origin) {
-    @Nullable declaration the_declaration;
-    if (the_analyzable instanceof resolve_analyzer) {
-      resolve_analyzer the_resolve_analyzer = (resolve_analyzer) the_analyzable;
-      the_declaration = declaration_util.get_declaration(the_resolve_analyzer.get_main_candidate());
-    } else {
-      the_declaration = get_declaration(the_analyzable);
-    }
+  private construct maybe_call(action the_action, construct the_construct, origin the_origin) {
+    declaration the_declaration = declaration_util.get_declaration(the_action);
     if (the_declaration != null && should_call_as_procedure(the_declaration)) {
-      return make_call(new_construct, new empty<construct>(), the_origin);
+      return make_call(the_construct, new empty<construct>(), the_origin);
     } else {
-      return new_construct;
+      return the_construct;
     }
   }
 
@@ -1150,7 +1131,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     @Nullable construct init = the_variable.init_action() != null ?
-        transform_and_maybe_rewrite_action(the_variable.init_action()) : null;
+        transform_and_maybe_rewrite(the_variable.init_action()) : null;
     return new variable_construct(annotations, type, the_variable.short_name(),
         new empty<annotation_construct>(), init, the_origin);
   }
@@ -1272,7 +1253,7 @@ public class to_java_transformer extends base_transformer {
   private list<construct> transform_parameters(readonly_list<action> actions) {
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < actions.size(); ++i) {
-      result.append(transform_and_maybe_rewrite_action(actions.get(i)));
+      result.append(transform_and_maybe_rewrite(actions.get(i)));
     }
     return result;
   }
@@ -1331,7 +1312,7 @@ public class to_java_transformer extends base_transformer {
     // TODO: handle other assignment operators.
     if (the_operator == operator.ASSIGN) {
       action lhs = arguments.get(0);
-      construct rhs = transform_and_maybe_rewrite_action(arguments.get(1));
+      construct rhs = transform_and_maybe_rewrite(arguments.get(1));
       if (lhs instanceof bound_procedure) {
         bound_procedure lhs2 = (bound_procedure) lhs;
         readonly_list<action> plhs = lhs2.parameters.params();
@@ -1504,7 +1485,7 @@ public class to_java_transformer extends base_transformer {
     if (library().is_reference_type(the_return.return_type())) {
       the_expression = transform_action(the_return.return_expression());
     } else {
-      the_expression = transform_and_maybe_rewrite_action(the_return.return_expression());
+      the_expression = transform_and_maybe_rewrite(the_return.return_expression());
     }
 
     return new return_construct(the_expression, the_origin);
@@ -1696,7 +1677,7 @@ public class to_java_transformer extends base_transformer {
     return process_action(the_action, the_origin);
   }
 
-  private construct transform_and_maybe_rewrite_action(action the_action) {
+  private construct transform_and_maybe_rewrite(action the_action) {
     origin the_origin = the_action;
     construct transformed = transform_action(the_action);
     if (is_explicit_reference(the_action)) {
@@ -1738,7 +1719,7 @@ public class to_java_transformer extends base_transformer {
       dispatch_action the_dispatch_action = (dispatch_action) the_action;
       action from_action = the_dispatch_action.get_from();
       assert from_action != null;
-      construct from_construct = process_action(from_action, the_origin);
+      construct from_construct = transform_and_maybe_rewrite(from_action);
       action primary = the_dispatch_action.get_primary();
       if (primary instanceof variable_action) {
         variable_action the_variable_action = (variable_action) primary;
@@ -1750,11 +1731,7 @@ public class to_java_transformer extends base_transformer {
         } else {
           result = new resolve_construct(from_construct, the_name_construct, the_origin);
         }
-        declaration the_declaration = declaration_util.get_declaration(the_variable_action);
-        if (the_declaration != null && should_call_as_procedure(the_declaration)) {
-          result = make_call(result, new empty<construct>(), the_origin);
-        }
-        return result;
+        return maybe_call(the_variable_action, result, the_origin);
       } else if (primary instanceof value_action) {
         base_procedure the_procedure = (base_procedure) ((value_action) primary).the_value;
         action_name the_name = map_name(the_procedure.name());
@@ -1785,8 +1762,9 @@ public class to_java_transformer extends base_transformer {
             name, the_origin);
       } else if (the_variable_action instanceof instance_variable) {
         assert the_variable_action.from != null;
-        construct from = transform_action(the_variable_action.from);
-        return new resolve_construct(from, name, the_origin);
+        construct from = transform_and_maybe_rewrite(the_variable_action.from);
+        construct result = new resolve_construct(from, name, the_origin);
+        return maybe_call(the_variable_action, result, the_origin);
       }
       return name;
     }

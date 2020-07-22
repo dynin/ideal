@@ -38,7 +38,7 @@ public class test_markup_text {
   public void test_quoted() {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
-    the_formatter.write((base_string) new base_string("AT&T <etc.> q1:' q2:\""));
+    the_formatter.write((base_string) new base_string("AT&T <etc.> q1:\' q2:\""));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("AT&amp;T &lt;etc.&gt; q1:&apos; q2:&quot;"), the_writer.elements());
   }
   public void test_writer_indent() {
@@ -52,7 +52,7 @@ public class test_markup_text {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
     the_formatter.write(base_element.make(text_library.P, text_library.NAME, (base_string) new base_string("foo"), (base_string) new base_string("bar")));
-    assert ideal.machine.elements.runtime_util.values_equal(new base_string("<p name='foo'>\n bar\n</p>\n"), the_writer.elements());
+    assert ideal.machine.elements.runtime_util.values_equal(new base_string("<p name=\'foo\'>\n bar\n</p>\n"), the_writer.elements());
   }
   public void test_self_closing_tag() {
     final string_writer the_writer = new string_writer();
@@ -60,7 +60,7 @@ public class test_markup_text {
     the_formatter.write((base_string) new base_string("foo"));
     the_formatter.write(base_element.make(text_library.BR, text_library.CLEAR, new base_string("all"), null));
     the_formatter.write((base_string) new base_string("bar\n"));
-    assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo<br clear='all' />\nbar\n"), the_writer.elements());
+    assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo<br clear=\'all\' />\nbar\n"), the_writer.elements());
   }
   public void test_writer_fragment() {
     final string_writer the_writer = new string_writer();

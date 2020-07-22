@@ -28,15 +28,15 @@ public class base_element extends debuggable implements text_element {
     return new base_element(id, new list_dictionary<attribute_id, string>(attr, value), children);
   }
   public @Override element_id get_id() {
-    return id;
+    return this.id;
   }
   public @Override immutable_dictionary<attribute_id, string> attributes() {
-    return the_attributes;
+    return this.the_attributes;
   }
   public @Override @Nullable text_fragment children() {
-    return the_children;
+    return this.the_children;
   }
   public @Override string to_string() {
-    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("<"), id.to_string()), new base_string(" ...>"));
+    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("<"), this.id.to_string()), new base_string(" ...>"));
   }
 }

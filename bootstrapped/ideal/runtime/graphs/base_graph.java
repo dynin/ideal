@@ -30,21 +30,21 @@ public class base_graph<vertice_type extends readonly_data, edge_type extends re
     this((equivalence_relation<vertice_type>) (readonly_value) runtime_util.default_equivalence);
   }
   public @Override readonly_set<vertice_type> vertices() {
-    return all_edges.keys();
+    return this.all_edges.keys();
   }
   public @Override void add_edge(final vertice_type from, final vertice_type to, final edge_type the_source) {
     final base_graph.edge<vertice_type, edge_type> new_edge = new base_graph.edge<vertice_type, edge_type>(from, to, the_source);
-    final @Nullable set<base_graph.edge<vertice_type, edge_type>> outgoing_edges = all_edges.get(from);
+    final @Nullable set<base_graph.edge<vertice_type, edge_type>> outgoing_edges = this.all_edges.get(from);
     if (outgoing_edges != null) {
       outgoing_edges.add(new_edge);
     } else {
       final hash_set<base_graph.edge<vertice_type, edge_type>> new_outgoing_edges = new hash_set<base_graph.edge<vertice_type, edge_type>>();
       new_outgoing_edges.add(new_edge);
-      all_edges.put(from, new_outgoing_edges);
+      this.all_edges.put(from, new_outgoing_edges);
     }
   }
   public @Override immutable_set<vertice_type> adjacent(final vertice_type from) {
-    final @Nullable set<base_graph.edge<vertice_type, edge_type>> edge_set = all_edges.get(from);
+    final @Nullable set<base_graph.edge<vertice_type, edge_type>> edge_set = this.all_edges.get(from);
     if (edge_set == null) {
       return new empty<vertice_type>();
     }
@@ -59,7 +59,7 @@ public class base_graph<vertice_type extends readonly_data, edge_type extends re
     return adjacent_vertices.frozen_copy();
   }
   public @Override boolean introduces_cycle(final vertice_type from, final vertice_type to) {
-    if (equivalence.call(from, to)) {
+    if (this.equivalence.call(from, to)) {
       return true;
     }
     final list<vertice_type> considered = new base_list<vertice_type>(from, to);
@@ -71,11 +71,11 @@ public class base_graph<vertice_type extends readonly_data, edge_type extends re
       for (int considered_vertice_index = 0; considered_vertice_index < considered_vertice_list.size(); considered_vertice_index += 1) {
         final vertice_type considered_vertice = considered_vertice_list.get(considered_vertice_index);
         {
-          final readonly_list<vertice_type> target_vertice_list = adjacent(considered_vertice).elements();
+          final readonly_list<vertice_type> target_vertice_list = this.adjacent(considered_vertice).elements();
           for (int target_vertice_index = 0; target_vertice_index < target_vertice_list.size(); target_vertice_index += 1) {
             final vertice_type target_vertice = target_vertice_list.get(target_vertice_index);
             if (visited.contains(target_vertice)) {
-              if (equivalence.call(target_vertice, from)) {
+              if (this.equivalence.call(target_vertice, from)) {
                 return true;
               }
             } else {

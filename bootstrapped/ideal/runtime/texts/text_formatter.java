@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 public abstract class text_formatter extends text_visitor<Void> implements output<text_fragment> {
   protected static final char NEWLINE = '\n';
-  protected static final singleton_pattern<Character> NEWLINE_PATTERN = new singleton_pattern<Character>(NEWLINE);
+  protected static final singleton_pattern<Character> NEWLINE_PATTERN = new singleton_pattern<Character>(text_formatter.NEWLINE);
   protected final output<Character> the_output;
   protected final string spaces;
   protected int indent;
@@ -20,71 +20,71 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
   protected text_formatter(final output<Character> the_output, final string spaces) {
     this.the_output = the_output;
     this.spaces = spaces;
-    indent = 0;
-    first = true;
+    this.indent = 0;
+    this.first = true;
   }
   public @Override void write(final text_fragment fragment) {
-    process(fragment);
+    this.process(fragment);
   }
   public @Override void write_all(final readonly_list<text_fragment> fragments) {
     {
       final readonly_list<text_fragment> fragment_list = fragments;
       for (int fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
         final text_fragment fragment = fragment_list.get(fragment_index);
-        process(fragment);
+        this.process(fragment);
       }
     }
   }
   public @Override void sync() {
-    the_output.sync();
+    this.the_output.sync();
   }
   public @Override void close() {
-    the_output.close();
+    this.the_output.close();
   }
   public @Override abstract Void process_string(string s);
   public @Override abstract Void process_element(text_element element);
   public @Override abstract Void process_special(special_text t);
   public @Override Void process_nodes(final list_text_node nodes) {
-    process_all(nodes.nodes());
+    this.process_all(nodes.nodes());
     return null;
   }
   protected void process_all(final readonly_list<text_node> nodes) {
-    write_all((readonly_list<text_fragment>) (readonly_list) nodes);
+    this.write_all((readonly_list<text_fragment>) (readonly_list) nodes);
   }
   protected void write_string(final string the_string) {
     int index = 0;
     while (index < the_string.size()) {
-      if (first) {
-        do_write_indent();
+      if (this.first) {
+        this.do_write_indent();
       }
-      final @Nullable range newline_match = NEWLINE_PATTERN.find_in(the_string, index);
+      final @Nullable range newline_match = text_formatter.NEWLINE_PATTERN.find_in(the_string, index);
       if (newline_match == null) {
-        do_write_string(the_string.skip(index));
+        this.do_write_string(the_string.skip(index));
         break;
       } else {
         final int newline_index = newline_match.begin();
-        do_write_string(the_string.slice(index, newline_index));
-        do_write_newline();
+        this.do_write_string(the_string.slice(index, newline_index));
+        this.do_write_newline();
         index = newline_match.end();
-        first = true;
+        this.first = true;
       }
     }
   }
   protected void write_newline() {
-    do_write_newline();
-    first = true;
-    the_output.sync();
+    this.do_write_newline();
+    this.first = true;
+    this.the_output.sync();
   }
   protected void do_write_newline() {
-    the_output.write(NEWLINE);
+    this.the_output.write(text_formatter.NEWLINE);
   }
   protected void do_write_indent() {
-    for (int i = 0; i < indent; i += 1) {
-      the_output.write_all(spaces);
+    for (int i = 0; i < this.indent; i += 1) {
+      this.the_output.write_all(this.spaces);
     }
-    first = false;
+    this.first = false;
   }
   protected void do_write_string(final readonly_list<Character> s) {
-    the_output.write_all(s);
+    this.the_output.write_all(s);
   }
 }

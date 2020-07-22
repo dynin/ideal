@@ -16,16 +16,16 @@ public class underline_style extends debuggable implements deeply_immutable_data
     this.display_character = display_character;
   }
   private static void register(final underline_style style) {
-    all_styles.put(style.style_id, style);
+    underline_style.all_styles.put(style.style_id, style);
   }
   public @Override string to_string() {
-    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(style_id, new base_string(" -> ")), display_character);
+    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(this.style_id, new base_string(" -> ")), this.display_character);
   }
   private static final char CARET = '^';
   private static final char DASH = '-';
   static {
-    all_styles = new list_dictionary<element_id, underline_style>();
-    register(new underline_style(text_library.UNDERLINE, CARET));
-    register(new underline_style(text_library.UNDERLINE2, DASH));
+    underline_style.all_styles = new list_dictionary<element_id, underline_style>();
+    underline_style.register(new underline_style(text_library.UNDERLINE, underline_style.CARET));
+    underline_style.register(new underline_style(text_library.UNDERLINE2, underline_style.DASH));
   }
 }

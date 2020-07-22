@@ -26,7 +26,7 @@ public class test_runtime_util {
     test_escape();
     ideal.machine.elements.runtime_util.end_test();
   }
-  private static class test1 implements data {
+  private static class test1 implements data, equality_comparable {
     public test1(final int i, final string s) {
       this.i = i;
       this.s = s;
@@ -39,30 +39,33 @@ public class test_runtime_util {
   private final test_runtime_util.test1 v3;
   private final test_runtime_util.test1 v4;
   public test_runtime_util() {
-    v1 = new test_runtime_util.test1(98, new base_string("asdf"));
-    v2 = new test_runtime_util.test1(98, new base_string("asdf"));
-    v3 = new test_runtime_util.test1(99, new base_string("asdf"));
-    v4 = new test_runtime_util.test1(98, new base_string("asdfghj"));
+    this.v1 = new test_runtime_util.test1(98, new base_string("asdf"));
+    this.v2 = new test_runtime_util.test1(98, new base_string("asdf"));
+    this.v3 = new test_runtime_util.test1(99, new base_string("asdf"));
+    this.v4 = new test_runtime_util.test1(98, new base_string("asdfghj"));
   }
   public void test_class_name() {
     assert runtime_util.values_equal(runtime_util.short_class_name(this), new base_string("test_runtime_util"));
     assert runtime_util.values_equal(runtime_util.short_class_name(new base_string("Hi")), new base_string("base_string"));
   }
   public void test_hash_code() {
-    final int hash1 = runtime_util.compute_hash_code(v1);
-    final int hash2 = runtime_util.compute_hash_code(v2);
-    final int hash3 = runtime_util.compute_hash_code(v3);
-    final int hash4 = runtime_util.compute_hash_code(v4);
+    final int hash1 = runtime_util.compute_hash_code(this.v1);
+    final int hash2 = runtime_util.compute_hash_code(this.v2);
+    final int hash3 = runtime_util.compute_hash_code(this.v3);
+    final int hash4 = runtime_util.compute_hash_code(this.v4);
     assert hash1 == hash2;
     assert hash1 != hash3;
     assert hash1 != hash4;
     assert hash3 != hash4;
   }
   public void test_simple_equals() {
-    assert runtime_util.values_equal(v1, v2);
-    assert !runtime_util.values_equal(v1, v3);
-    assert !runtime_util.values_equal(v1, v4);
-    assert !runtime_util.values_equal(v4, v3);
+    assert runtime_util.values_equal(this.v1, this.v2);
+    assert !runtime_util.values_equal(this.v1, this.v3);
+    assert !runtime_util.values_equal(this.v1, this.v4);
+    assert !runtime_util.values_equal(this.v4, this.v3);
+    assert !runtime_util.values_equal(this.v1, this.v3);
+    assert !runtime_util.values_equal(this.v1, this.v4);
+    assert !runtime_util.values_equal(this.v4, this.v3);
   }
   private immutable_list<readonly_data> make_list(final readonly_data first, final readonly_data second) {
     final base_list<readonly_data> the_list = new base_list<readonly_data>();
@@ -71,9 +74,9 @@ public class test_runtime_util {
     return the_list.frozen_copy();
   }
   public void test_list_equals() {
-    final immutable_list<readonly_data> s1 = make_list(v1, v3);
-    final immutable_list<readonly_data> s2 = make_list(v2, v3);
-    final immutable_list<readonly_data> s3 = make_list(v4, v3);
+    final immutable_list<readonly_data> s1 = this.make_list(this.v1, this.v3);
+    final immutable_list<readonly_data> s2 = this.make_list(this.v2, this.v3);
+    final immutable_list<readonly_data> s3 = this.make_list(this.v4, this.v3);
     assert runtime_util.values_equal(s1, s2);
     assert !runtime_util.values_equal(s1, s3);
   }
@@ -87,6 +90,6 @@ public class test_runtime_util {
   public void test_escape() {
     assert runtime_util.values_equal(runtime_util.escape_markup(new base_string("foo")), new base_string("foo"));
     assert runtime_util.values_equal(runtime_util.escape_markup(new base_string("hello! <>&")), new base_string("hello! &lt;&gt;&amp;"));
-    assert runtime_util.values_equal(runtime_util.escape_markup(new base_string("1: ' 2: \"")), new base_string("1: &apos; 2: &quot;"));
+    assert runtime_util.values_equal(runtime_util.escape_markup(new base_string("1: \' 2: \"")), new base_string("1: &apos; 2: &quot;"));
   }
 }

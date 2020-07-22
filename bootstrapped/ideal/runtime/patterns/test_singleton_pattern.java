@@ -54,18 +54,18 @@ public class test_singleton_pattern {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
     final immutable_list<immutable_list<Character>> split0 = the_pattern.split(new base_string("foo"));
     assert split0.size() == 1;
-    assert equals(split0.get(0), new base_string("foo"));
+    assert this.equals(split0.get(0), new base_string("foo"));
     final immutable_list<immutable_list<Character>> split1 = the_pattern.split(new base_string("fooxbarx"));
     assert split1.size() == 3;
-    assert equals(split1.get(0), new base_string("foo"));
-    assert equals(split1.get(1), new base_string("bar"));
-    assert equals(split1.get(2), new base_string(""));
+    assert this.equals(split1.get(0), new base_string("foo"));
+    assert this.equals(split1.get(1), new base_string("bar"));
+    assert this.equals(split1.get(2), new base_string(""));
     final immutable_list<immutable_list<Character>> split2 = the_pattern.split(new base_string("x1x2x3"));
     assert split2.size() == 4;
-    assert equals(split2.get(0), new base_string(""));
-    assert equals(split2.get(1), new base_string("1"));
-    assert equals(split2.get(2), new base_string("2"));
-    assert equals(split2.get(3), new base_string("3"));
+    assert this.equals(split2.get(0), new base_string(""));
+    assert this.equals(split2.get(1), new base_string("1"));
+    assert this.equals(split2.get(2), new base_string("2"));
+    assert this.equals(split2.get(3), new base_string("3"));
   }
   public boolean equals(final immutable_list<Character> s0, final string s1) {
     return ideal.machine.elements.runtime_util.values_equal(((string) s0), s1);

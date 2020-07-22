@@ -18,16 +18,16 @@ public class base_immutable_list<element_type> extends base_readonly_list<elemen
     return this;
   }
   public @Override immutable_list<element_type> reverse() {
-    if (size() <= 1) {
+    if (this.size() <= 1) {
       return this;
     }
-    final base_readonly_list.list_state<element_type> reversed = new base_readonly_list.list_state<element_type>(size());
-    for (int i = 0; i < size(); i += 1) {
-      final int new_index = size() - 1 - i;
+    final base_readonly_list.list_state<element_type> reversed = new base_readonly_list.list_state<element_type>(this.size());
+    for (int i = 0; i < this.size(); i += 1) {
+      final int new_index = this.size() - 1 - i;
       assert new_index >= 0;
-      reversed.the_elements.set(new_index, state.the_elements.at(i).get());
+      reversed.the_elements.set(new_index, this.state.the_elements.at(i).get());
     }
-    reversed.size = size();
+    reversed.size = this.size();
     return new base_immutable_list<element_type>(reversed);
   }
 }

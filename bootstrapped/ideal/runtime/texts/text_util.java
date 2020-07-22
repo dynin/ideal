@@ -17,7 +17,7 @@ public class text_util {
   }
   public static boolean is_block(final text_element element) {
     final element_id id = element.get_id();
-    return is_indent(element) || id == text_library.HTML || id == text_library.HEAD || id == text_library.BODY || id == text_library.TITLE || id == text_library.LINK || id == text_library.P || id == text_library.DIV || id == text_library.H1 || id == text_library.H2 || id == text_library.TABLE || id == text_library.TR || id == text_library.TH || id == text_library.TD || id == text_library.BR;
+    return text_util.is_indent(element) || id == text_library.HTML || id == text_library.HEAD || id == text_library.BODY || id == text_library.TITLE || id == text_library.LINK || id == text_library.P || id == text_library.DIV || id == text_library.H1 || id == text_library.H2 || id == text_library.TABLE || id == text_library.TR || id == text_library.TH || id == text_library.TD || id == text_library.BR;
   }
   public static immutable_list<text_node> make_singleton(final text_node element) {
     final base_list<text_node> the_list = new base_list<text_node>();
@@ -28,12 +28,14 @@ public class text_util {
     if (fragment == null) {
       return new empty<text_node>();
     } else if (fragment instanceof text_node) {
-      return make_singleton(((text_node) fragment));
+      return text_util.make_singleton(((text_node) fragment));
     } else if (fragment instanceof list_text_node) {
       return ((list_text_node) fragment).nodes();
     } else {
-      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown type "), fragment));
-      return null;
+      {
+        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown type "), fragment));
+        return null;
+      }
     }
   }
   public static text_fragment join(final readonly_list<text_fragment> fragments) {
@@ -42,23 +44,23 @@ public class text_util {
       final readonly_list<text_fragment> fragment_list = fragments;
       for (int fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
         final text_fragment fragment = fragment_list.get(fragment_index);
-        append(nodes, fragment);
+        text_util.append(nodes, fragment);
       }
     }
-    return to_fragment(nodes);
+    return text_util.to_fragment(nodes);
   }
   public static text_fragment join(final text_fragment first, final text_fragment second) {
     final base_list<text_node> nodes = new base_list<text_node>();
-    append(nodes, first);
-    append(nodes, second);
-    return to_fragment(nodes);
+    text_util.append(nodes, first);
+    text_util.append(nodes, second);
+    return text_util.to_fragment(nodes);
   }
   public static text_fragment join(final text_fragment first, final text_fragment second, final text_fragment third) {
     final base_list<text_node> nodes = new base_list<text_node>();
-    append(nodes, first);
-    append(nodes, second);
-    append(nodes, third);
-    return to_fragment(nodes);
+    text_util.append(nodes, first);
+    text_util.append(nodes, second);
+    text_util.append(nodes, third);
+    return text_util.to_fragment(nodes);
   }
   private static void append(final list<text_node> nodes, final text_fragment fragment) {
     if (fragment instanceof string_text_node) {
@@ -74,7 +76,7 @@ public class text_util {
   }
   private static text_fragment to_fragment(final readonly_list<text_node> nodes) {
     if (nodes.is_empty()) {
-      return EMPTY_FRAGMENT;
+      return text_util.EMPTY_FRAGMENT;
     } else if (nodes.size() == 1) {
       return nodes.first();
     } else {

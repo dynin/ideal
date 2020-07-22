@@ -14,21 +14,21 @@ public class constant_reference<value_type> extends debuggable implements refere
     this.the_reference_type = the_reference_type;
   }
   public @Override type_id type_bound() {
-    return the_reference_type;
+    return this.the_reference_type;
   }
   public @Override type_id value_type_bound() {
-    return the_value.type_bound();
+    return this.the_value.type_bound();
   }
   public @Override value_wrapper<value_type> get() {
-    return the_value;
+    return this.the_value;
   }
   public @Override void init(final value_wrapper<value_type> new_value) {
-    utilities.panic(new base_string("Can't init a constant_reference"));
+    utilities.panic(new base_string("Can\'t init a constant_reference"));
   }
   public @Override void set(final value_wrapper<value_type> new_value) {
-    utilities.panic(new base_string("Can't set a constant_reference"));
+    utilities.panic(new base_string("Can\'t set a constant_reference"));
   }
   public @Override string to_string() {
-    return utilities.describe(this, the_value);
+    return utilities.describe(this, this.the_value);
   }
 }

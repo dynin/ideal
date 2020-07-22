@@ -12,17 +12,17 @@ public class auto_sync_output<value_type> implements output<value_type> {
     this.the_output = the_output;
   }
   public @Override void write(final value_type value) {
-    the_output.write(value);
-    the_output.sync();
+    this.the_output.write(value);
+    this.the_output.sync();
   }
   public @Override void write_all(final readonly_list<value_type> values) {
-    the_output.write_all(values);
-    the_output.sync();
+    this.the_output.write_all(values);
+    this.the_output.sync();
   }
   public @Override void sync() {
-    the_output.sync();
+    this.the_output.sync();
   }
   public @Override void close() {
-    the_output.close();
+    this.the_output.close();
   }
 }

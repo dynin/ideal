@@ -18,61 +18,61 @@ public class base_string extends debuggable implements string, string_text_node 
     this.state = s1 + s2;
   }
   public base_string(final String s1, final String s2, final String s3) {
-    this.state = c(c(s1, s2), s3);
+    this.state = base_string.c(base_string.c(s1, s2), s3);
   }
   public base_string(final String s1, final String s2, final String s3, final String s4) {
-    this.state = c(c(c(s1, s2), s3), s4);
+    this.state = base_string.c(base_string.c(base_string.c(s1, s2), s3), s4);
   }
   public base_string(final String s1, final String s2, final String s3, final String s4, final String s5) {
-    this.state = c(c(c(c(s1, s2), s3), s4), s5);
+    this.state = base_string.c(base_string.c(base_string.c(base_string.c(s1, s2), s3), s4), s5);
   }
   public base_string(final String s1, final String s2, final String s3, final String s4, final String s5, final String s6) {
-    this.state = c(c(c(c(c(s1, s2), s3), s4), s5), s6);
+    this.state = base_string.c(base_string.c(base_string.c(base_string.c(base_string.c(s1, s2), s3), s4), s5), s6);
   }
   public base_string(final String s1, final String s2, final String s3, final String s4, final String s5, final String s6, final String s7) {
-    this.state = c(c(c(c(c(c(s1, s2), s3), s4), s5), s6), s7);
+    this.state = base_string.c(base_string.c(base_string.c(base_string.c(base_string.c(base_string.c(s1, s2), s3), s4), s5), s6), s7);
   }
   public base_string(final string s1, final string s2) {
-    this.state = unbox(s1) + unbox(s2);
+    this.state = base_string.unbox(s1) + base_string.unbox(s2);
   }
   public base_string(final string s1, final string s2, final string s3) {
-    this.state = c(c(s1, s2), s3);
+    this.state = base_string.c(base_string.c(s1, s2), s3);
   }
   public base_string(final string s1, final string s2, final string s3, final string s4) {
-    this.state = c(c(c(s1, s2), s3), s4);
+    this.state = base_string.c(base_string.c(base_string.c(s1, s2), s3), s4);
   }
   public base_string(final string s1, final string s2, final string s3, final string s4, final string s5) {
-    this.state = c(c(c(c(s1, s2), s3), s4), s5);
+    this.state = base_string.c(base_string.c(base_string.c(base_string.c(s1, s2), s3), s4), s5);
   }
   public base_string(final string s1, final string s2, final string s3, final string s4, final string s5, final string s6) {
-    this.state = c(c(c(c(c(s1, s2), s3), s4), s5), s6);
+    this.state = base_string.c(base_string.c(base_string.c(base_string.c(base_string.c(s1, s2), s3), s4), s5), s6);
   }
   public base_string(final String s1, final string s2) {
-    this.state = s1 + unbox(s2);
+    this.state = s1 + base_string.unbox(s2);
   }
   public base_string(final string s1, final String s2) {
-    this.state = unbox(s1) + s2;
+    this.state = base_string.unbox(s1) + s2;
   }
   public base_string(final string s1, final String s2, final String s3) {
-    this.state = c(c(s1, s2), s3);
+    this.state = base_string.c(base_string.c(s1, s2), s3);
   }
   public base_string(final String s1, final string s2, final String s3) {
-    this.state = c(c(s1, s2), s3);
+    this.state = base_string.c(base_string.c(s1, s2), s3);
   }
   public base_string(final String s1, final String s2, final string s3) {
-    this.state = c(c(s1, s2), s3);
+    this.state = base_string.c(base_string.c(s1, s2), s3);
   }
   public base_string(final string s1, final String s2, final string s3) {
-    this.state = c(c(s1, s2), s3);
+    this.state = base_string.c(base_string.c(s1, s2), s3);
   }
   public base_string(final string s1, final string s2, final String s3) {
-    this.state = c(c(s1, s2), s3);
+    this.state = base_string.c(base_string.c(s1, s2), s3);
   }
   public base_string(final String s1, final string s2, final String s3, final String s4, final String s5) {
-    this.state = c(c(c(c(s1, s2), s3), s4), s5);
+    this.state = base_string.c(base_string.c(base_string.c(base_string.c(s1, s2), s3), s4), s5);
   }
   public String s() {
-    return state;
+    return this.state;
   }
   public static String unbox(final string the_string) {
     return ((base_string) the_string).s();
@@ -81,13 +81,13 @@ public class base_string extends debuggable implements string, string_text_node 
     return (String) (s1 + s2);
   }
   public static String c(final String s1, final string s2) {
-    return (String) (s1 + unbox(s2));
+    return (String) (s1 + base_string.unbox(s2));
   }
   public static String c(final string s1, final string s2) {
-    return (String) (unbox(s1) + unbox(s2));
+    return (String) (base_string.unbox(s1) + base_string.unbox(s2));
   }
   public static String c(final string s1, final String s2) {
-    return (String) (unbox(s1) + s2);
+    return (String) (base_string.unbox(s1) + s2);
   }
   public static string from_list(final readonly_list<Character> chars) {
     final string_writer the_writer = new string_writer();
@@ -95,24 +95,24 @@ public class base_string extends debuggable implements string, string_text_node 
     return the_writer.extract_elements();
   }
   public @Override int size() {
-    return state.length();
+    return this.state.length();
   }
   public @Override boolean is_empty() {
-    return state.length() == 0;
+    return this.state.length() == 0;
   }
   public @Override boolean is_not_empty() {
-    return state.length() != 0;
+    return this.state.length() != 0;
   }
   public @Override Character first() {
-    assert is_not_empty();
-    return state.charAt(0);
+    assert this.is_not_empty();
+    return this.state.charAt(0);
   }
   public @Override Character last() {
-    assert is_not_empty();
-    return state.charAt(state.length() - 1);
+    assert this.is_not_empty();
+    return this.state.charAt(this.state.length() - 1);
   }
   public @Override Character get(final int index) {
-    return state.charAt(index);
+    return this.state.charAt(index);
   }
   public @Override immutable_list<Character> elements() {
     return this;
@@ -121,13 +121,13 @@ public class base_string extends debuggable implements string, string_text_node 
     return this;
   }
   public @Override string skip(final int count) {
-    return new base_string(state.substring(count));
+    return new base_string(this.state.substring(count));
   }
   public @Override string slice(final int begin, final int end) {
-    return new base_string(state.substring(begin, end));
+    return new base_string(this.state.substring(begin, end));
   }
   public @Override string reverse() {
-    return new base_string(new StringBuilder(state).reverse().toString());
+    return new base_string(new StringBuilder(this.state).reverse().toString());
   }
   public @Override boolean equals(final Object other) {
     return other instanceof base_string && this.state.equals(((base_string) other).state);

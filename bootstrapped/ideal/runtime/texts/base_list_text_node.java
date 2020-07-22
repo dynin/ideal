@@ -19,7 +19,7 @@ public class base_list_text_node extends debuggable implements list_text_node {
     return new base_list_text_node(new base_immutable_list<text_node>(new ideal.machine.elements.array<text_node>(new text_node[]{ first, second, third })));
   }
   public @Override immutable_list<text_node> nodes() {
-    return the_nodes;
+    return this.the_nodes;
   }
   public @Override string to_string() {
     return new base_string("base_list_text_node...");

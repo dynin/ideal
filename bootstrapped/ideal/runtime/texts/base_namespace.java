@@ -13,9 +13,9 @@ public class base_namespace extends debuggable implements text_namespace, refere
     this.name = name;
   }
   public @Override string short_name() {
-    return name;
+    return this.name;
   }
   public @Override string to_string() {
-    return name;
+    return this.name;
   }
 }

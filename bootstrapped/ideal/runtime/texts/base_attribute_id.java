@@ -15,12 +15,12 @@ public class base_attribute_id extends debuggable implements attribute_id, refer
     this.name = name;
   }
   public @Override text_namespace get_namespace() {
-    return the_namespace;
+    return this.the_namespace;
   }
   public @Override string short_name() {
-    return name;
+    return this.name;
   }
   public @Override string to_string() {
-    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(the_namespace.to_string(), new base_string(":")), name);
+    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(this.the_namespace.to_string(), new base_string(":")), this.name);
   }
 }

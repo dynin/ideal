@@ -17,23 +17,23 @@ public class appender<value_type> implements output<value_type> {
     this(new base_list<value_type>());
   }
   public @Override void write(final value_type element) {
-    assert active;
-    the_list.append(element);
+    assert this.active;
+    this.the_list.append(element);
   }
   public @Override void write_all(final readonly_list<value_type> elements) {
-    assert active;
-    the_list.append_all(elements);
+    assert this.active;
+    this.the_list.append_all(elements);
   }
   public @Override void sync() { }
   public @Override void close() {
-    active = false;
+    this.active = false;
   }
   public immutable_list<value_type> elements() {
-    return the_list.elements();
+    return this.the_list.elements();
   }
   public immutable_list<value_type> extract_elements() {
-    final immutable_list<value_type> result = the_list.elements();
-    the_list.clear();
+    final immutable_list<value_type> result = this.the_list.elements();
+    this.the_list.clear();
     return result;
   }
 }

@@ -14,20 +14,20 @@ public class output_counter<value_type> implements output<value_type> {
     this.count = 0;
   }
   public int get_count() {
-    return count;
+    return this.count;
   }
   public @Override void write(final value_type value) {
-    count += 1;
-    the_output.write(value);
+    this.count += 1;
+    this.the_output.write(value);
   }
   public @Override void write_all(final readonly_list<value_type> values) {
-    count += values.size();
-    the_output.write_all(values);
+    this.count += values.size();
+    this.the_output.write_all(values);
   }
   public @Override void sync() {
-    the_output.sync();
+    this.the_output.sync();
   }
   public @Override void close() {
-    the_output.close();
+    this.the_output.close();
   }
 }

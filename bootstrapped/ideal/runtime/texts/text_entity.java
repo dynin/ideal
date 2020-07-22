@@ -17,12 +17,12 @@ public class text_entity extends debuggable implements special_text, reference_e
     this.markup = markup;
   }
   public @Override string to_plain_text() {
-    return plain_text;
+    return this.plain_text;
   }
   public @Override string to_markup() {
-    return markup;
+    return this.markup;
   }
   public @Override string to_string() {
-    return markup;
+    return this.markup;
   }
 }

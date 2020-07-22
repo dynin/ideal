@@ -15,12 +15,12 @@ public enum base_extension implements extension {
   JAVASCRIPT_SOURCE(new base_string("js"));
   private final string the_dot_name;
   private base_extension(final string name) {
-    the_dot_name = new base_string(new base_string("."), name);
+    this.the_dot_name = new base_string(new base_string("."), name);
   }
   public @Override string dot_name() {
-    return the_dot_name;
+    return this.the_dot_name;
   }
   public @Override string to_string() {
-    return the_dot_name;
+    return this.the_dot_name;
   }
 }

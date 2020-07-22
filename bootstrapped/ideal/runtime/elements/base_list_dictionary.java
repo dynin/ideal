@@ -20,10 +20,10 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
       this(the_key, the_value, null);
     }
     public @Override key_type key() {
-      return the_key;
+      return this.the_key;
     }
     public @Override value_type value() {
-      return the_value;
+      return this.the_value;
     }
     protected void set_value(final value_type new_value) {
       this.the_value = new_value;
@@ -34,18 +34,18 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
   protected @Nullable base_list_dictionary.entry_cell<key_type, value_type> entries;
   protected base_list_dictionary(final equivalence_relation<key_type> equivalence) {
     this.equivalence = equivalence;
-    the_size = 0;
-    entries = null;
+    this.the_size = 0;
+    this.entries = null;
   }
   protected base_list_dictionary(final key_type key, final value_type value, final equivalence_relation<key_type> equivalence) {
     this.equivalence = equivalence;
-    the_size = 1;
-    entries = new base_list_dictionary.entry_cell<key_type, value_type>(key, value);
+    this.the_size = 1;
+    this.entries = new base_list_dictionary.entry_cell<key_type, value_type>(key, value);
   }
   protected base_list_dictionary(final base_list_dictionary<key_type, value_type> original) {
     this.equivalence = original.equivalence;
-    the_size = original.the_size;
-    entries = duplicate(original.entries);
+    this.the_size = original.the_size;
+    this.entries = this.duplicate(original.entries);
   }
   private @Nullable base_list_dictionary.entry_cell<key_type, value_type> duplicate(final @Nullable base_list_dictionary.entry_cell<key_type, value_type> original) {
     if (original == null) {
@@ -63,28 +63,28 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
     return copy;
   }
   public @Override int size() {
-    return the_size;
+    return this.the_size;
   }
   public @Override boolean is_empty() {
-    return the_size == 0;
+    return this.the_size == 0;
   }
   public @Override boolean is_not_empty() {
-    return the_size != 0;
+    return this.the_size != 0;
   }
   public @Override immutable_list<dictionary.entry<key_type, value_type>> elements() {
-    if (is_empty()) {
+    if (this.is_empty()) {
       return new empty<dictionary.entry<key_type, value_type>>();
     }
     final base_list<dictionary.entry<key_type, value_type>> result = new base_list<dictionary.entry<key_type, value_type>>();
-    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = entries; entry != null; entry = entry.next) {
+    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
       result.append(new base_dictionary_entry<key_type, value_type>(entry));
     }
     return result.frozen_copy();
   }
   public @Override @Nullable value_type get(final key_type key) {
     assert key != null;
-    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = entries; entry != null; entry = entry.next) {
-      if (equivalence.call(key, entry.key())) {
+    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
+      if (this.equivalence.call(key, entry.key())) {
         return entry.value();
       }
     }
@@ -92,23 +92,23 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
   }
   public @Override boolean contains_key(final key_type key) {
     assert key != null;
-    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = entries; entry != null; entry = entry.next) {
-      if (equivalence.call(key, entry.key())) {
+    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
+      if (this.equivalence.call(key, entry.key())) {
         return true;
       }
     }
     return false;
   }
   public @Override immutable_set<key_type> keys() {
-    final set<key_type> result = new hash_set<key_type>((equivalence_with_hash<key_type>) equivalence);
-    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = entries; entry != null; entry = entry.next) {
+    final set<key_type> result = new hash_set<key_type>((equivalence_with_hash<key_type>) this.equivalence);
+    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
       result.add(entry.key());
     }
     return result.frozen_copy();
   }
   public @Override readonly_collection<value_type> values() {
     final list<value_type> result = new base_list<value_type>();
-    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = entries; entry != null; entry = entry.next) {
+    for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
       result.append(entry.value());
     }
     return result.frozen_copy();

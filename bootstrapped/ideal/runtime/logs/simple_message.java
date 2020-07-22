@@ -16,16 +16,16 @@ public class simple_message implements log_message {
     this.the_string = the_string;
   }
   public @Override log_level level() {
-    return the_level;
+    return this.the_level;
   }
   public @Override string to_string() {
-    return the_string;
+    return this.the_string;
   }
   public @Override text_fragment to_text() {
-    if (the_string.is_empty()) {
+    if (this.the_string.is_empty()) {
       return new base_element(text_library.BR);
     } else {
-      return base_element.make(text_library.DIV, (base_string) the_string);
+      return base_element.make(text_library.DIV, (base_string) this.the_string);
     }
   }
 }

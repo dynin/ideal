@@ -18,16 +18,16 @@ public class log {
   }
   public final static output<log_message> log_output = new auto_sync_output<log_message>(new output_transformer<log_message, text_fragment>(new function1<text_fragment, log_message>() {
     @Override public text_fragment call(log_message first) {
-      return to_text(first);
+      return log.to_text(first);
     }
   }, new plain_formatter(standard_channels.stdout)));
   public static void debug(final String the_string) {
-    log_output.write(new simple_message(log_level.DEBUG, new base_string(the_string)));
+    log.log_output.write(new simple_message(log_level.DEBUG, new base_string(the_string)));
   }
   public static void info(final string the_string) {
-    log_output.write(new simple_message(log_level.INFORMATIONAL, the_string));
+    log.log_output.write(new simple_message(log_level.INFORMATIONAL, the_string));
   }
   public static void error(final String the_string) {
-    log_output.write(new simple_message(log_level.ERROR, new base_string(the_string)));
+    log.log_output.write(new simple_message(log_level.ERROR, new base_string(the_string)));
   }
 }

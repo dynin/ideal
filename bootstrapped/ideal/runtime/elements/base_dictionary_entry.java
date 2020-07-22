@@ -12,9 +12,9 @@ public class base_dictionary_entry<key_type, value_type> implements dictionary.e
     this.the_value = entry.value();
   }
   public @Override key_type key() {
-    return the_key;
+    return this.the_key;
   }
   public @Override value_type value() {
-    return the_value;
+    return this.the_value;
   }
 }

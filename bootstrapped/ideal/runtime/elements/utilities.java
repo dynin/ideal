@@ -17,8 +17,10 @@ public class utilities {
     final boolean first_null = first == null;
     final boolean second_null = second == null;
     if (first_null && second_null) {
-      panic(new base_string("double nulls in comparison"));
-      return false;
+      {
+        utilities.panic(new base_string("double nulls in comparison"));
+        return false;
+      }
     }
     if (first_null || second_null) {
       return false;
@@ -29,17 +31,17 @@ public class utilities {
   public static final string close_bracket = new base_string("]");
   public static final string colon = new base_string(": ");
   public static string describe(final readonly_value the_value) {
-    return new base_string(open_bracket, runtime_util.value_identifier(the_value), close_bracket);
+    return new base_string(utilities.open_bracket, runtime_util.value_identifier(the_value), utilities.close_bracket);
   }
   public static string describe(final readonly_value the_value, final readonly_stringable details) {
     if (details == null) {
-      return describe(the_value);
+      return utilities.describe(the_value);
     } else {
-      return new base_string(open_bracket, runtime_util.value_identifier(the_value), colon, details.to_string(), close_bracket);
+      return new base_string(utilities.open_bracket, runtime_util.value_identifier(the_value), utilities.colon, details.to_string(), utilities.close_bracket);
     }
   }
   public static void panic(final string message) {
-    runtime_util.do_panic(s(message));
+    runtime_util.do_panic(utilities.s(message));
   }
   public static void panic(final String message) {
     runtime_util.do_panic(message);

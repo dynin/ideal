@@ -29,51 +29,51 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
     public array<base_hash_set.hash_cell<element_type>> the_buckets;
     public int size;
     public set_state(final int initial_size) {
-      writable = true;
-      the_buckets = new array<base_hash_set.hash_cell<element_type>>(initial_size);
-      size = 0;
+      this.writable = true;
+      this.the_buckets = new array<base_hash_set.hash_cell<element_type>>(initial_size);
+      this.size = 0;
     }
     public set_state() {
       this(base_hash_set.parameters.default_size);
     }
     protected void clear() {
-      if (size != 0) {
-        the_buckets = new array<base_hash_set.hash_cell<element_type>>(base_hash_set.parameters.default_size);
-        size = 0;
+      if (this.size != 0) {
+        this.the_buckets = new array<base_hash_set.hash_cell<element_type>>(base_hash_set.parameters.default_size);
+        this.size = 0;
       }
     }
     public void reserve(final int reserve_size) {
-      if (the_buckets.size >= reserve_size) {
+      if (this.the_buckets.size >= reserve_size) {
         return;
       }
-      int new_size = the_buckets.size * 2;
+      int new_size = this.the_buckets.size * 2;
       if (new_size < reserve_size) {
         new_size = reserve_size;
       }
-      final array<base_hash_set.hash_cell<element_type>> old_buckets = the_buckets;
-      the_buckets = new array<base_hash_set.hash_cell<element_type>>(new_size);
+      final array<base_hash_set.hash_cell<element_type>> old_buckets = this.the_buckets;
+      this.the_buckets = new array<base_hash_set.hash_cell<element_type>>(new_size);
       for (int i = 0; i < old_buckets.size; i += 1) {
         @Nullable base_hash_set.hash_cell<element_type> bucket = old_buckets.at(i).get();
         while (bucket != null) {
           final @Nullable base_hash_set.hash_cell<element_type> old_next = bucket.next;
-          final int new_index = bucket_index(bucket.the_hash);
-          bucket.next = the_buckets.at(new_index).get();
-          the_buckets.set(new_index, bucket);
+          final int new_index = this.bucket_index(bucket.the_hash);
+          bucket.next = this.the_buckets.at(new_index).get();
+          this.the_buckets.set(new_index, bucket);
           bucket = old_next;
         }
       }
       old_buckets.scrub(0, old_buckets.size);
     }
     protected int bucket_index(final int hash) {
-      final int bucket_size = the_buckets.size;
+      final int bucket_size = this.the_buckets.size;
       final int index = ((hash % bucket_size) + bucket_size) % bucket_size;
       assert index >= 0;
       return index;
     }
     protected base_hash_set.set_state<element_type> copy() {
-      final base_hash_set.set_state<element_type> result = new base_hash_set.set_state<element_type>(the_buckets.size);
-      for (int i = 0; i < the_buckets.size; i += 1) {
-        @Nullable base_hash_set.hash_cell<element_type> bucket = the_buckets.at(i).get();
+      final base_hash_set.set_state<element_type> result = new base_hash_set.set_state<element_type>(this.the_buckets.size);
+      for (int i = 0; i < this.the_buckets.size; i += 1) {
+        @Nullable base_hash_set.hash_cell<element_type> bucket = this.the_buckets.at(i).get();
         while (bucket != null) {
           final base_hash_set.hash_cell<element_type> new_cell = new base_hash_set.hash_cell<element_type>(bucket.the_value, bucket.the_hash, result.the_buckets.at(i).get());
           result.the_buckets.set(i, new_cell);
@@ -95,35 +95,35 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
     this.state = state;
   }
   public @Override int size() {
-    return state.size;
+    return this.state.size;
   }
   public @Override boolean is_empty() {
-    return state.size == 0;
+    return this.state.size == 0;
   }
   public @Override boolean is_not_empty() {
-    return state.size != 0;
+    return this.state.size != 0;
   }
   public @Override immutable_list<element_type> elements() {
-    if (is_empty()) {
+    if (this.is_empty()) {
       return new empty<element_type>();
     }
     final base_list<element_type> result = new base_list<element_type>();
-    for (int i = 0; i < state.the_buckets.size; i += 1) {
-      for (@Nullable base_hash_set.hash_cell<element_type> entry = state.the_buckets.at(i).get(); entry != null; entry = entry.next) {
+    for (int i = 0; i < this.state.the_buckets.size; i += 1) {
+      for (@Nullable base_hash_set.hash_cell<element_type> entry = this.state.the_buckets.at(i).get(); entry != null; entry = entry.next) {
         result.append(entry.the_value);
       }
     }
     return result.frozen_copy();
   }
   public @Override immutable_set<element_type> frozen_copy() {
-    return new immutable_hash_set<element_type>(equivalence, state);
+    return new immutable_hash_set<element_type>(this.equivalence, this.state);
   }
   public @Override boolean contains(final element_type key) {
     assert key != null;
-    final int hash = equivalence.hash(key);
-    final @Nullable base_hash_set.hash_cell<element_type> bucket = state.the_buckets.at(state.bucket_index(hash)).get();
+    final int hash = this.equivalence.hash(key);
+    final @Nullable base_hash_set.hash_cell<element_type> bucket = this.state.the_buckets.at(this.state.bucket_index(hash)).get();
     for (@Nullable base_hash_set.hash_cell<element_type> entry = bucket; entry != null; entry = entry.next) {
-      if (hash == entry.the_hash && equivalence.call(key, entry.the_value)) {
+      if (hash == entry.the_hash && this.equivalence.call(key, entry.the_value)) {
         return true;
       }
     }

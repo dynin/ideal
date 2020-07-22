@@ -15,28 +15,28 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
     super((equivalence_with_hash<key_type>) (equivalence_with_hash) runtime_util.default_equivalence);
   }
   private void copy_on_write() {
-    if (!state.writable) {
-      state = state.copy();
-      assert state.writable;
+    if (!this.state.writable) {
+      this.state = this.state.copy();
+      assert this.state.writable;
     }
   }
   public @Override void clear() {
-    copy_on_write();
-    state.clear();
+    this.copy_on_write();
+    this.state.clear();
   }
   public @Override @Nullable value_type put(final key_type key, final value_type value) {
-    copy_on_write();
-    state.reserve(size() + 1);
-    final int hash = equivalence.hash(key);
-    final int index = state.bucket_index(hash);
-    @Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = state.the_buckets.at(index).get();
+    this.copy_on_write();
+    this.state.reserve(this.size() + 1);
+    final int hash = this.equivalence.hash(key);
+    final int index = this.state.bucket_index(hash);
+    @Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = this.state.the_buckets.at(index).get();
     if (entry == null) {
-      state.the_buckets.set(index, new base_hash_dictionary.hash_cell<key_type, value_type>(key, hash, value));
-      state.size += 1;
+      this.state.the_buckets.set(index, new base_hash_dictionary.hash_cell<key_type, value_type>(key, hash, value));
+      this.state.size += 1;
       return null;
     }
     while (true) {
-      if (hash == entry.the_key_hash && equivalence.call(key, entry.key())) {
+      if (hash == entry.the_key_hash && this.equivalence.call(key, entry.key())) {
         final value_type old_value = entry.value();
         entry.set_value(value);
         return old_value;
@@ -44,7 +44,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
       final @Nullable base_hash_dictionary.hash_cell<key_type, value_type> next = entry.next;
       if (next == null) {
         entry.next = new base_hash_dictionary.hash_cell<key_type, value_type>(key, hash, value);
-        state.size += 1;
+        this.state.size += 1;
         return null;
       } else {
         entry = next;
@@ -52,19 +52,19 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
     }
   }
   public @Override @Nullable value_type remove(final key_type key) {
-    copy_on_write();
-    final int hash = equivalence.hash(key);
-    final int index = state.bucket_index(hash);
-    @Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = state.the_buckets.at(index).get();
+    this.copy_on_write();
+    final int hash = this.equivalence.hash(key);
+    final int index = this.state.bucket_index(hash);
+    @Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = this.state.the_buckets.at(index).get();
     if (entry == null) {
       return null;
     }
-    if (hash == entry.the_key_hash && equivalence.call(key, entry.key())) {
+    if (hash == entry.the_key_hash && this.equivalence.call(key, entry.key())) {
       final value_type old_value = entry.value();
-      state.the_buckets.set(index, entry.next);
-      final int new_size = state.size - 1;
+      this.state.the_buckets.set(index, entry.next);
+      final int new_size = this.state.size - 1;
       assert new_size >= 0;
-      state.size = new_size;
+      this.state.size = new_size;
       return old_value;
     }
     while (true) {
@@ -72,12 +72,12 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
       if (next_entry == null) {
         return null;
       }
-      if (hash == next_entry.the_key_hash && equivalence.call(key, next_entry.key())) {
+      if (hash == next_entry.the_key_hash && this.equivalence.call(key, next_entry.key())) {
         final value_type old_value = next_entry.value();
         entry.next = next_entry.next;
-        final int new_size = state.size - 1;
+        final int new_size = this.state.size - 1;
         assert new_size >= 0;
-        state.size = new_size;
+        this.state.size = new_size;
         return old_value;
       }
       entry = next_entry;

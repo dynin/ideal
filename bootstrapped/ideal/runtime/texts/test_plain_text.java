@@ -48,38 +48,38 @@ public class test_plain_text {
   public void test_writer_trivial() {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.P, FOO));
+    the_formatter.write(base_element.make(text_library.P, test_plain_text.FOO));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\n"), the_writer.elements());
   }
   public void test_writer_indent0() {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.P, FOO));
-    the_formatter.write(base_element.make(text_library.INDENT, BAR));
+    the_formatter.write(base_element.make(text_library.P, test_plain_text.FOO));
+    the_formatter.write(base_element.make(text_library.INDENT, test_plain_text.BAR));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\n  bar\n"), the_writer.elements());
   }
   public void test_writer_indent1() {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.P, FOO));
-    final text_element bar = base_element.make(text_library.P, BAR);
-    final text_element baz = base_element.make(text_library.P, BAZ);
+    the_formatter.write(base_element.make(text_library.P, test_plain_text.FOO));
+    final text_element bar = base_element.make(text_library.P, test_plain_text.BAR);
+    final text_element baz = base_element.make(text_library.P, test_plain_text.BAZ);
     the_formatter.write(base_element.make(text_library.INDENT, base_list_text_node.make(bar, baz)));
-    the_formatter.write(base_element.make(text_library.P, WYZZY));
+    the_formatter.write(base_element.make(text_library.P, test_plain_text.WYZZY));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\n  bar\n  baz\nwyzzy\n"), the_writer.elements());
   }
   public void test_writer_indent2() {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.P, FOO));
+    the_formatter.write(base_element.make(text_library.P, test_plain_text.FOO));
     the_formatter.write(base_element.make(text_library.INDENT, (base_string) new base_string("bar\nbaz")));
-    the_formatter.write(base_element.make(text_library.P, WYZZY));
+    the_formatter.write(base_element.make(text_library.P, test_plain_text.WYZZY));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\n  bar\n  baz\nwyzzy\n"), the_writer.elements());
   }
   public void test_self_closing_tag() {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
-    the_formatter.write(FOO);
+    the_formatter.write(test_plain_text.FOO);
     the_formatter.write(base_element.make(text_library.BR, text_library.CLEAR, (base_string) new base_string("all"), null));
     the_formatter.write((base_string) new base_string("bar\n"));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\nbar\n"), the_writer.elements());
@@ -99,7 +99,7 @@ public class test_plain_text {
     the_formatter.write((base_string) new base_string("hello "));
     final base_string world_string = (base_string) new base_string("world");
     final text_element br = base_element.make(text_library.BR, null);
-    the_formatter.write(base_element.make(text_library.UNDERLINE, base_list_text_node.make(world_string, br, FOO)));
+    the_formatter.write(base_element.make(text_library.UNDERLINE, base_list_text_node.make(world_string, br, test_plain_text.FOO)));
     the_formatter.write((base_string) new base_string(" bar"));
     the_formatter.write(base_element.make(text_library.BR, null));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("hello world\n      ^^^^^\nfoo bar\n^^^\n"), the_writer.elements());
@@ -110,7 +110,7 @@ public class test_plain_text {
     the_formatter.write((base_string) new base_string("hello "));
     final base_string world_string = (base_string) new base_string("world");
     final text_element br = base_element.make(text_library.BR, null);
-    the_formatter.write(base_element.make(text_library.UNDERLINE2, base_list_text_node.make(world_string, br, FOO)));
+    the_formatter.write(base_element.make(text_library.UNDERLINE2, base_list_text_node.make(world_string, br, test_plain_text.FOO)));
     the_formatter.write((base_string) new base_string(" bar"));
     the_formatter.write(base_element.make(text_library.BR, null));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("hello world\n      -----\nfoo bar\n---\n"), the_writer.elements());
@@ -127,7 +127,7 @@ public class test_plain_text {
   public void test_blank_line() {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.DIV, FOO));
+    the_formatter.write(base_element.make(text_library.DIV, test_plain_text.FOO));
     the_formatter.write(new base_element(text_library.BR));
     the_formatter.write(base_element.make(text_library.DIV, (base_string) new base_string("bar")));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\n\nbar\n"), the_writer.elements());

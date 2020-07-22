@@ -17,15 +17,15 @@ public abstract class base_resource_store extends debuggable implements resource
     this.skip_prefix = skip_prefix;
   }
   public @Override boolean allow_up() {
-    return do_allow_up;
+    return this.do_allow_up;
   }
   public @Override string build_name(final immutable_list<string> path) {
     if (path.is_empty()) {
-      return path_prefix;
+      return this.path_prefix;
     }
     final string_writer result = new string_writer();
-    if (!skip_prefix) {
-      result.write_all(path_prefix);
+    if (!this.skip_prefix) {
+      result.write_all(this.path_prefix);
     }
     for (int i = 0; i < path.size(); i += 1) {
       if (i > 0) {

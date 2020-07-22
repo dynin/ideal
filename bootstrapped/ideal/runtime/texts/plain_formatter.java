@@ -18,78 +18,78 @@ public class plain_formatter extends text_formatter {
   private static final string DEFAULT_INDENT = new base_string("  ");
   public plain_formatter(final output<Character> the_output, final string spaces) {
     super(the_output, spaces);
-    chars_written = 0;
-    underline_stack = new base_list<underline_style>();
-    carets = new string_writer();
+    this.chars_written = 0;
+    this.underline_stack = new base_list<underline_style>();
+    this.carets = new string_writer();
   }
   public plain_formatter(final output<Character> the_output) {
-    this(the_output, DEFAULT_INDENT);
+    this(the_output, plain_formatter.DEFAULT_INDENT);
   }
   public @Override Void process_string(final string s) {
-    write_string(s);
+    this.write_string(s);
     return null;
   }
   public @Override Void process_element(final text_element element) {
     if (text_util.is_block(element)) {
-      if (!first || element.get_id() == text_library.BR) {
-        write_newline();
+      if (!this.first || element.get_id() == text_library.BR) {
+        this.write_newline();
       }
       if (text_util.is_indent(element)) {
-        indent += 1;
+        this.indent += 1;
       }
     }
     final @Nullable underline_style style = underline_style.all_styles.get(element.get_id());
     if (style != null) {
-      underline_stack.append(style);
+      this.underline_stack.append(style);
     }
     final @Nullable text_fragment children = element.children();
     if (children != null) {
-      process(children);
+      this.process(children);
     }
     if (text_util.is_block(element)) {
-      if (!first) {
-        write_newline();
+      if (!this.first) {
+        this.write_newline();
       }
       if (text_util.is_indent(element)) {
-        final int new_indent = indent - 1;
+        final int new_indent = this.indent - 1;
         assert new_indent >= 0;
-        indent = new_indent;
+        this.indent = new_indent;
       }
     }
     if (style != null) {
-      underline_stack.remove_last();
+      this.underline_stack.remove_last();
     }
     return null;
   }
   public @Override Void process_special(final special_text t) {
-    write_string(t.to_plain_text());
+    this.write_string(t.to_plain_text());
     return null;
   }
   public @Override void do_write_newline() {
     super.do_write_newline();
-    if (carets.size() > 0) {
-      the_output.write_all(carets.extract_elements());
-      the_output.write(NEWLINE);
+    if (this.carets.size() > 0) {
+      this.the_output.write_all(this.carets.extract_elements());
+      this.the_output.write(text_formatter.NEWLINE);
     }
-    chars_written = 0;
+    this.chars_written = 0;
   }
   public @Override void do_write_indent() {
     super.do_write_indent();
-    chars_written += spaces.size() * indent;
+    this.chars_written += this.spaces.size() * this.indent;
   }
   public @Override void do_write_string(final readonly_list<Character> the_string) {
     super.do_write_string(the_string);
-    if (underline_stack.is_not_empty()) {
-      while (carets.size() < chars_written) {
-        carets.write(SPACE);
+    if (this.underline_stack.is_not_empty()) {
+      while (this.carets.size() < this.chars_written) {
+        this.carets.write(plain_formatter.SPACE);
       }
-      final int last_underline_index = underline_stack.size() - 1;
+      final int last_underline_index = this.underline_stack.size() - 1;
       assert last_underline_index >= 0;
-      final char underline_character = underline_stack.at(last_underline_index).get().display_character;
+      final char underline_character = this.underline_stack.at(last_underline_index).get().display_character;
       for (int i = 0; i < the_string.size(); i += 1) {
-        carets.write(underline_character);
+        this.carets.write(underline_character);
       }
     }
-    chars_written += the_string.size();
+    this.chars_written += the_string.size();
   }
 }

@@ -13,35 +13,35 @@ public class base_range implements range {
     this.the_end = the_end;
   }
   public @Override int begin() {
-    return the_begin;
+    return this.the_begin;
   }
   public @Override int end() {
-    return the_end;
+    return this.the_end;
   }
   public @Override int size() {
-    final int the_size = the_end - the_begin;
+    final int the_size = this.the_end - this.the_begin;
     assert the_size >= 0;
     return the_size;
   }
   public @Override boolean is_empty() {
-    return the_begin == the_end;
+    return this.the_begin == this.the_end;
   }
   public @Override boolean is_not_empty() {
-    return the_begin != the_end;
+    return this.the_begin != this.the_end;
   }
   public @Override Integer first() {
-    assert is_not_empty();
-    return the_begin;
+    assert this.is_not_empty();
+    return this.the_begin;
   }
   public @Override Integer last() {
-    assert is_not_empty();
-    final int result = the_end - 1;
+    assert this.is_not_empty();
+    final int result = this.the_end - 1;
     assert result >= 0;
     return result;
   }
   public @Override Integer get(final int index) {
-    final int result = the_begin + index;
-    assert result < the_end;
+    final int result = this.the_begin + index;
+    assert result < this.the_end;
     return result;
   }
   public @Override range elements() {
@@ -51,19 +51,19 @@ public class base_range implements range {
     return this;
   }
   public @Override range skip(final int count) {
-    final int new_begin = the_begin + count;
-    assert new_begin <= the_end;
-    return new base_range(new_begin, the_end);
+    final int new_begin = this.the_begin + count;
+    assert new_begin <= this.the_end;
+    return new base_range(new_begin, this.the_end);
   }
   public @Override range slice(final int slice_begin, final int slice_end) {
-    final int new_begin = the_begin + slice_begin;
-    final int new_end = the_begin + slice_end;
+    final int new_begin = this.the_begin + slice_begin;
+    final int new_end = this.the_begin + slice_end;
     assert new_begin <= new_end;
     return new base_range(new_begin, new_end);
   }
   public @Override immutable_list<Integer> reverse() {
     final base_list<Integer> result = new base_list<Integer>();
-    for (int value = the_end - 1; value >= the_begin; value -= 1) {
+    for (int value = this.the_end - 1; value >= this.the_begin; value -= 1) {
       final int nonnegative_value = value;
       assert nonnegative_value >= 0;
       result.append(nonnegative_value);

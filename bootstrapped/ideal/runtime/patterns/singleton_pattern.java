@@ -14,14 +14,14 @@ public class singleton_pattern<element_type> implements pattern<element_type> {
     this.the_element = the_element;
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
-    return the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.first(), the_element);
+    return the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.first(), this.the_element);
   }
   public @Override boolean is_viable_prefix(final readonly_list<element_type> the_list) {
-    return the_list.is_empty() || (the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.first(), the_element));
+    return the_list.is_empty() || (the_list.size() == 1 && ideal.machine.elements.runtime_util.values_equal(the_list.first(), this.the_element));
   }
   public @Override @Nullable range find_in(final readonly_list<element_type> the_list, final int start_index) {
     for (int i = start_index; i < the_list.size(); i += 1) {
-      if (ideal.machine.elements.runtime_util.values_equal(the_list.get(i), the_element)) {
+      if (ideal.machine.elements.runtime_util.values_equal(the_list.get(i), this.the_element)) {
         return new base_range(i, i + 1);
       }
     }
@@ -31,7 +31,7 @@ public class singleton_pattern<element_type> implements pattern<element_type> {
     final base_list<immutable_list<element_type>> result = new base_list<immutable_list<element_type>>();
     int index = 0;
     while (true) {
-      final @Nullable range match = find_in(the_list, index);
+      final @Nullable range match = this.find_in(the_list, index);
       if (match != null) {
         result.append(the_list.slice(index, match.begin()));
         index = match.end();

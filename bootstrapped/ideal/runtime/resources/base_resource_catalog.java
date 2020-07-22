@@ -25,27 +25,27 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     return null;
   }
   public @Override void set(final @Nullable dictionary<string, resource_identifier> new_value) {
-    utilities.panic(new base_string("can't set a catalog"));
+    utilities.panic(new base_string("can\'t set a catalog"));
   }
   public @Override resource_identifier get_id() {
-    return new base_resource_identifier(the_resource_store, path);
+    return new base_resource_identifier(this.the_resource_store, this.path);
   }
   public @Override resource_identifier resolve(final string name) {
     if (name.is_empty()) {
-      return new base_resource_identifier(the_resource_store, path);
+      return new base_resource_identifier(this.the_resource_store, this.path);
     }
-    final immutable_list<immutable_list<Character>> components = path_separator.split(name);
+    final immutable_list<immutable_list<Character>> components = base_resource_catalog.path_separator.split(name);
     boolean absolute = false;
     int index;
     final base_list<string> result = new base_list<string>();
     if (components.first().is_empty()) {
-      if (the_resource_store.allow_up()) {
+      if (this.the_resource_store.allow_up()) {
         absolute = true;
       } else { }
       index = 1;
     } else {
       index = 0;
-      result.append_all(path);
+      result.append_all(this.path);
     }
     while (index < components.size()) {
       final string component = (string) components.get(index);
@@ -54,12 +54,12 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
         continue;
       } else if (ideal.machine.elements.runtime_util.values_equal(component, resource_util.PARENT_CATALOG)) {
         if (result.is_empty()) {
-          if (the_resource_store.allow_up()) {
+          if (this.the_resource_store.allow_up()) {
             result.append(component);
           } else { }
         } else {
           if (ideal.machine.elements.runtime_util.values_equal(result.last(), resource_util.PARENT_CATALOG)) {
-            assert the_resource_store.allow_up();
+            assert this.the_resource_store.allow_up();
             result.append(component);
           } else {
             result.remove_last();
@@ -74,13 +74,13 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     } else if (result.is_empty()) {
       result.append(resource_util.CURRENT_CATALOG);
     }
-    return new base_resource_identifier(the_resource_store, result.frozen_copy());
+    return new base_resource_identifier(this.the_resource_store, result.frozen_copy());
   }
   public @Override resource_identifier resolve(final string name, final @Nullable extension the_extension) {
     if (the_extension != null) {
-      return resolve(new base_string(name, the_extension.dot_name()));
+      return this.resolve(new base_string(name, the_extension.dot_name()));
     } else {
-      return resolve(name);
+      return this.resolve(name);
     }
   }
 }

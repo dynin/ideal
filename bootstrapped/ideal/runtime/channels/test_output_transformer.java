@@ -42,7 +42,7 @@ public class test_output_transformer {
     final appender<string> the_appender = new appender<string>();
     final output_transformer<string, string> the_transformer = new output_transformer<string, string>(new function1<string, string>() {
       @Override public string call(string first) {
-        return test_transform(first);
+        return test_output_transformer.test_transform(first);
       }
     }, the_appender);
     the_transformer.write(new base_string("foo"));

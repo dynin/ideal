@@ -1347,20 +1347,14 @@ public class to_java_transformer extends base_transformer {
     } else if (the_operator == operator.IS_NOT_OPERATOR) {
       return transform_is(true, arguments.get(0), get_type(arguments.get(1)), the_origin);
     } else if (the_operator == operator.EQUAL_TO) {
-      type first_type = result_type(arguments.get(0));
-      type second_type = result_type(arguments.get(1));
-
-      boolean is_primitive = java_library.is_mapped(first_type.principal()) ||
-          java_library.is_mapped(second_type.principal());
-      boolean is_reference_equality =
-          is_reference_equality(arguments.get(0)) || is_reference_equality(arguments.get(1));
-
-      if (!is_primitive && !is_reference_equality) {
-        construct values_equal = new resolve_construct(make_type(java_library.runtime_util_class(),
-            the_origin), new name_construct(OBJECTS_EQUAL_NAME, the_origin), the_origin);
-        return make_call(values_equal, transform_parameters(arguments), the_origin);
+      if (use_objects_equal(arguments)) {
+        return objects_equal(arguments, the_origin);
       }
     } else if (the_operator == operator.NOT_EQUAL_TO) {
+      if (use_objects_equal(arguments)) {
+        return new operator_construct(operator.LOGICAL_NOT, objects_equal(arguments, the_origin),
+            the_origin);
+      }
       // TODO: convert into an equivalence function call if the argument is not a primitive.
     } else if (the_operator == operator.CONCATENATE) {
       if (!is_string_type(arguments.get(0)) || !is_string_type(arguments.get(1))) {
@@ -1379,6 +1373,22 @@ public class to_java_transformer extends base_transformer {
 
     return new operator_construct(map_operator(the_operator), transform_parameters(arguments),
         the_origin);
+  }
+
+  private boolean use_objects_equal(readonly_list<action> arguments) {
+    assert arguments.size() == 2;
+    boolean is_primitive =
+        is_java_primitive(arguments.get(0)) || is_java_primitive(arguments.get(1));
+    boolean is_reference_equality =
+        is_reference_equality(arguments.get(0)) || is_reference_equality(arguments.get(1));
+
+    return !is_primitive && !is_reference_equality;
+  }
+
+  private construct objects_equal(readonly_list<action> arguments, origin the_origin) {
+    construct values_equal = new resolve_construct(make_type(java_library.runtime_util_class(),
+        the_origin), new name_construct(OBJECTS_EQUAL_NAME, the_origin), the_origin);
+    return make_call(values_equal, transform_parameters(arguments), the_origin);
   }
 
   public construct transform_cast(action expression, type the_type, origin the_origin) {
@@ -1421,6 +1431,7 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
+  // TODO: make three methods below into a generic function.
   private boolean is_string_type(action the_action) {
     boolean result = result_type(the_action).principal() == java_library.string_type();
     if (result) {
@@ -1445,6 +1456,20 @@ public class to_java_transformer extends base_transformer {
     if (the_action instanceof promotion_action) {
       the_action = ((promotion_action) the_action).get_action();
       return result_type(the_action).is_subtype_of(reference_equality);
+    }
+
+    return false;
+  }
+
+  private boolean is_java_primitive(action the_action) {
+    boolean result = java_library.is_mapped(result_type(the_action).principal());
+    if (result) {
+      return true;
+    }
+
+    if (the_action instanceof promotion_action) {
+      the_action = ((promotion_action) the_action).get_action();
+      return java_library.is_mapped(result_type(the_action).principal());
     }
 
     return false;

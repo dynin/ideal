@@ -9,7 +9,7 @@ import ideal.machine.elements.runtime_util;
 class test_runtime_util {
 
   private class test1 {
-    implements data;
+    implements data, equality_comparable;
 
     public test1(integer i, string s) {
       this.i = i;
@@ -53,6 +53,9 @@ class test_runtime_util {
     assert !runtime_util.values_equal(v1, v3);
     assert !runtime_util.values_equal(v1, v4);
     assert !runtime_util.values_equal(v4, v3);
+    assert v1 != v3;
+    assert v1 != v4;
+    assert v4 != v3;
   }
 
   private immutable list[readonly data] make_list(readonly data first, readonly data second) {

@@ -13,42 +13,42 @@ import javax.annotation.Nullable;
 
 public class simple_name extends debuggable implements action_name, displayable {
   public static final char the_underscore = '_';
-  public static final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>(the_underscore);
+  public static final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>(simple_name.the_underscore);
   private static final dictionary<immutable_list<string>, simple_name> all_names = new hash_dictionary<immutable_list<string>, simple_name>();
   public final immutable_list<string> segments;
   private simple_name(final immutable_list<string> segments) {
     this.segments = segments;
   }
   public @Override string to_string() {
-    if (segments.size() == 1) {
-      return segments.first();
+    if (this.segments.size() == 1) {
+      return this.segments.first();
     } else {
       final string_writer the_writer = new string_writer();
-      for (int i = 0; i < segments.size(); i += 1) {
-        the_writer.write_all(segments.get(i));
-        if (i != segments.size() - 1) {
-          the_writer.write(the_underscore);
+      for (int i = 0; i < this.segments.size(); i += 1) {
+        the_writer.write_all(this.segments.get(i));
+        if (i != this.segments.size() - 1) {
+          the_writer.write(simple_name.the_underscore);
         }
       }
       return the_writer.extract_elements();
     }
   }
   public @Override string display() {
-    return to_string();
+    return this.to_string();
   }
   public static simple_name make_from_segments(final immutable_list<string> segments) {
     assert segments.is_not_empty();
-    final @Nullable simple_name existing_name = all_names.get(segments);
+    final @Nullable simple_name existing_name = simple_name.all_names.get(segments);
     if (existing_name != null) {
       return existing_name;
     }
     final simple_name result = new simple_name(segments);
-    all_names.put(segments, result);
+    simple_name.all_names.put(segments, result);
     return result;
   }
   public static simple_name make(final String name) {
     assert name.length() > 0;
-    final immutable_list<immutable_list<Character>> segments_list = the_pattern.split(new base_string(name));
+    final immutable_list<immutable_list<Character>> segments_list = simple_name.the_pattern.split(new base_string(name));
     final base_list<string> segments = new base_list<string>();
     {
       final readonly_list<immutable_list<Character>> segment_list = segments_list;
@@ -57,9 +57,9 @@ public class simple_name extends debuggable implements action_name, displayable 
         segments.append(base_string.from_list(segment));
       }
     }
-    return make_from_segments(segments.frozen_copy());
+    return simple_name.make_from_segments(segments.frozen_copy());
   }
   public static simple_name make(final string name) {
-    return make(utilities.s(name));
+    return simple_name.make(utilities.s(name));
   }
 }

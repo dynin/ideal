@@ -13,6 +13,6 @@ public class string_event implements text_event {
     this.payload = payload;
   }
   public @Override string to_string() {
-    return payload;
+    return this.payload;
   }
 }

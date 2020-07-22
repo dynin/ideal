@@ -14,7 +14,7 @@ public class flavor_profiles {
   }
   public static final base_flavor_profile nameonly_profile = new base_flavor_profile(new base_string("nameonly_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
-      return nameonly_map(first);
+      return flavor_profiles.nameonly_map(first);
     }
   });
   private static type_flavor mutable_map(final type_flavor from) {
@@ -22,7 +22,7 @@ public class flavor_profiles {
   }
   public static final base_flavor_profile mutable_profile = new base_flavor_profile(new base_string("mutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
-      return mutable_map(first);
+      return flavor_profiles.mutable_map(first);
     }
   });
   private static type_flavor shallow_mutable_map(final type_flavor from) {
@@ -34,7 +34,7 @@ public class flavor_profiles {
   }
   public static final base_flavor_profile shallow_mutable_profile = new base_flavor_profile(new base_string("shallow_mutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
-      return shallow_mutable_map(first);
+      return flavor_profiles.shallow_mutable_map(first);
     }
   });
   private static type_flavor immutable_map(final type_flavor from) {
@@ -46,7 +46,7 @@ public class flavor_profiles {
   }
   public static final base_flavor_profile immutable_profile = new base_flavor_profile(new base_string("immutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
-      return immutable_map(first);
+      return flavor_profiles.immutable_map(first);
     }
   });
   private static type_flavor deeply_immutable_map(final type_flavor from) {
@@ -55,29 +55,31 @@ public class flavor_profiles {
     } else if (from == flavor.nameonly_flavor || from == flavor.raw_flavor) {
       return from;
     } else {
-      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown flavor: "), from));
-      return null;
+      {
+        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown flavor: "), from));
+        return null;
+      }
     }
   }
   public static final base_flavor_profile deeply_immutable_profile = new base_flavor_profile(new base_string("deeply_immutable_profile"), new function1<type_flavor, type_flavor>() {
     @Override public type_flavor call(type_flavor first) {
-      return deeply_immutable_map(first);
+      return flavor_profiles.deeply_immutable_map(first);
     }
   });
   public static flavor_profile combine(final flavor_profile flavors1, final flavor_profile flavors2) {
-    if (flavors1 == nameonly_profile || flavors2 == nameonly_profile) {
-      return nameonly_profile;
+    if (flavors1 == flavor_profiles.nameonly_profile || flavors2 == flavor_profiles.nameonly_profile) {
+      return flavor_profiles.nameonly_profile;
     }
-    if (flavors1 == deeply_immutable_profile || flavors2 == deeply_immutable_profile) {
-      return deeply_immutable_profile;
+    if (flavors1 == flavor_profiles.deeply_immutable_profile || flavors2 == flavor_profiles.deeply_immutable_profile) {
+      return flavor_profiles.deeply_immutable_profile;
     }
-    if (flavors1 == immutable_profile || flavors2 == immutable_profile) {
-      return immutable_profile;
+    if (flavors1 == flavor_profiles.immutable_profile || flavors2 == flavor_profiles.immutable_profile) {
+      return flavor_profiles.immutable_profile;
     }
-    if (flavors1 == shallow_mutable_profile || flavors2 == shallow_mutable_profile) {
-      return shallow_mutable_profile;
+    if (flavors1 == flavor_profiles.shallow_mutable_profile || flavors2 == flavor_profiles.shallow_mutable_profile) {
+      return flavor_profiles.shallow_mutable_profile;
     }
-    assert flavors1 == mutable_profile && flavors2 == mutable_profile;
-    return mutable_profile;
+    assert flavors1 == flavor_profiles.mutable_profile && flavors2 == flavor_profiles.mutable_profile;
+    return flavor_profiles.mutable_profile;
   }
 }

@@ -21,14 +21,16 @@ public class name_utilities {
   }
   public static simple_name make_numbered_name(final int index) {
     if (index == 0) {
-      return FIRST;
+      return name_utilities.FIRST;
     } else if (index == 1) {
-      return SECOND;
+      return name_utilities.SECOND;
     } else if (index == 2) {
-      return THIRD;
+      return name_utilities.THIRD;
     } else {
-      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Don't know how to count up to "), index));
-      return null;
+      {
+        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Don\'t know how to count up to "), index));
+        return null;
+      }
     }
   }
   public static simple_name join(final simple_name first, final simple_name second) {
@@ -42,11 +44,11 @@ public class name_utilities {
     int index = 0;
     while (index < name.size()) {
       final string_writer the_writer = new string_writer();
-      while (index < name.size() && the_character_handler.is_upper_case(name.get(index))) {
-        the_writer.write(the_character_handler.to_lower_case(name.get(index)));
+      while (index < name.size() && name_utilities.the_character_handler.is_upper_case(name.get(index))) {
+        the_writer.write(name_utilities.the_character_handler.to_lower_case(name.get(index)));
         index += 1;
       }
-      while (index < name.size() && !the_character_handler.is_upper_case(name.get(index))) {
+      while (index < name.size() && !name_utilities.the_character_handler.is_upper_case(name.get(index))) {
         the_writer.write(name.get(index));
         index += 1;
       }
@@ -55,8 +57,10 @@ public class name_utilities {
     if (segments.is_not_empty()) {
       return simple_name.make_from_segments(segments.frozen_copy());
     } else {
-      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Can't parse name "), name));
-      return null;
+      {
+        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Can\'t parse name "), name));
+        return null;
+      }
     }
   }
 }

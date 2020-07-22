@@ -16,6 +16,6 @@ public class keyword extends base_token_type {
     super(name);
   }
   public simple_name keyword_name() {
-    return simple_name.make(name());
+    return simple_name.make(this.name());
   }
 }

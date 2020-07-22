@@ -15,12 +15,12 @@ public class base_subtype_tag extends debuggable implements subtype_tag, readonl
     this.the_name = simple_name.make(the_name);
   }
   public simple_name name() {
-    return the_name;
+    return this.the_name;
   }
   public string to_string() {
-    return name_utilities.in_brackets(the_name);
+    return name_utilities.in_brackets(this.the_name);
   }
   public string display() {
-    return to_string();
+    return this.to_string();
   }
 }

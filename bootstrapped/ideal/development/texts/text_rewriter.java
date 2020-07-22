@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 public abstract class text_rewriter extends text_visitor<text_fragment> {
   public text_fragment rewrite(final text_fragment fragment) {
-    return process(fragment);
+    return this.process(fragment);
   }
   protected abstract text_fragment rewrite_element(element_id id, immutable_dictionary<attribute_id, string> attributes, @Nullable text_fragment children);
   protected @Override text_fragment process_string(final string s) {
@@ -20,9 +20,9 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
   protected @Override text_fragment process_element(final text_element element) {
     @Nullable text_fragment children = element.children();
     if (children != null) {
-      children = rewrite(children);
+      children = this.rewrite(children);
     }
-    return rewrite_element(element.get_id(), element.attributes(), children);
+    return this.rewrite_element(element.get_id(), element.attributes(), children);
   }
   protected @Override text_fragment process_special(final special_text t) {
     return t;
@@ -33,7 +33,7 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
       final readonly_list<text_node> source_list = nodes.nodes();
       for (int source_index = 0; source_index < source_list.size(); source_index += 1) {
         final text_node source = source_list.get(source_index);
-        result.append(process(source));
+        result.append(this.process(source));
       }
     }
     return text_util.join(result);

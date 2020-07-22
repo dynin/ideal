@@ -22,10 +22,10 @@ public enum declaration_pass implements deeply_immutable_data, stringable, reado
     return this.ordinal() > other.ordinal();
   }
   public @Override string to_string() {
-    return ideal.machine.elements.runtime_util.concatenate(new base_string(""), name());
+    return ideal.machine.elements.runtime_util.concatenate(new base_string(""), this.name());
   }
   public @Override string display() {
-    return to_string();
+    return this.to_string();
   }
   public static declaration_pass last() {
     return declaration_pass.METHODS_AND_VARIABLES;

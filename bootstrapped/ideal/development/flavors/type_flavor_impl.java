@@ -19,18 +19,18 @@ public class type_flavor_impl extends debuggable implements type_flavor, readonl
     this.superflavors = declared_superflavors.frozen_copy();
   }
   public @Override simple_name name() {
-    return the_name;
+    return this.the_name;
   }
   public @Override flavor_profile get_profile() {
-    return profile;
+    return this.profile;
   }
   public @Override immutable_list<type_flavor> get_superflavors() {
-    return superflavors;
+    return this.superflavors;
   }
   public @Override string to_string() {
-    return the_name.to_string();
+    return this.the_name.to_string();
   }
   public @Override string display() {
-    return to_string();
+    return this.to_string();
   }
 }

@@ -22,15 +22,15 @@ public class base_token_type extends debuggable implements token_type, readonly_
     this(name, -1);
   }
   public @Override string name() {
-    return the_name;
+    return this.the_name;
   }
   public @Override int symbol() {
-    return the_symbol;
+    return this.the_symbol;
   }
   public @Override string to_string() {
-    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("\""), the_name), new base_string("\""));
+    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("\""), this.the_name), new base_string("\""));
   }
   public @Override string display() {
-    return the_name;
+    return this.the_name;
   }
 }

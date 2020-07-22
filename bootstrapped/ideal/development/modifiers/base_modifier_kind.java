@@ -14,12 +14,12 @@ public class base_modifier_kind extends debuggable implements modifier_kind, rea
     this.the_name = simple_name.make(name);
   }
   public @Override simple_name name() {
-    return the_name;
+    return this.the_name;
   }
   public @Override string to_string() {
-    return name_utilities.in_brackets(the_name);
+    return name_utilities.in_brackets(this.the_name);
   }
   public @Override string display() {
-    return to_string();
+    return this.to_string();
   }
 }

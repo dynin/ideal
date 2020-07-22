@@ -13,14 +13,14 @@ import javax.annotation.Nullable;
 
 public class summary_extractor extends text_visitor<string> {
   public static string get_summary(final text_fragment the_text) {
-    return instance.process(the_text);
+    return summary_extractor.instance.process(the_text);
   }
   public static final summary_extractor instance = new summary_extractor();
   private static final char dot = '.';
-  private static final singleton_pattern<Character> dot_pattern = new singleton_pattern<Character>(dot);
+  private static final singleton_pattern<Character> dot_pattern = new singleton_pattern<Character>(summary_extractor.dot);
   private summary_extractor() { }
   protected @Override string process_string(final string the_string) {
-    final @Nullable range range = dot_pattern.find_in(the_string, 0);
+    final @Nullable range range = summary_extractor.dot_pattern.find_in(the_string, 0);
     if (range == null) {
       return the_string;
     } else {
@@ -30,9 +30,9 @@ public class summary_extractor extends text_visitor<string> {
   private string process_list(final immutable_list<text_node> nodes) {
     final string_writer result = new string_writer();
     for (int i = 0; i < nodes.size(); i += 1) {
-      final string s = process(nodes.get(i));
+      final string s = this.process(nodes.get(i));
       result.write_all(s);
-      if (s.is_not_empty() && s.last() == dot) {
+      if (s.is_not_empty() && s.last() == summary_extractor.dot) {
         break;
       }
     }
@@ -41,13 +41,13 @@ public class summary_extractor extends text_visitor<string> {
   protected @Override string process_element(final text_element element) {
     final @Nullable text_fragment children = element.children();
     if (children != null) {
-      return process(children);
+      return this.process(children);
     } else {
       return new base_string("");
     }
   }
   protected @Override string process_nodes(final list_text_node nodes_list) {
-    return process_list(nodes_list.nodes());
+    return this.process_list(nodes_list.nodes());
   }
   protected @Override string process_special(final special_text t) {
     return t.to_plain_text();

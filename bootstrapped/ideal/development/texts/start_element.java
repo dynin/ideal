@@ -13,9 +13,9 @@ public class start_element extends debuggable implements text_event {
     this.id = id;
   }
   public element_id get_id() {
-    return id;
+    return this.id;
   }
   public @Override string to_string() {
-    return new base_string(new base_string("<"), id.to_string(), new base_string(">"));
+    return new base_string(new base_string("<"), this.id.to_string(), new base_string(">"));
   }
 }

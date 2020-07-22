@@ -17,18 +17,18 @@ public class base_kind extends debuggable implements kind, readonly_displayable 
     this.the_default_profile = the_default_profile;
   }
   public @Override simple_name name() {
-    return the_name;
+    return this.the_name;
   }
   public @Override flavor_profile default_profile() {
-    return the_default_profile;
+    return this.the_default_profile;
   }
   public @Override boolean is_namespace() {
-    return the_default_profile == flavor_profiles.nameonly_profile;
+    return this.the_default_profile == flavor_profiles.nameonly_profile;
   }
   public @Override string to_string() {
-    return the_name.to_string();
+    return this.the_name.to_string();
   }
   public @Override string display() {
-    return to_string();
+    return this.to_string();
   }
 }

@@ -18,20 +18,20 @@ public class base_flavor_profile extends debuggable implements flavor_profile, r
     this.flavor_map = flavor_map;
   }
   public type_flavor map(final type_flavor from) {
-    return flavor_map.call(from);
+    return this.flavor_map.call(from);
   }
   public @Override type_flavor default_flavor() {
-    return map(flavor.DEFAULT_FLAVOR);
+    return this.map(flavor.DEFAULT_FLAVOR);
   }
   public @Override boolean supports(final type_flavor flavor) {
-    return map(flavor) == flavor;
+    return this.map(flavor) == flavor;
   }
   private @Nullable immutable_list<type_flavor> generated_supported_flavors_cache;
   public @Override immutable_list<type_flavor> supported_flavors() {
-    @Nullable immutable_list<type_flavor> result = generated_supported_flavors_cache;
+    @Nullable immutable_list<type_flavor> result = this.generated_supported_flavors_cache;
     if (result == null) {
-      result = generated_supported_flavors_compute();
-      generated_supported_flavors_cache = result;
+      result = this.generated_supported_flavors_compute();
+      this.generated_supported_flavors_cache = result;
     }
     return result;
   }
@@ -49,9 +49,9 @@ public class base_flavor_profile extends debuggable implements flavor_profile, r
     return filtered_flavors.frozen_copy();
   }
   public @Override string to_string() {
-    return name;
+    return this.name;
   }
   public @Override string display() {
-    return name;
+    return this.name;
   }
 }

@@ -32,6 +32,6 @@ public class special_name extends debuggable implements action_name {
     this(name);
   }
   public string to_string() {
-    return name_utilities.in_brackets(name);
+    return name_utilities.in_brackets(this.name);
   }
 }

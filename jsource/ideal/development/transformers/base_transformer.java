@@ -151,9 +151,8 @@ public class base_transformer extends analyzable_visitor<Object> {
   }
 
   public construct process_block(block_declaration the_block) {
-    origin the_origin = the_block;
-    return new block_construct(to_annotations(the_block.annotations(), true, the_origin),
-        transform1(the_block.get_body()), the_origin);
+    // TODO: this should always be overriden
+    return process_default(the_block);
   }
 
   public construct process_conditional(conditional_analyzer the_conditional) {

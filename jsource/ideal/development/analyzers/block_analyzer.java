@@ -9,9 +9,7 @@
 package ideal.development.analyzers;
 
 import ideal.library.elements.*;
-import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
-import ideal.runtime.reflections.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
 import ideal.development.actions.*;
@@ -25,7 +23,7 @@ import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 
 public class block_analyzer extends declaration_analyzer<origin>
-    implements block_declaration, action {
+    implements block_declaration {
 
   private static final special_name BLOCK_NAME =
       new special_name(new base_string("{"), new base_string("block_analyzer"));
@@ -58,13 +56,12 @@ public class block_analyzer extends declaration_analyzer<origin>
     return BLOCK_NAME;
   }
 
-  //@Override
+  @Override
   public action get_body_action() {
     assert body_action != null;
     return body_action;
   }
 
-  @Override
   public analyzable get_body() {
     return body;
   }
@@ -93,27 +90,14 @@ public class block_analyzer extends declaration_analyzer<origin>
 
   @Override
   protected analysis_result do_get_result() {
-    return this;
-  }
-
-  @Override
-  public declaration get_declaration() {
-    return this;
-  }
-
-  @Override
-  public abstract_value result() {
-    return body_action.result();
-  }
-
-  @Override
-  public action bind_from(action new_from, origin source) {
-    // Should never happen, ok to ignore it.
-    return this;
-  }
-
-  @Override
-  public entity_wrapper execute(execution_context exec_context) {
-    return body_action.execute(exec_context);
+    analysis_result result = body.analyze();
+    assert !(result instanceof error_signal);
+    block_action the_block_action = new block_action(this);
+    if (result instanceof action_plus_constraints) {
+      return new action_plus_constraints(the_block_action,
+          ((action_plus_constraints) result).the_constraints);
+    } else {
+      return the_block_action;
+    }
   }
 }

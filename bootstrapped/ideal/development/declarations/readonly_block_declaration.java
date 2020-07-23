@@ -13,5 +13,5 @@ import ideal.development.modifiers.*;
 
 public interface readonly_block_declaration extends readonly_declaration, any_block_declaration {
   annotation_set annotations();
-  analyzable get_body();
+  action get_body_action();
 }

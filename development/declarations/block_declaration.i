@@ -9,5 +9,5 @@ interface block_declaration {
   extends declaration;
 
   annotation_set annotations;
-  analyzable get_body;
+  action get_body_action;
 }

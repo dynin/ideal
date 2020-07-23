@@ -702,7 +702,7 @@ public class to_java_transformer extends base_transformer {
           append_static(annotations, the_origin);
         }
         result.append(process_procedure(the_procedure, annotations));
-      } else if (decl instanceof block_analyzer) {
+      } else if (decl instanceof block_declaration) {
         // TODO: make sure this is a static block...
         result.append_all(transform1(decl));
       } else if (decl instanceof import_analyzer) {
@@ -1199,9 +1199,8 @@ public class to_java_transformer extends base_transformer {
   @Override
   public construct process_block(block_declaration the_block) {
     origin the_origin = the_block;
-    action body = ((block_analyzer) the_block).get_body_action();
     return new block_construct(to_annotations(the_block.annotations(), true, the_origin),
-        transform_action_list(body), the_origin);
+        transform_action_list(the_block.get_body_action()), the_origin);
   }
 
   private boolean is_explicit_reference(action the_action) {
@@ -1566,6 +1565,11 @@ public class to_java_transformer extends base_transformer {
     return new constraint_construct(transform_action(the_constraint_action.expression), the_origin);
   }
 
+  public construct process_block_action(block_action the_block_action) {
+    origin the_origin = the_block_action;
+    return process_block(the_block_action.get_declaration());
+  }
+
   /*
   @Override
   public Object process_extension(extension_construct the_construct) {
@@ -1911,8 +1915,8 @@ public class to_java_transformer extends base_transformer {
       return process_constraint_action((constraint_action) the_action);
     }
 
-    if (the_action instanceof block_analyzer) {
-      return process_block((block_analyzer) the_action);
+    if (the_action instanceof block_action) {
+      return process_block_action((block_action) the_action);
     }
 
     utilities.panic("processing action " + the_action.getClass() + ": " + the_action);

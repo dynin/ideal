@@ -40,8 +40,8 @@ public class constraint_analyzer extends single_pass_analyzer {
 
     analysis_result the_result = expression.analyze();
 
-    // TODO: actually check constraint...
-    action the_action = library().void_instance().to_action(this);
+    origin the_origin = this;
+    action the_action = new constraint_action(action_not_error(expression), the_origin);
 
     if (the_result instanceof action_plus_constraints) {
       immutable_list<constraint> expression_constraints =

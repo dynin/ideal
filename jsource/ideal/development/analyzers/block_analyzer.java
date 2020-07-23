@@ -30,6 +30,7 @@ public class block_analyzer extends declaration_analyzer<origin>
 
   private readonly_list<annotation_construct> annotations;
   private final analyzable body;
+  private @Nullable action body_action;
   private principal_type inside;
 
   public block_analyzer(block_construct source) {
@@ -55,6 +56,12 @@ public class block_analyzer extends declaration_analyzer<origin>
     return BLOCK_NAME;
   }
 
+  //@Override
+  public action get_body_action() {
+    assert body_action != null;
+    return body_action;
+  }
+
   @Override
   public analyzable get_body() {
     return body;
@@ -76,6 +83,8 @@ public class block_analyzer extends declaration_analyzer<origin>
     if (find_error(body) != null) {
       return new error_signal(messages.error_in_block, body, this);
     }
+
+    body_action = action_not_error(body);
 
     return null;
   }

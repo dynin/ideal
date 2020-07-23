@@ -73,7 +73,7 @@ public class return_analyzer extends single_pass_analyzer {
     }
     return_expr = get_context().promote(return_expr, return_type, this);
 
-    return new return_action(return_expr, this);
+    return new return_action(return_expr, the_procedure, return_type, this);
   }
 
   public type return_type() {

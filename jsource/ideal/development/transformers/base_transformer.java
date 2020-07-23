@@ -117,9 +117,7 @@ public class base_transformer extends analyzable_visitor<Object> {
     return the_modifier_kind;
   }
 
-  protected @Nullable construct get_construct(@Nullable analyzable_or_declaration the_analyzable) {
-    @Nullable origin the_origin = the_analyzable;
-
+  protected @Nullable construct get_construct(@Nullable origin the_origin) {
     while (the_origin != null) {
       if (the_origin instanceof construct) {
         return (construct) the_origin;

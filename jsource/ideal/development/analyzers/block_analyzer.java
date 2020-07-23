@@ -9,7 +9,9 @@
 package ideal.development.analyzers;
 
 import ideal.library.elements.*;
+import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.reflections.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
 import ideal.development.actions.*;
@@ -23,7 +25,7 @@ import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 
 public class block_analyzer extends declaration_analyzer<origin>
-    implements block_declaration {
+    implements block_declaration, action {
 
   private static final special_name BLOCK_NAME =
       new special_name(new base_string("{"), new base_string("block_analyzer"));
@@ -91,6 +93,27 @@ public class block_analyzer extends declaration_analyzer<origin>
 
   @Override
   protected analysis_result do_get_result() {
-    return body.analyze();
+    return this;
+  }
+
+  @Override
+  public declaration get_declaration() {
+    return this;
+  }
+
+  @Override
+  public abstract_value result() {
+    return body_action.result();
+  }
+
+  @Override
+  public action bind_from(action new_from, origin source) {
+    // Should never happen, ok to ignore it.
+    return this;
+  }
+
+  @Override
+  public entity_wrapper execute(execution_context exec_context) {
+    return body_action.execute(exec_context);
   }
 }

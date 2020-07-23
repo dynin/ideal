@@ -1556,6 +1556,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   public construct process_list_action(list_action the_list_action) {
+    utilities.panic("list_action: " + the_list_action);
     origin the_origin = the_list_action;
     return new block_construct(transform_parameters(the_list_action.elements()), the_origin);
   }
@@ -1675,8 +1676,10 @@ public class to_java_transformer extends base_transformer {
     return transform_action(the_analyzable_action.the_action);
   }
 
-  public construct process_value(Object the_value, action the_action, origin the_origin) {
+  public construct process_value_action(base_value_action the_value_action) {
     //System.out.println("PV: " + the_value);
+    origin the_origin = the_value_action;
+    Object the_value = the_value_action.the_value;
     if (the_value instanceof singleton_value) {
       principal_type singleton_type = ((singleton_value) the_value).type_bound().principal();
       // Convert missing.instance to null literal
@@ -1700,7 +1703,7 @@ public class to_java_transformer extends base_transformer {
       }
     } else if (the_value instanceof string_value) {
       string_value the_string_value = (string_value) the_value;
-      type the_type = the_action.result().type_bound();
+      type the_type = the_value_action.result().type_bound();
       punctuation_type literal_type = (the_type == library().immutable_character_type()) ?
           punctuation.SINGLE_QUOTE : punctuation.DOUBLE_QUOTE;
       construct result = new literal_construct(new quoted_literal(the_string_value.unwrap(),
@@ -1789,8 +1792,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (the_action instanceof base_value_action) {
-      Object the_value = ((base_value_action) the_action).the_value;
-      return process_value(the_value, the_action, the_origin);
+      return process_value_action((base_value_action) the_action);
     }
 
     if (the_action instanceof dereference_action) {
@@ -1909,6 +1911,10 @@ public class to_java_transformer extends base_transformer {
       return process_constraint_action((constraint_action) the_action);
     }
 
+    if (the_action instanceof block_analyzer) {
+      return process_block((block_analyzer) the_action);
+    }
+
     utilities.panic("processing action " + the_action.getClass() + ": " + the_action);
     return null;
   }
@@ -1986,7 +1992,7 @@ public class to_java_transformer extends base_transformer {
         operator the_operator = (operator) the_name;
         return process_operator(the_bound_procedure, the_operator);
       }
-      main = process_value(the_value, the_bound_procedure, the_origin);
+      main = process_value_action((value_action) the_procedure_action);
     } else {
       main = process_action(the_procedure_action, the_origin);
     }

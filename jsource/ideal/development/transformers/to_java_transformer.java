@@ -1115,19 +1115,12 @@ public class to_java_transformer extends base_transformer {
 
     type var_type = the_variable.value_type();
     construct type;
-    if (the_variable.get_type_analyzable() == null) {
-      if (type_utilities.is_union(var_type)) {
-        annotations.append(make_nullable(the_origin));
-        type not_null_type = remove_null_type(var_type);
-        type = make_type_with_mapping(not_null_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
-      } else {
-        type = make_type(var_type, the_origin);
-      }
-    } else if (type_utilities.is_union(var_type)) {
+    if (type_utilities.is_union(var_type)) {
       annotations.append(make_nullable(the_origin));
-      type = make_type(remove_null_type(var_type), the_origin);
+      type not_null_type = remove_null_type(var_type);
+      type = make_type_with_mapping(not_null_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
     } else {
-      type = transform(the_variable.get_type_analyzable());
+      type = make_type(var_type, the_origin);
     }
 
     @Nullable construct init = the_variable.init_action() != null ?
@@ -1756,6 +1749,7 @@ public class to_java_transformer extends base_transformer {
     return null;
   }
 
+  @Override
   public construct transform_action(action the_action) {
     origin the_origin = the_action;
     return process_action(the_action, the_origin);

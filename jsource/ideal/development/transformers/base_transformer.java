@@ -129,6 +129,11 @@ public class base_transformer extends analyzable_visitor<Object> {
     return null;
   }
 
+  public construct transform_action(action the_action) {
+    utilities.panic("transform_action: " + the_action);
+    return null;
+  }
+
   @Override
   public construct process_default(analyzable_or_declaration the_analyzable) {
     utilities.panic("base_transformer.process_default()");
@@ -398,7 +403,7 @@ public class base_transformer extends analyzable_visitor<Object> {
 
   public construct process_variable(variable_declaration the_variable) {
     origin the_origin = the_variable;
-    construct the_type = transform(the_variable.get_type_analyzable());
+    construct the_type = make_type(the_variable.value_type(), the_origin);
     /*
     if (the_variable.value_type() != null) {
       the_type = make_type(the_variable.value_type(), the_origin);
@@ -412,6 +417,6 @@ public class base_transformer extends analyzable_visitor<Object> {
     boolean skip_access = false;
     return new variable_construct(to_annotations(the_variable.annotations(), skip_access,
         the_origin), the_type, the_variable.short_name(), new empty<annotation_construct>(),
-        transform(the_variable.initializer()), the_origin);
+        transform_action(the_variable.init_action()), the_origin);
   }
 }

@@ -16,8 +16,6 @@ interface variable_declaration {
   override type value_type;
   override type reference_type;
   boolean declared_as_reference;
-  analyzable or null get_type_analyzable;
-  analyzable or null initializer;
   action or null init_action;
   variable_declaration specialize(specialization_context context, principal_type new_parent);
 }

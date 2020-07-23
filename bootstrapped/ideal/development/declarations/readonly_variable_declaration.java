@@ -21,7 +21,5 @@ public interface readonly_variable_declaration extends readonly_declaration, rea
   type value_type();
   type reference_type();
   boolean declared_as_reference();
-  @Nullable analyzable get_type_analyzable();
-  @Nullable analyzable initializer();
   @Nullable action init_action();
 }

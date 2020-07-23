@@ -103,16 +103,6 @@ public class variable_analyzer extends declaration_analyzer
   }
 
   @Override
-  public @Nullable analyzable get_type_analyzable() {
-    return variable_type;
-  }
-
-  @Override
-  public @Nullable analyzable initializer() {
-    return init;
-  }
-
-  @Override
   public @Nullable action init_action() {
     if (init_action != null) {
       return init_action;
@@ -285,15 +275,7 @@ public class variable_analyzer extends declaration_analyzer
     assert get_category() == variable_category.LOCAL ||
         get_category() == variable_category.INSTANCE;
 
-    @Nullable analyzable new_init = null;
-    if (init != null) {
-      new_init = init.specialize(new_context, new_parent);
-    }
-
-    @Nullable analyzable type_analyzable = null;
-    if (init != null) {
-      type_analyzable = variable_type.specialize(new_context, new_parent);
-    }
+    //type_analyzable = variable_type.specialize(new_context, new_parent);
 
     // TODO: signal errors instead of asserts.
     action new_value_action;
@@ -301,8 +283,8 @@ public class variable_analyzer extends declaration_analyzer
       new_value_action = analyzer_utilities.to_action(
           variable_type.specialize(new_context, new_parent));
     } else {
-      assert new_init != null;
-      new_value_action = analyzer_utilities.to_action(new_init);
+      assert init != null;
+      new_value_action = analyzer_utilities.to_action(init.specialize(new_context, new_parent));
     }
 
     // TODO: handle errors better.
@@ -321,7 +303,7 @@ public class variable_analyzer extends declaration_analyzer
     type new_reference_type = library().get_reference(reference_flavor, new_value_type);
 
     specialized_variable new_variable = new specialized_variable(this, new_parent, new_value_type,
-        new_reference_type, declared_as_reference, type_analyzable, new_init);
+        new_reference_type, declared_as_reference, new_value_action);
     new_variable.add(get_context());
     return new_variable;
   }

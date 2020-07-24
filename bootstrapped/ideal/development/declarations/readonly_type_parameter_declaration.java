@@ -11,9 +11,6 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-import javax.annotation.Nullable;
-
 public interface readonly_type_parameter_declaration extends readonly_type_declaration, any_type_parameter_declaration {
   type variable_type();
-  @Nullable analyzable get_type_analyzable();
 }

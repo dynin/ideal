@@ -9,5 +9,4 @@ interface type_parameter_declaration {
   extends type_declaration;
 
   type variable_type;
-  analyzable or null get_type_analyzable;
 }

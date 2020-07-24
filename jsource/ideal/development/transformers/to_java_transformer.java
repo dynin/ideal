@@ -1240,12 +1240,10 @@ public class to_java_transformer extends base_transformer {
       utilities.panic("Type bound is not a value but " + type_bound);
     }
     @Nullable construct type_construct;
-    if (should_omit_type_bound(type_bound.principal()) ||
-        the_type_parameter.get_type_analyzable() == null) {
+    if (should_omit_type_bound(type_bound.principal())) {
       type_construct = null;
     } else {
-      type_construct = transform_with_mapping(the_type_parameter.get_type_analyzable(),
-          mapping.MAP_TO_WRAPPER_TYPE);
+      type_construct = make_type_with_mapping(type_bound, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
     }
     return new variable_construct(new empty<annotation_construct>(), type_construct,
         the_type_parameter.short_name(), new empty<annotation_construct>(), null, the_origin);

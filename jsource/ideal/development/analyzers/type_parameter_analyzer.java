@@ -67,11 +67,6 @@ public class type_parameter_analyzer extends declaration_analyzer
   }
 
   @Override
-  public @Nullable analyzable get_type_analyzable() {
-    return parameter_analyzable;
-  }
-
-  @Override
   public principal_type get_declared_type() {
     assert new_master != null;
     return new_master;

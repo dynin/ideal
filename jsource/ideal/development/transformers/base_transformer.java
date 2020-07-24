@@ -44,18 +44,11 @@ public class base_transformer extends analyzable_visitor<Object> {
     return common_library.get_instance();
   }
 
-/*
-  protected final annotation_construct transform(annotation_construct mod) {
-    return (annotation_construct) transform((construct) mod);
-  }*/
-
-  public list<construct> transform1(analyzable_or_declaration the_analyzable) {
-    if (the_analyzable instanceof statement_list_analyzer) {
-      return transform_list(((statement_list_analyzer) the_analyzable).elements());
-    } else if (the_analyzable instanceof declaration_list_analyzer) {
-      return transform_list(((declaration_list_analyzer) the_analyzable).elements());
+  public list<construct> transform1(declaration the_analyzable) {
+    if (the_analyzable instanceof declaration_list_analyzer) {
+      return transform_list(((declaration_list_analyzer) the_analyzable).declarations());
     } else {
-      return transform_list(new base_list<analyzable_or_declaration>(the_analyzable));
+      return transform_list(new base_list<declaration>(the_analyzable));
     }
   }
 
@@ -72,19 +65,15 @@ public class base_transformer extends analyzable_visitor<Object> {
         continue;
       }
 
-      if (the_analyzable instanceof statement_list_analyzer) {
-        result.append_all(transform_list(((statement_list_analyzer) the_analyzable).elements()));
+      Object transformed = process(the_analyzable);
+      if (transformed instanceof construct) {
+        result.append((construct) transformed);
+      } else if (transformed instanceof readonly_list/*<construct>*/) {
+        result.append_all((readonly_list<construct>) transformed);
+      } else if (transformed == null) {
+        // nothing
       } else {
-        Object transformed = process(the_analyzable);
-        if (transformed instanceof construct) {
-          result.append((construct) transformed);
-        } else if (transformed instanceof readonly_list/*<construct>*/) {
-          result.append_all((readonly_list<construct>) transformed);
-        } else if (transformed == null) {
-          // nothing
-        } else {
-          utilities.panic("Unknown result of transform " + transformed);
-        }
+        utilities.panic("Unknown result of transform " + transformed);
       }
     }
     return result;

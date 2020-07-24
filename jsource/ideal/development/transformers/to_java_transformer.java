@@ -173,17 +173,8 @@ public class to_java_transformer extends base_transformer {
     return true;
   }
 
-  private construct transform_with_mapping(analyzable_or_declaration the_analyzable,
-      mapping new_mapping) {
-    mapping old_mapping_strategy = mapping_strategy;
-    mapping_strategy = new_mapping;
-    construct result = transform(the_analyzable);
-    mapping_strategy = old_mapping_strategy;
-    return result;
-  }
-
-  private readonly_list<construct> transform_list_with_mapping(
-      readonly_list<? extends analyzable_or_declaration> the_analyzables, mapping new_mapping) {
+  private readonly_list<construct> transform_parameters_with_mapping(
+      readonly_list<type_parameter_declaration> the_analyzables, mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
     mapping_strategy = new_mapping;
     readonly_list<construct> result = transform_list(the_analyzables);
@@ -784,7 +775,7 @@ public class to_java_transformer extends base_transformer {
 
     if (the_type_declaration.get_parameters() != null) {
       type_parameters = new list_construct(
-          transform_list_with_mapping(the_type_declaration.get_parameters(),
+          transform_parameters_with_mapping(the_type_declaration.get_parameters(),
               mapping.MAP_TO_WRAPPER_TYPE),
           grouping_type.ANGLE_BRACKETS, false, the_origin);
     }

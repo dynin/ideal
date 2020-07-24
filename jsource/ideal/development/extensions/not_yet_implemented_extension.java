@@ -36,14 +36,14 @@ public class not_yet_implemented_extension extends declaration_extension {
   @Override
   protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,
       analysis_pass pass) {
-    set_expanded(to_analyzable(library().void_instance()));
+    set_expanded(null);
     return null;
   }
 
   @Override
   protected @Nullable error_signal process_variable(variable_analyzer the_variable,
       analysis_pass pass) {
-    set_expanded(to_analyzable(library().void_instance()));
+    set_expanded(null);
     return null;
   }
 }

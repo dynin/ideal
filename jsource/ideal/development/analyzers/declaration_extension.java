@@ -43,7 +43,8 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   private final extension_modifier_kind the_modifier_kind;
   @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
-  private @Nullable analyzable expanded;
+  private boolean is_expanded_set;
+  private @Nullable declaration expanded;
 
   public declaration_extension(String modifier_kind_name) {
     super(analyzer_utilities.UNINITIALIZED_POSITION);
@@ -55,6 +56,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       the_modifier_kind =
           new extension_modifier_kind(new base_string(modifier_kind_name), this_class);
     }
+    is_expanded_set = false;
   }
 
   @Override
@@ -81,16 +83,19 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     this.the_declaration = the_declaration;
   }
 
-  public void set_expanded(analyzable expanded) {
-    assert this.expanded == null;
+  public void set_expanded(declaration expanded) {
+    assert !is_expanded_set;
+    is_expanded_set = true;
     this.expanded = expanded;
-    analyze_and_ignore_errors(expanded, last_pass);
+    if (expanded instanceof analyzable) {
+      analyze_and_ignore_errors((analyzable) expanded, last_pass);
+    }
   }
 
-  public @Nullable analyzable_or_declaration expand() {
+  public @Nullable declaration expand() {
     if (has_errors()) {
       return null;
-    } else if (expanded != null) {
+    } else if (is_expanded_set) {
       return expanded;
     } else {
       return get_declaration();
@@ -102,8 +107,10 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       return null;
     }
 
-    if (expanded != null) {
-      analyze_and_ignore_errors(expanded, pass);
+    if (is_expanded_set) {
+      if (expanded instanceof analyzable) {
+        analyze_and_ignore_errors((analyzable) expanded, pass);
+      }
       return null;
     }
 
@@ -144,7 +151,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     return library().void_instance().to_action(this);
   }
 
-  protected void display_code(analyzable code) {
+  protected void display_code(declaration code) {
     readonly_list<construct> constructs = new to_java_transformer(java_library.get_instance(),
         get_context()).transform1(code);
     output<text_fragment> out = new plain_formatter(standard_channels.stdout);

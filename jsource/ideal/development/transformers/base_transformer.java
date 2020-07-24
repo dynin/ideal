@@ -142,7 +142,7 @@ public class base_transformer extends analyzable_visitor<Object> {
 
   public construct process_analyzable_action(analyzable_action the_analyzable_action) {
     origin the_origin = the_analyzable_action;
-    action the_action = the_analyzable_action.the_action;
+    action the_action = the_analyzable_action.get_action();
     return process_action(the_action, the_origin);
   }
 
@@ -328,9 +328,9 @@ public class base_transformer extends analyzable_visitor<Object> {
         transform_list(the_procedure.get_parameter_variables()),
             grouping, has_trailing_comma, the_origin);
     return new procedure_construct(to_annotations(the_procedure.annotations(), false, the_origin),
-        transform(the_procedure.get_return()), the_procedure.original_name(),
+        make_type(the_procedure.get_return_type(), the_origin), the_procedure.original_name(),
         parameters, new empty<annotation_construct>(),
-        transform(the_procedure.get_body()), the_origin);
+        transform_action(the_procedure.get_body_action()), the_origin);
   }
 
   public construct process_resolve(resolve_analyzer the_resolve) {

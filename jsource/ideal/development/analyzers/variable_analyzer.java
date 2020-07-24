@@ -311,11 +311,7 @@ public class variable_analyzer extends declaration_analyzer
   @Override
   protected action do_get_result() {
     assert the_variable_action != null;
-    if (init_action == null) {
-      return library().void_instance().to_action(this);
-    } else {
-      return new variable_initializer(the_variable_action, init_action);
-    }
+    return new variable_initializer(the_variable_action, init_action);
   }
 
   @Override

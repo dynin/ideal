@@ -39,6 +39,11 @@ public class loop_action extends base_action {
     this.body = body;
   }
 
+  public action get_body() {
+    assert body != null;
+    return body;
+  }
+
   public void use_break() {
     has_breaks = true;
   }

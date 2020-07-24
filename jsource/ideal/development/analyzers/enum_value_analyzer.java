@@ -97,7 +97,8 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
 
     if (pass == analysis_pass.BODY_CHECK && parameters != null) {
       origin pos = this;
-      analyzable allocate = new analyzable_action(new allocate_action(declared_in_type(), pos));
+      analyzable allocate = new base_analyzable_action(
+          new allocate_action(declared_in_type(), pos));
       analyzable ctor_expression = new resolve_analyzer(allocate, special_name.IMPLICIT_CALL, pos);
       the_constructor_parameters = make_list(parameters.elements);
       analyzable ctor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters,

@@ -55,7 +55,7 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
   public final @Nullable error_signal multi_pass_analysis(analysis_pass pass) {
     if (last_pass.is_before(pass)) {
       if (in_progress) {
-        utilities.panic("Analysys in progress " + this + ": last " + last_pass +
+        utilities.panic("Analysis in progress " + this + ": last " + last_pass +
             ", requested " + pass);
       }
       if (trace_analysis()) {

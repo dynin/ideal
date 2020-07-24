@@ -31,8 +31,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
   private final type return_type;
   private final principal_type parent_type;
   private final readonly_list<variable_declaration> parameter_variables;
-  private final @Nullable analyzable return_analyzable;
-  private final @Nullable analyzable body;
+  private final @Nullable action body_action;
   private final variable_declaration this_declaration;
   private final readonly_list<type> argument_types;
   private final type procedure_type;
@@ -40,14 +39,12 @@ public class specialized_procedure extends debuggable implements procedure_decla
 
   public specialized_procedure(procedure_declaration main, type return_type,
       principal_type parent_type, readonly_list<variable_declaration> parameter_variables,
-      @Nullable analyzable return_analyzable, @Nullable analyzable body,
-      variable_declaration this_declaration) {
+      @Nullable action body_action, variable_declaration this_declaration) {
     this.main = main;
     this.return_type = return_type;
     this.parent_type = parent_type;
     this.parameter_variables = parameter_variables;
-    this.return_analyzable = return_analyzable;
-    this.body = body;
+    this.body_action = body_action;
     this.this_declaration = this_declaration;
 
     assert main.get_category() != procedure_category.STATIC;
@@ -169,21 +166,9 @@ public class specialized_procedure extends debuggable implements procedure_decla
     return main.get_overriden();
   }
 
-
-  @Override
-  public @Nullable analyzable get_return() {
-    return return_analyzable;
-  }
-
-  @Override
-  public @Nullable analyzable get_body() {
-    return body;
-  }
-
   @Override
   public @Nullable action get_body_action() {
-    utilities.panic("specialized_procedure.get_body_action() not implemented");
-    return null;
+    return body_action;
   }
 
   @Override

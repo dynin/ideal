@@ -23,42 +23,6 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 
-public class analyzable_action extends debuggable implements analyzable {
-  public final action the_action;
-
-  public analyzable_action(action the_action) {
-    if (the_action instanceof analyzable) {
-      // TODO: may be do a static method that enforces this?
-      utilities.panic("Don't wrap " + the_action);
-    }
-    this.the_action = the_action;
-  }
-
-  public static analyzable_action from(abstract_value value, origin the_origin) {
-    return new analyzable_action(value.to_action(the_origin));
-  }
-
-  public static analyzable_action nothing(origin the_origin) {
-    return from(common_library.get_instance().void_instance(), the_origin);
-  }
-
-  @Override
-  public action analyze() {
-    return the_action;
-  }
-
-  @Override
-  public analyzable specialize(specialization_context context, principal_type new_parent) {
-    return this;
-  }
-
-  @Override
-  public origin deeper_origin() {
-    return the_action;
-  }
-
-  @Override
-  public string to_string() {
-    return utilities.describe(this, the_action);
-  }
+public interface analyzable_action extends analyzable {
+  action get_action();
 }

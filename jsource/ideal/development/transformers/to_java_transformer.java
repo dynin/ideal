@@ -392,7 +392,7 @@ public class to_java_transformer extends base_transformer {
     readonly_list<construct> parameters = the_list_construct.elements;
     @Nullable readonly_list<construct> body_statements = null;
 
-    if (the_procedure.get_body() != null) {
+    if (the_procedure.get_body_action() != null) {
       boolean is_constructor = the_procedure.get_category() == procedure_category.CONSTRUCTOR;
       boolean void_return = the_procedure.get_return_type().principal() == library().void_type();
       boolean unreachable_result = is_unreachable_result(the_procedure);
@@ -401,7 +401,7 @@ public class to_java_transformer extends base_transformer {
           should_use_wrapper_in_return(the_procedure);
 
       the_enclosing_procedure = the_procedure;
-      list<construct> body = transform1(the_procedure.get_body());
+      list<construct> body = transform_action_list(the_procedure.get_body_action());
       the_enclosing_procedure = null;
       if (add_return) {
         body.append(new return_construct(make_null(the_origin), the_origin));
@@ -416,12 +416,8 @@ public class to_java_transformer extends base_transformer {
     }
 
     @Nullable construct ret;
-    if (the_procedure.get_return() == null) {
-      if (the_procedure.get_category() == procedure_category.CONSTRUCTOR) {
-        ret = null;
-      } else {
-        ret = make_type(the_procedure.get_return_type(), the_origin);
-      }
+    if (the_procedure.get_category() == procedure_category.CONSTRUCTOR) {
+      ret = null;
     } else {
       type return_type = the_procedure.get_return_type();
       if (type_utilities.is_union(return_type)) {
@@ -429,7 +425,7 @@ public class to_java_transformer extends base_transformer {
         ret = make_type(remove_null_type(return_type), the_origin);
       } else if (library().is_reference_type(return_type)) {
         type_flavor ref_flavor = return_type.get_flavor();
-        ret = transform(the_procedure.get_return());
+        ret = make_type(return_type, the_origin);
         if (ref_flavor != mutable_flavor) {
           if (ret instanceof flavor_construct) {
             ret = ((flavor_construct) ret).expr;
@@ -450,11 +446,16 @@ public class to_java_transformer extends base_transformer {
         }
       } else {
         if (should_use_wrapper_in_return(the_procedure)) {
-          ret = transform_with_mapping(the_procedure.get_return(), mapping.MAP_TO_WRAPPER_TYPE);
+          ret = make_type_with_mapping(the_procedure.get_return_type(), the_origin,
+              mapping.MAP_TO_WRAPPER_TYPE);
           // Note: if Java return type is 'Void' (with the capital V),
           // then we may need to insert "return null" to keep javac happy.
         } else {
-          ret = transform(the_procedure.get_return());
+          if (the_procedure.get_return_type() == core_types.unreachable_type()) {
+            ret = make_type(library().void_type(), the_origin);
+          } else {
+            ret = make_type(the_procedure.get_return_type(), the_origin);
+          }
         }
       }
     }
@@ -1478,6 +1479,13 @@ public class to_java_transformer extends base_transformer {
     return new while_construct(true_construct, transform(the_loop.body), the_origin);
   }
 
+  public construct process_loop_action(loop_action the_loop_action) {
+    origin the_origin = the_loop_action;
+    construct true_construct = new name_construct(library().true_value().short_name(), the_origin);
+    return new while_construct(true_construct, transform_action(the_loop_action.get_body()),
+        the_origin);
+  }
+
   @Override
   public construct process_literal(literal_analyzer the_literal_analyzer) {
     return transform_action(get_action(the_literal_analyzer));
@@ -1670,7 +1678,7 @@ public class to_java_transformer extends base_transformer {
     });
 
   public construct process_analyzable_action(analyzable_action the_analyzable_action) {
-    return transform_action(the_analyzable_action.the_action);
+    return transform_action(the_analyzable_action.get_action());
   }
 
   public construct process_value_action(base_value_action the_value_action) {
@@ -1911,6 +1919,10 @@ public class to_java_transformer extends base_transformer {
 
     if (the_action instanceof block_action) {
       return process_block_action((block_action) the_action);
+    }
+
+    if (the_action instanceof loop_action) {
+      return process_loop_action((loop_action) the_action);
     }
 
     utilities.panic("processing action " + the_action.getClass() + ": " + the_action);

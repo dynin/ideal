@@ -121,20 +121,20 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
 
     local_variable_declaration list_declaration =
         new local_variable_declaration(analyzer_utilities.PRIVATE_FINAL_MODIFIERS, list_name,
-        flavor.immutable_flavor, list_type, new analyzable_action(init_action), the_origin);
+        flavor.immutable_flavor, list_type, new base_analyzable_action(init_action), the_origin);
 
     local_variable_declaration index_declaration = new local_variable_declaration(
         analyzer_utilities.PRIVATE_MODIFIERS, index_name,
-        flavor.mutable_flavor, library.immutable_nonnegative_type(), new analyzable_action(
+        flavor.mutable_flavor, library.immutable_nonnegative_type(), new base_analyzable_action(
         new integer_value(0, library.immutable_nonnegative_type()).to_action(the_origin)),
         the_origin);
 
     analyzable index_condition = new parameter_analyzer(
         new resolve_analyzer(operator.LESS, the_origin),
         new base_list<analyzable>(
-          new analyzable_action(index_declaration.dereference_access()),
+          new base_analyzable_action(index_declaration.dereference_access()),
           new resolve_analyzer(
-            new analyzable_action(list_declaration.dereference_access()),
+            new base_analyzable_action(list_declaration.dereference_access()),
             common_library.size_name,
             the_origin
           )
@@ -145,8 +145,8 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     analyzable index_increment = new parameter_analyzer(
         new resolve_analyzer(operator.ADD_ASSIGN, the_origin),
         new base_list<analyzable>(
-          new analyzable_action(index_declaration.get_access()),
-          new analyzable_action(
+          new base_analyzable_action(index_declaration.get_access()),
+          new base_analyzable_action(
             new integer_value(1, library.immutable_nonnegative_type()).to_action(the_origin)
           )
         ),
@@ -154,11 +154,11 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
       );
 
     analyzable element_get = new parameter_analyzer(
-        //new analyzable_action(list_declaration.dereference_access()),
+        //new base_analyzable_action(list_declaration.dereference_access()),
         // TODO: list_declaration.get_access() should work.
         new resolve_analyzer(list_name, the_origin),
         new base_list<analyzable>(
-            new analyzable_action(index_declaration.dereference_access())
+            new base_analyzable_action(index_declaration.dereference_access())
         ),
         the_origin
       );

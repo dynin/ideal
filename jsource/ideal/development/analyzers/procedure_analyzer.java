@@ -121,12 +121,6 @@ public class procedure_analyzer extends declaration_analyzer
     return parameter_variables;
   }
 
-  @Override
-  public @Nullable analyzable get_return() {
-    return return_analyzable;
-  }
-
-  @Override
   public @Nullable analyzable get_body() {
     return body;
   }
@@ -138,14 +132,13 @@ public class procedure_analyzer extends declaration_analyzer
 
   @Override
   public @Nullable action get_body_action() {
-    if (has_errors() || (body != null && has_errors(body))) {
+    if (has_errors() || body == null) {
       return null;
     }
-    if (body != null) {
-      return action_not_error(body);
-    } else {
+    if (has_errors(body)) {
       return null;
     }
+    return action_not_error(body);
   }
 
   public boolean is_pure() {
@@ -324,7 +317,7 @@ public class procedure_analyzer extends declaration_analyzer
         return_analyzable = ret;
         add_dependence(return_analyzable, null, declaration_pass.TYPES_AND_PROMOTIONS);
       } else {
-        return_analyzable = analyzable_action.from(library().void_type(), this);
+        return_analyzable = base_analyzable_action.from(library().void_type(), this);
       }
       @Nullable error_signal return_error = find_error(return_analyzable);
       if (return_error != null) {
@@ -537,14 +530,12 @@ public class procedure_analyzer extends declaration_analyzer
     type_declaration the_declaration = (type_declaration) declared_in_type().get_declaration();
 
     principal_type new_inside = make_block(original_name(), new_parent, this);
-    analyzable return_specialized;
     type new_return_type;
     if (get_category() == procedure_category.CONSTRUCTOR) {
-      return_specialized = null;
       new_return_type = new_parent.get_flavored(flavor.mutable_flavor);
     } else {
       // TODO: what if return_analyzable is null?
-      return_specialized = return_analyzable.specialize(new_context, new_inside);
+      analyzable return_specialized = return_analyzable.specialize(new_context, new_inside);
       abstract_value return_value = analyzer_utilities.to_action(return_specialized).result();
       if (return_value instanceof error_signal) {
         new_return_type = return_value.type_bound();
@@ -557,19 +548,13 @@ public class procedure_analyzer extends declaration_analyzer
       new_parameters.append(parameter_variables.get(i).specialize(new_context, new_inside));
     }
 
-    @Nullable analyzable new_body = body;
     // TODO: specialize body.
-    if (false && body != null) {
-      @Nullable error_signal body_error = find_error(body);
-      if (body_error == null) {
-        new_body = body.specialize(new_context, new_inside);
-      }
-    }
+    action new_body = null;
 
     variable_declaration this_declaration = this_decl != null ?
         this_decl.specialize(new_context, new_parent) : null;
     specialized_procedure result = new specialized_procedure(this, new_return_type, new_parent,
-        new_parameters, return_specialized, new_body, this_declaration);
+        new_parameters, new_body, this_declaration);
     result.add(get_context());
     return result;
   }

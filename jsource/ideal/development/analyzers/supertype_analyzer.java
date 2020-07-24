@@ -45,7 +45,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     this.annotations = annotations;
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
-    this.the_analyzable = analyzable_action.from(the_type, the_origin);
+    this.the_analyzable = base_analyzable_action.from(the_type, the_origin);
   }
 
   @Override

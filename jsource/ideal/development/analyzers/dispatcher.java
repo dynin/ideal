@@ -50,12 +50,12 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_empty(empty_construct source) {
-    return analyzable_action.nothing(source);
+    return base_analyzable_action.nothing(source);
   }
 
   @Override
   public analyzable process_comment(comment_construct source) {
-    return analyzable_action.nothing(source);
+    return base_analyzable_action.nothing(source);
   }
 
   @Override

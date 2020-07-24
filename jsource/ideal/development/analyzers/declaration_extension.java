@@ -127,7 +127,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   public analyzable_action to_analyzable(abstract_value the_abstract_value) {
     origin the_origin = this;
-    return analyzable_action.from(the_abstract_value, the_origin);
+    return base_analyzable_action.from(the_abstract_value, the_origin);
   }
 
   protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,

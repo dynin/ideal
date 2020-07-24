@@ -145,11 +145,7 @@ public class local_variable_declaration extends single_pass_analyzer
 
     get_context().add(declared_in_type(), name, get_access().to_action(the_origin));
 
-    if (init_action == null) {
-      return common_library.get_instance().void_instance().to_action(the_origin);
-    } else {
-      return new variable_initializer(get_access(), init_action);
-    }
+    return new variable_initializer(get_access(), init_action);
   }
 
   @Override

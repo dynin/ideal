@@ -37,7 +37,7 @@ public class use_construct extends extension_construct {
 
   @Override
   public analyzable to_analyzable() {
-    return analyzable_action.nothing(this);
+    return base_analyzable_action.nothing(this);
   }
 
   @Override

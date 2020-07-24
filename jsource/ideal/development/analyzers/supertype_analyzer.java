@@ -58,10 +58,6 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     return tag;
   }
 
-  public analyzable supertype_analyzable() {
-    return the_analyzable;
-  }
-
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 

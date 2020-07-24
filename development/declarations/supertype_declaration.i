@@ -11,7 +11,6 @@ interface supertype_declaration {
   annotation_set annotations;
   type_flavor subtype_flavor;
   subtype_tag tag;
-  analyzable supertype_analyzable;
   type get_supertype;
   supertype_declaration specialize(specialization_context context, principal_type new_parent);
 }

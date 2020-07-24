@@ -823,8 +823,8 @@ public class to_java_transformer extends base_transformer {
         type supertype = supertype_decl.get_supertype();
         kind supertype_kind = supertype.principal().get_kind();
         if (concrete_mode) {
-          construct transformed_supertype = transform_with_mapping(
-              supertype_decl.supertype_analyzable(), mapping.NO_MAPPING);
+          construct transformed_supertype = make_type_with_mapping(
+              supertype_decl.get_supertype(), the_origin, mapping.NO_MAPPING);
           if (supertype_kind == class_kind) {
             if (superclass != null) {
               // TODO: do not panic!
@@ -848,8 +848,8 @@ public class to_java_transformer extends base_transformer {
               if (supertype_profile.supports(flavor)) {
                 construct flavored_supertype;
                 if (flavor == supertype_profile.default_flavor()) {
-                  flavored_supertype = transform_with_mapping(supertype_decl.supertype_analyzable(),
-                      mapping.MAP_TO_WRAPPER_TYPE);
+                  flavored_supertype = make_type_with_mapping(supertype_decl.get_supertype(),
+                      the_origin2, mapping.MAP_TO_WRAPPER_TYPE);
                 } else {
                   flavored_supertype = make_type_with_mapping(supertype.get_flavored(flavor),
                       the_origin2, mapping.MAP_TO_WRAPPER_TYPE);
@@ -864,8 +864,8 @@ public class to_java_transformer extends base_transformer {
             if (subtype_flavor == null) {
               subtype_flavor = supertype.get_flavor();
             }
-            construct flavored_supertype = transform_with_mapping(
-                supertype_decl.supertype_analyzable(), mapping.MAP_TO_WRAPPER_TYPE);
+            construct flavored_supertype = make_type_with_mapping(supertype_decl.get_supertype(),
+                the_origin2, mapping.MAP_TO_WRAPPER_TYPE);
             list<construct> supertype_list = supertype_lists.get(profile.map(subtype_flavor));
             assert supertype_list != null;
             supertype_list.append(flavored_supertype);
@@ -1060,7 +1060,7 @@ public class to_java_transformer extends base_transformer {
         supertype_declaration supertype_decl = (supertype_declaration) decl;
         type supertype = supertype_decl.get_supertype();
         if (supertype.principal().get_kind() != procedure_kind) {
-          extends_types.append(transform(supertype_decl.supertype_analyzable()));
+          extends_types.append(make_type(supertype_decl.get_supertype(), the_origin));
         }
       }
     }

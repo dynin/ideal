@@ -358,7 +358,7 @@ public class base_transformer extends analyzable_visitor<Object> {
     // TODO: add annotation support
     return new supertype_construct(new empty<annotation_construct>(),
         the_supertype.subtype_flavor(), the_supertype.tag(),
-        new base_list<construct>(transform(the_supertype.supertype_analyzable())), the_origin);
+        new base_list<construct>(make_type(the_supertype.get_supertype(), the_origin)), the_origin);
   }
 
   public construct process_target(target_declaration the_target) {

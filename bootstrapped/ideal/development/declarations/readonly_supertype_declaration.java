@@ -15,6 +15,5 @@ public interface readonly_supertype_declaration extends readonly_declaration, an
   annotation_set annotations();
   type_flavor subtype_flavor();
   subtype_tag tag();
-  analyzable supertype_analyzable();
   type get_supertype();
 }

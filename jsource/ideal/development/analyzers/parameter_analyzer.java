@@ -27,6 +27,7 @@ public class parameter_analyzer extends single_pass_analyzer {
   public final readonly_list<analyzable> analyzable_parameters;
 
   public @Nullable action main_action;
+  private @Nullable action_parameters aparams;
   private declaration_pass parameter_pass;
 
   public parameter_analyzer(analyzable main, readonly_list<analyzable> params, origin pos) {
@@ -57,6 +58,10 @@ public class parameter_analyzer extends single_pass_analyzer {
     this.parameter_pass = pass;
   }
 
+  public @Nullable action_parameters get_parameters() {
+    return aparams;
+  }
+
   @Override
   protected analysis_result do_single_pass_analysis() {
     list<action> param_actions = new base_list<action>();
@@ -78,7 +83,7 @@ public class parameter_analyzer extends single_pass_analyzer {
     if (error != null) {
       return new error_signal(messages.error_in_parametrizable, error, this);
     }
-    action_parameters aparams = new action_parameters(param_actions);
+    aparams = new action_parameters(param_actions);
 
     @Nullable error_signal main_error = find_error(main_analyzable);
     if (main_error != null) {

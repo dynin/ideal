@@ -53,14 +53,14 @@ public class base_transformer extends analyzable_visitor<Object> {
   }
 
   public list<construct> transform_list(
-      @Nullable readonly_list<? extends analyzable_or_declaration> the_analyzables) {
+      @Nullable readonly_list<? extends declaration> the_analyzables) {
     if (the_analyzables == null) {
       return null;
     }
 
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < the_analyzables.size(); ++i) {
-      analyzable_or_declaration the_analyzable = the_analyzables.get(i);
+      declaration the_analyzable = the_analyzables.get(i);
       if (the_analyzable == null) {
         continue;
       }
@@ -174,20 +174,7 @@ public class base_transformer extends analyzable_visitor<Object> {
   }
 
   public construct process_enum_value(enum_value_analyzer the_enum_value) {
-    origin the_origin = the_enum_value;
-    name_construct the_name = new name_construct(the_enum_value.short_name(), the_origin);
-    if (the_enum_value.parameters != null) {
-      grouping_type grouping = grouping_type.PARENS;
-      construct the_construct = get_construct(the_enum_value);
-      if (the_construct instanceof parameter_construct) {
-        grouping = ((parameter_construct) the_construct).parameters.grouping;
-      }
-      return new parameter_construct(the_name, new list_construct(
-          transform_list(the_enum_value.constructor_parameters()),
-              grouping, false, the_origin), the_origin);
-    } else {
-      return the_name;
-    }
+    return process_default(the_enum_value);
   }
 
   public construct process_error_signal(error_signal the_error_signal) {
@@ -214,14 +201,6 @@ public class base_transformer extends analyzable_visitor<Object> {
     return new jump_construct(the_jump.the_jump_type, the_origin);
   }
 
-  public construct process_list_initializer(list_initializer_analyzer the_list_initializer) {
-    origin the_origin = the_list_initializer;
-    grouping_type grouping = grouping_type.PARENS;
-    boolean has_trailing_comma = the_list_initializer.analyzable_parameters.size() == 1;
-    return new list_construct(transform_list(the_list_initializer.analyzable_parameters),
-        grouping, has_trailing_comma, the_origin);
-  }
-
   public construct process_literal(literal_analyzer the_literal) {
     origin the_origin = the_literal;
     return new literal_construct(the_literal.the_literal, the_origin);
@@ -230,20 +209,6 @@ public class base_transformer extends analyzable_visitor<Object> {
   public construct process_loop(loop_analyzer the_loop) {
     origin the_origin = the_loop;
     return new loop_construct(transform(the_loop.body), the_origin);
-  }
-
-  public Object process_parameter(parameter_analyzer the_parameter) {
-    origin the_origin = the_parameter;
-    grouping_type grouping = grouping_type.PARENS;
-    boolean has_trailing_comma = false;
-    construct the_construct = get_construct(the_parameter);
-    if (the_construct instanceof parameter_construct) {
-      grouping = ((parameter_construct) the_construct).parameters.grouping;
-      has_trailing_comma = ((parameter_construct) the_construct).parameters.has_trailing_comma;
-    }
-    return new parameter_construct(transform(the_parameter.main_analyzable),
-        new list_construct(transform_list(the_parameter.analyzable_parameters),
-            grouping, has_trailing_comma, the_origin), the_origin);
   }
 
   protected simple_name get_simple_name(principal_type the_type) {

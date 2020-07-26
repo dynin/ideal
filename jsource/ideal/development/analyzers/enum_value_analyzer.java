@@ -28,9 +28,9 @@ import ideal.development.declarations.*;
 public class enum_value_analyzer extends declaration_analyzer implements variable_declaration {
 
   private final action_name the_name;
-  public final @Nullable list_construct parameters;
+  private final @Nullable list_construct parameters;
   private final int ordinal;
-  readonly_list<analyzable> the_constructor_parameters;
+  private @Nullable action_parameters the_action_parameters;
 
   public enum_value_analyzer(construct the_construct, int ordinal) {
     super(the_construct);
@@ -73,8 +73,12 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     return false;
   }
 
-  public @Nullable readonly_list<analyzable> constructor_parameters() {
-    return the_constructor_parameters;
+  public boolean has_parameters() {
+    return the_action_parameters != null;
+  }
+
+  public @Nullable action_parameters get_parameters() {
+    return the_action_parameters;
   }
 
   @Override
@@ -100,10 +104,12 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       analyzable allocate = new base_analyzable_action(
           new allocate_action(declared_in_type(), pos));
       analyzable ctor_expression = new resolve_analyzer(allocate, special_name.IMPLICIT_CALL, pos);
-      the_constructor_parameters = make_list(parameters.elements);
-      analyzable ctor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters,
-          pos);
-      analyze_and_ignore_errors(ctor_call, pass);
+      readonly_list<analyzable> the_constructor_parameters = make_list(parameters.elements);
+      parameter_analyzer ctor_call = new parameter_analyzer(ctor_expression,
+          the_constructor_parameters, pos);
+      if (!has_errors(ctor_call, pass)) {
+        the_action_parameters = ctor_call.get_parameters();
+      }
     }
 
     return null;

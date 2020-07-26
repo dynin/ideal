@@ -182,8 +182,7 @@ public class to_java_transformer extends base_transformer {
     return result;
   }
 
-  @Override
-  public construct process_list_initializer(list_initializer_analyzer initializer) {
+  public construct process_list_initializer_action(list_initializer_action initializer) {
     origin the_origin = initializer;
     type element_type = initializer.element_type;
     construct type_name = make_type(element_type, the_origin);
@@ -192,8 +191,9 @@ public class to_java_transformer extends base_transformer {
         grouping_type.BRACKETS, false, the_origin);
     construct alloc_array = new parameter_construct(alloc, empty_brackets, the_origin);
     // TODO: handle promotions
-    list_construct elements = new list_construct(transform_list(initializer.analyzable_parameters),
-       grouping_type.BRACES, false, the_origin);
+    list_construct elements = new list_construct(
+        transform_parameters(initializer.parameter_actions), grouping_type.BRACES, false,
+        the_origin);
     construct alloc_call = new parameter_construct(alloc_array, elements, the_origin);
 
     construct array_name = make_type(java_library.array_class(), the_origin);
@@ -1879,7 +1879,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (the_action instanceof list_initializer_action) {
-      return process_list_initializer((list_initializer_analyzer) the_action.deeper_origin());
+      return process_list_initializer_action((list_initializer_action) the_action);
     }
 
     if (the_action instanceof is_action) {
@@ -2040,6 +2040,7 @@ public class to_java_transformer extends base_transformer {
     return transformed;
   }
 
+  /*
   public readonly_list<construct> process_action_list(readonly_list<action> action_list) {
     list<construct> result = new base_list<construct>();
     // TODO: use list.map()
@@ -2048,18 +2049,19 @@ public class to_java_transformer extends base_transformer {
     }
     return result;
   }
+  */
 
   public construct process_enum_value(enum_value_analyzer the_enum_value) {
     origin the_origin = the_enum_value;
     name_construct the_name = new name_construct(the_enum_value.short_name(), the_origin);
-    if (the_enum_value.parameters != null) {
+    if (the_enum_value.has_parameters()) {
       grouping_type grouping = grouping_type.PARENS;
       construct the_construct = get_construct(the_enum_value);
       if (the_construct instanceof parameter_construct) {
         grouping = ((parameter_construct) the_construct).parameters.grouping;
       }
       return new parameter_construct(the_name, new list_construct(
-          transform_list(the_enum_value.constructor_parameters()),
+          transform_parameters(the_enum_value.get_parameters().params()),
               grouping, false, the_origin), the_origin);
     } else {
       return the_name;

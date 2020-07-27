@@ -27,4 +27,5 @@ package declarations {
   interface type_parameter_declaration;
   enum variable_category;
   interface variable_declaration;
+  interface import_declaration;
 }

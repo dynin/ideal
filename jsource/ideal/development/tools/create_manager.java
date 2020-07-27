@@ -123,7 +123,7 @@ public class create_manager implements target_manager, type_bootstrapper {
       analysis_context context) {
     list<construct> constructs = parse(source);
     if (constructs != null) {
-      check(new declaration_list_analyzer(constructs, parent, context, root_origin));
+      check(new declaration_list(constructs, parent, context, root_origin));
     }
     return constructs;
   }
@@ -198,8 +198,8 @@ public class create_manager implements target_manager, type_bootstrapper {
     list<construct> constructs = parse(type_source);
     assert constructs != null;
 
-    declaration_list_analyzer body =
-        new declaration_list_analyzer(constructs, root, bootstrap_context, root_origin);
+    declaration_list body =
+        new declaration_list(constructs, root, bootstrap_context, root_origin);
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);
 
     if (has_errors()) {
@@ -271,8 +271,8 @@ public class create_manager implements target_manager, type_bootstrapper {
 
   /*
   public void process_project(list<construct> constructs, analysis_context context) {
-    declaration_list_analyzer body =
-        new declaration_list_analyzer(constructs, root, context, root_origin);
+    declaration_list body =
+        new declaration_list(constructs, root, context, root_origin);
     check(body);
     if (!has_errors()) {
       ensure_everything_is_analyzed(constructs, context);

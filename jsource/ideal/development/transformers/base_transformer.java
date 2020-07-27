@@ -45,8 +45,8 @@ public class base_transformer extends declaration_visitor<Object> {
   }
 
   public list<construct> transform1(declaration the_analyzable) {
-    if (the_analyzable instanceof declaration_list_analyzer) {
-      return transform_list(((declaration_list_analyzer) the_analyzable).declarations());
+    if (the_analyzable instanceof declaration_list) {
+      return transform_list(((declaration_list) the_analyzable).declarations());
     } else {
       return transform_list(new base_list<declaration>(the_analyzable));
     }
@@ -149,7 +149,7 @@ public class base_transformer extends declaration_visitor<Object> {
     return process_default(the_block);
   }
 
-  public construct process_declaration_list(declaration_list_analyzer the_declaration_list) {
+  public construct process_declaration_list(declaration_list the_declaration_list) {
     // TODO: report error
     return process_default(the_declaration_list);
   }
@@ -158,7 +158,7 @@ public class base_transformer extends declaration_visitor<Object> {
     return process_default(the_enum_value);
   }
 
-  public import_construct process_import(import_analyzer the_import) {
+  public import_construct process_import(import_declaration the_import) {
     origin the_origin = the_import;
     return new import_construct(to_annotations(the_import.annotations(), true, the_origin),
         make_type(the_import.get_type(), the_origin), the_origin);

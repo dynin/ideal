@@ -13,13 +13,15 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
 import ideal.development.actions.*;
+import ideal.development.declarations.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.modifiers.*;
 
-public class import_analyzer extends declaration_analyzer<import_construct> {
+public class import_analyzer extends declaration_analyzer<import_construct>
+    implements import_declaration {
 
   public final analyzable type_analyzable;
   private @Nullable action_name the_name;
@@ -69,6 +71,7 @@ public class import_analyzer extends declaration_analyzer<import_construct> {
     return null;
   }
 
+  @Override
   public boolean is_implicit() {
     return annotations().has(general_modifier.implicit_modifier);
   }
@@ -77,6 +80,7 @@ public class import_analyzer extends declaration_analyzer<import_construct> {
     return get_action_name(source.type);
   }
 
+  @Override
   public type get_type() {
     if (!has_errors(type_analyzable)) {
       action the_action = action_not_error(type_analyzable);

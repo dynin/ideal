@@ -121,8 +121,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         the_declaration = (declaration) the_analyzable;
       }
 
-      if (the_declaration instanceof declaration_list_analyzer) {
-        types.append_all(((declaration_list_analyzer) the_declaration).declarations());
+      if (the_declaration instanceof declaration_list) {
+        types.append_all(((declaration_list) the_declaration).declarations());
       } else if (the_declaration != null) {
         types.append(the_declaration);
       }

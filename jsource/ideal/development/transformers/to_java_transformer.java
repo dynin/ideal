@@ -96,14 +96,15 @@ public class to_java_transformer extends base_transformer {
 
       // TODO: refactor as a filter
       for (int i = 0; i < imports.size(); ++i) {
-        import_analyzer the_analyzable = (import_analyzer) context.get_analyzable(imports.get(i));
-        import_construct the_import = process_import(the_analyzable);
-        principal_type imported_type = (principal_type) the_analyzable.get_type();
+        import_declaration the_import_declaration =
+            (import_declaration) context.get_analyzable(imports.get(i));
+        import_construct the_import = process_import(the_import_declaration);
+        principal_type imported_type = (principal_type) the_import_declaration.get_type();
         if (imported_type == java_library.builtins_package() ||
             imported_type.get_parent() == java_library.builtins_package()) {
           continue;
         }
-        if (the_analyzable.is_implicit()) {
+        if (the_import_declaration.is_implicit()) {
           implicit_names.add(imported_type);
         } else {
           imported_names.add(imported_type);
@@ -680,7 +681,7 @@ public class to_java_transformer extends base_transformer {
       } else if (decl instanceof block_declaration) {
         // TODO: make sure this is a static block...
         result.append_all(transform1(decl));
-      } else if (decl instanceof import_analyzer) {
+      } else if (decl instanceof import_declaration) {
         // Skip imports: they should have been declared at the top level.
       } else {
         utilities.panic("Unexpected declaration in a namespace: " + decl);
@@ -880,7 +881,7 @@ public class to_java_transformer extends base_transformer {
         }
       } else if (decl instanceof type_declaration) {
         flavored_bodies.get(profile.default_flavor()).append_all(transform1(decl));
-      } else if (decl instanceof import_analyzer) {
+      } else if (decl instanceof import_declaration) {
         // Skip imports: they should have been declared at the top level.
       } else if (decl instanceof block_declaration) {
         // TODO: make sure this is a static block...
@@ -1067,6 +1068,10 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   public construct process_variable(variable_declaration the_variable) {
+    if (the_variable instanceof enum_value_analyzer) {
+      return process_enum_value((enum_value_analyzer) the_variable);
+    }
+
     origin the_origin = the_variable;
 
     principal_type declared_in_type = the_variable.declared_in_type();
@@ -1421,7 +1426,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   @Override
-  public import_construct process_import(import_analyzer the_import) {
+  public import_construct process_import(import_declaration the_import) {
     origin the_origin = the_import;
     list<annotation_construct> annotations = new base_list<annotation_construct>();
     if (the_import.is_implicit())  {
@@ -1998,17 +2003,6 @@ public class to_java_transformer extends base_transformer {
 
     return transformed;
   }
-
-  /*
-  public readonly_list<construct> process_action_list(readonly_list<action> action_list) {
-    list<construct> result = new base_list<construct>();
-    // TODO: use list.map()
-    for (int i = 0; i < action_list.size(); ++i) {
-      result.append(transform_action(action_list.get(i)));
-    }
-    return result;
-  }
-  */
 
   public construct process_enum_value(enum_value_analyzer the_enum_value) {
     origin the_origin = the_enum_value;

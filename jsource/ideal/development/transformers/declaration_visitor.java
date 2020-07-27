@@ -24,16 +24,12 @@ public abstract class declaration_visitor<T> implements value {
       return process_block((block_declaration) the_declaration);
     }
 
-    if (the_declaration instanceof declaration_list_analyzer) {
-      return process_declaration_list((declaration_list_analyzer) the_declaration);
+    if (the_declaration instanceof declaration_list) {
+      return process_declaration_list((declaration_list) the_declaration);
     }
 
-    if (the_declaration instanceof enum_value_analyzer) {
-      return process_enum_value((enum_value_analyzer) the_declaration);
-    }
-
-    if (the_declaration instanceof import_analyzer) {
-      return process_import((import_analyzer) the_declaration);
+    if (the_declaration instanceof import_declaration) {
+      return process_import((import_declaration) the_declaration);
     }
 
     if (the_declaration instanceof procedure_declaration) {
@@ -81,15 +77,11 @@ public abstract class declaration_visitor<T> implements value {
     return process_default(the_block);
   }
 
-  public T process_declaration_list(declaration_list_analyzer the_declaration_list) {
+  public T process_declaration_list(declaration_list the_declaration_list) {
     return process_default(the_declaration_list);
   }
 
-  public T process_enum_value(enum_value_analyzer the_enum_value) {
-    return process_default(the_enum_value);
-  }
-
-  public T process_import(import_analyzer the_import) {
+  public T process_import(import_declaration the_import) {
     return process_default(the_import);
   }
 

@@ -23,15 +23,15 @@ import ideal.development.types.*;
 /**
  * Analyze a sequence (list) of actions.  Unlike |block_analyzer|, no frame is created.
  */
-public class declaration_list_analyzer extends multi_pass_analyzer implements declaration {
+public class declaration_list extends multi_pass_analyzer implements declaration {
   private readonly_list<analyzable> the_elements;
 
-  public declaration_list_analyzer(readonly_list<analyzable> the_elements, origin pos) {
+  public declaration_list(readonly_list<analyzable> the_elements, origin pos) {
     super(pos);
     this.the_elements = the_elements;
   }
 
-  public declaration_list_analyzer(readonly_list<construct> constructs, principal_type parent,
+  public declaration_list(readonly_list<construct> constructs, principal_type parent,
       analysis_context context, origin pos) {
     super(pos, parent, context);
     assert constructs != null;

@@ -112,7 +112,7 @@ class create {
 
     analysis_context the_context = cm.get_analysis_context();
     multi_pass_analyzer body =
-        new declaration_list_analyzer(constructs, cm.root, the_context, input);
+        new declaration_list(constructs, cm.root, the_context, input);
 
     immutable_list<analysis_pass> passes = analysis_pass.all();
     assert passes.first() == analysis_pass.BEFORE_EVALUATION;

@@ -133,8 +133,8 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  protected action get_action(analyzable the_analyzable) {
-    return analyzer_utilities.to_action(the_analyzable);
+  protected construct transform_analyzable(analyzable the_analyzable) {
+    return transform_action(analyzer_utilities.to_action(the_analyzable));
   }
 
   protected type get_type(action the_action) {
@@ -231,11 +231,6 @@ public class to_java_transformer extends base_transformer {
     return the_type.principal() == library().missing_type();
   }
 
-  @Override
-  public construct process_resolve(resolve_analyzer the_resolve) {
-    return transform_action(get_action(the_resolve));
-  }
-
   private action_name map_name(action_name the_name) {
     if (the_name == special_name.THIS_CONSTRUCTOR) {
       return special_name.THIS;
@@ -295,18 +290,6 @@ public class to_java_transformer extends base_transformer {
 
   private boolean has_override(annotation_set the_annotations) {
     return the_annotations.has(override_modifier) || the_annotations.has(implement_modifier);
-  }
-
-  @Override
-  public construct process_flavor(flavor_analyzer the_flavor) {
-    origin the_origin = the_flavor;
-    type flavored_type = the_flavor.flavored_type;
-    if (flavored_type.get_flavor() !=
-        flavored_type.principal().get_flavor_profile().default_flavor()) {
-      return make_type(flavored_type, the_origin);
-    } else {
-      return transform(the_flavor.expression);
-    }
   }
 
   private construct make_parametrized_type(construct main, readonly_list<construct> parameters,
@@ -1248,11 +1231,6 @@ public class to_java_transformer extends base_transformer {
     return result;
   }
 
-  @Override
-  public Object process_parameter(parameter_analyzer the_parameter) {
-    return transform_action(get_action(the_parameter));
-  }
-
   // TODO: better way to detect procedure variables?
   private boolean is_procedure_variable(@Nullable declaration the_declaration) {
     return the_declaration instanceof type_declaration &&
@@ -1461,28 +1439,11 @@ public class to_java_transformer extends base_transformer {
         make_imported_type((principal_type) the_import.get_type(), the_origin), the_origin);
   }
 
-  @Override
-  public construct process_loop(loop_analyzer the_loop) {
-    origin the_origin = the_loop;
-    construct true_construct = new name_construct(library().true_value().short_name(), the_origin);
-    return new while_construct(true_construct, transform(the_loop.body), the_origin);
-  }
-
   public construct process_loop_action(loop_action the_loop_action) {
     origin the_origin = the_loop_action;
     construct true_construct = new name_construct(library().true_value().short_name(), the_origin);
     return new while_construct(true_construct, transform_action(the_loop_action.get_body()),
         the_origin);
-  }
-
-  @Override
-  public construct process_literal(literal_analyzer the_literal_analyzer) {
-    return transform_action(get_action(the_literal_analyzer));
-  }
-
-  @Override
-  public construct process_return(return_analyzer the_return) {
-    return transform_action(get_action(the_return));
   }
 
   public construct process_return_action(return_action the_return) {
@@ -1505,6 +1466,20 @@ public class to_java_transformer extends base_transformer {
     }
 
     return new return_construct(the_expression, the_origin);
+  }
+
+  public construct process_extension_action(extension_action the_extension_action) {
+    extension_analyzer the_extension = the_extension_action.get_extension();
+
+    if (the_extension instanceof grouping_analyzer) {
+      return process_grouping((grouping_analyzer) the_extension);
+    } else if (the_extension instanceof while_analyzer) {
+      return process_while((while_analyzer) the_extension);
+    } else if (the_extension instanceof for_analyzer) {
+      return process_for((for_analyzer) the_extension);
+    }
+
+    return transform_action(the_extension_action.extended_action);
   }
 
   public construct process_variable_initializer(variable_initializer the_variable_initializer) {
@@ -1559,22 +1534,6 @@ public class to_java_transformer extends base_transformer {
     origin the_origin = the_block_action;
     return process_block(the_block_action.get_declaration());
   }
-
-  /*
-  @Override
-  public Object process_extension(extension_construct the_construct) {
-    if (the_construct instanceof please_construct) {
-      // Java doesn't support good manners.
-      return transform(((please_construct) the_construct).the_statement);
-    }
-
-    if (the_construct instanceof list_iteration_construct) {
-      return rewrite_list_iteration((list_iteration_construct) the_construct);
-    }
-
-    return super.process_extension(the_construct);
-  }
-  */
 
   private simple_name get_simple_name(construct c) {
     name_construct identifier = (name_construct) c;
@@ -1871,7 +1830,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (the_action instanceof extension_action) {
-      return transform(((extension_action) the_action).get_extension());
+      return process_extension_action((extension_action) the_action);
     }
 
     if (the_action instanceof cast_action) {
@@ -2070,39 +2029,27 @@ public class to_java_transformer extends base_transformer {
 
   public construct process_grouping(grouping_analyzer the_grouping) {
     origin the_origin = the_grouping;
-    return new list_construct(new base_list<construct>(transform(the_grouping.expression)),
+    return new list_construct(new base_list<construct>(
+        transform_analyzable(the_grouping.expression)),
         grouping_type.PARENS, false, the_origin);
   }
 
   public construct process_while(while_analyzer the_while) {
     origin the_origin = the_while;
     return new while_construct(
-        transform(the_while.condition),
-        transform(the_while.body),
+        transform_analyzable(the_while.condition),
+        transform_analyzable(the_while.body),
         the_origin);
   }
 
   public construct process_for(for_analyzer the_for) {
     origin the_origin = the_for;
     return new for_construct(
-        transform(the_for.init),
-        transform(the_for.condition),
-        transform(the_for.update),
-        transform(the_for.body),
+        transform_analyzable(the_for.init),
+        transform_analyzable(the_for.condition),
+        transform_analyzable(the_for.update),
+        transform_analyzable(the_for.body),
         the_origin);
-  }
-
-  @Override
-  public construct process_extension(extension_analyzer the_extension) {
-    if (the_extension instanceof grouping_analyzer) {
-      return process_grouping((grouping_analyzer) the_extension);
-    } else if (the_extension instanceof while_analyzer) {
-      return process_while((while_analyzer) the_extension);
-    } else if (the_extension instanceof for_analyzer) {
-      return process_for((for_analyzer) the_extension);
-    } else {
-      return transform(the_extension.expand());
-    }
   }
 
   public construct process_supertype(supertype_declaration the_supertype) {

@@ -29,14 +29,14 @@ import ideal.development.notifications.error_signal;
 import ideal.development.extensions.extension_analyzer;
 import ideal.development.targets.target_declaration;
 
-public class base_transformer extends analyzable_visitor<Object> {
+public class base_transformer extends declaration_visitor<Object> {
 
-  public construct transform(@Nullable analyzable_or_declaration the_analyzable) {
-    if (the_analyzable == null) {
+  public construct transform(@Nullable declaration the_declaration) {
+    if (the_declaration == null) {
       return null;
     }
 
-    construct new_construct = (construct) process(the_analyzable);
+    construct new_construct = (construct) process(the_declaration);
     return new_construct;
   }
 
@@ -124,7 +124,7 @@ public class base_transformer extends analyzable_visitor<Object> {
   }
 
   @Override
-  public construct process_default(analyzable_or_declaration the_analyzable) {
+  public construct process_default(declaration the_declaration) {
     utilities.panic("base_transformer.process_default()");
     return null;
   }
@@ -149,25 +149,6 @@ public class base_transformer extends analyzable_visitor<Object> {
     return process_default(the_block);
   }
 
-  public construct process_conditional(conditional_analyzer the_conditional) {
-    origin the_origin = the_conditional;
-    // TODO: infer is_statement from conditional_analyzer
-    boolean is_statement = true;
-    construct the_construct = get_construct(the_conditional);
-    if (the_construct instanceof conditional_construct) {
-      is_statement = ((conditional_construct) the_construct).is_statement;
-    }
-
-    return new conditional_construct(transform(the_conditional.condition),
-        transform(the_conditional.then_branch), transform(the_conditional.else_branch),
-        is_statement, the_origin);
-  }
-
-  public construct process_constraint(constraint_analyzer the_constraint) {
-    origin the_origin = the_constraint;
-    return new constraint_construct(transform(the_constraint.expression), the_origin);
-  }
-
   public construct process_declaration_list(declaration_list_analyzer the_declaration_list) {
     // TODO: report error
     return process_default(the_declaration_list);
@@ -177,38 +158,10 @@ public class base_transformer extends analyzable_visitor<Object> {
     return process_default(the_enum_value);
   }
 
-  public construct process_error_signal(error_signal the_error_signal) {
-    return process_default(the_error_signal);
-  }
-
-  public construct process_extension(extension_analyzer the_extension) {
-    return transform(the_extension.expand());
-  }
-
-  public construct process_flavor(flavor_analyzer the_flavor) {
-    origin the_origin = the_flavor;
-    return new flavor_construct(the_flavor.flavor, transform(the_flavor.expression), the_origin);
-  }
-
   public import_construct process_import(import_analyzer the_import) {
     origin the_origin = the_import;
     return new import_construct(to_annotations(the_import.annotations(), true, the_origin),
-        transform(the_import.type_analyzable), the_origin);
-  }
-
-  public construct process_jump(jump_analyzer the_jump) {
-    origin the_origin = the_jump;
-    return new jump_construct(the_jump.the_jump_type, the_origin);
-  }
-
-  public construct process_literal(literal_analyzer the_literal) {
-    origin the_origin = the_literal;
-    return new literal_construct(the_literal.the_literal, the_origin);
-  }
-
-  public construct process_loop(loop_analyzer the_loop) {
-    origin the_origin = the_loop;
-    return new loop_construct(transform(the_loop.body), the_origin);
+        make_type(the_import.get_type(), the_origin), the_origin);
   }
 
   protected simple_name get_simple_name(principal_type the_type) {
@@ -287,26 +240,6 @@ public class base_transformer extends analyzable_visitor<Object> {
         transform_action(the_procedure.get_body_action()), the_origin);
   }
 
-  public construct process_resolve(resolve_analyzer the_resolve) {
-    origin the_origin = the_resolve;
-    name_construct the_name = new name_construct(the_resolve.short_name(), the_origin);
-    if (the_resolve.has_from()) {
-      return new resolve_construct(transform(the_resolve.get_from()), the_name, the_origin);
-    } else {
-      return the_name;
-    }
-  }
-
-  public construct process_return(return_analyzer the_return) {
-    origin the_origin = the_return;
-    return new return_construct(transform(the_return.the_expression), the_return);
-  }
-
-  public construct process_statement_list(statement_list_analyzer the_statement_list) {
-    utilities.panic("base_transformer.process_statement_list()");
-    return process_default(the_statement_list);
-  }
-
   public construct process_supertype(supertype_declaration the_supertype) {
     origin the_origin = the_supertype;
     // TODO: add annotation support
@@ -318,7 +251,7 @@ public class base_transformer extends analyzable_visitor<Object> {
   public construct process_target(target_declaration the_target) {
     origin the_origin = the_target;
     return new target_construct(the_target.short_name(),
-        transform(the_target.get_expression()), the_origin);
+        transform_action(the_target.get_target_action()), the_origin);
   }
 
   public construct process_type_announcement(type_announcement the_type_announcement) {

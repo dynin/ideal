@@ -40,6 +40,11 @@ public class target_declaration extends declaration_analyzer<target_construct> {
     return expression;
   }
 
+  public action get_target_action() {
+    assert target_action != null;
+    return target_action;
+  }
+
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
     analyze_and_ignore_errors(expression, pass);

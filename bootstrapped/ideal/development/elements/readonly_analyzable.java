@@ -4,6 +4,6 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface readonly_analyzable extends readonly_analyzable_or_declaration, any_analyzable {
+public interface readonly_analyzable extends readonly_origin, any_analyzable {
   analyzable specialize(specialization_context context, principal_type new_parent);
 }

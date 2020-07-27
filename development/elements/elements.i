@@ -19,7 +19,6 @@ package elements {
   interface action_name;
   interface analysis_result;
   interface analyzable;
-  interface analyzable_or_declaration;
   interface modifier_kind;
   interface kind;
   interface flavor_profile;

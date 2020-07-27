@@ -8,7 +8,7 @@
 --- |ideal.development.declarations.type_declaration|,
 --- |ideal.development.declarations.variable_declaration|, and so on.
 interface declaration {
-  extends analyzable_or_declaration;
+  extends origin;
 
   -- The named parent type in which this declaration belongs.
   principal_type declared_in_type;

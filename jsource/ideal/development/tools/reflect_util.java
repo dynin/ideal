@@ -38,6 +38,7 @@ import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.targets.*;
+import ideal.development.origins.*;
 import ideal.development.functions.*;
 
 public class reflect_util {

@@ -23,13 +23,14 @@ import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
+import ideal.development.origins.*;
 import ideal.development.values.*;
 
 public class action_utilities {
 
   private action_utilities() { }
 
-  static final origin no_origin = new special_position(new base_string("no-origin"));
+  static final origin no_origin = new special_origin(new base_string("no-origin"));
 
   public static readonly_list<type> lookup_types(analysis_context context, type from,
       action_name name) {

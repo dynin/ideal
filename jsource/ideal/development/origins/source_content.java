@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.scanners;
+package ideal.development.origins;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;

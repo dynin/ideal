@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.notifications;
+package ideal.development.origins;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
@@ -16,9 +16,8 @@ import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.scanners.*;
 
-public class position_util {
+public class origin_utilities {
 
   public static @Nullable source_content get_source(origin pos) {
     while (pos != null) {

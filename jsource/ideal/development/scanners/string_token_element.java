@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import ideal.development.origins.*;
 
 public class string_token_element<P extends deeply_immutable_data> implements scanner_element {
   protected final punctuation_type the_punctuation;

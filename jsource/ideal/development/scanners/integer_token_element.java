@@ -13,6 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.literals.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 public class integer_token_element implements scanner_element {

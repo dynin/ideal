@@ -13,6 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 public class line_comment implements scanner_element {

@@ -17,6 +17,7 @@ import ideal.development.flavors.*;
 import ideal.development.modifiers.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
+import ideal.development.origins.*;
 
 public interface semantics extends data {
 
@@ -28,5 +29,5 @@ public interface semantics extends data {
 
   access_modifier get_default_procedure_access(kind the_kind);
 
-  static final origin BUILTIN_POSITION = new special_position(new base_string("[builtin]"));
+  static final origin BUILTIN_POSITION = new special_origin(new base_string("[builtin]"));
 }

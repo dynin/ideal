@@ -22,6 +22,7 @@ import static ideal.development.flavors.flavor.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.kinds.*;
+import ideal.development.origins.*;
 import ideal.development.values.*;
 
 import javax.annotation.Nullable;
@@ -31,7 +32,7 @@ public class analyzer_utilities {
   private analyzer_utilities() { }
 
   public static final origin UNINITIALIZED_POSITION =
-      new special_position(new base_string("[uninitialized]"));
+      new special_origin(new base_string("[uninitialized]"));
 
   public static final annotation_set PUBLIC_MODIFIERS =
       new base_annotation_set(access_modifier.public_modifier,

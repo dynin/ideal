@@ -6,19 +6,19 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.notifications;
+package ideal.development.origins;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
 
-public class special_position extends debuggable implements origin, deeply_immutable_data,
+public class special_origin extends debuggable implements origin, deeply_immutable_data,
     stringable {
 
   public final string description;
 
-  public special_position(string description) {
+  public special_origin(string description) {
     this.description = description;
   }
 

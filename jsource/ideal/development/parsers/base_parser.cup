@@ -22,6 +22,7 @@ import ideal.development.parsers.*;
 import ideal.development.extensions.*;
 import ideal.development.targets.*;
 import ideal.development.templates.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 /* Terminals (tokens returned by the scanner). */
@@ -150,11 +151,11 @@ statement ::=
         |       supertype_declaration:d
                 {: RESULT = d; :}
         |       annotations_opt:m IMPORT:i expression:t SEMICOLON:s
-                {: RESULT = new import_construct(m, t, new fragment_position(i, i, s)); :}
+                {: RESULT = new import_construct(m, t, new fragment_origin(i, i, s)); :}
         |       USE:u name:n SEMICOLON:s
-                {: RESULT = new use_construct(n, new fragment_position(u, u, s)); :}
+                {: RESULT = new use_construct(n, new fragment_origin(u, u, s)); :}
         |       TARGET:t name:n COLON:c expression:e SEMICOLON:s
-                {: RESULT = new target_construct(n, e, new fragment_position(t, t, s)); :}
+                {: RESULT = new target_construct(n, e, new fragment_origin(t, t, s)); :}
         ;
 
 type_declaration ::=
@@ -182,13 +183,13 @@ procedure_declaration ::=
 variable_declaration ::=
                 annotations_opt:m expression:t name:n post_annotations_opt:pm COLON expression:e
                 {: RESULT = new variable_construct(m, t, n.the_name, pm, e,
-                    new fragment_position(t, n, e)); :}
+                    new fragment_origin(t, n, e)); :}
         |       annotations_opt:m expression:t name:n post_annotations_opt:pm
                 {: RESULT = new variable_construct(m, t, n.the_name, pm, null,
-                    new fragment_position(t, n, n)); :}
+                    new fragment_origin(t, n, n)); :}
         |       annotations_opt:m name:n post_annotations_opt:pm COLON expression:e
                 {: RESULT = new variable_construct(m, null, n.the_name, pm, e,
-                    new fragment_position(n, n, e)); :}
+                    new fragment_origin(n, n, e)); :}
         ;
 
 supertype_declaration ::=
@@ -199,7 +200,7 @@ supertype_declaration ::=
         ;
 
 block ::=       OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb
-                {: RESULT = new block_construct(st, new fragment_position(ob, ob, cb)); :}
+                {: RESULT = new block_construct(st, new fragment_origin(ob, ob, cb)); :}
         ;
 
 procedure_body ::=
@@ -215,29 +216,29 @@ procedure_body ::=
 
 block_statement ::=
                 RETURN:r expression_opt:e SEMICOLON:s
-                {: RESULT = new return_construct(e, new fragment_position(r, r, s)); :}
+                {: RESULT = new return_construct(e, new fragment_origin(r, r, s)); :}
         |       JUMP:j SEMICOLON:s
-                {: RESULT = new jump_construct(j.payload(), new fragment_position(j, j, s)); :}
+                {: RESULT = new jump_construct(j.payload(), new fragment_origin(j, j, s)); :}
         |       ASSERT:a expression:e SEMICOLON:s
-                {: RESULT = new constraint_construct(e, new fragment_position(a, a, s)); :}
+                {: RESULT = new constraint_construct(e, new fragment_origin(a, a, s)); :}
         |       IF:i condition_in_parens:c statement:t
                 {: RESULT = new conditional_construct(c, t, null, true,
-                                           new fragment_position(i, i, t)); :}
+                                           new fragment_origin(i, i, t)); :}
         |       IF:i condition_in_parens:c statement:t ELSE statement:e
                 {: RESULT = new conditional_construct(c, t, e, true,
-                                           new fragment_position(i, i, e)); :}
+                                           new fragment_origin(i, i, e)); :}
         |       LOOP:p statement:st
-                {: RESULT = new loop_construct(st, new fragment_position(p, p, st)); :}
+                {: RESULT = new loop_construct(st, new fragment_origin(p, p, st)); :}
         |       WHILE:w condition_in_parens:c statement:t
-                {: RESULT = new while_construct(c, t, new fragment_position(w, w, t)); :}
+                {: RESULT = new while_construct(c, t, new fragment_origin(w, w, t)); :}
         |       FOR:f OPEN_PARENTHESIS variable_or_expression_opt:i SEMICOLON:s
                       expression_opt:c SEMICOLON expression_opt:u CLOSE_PARENTHESIS
                       statement:st
-                {: RESULT = new for_construct(i, c, u, st, new fragment_position(f, f, st)); :}
+                {: RESULT = new for_construct(i, c, u, st, new fragment_origin(f, f, st)); :}
         |       FOR:f OPEN_PARENTHESIS variable_declaration:v CLOSE_PARENTHESIS statement:st
-                {: RESULT = new list_iteration_construct(v, st, new fragment_position(f, f, st)); :}
+                {: RESULT = new list_iteration_construct(v, st, new fragment_origin(f, f, st)); :}
         |       PLEASE:p statement:st
-                {: RESULT = new please_construct(st, new fragment_position(p, p, st)); :}
+                {: RESULT = new please_construct(st, new fragment_origin(p, p, st)); :}
         ;
 
 variable_or_expression_opt ::=
@@ -252,7 +253,7 @@ annotation ::=  MODIFIER_KIND:mk
                 /*
         |       MODIFIER_KIND:mk parameters:p
                 {: RESULT = new annotation_construct(mk.payload(), p,
-                    new fragment_position(mk, mk, p)); :}
+                    new fragment_origin(mk, mk, p)); :}
                 */
         |       COMMENT:c
                 {: RESULT = new comment_construct(c.payload(), c); :}
@@ -299,10 +300,10 @@ types ::=       expression:t
 parameters ::=
                 OPEN_PARENTHESIS:o parameter_list_opt:pl CLOSE_PARENTHESIS:c
                 {: RESULT = new list_construct(pl.elements, grouping_type.PARENS,
-                    pl.has_trailing_comma, new fragment_position(o, o, c)); :}
+                    pl.has_trailing_comma, new fragment_origin(o, o, c)); :}
         |       OPEN_BRACKET:o parameter_list_opt:pl CLOSE_BRACKET:c
                 {: RESULT = new list_construct(pl.elements, grouping_type.BRACKETS,
-                    pl.has_trailing_comma, new fragment_position(o, o, c)); :}
+                    pl.has_trailing_comma, new fragment_origin(o, o, c)); :}
         ;
 
 parameters_opt ::=
@@ -325,7 +326,7 @@ parameter_list_opt ::=
                 {: list<construct> the_list = new base_list<construct>(hd);
                    the_list.append_all(tl.elements);
                    RESULT = new list_construct(the_list, grouping_type.PARENS,
-                   tl.elements.is_empty(), new fragment_position(hd, cm, tl)); :}
+                   tl.elements.is_empty(), new fragment_origin(hd, cm, tl)); :}
         ;
 
 parameter ::=
@@ -333,17 +334,17 @@ parameter ::=
                 {: parser_util.ensure_empty(m); RESULT = e; :}
         |       annotations_opt:m expression:t name:n post_annotations_opt:pm COLON expression:e
                 {: RESULT = new variable_construct(m, t, n.the_name, pm, e,
-                    new fragment_position(t, n, e)); :}
+                    new fragment_origin(t, n, e)); :}
         |       annotations_opt:m expression:t name:n post_annotations_opt:pm
                 {: RESULT = new variable_construct(m, t, n.the_name, pm, null,
-                    new fragment_position(t, n, n)); :}
+                    new fragment_origin(t, n, n)); :}
         |       annotations_opt:m expression:t post_annotations_opt:pm COLON expression:e
                 {:
                   // TODO: handle initializer expressions correctly.
                   // Right now, we just drop the tag expression.
                   RESULT = (t instanceof name_construct) ?
                     new variable_construct(m, null, ((name_construct) t).the_name, pm, e,
-                        new fragment_position(t, t, e)) :
+                        new fragment_origin(t, t, e)) :
                         e;
                 :}
         ;
@@ -355,9 +356,9 @@ expression ::=  name:n
         |       parameters:p
                 {: RESULT = p; :}
         |       expression:e1 DOT:d expression:e2
-                {: RESULT = new resolve_construct(e1, e2, new fragment_position(e1, d, e2)); :}
+                {: RESULT = new resolve_construct(e1, e2, new fragment_origin(e1, d, e2)); :}
         |       expression:e parameters:p
-                {: RESULT = new parameter_construct(e, p, new fragment_position(e, p, p)); :}
+                {: RESULT = new parameter_construct(e, p, new fragment_origin(e, p, p)); :}
         |       EXCLAMATION_MARK:op expression:e
                 {: RESULT = parser_util.make_op(op, e, operator.LOGICAL_NOT); :}
         |       MINUS:op expression:e
@@ -406,7 +407,7 @@ expression ::=  name:n
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.GENERAL_OR); :}
         |       expression:e1 QUESTION_MARK:q expression:e2 COLON:c expression:e3
                 {: RESULT = new conditional_construct(e1, e2, e3, false,
-                                           new fragment_position(e1, q, e3)); :}
+                                           new fragment_origin(e1, q, e3)); :}
         |       expression:e1 EQUALS:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.ASSIGN); :}
         |       expression:e1 PLUS_EQUALS:op expression:e2
@@ -418,7 +419,7 @@ expression ::=  name:n
         |       expression:e1 PLUS_PLUS_EQUALS:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.CONCATENATE_ASSIGN); :}
         |       FLAVOR:f expression:t
-                {: RESULT = new flavor_construct(f.payload(), t, new fragment_position(f, t, t)); :}
+                {: RESULT = new flavor_construct(f.payload(), t, new fragment_origin(f, t, t)); :}
         ;
 
 literal_value ::=
@@ -433,11 +434,11 @@ name ::=        SIMPLE_NAME:n
         ;
 
 template ::=    HASH:h sexpression:sexpr
-                {: RESULT = new template_construct(sexpr, new fragment_position(h, h, sexpr)); :}
+                {: RESULT = new template_construct(sexpr, new fragment_origin(h, h, sexpr)); :}
         ;
 
 sexpression ::= OPEN_PARENTHESIS:op sexpression_elements:e CLOSE_PARENTHESIS:cp
-                {: RESULT = new sexpression_construct(e, new fragment_position(op, op, cp)); :}
+                {: RESULT = new sexpression_construct(e, new fragment_origin(op, op, cp)); :}
         ;
 
 sexpression_elements ::=
@@ -456,7 +457,7 @@ sexpression_element ::=
                 {: RESULT = sexpr; :}
         |       OPEN_BRACE:ob expression:expr CLOSE_BRACE:cb
                 {: RESULT = new list_construct(new base_list<construct>(expr), grouping_type.BRACES,
-                                false, new fragment_position(ob, ob, cb)); :}
+                                false, new fragment_origin(ob, ob, cb)); :}
         ;
 
 sexpression_atom ::=

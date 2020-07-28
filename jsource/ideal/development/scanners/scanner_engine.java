@@ -16,6 +16,7 @@ import ideal.development.comments.*;
 import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
 import ideal.development.names.*;
+import ideal.development.origins.*;
 
 public class scanner_engine {
   private scanner_config config;

@@ -16,12 +16,13 @@ import ideal.development.notifications.*;
 import ideal.development.constructs.*;
 import ideal.development.scanners.*;
 import ideal.development.names.*;
+import ideal.development.origins.*;
 
 import javax.annotation.Nullable;
 
 public class parser_util {
 
-  public static origin empty_origin = new special_position(new base_string("empty"));
+  public static origin empty_origin = new special_origin(new base_string("empty"));
 
   public static void ensure_empty(readonly_list<annotation_construct> seq) {
     if (seq.is_not_empty()) {
@@ -57,11 +58,11 @@ public class parser_util {
   // TODO: introduce operator construct
   public static construct make_op(construct e1, token op_token, construct e2, operator op) {
     assert op.the_operator_type == operator_type.INFIX;
-    origin op_origin = new fragment_position(e1, op_token, e2);
+    origin op_origin = new fragment_origin(e1, op_token, e2);
     return new operator_construct(op, e1, e2, op_origin);
   }
 
   public static construct make_op(token op_token, construct e, operator op) {
-    return new operator_construct(op, e, new fragment_position(op_token, op_token, e));
+    return new operator_construct(op, e, new fragment_origin(op_token, op_token, e));
   }
 }

@@ -17,7 +17,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.scanners.*;
+import ideal.development.origins.*;
 
 public class base_notification implements notification {
 
@@ -82,12 +82,12 @@ public class base_notification implements notification {
   public text_fragment render_text(boolean prefix_with_source) {
     base_string full_message;
     if (prefix_with_source) {
-      full_message = new base_string(position_util.get_source_prefix(the_origin), message);
+      full_message = new base_string(origin_utilities.get_source_prefix(the_origin), message);
     } else {
       full_message = (base_string) message;
     }
     // TODO: do not hardcode style.
-    text_fragment primary = text_util.join(position_printer.show_origin(the_origin),
+    text_fragment primary = text_util.join(origin_printer.show_origin(the_origin),
         base_element.make(text_library.DIV, text_library.CLASS, new base_string("message"),
             full_message));
 

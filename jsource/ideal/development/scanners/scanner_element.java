@@ -10,6 +10,7 @@ package ideal.development.scanners;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
+import ideal.development.origins.*;
 
 public interface scanner_element extends immutable_data {
   scan_state process(source_content source, int begin);

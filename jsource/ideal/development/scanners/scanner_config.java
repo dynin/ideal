@@ -13,6 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.modifiers.*;
 import ideal.development.names.*;
+import ideal.development.origins.*;
 
 public interface scanner_config {
   boolean is_whitespace(char c);

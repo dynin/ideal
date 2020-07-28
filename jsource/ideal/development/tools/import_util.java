@@ -29,6 +29,7 @@ import static ideal.development.modifiers.general_modifier.*;
 import ideal.development.names.*;
 import ideal.development.kinds.*;
 import ideal.development.printers.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 import java.lang.reflect.*;
@@ -46,7 +47,7 @@ public class import_util {
     String name = "java.lang.Object";
     //String name = "java.lang.String";
 
-    origin import_pos = new special_position(new base_string("[import]"));
+    origin import_pos = new special_origin(new base_string("[import]"));
     type_declaration_construct tc = new import_util().import_type(name, import_pos);
 
     out.write(new base_printer(printer_mode.CURLY).print(tc));

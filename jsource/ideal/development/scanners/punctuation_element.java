@@ -11,6 +11,7 @@ package ideal.development.scanners;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
+import ideal.development.origins.*;
 import ideal.development.names.*;
 
 public class punctuation_element implements scanner_element {

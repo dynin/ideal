@@ -14,6 +14,7 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.literals.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 public class hash_element implements scanner_element {

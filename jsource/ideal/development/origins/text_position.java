@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.scanners;
+package ideal.development.origins;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
@@ -39,7 +39,7 @@ public class text_position implements deeply_immutable_data, origin, stringable 
     return source;
   }
 
-  string image() {
+  public string image() {
     return source.content.slice(begin, end);
   }
 

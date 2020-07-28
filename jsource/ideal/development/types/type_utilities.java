@@ -16,11 +16,14 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.kinds.*;
 import ideal.development.declarations.*;
+import ideal.development.origins.special_origin;
 
 public class type_utilities {
 
   // do not instantiate
   private type_utilities() { }
+
+  static final origin PRIMARY_TYPE_ORIGIN = new special_origin(new base_string("[primary_type]"));
 
   public static immutable_list<simple_name> get_full_names(@Nullable principal_type the_type) {
     list<simple_name> names = new base_list<simple_name>();

@@ -18,7 +18,6 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
-import ideal.development.actions.*;
 import ideal.development.kinds.*;
 
 public class master_type extends base_principal_type {
@@ -104,7 +103,7 @@ public class master_type extends base_principal_type {
         graph<principal_type, origin> the_type_graph = the_context.type_graph();
         // TODO: do not panic but report a diagnostic
         assert !the_type_graph.introduces_cycle(result, primary_type);
-        the_type_graph.add_edge(result, primary_type, semantics.BUILTIN_POSITION);
+        the_type_graph.add_edge(result, primary_type, type_utilities.PRIMARY_TYPE_ORIGIN);
       } else {
         assert is_special();
       }

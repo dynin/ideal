@@ -37,6 +37,7 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.functions.*;
 import ideal.development.transformers.*;
+import ideal.development.origins.*;
 import ideal.development.targets.*;
 
 public class create_manager implements target_manager, type_bootstrapper {
@@ -298,7 +299,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   public @Nullable readonly_list<construct> load_type_body(
       type_announcement_construct the_declaration) {
 
-    @Nullable source_content declaration_sourcee = position_util.get_source(the_declaration);
+    @Nullable source_content declaration_sourcee = origin_utilities.get_source(the_declaration);
     assert declaration_sourcee != null;
     assert declaration_sourcee.name instanceof resource_identifier;
 

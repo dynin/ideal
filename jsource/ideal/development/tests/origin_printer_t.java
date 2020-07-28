@@ -16,6 +16,7 @@ import ideal.runtime.texts.*;
 import ideal.runtime.channels.*;
 import ideal.development.elements.*;
 import ideal.development.scanners.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 import java.io.StringWriter;
@@ -24,7 +25,7 @@ import junit.framework.TestCase;
 /**
  * A set of tests for the |text_position| printer.
  */
-public class position_printer_t extends TestCase {
+public class origin_printer_t extends TestCase {
 
   private static void show_origin_helper(string input, int begin, int end, String output) {
     source_content source = new source_content(simple_name.make("foo"), input);
@@ -32,7 +33,7 @@ public class position_printer_t extends TestCase {
     string_writer the_writer = new string_writer();
     plain_formatter out = new plain_formatter(the_writer);
 
-    out.write(position_printer.render_text_position(pos, null, null));
+    out.write(origin_printer.render_text_position(pos, null, null));
 
     assertEquals(new base_string(output), the_writer.elements());
   }

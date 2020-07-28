@@ -11,6 +11,7 @@ package ideal.development.scanners;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
+import ideal.development.origins.*;
 
 public class scan_state implements deeply_immutable_data {
   public final token token;

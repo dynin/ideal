@@ -13,6 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.constructs.jump_type;
 import ideal.development.names.*;
+import ideal.development.origins.*;
 
 public class base_scanner_config implements scanner_config {
   private dictionary<simple_name, token_matcher> keywords =

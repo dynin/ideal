@@ -6,18 +6,18 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.notifications;
+package ideal.development.origins;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
-public class fragment_position extends debuggable implements deeply_immutable_data, origin {
+public class fragment_origin extends debuggable implements deeply_immutable_data, origin {
   public final origin begin;
   public final origin main;
   public final origin end;
 
-  public fragment_position(origin begin, origin main, origin end) {
+  public fragment_origin(origin begin, origin main, origin end) {
     this.begin = begin;
     this.main = main;
     this.end = end;

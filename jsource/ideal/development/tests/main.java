@@ -28,7 +28,7 @@ public class main {
     TestSuite suite = new TestSuite();
 
     // developer.notifications
-    suite.addTestSuite(position_printer_t.class);
+    suite.addTestSuite(origin_printer_t.class);
 
     suite.addTestSuite(flag_util_t.class);
 

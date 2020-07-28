@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.notifications;
+package ideal.development.origins;
 
 import ideal.library.elements.*;
 import ideal.library.channels.*;
@@ -15,13 +15,12 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 import ideal.runtime.texts.*;
 import ideal.development.elements.*;
-import ideal.development.scanners.*;
 
 /**
  * A collection of methods responsible for displaying origin
  * infromation associatd with error and warning messages.
  */
-public class position_printer {
+public class origin_printer {
 
   /** If possible, display information about a origin. */
   public static text_fragment show_origin(origin pos) {
@@ -33,11 +32,11 @@ public class position_printer {
     while (true) {
       if (pos instanceof text_position) {
         return render_text_position((text_position) pos, fragment_begin, fragment_end);
-      } else if (pos instanceof special_position) {
-        string description = ((special_position) pos).description;
+      } else if (pos instanceof special_origin) {
+        string description = ((special_origin) pos).description;
         return base_element.make(text_library.DIV, (base_string) description);
-      } else if (pos instanceof fragment_position) {
-        fragment_position fp = (fragment_position) pos;
+      } else if (pos instanceof fragment_origin) {
+        fragment_origin fp = (fragment_origin) pos;
         if (fragment_begin == null) {
           fragment_begin = find_text_position(fp.begin, true);
         }
@@ -55,8 +54,8 @@ public class position_printer {
     while (pos != null) {
       if (pos instanceof text_position) {
         return (text_position) pos;
-      } else if (pos instanceof fragment_position) {
-        fragment_position fp = (fragment_position) pos;
+      } else if (pos instanceof fragment_origin) {
+        fragment_origin fp = (fragment_origin) pos;
         pos = begin ? fp.begin : fp.end;
       } else {
         pos = pos.deeper_origin();

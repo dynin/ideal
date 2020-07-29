@@ -45,8 +45,8 @@ public class base_token<P extends deeply_immutable_data> extends debuggable impl
   @Override
   public string to_string() {
     // TODO: display origin? "@" pos.to_string().s());
-    if (pos instanceof text_position) {
-      return new base_string(type.to_string(), ":\"", ((text_position) pos).image());
+    if (pos instanceof text_origin) {
+      return new base_string(type.to_string(), ":\"", ((text_origin) pos).image());
     } else {
       return new base_string("[", type.to_string(), "]");
     }

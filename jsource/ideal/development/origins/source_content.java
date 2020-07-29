@@ -36,11 +36,11 @@ public class source_content extends debuggable
   }
 
   public origin make_origin(int begin, int end) {
-    return new text_position(this, begin, end);
+    return new text_origin(this, begin, end);
   }
 
   // TODO: this can be optimized...
-  public int line_number(text_position pos) {
+  public int line_number(text_origin pos) {
     assert pos.source == this;
     assert pos.begin <= content.size();
     // TODO: use list.count()

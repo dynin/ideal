@@ -23,17 +23,17 @@ import java.io.StringWriter;
 import junit.framework.TestCase;
 
 /**
- * A set of tests for the |text_position| printer.
+ * A set of tests for the |text_origin| printer.
  */
 public class origin_printer_t extends TestCase {
 
   private static void show_origin_helper(string input, int begin, int end, String output) {
     source_content source = new source_content(simple_name.make("foo"), input);
-    text_position pos = (text_position) source.make_origin(begin, end);
+    text_origin pos = (text_origin) source.make_origin(begin, end);
     string_writer the_writer = new string_writer();
     plain_formatter out = new plain_formatter(the_writer);
 
-    out.write(origin_printer.render_text_position(pos, null, null));
+    out.write(origin_printer.render_text_origin(pos, null, null));
 
     assertEquals(new base_string(output), the_writer.elements());
   }

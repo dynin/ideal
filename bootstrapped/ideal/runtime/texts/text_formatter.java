@@ -57,7 +57,7 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
       if (this.first) {
         this.do_write_indent();
       }
-      final @Nullable range newline_match = text_formatter.NEWLINE_PATTERN.find_in(the_string, index);
+      final @Nullable range newline_match = text_formatter.NEWLINE_PATTERN.find_first(the_string, index);
       if (newline_match == null) {
         this.do_write_string(the_string.skip(index));
         break;

@@ -65,14 +65,19 @@ public class for_construct extends extension_construct {
     fragments.append(p.print_space());
 
     list<text_fragment> expressions = new base_list<text_fragment>();
-    expressions.append(p.print(init));
+    if (!(init instanceof empty_construct)) {
+      expressions.append(p.print(init));
+    }
     expressions.append(p.print_punctuation(punctuation.SEMICOLON));
-    expressions.append(p.print_space());
-    expressions.append(p.print(condition));
+    if (!(condition instanceof empty_construct)) {
+      expressions.append(p.print_space());
+      expressions.append(p.print(condition));
+    }
     expressions.append(p.print_punctuation(punctuation.SEMICOLON));
-    expressions.append(p.print_space());
+
     // TODO: this is a hack; fix
     if (!(update instanceof empty_construct)) {
+      expressions.append(p.print_space());
       expressions.append(p.print(update));
     }
 

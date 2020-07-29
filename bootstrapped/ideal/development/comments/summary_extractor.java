@@ -20,7 +20,7 @@ public class summary_extractor extends text_visitor<string> {
   private static final singleton_pattern<Character> dot_pattern = new singleton_pattern<Character>(summary_extractor.dot);
   private summary_extractor() { }
   protected @Override string process_string(final string the_string) {
-    final @Nullable range range = summary_extractor.dot_pattern.find_in(the_string, 0);
+    final @Nullable range range = summary_extractor.dot_pattern.find_first(the_string, 0);
     if (range == null) {
       return the_string;
     } else {

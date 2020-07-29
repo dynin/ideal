@@ -27,7 +27,7 @@ class summary_extractor {
 
   -- TODO: inherit protected access modifier from supertype.
   protected override string process_string(string the_string) {
-    range : dot_pattern.find_in(the_string, 0);
+    range : dot_pattern.find_first(the_string, 0);
     if (range is null) {
       return the_string;
     } else {

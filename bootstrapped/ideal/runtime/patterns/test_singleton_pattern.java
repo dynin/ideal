@@ -16,8 +16,11 @@ public class test_singleton_pattern {
     ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_viable_prefix");
     test_viable_prefix();
     ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_find_in");
-    test_find_in();
+    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_find_first");
+    test_find_first();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_find_last");
+    test_find_last();
     ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_split");
     test_split();
@@ -36,19 +39,38 @@ public class test_singleton_pattern {
     assert !the_pattern.is_viable_prefix(new base_string("y"));
     assert !the_pattern.is_viable_prefix(new base_string("xx"));
   }
-  public void test_find_in() {
+  public void test_find_first() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
-    assert the_pattern.find_in(new base_string(""), 0) == null;
-    assert the_pattern.find_in(new base_string("foo"), 0) == null;
-    assert the_pattern.find_in(new base_string("xfoo"), 1) == null;
-    final @Nullable range match = the_pattern.find_in(new base_string("x"), 0);
+    assert the_pattern.find_first(new base_string(""), 0) == null;
+    assert the_pattern.find_first(new base_string("foo"), 0) == null;
+    assert the_pattern.find_first(new base_string("xfoo"), 1) == null;
+    final @Nullable range match = the_pattern.find_first(new base_string("x"), 0);
     assert match != null;
     assert match.begin() == 0;
     assert match.end() == 1;
-    final @Nullable range match2 = the_pattern.find_in(new base_string("xyzzyxy"), 2);
+    final @Nullable range match2 = the_pattern.find_first(new base_string("xyzzyxy"), 2);
     assert match2 != null;
     assert match2.begin() == 5;
     assert match2.end() == 6;
+  }
+  public void test_find_last() {
+    final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
+    assert the_pattern.find_last(new base_string(""), null) == null;
+    assert the_pattern.find_last(new base_string("foo"), null) == null;
+    assert the_pattern.find_last(new base_string("foo"), 2) == null;
+    assert the_pattern.find_last(new base_string("foox"), 2) == null;
+    final @Nullable range match = the_pattern.find_last(new base_string("x"), 0);
+    assert match != null;
+    assert match.begin() == 0;
+    assert match.end() == 1;
+    final @Nullable range match2 = the_pattern.find_last(new base_string("xyzzyxy"), 5);
+    assert match2 != null;
+    assert match2.begin() == 5;
+    assert match2.end() == 6;
+    final @Nullable range match3 = the_pattern.find_last(new base_string("xyzzyxy"), 3);
+    assert match3 != null;
+    assert match3.begin() == 0;
+    assert match3.end() == 1;
   }
   public void test_split() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');

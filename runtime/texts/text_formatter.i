@@ -65,7 +65,7 @@ abstract class text_formatter {
       if (first) {
         do_write_indent();
       }
-      newline_match : NEWLINE_PATTERN.find_in(the_string, index);
+      newline_match : NEWLINE_PATTERN.find_first(the_string, index);
       if (newline_match is null) {
         do_write_string(the_string.skip(index));
         break;

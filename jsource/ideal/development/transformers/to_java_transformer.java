@@ -139,6 +139,16 @@ public class to_java_transformer extends base_transformer {
     return transform_action(analyzer_utilities.to_action(the_analyzable));
   }
 
+  protected construct transform_analyzable_or_null(analyzable the_analyzable) {
+    origin the_origin = the_analyzable;
+    action the_action = analyzer_utilities.to_action(the_analyzable);
+    if (is_nothing(the_action)) {
+      return new empty_construct(the_origin);
+    } else {
+      return transform_action(the_action);
+    }
+  }
+
   protected type get_type(action the_action) {
     assert the_action instanceof type_action : "Action: " + the_action;
     return ((type_action) the_action).get_type();
@@ -2040,10 +2050,10 @@ public class to_java_transformer extends base_transformer {
   public construct process_for(for_analyzer the_for) {
     origin the_origin = the_for;
     return new for_construct(
-        transform_analyzable(the_for.init),
-        transform_analyzable(the_for.condition),
-        transform_analyzable(the_for.update),
-        transform_analyzable(the_for.body),
+        transform_analyzable_or_null(the_for.init),
+        transform_analyzable_or_null(the_for.condition),
+        transform_analyzable_or_null(the_for.update),
+        transform_analyzable_or_null(the_for.body),
         the_origin);
   }
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM='text_origin'
-TO='text_position'
+FROM='find_in'
+TO='find_first'
 
 #cd $HOME/Projects/ideal
 

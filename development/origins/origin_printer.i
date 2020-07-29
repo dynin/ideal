@@ -114,7 +114,7 @@ namespace origin_printer {
       highlight_prefix = "";
     }
 
-    line_end : newline_pattern.find_in(input, line_begin);
+    line_end : newline_pattern.find_first(input, line_begin);
     var end : the_text_origin.end;
 
     -- print an extra caret:

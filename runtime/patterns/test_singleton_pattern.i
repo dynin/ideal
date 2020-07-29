@@ -23,22 +23,46 @@ class test_singleton_pattern {
     assert !the_pattern.is_viable_prefix("xx");
   }
 
-  testcase test_find_in() {
+  testcase test_find_first() {
     the_pattern : singleton_pattern[character].new('x');
 
-    assert the_pattern.find_in("", 0) is null;
-    assert the_pattern.find_in("foo", 0) is null;
-    assert the_pattern.find_in("xfoo", 1) is null;
+    assert the_pattern.find_first("", 0) is null;
+    assert the_pattern.find_first("foo", 0) is null;
+    assert the_pattern.find_first("xfoo", 1) is null;
 
-    match : the_pattern.find_in("x", 0);
+    match : the_pattern.find_first("x", 0);
     assert match is_not null;
     assert match.begin == 0;
     assert match.end == 1;
 
-    match2 : the_pattern.find_in("xyzzyxy", 2);
+    match2 : the_pattern.find_first("xyzzyxy", 2);
     assert match2 is_not null;
     assert match2.begin == 5;
     assert match2.end == 6;
+  }
+
+  testcase test_find_last() {
+    the_pattern : singleton_pattern[character].new('x');
+
+    assert the_pattern.find_last("", missing.instance) is null;
+    assert the_pattern.find_last("foo", missing.instance) is null;
+    assert the_pattern.find_last("foo", 2) is null;
+    assert the_pattern.find_last("foox", 2) is null;
+
+    match : the_pattern.find_last("x", 0);
+    assert match is_not null;
+    assert match.begin == 0;
+    assert match.end == 1;
+
+    match2 : the_pattern.find_last("xyzzyxy", 5);
+    assert match2 is_not null;
+    assert match2.begin == 5;
+    assert match2.end == 6;
+
+    match3 : the_pattern.find_last("xyzzyxy", 3);
+    assert match3 is_not null;
+    assert match3.begin == 0;
+    assert match3.end == 1;
   }
 
   testcase test_split() {

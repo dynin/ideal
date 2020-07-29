@@ -6,7 +6,7 @@
 
 --- Matches a single element.
 class singleton_pattern[readonly equality_comparable element_type] {
-  implements pattern[element_type];
+  implements reversible_pattern[element_type];
 
   element_type the_element;
 
@@ -23,13 +23,34 @@ class singleton_pattern[readonly equality_comparable element_type] {
   }
 
   -- TODO: default start_index to 0.
-  override range or null find_in(readonly list[element_type] the_list,
+  override range or null find_first(readonly list[element_type] the_list,
       nonnegative start_index) {
     for (var nonnegative i : start_index; i < the_list.size; i += 1) {
       if (the_list[i] == the_element) {
         return base_range.new(i, i + 1);
       }
     }
+    return missing.instance;
+  }
+
+  -- TODO: default end_index to missing.
+  override range or null find_last(readonly list[element_type] the_list,
+      var nonnegative or null end_index) {
+    var integer i;
+    if (end_index is null) {
+      i = the_list.size - 1;
+    } else {
+      assert end_index < the_list.size;
+      i = end_index;
+    }
+
+    for (; i >= 0; i -= 1) {
+      assert i is nonnegative;
+      if (the_list[i] == the_element) {
+        return base_range.new(i, i + 1);
+      }
+    }
+
     return missing.instance;
   }
 
@@ -40,7 +61,7 @@ class singleton_pattern[readonly equality_comparable element_type] {
     var index : 0;
 
     loop {
-      match : find_in(the_list, index);
+      match : find_first(the_list, index);
       if (match is_not null) {
         result.append(the_list.slice(index, match.begin));
         index = match.end;

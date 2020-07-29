@@ -14,7 +14,7 @@ import ideal.machine.annotations.dont_display;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
-public class text_position implements deeply_immutable_data, origin, stringable {
+public class text_origin implements deeply_immutable_data, origin, stringable {
   @dont_display
   public final source_content source;
   @dont_display
@@ -22,7 +22,7 @@ public class text_position implements deeply_immutable_data, origin, stringable 
   @dont_display
   public final int end;
 
-  public text_position(source_content source, int begin, int end) {
+  public text_origin(source_content source, int begin, int end) {
     this.source = source;
     this.begin = begin;
     this.end = end;

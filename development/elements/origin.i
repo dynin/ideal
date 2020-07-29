@@ -6,7 +6,7 @@
 
 --- Origin is a way to reference almost any piece of data in the ideal system.
 --- At the lowest level, |origin| is an instance of
---- |ideal.development.scanners.text_position|; one level up, it's a |token|;
+--- |ideal.development.scanners.text_origin|; one level up, it's a |token|;
 --- the next level up, it's a |construct|; at the top level, it's an |analyzable|
 --- instance.  This heirarchy can be traversed by accessing |deeper_origin| until
 --- |null| is encountered.

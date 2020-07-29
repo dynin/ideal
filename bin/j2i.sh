@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PACKAGE=kinds
+PACKAGE=origins
 TMPDIR=tmp
 IDEAL=ideal.i
 ALLFILES="jsource/ideal/development/${PACKAGE}/*.java"

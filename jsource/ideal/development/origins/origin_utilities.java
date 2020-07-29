@@ -31,8 +31,8 @@ public class origin_utilities {
 
   public static string get_source_prefix(origin the_origin) {
     while (the_origin != null) {
-      if (the_origin instanceof text_position) {
-        text_position in_text = (text_position) the_origin;
+      if (the_origin instanceof text_origin) {
+        text_origin in_text = (text_origin) the_origin;
         source_content source = in_text.source;;
         int line_number = source.line_number(in_text);
         return new base_string(source.name.to_string().toString(), ":",

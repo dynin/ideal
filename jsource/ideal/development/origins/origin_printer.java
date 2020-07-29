@@ -25,23 +25,23 @@ public class origin_printer {
   /** If possible, display information about a origin. */
   public static text_fragment show_origin(origin pos) {
     assert pos != null;
-    @Nullable text_position fragment_begin = null;
-    @Nullable text_position fragment_end = null;
+    @Nullable text_origin fragment_begin = null;
+    @Nullable text_origin fragment_end = null;
     // We only know how to display selected origins,
     // so drill down until we find one.
     while (true) {
-      if (pos instanceof text_position) {
-        return render_text_position((text_position) pos, fragment_begin, fragment_end);
+      if (pos instanceof text_origin) {
+        return render_text_origin((text_origin) pos, fragment_begin, fragment_end);
       } else if (pos instanceof special_origin) {
         string description = ((special_origin) pos).description;
         return base_element.make(text_library.DIV, (base_string) description);
       } else if (pos instanceof fragment_origin) {
         fragment_origin fp = (fragment_origin) pos;
         if (fragment_begin == null) {
-          fragment_begin = find_text_position(fp.begin, true);
+          fragment_begin = find_text_origin(fp.begin, true);
         }
         if (fragment_end == null) {
-          fragment_end = find_text_position(fp.end, false);
+          fragment_end = find_text_origin(fp.end, false);
         }
       } else if (pos.deeper_origin() == null) {
         utilities.panic("Can't display origin " + pos + " of type " + pos.getClass());
@@ -50,10 +50,10 @@ public class origin_printer {
     }
   }
 
-  private static @Nullable text_position find_text_position(origin pos, boolean begin) {
+  private static @Nullable text_origin find_text_origin(origin pos, boolean begin) {
     while (pos != null) {
-      if (pos instanceof text_position) {
-        return (text_position) pos;
+      if (pos instanceof text_origin) {
+        return (text_origin) pos;
       } else if (pos instanceof fragment_origin) {
         fragment_origin fp = (fragment_origin) pos;
         pos = begin ? fp.begin : fp.end;
@@ -64,9 +64,9 @@ public class origin_printer {
     return null;
   }
 
-  public static text_node render_text_position(text_position pos,
-      @Nullable text_position fragment_begin,
-      @Nullable text_position fragment_end) {
+  public static text_node render_text_origin(text_origin pos,
+      @Nullable text_origin fragment_begin,
+      @Nullable text_origin fragment_end) {
 
     int highlight_begin = pos.begin;
     if (fragment_begin != null && fragment_begin.source == pos.source &&
@@ -80,7 +80,7 @@ public class origin_printer {
       highlight_end = fragment_end.end;
     }
 
-    return render_text_position(pos, highlight_begin, highlight_end);
+    return render_text_origin(pos, highlight_begin, highlight_end);
   }
 
   /**
@@ -91,7 +91,7 @@ public class origin_printer {
    *     ^^^
    * </pre>
    */
-  public static text_node render_text_position(text_position pos,
+  public static text_node render_text_origin(text_origin pos,
       int highlight_begin, int highlight_end) {
 
     String input = utilities.s(pos.source.content);

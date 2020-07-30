@@ -44,7 +44,7 @@ package texts {
     string to_markup;
   }
 
-  interface string_text_node {
+  supertype_of_string interface string_text_node {
     extends text_node, string;
   }
 

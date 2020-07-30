@@ -40,6 +40,7 @@ public class to_java_transformer extends base_transformer {
   private static enum mapping {
     MAP_TO_PRIMITIVE_TYPE,
     MAP_TO_WRAPPER_TYPE,
+    MAP_PRESERVE_ALIAS,
     NO_MAPPING;
   }
 
@@ -139,8 +140,7 @@ public class to_java_transformer extends base_transformer {
     return transform_action(analyzer_utilities.to_action(the_analyzable));
   }
 
-  protected construct transform_analyzable_or_null(analyzable the_analyzable) {
-    origin the_origin = the_analyzable;
+  protected construct transform_analyzable_or_null(analyzable the_analyzable, origin the_origin) {
     action the_action = analyzer_utilities.to_action(the_analyzable);
     if (is_nothing(the_action)) {
       return new empty_construct(the_origin);
@@ -489,6 +489,10 @@ public class to_java_transformer extends base_transformer {
     principal_type principal = the_type.principal();
     type_flavor the_flavor = the_type.get_flavor();
 
+    if (mapping_strategy != mapping.MAP_PRESERVE_ALIAS && is_aliased_type(principal)) {
+      principal = substitute_aliased_type(principal);
+    }
+
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
         @Nullable principal_type mapped = java_library.map_to_primitive(principal);
@@ -497,6 +501,7 @@ public class to_java_transformer extends base_transformer {
         }
         break;
       case MAP_TO_WRAPPER_TYPE:
+      case MAP_PRESERVE_ALIAS:
         @Nullable simple_name mapped_name = java_library.map_to_wrapper(principal);
         if (mapped_name != null) {
           return new name_construct(mapped_name, the_origin);
@@ -807,10 +812,14 @@ public class to_java_transformer extends base_transformer {
           continue;
         }
         type supertype = supertype_decl.get_supertype();
+        if (skip_supertype(the_type_declaration, supertype)) {
+          continue;
+        }
         kind supertype_kind = supertype.principal().get_kind();
         if (concrete_mode) {
+          // TODO: use NO_MAPPING here.
           construct transformed_supertype = make_type_with_mapping(
-              supertype_decl.get_supertype(), the_origin, mapping.NO_MAPPING);
+              supertype_decl.get_supertype(), the_origin, mapping.MAP_PRESERVE_ALIAS);
           if (supertype_kind == class_kind) {
             if (superclass != null) {
               // TODO: do not panic!
@@ -835,10 +844,10 @@ public class to_java_transformer extends base_transformer {
                 construct flavored_supertype;
                 if (flavor == supertype_profile.default_flavor()) {
                   flavored_supertype = make_type_with_mapping(supertype_decl.get_supertype(),
-                      the_origin2, mapping.MAP_TO_WRAPPER_TYPE);
+                      the_origin2, mapping.MAP_PRESERVE_ALIAS);
                 } else {
                   flavored_supertype = make_type_with_mapping(supertype.get_flavored(flavor),
-                      the_origin2, mapping.MAP_TO_WRAPPER_TYPE);
+                      the_origin2, mapping.MAP_PRESERVE_ALIAS);
                 }
                 list<construct> supertype_list = supertype_lists.get(flavor);
                 assert supertype_list != null;
@@ -851,7 +860,7 @@ public class to_java_transformer extends base_transformer {
               subtype_flavor = supertype.get_flavor();
             }
             construct flavored_supertype = make_type_with_mapping(supertype_decl.get_supertype(),
-                the_origin2, mapping.MAP_TO_WRAPPER_TYPE);
+                the_origin2, mapping.MAP_PRESERVE_ALIAS);
             list<construct> supertype_list = supertype_lists.get(profile.map(subtype_flavor));
             assert supertype_list != null;
             supertype_list.append(flavored_supertype);
@@ -944,6 +953,21 @@ public class to_java_transformer extends base_transformer {
     }
 
     return type_decls;
+  }
+
+  private static simple_name STRING_TEXT_NODE = simple_name.make("string_text_node");
+
+  private boolean is_aliased_type(principal_type the_principal_type) {
+    return the_principal_type.short_name() == STRING_TEXT_NODE;
+  }
+
+  private principal_type substitute_aliased_type(principal_type the_principal_type) {
+    return library().string_type();
+  }
+
+  private boolean skip_supertype(type_declaration the_type_declaration, type supertype) {
+    return the_type_declaration.short_name() == STRING_TEXT_NODE &&
+        supertype.principal() == library().string_type();
   }
 
   private static boolean is_readonly_flavor(type_flavor the_flavor) {
@@ -2050,10 +2074,10 @@ public class to_java_transformer extends base_transformer {
   public construct process_for(for_analyzer the_for) {
     origin the_origin = the_for;
     return new for_construct(
-        transform_analyzable_or_null(the_for.init),
-        transform_analyzable_or_null(the_for.condition),
-        transform_analyzable_or_null(the_for.update),
-        transform_analyzable_or_null(the_for.body),
+        transform_analyzable_or_null(the_for.init, the_origin),
+        transform_analyzable_or_null(the_for.condition, the_origin),
+        transform_analyzable_or_null(the_for.update, the_origin),
+        transform_analyzable_or_null(the_for.body, the_origin),
         the_origin);
   }
 

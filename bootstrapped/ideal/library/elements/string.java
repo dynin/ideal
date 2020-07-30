@@ -2,7 +2,7 @@
 
 package ideal.library.elements;
 
-public interface string extends deeply_immutable_list<Character>, deeply_immutable_stringable, deeply_immutable_data, deeply_immutable_equality_comparable {
+public interface string extends deeply_immutable_list<Character>, deeply_immutable_stringable, deeply_immutable_data, deeply_immutable_equality_comparable, ideal.library.texts.string_text_node {
   @Override string skip(int count);
   @Override string slice(int begin, int end);
 }

@@ -43,6 +43,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   private final extension_modifier_kind the_modifier_kind;
   @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
+  private @Nullable modifier_construct the_modifier;
   private boolean is_expanded_set;
   private @Nullable declaration expanded;
 
@@ -66,8 +67,8 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   @Override
   public origin deeper_origin() {
-    if (the_declaration != null) {
-      return the_declaration;
+    if (the_modifier != null) {
+      return the_modifier;
     } else {
       return this.deeper_origin();
     }
@@ -78,9 +79,10 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     return the_declaration;
   }
 
-  void set_declaration(declaration_analyzer the_declaration) {
+  void initialize(declaration_analyzer the_declaration, modifier_construct the_modifier) {
     assert this.the_declaration == null;
     this.the_declaration = the_declaration;
+    this.the_modifier = the_modifier;
   }
 
   public void set_expanded(declaration expanded) {
@@ -111,7 +113,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       if (expanded instanceof analyzable) {
         analyze_and_ignore_errors((analyzable) expanded, pass);
       }
-      return null;
+    //  return null;
     }
 
     assert the_declaration != null;
@@ -119,6 +121,8 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       return process_procedure((procedure_analyzer) the_declaration, pass);
     } else if (the_declaration instanceof variable_analyzer) {
       return process_variable((variable_analyzer) the_declaration, pass);
+    } else if (the_declaration instanceof type_declaration_analyzer) {
+      return process_type_declaration((type_declaration_analyzer) the_declaration, pass);
     }
 
     if (has_errors(get_declaration(), pass)) {
@@ -145,6 +149,12 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   protected @Nullable error_signal process_variable(variable_analyzer the_variable,
       analysis_pass pass) {
     return new error_signal(new base_string("Extension doesn't support a variable"), this);
+  }
+
+  protected @Nullable error_signal process_type_declaration(
+      type_declaration_analyzer the_type_declaration, analysis_pass pass) {
+    return new error_signal(
+        new base_string("Extension doesn't support a type declaration"), this);
   }
 
   protected analysis_result do_get_result() {

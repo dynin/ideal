@@ -63,8 +63,8 @@ public class text_util {
     return text_util.to_fragment(nodes);
   }
   private static void append(final list<text_node> nodes, final text_fragment fragment) {
-    if (fragment instanceof string_text_node) {
-      if (((string_text_node) fragment).is_empty()) {
+    if (fragment instanceof string) {
+      if (((string) fragment).is_empty()) {
         return;
       }
     }

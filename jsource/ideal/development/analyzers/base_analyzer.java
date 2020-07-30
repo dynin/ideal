@@ -165,7 +165,8 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     @Nullable analyzable before = context.get_analyzable(source);
     if (before == null) {
       context.put_analyzable(source, this);
-    } else if (before != this) {
+      // TODO: handle extensions in a cleaner way
+    } else if (before != this && !(before instanceof declaration_extension)) {
       utilities.panic("Dup for " + source + ": " + before + " & " + this);
     }
   }

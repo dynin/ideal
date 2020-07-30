@@ -71,6 +71,10 @@ public class cache_extension extends declaration_extension {
       return find_error(the_procedure, pass);
     }
 
+    if (pass.is_after(analysis_pass.METHOD_AND_VARIABLE_DECL)) {
+      return null;
+    }
+
     assert pass == analysis_pass.METHOD_AND_VARIABLE_DECL;
     origin the_origin = this;
 

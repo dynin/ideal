@@ -26,11 +26,12 @@ import ideal.development.declarations.*;
 public class type_declaration_analyzer extends declaration_analyzer<type_declaration_construct>
     implements type_declaration {
 
+  private readonly_list<annotation_construct> annotations_list;
   private master_type master;
   private base_principal_type result_type;
   private @Nullable principal_type inside_type;
   private @Nullable readonly_list<type_parameter_analyzer> parameters;
-  private @Nullable readonly_list<analyzable> body;
+  private @Nullable list<analyzable> body;
   private boolean master_already_declared;
   private @Nullable type_parameters parameter_values;
   private boolean declaration_analysis_in_progress;
@@ -39,6 +40,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     super(source);
     assert source.body != null;
     assert source.annotations != null;
+    annotations_list = source.annotations;
   }
 
   public type_declaration_analyzer(type_declaration_construct source,
@@ -46,11 +48,16 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     super(source, parent, context);
     assert source.body != null;
     assert source.annotations != null;
+    annotations_list = source.annotations;
 
     // TODO: this should be moved out of constructor.
     @Nullable analyzable before = context.get_analyzable(source);
     assert before == null;
     context.put_analyzable(source, this);
+  }
+
+  public readonly_list<annotation_construct> annotations_list() {
+    return annotations_list;
   }
 
   @Override
@@ -143,7 +150,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     return false;
   }
 
-  private readonly_list<analyzable> make_body_list(readonly_list<construct> constructs) {
+  private list<analyzable> make_body_list(readonly_list<construct> constructs) {
     list<analyzable> body_list = new base_list<analyzable>();
     int enum_value_ordinal = 0;
     for (int i = 0; i < constructs.size(); ++i) {
@@ -175,7 +182,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.TARGET_DECL) {
-      process_annotations(source.annotations, language().get_default_type_access(outer_kind()));
+      process_annotations(annotations_list, language().get_default_type_access(outer_kind()));
 
       readonly_list<action> resolved = get_context().lookup(declared_in_type(), short_name());
 
@@ -381,6 +388,12 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     */
   }
 
+  public void add_to_body(analyzable the_analyzable) {
+    assert body != null;
+    body.append(the_analyzable);
+    analyze_and_ignore_errors(the_analyzable, last_pass);
+  }
+
   private void add_enum_members() {
     simple_name ordinal_name = simple_name.make("ordinal");
     simple_name name_name = simple_name.make("name");
@@ -416,12 +429,6 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         new base_string("Primary type already defined"), this,
         primary_notification != null ? new base_list<notification>(primary_notification) : null);
     return new error_signal(already_notification, false);
-  }
-
-  private void add_to_body(analyzable the_analyzable) {
-    list<analyzable> new_body = new base_list<analyzable>(the_analyzable);
-    new_body.append_all(body);
-    body = new_body;
   }
 
   private flavor_profile analyze_flavor_profile() {

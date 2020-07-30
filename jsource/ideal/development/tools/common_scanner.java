@@ -167,5 +167,6 @@ public class common_scanner extends base_scanner_config {
     // TODO: process a list of extensions
     new cache_extension().register_syntax_extension(this);
     new not_yet_implemented_extension().register_syntax_extension(this);
+    new supertype_of_string_extension().register_syntax_extension(this);
   }
 }

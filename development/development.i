@@ -15,5 +15,5 @@ namespace development {
   package modifiers;
   package declarations;
   package kinds;
-  package origins;
+--  package origins;
 }

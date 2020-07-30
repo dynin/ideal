@@ -30,7 +30,8 @@ public class extension_modifier_kind extends base_modifier_kind {
     this.extension_class = extension_class;
   }
 
-  public declaration_extension make_extension(declaration_analyzer the_declaration) {
+  public declaration_extension make_extension(declaration_analyzer the_declaration,
+      modifier_construct the_modifier) {
     declaration_extension instance = null;
     try {
       instance = (declaration_extension) extension_class.newInstance();
@@ -40,7 +41,7 @@ public class extension_modifier_kind extends base_modifier_kind {
       utilities.panic(e.toString());
     }
     // TODO: drop extension modifier from modifiers
-    instance.set_declaration(the_declaration);
+    instance.initialize(the_declaration, the_modifier);
     return instance;
   }
 }

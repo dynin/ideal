@@ -33,17 +33,29 @@ public class not_yet_implemented_extension extends declaration_extension {
     super("not_yet_implemented");
   }
 
+  private @Nullable error_signal skip_declaration(analysis_pass pass) {
+    if (pass == analysis_pass.TARGET_DECL) {
+      set_expanded(null);
+    }
+
+    return null;
+  }
+
   @Override
   protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,
       analysis_pass pass) {
-    set_expanded(null);
-    return null;
+    return skip_declaration(pass);
   }
 
   @Override
   protected @Nullable error_signal process_variable(variable_analyzer the_variable,
       analysis_pass pass) {
-    set_expanded(null);
-    return null;
+    return skip_declaration(pass);
+  }
+
+  @Override
+  protected @Nullable error_signal process_type_declaration(
+      type_declaration_analyzer the_type_declaration, analysis_pass pass) {
+    return skip_declaration(pass);
   }
 }

@@ -25,14 +25,11 @@ public class flavor_analyzer extends single_pass_analyzer {
   public final type_flavor flavor;
   public final analyzable expression;
   public type flavored_type;
-  // TODO: do we need flavor_pass?
-  private declaration_pass flavor_pass;
 
   private flavor_analyzer(type_flavor flavor, analyzable expression, origin source) {
     super(source);
     this.flavor = flavor;
     this.expression = expression;
-    this.flavor_pass = declaration_pass.METHODS_AND_VARIABLES;
   }
 
   public flavor_analyzer(flavor_construct source) {
@@ -41,7 +38,6 @@ public class flavor_analyzer extends single_pass_analyzer {
 
   @Override
   protected void do_add_dependence(@Nullable principal_type the_principal, declaration_pass pass) {
-    flavor_pass = pass;
     add_dependence(expression, the_principal, pass);
   }
 

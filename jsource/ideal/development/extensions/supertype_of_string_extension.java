@@ -38,6 +38,10 @@ public class supertype_of_string_extension extends declaration_extension {
   protected @Nullable error_signal process_type_declaration(
       type_declaration_analyzer the_type_declaration, analysis_pass pass) {
 
+    //type_declaration_analyzer string_declaration2 =
+    //      (type_declaration_analyzer) library().string_type().get_declaration();
+    //System.out.println("P " + pass + " SPASS " + string_declaration2.get_pass());
+
     if (pass == analysis_pass.TYPE_DECL) {
       set_expanded(the_type_declaration);
     }
@@ -47,6 +51,7 @@ public class supertype_of_string_extension extends declaration_extension {
       principal_type string_type = library().string_type();
       type_declaration_analyzer string_declaration =
           (type_declaration_analyzer) string_type.get_declaration();
+    // System.out.println("PASS " + string_declaration.get_pass());
       supertype_analyzer the_supertype = new supertype_analyzer(
           new base_list<annotation_construct>(
               new modifier_construct(access_modifier.public_modifier, the_origin)), null,

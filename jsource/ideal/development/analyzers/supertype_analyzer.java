@@ -60,6 +60,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
   @Override
   protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+    origin the_origin = this;
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
       process_annotations(annotations, access_modifier.public_modifier);
@@ -82,11 +83,20 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
       the_supertype = ((type_action) supertype_action).get_type();
 
-      get_context().add(declared_in_type(), special_name.SUPERTYPE, the_supertype.to_action(this));
+      get_context().add(declared_in_type(), special_name.SUPERTYPE,
+          the_supertype.to_action(the_origin));
+
       // Note that promotion is from parent, not declared_in_type.
       // The reason for this is to allow accessing static symbols from the subtype.
       get_context().add(parent(), special_name.PROMOTION,
-          the_supertype.principal().to_action(this));
+          the_supertype.principal().to_action(the_origin));
+    } else if (pass == analysis_pass.BODY_CHECK) {
+
+      if (false && !has_errors()) {
+        type_utilities.prepare(declared_in_type(), declaration_pass.TYPES_AND_PROMOTIONS);
+        action_utilities.process_super_flavors(declared_in_type(),
+            subtype_flavor(), get_supertype(), the_origin, get_context());
+      }
     }
 
     return null;

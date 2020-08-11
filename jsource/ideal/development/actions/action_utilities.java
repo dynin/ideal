@@ -218,4 +218,37 @@ public class action_utilities {
     kind the_kind = the_type.get_kind();
     return the_kind == class_kind || the_kind == datatype_kind || the_kind == enum_kind;
   }
+
+  public static void process_super_flavors(principal_type the_subtype,
+      @Nullable type_flavor subtype_flavor, type the_supertype, origin the_origin,
+      analysis_context the_context) {
+
+    immutable_list<type_flavor> supported_flavors =
+        the_subtype.get_flavor_profile().supported_flavors();
+
+    if (subtype_flavor == null && the_supertype instanceof principal_type) {
+      for (int i = 0; i < supported_flavors.size(); ++i) {
+        type_flavor the_flavor = supported_flavors.get(i);
+        if (type_utilities.get_flavor_profile(the_supertype.principal()).supports(the_flavor)) {
+          add_supertype_and_promotion(the_subtype.get_flavored(the_flavor),
+              the_supertype.get_flavored(the_flavor), the_context, the_origin);
+        }
+      }
+    } else {
+      if (subtype_flavor == null) {
+        subtype_flavor = the_supertype.get_flavor();
+      }
+      add_supertype_and_promotion(the_subtype.get_flavored(subtype_flavor),
+          the_supertype, the_context, the_origin);
+    }
+  }
+
+  public static void add_supertype_and_promotion(type from, type to, analysis_context context,
+      origin the_origin) {
+    assert !(from instanceof principal_type);
+    assert !(to instanceof principal_type);
+
+    context.add(from, special_name.SUPERTYPE, to.to_action(the_origin));
+    action_utilities.add_promotion(context, from, to, the_origin);
+  }
 }

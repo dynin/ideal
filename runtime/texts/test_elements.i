@@ -33,6 +33,7 @@ class test_elements {
     node0 : base_element.new(text_library.P);
     -- TODO: shouldn't need to specify type
     text_node node1 : "foo" as base_string;
+    --string_text_node node1 : "foo";
 
     nodes : [node0, node1];
     element : text_util.make_element(text_library.BODY, nodes);

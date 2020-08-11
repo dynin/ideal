@@ -350,7 +350,7 @@ public class base_semantics implements semantics {
       return;
     }
 
-    if (the_kind == union_kind) {
+    if (the_kind == union_kind || the_kind == type_alias_kind) {
       return;
     }
 
@@ -408,21 +408,6 @@ public class base_semantics implements semantics {
 
     the_type_declaration.process_declaration(pass);
 
-    flavor_profile profile;
-    if (new_type.has_flavor_profile()) {
-      profile = new_type.get_flavor_profile();
-    } else {
-      utilities.panic("Flavor profile not set in " + new_type);
-      return;
-    }
-
-    if (profile == flavor_profiles.nameonly_profile) {
-      // Most of the time, namespace case is handled in the condition at
-      // the top of the procedure.
-      assert the_kind == type_alias_kind;
-      return;
-    }
-
     origin pos = the_type_declaration;
 
     if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
@@ -433,7 +418,15 @@ public class base_semantics implements semantics {
         type procedure_type = library().procedure_type().bind_parameters(
           ((parametrized_type) new_type).get_parameters()).get_flavored(
             flavor.immutable_flavor);
-        process_super_flavors(new_type, null, procedure_type, pos, context);
+        action_utilities.process_super_flavors(new_type, null, procedure_type, pos, context);
+      }
+
+      flavor_profile profile;
+      if (new_type.has_flavor_profile()) {
+        profile = new_type.get_flavor_profile();
+      } else {
+        utilities.panic("Flavor profile not set in " + new_type);
+        return;
       }
 
       immutable_list<type_flavor> supported_flavors = profile.supported_flavors();
@@ -443,7 +436,7 @@ public class base_semantics implements semantics {
         for (int j = 0; j < superflavors.size(); ++j) {
           type_flavor superflavor = superflavors.get(j);
           if (profile.supports(superflavor)) {
-            add_supertype_and_promotion(new_type.get_flavored(the_flavor),
+            action_utilities.add_supertype_and_promotion(new_type.get_flavored(the_flavor),
                 new_type.get_flavored(superflavor), context, pos);
           }
         }
@@ -459,7 +452,8 @@ public class base_semantics implements semantics {
             continue;
           }
           type the_supertype = the_supertype_declaration.get_supertype();
-          process_super_flavors(new_type, the_supertype_declaration.subtype_flavor(),
+          action_utilities.process_super_flavors(new_type,
+              the_supertype_declaration.subtype_flavor(),
               the_supertype, the_supertype_declaration, context);
         }
       }
@@ -487,39 +481,6 @@ public class base_semantics implements semantics {
         context.add(new_type, INSTANCE_NAME, new singleton_value(new_type).to_action(pos));
       }
     }
-  }
-
-  private void process_super_flavors(principal_type the_subtype,
-      @Nullable type_flavor subtype_flavor, type the_supertype, origin pos,
-      analysis_context the_context) {
-
-    immutable_list<type_flavor> supported_flavors =
-        the_subtype.get_flavor_profile().supported_flavors();
-
-    if (subtype_flavor == null && the_supertype instanceof principal_type) {
-      for (int i = 0; i < supported_flavors.size(); ++i) {
-        type_flavor the_flavor = supported_flavors.get(i);
-        if (type_utilities.get_flavor_profile(the_supertype.principal()).supports(the_flavor)) {
-          add_supertype_and_promotion(the_subtype.get_flavored(the_flavor),
-              the_supertype.get_flavored(the_flavor), the_context, pos);
-        }
-      }
-    } else {
-      if (subtype_flavor == null) {
-        subtype_flavor = the_supertype.get_flavor();
-      }
-      add_supertype_and_promotion(the_subtype.get_flavored(subtype_flavor),
-          the_supertype, the_context, pos);
-    }
-  }
-
-  private static void add_supertype_and_promotion(type from, type to, analysis_context context,
-      origin pos) {
-    assert !(from instanceof principal_type);
-    assert !(to instanceof principal_type);
-
-    context.add(from, special_name.SUPERTYPE, to.to_action(pos));
-    action_utilities.add_promotion(context, from, to, pos);
   }
 
   private specialization_context make_specialization_context(parametrized_type new_type,

@@ -464,6 +464,10 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     return new list_action(subactions, this);
   }
 
+  public analysis_pass get_pass() {
+    return last_pass;
+  }
+
   @Override
   public string to_string() {
     return utilities.describe(this, short_name());

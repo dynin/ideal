@@ -64,6 +64,12 @@ public class parameter_analyzer extends single_pass_analyzer {
 
   @Override
   protected analysis_result do_single_pass_analysis() {
+    if (false && is_logical_and()) {
+      analyzable logical_and_conditional = rewrite_logical_and();
+      init_context(logical_and_conditional);
+      return logical_and_conditional.analyze();
+    }
+
     list<action> param_actions = new base_list<action>();
     error_signal error = null;
     for (int i = 0; i < analyzable_parameters.size(); ++i) {
@@ -128,6 +134,20 @@ public class parameter_analyzer extends single_pass_analyzer {
     }
 
     return result;
+  }
+
+  private boolean is_logical_and() {
+    return main_analyzable instanceof resolve_analyzer &&
+        ((resolve_analyzer) main_analyzable).short_name() == operator.LOGICAL_AND;
+  }
+
+  private conditional_analyzer rewrite_logical_and() {
+    origin the_origin = this;
+    assert analyzable_parameters.size() == 2;
+    analyzable first = analyzable_parameters.get(0);
+    analyzable second = analyzable_parameters.get(1);
+    analyzable false_value = base_analyzable_action.from(library().false_value(), the_origin);
+    return new conditional_analyzer(first, second, false_value, the_origin);
   }
 
   @Override

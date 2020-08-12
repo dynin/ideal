@@ -10,15 +10,16 @@ namespace origin_printer {
 
   --- If possible, display information about an origin.
   text_fragment show_origin(var origin or null the_origin) {
-    text_origin or null fragment_begin : missing.instance;
-    text_origin or null fragment_end : missing.instance;
+    var text_origin or null fragment_begin : missing.instance;
+    var text_origin or null fragment_end : missing.instance;
     -- We only know how to display selected origins,
     -- so drill down until we find one.
     loop {
       if (the_origin is text_origin) {
         return render_text_origin(the_origin, fragment_begin, fragment_end);
       } else if (the_origin is special_origin) {
-        description : the_origin.description;
+        -- TODO: retire cast
+        description : the_origin.description as base_string;
         return base_element.make(text_library.DIV, description);
       } else if (the_origin is fragment_origin) {
         if (fragment_begin is null) {
@@ -27,9 +28,11 @@ namespace origin_printer {
         if (fragment_end is null) {
           fragment_end = find_text_origin(the_origin.end, false);
         }
-      } else if (the_origin.deeper_origin is null) {
-        utilities.panic("Can't display origin " + the_origin);
+      } else if (the_origin is null) {
+        utilities.panic("Can't display origin");
       }
+      -- TODO: this assertion should be redundant. Update conditional_analyzer
+      assert the_origin is_not null;
       the_origin = the_origin.deeper_origin;
     }
   }

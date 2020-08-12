@@ -55,7 +55,12 @@ public class resolve_analyzer extends single_pass_analyzer {
   }
 
   public action_name short_name() {
-    assert the_name != null;
+    if (the_name == null) {
+      assert the_name_construct != null;
+      // TODO: should this ever fail?
+      assert the_name_construct instanceof name_construct;
+      return ((name_construct) the_name_construct).the_name;
+    }
     return the_name;
   }
 

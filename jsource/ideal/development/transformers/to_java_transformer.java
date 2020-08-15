@@ -1544,8 +1544,19 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
+  protected boolean is_value(action the_action, value the_value) {
+    return the_action instanceof base_value_action &&
+        ((base_value_action) the_action).the_value == the_value;
+  }
+
   public construct process_conditional_action(conditional_action the_conditional) {
     origin the_origin = the_conditional;
+    if (is_value(the_conditional.else_action, library().false_value())) {
+      return new operator_construct(operator.LOGICAL_AND,
+          transform_action(the_conditional.condition),
+          transform_action(the_conditional.then_action), the_origin);
+    }
+
     // TODO: infer is_statement from conditional_action
     boolean is_statement = true;
     construct the_construct = get_construct(the_conditional);

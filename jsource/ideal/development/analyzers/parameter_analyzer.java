@@ -64,7 +64,7 @@ public class parameter_analyzer extends single_pass_analyzer {
 
   @Override
   protected analysis_result do_single_pass_analysis() {
-    if (false && is_logical_and()) {
+    if (is_logical_and()) {
       analyzable logical_and_conditional = rewrite_logical_and();
       init_context(logical_and_conditional);
       return logical_and_conditional.analyze();

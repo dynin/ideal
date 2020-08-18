@@ -118,7 +118,15 @@ class B {
     println(value ++ ": B");
   }
 }
+void test_and() {
+  string or null value : "foo";
+  if (value is_not null ? true : false) {-- && value.size < 5)) {
+    string svar : value;
+    println(value);
+  }
+}
 A.new().method(1);
 B.new().method(2);
 A foo : B.new();
 foo.method(3);
+test_and();

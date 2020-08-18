@@ -55,15 +55,19 @@ namespace origin_printer {
       text_origin or null fragment_end) {
 
     var highlight_begin : the_text_origin.begin;
-    if (fragment_begin is_not null && fragment_begin.source == the_text_origin.source &&
-        fragment_begin.begin < the_text_origin.begin) {
-      highlight_begin = fragment_begin.begin;
+    if (fragment_begin is_not null) {
+      if (fragment_begin.source == the_text_origin.source &&
+          fragment_begin.begin < the_text_origin.begin) {
+        highlight_begin = fragment_begin.begin;
+      }
     }
 
     var highlight_end : the_text_origin.end;
-    if (fragment_end is_not null && fragment_end.source == the_text_origin.source &&
-        fragment_end.end > the_text_origin.end) {
-      highlight_end = fragment_end.end;
+    if (fragment_end is_not null) {
+      if (fragment_end.source == the_text_origin.source &&
+         fragment_end.end > the_text_origin.end) {
+        highlight_end = fragment_end.end;
+      }
     }
 
     return do_render_text_origin(the_text_origin, highlight_begin, highlight_end);

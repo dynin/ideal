@@ -161,7 +161,7 @@ generate_cache: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(ONE)
 
 12: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE) $(FLAGS_RUN) -input=$(ONETWO)
+	$(CREATE) $(FLAGS_RUN) --debug-constructs -input=$(ONETWO)
 
 gt: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_test

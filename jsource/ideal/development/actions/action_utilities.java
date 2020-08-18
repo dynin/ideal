@@ -165,6 +165,9 @@ public class action_utilities {
     }
 
     action body_action = the_procedure.get_body_action();
+    if (body_action == null)  {
+      utilities.panic("No body action for " + the_procedure.short_name());
+    }
     assert body_action != null;
     result = body_action.execute(new_context);
 

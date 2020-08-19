@@ -32,8 +32,8 @@ public class singleton_pattern<element_type> implements reversible_pattern<eleme
     if (end_index == null) {
       i = the_list.size() - 1;
     } else {
-      assert end_index < the_list.size();
-      i = end_index;
+      assert end_index <= the_list.size();
+      i = end_index - 1;
     }
     for (; i >= 0; i -= 1) {
       assert i >= 0;

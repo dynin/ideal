@@ -71,15 +71,6 @@ public class origin_printer {
     return origin_printer.do_render_text_origin(the_text_origin, highlight_begin, highlight_end);
   }
   private static final singleton_pattern<Character> newline_pattern = new singleton_pattern<Character>('\n');
-  private static int lastIndexOf(final string s, final int index) {
-    for (int i = index; i >= 0; i -= 1) {
-      assert i >= 0;
-      if (s.get(i) == '\n') {
-        return i;
-      }
-    }
-    return -1;
-  }
   private static text_node do_render_text_origin(final text_origin the_text_origin, int highlight_begin, int highlight_end) {
     final string input = the_text_origin.source.content;
     int begin = the_text_origin.begin;
@@ -90,8 +81,8 @@ public class origin_printer {
         begin = before_begin;
       }
     }
-    final int line_begin = origin_printer.lastIndexOf(input, begin - 1) + 1;
-    assert line_begin >= 0;
+    final @Nullable range line_begin_range = origin_printer.newline_pattern.find_last(input, begin);
+    final int line_begin = line_begin_range != null ? line_begin_range.begin() + 1 : 0;
     string prefix;
     string highlight_prefix;
     if (highlight_begin < begin) {

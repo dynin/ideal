@@ -77,17 +77,6 @@ namespace origin_printer {
 
   private newline_pattern : singleton_pattern[character].new('\n');
 
-  private integer lastIndexOf(string s, integer index) {
-    for (var integer i : index; i >= 0; i -= 1) {
-      assert i is nonnegative;
-      if (s[i] == '\n') {
-        return i;
-      }
-    }
-    return -1;
-  }
-
-
   --- Display information about a text position -- a line and carets
   --- underlining the exact location, e.g.
   --- <pre>
@@ -107,8 +96,9 @@ namespace origin_printer {
         begin = before_begin;
       }
     }
-    line_begin : lastIndexOf(input, begin - 1) + 1;
-    assert line_begin is nonnegative;
+
+    line_begin_range : newline_pattern.find_last(input, begin);
+    nonnegative line_begin : line_begin_range is_not null ? line_begin_range.begin + 1 : 0;
 
     var string prefix;
     var string highlight_prefix;

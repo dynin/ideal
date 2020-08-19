@@ -57,20 +57,24 @@ public class test_singleton_pattern {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
     assert the_pattern.find_last(new base_string(""), null) == null;
     assert the_pattern.find_last(new base_string("foo"), null) == null;
-    assert the_pattern.find_last(new base_string("foo"), 2) == null;
-    assert the_pattern.find_last(new base_string("foox"), 2) == null;
-    final @Nullable range match = the_pattern.find_last(new base_string("x"), 0);
+    assert the_pattern.find_last(new base_string("foo"), 3) == null;
+    assert the_pattern.find_last(new base_string("foox"), 3) == null;
+    final @Nullable range match = the_pattern.find_last(new base_string("x"), 1);
     assert match != null;
     assert match.begin() == 0;
     assert match.end() == 1;
-    final @Nullable range match2 = the_pattern.find_last(new base_string("xyzzyxy"), 5);
+    final @Nullable range match2 = the_pattern.find_last(new base_string("xyzzyxy"), 6);
     assert match2 != null;
     assert match2.begin() == 5;
     assert match2.end() == 6;
-    final @Nullable range match3 = the_pattern.find_last(new base_string("xyzzyxy"), 3);
+    final @Nullable range match3 = the_pattern.find_last(new base_string("xyzzyxy"), 4);
     assert match3 != null;
     assert match3.begin() == 0;
     assert match3.end() == 1;
+    final @Nullable range match4 = the_pattern.find_last(new base_string("xyzzyxy"), null);
+    assert match4 != null;
+    assert match4.begin() == 5;
+    assert match4.end() == 6;
   }
   public void test_split() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');

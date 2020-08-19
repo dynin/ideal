@@ -40,8 +40,8 @@ class singleton_pattern[readonly equality_comparable element_type] {
     if (end_index is null) {
       i = the_list.size - 1;
     } else {
-      assert end_index < the_list.size;
-      i = end_index;
+      assert end_index <= the_list.size;
+      i = end_index - 1;
     }
 
     for (; i >= 0; i -= 1) {

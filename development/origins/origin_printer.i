@@ -50,11 +50,12 @@ namespace origin_printer {
     return missing.instance;
   }
 
-  private text_node render_text_origin(text_origin the_text_origin,
+  text_node render_text_origin(text_origin the_text_origin,
       text_origin or null fragment_begin,
       text_origin or null fragment_end) {
 
     var highlight_begin : the_text_origin.begin;
+    -- TODO: use &&
     if (fragment_begin is_not null) {
       if (fragment_begin.source == the_text_origin.source &&
           fragment_begin.begin < the_text_origin.begin) {
@@ -63,6 +64,7 @@ namespace origin_printer {
     }
 
     var highlight_end : the_text_origin.end;
+    -- TODO: use &&
     if (fragment_end is_not null) {
       if (fragment_end.source == the_text_origin.source &&
          fragment_end.end > the_text_origin.end) {
@@ -93,7 +95,7 @@ namespace origin_printer {
   ---         ^^^
   --- </pre>
   private text_node do_render_text_origin(text_origin the_text_origin,
-      var nonnegative highlight_begin, nonnegative highlight_end) {
+      var nonnegative highlight_begin, var nonnegative highlight_end) {
 
     input : the_text_origin.source.content;
     var begin : the_text_origin.begin;
@@ -131,36 +133,46 @@ namespace origin_printer {
     if (end == begin) {
       end = begin + 1;
     }
-    if (line_end is_not null && end > line_end) {
-      end = line_end;
-      suffix_caret = true;
+    if (line_end is_not null) {
+      -- TODO: use &&
+      if (end > line_end.begin) {
+        end = line_end.begin;
+        suffix_caret = true;
+      }
     }
     underlined : input.slice(begin, end) ++ (suffix_caret ? " " : "");
 
     var suffix : "";
     var highlight_suffix : "";
-    if (end < line_end) {
-      if (highlight_end > end) {
-        if (highlight_end > line_end) {
-          highlight_end = line_end;
+    -- TODO: use &&
+    if (line_end is_not null) {
+      if (end < line_end.begin) {
+        if (highlight_end > end) {
+          if (highlight_end > line_end.begin) {
+            highlight_end = line_end.begin;
+          }
+          highlight_suffix = input.slice(end, highlight_end);
+          suffix = input.slice(highlight_end, line_end.begin);
+        } else {
+          suffix = input.slice(end, line_end.begin);
         }
-        highlight_suffix = input.slice(end, highlight_end);
-        suffix = input.slice(highlight_end, line_end);
-      } else {
-        suffix = input.slice(end, line_end);
       }
     }
 
-    underlined_element : base_element.make(text_library.UNDERLINE, underlined);
+    -- TODO: the cast is redundant
+    underlined_element : base_element.make(text_library.UNDERLINE, underlined as base_string);
     var text_element highlighted_element;
     if (highlight_prefix.is_empty && highlight_suffix.is_empty) {
       highlighted_element = underlined_element;
     } else {
-      highlighted : text_util.join(highlight_prefix, underlined_element, highlight_suffix);
+      -- TODO: the casts are redundant
+      highlighted : text_util.join(highlight_prefix as base_string,
+          underlined_element, highlight_suffix as base_string);
       highlighted_element = base_element.new(text_library.UNDERLINE2,
           list_dictionary[attribute_id, string].new(), highlighted);
     }
-    text_line : text_util.join(prefix, highlighted_element, suffix);
+    -- TODO: the casts are redundant
+    text_line : text_util.join(prefix as base_string, highlighted_element, suffix as base_string);
 
     return base_element.new(text_library.DIV,
           list_dictionary[attribute_id, string].new(), text_line);

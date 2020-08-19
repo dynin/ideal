@@ -16,6 +16,7 @@ import ideal.runtime.channels.*;
 import ideal.runtime.graphs.*;
 import ideal.runtime.logs.test_display;
 import ideal.development.names.*;
+import ideal.development.origins.*;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -26,9 +27,6 @@ public class main {
     run_all_runtime_tests();
 
     TestSuite suite = new TestSuite();
-
-    // developer.notifications
-    suite.addTestSuite(origin_printer_t.class);
 
     suite.addTestSuite(flag_util_t.class);
 
@@ -61,5 +59,7 @@ public class main {
     new test_graph().run_all_tests();
 
     new test_names().run_all_tests();
+
+    new test_origin_printer().run_all_tests();
   }
 }

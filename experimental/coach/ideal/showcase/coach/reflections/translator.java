@@ -22,6 +22,7 @@ import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.tools.*;
 import ideal.development.declarations.*;
+import ideal.development.origins.*;
 
 import javax.annotation.Nullable;
 public class translator {

@@ -13,7 +13,7 @@ public class base_lifespan extends resource_manager implements lifespan {
       parent.add_resource((disposable) this);
     }
   }
-  public @Override lifespan sub_span() {
+  public @Override lifespan make_sub_span() {
     return new base_lifespan(this);
   }
 }

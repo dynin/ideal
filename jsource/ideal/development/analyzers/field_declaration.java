@@ -127,7 +127,7 @@ public class field_declaration extends single_pass_analyzer
     get_context().add(declared_in_type().get_flavored(declared_in_flavor), name,
         get_access().to_action(the_origin));
 
-    return common_library.get_instance().void_instance().to_action(the_origin);
+    return common_library.get_instance().noop(the_origin);
   }
 
   @Override

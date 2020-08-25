@@ -8,5 +8,6 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 
 public interface readonly_future<element> extends any_future<element> {
+  boolean is_done();
   @Nullable element value();
 }

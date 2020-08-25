@@ -347,6 +347,7 @@ package elements {
 
     void add(element the_element);
     void add_all(readonly collection[element] the_collection);
+    boolean remove(element the_element);
 
     -- TODO: this should be in data
     not_yet_implemented set[element] copy() pure;

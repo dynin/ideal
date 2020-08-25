@@ -16,6 +16,7 @@ import ideal.runtime.channels.*;
 import ideal.runtime.graphs.*;
 import ideal.runtime.logs.test_display;
 import ideal.development.names.*;
+import ideal.development.futures.*;
 import ideal.development.origins.*;
 
 import junit.framework.Test;
@@ -61,5 +62,7 @@ public class main {
     new test_names().run_all_tests();
 
     new test_origin_printer().run_all_tests();
+
+    new test_futures().run_all_tests();
   }
 }

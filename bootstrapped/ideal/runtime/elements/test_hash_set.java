@@ -51,6 +51,32 @@ public class test_hash_set {
     assert set3.contains(new base_string("value2"));
     assert set2.contains(new base_string("value3"));
     assert !set3.contains(new base_string("value3"));
+    final boolean removed2 = set2.remove(new base_string("value2"));
+    assert removed2;
+    assert set2.size() == 2;
+    assert set2.is_not_empty();
+    assert set2.contains(new base_string("value"));
+    assert !set2.contains(new base_string("value2"));
+    assert set2.contains(new base_string("value3"));
+    final boolean removed3 = set2.remove(new base_string("value3"));
+    assert removed3;
+    assert set2.size() == 1;
+    assert set2.is_not_empty();
+    assert set2.contains(new base_string("value"));
+    assert !set2.contains(new base_string("value2"));
+    assert !set2.contains(new base_string("value3"));
+    final boolean not_removed = set2.remove(new base_string("foo"));
+    assert !not_removed;
+    assert set2.size() == 1;
+    assert set2.is_not_empty();
+    final boolean removed = set2.remove(new base_string("value"));
+    assert removed;
+    assert set2.is_empty();
+    assert !set2.is_not_empty();
+    assert set2.size() == 0;
+    assert !set2.contains(new base_string("value"));
+    assert !set2.contains(new base_string("value2"));
+    assert !set2.contains(new base_string("value3"));
   }
   public void test_set_updates() {
     final hash_set<string> set = new hash_set<string>();

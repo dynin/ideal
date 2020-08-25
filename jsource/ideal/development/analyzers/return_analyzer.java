@@ -54,7 +54,7 @@ public class return_analyzer extends single_pass_analyzer {
 
     if (the_procedure.has_errors()) {
       // The return type might be not set
-      return library().void_instance().to_action(this);
+      return library().noop(this);
     }
 
     // TODO: add support for return type inference...

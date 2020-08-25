@@ -5,4 +5,5 @@ package ideal.library.elements;
 public interface set<element> extends collection<element>, readonly_set<element>, writeonly_set<element> {
   void add(element the_element);
   void add_all(readonly_collection<element> the_collection);
+  boolean remove(element the_element);
 }

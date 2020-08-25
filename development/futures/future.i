@@ -6,6 +6,7 @@
 
 --- A |future| encapsulates the result of a delayed computation.
 interface future[covariant value element] {
+  boolean is_done;
   element or null value;
   void observe(procedure[void, element] observer, lifespan the_lifespan);
 }

@@ -49,6 +49,36 @@ class test_hash_set {
     assert set3.contains("value2");
     assert set2.contains("value3");
     assert !set3.contains("value3");
+
+    removed2 : set2.remove("value2");
+    assert removed2;
+    assert set2.size == 2;
+    assert set2.is_not_empty;
+    assert set2.contains("value");
+    assert !set2.contains("value2");
+    assert set2.contains("value3");
+
+    removed3 : set2.remove("value3");
+    assert removed3;
+    assert set2.size == 1;
+    assert set2.is_not_empty;
+    assert set2.contains("value");
+    assert !set2.contains("value2");
+    assert !set2.contains("value3");
+
+    not_removed : set2.remove("foo");
+    assert !not_removed;
+    assert set2.size == 1;
+    assert set2.is_not_empty;
+
+    removed : set2.remove("value");
+    assert removed;
+    assert set2.is_empty;
+    assert !set2.is_not_empty;
+    assert set2.size == 0;
+    assert !set2.contains("value");
+    assert !set2.contains("value2");
+    assert !set2.contains("value3");
   }
 
   testcase test_set_updates() {

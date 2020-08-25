@@ -9,6 +9,18 @@ import javax.annotation.Nullable;
 
 public class base_future<element> implements future<element> {
   private @Nullable element the_value;
+  private final set<procedure1<Void, element>> observers = new hash_set<procedure1<Void, element>>();
+  public static class dispose_observer<element> implements disposable {
+    public final base_future<element> the_future;
+    public final procedure1<Void, element> observer;
+    public dispose_observer(final base_future<element> the_future, final procedure1<Void, element> observer) {
+      this.the_future = the_future;
+      this.observer = observer;
+    }
+    public void dispose() {
+      this.the_future.observers.remove(this.observer);
+    }
+  }
   public base_future(final element the_value) {
     this.the_value = the_value;
   }
@@ -18,9 +30,30 @@ public class base_future<element> implements future<element> {
   public @Override @Nullable element value() {
     return this.the_value;
   }
-  public void set(final element the_value) {
-    assert this.the_value == null;
-    this.the_value = the_value;
+  public @Override boolean is_done() {
+    return this.the_value != null;
   }
-  public @Override void observe(final procedure1<Void, element> observer, final lifespan the_lifespan) { }
+  public void set(final element the_value) {
+    assert !this.is_done();
+    this.the_value = the_value;
+    if (this.observers.is_not_empty()) {
+      {
+        final readonly_list<procedure1<Void, element>> observer_list = this.observers.elements();
+        for (int observer_index = 0; observer_index < observer_list.size(); observer_index += 1) {
+          final procedure1<Void, element> observer = observer_list.get(observer_index);
+          observer.call(the_value);
+        }
+      }
+    }
+  }
+  public @Override void observe(final procedure1<Void, element> observer, final lifespan the_lifespan) {
+    if (this.is_done()) {
+      final @Nullable element result = this.the_value;
+      assert result != null;
+      observer.call(result);
+      return;
+    }
+    this.observers.add(observer);
+    the_lifespan.add_resource(new base_future.dispose_observer<element>(this, observer));
+  }
 }

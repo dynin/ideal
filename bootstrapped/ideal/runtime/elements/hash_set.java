@@ -63,4 +63,35 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
       }
     }
   }
+  public @Override boolean remove(final element_type the_element) {
+    this.copy_on_write();
+    final int hash = this.equivalence.hash(the_element);
+    final int index = this.state.bucket_index(hash);
+    @Nullable base_hash_set.hash_cell<element_type> entry = this.state.the_buckets.at(index).get();
+    if (entry == null) {
+      return false;
+    }
+    if (hash == entry.the_hash && this.equivalence.call(the_element, entry.the_value)) {
+      this.state.the_buckets.set(index, entry.next);
+      this.decrement_size();
+      return true;
+    }
+    while (true) {
+      final @Nullable base_hash_set.hash_cell<element_type> next = entry.next;
+      if (next == null) {
+        return false;
+      }
+      if (hash == next.the_hash && this.equivalence.call(the_element, next.the_value)) {
+        entry.next = next.next;
+        this.decrement_size();
+        return true;
+      }
+      entry = next;
+    }
+  }
+  private void decrement_size() {
+    final int new_size = this.state.size - 1;
+    assert new_size >= 0;
+    this.state.size = new_size;
+  }
 }

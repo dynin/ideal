@@ -24,5 +24,5 @@ interface lifespan {
   void add_resource(disposable resource);
 
   --- Create a sublifespan with this lifespan as a parent.
-  lifespan sub_span();
+  lifespan make_sub_span();
 }

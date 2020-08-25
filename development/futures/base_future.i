@@ -9,23 +9,58 @@ class base_future[covariant value element] {
   implements future[element];
 
   private var element or null the_value;
+  private set[procedure[void, element]] observers : hash_set[procedure[void, element]].new();
+
+  class dispose_observer[value element] {
+    implements disposable;
+
+    base_future[element] the_future;
+    procedure[void, element] observer;
+
+    -- TODO: generate ctor
+    dispose_observer(base_future[element] the_future, procedure[void, element] observer) {
+      this.the_future = the_future;
+      this.observer = observer;
+    }
+
+    void dispose() {
+      the_future.observers.remove(observer);
+    }
+  }
 
   overload base_future(element the_value) {
     this.the_value = the_value;
   }
 
   overload base_future() {
+    -- TODO: use uninitalized singleton instead
     this.the_value = missing.instance;
   }
 
-  override element or null value => the_value;
+  implement element or null value => the_value;
+
+  implement boolean is_done => the_value is_not null;
 
   void set(element the_value) {
-    assert this.the_value is null;
+    assert !is_done;
     this.the_value = the_value;
+
+    if (observers.is_not_empty) {
+      for (observer : observers.elements) {
+        observer(the_value);
+      }
+    }
   }
 
-  override void observe(procedure[void, element] observer, lifespan the_lifespan) {
-    -- TODO: implement observer
+  implement void observe(procedure[void, element] observer, lifespan the_lifespan) {
+    if (is_done) {
+      result : the_value;
+      assert result is_not null;
+      observer(result);
+      return;
+    }
+
+    observers.add(observer);
+    the_lifespan.add_resource(dispose_observer[element].new(this, observer));
   }
 }

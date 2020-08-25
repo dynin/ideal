@@ -158,7 +158,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   }
 
   protected analysis_result do_get_result() {
-    return library().void_instance().to_action(this);
+    return library().noop(this);
   }
 
   protected void display_code(declaration code) {

@@ -14,4 +14,5 @@ package futures {
   class base_lifespan;
   interface future;
   class base_future;
+  class test_futures;
 }

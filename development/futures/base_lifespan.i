@@ -16,5 +16,5 @@ class base_lifespan {
     }
   }
 
-  override lifespan sub_span() => base_lifespan.new(this);
+  override lifespan make_sub_span() => base_lifespan.new(this);
 }

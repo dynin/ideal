@@ -76,4 +76,42 @@ public class hash_set[readonly value element_type] {
       }
     }
   }
+
+  implement boolean remove(element_type the_element) {
+    copy_on_write();
+    hash : equivalence.hash(the_element);
+    index : state.bucket_index(hash);
+
+    var entry : state.the_buckets[index];
+    if (entry is null) {
+      return false;
+    }
+
+    if (hash == entry.the_hash && equivalence(the_element, entry.the_value)) {
+      state.the_buckets[index] = entry.next;
+      decrement_size();
+      return true;
+    }
+
+    loop {
+      next : entry.next;
+      if (next is null) {
+        return false;
+      }
+
+      if (hash == next.the_hash && equivalence(the_element, next.the_value)) {
+        entry.next = next.next;
+        decrement_size();
+        return true;
+      }
+
+      entry = next;
+    }
+  }
+
+  private void decrement_size() {
+    new_size : state.size - 1;
+    assert new_size is nonnegative;
+    state.size = new_size;
+  }
 }

@@ -7,5 +7,5 @@ import ideal.runtime.elements.*;
 
 public interface lifespan extends disposable, readonly_lifespan, writeonly_lifespan {
   void add_resource(disposable resource);
-  lifespan sub_span();
+  lifespan make_sub_span();
 }

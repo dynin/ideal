@@ -12,9 +12,9 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 public class link implements widget {
   public final String name;
-  public final procedure0 target;
+  public final procedure0arg target;
 
-  public link(String name, procedure0 target) {
+  public link(String name, procedure0arg target) {
     this.name = name;
     this.target = target;
   }

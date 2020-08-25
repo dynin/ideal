@@ -55,7 +55,7 @@ public abstract class base_handler {
     return get_schema().version;
   }
 
-  public @Nullable procedure0 get_action() {
+  public @Nullable procedure0arg get_action() {
     @Nullable immutable_list<string> action = request.action;
 
     if (action == null) {
@@ -70,9 +70,9 @@ public abstract class base_handler {
       return null;
     }
 
-    if (procedure instanceof procedure0) {
+    if (procedure instanceof procedure0arg) {
       assert action.size() == 1;
-      return (procedure0) procedure;
+      return (procedure0arg) procedure;
     }
 
     assert action.size() == 2;

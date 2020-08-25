@@ -12,6 +12,6 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.showcase.coach.reflections.*;
 import ideal.showcase.coach.forms.*;
-public interface invokable_procedure0 extends procedure0 {
+public interface invokable_procedure0 extends procedure0arg {
   Object invoke(Object the_object);
 }

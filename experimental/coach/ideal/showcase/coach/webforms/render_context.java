@@ -12,6 +12,6 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.showcase.coach.forms.*;
 public interface render_context {
-  string to_uri(procedure0 action);
-  string to_button_id(procedure0 action);
+  string to_uri(procedure0arg action);
+  string to_button_id(procedure0arg action);
 }

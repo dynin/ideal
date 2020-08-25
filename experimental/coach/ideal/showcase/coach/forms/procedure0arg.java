@@ -14,5 +14,5 @@ import ideal.runtime.elements.*;
 /**
  * Identifier of a procedure with zero arguments.
  */
-public interface procedure0 extends identifier {
+public interface procedure0arg extends identifier {
 }

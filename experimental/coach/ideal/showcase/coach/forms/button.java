@@ -12,9 +12,9 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 public class button implements widget {
   public final String name;
-  public final procedure0 target;
+  public final procedure0arg target;
 
-  public button(String name, procedure0 target) {
+  public button(String name, procedure0arg target) {
     this.name = name;
     this.target = target;
   }

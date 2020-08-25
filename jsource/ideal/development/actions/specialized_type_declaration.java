@@ -15,6 +15,7 @@ import ideal.development.elements.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
+import ideal.development.futures.*;
 import javax.annotation.Nullable;
 
 public class specialized_type_declaration extends debuggable implements type_declaration {
@@ -76,6 +77,12 @@ public class specialized_type_declaration extends debuggable implements type_dec
   @Override
   public boolean has_errors() {
     return false;
+  }
+
+  @Override
+  public future<analysis_result> process_type(declaration_pass pass) {
+    process_declaration(pass);
+    return new base_future<analysis_result>(common_library.get_instance().noop(this));
   }
 
   @Override

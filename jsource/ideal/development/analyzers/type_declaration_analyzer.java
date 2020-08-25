@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
+import ideal.development.futures.*;
 import ideal.development.actions.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
@@ -330,6 +331,12 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     }
 
     return null;
+  }
+
+  @Override
+  public future<analysis_result> process_type(declaration_pass pass) {
+    process_declaration(pass);
+    return new base_future<analysis_result>(common_library.get_instance().noop(this));
   }
 
   @Override

@@ -53,7 +53,7 @@ public abstract class procedure1<T> extends name implements procedure_id {
 
   protected abstract string to_string(T arg);
 
-  public procedure0 bind(T arg) {
+  public procedure0arg bind(T arg) {
     return new bound_p0(this, arg, to_string(arg));
   }
 

@@ -52,7 +52,7 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
 
   @Override
   protected analysis_result do_get_result() {
-    return library().void_instance().to_action(this);
+    return library().noop(this);
   }
 
   public principal_type declared_in_type() {

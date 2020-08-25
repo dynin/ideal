@@ -27,7 +27,7 @@ namespace flavor {
       flavor_profiles.deeply_immutable_profile, [immutable_flavor, ]);
 
   type_flavor raw_flavor : type_flavor_impl.new("raw", flavor_profiles.mutable_profile,
-      empty[type_flavor].new());
+      [writeonly_flavor, ]);
 
   all_flavors : [
     nameonly_flavor, any_flavor, readonly_flavor, writeonly_flavor,
@@ -38,6 +38,6 @@ namespace flavor {
 
   PRIMARY_FLAVORS : [
     any_flavor, readonly_flavor, writeonly_flavor, mutable_flavor,
-    immutable_flavor, deeply_immutable_flavor
+    raw_flavor, immutable_flavor, deeply_immutable_flavor
   ];
 }

@@ -104,12 +104,12 @@ public class fluid_context implements render_context, parameter_context {
   }
 
   @Override
-  public string to_uri(procedure0 action) {
+  public string to_uri(procedure0arg action) {
     return append_param(base_uri(), ACTION, action.to_string());
   }
 
   @Override
-  public string to_button_id(procedure0 action) {
+  public string to_button_id(procedure0arg action) {
     return new base_string(ACTION_PREFIX, action.to_string());
   }
 

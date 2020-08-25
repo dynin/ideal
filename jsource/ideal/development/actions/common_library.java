@@ -258,6 +258,10 @@ public class common_library implements value {
     return VOID_INSTANCE;
   }
 
+  public action noop(origin the_origin) {
+    return void_instance().to_action(the_origin);
+  }
+
   public singleton_value undefined_instance() {
     return UNDEFINED_INSTANCE;
   }

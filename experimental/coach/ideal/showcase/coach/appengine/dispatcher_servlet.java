@@ -54,7 +54,7 @@ public class dispatcher_servlet extends base_servlet {
 
       base_handler handler = new request_handler(context, request_context);
 
-      procedure0 action = handler.get_action();
+      procedure0arg action = handler.get_action();
 
       if (action == null) {
         action = request_handler.DEFAULT_PAGE;

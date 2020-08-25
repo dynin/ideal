@@ -716,6 +716,19 @@ public class to_java_transformer extends base_transformer {
     return false; // the_kind == reference_kind;
   }
 
+  private immutable_list<type_flavor> supported_no_raw(flavor_profile profile) {
+    list<type_flavor> result = new base_list<type_flavor>();
+    immutable_list<type_flavor> supported_flavors = profile.supported_flavors();
+    // TODO: use list.filter()
+    for (int i = 0; i < supported_flavors.size(); ++i) {
+      type_flavor flavor = supported_flavors.get(i);
+      if (flavor != raw_flavor) {
+        result.append(flavor);
+      }
+    }
+    return result.frozen_copy();
+  }
+
   @Override
   public Object process_type(type_declaration the_type_declaration) {
     origin the_origin = the_type_declaration;
@@ -786,7 +799,7 @@ public class to_java_transformer extends base_transformer {
         new list_dictionary<type_flavor, list<construct>>();
     @Nullable construct superclass = null;
 
-    immutable_list<type_flavor> supported_flavors = profile.supported_flavors();
+    immutable_list<type_flavor> supported_flavors = supported_no_raw(profile);
     for (int i = 0; i < supported_flavors.size(); ++i) {
       type_flavor flavor = supported_flavors.get(i);
       flavored_bodies.put(flavor, new base_list<construct>());
@@ -913,7 +926,7 @@ public class to_java_transformer extends base_transformer {
 
     list<construct> type_decls = new base_list<construct>();
 
-    immutable_list<type_flavor> type_flavors = profile.supported_flavors();
+    immutable_list<type_flavor> type_flavors = supported_no_raw(profile);
     for (int i = 0; i < type_flavors.size(); ++i) {
       type_flavor flavor = type_flavors.get(i);
       list<construct> flavored_body = flavored_bodies.get(flavor);
@@ -1017,6 +1030,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     list<construct> result = new base_list<construct>();
+    result.append(make_procedure_construct(annotations, the_type_declaration, is_function, 0));
     result.append(make_procedure_construct(annotations, the_type_declaration, is_function, 1));
     result.append(make_procedure_construct(annotations, the_type_declaration, is_function, 2));
     return result;

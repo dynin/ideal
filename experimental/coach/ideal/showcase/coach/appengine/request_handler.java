@@ -63,7 +63,7 @@ public class request_handler extends base_handler {
   private static final base_procedure0 SYNC = new base_procedure0("sync");
   private static final base_procedure0 MSYNC = new base_procedure0("msync");
 
-  public static final procedure0 DEFAULT_PAGE = SHOW_WORLD;
+  public static final procedure0arg DEFAULT_PAGE = SHOW_WORLD;
 
   private static final procedure_id[] REQUEST_TYPES = {
       SHOW_WORLD, ADD_VALUE_PAGE, ADD_VALUE_ACTION, EDIT_VALUE_PAGE, EDIT_VALUE_ACTION,
@@ -304,7 +304,7 @@ public class request_handler extends base_handler {
   }
 
   private widget render_edit_value_page(data_value dv, @Nullable String button_name,
-      @Nullable procedure0 button_action) {
+      @Nullable procedure0arg button_action) {
     list<widget> rows = new base_list<widget>();
 
     readonly_list<field_reference> all_fields = dv.get_fields();

@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
+import ideal.development.futures.*;
 import ideal.development.actions.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
@@ -179,6 +180,11 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   @Override
   public principal_type get_declared_type() {
     return type_declaration.get_declared_type();
+  }
+
+  @Override
+  public future<analysis_result> process_type(declaration_pass pass) {
+    return type_declaration.process_type(pass);
   }
 
   @Override

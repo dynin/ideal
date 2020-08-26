@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface writeonly_disposable extends any_disposable { }
+public interface writeonly_disposable extends writeonly_value, any_disposable { }

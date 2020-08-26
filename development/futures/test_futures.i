@@ -18,10 +18,15 @@ class test_futures {
     assert future1.value == "bar";
   }
 
-  var string or null value0 : missing.instance;
+  static var string or null value0 : missing.instance;
+  static var string or null value1 : missing.instance;
 
-  void observe0(string value) {
+  static void observe0(string value) {
     value0 = value;
+  }
+
+  static void observe1(string value) {
+    value1 = value;
   }
 
   testcase test_future_observers() {
@@ -29,7 +34,22 @@ class test_futures {
 
     future0 : base_future[string].new("foo");
     assert value0 is null;
-    --future0.observe(observe0, the_lifespan);
-    --assert value0 == "foo";
+    future0.observe(observe0, the_lifespan);
+    assert value0 == "foo";
+
+    future1 : base_future[string].new();
+    future1.observe(observe1, the_lifespan);
+    assert value1 is null;
+    future1.set("bar");
+    assert value1 == "bar";
+
+    short_lifespan : the_lifespan.make_sub_span();
+    future2 : base_future[string].new();
+    future2.observe(observe1, short_lifespan);
+    assert value1 == "bar";
+    short_lifespan.dispose();
+    future2.set("baz");
+    assert value1 == "bar";
+    assert future2.value == "baz";
   }
 }

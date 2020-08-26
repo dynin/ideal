@@ -5,6 +5,6 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface disposable extends readonly_disposable, writeonly_disposable {
+public interface disposable extends value, readonly_disposable, writeonly_disposable {
   void dispose();
 }

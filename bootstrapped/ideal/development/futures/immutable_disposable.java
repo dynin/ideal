@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface immutable_disposable extends readonly_disposable { }
+public interface immutable_disposable extends immutable_value, readonly_disposable { }

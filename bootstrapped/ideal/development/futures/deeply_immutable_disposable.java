@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface deeply_immutable_disposable extends immutable_disposable { }
+public interface deeply_immutable_disposable extends deeply_immutable_value, immutable_disposable { }

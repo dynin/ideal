@@ -1159,15 +1159,23 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean is_procedure_reference(action the_action) {
+    if (the_action instanceof dispatch_action) {
+      return is_procedure_declaration(((dispatch_action) the_action).get_declaration());
+    }
+
     if (the_action instanceof value_action) {
       Object the_value = ((value_action) the_action).the_value;
       if (the_value instanceof base_data_value) {
-        declaration the_declaration = ((base_data_value) the_value).get_declaration();;
-        return the_declaration instanceof procedure_declaration &&
-            !should_call_as_procedure(the_declaration);
+        return is_procedure_declaration(((base_data_value) the_value).get_declaration());
       }
     }
+
     return false;
+  }
+
+  private boolean is_procedure_declaration(declaration the_declaration) {
+    return the_declaration instanceof procedure_declaration &&
+        !should_call_as_procedure(the_declaration);
   }
 
   private construct make_procedure_class(action the_action, origin the_origin) {
@@ -1192,25 +1200,33 @@ public class to_java_transformer extends base_transformer {
       simple_name argument_name = name_utilities.make_numbered_name(i);
       type argument_type = argument_types.get(i);
       declaration_arguments.append(new variable_construct(
-          new empty<annotation_construct>(), make_type(argument_type, the_origin),
+          new empty<annotation_construct>(),
+          make_type_with_mapping(argument_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE),
           argument_name, new empty<annotation_construct>(), null, the_origin));
       call_arguments.append(new name_construct(argument_name, the_origin));
     }
 
-    construct the_call_body = new return_construct(
-        new parameter_construct(
+    list<construct> body = new base_list<construct>();
+    construct body_call = new parameter_construct(
             transform_action(the_action),
             new list_construct(call_arguments, grouping_type.PARENS, false, the_origin),
-            the_origin),
-        the_origin);
+            the_origin);
+    if (the_procedure.get_return_type() == library().immutable_void_type()) {
+      // We need this because the return type is Void, not void
+      body.append(body_call);
+      body.append(new return_construct(make_null(the_origin), the_origin));
+    } else {
+      body.append(new return_construct(body_call, the_origin));
+    }
 
     construct the_call = new procedure_construct(
         annotations,
-        make_type(the_procedure.get_return_type(), the_origin),
+        make_type_with_mapping(the_procedure.get_return_type(), the_origin,
+            mapping.MAP_TO_WRAPPER_TYPE),
         CALL_NAME,
         new list_construct(declaration_arguments, grouping_type.PARENS, false, the_origin),
         new empty<annotation_construct>(),
-        new block_construct(new base_list<construct>(the_call_body), the_origin),
+        new block_construct(body, the_origin),
         the_origin);
 
     return new parameter_construct(with_parens,

@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface any_disposable { }
+public interface any_disposable extends any_value { }

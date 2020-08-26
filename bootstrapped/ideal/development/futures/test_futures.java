@@ -25,13 +25,47 @@ public class test_futures {
     assert future1.value() != null;
     assert ideal.machine.elements.runtime_util.values_equal(future1.value(), new base_string("bar"));
   }
-  public @Nullable string value0 = null;
-  public void observe0(final string value) {
-    this.value0 = value;
+  public static @Nullable string value0 = null;
+  public static @Nullable string value1 = null;
+  public static void observe0(final string value) {
+    test_futures.value0 = value;
+  }
+  public static void observe1(final string value) {
+    test_futures.value1 = value;
   }
   public void test_future_observers() {
     final lifespan the_lifespan = new base_lifespan(null);
     final base_future<string> future0 = new base_future<string>(new base_string("foo"));
-    assert this.value0 == null;
+    assert test_futures.value0 == null;
+    future0.observe(new procedure1<Void, string>() {
+      @Override public Void call(string first) {
+        test_futures.observe0(first);
+        return null;
+      }
+    }, the_lifespan);
+    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value0, new base_string("foo"));
+    final base_future<string> future1 = new base_future<string>();
+    future1.observe(new procedure1<Void, string>() {
+      @Override public Void call(string first) {
+        test_futures.observe1(first);
+        return null;
+      }
+    }, the_lifespan);
+    assert test_futures.value1 == null;
+    future1.set(new base_string("bar"));
+    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value1, new base_string("bar"));
+    final lifespan short_lifespan = the_lifespan.make_sub_span();
+    final base_future<string> future2 = new base_future<string>();
+    future2.observe(new procedure1<Void, string>() {
+      @Override public Void call(string first) {
+        test_futures.observe1(first);
+        return null;
+      }
+    }, short_lifespan);
+    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value1, new base_string("bar"));
+    short_lifespan.dispose();
+    future2.set(new base_string("baz"));
+    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value1, new base_string("bar"));
+    assert ideal.machine.elements.runtime_util.values_equal(future2.value(), new base_string("baz"));
   }
 }

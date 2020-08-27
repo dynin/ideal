@@ -92,4 +92,19 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
     this.writable_state().clear(last_index, 1);
     return result;
   }
+  public @Override element_type remove_at(final int index) {
+    assert this.is_not_empty();
+    assert index < this.size();
+    final ideal.machine.elements.array<element_type> the_elements = this.writable_state().the_elements;
+    final element_type result = the_elements.at(index).get();
+    if (index != this.size() - 1) {
+      final int rest_length = this.size() - index - 1;
+      assert rest_length >= 0;
+      the_elements.move(index + 1, index, rest_length);
+    }
+    final int last_index = this.size() - 1;
+    assert last_index >= 0;
+    this.state.clear(last_index, 1);
+    return result;
+  }
 }

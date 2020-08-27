@@ -15,6 +15,9 @@ public class test_list {
     ideal.machine.elements.runtime_util.start_test("test_list.test_list_elements");
     test_list_elements();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_list.test_list_remove");
+    test_list_remove();
+    ideal.machine.elements.runtime_util.end_test();
   }
   public void test_empty() {
     final empty<string> strings = new empty<string>();
@@ -81,5 +84,38 @@ public class test_list {
     assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(1).get(), new base_string("bar"));
+  }
+  public void test_list_remove() {
+    final base_list<string> strings = new base_list<string>();
+    strings.append(new base_string("foo"));
+    strings.append(new base_string("bar"));
+    strings.append(new base_string("baz"));
+    assert strings.size() == 3;
+    assert !strings.is_empty();
+    assert strings.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(strings.first(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("baz"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(1).get(), new base_string("bar"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(2).get(), new base_string("baz"));
+    strings.remove_at(1);
+    assert strings.size() == 2;
+    assert !strings.is_empty();
+    assert strings.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(strings.first(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("baz"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(1).get(), new base_string("baz"));
+    strings.remove_at(0);
+    assert strings.size() == 1;
+    assert !strings.is_empty();
+    assert strings.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(strings.first(), new base_string("baz"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("baz"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("baz"));
+    strings.remove_at(0);
+    assert strings.size() == 0;
+    assert strings.is_empty();
+    assert !strings.is_not_empty();
   }
 }

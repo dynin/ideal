@@ -8,4 +8,5 @@ public interface list<element> extends collection<element>, readonly_list<elemen
   void append_all(readonly_list<element> the_list);
   void prepend(element the_element);
   element remove_last();
+  element remove_at(int index);
 }

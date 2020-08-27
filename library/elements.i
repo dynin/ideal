@@ -303,6 +303,7 @@ package elements {
     not_yet_implemented element remove_at(nonnegative index);
 
     element remove_last();
+    element remove_at(nonnegative index);
 
     --- <div>Skips over the specified count of elements and returns an immutable slice
     --- that begins with |count| and ends with the end of this list.</div>

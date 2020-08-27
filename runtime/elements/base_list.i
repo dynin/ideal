@@ -119,4 +119,20 @@ class base_list[value element_type] {
     writable_state().clear(last_index, 1);
     return result;
   }
+
+  implement element_type remove_at(nonnegative index) {
+    assert is_not_empty;
+    assert index < size;
+    the_elements : writable_state().the_elements;
+    result : the_elements[index];
+    if (index != size - 1) {
+      rest_length : size - index - 1;
+      assert rest_length is nonnegative;
+      the_elements.move(index + 1, index, rest_length);
+    }
+    last_index : size - 1;
+    assert last_index is nonnegative;
+    state.clear(last_index, 1);
+    return result;
+  }
 }

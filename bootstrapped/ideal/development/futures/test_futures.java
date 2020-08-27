@@ -5,8 +5,6 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-import javax.annotation.Nullable;
-
 public class test_futures {
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test("test_futures.test_simple_futures");
@@ -25,47 +23,44 @@ public class test_futures {
     assert future1.value() != null;
     assert ideal.machine.elements.runtime_util.values_equal(future1.value(), new base_string("bar"));
   }
-  public static @Nullable string value0 = null;
-  public static @Nullable string value1 = null;
-  public static void observe0(final string value) {
-    test_futures.value0 = value;
+  public static int count0 = 0;
+  public static int count1 = 0;
+  public static void observe0() {
+    test_futures.count0 += 1;
   }
-  public static void observe1(final string value) {
-    test_futures.value1 = value;
+  public static void observe1() {
+    test_futures.count1 += 1;
   }
   public void test_future_observers() {
     final lifespan the_lifespan = new base_lifespan(null);
+    final base_operation op0 = new base_operation(new procedure0<Void>() {
+      @Override public Void call() {
+        test_futures.observe0();
+        return null;
+      }
+    }, new base_string("observe0"));
+    final base_operation op1 = new base_operation(new procedure0<Void>() {
+      @Override public Void call() {
+        test_futures.observe1();
+        return null;
+      }
+    }, new base_string("observe1"));
     final base_future<string> future0 = new base_future<string>(new base_string("foo"));
-    assert test_futures.value0 == null;
-    future0.observe(new procedure1<Void, string>() {
-      @Override public Void call(string first) {
-        test_futures.observe0(first);
-        return null;
-      }
-    }, the_lifespan);
-    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value0, new base_string("foo"));
+    assert test_futures.count0 == 0;
+    future0.observe(op0, the_lifespan);
+    assert test_futures.count0 == 0;
     final base_future<string> future1 = new base_future<string>();
-    future1.observe(new procedure1<Void, string>() {
-      @Override public Void call(string first) {
-        test_futures.observe1(first);
-        return null;
-      }
-    }, the_lifespan);
-    assert test_futures.value1 == null;
+    future1.observe(op1, the_lifespan);
+    assert test_futures.count1 == 0;
     future1.set(new base_string("bar"));
-    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value1, new base_string("bar"));
+    assert test_futures.count1 == 1;
     final lifespan short_lifespan = the_lifespan.make_sub_span();
     final base_future<string> future2 = new base_future<string>();
-    future2.observe(new procedure1<Void, string>() {
-      @Override public Void call(string first) {
-        test_futures.observe1(first);
-        return null;
-      }
-    }, short_lifespan);
-    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value1, new base_string("bar"));
+    future2.observe(op1, short_lifespan);
+    assert test_futures.count1 == 1;
     short_lifespan.dispose();
     future2.set(new base_string("baz"));
-    assert ideal.machine.elements.runtime_util.values_equal(test_futures.value1, new base_string("bar"));
+    assert test_futures.count1 == 1;
     assert ideal.machine.elements.runtime_util.values_equal(future2.value(), new base_string("baz"));
   }
 }

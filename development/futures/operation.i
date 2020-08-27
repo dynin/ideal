@@ -4,9 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
---- A |future| encapsulates the result of a delayed computation.
-interface future[covariant value element] {
-  boolean is_done;
-  element or null value;
-  void observe(operation observer, lifespan the_lifespan);
+--- An operation (a.k.a. procedure or callback).
+interface operation {
+  implements data, stringable;
+
+  --- Schedule this operation for execution.
+  void schedule();
 }

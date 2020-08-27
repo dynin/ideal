@@ -18,38 +18,41 @@ class test_futures {
     assert future1.value == "bar";
   }
 
-  static var string or null value0 : missing.instance;
-  static var string or null value1 : missing.instance;
+  static var nonnegative count0 : 0;
+  static var nonnegative count1 : 0;
 
-  static void observe0(string value) {
-    value0 = value;
+  static void observe0() {
+    count0 += 1;
   }
 
-  static void observe1(string value) {
-    value1 = value;
+  static void observe1() {
+    count1 += 1;
   }
 
   testcase test_future_observers() {
     lifespan the_lifespan : base_lifespan.new(missing.instance);
 
+    op0 : base_operation.new(observe0, "observe0");
+    op1 : base_operation.new(observe1, "observe1");
+
     future0 : base_future[string].new("foo");
-    assert value0 is null;
-    future0.observe(observe0, the_lifespan);
-    assert value0 == "foo";
+    assert count0 == 0;
+    future0.observe(op0, the_lifespan);
+    assert count0 == 0;
 
     future1 : base_future[string].new();
-    future1.observe(observe1, the_lifespan);
-    assert value1 is null;
+    future1.observe(op1, the_lifespan);
+    assert count1 == 0;
     future1.set("bar");
-    assert value1 == "bar";
+    assert count1 == 1;
 
     short_lifespan : the_lifespan.make_sub_span();
     future2 : base_future[string].new();
-    future2.observe(observe1, short_lifespan);
-    assert value1 == "bar";
+    future2.observe(op1, short_lifespan);
+    assert count1 == 1;
     short_lifespan.dispose();
     future2.set("baz");
-    assert value1 == "bar";
+    assert count1 == 1;
     assert future2.value == "baz";
   }
 }

@@ -12,6 +12,8 @@ package futures {
   interface lifespan;
   class resource_manager;
   class base_lifespan;
+  interface operation;
+  class base_operation;
   interface future;
   class base_future;
   class test_futures;

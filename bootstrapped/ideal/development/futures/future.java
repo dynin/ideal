@@ -6,5 +6,5 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
 public interface future<element> extends readonly_future<element>, writeonly_future<element> {
-  void observe(procedure1<Void, element> observer, lifespan the_lifespan);
+  void observe(operation observer, lifespan the_lifespan);
 }

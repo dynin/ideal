@@ -9,16 +9,16 @@ class base_future[covariant value element] {
   implements future[element];
 
   private var element or null the_value;
-  private set[procedure[void, element]] observers : hash_set[procedure[void, element]].new();
+  private set[operation] observers : hash_set[operation].new();
 
   class dispose_observer[value element] {
     implements disposable;
 
     base_future[element] the_future;
-    procedure[void, element] observer;
+    operation observer;
 
     -- TODO: generate ctor
-    dispose_observer(base_future[element] the_future, procedure[void, element] observer) {
+    dispose_observer(base_future[element] the_future, operation observer) {
       this.the_future = the_future;
       this.observer = observer;
     }
@@ -47,16 +47,13 @@ class base_future[covariant value element] {
 
     if (observers.is_not_empty) {
       for (observer : observers.elements) {
-        observer(the_value);
+        observer.schedule();
       }
     }
   }
 
-  implement void observe(procedure[void, element] observer, lifespan the_lifespan) {
+  implement void observe(operation observer, lifespan the_lifespan) {
     if (is_done) {
-      result : the_value;
-      assert result is_not null;
-      observer(result);
       return;
     }
 

@@ -9,11 +9,11 @@ import javax.annotation.Nullable;
 
 public class base_future<element> implements future<element> {
   private @Nullable element the_value;
-  private final set<procedure1<Void, element>> observers = new hash_set<procedure1<Void, element>>();
+  private final set<operation> observers = new hash_set<operation>();
   public static class dispose_observer<element> implements disposable {
     public final base_future<element> the_future;
-    public final procedure1<Void, element> observer;
-    public dispose_observer(final base_future<element> the_future, final procedure1<Void, element> observer) {
+    public final operation observer;
+    public dispose_observer(final base_future<element> the_future, final operation observer) {
       this.the_future = the_future;
       this.observer = observer;
     }
@@ -38,19 +38,16 @@ public class base_future<element> implements future<element> {
     this.the_value = the_value;
     if (this.observers.is_not_empty()) {
       {
-        final readonly_list<procedure1<Void, element>> observer_list = this.observers.elements();
+        final readonly_list<operation> observer_list = this.observers.elements();
         for (int observer_index = 0; observer_index < observer_list.size(); observer_index += 1) {
-          final procedure1<Void, element> observer = observer_list.get(observer_index);
-          observer.call(the_value);
+          final operation observer = observer_list.get(observer_index);
+          observer.schedule();
         }
       }
     }
   }
-  public @Override void observe(final procedure1<Void, element> observer, final lifespan the_lifespan) {
+  public @Override void observe(final operation observer, final lifespan the_lifespan) {
     if (this.is_done()) {
-      final @Nullable element result = this.the_value;
-      assert result != null;
-      observer.call(result);
       return;
     }
     this.observers.add(observer);

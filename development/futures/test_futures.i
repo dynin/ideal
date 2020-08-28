@@ -36,22 +36,28 @@ class test_futures {
     op1 : base_operation.new(observe1, "observe1");
 
     future0 : base_future[string].new("foo");
+    event_queue.process();
     assert count0 == 0;
     future0.observe(op0, the_lifespan);
+    event_queue.process();
     assert count0 == 0;
 
     future1 : base_future[string].new();
     future1.observe(op1, the_lifespan);
+    event_queue.process();
     assert count1 == 0;
     future1.set("bar");
+    event_queue.process();
     assert count1 == 1;
 
     short_lifespan : the_lifespan.make_sub_span();
     future2 : base_future[string].new();
     future2.observe(op1, short_lifespan);
+    event_queue.process();
     assert count1 == 1;
     short_lifespan.dispose();
     future2.set("baz");
+    event_queue.process();
     assert count1 == 1;
     assert future2.value == "baz";
   }

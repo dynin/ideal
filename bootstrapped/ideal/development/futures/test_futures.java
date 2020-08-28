@@ -46,20 +46,26 @@ public class test_futures {
       }
     }, new base_string("observe1"));
     final base_future<string> future0 = new base_future<string>(new base_string("foo"));
+    event_queue.process();
     assert test_futures.count0 == 0;
     future0.observe(op0, the_lifespan);
+    event_queue.process();
     assert test_futures.count0 == 0;
     final base_future<string> future1 = new base_future<string>();
     future1.observe(op1, the_lifespan);
+    event_queue.process();
     assert test_futures.count1 == 0;
     future1.set(new base_string("bar"));
+    event_queue.process();
     assert test_futures.count1 == 1;
     final lifespan short_lifespan = the_lifespan.make_sub_span();
     final base_future<string> future2 = new base_future<string>();
     future2.observe(op1, short_lifespan);
+    event_queue.process();
     assert test_futures.count1 == 1;
     short_lifespan.dispose();
     future2.set(new base_string("baz"));
+    event_queue.process();
     assert test_futures.count1 == 1;
     assert ideal.machine.elements.runtime_util.values_equal(future2.value(), new base_string("baz"));
   }

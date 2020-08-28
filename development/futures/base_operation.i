@@ -17,6 +17,10 @@ class base_operation {
   }
 
   implement void schedule() {
+    event_queue.schedule(this);
+  }
+
+  void execute() {
     callback();
   }
 

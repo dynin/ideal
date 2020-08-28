@@ -13,6 +13,9 @@ public class base_operation implements operation {
     this.name = name;
   }
   public @Override void schedule() {
+    event_queue.schedule(this);
+  }
+  public void execute() {
     this.callback.call();
   }
   public @Override string to_string() {

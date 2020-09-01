@@ -59,7 +59,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
     origin the_origin = this;
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
@@ -99,7 +99,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
       }
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   @Override

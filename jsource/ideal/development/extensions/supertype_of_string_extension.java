@@ -35,8 +35,8 @@ public class supertype_of_string_extension extends declaration_extension {
   }
 
   @Override
-  protected @Nullable error_signal process_type_declaration(
-      type_declaration_analyzer the_type_declaration, analysis_pass pass) {
+  protected signal process_type_declaration(type_declaration_analyzer the_type_declaration,
+      analysis_pass pass) {
 
     //type_declaration_analyzer string_declaration2 =
     //      (type_declaration_analyzer) library().string_type().get_declaration();
@@ -60,6 +60,6 @@ public class supertype_of_string_extension extends declaration_extension {
       string_declaration.add_to_body(the_supertype);
     }
 
-    return null;
+    return ok_signal.instance;
   }
 }

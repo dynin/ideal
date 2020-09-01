@@ -180,7 +180,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.TARGET_DECL) {
       process_annotations(annotations_list, language().get_default_type_access(outer_kind()));
@@ -215,7 +215,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       }
 
       if (has_parameters()) {
-        return null;
+        return ok_signal.instance;
       }
 
       result_type = master;
@@ -253,7 +253,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     if (body == null) {
       assert has_errors();
-      return null;
+      return ok_signal.instance;
     }
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL && has_parameters()) {
@@ -330,7 +330,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       }
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   @Override

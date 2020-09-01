@@ -46,7 +46,7 @@ public class target_declaration extends declaration_analyzer<target_construct> {
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
     analyze_and_ignore_errors(expression, pass);
     
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
@@ -57,7 +57,7 @@ public class target_declaration extends declaration_analyzer<target_construct> {
       target_action = action_not_error(expression);
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   public void process() {

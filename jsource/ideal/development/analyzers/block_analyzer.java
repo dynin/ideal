@@ -67,9 +67,9 @@ public class block_analyzer extends declaration_analyzer<origin>
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
     if (pass != analysis_pass.BODY_CHECK) {
-      return null;
+      return ok_signal.instance;
     }
 
     assert annotations != null;
@@ -85,7 +85,7 @@ public class block_analyzer extends declaration_analyzer<origin>
 
     body_action = action_not_error(body);
 
-    return null;
+    return ok_signal.instance;
   }
 
   @Override

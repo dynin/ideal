@@ -87,7 +87,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       set_annotations(new base_annotation_set(access_modifier.public_modifier,
@@ -112,7 +112,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       }
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   @Override

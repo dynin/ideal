@@ -60,7 +60,7 @@ public class declaration_list extends multi_pass_analyzer implements declaration
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
     error_signal error = null;
 
     for (int i = 0; i < the_elements.size(); ++i) {
@@ -69,7 +69,7 @@ public class declaration_list extends multi_pass_analyzer implements declaration
       }
     }
 
-    return error;
+    return error != null ? error : ok_signal.instance;
   }
 
   @Override

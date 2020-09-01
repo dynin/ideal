@@ -113,7 +113,7 @@ public class variable_analyzer extends declaration_analyzer
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       // TODO: signal error
@@ -140,8 +140,8 @@ public class variable_analyzer extends declaration_analyzer
 
     if (pass == analysis_pass.BODY_CHECK) {
       if (get_category() == variable_category.LOCAL) {
-        @Nullable error_signal result = process_declaration();
-        if (result != null) {
+        signal result = process_declaration();
+        if (result instanceof error_signal) {
           return result;
         }
       }
@@ -159,7 +159,7 @@ public class variable_analyzer extends declaration_analyzer
       }
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   private void set_init() {
@@ -168,7 +168,7 @@ public class variable_analyzer extends declaration_analyzer
     init_action = analyzer_utilities.to_value(action_not_error(init), get_context(), the_origin);
   }
 
-  private @Nullable error_signal process_declaration() {
+  private signal process_declaration() {
     // TODO: handle init
     if (variable_type != null) {
       add_dependence(variable_type, null, declaration_pass.TYPES_AND_PROMOTIONS);
@@ -244,7 +244,7 @@ public class variable_analyzer extends declaration_analyzer
       add_var_action(nameonly_flavor, the_variable_action);
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   private boolean is_immutable() {

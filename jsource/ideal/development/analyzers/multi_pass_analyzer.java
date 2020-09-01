@@ -44,7 +44,7 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
     this(source, null, null);
   }
 
-  protected abstract @Nullable error_signal do_multi_pass_analysis(analysis_pass pass);
+  protected abstract signal do_multi_pass_analysis(analysis_pass pass);
 
   protected abstract analysis_result do_get_result();
 
@@ -52,7 +52,7 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
     return pass.is_before(last_pass) || pass == last_pass;
   }
 
-  public final @Nullable error_signal multi_pass_analysis(analysis_pass pass) {
+  public final signal multi_pass_analysis(analysis_pass pass) {
     if (last_pass.is_before(pass)) {
       if (in_progress) {
         utilities.panic("Analysis in progress " + this + ": last " + last_pass +
@@ -66,13 +66,15 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
       for (int pass_index = start; pass_index <= pass.ordinal(); ++pass_index) {
         analysis_pass current_pass = analysis_pass.values()[pass_index];
 
-        @Nullable error_signal current_error = do_multi_pass_analysis(current_pass);
+        signal current_signal = do_multi_pass_analysis(current_pass);
+        assert current_signal != null;
+
         assert last_pass != current_pass;
         last_pass = current_pass;
 
-        if (current_error != null) {
-          last_error = current_error;
-          maybe_report_error(current_error);
+        if (current_signal instanceof error_signal) {
+          last_error = (error_signal) current_signal;
+          maybe_report_error(last_error);
         }
       }
       if (trace_analysis()) {
@@ -81,7 +83,11 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
       in_progress = false;
     }
 
-    return last_error;
+    if (last_error != null) {
+      return last_error;
+    } else {
+      return ok_signal.instance;
+    }
   }
 
   private boolean trace_analysis() {
@@ -93,28 +99,38 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
   }
 
   protected void analyze_and_ignore_errors(analyzable a, analysis_pass pass) {
-    do_analyze(a, pass);
+    analyze(a, pass);
   }
 
   protected boolean has_errors(analyzable a, analysis_pass pass) {
-    return do_analyze(a, pass) != null;
+    return analyze(a, pass) instanceof error_signal;
   }
 
   protected @Nullable error_signal find_error(analyzable a, analysis_pass pass) {
-    return do_analyze(a, pass);
+    signal result = analyze(a, pass);
+    if (result instanceof error_signal) {
+      return (error_signal) result;
+    } else {
+      return null;
+    }
   }
 
-  private @Nullable error_signal do_analyze(analyzable a, analysis_pass pass) {
-    if (a instanceof base_analyzer) {
-      init_context(a);
-      if (a instanceof multi_pass_analyzer) {
-        return ((multi_pass_analyzer) a).multi_pass_analysis(pass);
+  public signal analyze(analyzable the_analyzable, analysis_pass pass) {
+    if (the_analyzable instanceof base_analyzer) {
+      init_context(the_analyzable);
+      if (the_analyzable instanceof multi_pass_analyzer) {
+        return ((multi_pass_analyzer) the_analyzable).multi_pass_analysis(pass);
       } else if (pass.is_before(analysis_pass.BODY_CHECK)) {
-        return null;
+        return ok_signal.instance;
       }
     }
 
-    return find_error(a);
+    analysis_result the_analysis_result = the_analyzable.analyze();
+    if (the_analysis_result instanceof error_signal) {
+      return (error_signal) the_analysis_result;
+    } else {
+      return ok_signal.instance;
+    }
   }
 
   @Override

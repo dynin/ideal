@@ -32,7 +32,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.TYPE_DECL) {
       process_annotations(source.annotations, access_modifier.private_modifier);
@@ -68,7 +68,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
       }
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   @Override

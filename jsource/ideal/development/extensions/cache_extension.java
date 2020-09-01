@@ -64,15 +64,14 @@ public class cache_extension extends declaration_extension {
   }
 
   @Override
-  protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,
-      analysis_pass pass) {
+  protected signal process_procedure(procedure_analyzer the_procedure, analysis_pass pass) {
 
     if (pass.is_before(analysis_pass.METHOD_AND_VARIABLE_DECL)) {
-      return find_error(the_procedure, pass);
+      return analyze(the_procedure, pass);
     }
 
     if (pass.is_after(analysis_pass.METHOD_AND_VARIABLE_DECL)) {
-      return null;
+      return ok_signal.instance;
     }
 
     assert pass == analysis_pass.METHOD_AND_VARIABLE_DECL;
@@ -158,6 +157,6 @@ public class cache_extension extends declaration_extension {
 
     set_expanded(the_declaration_list);
 
-    return null;
+    return ok_signal.instance;
   }
 }

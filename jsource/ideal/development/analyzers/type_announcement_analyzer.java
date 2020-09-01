@@ -49,15 +49,15 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
     assert !announcement_analysis_in_progress;
     announcement_analysis_in_progress = true;
-    @Nullable error_signal result = do_announcement_analysis(pass);
+    signal result = do_announcement_analysis(pass);
     announcement_analysis_in_progress = false;
     return result;
   }
 
-  private @Nullable error_signal do_announcement_analysis(analysis_pass pass) {
+  private signal do_announcement_analysis(analysis_pass pass) {
     if (pass == analysis_pass.TARGET_DECL) {
       // TODO: really handle modifiers, at least the document modifier.
       process_annotations(source.annotations, access_modifier.public_modifier);
@@ -91,7 +91,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         if (external_body == null) {
           // Assume the error has been reported.
           // TODO: load_type_body() should return error_signal.
-          return null;
+          return ok_signal.instance;
         }
 
         if (external_body.size() == 0) {
@@ -141,7 +141,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
       return ((multi_pass_analyzer) external_declaration).multi_pass_analysis(pass);
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   @Override

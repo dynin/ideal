@@ -104,16 +104,15 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     }
   }
 
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
     if (has_errors()) {
-      return null;
+      return ok_signal.instance;
     }
 
     if (is_expanded_set) {
       if (expanded instanceof analyzable) {
         analyze_and_ignore_errors((analyzable) expanded, pass);
       }
-    //  return null;
     }
 
     assert the_declaration != null;
@@ -129,7 +128,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       return find_error(get_declaration());
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   public simple_name generated_name(simple_name name) {
@@ -141,17 +140,17 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     return base_analyzable_action.from(the_abstract_value, the_origin);
   }
 
-  protected @Nullable error_signal process_procedure(procedure_analyzer the_procedure,
+  protected signal process_procedure(procedure_analyzer the_procedure,
       analysis_pass pass) {
     return new error_signal(new base_string("Extension doesn't support a procedure"), this);
   }
 
-  protected @Nullable error_signal process_variable(variable_analyzer the_variable,
+  protected signal process_variable(variable_analyzer the_variable,
       analysis_pass pass) {
     return new error_signal(new base_string("Extension doesn't support a variable"), this);
   }
 
-  protected @Nullable error_signal process_type_declaration(
+  protected signal process_type_declaration(
       type_declaration_analyzer the_type_declaration, analysis_pass pass) {
     return new error_signal(
         new base_string("Extension doesn't support a type declaration"), this);

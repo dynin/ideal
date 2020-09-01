@@ -150,7 +150,7 @@ public class procedure_analyzer extends declaration_analyzer
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
       // TODO: implement flavor support when constructing procedure_analyzer from analyzables
@@ -205,7 +205,7 @@ public class procedure_analyzer extends declaration_analyzer
       }
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   private @Nullable error_signal process_parameters(readonly_list<construct> parameters) {
@@ -246,7 +246,7 @@ public class procedure_analyzer extends declaration_analyzer
     return arg_error;
   }
 
-  private @Nullable error_signal process_declaration() {
+  private signal process_declaration() {
     if (get_category() == procedure_category.CONSTRUCTOR) {
       name = special_name.IMPLICIT_CALL;
     } else {
@@ -284,7 +284,7 @@ public class procedure_analyzer extends declaration_analyzer
 
     if (parameter_variables == null) {
       if (parameters_construct != null) {
-        error_signal parameters_error = process_parameters(parameters_construct.elements);
+        @Nullable error_signal parameters_error = process_parameters(parameters_construct.elements);
         if (parameters_error != null) {
           add_error(declared_in_type(), name, parameters_error);
           return parameters_error;
@@ -350,10 +350,10 @@ public class procedure_analyzer extends declaration_analyzer
     proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
         get_flavored(flavor.immutable_flavor);
 
-    return null;
+    return ok_signal.instance;
   }
 
-  private @Nullable error_signal process_over_declarations() {
+  private signal process_over_declarations() {
     // Handle overloading
     @Nullable overloaded_procedure the_overloaded_procedure = null;
     type from_type = declared_in_type().get_flavored(get_flavor());
@@ -407,7 +407,7 @@ public class procedure_analyzer extends declaration_analyzer
     procedure_action = analyzer_utilities.add_procedure(this, the_overloaded_procedure,
         get_context());
 
-    return null;
+    return ok_signal.instance;
   }
 
   private void declare_this_and_super() {

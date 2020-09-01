@@ -74,7 +74,7 @@ public class type_parameter_analyzer extends declaration_analyzer
   }
 
   @Override
-  protected @Nullable error_signal do_multi_pass_analysis(analysis_pass pass) {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
       process_annotations(annotations, access_modifier.public_modifier);
@@ -91,10 +91,10 @@ public class type_parameter_analyzer extends declaration_analyzer
       assert new_master != null;
       assert var_type == null;
 
-      @Nullable error_signal signal = process_parameter();
-      if (signal != null) {
+      signal the_signal = process_parameter();
+      if (the_signal instanceof error_signal) {
         var_type = library().value_type().get_flavored(flavor.any_flavor);
-        maybe_report_error(signal);
+        maybe_report_error((error_signal) the_signal);
       } else {
         assert var_type != null;
       }
@@ -110,7 +110,7 @@ public class type_parameter_analyzer extends declaration_analyzer
       declaration_analysis_in_progress = false;
     }
 
-    return null;
+    return ok_signal.instance;
   }
 
   @Override
@@ -146,7 +146,7 @@ public class type_parameter_analyzer extends declaration_analyzer
     return signature;
   }
 
-  private @Nullable error_signal process_parameter() {
+  private signal process_parameter() {
     if (parameter_analyzable == null) {
       return new error_signal(messages.var_type_expected, this);
     }
@@ -164,7 +164,7 @@ public class type_parameter_analyzer extends declaration_analyzer
     }
 
     var_type = handle_default_any_flavor(((type_action) the_action).get_type());
-    return null;
+    return ok_signal.instance;
   }
 
   private static type handle_default_any_flavor(type the_type) {

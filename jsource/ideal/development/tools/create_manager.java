@@ -134,8 +134,8 @@ public class create_manager implements target_manager, type_bootstrapper {
     process_type_operators();
 
     principal_type elements = library().elements_package();
-    bootstrap_type(elements);
-    bootstrap_type(library().operators_package());
+    bootstrap_type(elements, analysis_pass.IMPORT_AND_TYPE_VAR_DECL);
+    bootstrap_type(library().operators_package(), analysis_pass.METHOD_AND_VARIABLE_DECL);
 
     process_bootstrap_ops(bootstrap_context);
 
@@ -162,7 +162,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   @Override
-  public void bootstrap_type(principal_type the_type) {
+  public void bootstrap_type(principal_type the_type, analysis_pass pass) {
     assert the_type.get_declaration() == null;
 
     resource_catalog source_catalog;
@@ -182,7 +182,10 @@ public class create_manager implements target_manager, type_bootstrapper {
     // TODO: gracefully handle errors.
     assert constructs.size() == 1;
     type_declaration_construct the_declaration = (type_declaration_construct) constructs.first();
-    check(new type_declaration_analyzer(the_declaration, the_type.get_parent(), bootstrap_context));
+    type_declaration_analyzer the_analyzer =
+        new type_declaration_analyzer(the_declaration, the_type.get_parent(), bootstrap_context);
+    the_analyzer.multi_pass_analysis(pass);
+
     assert the_type.get_declaration() != null;
     assert bootstrap_context.get_analyzable(the_declaration) != null;
 

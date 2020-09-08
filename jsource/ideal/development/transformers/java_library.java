@@ -76,7 +76,7 @@ public class java_library implements value {
     }
 
     if (machine_adapters_namespace.get_declaration() == null) {
-      bootstrapper.bootstrap_type(machine_adapters_namespace);
+      bootstrapper.bootstrap_type(machine_adapters_namespace, analysis_pass.TYPE_DECL);
     }
 
     java_package = get_type(machine_adapters_namespace, "java");

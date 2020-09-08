@@ -121,6 +121,8 @@ class B {
 void test_and() {
   string or null value : "foo";
   if (value is_not null ? true : false) {-- && value.size < 5)) {
+    -- TODO: should be redundant
+    assert value is_not null;
     string svar : value;
     println(value);
   }

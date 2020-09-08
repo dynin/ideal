@@ -62,6 +62,7 @@ ONETWO = $(TEST_DIR)/12.i
 ONE = $(TEST_DIR)/1.i
 TESTCACHE = $(TEST_DIR)/cache.i
 DIRECTORY = $(TEST_DIR)/directory.i
+TEST_STRING = $(TEST_DIR)/string.i
 
 SHOWCASE_DIR = showcase
 CIRCLE = $(SHOWCASE_DIR)/circle.i
@@ -161,7 +162,10 @@ generate_cache: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(ONE)
 
 12: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE) $(FLAGS_RUN) --debug-constructs -input=$(ONETWO)
+	$(CREATE) $(FLAGS_RUN) -debug-constructs -input=$(ONETWO)
+
+s: $(IDEAL_TARGET) $(TEST_STRING)
+	$(CREATE) -debug-progress -input=$(TEST_STRING)
 
 gt: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_test

@@ -182,6 +182,15 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
+    /*
+    if (short_name().toString().equals("string")) {
+      if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
+        utilities.panic("import");
+      }
+      System.out.println("STRING P " + pass);
+    }
+    */
+
     if (pass == analysis_pass.TARGET_DECL) {
       process_annotations(annotations_list, language().get_default_type_access(outer_kind()));
 

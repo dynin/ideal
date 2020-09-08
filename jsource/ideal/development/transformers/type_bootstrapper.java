@@ -9,7 +9,8 @@
 package ideal.development.transformers;
 
 import ideal.development.elements.*;
+import ideal.development.analyzers.*;
 
 public interface type_bootstrapper {
-  void bootstrap_type(principal_type the_type);
+  void bootstrap_type(principal_type the_type, analysis_pass pass);
 }

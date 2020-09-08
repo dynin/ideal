@@ -8,6 +8,8 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
+import javax.annotation.Nullable;
+
 public class flavor_profiles {
   private static type_flavor nameonly_map(final type_flavor from) {
     return flavor.nameonly_flavor;
@@ -66,7 +68,14 @@ public class flavor_profiles {
       return flavor_profiles.deeply_immutable_map(first);
     }
   });
-  public static flavor_profile combine(final flavor_profile flavors1, final flavor_profile flavors2) {
+  public static flavor_profile combine(final @Nullable flavor_profile flavors1, final @Nullable flavor_profile flavors2) {
+    if (flavors1 == null) {
+      assert flavors2 != null;
+      return flavors2;
+    }
+    if (flavors2 == null) {
+      return flavors1;
+    }
     if (flavors1 == flavor_profiles.nameonly_profile || flavors2 == flavor_profiles.nameonly_profile) {
       return flavor_profiles.nameonly_profile;
     }

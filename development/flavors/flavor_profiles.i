@@ -56,7 +56,16 @@ namespace flavor_profiles {
   deeply_immutable_profile :
       base_flavor_profile.new("deeply_immutable_profile", deeply_immutable_map);
 
-  flavor_profile combine(flavor_profile flavors1, flavor_profile flavors2) {
+  flavor_profile combine(flavor_profile or null flavors1, flavor_profile or null flavors2) {
+    if (flavors1 is null) {
+      assert flavors2 is_not null;
+      return flavors2;
+    }
+
+    if (flavors2 is null) {
+      return flavors1;
+    }
+
     if (flavors1 == nameonly_profile || flavors2 == nameonly_profile) {
       return nameonly_profile;
     }

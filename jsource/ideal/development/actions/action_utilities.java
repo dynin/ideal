@@ -207,9 +207,13 @@ public class action_utilities {
         " to " + the_context.print_value(target)), pos);
   }
 
-  public static flavor_profile get_profile(supertype_declaration the_supertype) {
+  public static @Nullable flavor_profile get_profile(supertype_declaration the_supertype) {
     type the_type = the_supertype.get_supertype();
     type_utilities.prepare(the_type, declaration_pass.TYPES_AND_PROMOTIONS);
+
+    if (!the_type.principal().has_flavor_profile()) {
+      return null;
+    }
     flavor_profile the_profile = the_type.principal().get_flavor_profile();
     if (the_type.get_flavor() != flavor.nameonly_flavor) {
       the_profile = flavor_profiles.combine(the_profile, the_type.get_flavor().get_profile());

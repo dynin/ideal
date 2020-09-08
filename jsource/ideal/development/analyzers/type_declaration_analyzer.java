@@ -455,7 +455,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       if (a instanceof supertype_analyzer && !has_errors(a)) {
         supertype_analyzer the_supertype_analyzer = (supertype_analyzer) a;
         if (the_supertype_analyzer.subtype_flavor() == null) {
-          flavor_profile super_profile = action_utilities.get_profile(the_supertype_analyzer);
+          @Nullable flavor_profile super_profile =
+              action_utilities.get_profile(the_supertype_analyzer);
           result = flavor_profiles.combine(result, super_profile);
         }
       }

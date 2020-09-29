@@ -4,8 +4,13 @@ body {
   /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
   font-family: 'Roboto', sans-serif;
   font-size: 16;
+  height: 100vh;
   margin-left: 1em;
   margin-right: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 
@@ -83,7 +88,12 @@ a:active {
   margin-right: 0.1em;
 }
 
+.main {
+  flex-grow: 1;
+}
+
 .nav-table {
+  flex-grow: 0;
   width: 100%;
 }
 

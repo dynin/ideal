@@ -139,7 +139,8 @@ public class publish_generator {
 
     base_printer printer = the_naming_strategy.get_printer();
     text_fragment body = printer.print_statements(constructs);
-    body = new html_rewriter().rewrite(body);
+    body = styles.wrap(styles.main_style, new html_rewriter().rewrite(body));
+
     text_element navigation = make_navigation(the_naming_strategy);
     body = text_util.join(navigation, body, navigation);
     text_fragment result = wrap_body(body, full_names, the_naming_strategy);

@@ -13,8 +13,8 @@ import javax.annotation.Nullable;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
-public class styles {
 
+public class styles {
   public static final text_element indent_style = make_div(new base_string("indent"));
 
   public static final text_element documentation_style =

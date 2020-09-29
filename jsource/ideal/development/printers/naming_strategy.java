@@ -18,6 +18,7 @@ import ideal.runtime.logs.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.resources.*;
 import ideal.development.elements.*;
+import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.constructs.*;
 import ideal.development.declarations.*;
@@ -30,6 +31,7 @@ import javax.annotation.Nullable;
 public class naming_strategy extends debuggable implements printer_assistant, immutable_data {
 
   public static final string INDEX = new base_string("index");
+  public static final simple_name XREF_NAME = simple_name.make("xref");
 
   private final immutable_list<simple_name> full_names;
   private final principal_type current_type;
@@ -63,6 +65,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   // TODO: this is only exposed so it can be used by create -pretty-print
   public naming_strategy(immutable_list<simple_name> full_names, principal_type current_type,
       analysis_context the_context) {
+    assert full_names.is_not_empty();
+
     this.full_names = full_names;
     this.current_type = current_type;
     this.the_context = the_context;
@@ -83,6 +87,21 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public immutable_list<simple_name> get_full_names() {
     return full_names;
+  }
+
+  public immutable_list<simple_name> get_xref_names() {
+    return make_xref_target(full_names).frozen_copy();
+  }
+
+  private readonly_list<simple_name> make_xref_target(readonly_list<simple_name> target) {
+    assert target.is_not_empty();
+    list<simple_name> xref_names = new base_list<simple_name>();
+    xref_names.append_all(target.slice(0, target.size() - 1));
+
+    simple_name last_name = full_names.last();
+    xref_names.append(name_utilities.join(last_name, XREF_NAME));
+
+    return xref_names;
   }
 
   // TODO: test.
@@ -115,9 +134,12 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return new base_string(result.toString());
   }
 
-  public @Nullable string link_to_type(principal_type the_type) {
+  public @Nullable string link_to_type(principal_type the_type, link_mode mode) {
     readonly_list<simple_name> target_name = type_utilities.get_full_names(the_type);
     if (target_name.is_not_empty()) {
+      if (mode == link_mode.XREF) {
+        target_name = make_xref_target(target_name);
+      }
       return link_to(target_name, base_extension.HTML);
     } else {
       return null;
@@ -142,14 +164,17 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   @Override
-  public @Nullable string make_link(construct the_construct) {
+  public @Nullable string make_link(construct the_construct, link_mode mode) {
     @Nullable declaration the_declaration = get_declaration(the_construct);
     if (the_declaration instanceof type_declaration &&
         !(the_declaration instanceof type_parameter_declaration)) {
-      return link_to_type(((type_declaration) the_declaration).get_declared_type());
-    } else {
-      return null;
+      type_declaration the_type_declaration = (type_declaration) the_declaration;
+      if (!the_type_declaration.has_errors()) {
+        return link_to_type(the_type_declaration.get_declared_type(), mode);
+      }
     }
+
+    return null;
   }
 
   @Override

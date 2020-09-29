@@ -146,6 +146,12 @@ public class publish_generator {
 
     string result_string = text_util.to_markup_string(result);
     processor.write(result_string, full_names, base_extension.HTML);
+
+    text_fragment xref_body = new base_string(the_naming_strategy.get_current_type().to_string(),
+        "\n");
+    string xref_string = text_util.to_markup_string(xref_body);
+    processor.write((base_string) xref_string, the_naming_strategy.get_xref_names(),
+        base_extension.HTML);
   }
 
   private static text_fragment make_title(readonly_list<simple_name> full_name) {
@@ -185,7 +191,7 @@ public class publish_generator {
 
     if (the_type != null) {
       the_text = the_naming_strategy.print_simple_name((simple_name) the_type.short_name());
-      @Nullable string link = the_naming_strategy.link_to_type(the_type);
+      @Nullable string link = the_naming_strategy.link_to_type(the_type, link_mode.STYLISH);
       if (link != null) {
         the_text = text_util.make_html_link(the_text, link);
       }
@@ -211,7 +217,7 @@ public class publish_generator {
       action_name current_name = current_type.short_name();
       if (current_name instanceof simple_name) {
         text_fragment name_text = the_naming_strategy.print_simple_name((simple_name) current_name);
-        @Nullable string link = the_naming_strategy.link_to_type(current_type);
+        @Nullable string link = the_naming_strategy.link_to_type(current_type, link_mode.STYLISH);
         if (link != null) {
           name_text = text_util.make_html_link(name_text, link);
         }

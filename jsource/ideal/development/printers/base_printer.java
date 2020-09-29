@@ -533,7 +533,17 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   protected text_fragment make_link(text_fragment the_text, construct the_construct) {
     if (the_assistant != null) {
-      @Nullable string link = the_assistant.make_link(the_construct);
+      @Nullable string link = the_assistant.make_link(the_construct, link_mode.STYLISH);
+      if (link != null) {
+        return text_util.make_html_link(the_text, link);
+      }
+    }
+    return the_text;
+  }
+
+  protected text_fragment make_xref_link(text_fragment the_text, construct the_construct) {
+    if (the_assistant != null) {
+      @Nullable string link = the_assistant.make_link(the_construct, link_mode.XREF);
       if (link != null) {
         return text_util.make_html_link(the_text, link);
       }
@@ -738,7 +748,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_space());
 
     // TODO: make the style a parameter
-    fragments.append(styles.wrap(styles.type_declaration_name_style, print_action_name(c.name)));
+    fragments.append(styles.wrap(styles.type_declaration_name_style,
+        make_xref_link(print_action_name(c.name), c)));
 
     if (c.has_parameters()) {
       fragments.append(print_type_parameters(c.parameters));

@@ -43,20 +43,12 @@ public class publish_generator {
 
   private final analysis_context the_context;
   private final content_writer processor;
-  private final dictionary<principal_type, principal_type> successor;
-  private final dictionary<principal_type, principal_type> predecessor;
+  private final xref_context the_xref_context;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
     this.the_context = the_context;
     this.processor = processor;
-    // TODO: use hash dictionaries here.
-    this.successor = new list_dictionary<principal_type, principal_type>();
-    this.predecessor = new list_dictionary<principal_type, principal_type>();
-  }
-
-  private void declare_successor(principal_type first, principal_type second) {
-    successor.put(first, second);
-    predecessor.put(second, first);
+    this.the_xref_context = new xref_context();
   }
 
   public void generate_for_type(principal_type the_type) {
@@ -75,8 +67,7 @@ public class publish_generator {
       for (int i = 0; i < sub_declarations.size(); ++i) {
         type_declaration sub_declaration = get_type_declaration(sub_declarations.get(i));
         if (i < sub_declarations.size() - 1) {
-          declare_successor(sub_declaration.get_declared_type(),
-              sub_declarations.get(i + 1).get_declared_type());
+          the_xref_context.add(sub_declaration, xref_mode.SUCCESSOR, sub_declarations.get(i + 1));
         }
         generate_for_type(sub_declaration.get_declared_type());
 
@@ -178,16 +169,23 @@ public class publish_generator {
 
   private text_element make_navigation(naming_strategy the_naming_strategy) {
     principal_type the_type = the_naming_strategy.get_current_type();
+    @Nullable declaration the_declaration = the_naming_strategy.get_current_declaration();
 
-    text_element left = make_nav_cell(predecessor.get(the_type), true, the_naming_strategy);
+    text_element left = make_nav_cell(
+        the_xref_context.get_source(the_declaration, xref_mode.SUCCESSOR), true,
+        the_naming_strategy);
     text_element center = make_center_cell(the_type.get_parent(), the_naming_strategy);
-    text_element right = make_nav_cell(successor.get(the_type), false, the_naming_strategy);
+    text_element right = make_nav_cell(
+        the_xref_context.get_target(the_declaration, xref_mode.SUCCESSOR), false,
+        the_naming_strategy);
     text_element row = text_util.make_element(TR, new base_list<text_node>(left, center, right));
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
-  private text_element make_nav_cell(@Nullable principal_type the_type, boolean left,
+  private text_element make_nav_cell(@Nullable declaration the_declaration, boolean left,
       naming_strategy the_naming_strategy) {
+    @Nullable principal_type the_type = the_declaration instanceof type_declaration ?
+        ((type_declaration) the_declaration).get_declared_type() : null;
     text_fragment the_text;
 
     if (the_type != null) {

@@ -95,6 +95,11 @@ a:active {
   font-weight: bolder;
 }
 
+.xref-links {
+  margin-left: 1.5em;
+  margin-bottom: 0.1em;
+}
+
 .main {
   flex-grow: 1;
 }

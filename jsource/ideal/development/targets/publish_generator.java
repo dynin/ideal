@@ -59,6 +59,7 @@ public class publish_generator {
 
     type_declaration_construct the_declaration_construct =
         (type_declaration_construct) (get_type_declaration(the_declaration).deeper_origin());
+    the_populate_xref.process(the_declaration_construct);
 
     if (the_type.get_kind().is_namespace()) {
       list<construct> namespace_body = new base_list<construct>();
@@ -135,7 +136,8 @@ public class publish_generator {
     string result_string = text_util.to_markup_string(result);
     processor.write(result_string, the_naming_strategy.get_full_names(), base_extension.HTML);
 
-    xref_printer the_xref_printer = new xref_printer(the_context, the_xref_context);
+    xref_printer the_xref_printer = new xref_printer(the_context, the_xref_context,
+        the_naming_strategy);
     text_fragment xref_body = the_xref_printer.print_statements(constructs);
     text_fragment xref_result = render_page(xref_body, the_naming_strategy);
 

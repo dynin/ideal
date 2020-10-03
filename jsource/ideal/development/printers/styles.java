@@ -45,6 +45,8 @@ public class styles {
 
   public static final text_element xref_title_style = make_div(new base_string("xref-title"));
 
+  public static final text_element xref_links_style = make_div(new base_string("xref-links"));
+
   public static final text_element code_style = make_span(new base_string("code"));
 
   public static final base_string nav_table_style = new base_string("nav-table");

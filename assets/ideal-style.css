@@ -88,6 +88,13 @@ a:active {
   margin-right: 0.1em;
 }
 
+.xref-title {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  font-size: larger;
+  font-weight: bolder;
+}
+
 .main {
   flex-grow: 1;
 }

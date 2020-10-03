@@ -44,11 +44,13 @@ public class publish_generator {
   private final analysis_context the_context;
   private final content_writer processor;
   private final xref_context the_xref_context;
+  private final populate_xref the_populate_xref;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
     this.the_context = the_context;
     this.processor = processor;
     this.the_xref_context = new xref_context();
+    this.the_populate_xref = new populate_xref(the_context, the_xref_context);
   }
 
   public void generate_for_type(principal_type the_type) {
@@ -126,24 +128,28 @@ public class publish_generator {
   public void generate_markup(readonly_list<construct> constructs,
       naming_strategy the_naming_strategy) {
 
-    immutable_list<simple_name> full_names = the_naming_strategy.get_full_names();
-
     base_printer printer = the_naming_strategy.get_printer();
     text_fragment body = printer.print_statements(constructs);
+    text_fragment result = render_page(body, the_naming_strategy);
+
+    string result_string = text_util.to_markup_string(result);
+    processor.write(result_string, the_naming_strategy.get_full_names(), base_extension.HTML);
+
+    xref_printer the_xref_printer = new xref_printer(the_context, the_xref_context);
+    text_fragment xref_body = the_xref_printer.print_statements(constructs);
+    text_fragment xref_result = render_page(xref_body, the_naming_strategy);
+
+    string xref_string = text_util.to_markup_string(xref_result);
+    processor.write((base_string) xref_string, the_naming_strategy.get_xref_names(),
+        base_extension.HTML);
+  }
+
+  text_fragment render_page(text_fragment body, naming_strategy the_naming_strategy) {
     body = styles.wrap(styles.main_style, new html_rewriter().rewrite(body));
 
     text_element navigation = make_navigation(the_naming_strategy);
     body = text_util.join(navigation, body, navigation);
-    text_fragment result = wrap_body(body, full_names, the_naming_strategy);
-
-    string result_string = text_util.to_markup_string(result);
-    processor.write(result_string, full_names, base_extension.HTML);
-
-    text_fragment xref_body = new base_string(the_naming_strategy.get_current_type().to_string(),
-        "\n");
-    string xref_string = text_util.to_markup_string(xref_body);
-    processor.write((base_string) xref_string, the_naming_strategy.get_xref_names(),
-        base_extension.HTML);
+    return wrap_body(body, the_naming_strategy.get_full_names(), the_naming_strategy);
   }
 
   private static text_fragment make_title(readonly_list<simple_name> full_name) {
@@ -182,10 +188,10 @@ public class publish_generator {
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
-  private text_element make_nav_cell(@Nullable declaration the_declaration, boolean left,
+  private text_element make_nav_cell(@Nullable origin the_origin, boolean left,
       naming_strategy the_naming_strategy) {
-    @Nullable principal_type the_type = the_declaration instanceof type_declaration ?
-        ((type_declaration) the_declaration).get_declared_type() : null;
+    @Nullable principal_type the_type = the_origin instanceof type_declaration ?
+        ((type_declaration) the_origin).get_declared_type() : null;
     text_fragment the_text;
 
     if (the_type != null) {

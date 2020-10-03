@@ -12,7 +12,7 @@ package ideal.development.printers;
  * Used in |xref_context| to tag relationships between declarations.
  */
 public enum xref_mode {
-  SUCCESSOR;
-//  TYPE_DECLARATION,
+  SUCCESSOR,
+  DECLARATION;
 //  SUPERTYPE_DECLARATION;
 }

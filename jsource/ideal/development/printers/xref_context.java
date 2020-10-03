@@ -31,61 +31,61 @@ import javax.annotation.Nullable;
 public class xref_context extends debuggable {
   private final static int num_modes = xref_mode.values().length;
 
-  private final dictionary<declaration, list<declaration>>[] mapping;
+  private final dictionary<origin, list<origin>>[] mapping;
 
   public xref_context() {
     mapping = new dictionary[num_modes * 2];
     for (int i = 0; i < mapping.length; ++i) {
-      mapping[i] = new list_dictionary<declaration, list<declaration>>();
+      mapping[i] = new list_dictionary<origin, list<origin>>();
     }
   }
 
-  public void add(declaration source, xref_mode the_xref_mode, declaration target) {
+  public void add(origin source, xref_mode the_xref_mode, origin target) {
     add_mapping(source, the_xref_mode.ordinal(), target);
     add_mapping(target, num_modes + the_xref_mode.ordinal(), source);
   }
 
-  public @Nullable declaration get_target(@Nullable declaration source, xref_mode the_xref_mode) {
+  public @Nullable origin get_target(@Nullable origin source, xref_mode the_xref_mode) {
     return get_mapping(source, the_xref_mode.ordinal());
   }
 
-  public @Nullable declaration get_source(@Nullable declaration target, xref_mode the_xref_mode) {
+  public @Nullable origin get_source(@Nullable origin target, xref_mode the_xref_mode) {
     return get_mapping(target, num_modes + the_xref_mode.ordinal());
   }
 
-  private void add_mapping(declaration source, int slot, declaration target) {
-    dictionary<declaration, list<declaration>> the_dictionary = mapping[slot];
-    list<declaration> the_list = the_dictionary.get(source);
+  private void add_mapping(origin source, int slot, origin target) {
+    dictionary<origin, list<origin>> the_dictionary = mapping[slot];
+    list<origin> the_list = the_dictionary.get(source);
     if (the_list == null) {
-      the_list = new base_list<declaration>();
+      the_list = new base_list<origin>();
       the_dictionary.put(source, the_list);
     }
     the_list.append(target);
   }
 
-  private @Nullable readonly_list<declaration> get_mapping_list(@Nullable declaration source,
+  private @Nullable readonly_list<origin> get_mapping_list(@Nullable origin source,
       int slot) {
     if (source == null) {
       return null;
     }
-    dictionary<declaration, list<declaration>> the_dictionary = mapping[slot];
-    list<declaration> the_list = the_dictionary.get(source);
+    dictionary<origin, list<origin>> the_dictionary = mapping[slot];
+    list<origin> the_list = the_dictionary.get(source);
     if (the_list == null) {
       return null;
     }
     return the_list;
   }
 
-  private @Nullable declaration get_mapping(@Nullable declaration source, int slot) {
-    @Nullable readonly_list<declaration> declarations = get_mapping_list(source, slot);
-    if (declarations == null) {
+  private @Nullable origin get_mapping(@Nullable origin source, int slot) {
+    @Nullable readonly_list<origin> origins = get_mapping_list(source, slot);
+    if (origins == null) {
       return null;
     }
-    assert declarations.size() <= 1;
-    if (declarations.is_empty()) {
+    assert origins.size() <= 1;
+    if (origins.is_empty()) {
       return null;
     } else {
-      return declarations.first();
+      return origins.first();
     }
   }
 }

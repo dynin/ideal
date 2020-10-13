@@ -49,4 +49,6 @@ target document_library: print_documentation(ideal.library);
 
 target document_runtime: print_documentation(ideal.runtime);
 
-target document_all: print_documentation(ideal.library, ideal.runtime);
+target document_librun: print_documentation(ideal.library, ideal.runtime);
+
+target document_all: print_documentation(ideal.library, ideal.runtime, ideal.development);

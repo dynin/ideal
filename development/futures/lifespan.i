@@ -11,6 +11,7 @@
 --- and there are no cycles in the lifespan graph.
 --- Lifespan hierarchy can correspond to the UI widget hierarchy,
 --- data structure hierarchy and so on.
+--- </p>
 interface lifespan {
   implements disposable;
 

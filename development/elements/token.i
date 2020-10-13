@@ -9,6 +9,7 @@
 --- carry a payload.  Payload type varies based on the token type.
 --- <p>
 --- Scanners generate a list of tokens.
+--- </p>
 interface token[deeply_immutable data payload_type] {
   extends deeply_immutable data, mutable origin, stringable;
 

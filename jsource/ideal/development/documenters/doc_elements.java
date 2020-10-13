@@ -21,7 +21,8 @@ public class doc_elements {
   public static final element_id J = new base_element_id(DOC_NS, new base_string("j"));
   public static final element_id CPP = new base_element_id(DOC_NS, new base_string("cpp"));
 
-  public static final dictionary<string, element_id> WHITELIST = new hash_dictionary<string, element_id>();
+  public static final dictionary<string, element_id> WHITELIST =
+      new hash_dictionary<string, element_id>();
 
   private static void add_element(element_id id) {
     WHITELIST.put(id.short_name(), id);
@@ -29,6 +30,7 @@ public class doc_elements {
 
   static {
     add_element(text_library.DIV);
+    add_element(text_library.P);
     add_element(text_library.EM);
 
     add_element(CODE);

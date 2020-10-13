@@ -64,283 +64,285 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
        <td class='nav-right' />
       </tr>
     </table>
-    <div>
-     import java &bull; util &bull; List
-    </div>
-    <div>
-     import java &bull; util &bull; ArrayList
-    </div>
-    <div>
-     implicit import <a href='ideal.html'>ideal</a> &bull; concepts
-    </div>
-    <div>
-     implicit import <a href='ideal.html'>ideal</a> &bull; constructs
-    </div>
-    <div>
-     import <a href='ideal.html'>ideal</a> &bull; concepts &bull; type
-    </div>
-    <div>
-     import <a href='ideal.html'>ideal</a> &bull; scanners &bull; scanner element
-    </div>
-    <div>
-     import <a href='ideal.html'>ideal</a> &bull; semantics &bull; lookup row
-    </div>
-    <div class='type-declaration'>
-     public class <span class='type-declaration-name'><a href='test-xref.html'>sequence</a></span>[readonly data <span class='var-declaration-name'>element</span>]
-      <div class='indent'>
-        <div>
-         implements <span class='supertype-declaration-name'>readonly data</span>
-        </div>
-        <div>
-         private List <span class='var-declaration-name'>list</span>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>()
-          <div class='indent'>
-            <div>
-             <span class='var-declaration-name'>list</span> : ArrayList &bull; new()
-            </div>
+    <div class='main'>
+      <div>
+       import java &bull; util &bull; List
+      </div>
+      <div>
+       import java &bull; util &bull; ArrayList
+      </div>
+      <div>
+       implicit import <a href='ideal.html'>ideal</a> &bull; concepts
+      </div>
+      <div>
+       implicit import <a href='ideal.html'>ideal</a> &bull; constructs
+      </div>
+      <div>
+       import <a href='ideal.html'>ideal</a> &bull; concepts &bull; type
+      </div>
+      <div>
+       import <a href='ideal.html'>ideal</a> &bull; scanners &bull; scanner element
+      </div>
+      <div>
+       import <a href='ideal.html'>ideal</a> &bull; semantics &bull; lookup row
+      </div>
+      <div class='type-declaration'>
+       public class <span class='type-declaration-name'><a href='test-xref.html'>sequence</a></span>[readonly data <span class='var-declaration-name'>element</span>]
+        <div class='indent'>
+          <div>
+           implements <span class='supertype-declaration-name'>readonly data</span>
           </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append(n1)
-            </div>
+          <div>
+           private List <span class='var-declaration-name'>list</span>
           </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append(n1)
-            </div>
-            <div>
-             append(n2)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(<a href='sequence.html'>sequence</a> <span class='var-declaration-name'>ns1</span>, element <span class='var-declaration-name'>n2</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append all(ns1)
-            </div>
-            <div>
-             append(n2)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, <a href='sequence.html'>sequence</a> <span class='var-declaration-name'>ns2</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append(n1)
-            </div>
-            <div>
-             append all(ns2)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append(n1)
-            </div>
-            <div>
-             append(n2)
-            </div>
-            <div>
-             append(n3)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append(n1)
-            </div>
-            <div>
-             append(n2)
-            </div>
-            <div>
-             append(n3)
-            </div>
-            <div>
-             append(n4)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append(n1)
-            </div>
-            <div>
-             append(n2)
-            </div>
-            <div>
-             append(n3)
-            </div>
-            <div>
-             append(n4)
-            </div>
-            <div>
-             append(n5)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>, element <span class='var-declaration-name'>n6</span>)
-          <div class='indent'>
-            <div>
-             this()
-            </div>
-            <div>
-             append(n1)
-            </div>
-            <div>
-             append(n2)
-            </div>
-            <div>
-             append(n3)
-            </div>
-            <div>
-             append(n4)
-            </div>
-            <div>
-             append(n5)
-            </div>
-            <div>
-             append(n6)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public int <span class='procedure-declaration-name'>size</span>()
-          <div class='indent'>
-            <div>
-             return list &bull; size()
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>empty</span> =&gt; list &bull; isEmpty()
-        </div>
-        <div class='procedure-declaration'>
-         public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>is not empty</span> =&gt; !empty()
-        </div>
-        <div class='procedure-declaration'>
-         public element <span class='procedure-declaration-name'>get</span>(int <span class='var-declaration-name'>index</span>)
-          <div class='indent'>
-            <div>
-             return list &bull; get(index) as element
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>append</span>(element <span class='var-declaration-name'>t</span>)
-          <div class='indent'>
-            <div>
-             list &bull; add(t)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>append all</span>(<a href='sequence.html'>sequence</a> <span class='var-declaration-name'>s</span>)
-          <div class='indent'>
-            <div>
-             list &bull; addAll(s &bull; list)
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>, int <span class='var-declaration-name'>end</span>)
-          <div class='indent'>
-            <div>
-             assert begin &gt;= 0 &amp;&amp; end &lt;= size()
-            </div>
-            <div>
-             sequence <span class='var-declaration-name'>result</span> : sequence &bull; new()
-            </div>
-           for int <span class='var-declaration-name'>i</span> : begin; i &lt; end; i += 1
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>()
             <div class='indent'>
               <div>
-               result &bull; append(get(i))
-              </div>
-            </div>
-            <div>
-             return result
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>)
-          <div class='indent'>
-            <div>
-             return subsequence(begin, size())
-            </div>
-          </div>
-        </div>
-        <div class='procedure-declaration'>
-         public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>test</span>()
-          <div class='indent'>
-           if true
-            <div class='indent'>
-              <div>
-               test()
-              </div>
-            </div>
-            else
-            <div class='indent'>
-              <div>
-               test()
+               <span class='var-declaration-name'>list</span> : ArrayList &bull; new()
               </div>
             </div>
           </div>
-        </div>
-        <div class='procedure-declaration'>
-         public void <span class='procedure-declaration-name'> display</span>(display writer <span class='var-declaration-name'>writer</span>, display context <span class='var-declaration-name'>options</span>)
-          <div class='indent'>
-            <div>
-             identifier <span class='var-declaration-name'>id</span> : display function &bull; name(getClass())
-            </div>
-            <div>
-             writer &bull; start list(id)
-            </div>
-           for int <span class='var-declaration-name'>i</span> : 0; i &lt; list &bull; size(); i += 1
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>)
             <div class='indent'>
               <div>
-               function &bull; display(writer, list &bull; get(i) as element, options)
+               this()
+              </div>
+              <div>
+               append(n1)
               </div>
             </div>
-            <div>
-             writer &bull; end list(id)
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>)
+            <div class='indent'>
+              <div>
+               this()
+              </div>
+              <div>
+               append(n1)
+              </div>
+              <div>
+               append(n2)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(<a href='sequence.html'>sequence</a> <span class='var-declaration-name'>ns1</span>, element <span class='var-declaration-name'>n2</span>)
+            <div class='indent'>
+              <div>
+               this()
+              </div>
+              <div>
+               append all(ns1)
+              </div>
+              <div>
+               append(n2)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, <a href='sequence.html'>sequence</a> <span class='var-declaration-name'>ns2</span>)
+            <div class='indent'>
+              <div>
+               this()
+              </div>
+              <div>
+               append(n1)
+              </div>
+              <div>
+               append all(ns2)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>)
+            <div class='indent'>
+              <div>
+               this()
+              </div>
+              <div>
+               append(n1)
+              </div>
+              <div>
+               append(n2)
+              </div>
+              <div>
+               append(n3)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>)
+            <div class='indent'>
+              <div>
+               this()
+              </div>
+              <div>
+               append(n1)
+              </div>
+              <div>
+               append(n2)
+              </div>
+              <div>
+               append(n3)
+              </div>
+              <div>
+               append(n4)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>)
+            <div class='indent'>
+              <div>
+               this()
+              </div>
+              <div>
+               append(n1)
+              </div>
+              <div>
+               append(n2)
+              </div>
+              <div>
+               append(n3)
+              </div>
+              <div>
+               append(n4)
+              </div>
+              <div>
+               append(n5)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>, element <span class='var-declaration-name'>n6</span>)
+            <div class='indent'>
+              <div>
+               this()
+              </div>
+              <div>
+               append(n1)
+              </div>
+              <div>
+               append(n2)
+              </div>
+              <div>
+               append(n3)
+              </div>
+              <div>
+               append(n4)
+              </div>
+              <div>
+               append(n5)
+              </div>
+              <div>
+               append(n6)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public int <span class='procedure-declaration-name'>size</span>()
+            <div class='indent'>
+              <div>
+               return list &bull; size()
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>empty</span> =&gt; list &bull; isEmpty()
+          </div>
+          <div class='procedure-declaration'>
+           public <a href='ideal/library/elements/boolean.html'>boolean</a> <span class='procedure-declaration-name'>is not empty</span> =&gt; !empty()
+          </div>
+          <div class='procedure-declaration'>
+           public element <span class='procedure-declaration-name'>get</span>(int <span class='var-declaration-name'>index</span>)
+            <div class='indent'>
+              <div>
+               return list &bull; get(index) as element
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>append</span>(element <span class='var-declaration-name'>t</span>)
+            <div class='indent'>
+              <div>
+               list &bull; add(t)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>append all</span>(<a href='sequence.html'>sequence</a> <span class='var-declaration-name'>s</span>)
+            <div class='indent'>
+              <div>
+               list &bull; addAll(s &bull; list)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>, int <span class='var-declaration-name'>end</span>)
+            <div class='indent'>
+              <div>
+               assert begin &gt;= 0 &amp;&amp; end &lt;= size()
+              </div>
+              <div>
+               sequence <span class='var-declaration-name'>result</span> : sequence &bull; new()
+              </div>
+             for int <span class='var-declaration-name'>i</span> : begin; i &lt; end; i += 1
+              <div class='indent'>
+                <div>
+                 result &bull; append(get(i))
+                </div>
+              </div>
+              <div>
+               return result
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>)
+            <div class='indent'>
+              <div>
+               return subsequence(begin, size())
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public <a href='ideal/library/elements/void.html'>void</a> <span class='procedure-declaration-name'>test</span>()
+            <div class='indent'>
+             if true
+              <div class='indent'>
+                <div>
+                 test()
+                </div>
+              </div>
+              else
+              <div class='indent'>
+                <div>
+                 test()
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public void <span class='procedure-declaration-name'> display</span>(display writer <span class='var-declaration-name'>writer</span>, display context <span class='var-declaration-name'>options</span>)
+            <div class='indent'>
+              <div>
+               identifier <span class='var-declaration-name'>id</span> : display function &bull; name(getClass())
+              </div>
+              <div>
+               writer &bull; start list(id)
+              </div>
+             for int <span class='var-declaration-name'>i</span> : 0; i &lt; list &bull; size(); i += 1
+              <div class='indent'>
+                <div>
+                 function &bull; display(writer, list &bull; get(i) as element, options)
+                </div>
+              </div>
+              <div>
+               writer &bull; end list(id)
+              </div>
             </div>
           </div>
         </div>
@@ -355,4 +357,35 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
     </table>
   </body>
 </html>
-&lt;root&gt;
+<html>
+  <head>
+    <title>
+     test
+    </title>
+   <link href='assets/ideal-style.css' rel='stylesheet' style='text/css' />
+  </head>
+  <body>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+    <div class='main'>
+      <div class='xref-title'>
+       class sequence[sequence.element]
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+    </div>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+  </body>
+</html>

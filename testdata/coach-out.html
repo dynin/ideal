@@ -13,92 +13,94 @@
        <td class='nav-right' />
       </tr>
     </table>
-    <div class='type-declaration'>
-     datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise type</a></span>
-      <div class='indent'>
-        <div>
-         <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>name</span>
-        </div>
-        <div>
-         <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>description link</span>
-        </div>
-        <div>
-         <a href='exercise-category.html'>exercise category</a> <span class='var-declaration-name'>category</span>
-        </div>
-        <div>
-         <a href='exercise-parameter.html'>exercise parameter</a> <span class='var-declaration-name'>parameter</span>
-        </div>
-      </div>
-    </div>
-    <div class='type-declaration'>
-     enum <span class='type-declaration-name'><a href='test-xref.html'>exercise category</a></span>
-      <div class='indent'>
-        <div>
-         <span class='var-declaration-name'>UPPER BODY</span>
-        </div>
-        <div>
-         <span class='var-declaration-name'>LOWER BODY</span>
-        </div>
-        <div>
-         <span class='var-declaration-name'>CORE</span>
-        </div>
-        <div>
-         <span class='var-declaration-name'>CARDIO</span>
-        </div>
-        <div>
-         <span class='var-declaration-name'>BALANCE</span>
+    <div class='main'>
+      <div class='type-declaration'>
+       datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise type</a></span>
+        <div class='indent'>
+          <div>
+           <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>name</span>
+          </div>
+          <div>
+           <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>description link</span>
+          </div>
+          <div>
+           <a href='exercise-category.html'>exercise category</a> <span class='var-declaration-name'>category</span>
+          </div>
+          <div>
+           <a href='exercise-parameter.html'>exercise parameter</a> <span class='var-declaration-name'>parameter</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class='type-declaration'>
-     enum <span class='type-declaration-name'><a href='test-xref.html'>exercise parameter</a></span>
-      <div class='indent'>
-        <div>
-         <span class='var-declaration-name'>REPETITION COUNT</span>
-        </div>
-        <div>
-         <span class='var-declaration-name'>DISTANCE</span>
-        </div>
-      </div>
-    </div>
-    <div class='type-declaration'>
-     datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise</a></span>
-      <div class='indent'>
-        <div>
-         <a href='exercise-type.html'>exercise type</a> <span class='var-declaration-name'>type</span>
-        </div>
-        <div>
-         <a href='ideal/library/elements/nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>repetition count</span>
-        </div>
-        <div>
-         <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>distance</span>
+      <div class='type-declaration'>
+       enum <span class='type-declaration-name'><a href='test-xref.html'>exercise category</a></span>
+        <div class='indent'>
+          <div>
+           <span class='var-declaration-name'>UPPER BODY</span>
+          </div>
+          <div>
+           <span class='var-declaration-name'>LOWER BODY</span>
+          </div>
+          <div>
+           <span class='var-declaration-name'>CORE</span>
+          </div>
+          <div>
+           <span class='var-declaration-name'>CARDIO</span>
+          </div>
+          <div>
+           <span class='var-declaration-name'>BALANCE</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class='type-declaration'>
-     datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise set</a></span>
-      <div class='indent'>
-        <div>
-         <a href='ideal/library/elements/list.html'>list</a>[<a href='exercise.html'>exercise</a>] <span class='var-declaration-name'>exercises</span>
+      <div class='type-declaration'>
+       enum <span class='type-declaration-name'><a href='test-xref.html'>exercise parameter</a></span>
+        <div class='indent'>
+          <div>
+           <span class='var-declaration-name'>REPETITION COUNT</span>
+          </div>
+          <div>
+           <span class='var-declaration-name'>DISTANCE</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class='type-declaration'>
-     datatype <span class='type-declaration-name'><a href='test-xref.html'>workout</a></span>
-      <div class='indent'>
-        <div>
-         <a href='exercise-set.html'>exercise set</a> <span class='var-declaration-name'>set</span>
-        </div>
-        <div>
-         <a href='ideal/library/elements/nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>repetition count</span>
+      <div class='type-declaration'>
+       datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise</a></span>
+        <div class='indent'>
+          <div>
+           <a href='exercise-type.html'>exercise type</a> <span class='var-declaration-name'>type</span>
+          </div>
+          <div>
+           <a href='ideal/library/elements/nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>repetition count</span>
+          </div>
+          <div>
+           <a href='ideal/library/elements/string.html'>string</a> <span class='var-declaration-name'>distance</span>
+          </div>
         </div>
       </div>
-    </div>
-    <div class='type-declaration'>
-     datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise program</a></span>
-      <div class='indent'>
-        <div>
-         <a href='ideal/library/elements/list.html'>list</a>[<a href='workout.html'>workout</a>] <span class='var-declaration-name'>workouts</span>
+      <div class='type-declaration'>
+       datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise set</a></span>
+        <div class='indent'>
+          <div>
+           <a href='ideal/library/elements/list.html'>list</a>[<a href='exercise.html'>exercise</a>] <span class='var-declaration-name'>exercises</span>
+          </div>
+        </div>
+      </div>
+      <div class='type-declaration'>
+       datatype <span class='type-declaration-name'><a href='test-xref.html'>workout</a></span>
+        <div class='indent'>
+          <div>
+           <a href='exercise-set.html'>exercise set</a> <span class='var-declaration-name'>set</span>
+          </div>
+          <div>
+           <a href='ideal/library/elements/nonnegative.html'>nonnegative</a> <span class='var-declaration-name'>repetition count</span>
+          </div>
+        </div>
+      </div>
+      <div class='type-declaration'>
+       datatype <span class='type-declaration-name'><a href='test-xref.html'>exercise program</a></span>
+        <div class='indent'>
+          <div>
+           <a href='ideal/library/elements/list.html'>list</a>[<a href='workout.html'>workout</a>] <span class='var-declaration-name'>workouts</span>
+          </div>
         </div>
       </div>
     </div>
@@ -111,4 +113,71 @@
     </table>
   </body>
 </html>
-&lt;root&gt;
+<html>
+  <head>
+    <title>
+     test
+    </title>
+   <link href='assets/ideal-style.css' rel='stylesheet' style='text/css' />
+  </head>
+  <body>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+    <div class='main'>
+      <div class='xref-title'>
+       datatype exercise_type
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+      <div class='xref-title'>
+       enum exercise_category
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+      <div class='xref-title'>
+       enum exercise_parameter
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+      <div class='xref-title'>
+       datatype exercise
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+      <div class='xref-title'>
+       datatype exercise_set
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+      <div class='xref-title'>
+       datatype workout
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+      <div class='xref-title'>
+       datatype exercise_program
+      </div>
+      <div class='xref-links'>
+       Declaration: [null]
+      </div>
+    </div>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+  </body>
+</html>

@@ -71,6 +71,10 @@ public class xref_printer {
     }
 
     type_declaration the_declaration = (type_declaration) a;
+    if (the_declaration.has_errors()) {
+      return null;
+    }
+
     text_fragment title = new base_string(c.kind.to_string(), " ",
         the_value_printer.print_value(the_declaration.get_declared_type()));
     text_fragment title_text = styles.wrap(styles.xref_title_style, title);

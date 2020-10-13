@@ -207,7 +207,7 @@ public class publish_generator {
 
   private text_element make_navigation(naming_strategy the_naming_strategy) {
     principal_type the_type = the_naming_strategy.get_current_type();
-    @Nullable declaration the_declaration = the_naming_strategy.get_current_declaration();
+    @Nullable type_declaration the_declaration = get_type_declaration(the_type.get_declaration());
 
     text_element left = make_nav_cell(
         the_xref_context.get_source(the_declaration, xref_mode.SUCCESSOR), true,

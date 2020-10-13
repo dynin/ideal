@@ -81,10 +81,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return current_type;
   }
 
-  public @Nullable declaration get_current_declaration() {
-    return current_type.get_declaration();
-  }
-
   public base_printer get_printer() {
     return the_printer;
   }

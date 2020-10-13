@@ -29,11 +29,11 @@ public class target_utilities {
 
     for (int i = 0; i < signature.size(); ++i) {
       declaration the_declaration = signature.get(i);
-      if (the_declaration instanceof type_declaration) {
-        result.append((type_declaration) the_declaration);
-      } else if (the_declaration instanceof type_announcement_analyzer) {
+      if (the_declaration instanceof type_announcement) {
         // TODO: should this be in get_signature?
-        result.append(((type_announcement_analyzer) the_declaration).get_type_declaration());
+        result.append(((type_announcement) the_declaration).get_type_declaration());
+      } else if (the_declaration instanceof type_declaration) {
+        result.append((type_declaration) the_declaration);
       }
     }
 

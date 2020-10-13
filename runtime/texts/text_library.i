@@ -18,6 +18,7 @@ public namespace text_library {
   DIV : base_element_id.new(HTML_NS, "div");
   H1 : base_element_id.new(HTML_NS, "h1");
   H2 : base_element_id.new(HTML_NS, "h2");
+  PRE : base_element_id.new(HTML_NS, "pre");
 
   TABLE : base_element_id.new(HTML_NS, "table");
   TR : base_element_id.new(HTML_NS, "tr");

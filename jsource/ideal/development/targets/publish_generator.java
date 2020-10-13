@@ -63,7 +63,7 @@ public class publish_generator {
         (type_declaration_construct) (get_type_declaration(the_declaration).deeper_origin());
     the_populate_xref.process(the_declaration_construct);
 
-    if (the_type.get_kind().is_namespace()) {
+    if (generate_subpages(the_declaration)) {
       list<construct> namespace_body = new base_list<construct>();
       // TODO: we should handle other subdeclarations here,
       //  such as variable declarations.
@@ -109,6 +109,22 @@ public class publish_generator {
     } else {
       add_output_declaration(the_type, the_declaration_construct);
     }
+  }
+
+  private boolean generate_subpages(type_declaration the_type_declaration) {
+    readonly_list<declaration> signature = the_type_declaration.get_signature();
+    for (int i = 0; i < signature.size(); ++i) {
+      declaration the_declaration = signature.get(i);
+      if (the_declaration instanceof type_announcement ||
+          the_declaration instanceof type_declaration ||
+          the_declaration instanceof import_declaration) {
+        continue;
+      } else {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   private void add_output_declaration(principal_type the_type,

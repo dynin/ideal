@@ -18,6 +18,7 @@ public class text_library {
   public static final base_element_id DIV = new base_element_id(text_library.HTML_NS, new base_string("div"));
   public static final base_element_id H1 = new base_element_id(text_library.HTML_NS, new base_string("h1"));
   public static final base_element_id H2 = new base_element_id(text_library.HTML_NS, new base_string("h2"));
+  public static final base_element_id PRE = new base_element_id(text_library.HTML_NS, new base_string("pre"));
   public static final base_element_id TABLE = new base_element_id(text_library.HTML_NS, new base_string("table"));
   public static final base_element_id TR = new base_element_id(text_library.HTML_NS, new base_string("tr"));
   public static final base_element_id TH = new base_element_id(text_library.HTML_NS, new base_string("th"));

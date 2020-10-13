@@ -31,6 +31,8 @@ public class doc_elements {
   static {
     add_element(text_library.DIV);
     add_element(text_library.P);
+    add_element(text_library.PRE);
+
     add_element(text_library.EM);
 
     add_element(CODE);

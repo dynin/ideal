@@ -57,6 +57,11 @@ public class publish_target extends type_processor_target {
 
   @Override
   public void process_type(principal_type the_type) {
-    the_generator.generate_for_type(the_type);
+    the_generator.add_type(the_type);
+  }
+
+  @Override
+  public void finish_processing() {
+    the_generator.generate_all();
   }
 }

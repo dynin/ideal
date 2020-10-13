@@ -37,4 +37,7 @@ public class java_generator_target extends type_processor_target {
   public void process_type(principal_type the_type) {
     generator.generate_for_type(the_type);
   }
+
+  @Override
+  public void finish_processing() { }
 }

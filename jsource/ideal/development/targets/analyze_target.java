@@ -36,6 +36,7 @@ public class analyze_target extends type_processor_target {
     printer = new base_value_printer(null);
   }
 
+  @Override
   public void setup(analysis_context the_context) { }
 
   @Override
@@ -49,4 +50,7 @@ public class analyze_target extends type_processor_target {
       log.info(new base_string(printer.print_type(the_type), " looking good."));
     }
   }
+
+  @Override
+  public void finish_processing() { }
 }

@@ -71,4 +71,7 @@ public class printer_target extends type_processor_target {
     string string_result = text_util.to_plain_text(result);
     the_writer.write(string_result, full_name, base_extension.TEXT);
   }
+
+  @Override
+  public void finish_processing() { }
 }

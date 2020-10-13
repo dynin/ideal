@@ -45,15 +45,17 @@ public class publish_generator {
   private final content_writer processor;
   private final xref_context the_xref_context;
   private final populate_xref the_populate_xref;
+  private final list<type_declaration_construct> output_declarations;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
     this.the_context = the_context;
     this.processor = processor;
     this.the_xref_context = new xref_context();
     this.the_populate_xref = new populate_xref(the_context, the_xref_context);
+    this.output_declarations = new base_list<type_declaration_construct>();
   }
 
-  public void generate_for_type(principal_type the_type) {
+  public void add_type(principal_type the_type) {
     assert the_type.get_declaration() instanceof type_declaration;
     type_declaration the_declaration = (type_declaration) the_type.get_declaration();
 
@@ -72,7 +74,7 @@ public class publish_generator {
         if (i < sub_declarations.size() - 1) {
           the_xref_context.add(sub_declaration, xref_mode.SUCCESSOR, sub_declarations.get(i + 1));
         }
-        generate_for_type(sub_declaration.get_declared_type());
+        add_type(sub_declaration.get_declared_type());
 
         @Nullable text_fragment summary_text = null;
         @Nullable documentation the_documentation =
@@ -102,28 +104,40 @@ public class publish_generator {
           new type_declaration_construct(the_declaration_construct.annotations,
               the_declaration_construct.kind, the_declaration_construct.name,
               the_declaration_construct.parameters, namespace_body, the_declaration_construct);
-      generate_declaration(the_type, namespace_declaration);
+      the_context.put_analyzable(namespace_declaration, (analyzable) the_declaration);
+      add_output_declaration(the_type, namespace_declaration);
     } else {
-      generate_declaration(the_type, the_declaration_construct);
+      add_output_declaration(the_type, the_declaration_construct);
     }
   }
 
-   private type_declaration get_type_declaration(declaration the_declaration) {
-    if (the_declaration instanceof type_announcement) {
-      return ((type_announcement) the_declaration).get_type_declaration();
-    } else if (the_declaration instanceof type_declaration) {
-      return (type_declaration) the_declaration;
+  private void add_output_declaration(principal_type the_type,
+      type_declaration_construct the_declaration_construct) {
+    type_declaration the_type_declaration =
+        get_type_declaration(the_context.get_analyzable(the_declaration_construct));
+    assert the_type_declaration.get_declared_type() == the_type;
+    output_declarations.append(the_declaration_construct);
+  }
+
+  public void generate_all() {
+    for (int i = 0; i < output_declarations.size(); ++i) {
+      type_declaration_construct the_declaration_construct = output_declarations.get(i);
+      type_declaration the_declaration =
+          get_type_declaration(the_context.get_analyzable(the_declaration_construct));
+      generate_markup(new base_list<construct>(the_declaration_construct),
+          new naming_strategy(the_declaration.get_declared_type(), the_context));
+    }
+  }
+
+  private type_declaration get_type_declaration(origin the_origin) {
+    if (the_origin instanceof type_announcement) {
+      return ((type_announcement) the_origin).get_type_declaration();
+    } else if (the_origin instanceof type_declaration) {
+      return (type_declaration) the_origin;
     } else {
       utilities.panic("Type declaration expected");
       return null;
     }
-  }
-
-  private void generate_declaration(principal_type the_type,
-      type_declaration_construct the_declaration) {
-
-    generate_markup(new base_list<construct>(the_declaration),
-        new naming_strategy(the_type, the_context));
   }
 
   public void generate_markup(readonly_list<construct> constructs,

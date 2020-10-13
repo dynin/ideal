@@ -34,6 +34,8 @@ public abstract class type_processor_target extends target_value {
 
   public abstract void process_type(principal_type the_type);
 
+  public abstract void finish_processing();
+
   @Override
   public void process(action_parameters parameters, analysis_context the_context) {
 
@@ -55,10 +57,14 @@ public abstract class type_processor_target extends target_value {
       types.append(the_type);
     }
 
-    if (!the_manager.has_errors()) {
-      for (int i = 0; i < types.size(); ++i) {
-        process_type(types.get(i));
-      }
+    if (the_manager.has_errors()) {
+      return;
     }
+
+    for (int i = 0; i < types.size(); ++i) {
+      process_type(types.get(i));
+    }
+
+    finish_processing();
   }
 }

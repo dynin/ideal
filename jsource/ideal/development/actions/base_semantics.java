@@ -359,52 +359,31 @@ public class base_semantics implements semantics {
       type_utilities.prepare(adjacent.get(k), pass);
     }
 
-    type_declaration the_type_declaration = (type_declaration) new_type.get_declaration();
+    declaration new_type_declaration = new_type.get_declaration();
 
-    if (the_type_declaration == null) {
+    if (new_type_declaration == null) {
       assert pass == declaration_pass.TYPES_AND_PROMOTIONS;
       assert new_type instanceof parametrized_type;
       // or utilities.panic("No declaration for " + new_type);
       parametrized_type ptype = (parametrized_type) new_type;
-      principal_type declared_type =
-          ((type_declaration) ptype.get_master().get_declaration()).get_declared_type();
+      declaration master_declaration = ptype.get_master().get_declaration();
+      principal_type declared_type = (master_declaration instanceof type_announcement) ?
+          ((type_announcement) master_declaration).get_declared_type() :
+          ((type_declaration) master_declaration).get_declared_type();
       assert declared_type != new_type : "Got type " + new_type;
       assert declared_type instanceof parametrized_type;
-      the_type_declaration = specialize_declaration(ptype,
+      new_type_declaration = specialize_declaration(ptype,
           (parametrized_type) declared_type, pass, context);
-      ptype.set_declaration(the_type_declaration);
+      ptype.set_declaration(new_type_declaration);
     }
 
-    /*
-      if (the_type_declaration == null) {
-        utilities.panic("No declaration for " + new_type);
-      }
+    type_declaration the_type_declaration;
 
-      principal_type declared_type = the_type_declaration.get_declared_type();
-
-      if (declared_type != new_type) {
-        if (declared_type instanceof parametrized_type &&
-            new_type instanceof parametrized_type) {
-          if (false) {
-            assert pass == declaration_pass.TYPES_AND_PROMOTIONS;
-            the_type_declaration = specialize_declaration((parametrized_type) new_type,
-                (parametrized_type) declared_type, pass, context);
-            ((parametrized_type) new_type).set_declaration(the_type_declaration);
-          } else {
-            specialize_declaration((parametrized_type) new_type,
-                (parametrized_type) declared_type, pass, context).process_declaration(pass);
-          }
-        } else {
-          // This happens when declare_type() is called for the master type
-          // of a parametrized type, such as collection (with no parameters).
-          // TODO: this should never happen.
-          assert declared_type instanceof parametrized_type &&
-                 new_type instanceof master_type;
-          return;
-        }
-      }
+    if (new_type_declaration instanceof type_declaration) {
+      the_type_declaration = (type_declaration) new_type_declaration;
+    } else {
+      the_type_declaration = ((type_announcement) new_type_declaration).get_type_declaration();
     }
-    */
 
     the_type_declaration.process_declaration(pass);
 

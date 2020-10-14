@@ -12,4 +12,4 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface immutable_type_announcement extends immutable_type_declaration, readonly_type_announcement { }
+public interface immutable_type_announcement extends immutable_declaration, readonly_type_announcement { }

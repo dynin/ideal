@@ -56,8 +56,7 @@ public class publish_generator {
   }
 
   public void add_type(principal_type the_type) {
-    assert the_type.get_declaration() instanceof type_declaration;
-    type_declaration the_declaration = (type_declaration) the_type.get_declaration();
+    type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
     type_declaration_construct the_declaration_construct =
         (type_declaration_construct) (get_type_declaration(the_declaration).deeper_origin());
@@ -207,7 +206,7 @@ public class publish_generator {
 
   private text_element make_navigation(naming_strategy the_naming_strategy) {
     principal_type the_type = the_naming_strategy.get_current_type();
-    @Nullable type_declaration the_declaration = get_type_declaration(the_type.get_declaration());
+    @Nullable type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
     text_element left = make_nav_cell(
         the_xref_context.get_source(the_declaration, xref_mode.SUCCESSOR), true,

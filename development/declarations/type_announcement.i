@@ -6,7 +6,12 @@
 
 --- A declaration that contains type name but loading the body is delayed.
 interface type_announcement {
-  extends type_declaration;
+  extends declaration;
+
+  action_name short_name;
+  kind get_kind;
+  annotation_set annotations;
+  principal_type get_declared_type;
 
   type_declaration get_type_declaration;
   void load_type();

@@ -32,6 +32,8 @@ namespace declaration_util {
     the_declaration : the_type.principal.get_declaration;
     if (the_declaration is type_declaration) {
       return the_declaration;
+    } else if (the_declaration is type_announcement) {
+      return the_declaration.get_type_declaration;
     } else {
       return missing.instance;
     }

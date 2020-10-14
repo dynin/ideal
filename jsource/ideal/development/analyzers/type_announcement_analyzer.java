@@ -183,26 +183,6 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   }
 
   @Override
-  public future<analysis_result> process_type(declaration_pass pass) {
-    return type_declaration.process_type(pass);
-  }
-
-  @Override
-  public void process_declaration(declaration_pass pass) {
-    type_declaration.process_declaration(pass);
-  }
-
-  @Override
-  public @Nullable readonly_list<type_parameter_declaration> get_parameters() {
-    return type_declaration.get_parameters();
-  }
-
-  @Override
-  public readonly_list<declaration> get_signature() {
-    return type_declaration.get_signature();
-  }
-
-  @Override
   public string to_string() {
     return utilities.describe(this, short_name());
   }

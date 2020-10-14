@@ -35,6 +35,8 @@ public class declaration_util {
     final @Nullable declaration the_declaration = the_type.principal().get_declaration();
     if (the_declaration instanceof type_declaration) {
       return ((type_declaration) the_declaration);
+    } else if (the_declaration instanceof type_announcement) {
+      return ((type_announcement) the_declaration).get_type_declaration();
     } else {
       return null;
     }

@@ -12,4 +12,4 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface writeonly_type_announcement extends writeonly_type_declaration, any_type_announcement { }
+public interface writeonly_type_announcement extends writeonly_declaration, any_type_announcement { }

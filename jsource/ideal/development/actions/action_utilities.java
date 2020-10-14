@@ -53,8 +53,9 @@ public class action_utilities {
   // TODO: use declaration_utils.get_declared_supertypes()
   public static readonly_list<type> get_supertypes(principal_type the_type) {
     declaration the_declaration = the_type.get_declaration();
-    assert the_declaration instanceof type_declaration;
-    readonly_list<declaration> signature = ((type_declaration) the_declaration).get_signature();
+    readonly_list<declaration> signature = (the_declaration instanceof type_declaration) ?
+        ((type_declaration) the_declaration).get_signature() :
+        ((type_announcement) the_declaration).get_type_declaration().get_signature();
     list<type> result = new base_list<type>();
     for (int i = 0; i < signature.size(); ++i) {
       declaration d = signature.get(i);

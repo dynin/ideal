@@ -12,4 +12,4 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface deeply_immutable_type_announcement extends deeply_immutable_type_declaration, immutable_type_announcement { }
+public interface deeply_immutable_type_announcement extends deeply_immutable_declaration, immutable_type_announcement { }

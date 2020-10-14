@@ -308,7 +308,6 @@ public class procedure_analyzer extends declaration_analyzer
       // what happens for readonly types?  FIXME
       // Also: implicit returns for constructors?
       principal_type the_type = declared_in_type();
-      assert the_type.get_declaration() instanceof type_declaration;
       return_type = the_type.get_flavored(flavor.mutable_flavor);
     } else {
       // what if return expression is not a type?

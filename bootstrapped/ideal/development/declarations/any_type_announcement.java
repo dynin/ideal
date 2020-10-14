@@ -12,4 +12,4 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface any_type_announcement extends any_type_declaration { }
+public interface any_type_announcement extends any_declaration { }

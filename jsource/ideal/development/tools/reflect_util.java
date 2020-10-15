@@ -74,8 +74,7 @@ public class reflect_util {
     String line = "World: " + world_declaration.short_name();
     text_fragment result = base_element.make(text_library.DIV, new base_string(line));
 
-    readonly_list<type_declaration> subtypes =
-        target_utilities.get_declared_types(world_declaration);
+    readonly_list<type_declaration> subtypes = get_declared_types(world_declaration);
     for (int i = 0; i < subtypes.size(); ++i) {
       result = text_util.join(result, print_subtype(subtypes.get(i)));
     }
@@ -123,8 +122,7 @@ public class reflect_util {
   public text_fragment render_world(type_declaration world_declaration) {
     text_fragment result = text_util.EMPTY_FRAGMENT;
 
-    readonly_list<type_declaration> subtypes =
-        target_utilities.get_declared_types(world_declaration);
+    readonly_list<type_declaration> subtypes = get_declared_types(world_declaration);
     for (int i = 0; i < subtypes.size(); ++i) {
       result = text_util.join(result, render_subtype(subtypes.get(i)));
     }
@@ -167,4 +165,24 @@ public class reflect_util {
     }
     return false;
   }
+
+  private static readonly_list<type_declaration> get_declared_types(
+      type_declaration the_type_declaration) {
+
+    readonly_list<declaration> signature = the_type_declaration.get_signature();
+    list<type_declaration> result = new base_list<type_declaration>();
+
+    for (int i = 0; i < signature.size(); ++i) {
+      declaration the_declaration = signature.get(i);
+      if (the_declaration instanceof type_announcement) {
+        // TODO: should this be in get_signature?
+        result.append(((type_announcement) the_declaration).get_type_declaration());
+      } else if (the_declaration instanceof type_declaration) {
+        result.append((type_declaration) the_declaration);
+      }
+    }
+
+    return result;
+  }
+
 }

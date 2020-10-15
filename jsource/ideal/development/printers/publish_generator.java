@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.targets;
+package ideal.development.printers;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
@@ -31,7 +31,6 @@ import ideal.development.constructs.*;
 import ideal.development.names.*;
 import ideal.development.analyzers.*;
 import ideal.development.parsers.*;
-import ideal.development.printers.*;
 import ideal.development.documenters.*;
 import ideal.development.declarations.*;
 import ideal.development.transformers.content_writer;
@@ -62,39 +61,18 @@ public class publish_generator {
 
     if (generate_subpages(the_declaration)) {
       list<construct> namespace_body = new base_list<construct>();
-      // TODO: we should handle other subdeclarations here,
-      //  such as variable declarations.
-      readonly_list<type_declaration> sub_declarations =
-          target_utilities.get_declared_types(the_declaration);
-      for (int i = 0; i < sub_declarations.size(); ++i) {
-        type_declaration sub_declaration =
-            declaration_util.to_type_declaration(sub_declarations.get(i));
-        if (i < sub_declarations.size() - 1) {
-          the_xref_context.add(sub_declaration, xref_mode.SUCCESSOR, sub_declarations.get(i + 1));
+      readonly_list<declaration> signature = the_declaration.get_signature();
+      for (int i = 0; i < signature.size(); ++i) {
+        @Nullable type_declaration sub_declaration =
+            declaration_util.to_type_declaration(signature.get(i));
+
+        if (sub_declaration == null) {
+          continue;
         }
+
         add_type(sub_declaration.get_declared_type());
 
-        @Nullable text_fragment summary_text = null;
-        @Nullable documentation the_documentation =
-            sub_declaration.annotations().the_documentation();
-        if (the_documentation != null) {
-          summary_text = the_documentation.section(documentation_section.SUMMARY);
-        }
-
-        readonly_list<annotation_construct> annotations;
-        if (summary_text == null) {
-          annotations = new empty<annotation_construct>();
-        } else {
-          // TODO: handle text_fragment here.
-          string summary = (base_string) summary_text;
-          comment the_comment = new comment(comment_type.BLOCK_DOC_COMMENT, summary, summary);
-          annotations = new base_list<annotation_construct>(
-              new comment_construct(the_comment, sub_declaration));
-        }
-
-        type_announcement_construct the_announcement =
-            new type_announcement_construct(annotations, sub_declaration.get_kind(),
-                sub_declaration.short_name(), sub_declaration);
+        type_announcement_construct the_announcement = to_announcement(sub_declaration);
         namespace_body.append(the_announcement);
         the_context.put_analyzable(the_announcement, (type_declaration_analyzer) sub_declaration);
       }
@@ -107,6 +85,29 @@ public class publish_generator {
     } else {
       the_xref_context.add_output_declaration(the_type, the_declaration_construct);
     }
+  }
+
+  private type_announcement_construct to_announcement(type_declaration the_type_declaration) {
+    @Nullable text_fragment summary_text = null;
+    @Nullable documentation the_documentation =
+        the_type_declaration.annotations().the_documentation();
+    if (the_documentation != null) {
+      summary_text = the_documentation.section(documentation_section.SUMMARY);
+    }
+
+    readonly_list<annotation_construct> annotations;
+    if (summary_text == null) {
+      annotations = new empty<annotation_construct>();
+    } else {
+      // TODO: handle text_fragment here.
+      string summary = (base_string) summary_text;
+      comment the_comment = new comment(comment_type.BLOCK_DOC_COMMENT, summary, summary);
+      annotations = new base_list<annotation_construct>(
+          new comment_construct(the_comment, the_type_declaration));
+    }
+
+    return new type_announcement_construct(annotations, the_type_declaration.get_kind(),
+            the_type_declaration.short_name(), the_type_declaration);
   }
 
   private boolean generate_subpages(type_declaration the_type_declaration) {
@@ -125,11 +126,31 @@ public class publish_generator {
     return true;
   }
 
+  private void generate_navigation_xref() {
+    immutable_list<type_declaration> all_declarations = the_xref_context.output_declarations();
+    for (int i = 0; i < all_declarations.size(); ++i) {
+      type_declaration the_type_declaration = all_declarations.get(i);
+      readonly_list<declaration> signature = the_type_declaration.get_signature();
+      @Nullable type_declaration previous = null;
+      for (int j = 0; j < signature.size(); ++j) {
+        @Nullable type_declaration sub_declaration =
+            declaration_util.to_type_declaration(signature.get(j));
+        if (sub_declaration == null) {
+          continue;
+        }
+        if (previous != null) {
+          the_xref_context.add(previous, xref_mode.SUCCESSOR, sub_declaration);
+        }
+        previous = sub_declaration;
+      }
+    }
+  }
+
   public void generate_all() {
-    immutable_list<type_declaration_construct> declarations =
-        the_xref_context.output_declarations();
-    for (int i = 0; i < declarations.size(); ++i) {
-      type_declaration_construct the_declaration_construct = declarations.get(i);
+    generate_navigation_xref();
+    immutable_list<type_declaration_construct> constructs = the_xref_context.output_constructs();
+    for (int i = 0; i < constructs.size(); ++i) {
+      type_declaration_construct the_declaration_construct = constructs.get(i);
       type_declaration the_declaration = declaration_util.to_type_declaration(
           the_context.get_analyzable(the_declaration_construct));
       generate_markup(new base_list<construct>(the_declaration_construct),

@@ -153,6 +153,16 @@ public class base_semantics implements semantics {
       return subtype;
     }
 
+    if (type_utilities.is_union(subtype)) {
+      immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(subtype);
+      for (int i = 0; i < parameters.size(); ++i) {
+        if (find_supertype(actions, parameters.get(i), target) == null) {
+          return null;
+        }
+      }
+      return subtype;
+    }
+
     if (type_utilities.is_union(target)) {
       immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(target);
       for (int i = 0; i < parameters.size(); ++i) {
@@ -172,16 +182,6 @@ public class base_semantics implements semantics {
           (parametrized_type) target.principal(), subtype.get_flavor())) {
         return target;
       }
-    }
-
-    if (type_utilities.is_union(subtype)) {
-      immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(subtype);
-      for (int i = 0; i < parameters.size(); ++i) {
-        if (find_supertype(actions, parameters.get(i), target) == null) {
-          return null;
-        }
-      }
-      return subtype;
     }
 
     supertype_set supertypes = supertype_set.make(subtype, actions);

@@ -45,21 +45,19 @@ public class publish_generator {
   private final content_writer processor;
   private final xref_context the_xref_context;
   private final populate_xref the_populate_xref;
-  private final list<type_declaration_construct> output_declarations;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
     this.the_context = the_context;
     this.processor = processor;
-    this.the_xref_context = new xref_context();
+    this.the_xref_context = new xref_context(the_context);
     this.the_populate_xref = new populate_xref(the_context, the_xref_context);
-    this.output_declarations = new base_list<type_declaration_construct>();
   }
 
   public void add_type(principal_type the_type) {
     type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
-    type_declaration_construct the_declaration_construct =
-        (type_declaration_construct) (get_type_declaration(the_declaration).deeper_origin());
+    type_declaration_construct the_declaration_construct = (type_declaration_construct)
+        declaration_util.to_type_declaration(the_declaration).deeper_origin();
     the_populate_xref.process(the_declaration_construct);
 
     if (generate_subpages(the_declaration)) {
@@ -69,7 +67,8 @@ public class publish_generator {
       readonly_list<type_declaration> sub_declarations =
           target_utilities.get_declared_types(the_declaration);
       for (int i = 0; i < sub_declarations.size(); ++i) {
-        type_declaration sub_declaration = get_type_declaration(sub_declarations.get(i));
+        type_declaration sub_declaration =
+            declaration_util.to_type_declaration(sub_declarations.get(i));
         if (i < sub_declarations.size() - 1) {
           the_xref_context.add(sub_declaration, xref_mode.SUCCESSOR, sub_declarations.get(i + 1));
         }
@@ -104,9 +103,9 @@ public class publish_generator {
               the_declaration_construct.kind, the_declaration_construct.name,
               the_declaration_construct.parameters, namespace_body, the_declaration_construct);
       the_context.put_analyzable(namespace_declaration, (analyzable) the_declaration);
-      add_output_declaration(the_type, namespace_declaration);
+      the_xref_context.add_output_declaration(the_type, namespace_declaration);
     } else {
-      add_output_declaration(the_type, the_declaration_construct);
+      the_xref_context.add_output_declaration(the_type, the_declaration_construct);
     }
   }
 
@@ -126,32 +125,15 @@ public class publish_generator {
     return true;
   }
 
-  private void add_output_declaration(principal_type the_type,
-      type_declaration_construct the_declaration_construct) {
-    type_declaration the_type_declaration =
-        get_type_declaration(the_context.get_analyzable(the_declaration_construct));
-    assert the_type_declaration.get_declared_type() == the_type;
-    output_declarations.append(the_declaration_construct);
-  }
-
   public void generate_all() {
-    for (int i = 0; i < output_declarations.size(); ++i) {
-      type_declaration_construct the_declaration_construct = output_declarations.get(i);
-      type_declaration the_declaration =
-          get_type_declaration(the_context.get_analyzable(the_declaration_construct));
+    immutable_list<type_declaration_construct> declarations =
+        the_xref_context.output_declarations();
+    for (int i = 0; i < declarations.size(); ++i) {
+      type_declaration_construct the_declaration_construct = declarations.get(i);
+      type_declaration the_declaration = declaration_util.to_type_declaration(
+          the_context.get_analyzable(the_declaration_construct));
       generate_markup(new base_list<construct>(the_declaration_construct),
           new naming_strategy(the_declaration.get_declared_type(), the_context));
-    }
-  }
-
-  private type_declaration get_type_declaration(origin the_origin) {
-    if (the_origin instanceof type_announcement) {
-      return ((type_announcement) the_origin).get_type_declaration();
-    } else if (the_origin instanceof type_declaration) {
-      return (type_declaration) the_origin;
-    } else {
-      utilities.panic("Type declaration expected");
-      return null;
     }
   }
 

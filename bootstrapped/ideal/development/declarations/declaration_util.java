@@ -31,15 +31,17 @@ public class declaration_util {
     }
     return null;
   }
-  public static @Nullable type_declaration get_type_declaration(final type the_type) {
-    final @Nullable declaration the_declaration = the_type.principal().get_declaration();
-    if (the_declaration instanceof type_declaration) {
-      return ((type_declaration) the_declaration);
-    } else if (the_declaration instanceof type_announcement) {
-      return ((type_announcement) the_declaration).get_type_declaration();
+  public static @Nullable type_declaration to_type_declaration(final @Nullable origin the_origin) {
+    if (the_origin instanceof type_declaration) {
+      return ((type_declaration) the_origin);
+    } else if (the_origin instanceof type_announcement) {
+      return ((type_announcement) the_origin).get_type_declaration();
     } else {
       return null;
     }
+  }
+  public static @Nullable type_declaration get_type_declaration(final type the_type) {
+    return declaration_util.to_type_declaration(the_type.principal().get_declaration());
   }
   public static readonly_list<type_declaration> get_declared_types(final type_declaration the_type_declaration) {
     final base_list<type_declaration> result = new base_list<type_declaration>();

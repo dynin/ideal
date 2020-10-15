@@ -31,13 +31,30 @@ import javax.annotation.Nullable;
 public class xref_context extends debuggable {
   private final static int num_modes = xref_mode.values().length;
 
+  private final analysis_context the_analysis_context;
+  private final list<type_declaration_construct> the_output_declarations;
   private final dictionary<origin, list<origin>>[] mapping;
 
-  public xref_context() {
+  public xref_context(analysis_context the_analysis_context) {
+    this.the_analysis_context = the_analysis_context;
+    this.the_output_declarations = new base_list<type_declaration_construct>();
     mapping = new dictionary[num_modes * 2];
     for (int i = 0; i < mapping.length; ++i) {
       mapping[i] = new list_dictionary<origin, list<origin>>();
     }
+  }
+
+  public void add_output_declaration(principal_type the_type,
+      type_declaration_construct the_declaration_construct) {
+    type_declaration the_type_declaration = declaration_util.to_type_declaration(
+        the_analysis_context.get_analyzable(the_declaration_construct));
+    assert the_type_declaration != null;
+    assert the_type_declaration.get_declared_type() == the_type;
+    the_output_declarations.append(the_declaration_construct);
+  }
+
+  public immutable_list<type_declaration_construct> output_declarations() {
+    return the_output_declarations.frozen_copy();
   }
 
   public void add(origin source, xref_mode the_xref_mode, origin target) {

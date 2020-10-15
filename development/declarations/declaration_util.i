@@ -28,15 +28,18 @@ namespace declaration_util {
     return missing.instance;
   }
 
-  type_declaration or null get_type_declaration(type the_type) {
-    the_declaration : the_type.principal.get_declaration;
-    if (the_declaration is type_declaration) {
-      return the_declaration;
-    } else if (the_declaration is type_announcement) {
-      return the_declaration.get_type_declaration;
+  type_declaration or null to_type_declaration(origin or null the_origin) {
+    if (the_origin is type_declaration) {
+      return the_origin;
+    } else if (the_origin is type_announcement) {
+      return the_origin.get_type_declaration;
     } else {
       return missing.instance;
     }
+  }
+
+  type_declaration or null get_type_declaration(type the_type) {
+    return to_type_declaration(the_type.principal.get_declaration);
   }
 
   -- TODO: use list.filter(), here and below.

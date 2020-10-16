@@ -35,7 +35,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   private final immutable_list<simple_name> full_names;
   private final principal_type current_type;
-  private final analysis_context the_context;
+  private final xref_context the_xref_context;
 
   private final immutable_list<simple_name> current_catalog;
   private final base_printer the_printer;
@@ -58,18 +58,18 @@ public class naming_strategy extends debuggable implements printer_assistant, im
         }
       };
 
-  public naming_strategy(principal_type current_type, analysis_context the_context) {
-    this(type_utilities.get_full_names(current_type), current_type, the_context);
+  public naming_strategy(principal_type current_type, xref_context the_xref_context) {
+    this(type_utilities.get_full_names(current_type), current_type, the_xref_context);
   }
 
   // TODO: this is only exposed so it can be used by create -pretty-print
   public naming_strategy(immutable_list<simple_name> full_names, principal_type current_type,
-      analysis_context the_context) {
+      xref_context the_xref_context) {
     assert full_names.is_not_empty();
 
     this.full_names = full_names;
     this.current_type = current_type;
-    this.the_context = the_context;
+    this.the_xref_context = the_xref_context;
 
     assert full_names.is_not_empty();
     this.current_catalog = full_names.slice(0, full_names.size() - 1);
@@ -93,6 +93,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return make_xref_target(full_names).frozen_copy();
   }
 
+  private analysis_context the_analysis_context() {
+    return the_xref_context.the_analysis_context;
+  }
+
   private readonly_list<simple_name> make_xref_target(readonly_list<simple_name> target) {
     assert target.is_not_empty();
     list<simple_name> xref_names = new base_list<simple_name>();
@@ -105,7 +109,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   // TODO: test.
-  public base_string link_to(readonly_list<simple_name> target_name, extension target_extension) {
+  public base_string link_to_resource(readonly_list<simple_name> target_name,
+      extension target_extension) {
     int shared_prefix = 0;
 
     while (shared_prefix < (current_catalog.size() - 1) &&
@@ -134,24 +139,12 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return new base_string(result.toString());
   }
 
-  public @Nullable string link_to_type(principal_type the_type, link_mode mode) {
-    readonly_list<simple_name> target_name = type_utilities.get_full_names(the_type);
-    if (target_name.is_not_empty()) {
-      if (mode == link_mode.XREF) {
-        target_name = make_xref_target(target_name);
-      }
-      return link_to(target_name, base_extension.HTML);
-    } else {
-      return null;
-    }
-  }
-
   public text_fragment print_simple_name(simple_name name) {
     return the_printer.print_simple_name(name);
   }
 
   private @Nullable declaration get_declaration(construct the_construct) {
-    @Nullable analyzable the_analyzable = the_context.get_analyzable(the_construct);
+    @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
     if (the_analyzable != null) {
       @Nullable declaration the_declaration;
       if (the_analyzable instanceof declaration) {
@@ -163,15 +156,46 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return null;
   }
 
+  private @Nullable string link_to_type(@Nullable principal_type the_type, link_mode mode) {
+    while (the_type != null && !the_xref_context.has_output_type(the_type)) {
+      the_type = the_type.get_parent();
+    }
+
+    if (the_type == null) {
+      return null;
+    }
+
+    readonly_list<simple_name> target_name = type_utilities.get_full_names(the_type);
+    if (target_name.is_not_empty()) {
+      if (mode == link_mode.XREF) {
+        target_name = make_xref_target(target_name);
+      }
+      return link_to_resource(target_name, base_extension.HTML);
+    } else {
+      return null;
+    }
+  }
+
   @Override
-  public @Nullable string make_link(construct the_construct, link_mode mode) {
-    @Nullable declaration the_declaration = get_declaration(the_construct);
+  public @Nullable string link_to_construct(construct the_construct, link_mode mode) {
+    return link_to_declaration(get_declaration(the_construct), mode);
+  }
+
+  public @Nullable string link_to_declaration(@Nullable declaration the_declaration,
+      link_mode mode) {
+    if (the_declaration == null || the_declaration.has_errors()) {
+      return null;
+    }
+
+    if (the_declaration instanceof type_announcement) {
+      type_announcement the_type_announcement = (type_announcement) the_declaration;
+      return link_to_type(the_type_announcement.get_declared_type(), mode);
+    }
+
     if (the_declaration instanceof type_declaration &&
         !(the_declaration instanceof type_parameter_declaration)) {
       type_declaration the_type_declaration = (type_declaration) the_declaration;
-      if (!the_type_declaration.has_errors()) {
-        return link_to_type(the_type_declaration.get_declared_type(), mode);
-      }
+      return link_to_type(the_type_declaration.get_declared_type(), mode);
     }
 
     return null;

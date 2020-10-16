@@ -154,7 +154,7 @@ public class publish_generator {
       type_declaration the_declaration = declaration_util.to_type_declaration(
           the_context.get_analyzable(the_declaration_construct));
       generate_markup(new base_list<construct>(the_declaration_construct),
-          new naming_strategy(the_declaration.get_declared_type(), the_context));
+          new naming_strategy(the_declaration.get_declared_type(), the_xref_context));
     }
   }
 
@@ -222,6 +222,11 @@ public class publish_generator {
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
+  private @Nullable string link_to_type(naming_strategy the_naming_strategy,
+      principal_type the_type) {
+    return the_naming_strategy.link_to_declaration(the_type.get_declaration(), link_mode.STYLISH);
+  }
+
   private text_element make_nav_cell(@Nullable origin the_origin, boolean left,
       naming_strategy the_naming_strategy) {
     @Nullable principal_type the_type = the_origin instanceof type_declaration ?
@@ -230,7 +235,7 @@ public class publish_generator {
 
     if (the_type != null) {
       the_text = the_naming_strategy.print_simple_name((simple_name) the_type.short_name());
-      @Nullable string link = the_naming_strategy.link_to_type(the_type, link_mode.STYLISH);
+      @Nullable string link = link_to_type(the_naming_strategy, the_type);
       if (link != null) {
         the_text = text_util.make_html_link(the_text, link);
       }
@@ -256,7 +261,7 @@ public class publish_generator {
       action_name current_name = current_type.short_name();
       if (current_name instanceof simple_name) {
         text_fragment name_text = the_naming_strategy.print_simple_name((simple_name) current_name);
-        @Nullable string link = the_naming_strategy.link_to_type(current_type, link_mode.STYLISH);
+        @Nullable string link = link_to_type(the_naming_strategy, current_type);
         if (link != null) {
           name_text = text_util.make_html_link(name_text, link);
         }
@@ -276,7 +281,7 @@ public class publish_generator {
       readonly_list<simple_name> full_name, naming_strategy the_naming_strategy) {
     text_element title = text_util.make_element(TITLE, text_util.to_list(make_title(full_name)));
     // TODO: introduce constants.
-    base_string css_href = the_naming_strategy.link_to(
+    base_string css_href = the_naming_strategy.link_to_resource(
         new base_list<simple_name>(ASSETS_NAME, IDEAL_STYLE_NAME), base_extension.CSS);
     list_dictionary<attribute_id, string> attributes = new list_dictionary<attribute_id, string>();
     attributes.put(HREF, css_href);

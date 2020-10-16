@@ -19,6 +19,6 @@ import javax.annotation.Nullable;
  * Generates cross-reference links that are inserted in the output by printers.
  */
 public interface printer_assistant {
-  @Nullable string make_link(construct the_construct, link_mode mode);
+  @Nullable string link_to_construct(construct the_construct, link_mode mode);
   @Nullable documentation get_documentation(construct the_construct);
 }

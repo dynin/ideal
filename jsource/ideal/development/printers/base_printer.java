@@ -533,7 +533,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   protected text_fragment make_link(text_fragment the_text, construct the_construct) {
     if (the_assistant != null) {
-      @Nullable string link = the_assistant.make_link(the_construct, link_mode.STYLISH);
+      @Nullable string link = the_assistant.link_to_construct(the_construct, link_mode.STYLISH);
       if (link != null) {
         return text_util.make_html_link(the_text, link);
       }
@@ -543,7 +543,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   protected text_fragment make_xref_link(text_fragment the_text, construct the_construct) {
     if (the_assistant != null) {
-      @Nullable string link = the_assistant.make_link(the_construct, link_mode.XREF);
+      @Nullable string link = the_assistant.link_to_construct(the_construct, link_mode.XREF);
       if (link != null) {
         return text_util.make_html_link(the_text, link);
       }

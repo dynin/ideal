@@ -154,7 +154,8 @@ class create {
       publish_generator the_generator = new publish_generator(the_context, the_writer);
       immutable_list<simple_name> test_name =
           new base_list<simple_name>(simple_name.make("test")).frozen_copy();
-      naming_strategy the_naming_strategy = new naming_strategy(test_name, cm.root, the_context);
+      naming_strategy the_naming_strategy = new naming_strategy(test_name, cm.root,
+          new xref_context(the_context));
       the_generator.generate_markup(constructs, the_naming_strategy);
     }
 

@@ -101,7 +101,8 @@ public class xref_printer {
     // TODO: fail gracefully if name is not a simple_name
     text_fragment the_text =
         the_naming_strategy.print_simple_name((simple_name) the_type.short_name());
-    @Nullable string link = the_naming_strategy.link_to_type(the_type, link_mode.STYLISH);
+    @Nullable string link = the_naming_strategy.link_to_declaration(the_declaration,
+        link_mode.STYLISH);
     if (link != null) {
       the_text = text_util.make_html_link(the_text, link);
     }

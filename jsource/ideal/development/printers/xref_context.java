@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 public class xref_context extends debuggable {
   private final static int num_modes = xref_mode.values().length;
 
-  private final analysis_context the_analysis_context;
+  public final analysis_context the_analysis_context;
   private final list<type_declaration_construct> the_output_declarations;
   private final set<principal_type> output_types;
   private final dictionary<origin, list<origin>>[] mapping;
@@ -51,6 +51,8 @@ public class xref_context extends debuggable {
     if (output_types.contains(the_type)) {
       return;
     }
+    output_types.add(the_type);
+
     type_declaration the_type_declaration = declaration_util.to_type_declaration(
         the_analysis_context.get_analyzable(the_declaration_construct));
     assert the_type_declaration != null;
@@ -75,6 +77,10 @@ public class xref_context extends debuggable {
     }
 
     return declarations.frozen_copy();
+  }
+
+  public boolean has_output_type(principal_type the_principal_type) {
+    return output_types.contains(the_principal_type);
   }
 
   public void add(origin source, xref_mode the_xref_mode, origin target) {

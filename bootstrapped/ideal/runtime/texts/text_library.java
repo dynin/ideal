@@ -30,6 +30,7 @@ public class text_library {
   public static final base_element_id B = new base_element_id(text_library.HTML_NS, new base_string("b"));
   public static final base_element_id UNDERLINE = new base_element_id(text_library.HTML_NS, new base_string("u"));
   public static final base_element_id UNDERLINE2 = new base_element_id(text_library.HTML_NS, new base_string("u2"));
+  public static final base_attribute_id ID = new base_attribute_id(text_library.HTML_NS, new base_string("id"));
   public static final base_attribute_id NAME = new base_attribute_id(text_library.HTML_NS, new base_string("name"));
   public static final base_attribute_id CLEAR = new base_attribute_id(text_library.HTML_NS, new base_string("clear"));
   public static final base_attribute_id CLASS = new base_attribute_id(text_library.HTML_NS, new base_string("class"));

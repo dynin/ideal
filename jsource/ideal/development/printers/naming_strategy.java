@@ -202,6 +202,35 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   @Override
+  public @Nullable string fragment_of_construct(construct the_construct, link_mode mode) {
+    return fragment_of_declaration(get_declaration(the_construct), mode);
+  }
+
+  private string name_to_id(action_name the_action_name) {
+    return dash_renderer.call((simple_name) the_action_name);
+  }
+
+  public @Nullable string fragment_of_declaration(@Nullable declaration the_declaration,
+      link_mode mode) {
+    if (the_declaration == null || the_declaration.has_errors()) {
+      return null;
+    }
+
+    if (the_declaration instanceof type_announcement) {
+      type_announcement the_type_announcement = (type_announcement) the_declaration;
+      return name_to_id(the_type_announcement.short_name());
+    }
+
+    if (the_declaration instanceof type_declaration &&
+        !(the_declaration instanceof type_parameter_declaration)) {
+      type_declaration the_type_declaration = (type_declaration) the_declaration;
+      return name_to_id(the_type_declaration.short_name());
+    }
+
+    return null;
+  }
+
+  @Override
   public @Nullable documentation get_documentation(construct the_construct) {
     @Nullable declaration the_declaration = get_declaration(the_construct);
     if (the_declaration instanceof procedure_declaration) {

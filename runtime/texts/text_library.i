@@ -34,6 +34,7 @@ public namespace text_library {
   -- TODO: use some other type of emphasis...
   UNDERLINE2 : base_element_id.new(HTML_NS, "u2");
 
+  ID : base_attribute_id.new(HTML_NS, "id");
   NAME : base_attribute_id.new(HTML_NS, "name");
   CLEAR : base_attribute_id.new(HTML_NS, "clear");
   CLASS : base_attribute_id.new(HTML_NS, "class");

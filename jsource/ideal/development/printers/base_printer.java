@@ -747,9 +747,15 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_simple_name(c.kind.name()));
     fragments.append(print_space());
 
+    text_fragment type_name = print_action_name(c.name);
+    if (the_assistant != null) {
+      @Nullable string id = the_assistant.fragment_of_construct(c, link_mode.STYLISH);
+      if (id != null) {
+        type_name = base_element.make(text_library.SPAN, text_library.ID, id, type_name);
+      }
+    }
     // TODO: make the style a parameter
-    fragments.append(styles.wrap(styles.type_declaration_name_style,
-        make_xref_link(print_action_name(c.name), c)));
+    fragments.append(styles.wrap(styles.type_declaration_name_style, make_xref_link(type_name, c)));
 
     if (c.has_parameters()) {
       fragments.append(print_type_parameters(c.parameters));

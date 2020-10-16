@@ -57,16 +57,34 @@ public class styles {
 
   public static final base_string nav_right_style = new base_string("nav-right");
 
-  public static text_fragment wrap(text_element element, @Nullable text_fragment fragment) {
-    assert element.children() == null;
-    return new base_element(element.get_id(), element.attributes(), fragment);
-  }
-
   private static text_element make_div(base_string div_class) {
     return base_element.make(text_library.DIV, text_library.CLASS, div_class, null);
   }
 
   private static text_element make_span(base_string span_class) {
     return base_element.make(text_library.SPAN, text_library.CLASS, span_class, null);
+  }
+
+  public static text_fragment wrap(text_element element, @Nullable text_fragment fragment) {
+    assert element.children() == null;
+    return new base_element(element.get_id(), element.attributes(), fragment);
+  }
+
+  // TODO: this code is not used, retire it.
+  private static text_fragment wrap_with_id(text_element element, @Nullable string id,
+      @Nullable text_fragment fragment) {
+    if (id == null) {
+      return wrap(element, fragment);
+    }
+    assert element.children() == null;
+    dictionary<attribute_id, string> attributes = new list_dictionary<attribute_id, string>();
+    attributes.put(text_library.ID, id);
+    readonly_list<dictionary.entry<attribute_id, string>> style_attributes =
+        element.attributes().elements();
+    for (int i = 0; i < style_attributes.size(); ++i) {
+      dictionary.entry<attribute_id, string> entry = style_attributes.get(i);
+      attributes.put(entry.key(), entry.value());
+    }
+    return new base_element(element.get_id(), attributes, fragment);
   }
 }

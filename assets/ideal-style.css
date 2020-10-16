@@ -34,6 +34,12 @@ a:active {
   color: blue;
 }
 
+span:target {
+  background-color: black;
+  color: white;
+  padding: 4px;
+}
+
 .indent {
   margin-left: 1.5em;
   margin-bottom: 0.1em;

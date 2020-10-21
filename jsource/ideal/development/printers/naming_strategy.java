@@ -157,6 +157,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   private @Nullable string link_to_type(@Nullable principal_type the_type, link_mode mode) {
+    if (!publish_generator.GENERATE_XREF && mode == link_mode.XREF) {
+      return null;
+    }
+
     while (the_type != null && !the_xref_context.has_output_type(the_type)) {
       the_type = the_type.get_parent();
     }
@@ -183,6 +187,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public @Nullable string link_to_declaration(@Nullable declaration the_declaration,
       link_mode mode) {
+
     if (the_declaration == null || the_declaration.has_errors()) {
       return null;
     }
@@ -212,6 +217,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public @Nullable string fragment_of_declaration(@Nullable declaration the_declaration,
       link_mode mode) {
+    if (!publish_generator.GENERATE_XREF) {
+      return null;
+    }
+
     if (the_declaration == null || the_declaration.has_errors()) {
       return null;
     }

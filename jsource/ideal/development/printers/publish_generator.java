@@ -37,6 +37,8 @@ import ideal.development.transformers.content_writer;
 
 public class publish_generator {
 
+  public static final boolean GENERATE_XREF = false;
+
   public static final simple_name ASSETS_NAME = simple_name.make("assets");
   public static final simple_name IDEAL_STYLE_NAME = simple_name.make("ideal_style");
 
@@ -167,6 +169,10 @@ public class publish_generator {
 
     string result_string = text_util.to_markup_string(result);
     processor.write(result_string, the_naming_strategy.get_full_names(), base_extension.HTML);
+
+    if (!GENERATE_XREF) {
+      return;
+    }
 
     xref_printer the_xref_printer = new xref_printer(the_context, the_xref_context,
         the_naming_strategy);

@@ -553,7 +553,14 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_name(name_construct c) {
-    return make_link(print_action_name(c.the_name), c);
+    text_fragment name = print_action_name(c.the_name);
+    if (the_assistant != null) {
+      @Nullable string id = the_assistant.fragment_of_construct(c, link_mode.STYLISH);
+      if (id != null) {
+        name = base_element.make(text_library.SPAN, text_library.ID, id, name);
+      }
+    }
+    return make_link(name, c);
   }
 
   public text_fragment process_question(conditional_construct c) {

@@ -37,7 +37,7 @@ import ideal.development.transformers.content_writer;
 
 public class publish_generator {
 
-  public static final boolean GENERATE_XREF = false;
+  public static final boolean GENERATE_XREF = true;
 
   public static final simple_name ASSETS_NAME = simple_name.make("assets");
   public static final simple_name IDEAL_STYLE_NAME = simple_name.make("ideal_style");

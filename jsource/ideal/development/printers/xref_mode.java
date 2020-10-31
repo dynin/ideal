@@ -13,6 +13,6 @@ package ideal.development.printers;
  */
 public enum xref_mode {
   SUCCESSOR,
-  DECLARATION;
-//  SUPERTYPE_DECLARATION;
+  DECLARATION,
+  SUPERTYPE_DECLARATION;
 }

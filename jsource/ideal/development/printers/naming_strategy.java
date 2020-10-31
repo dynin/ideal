@@ -208,6 +208,16 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   @Override
   public @Nullable string fragment_of_construct(construct the_construct, link_mode mode) {
+    if (!publish_generator.GENERATE_XREF) {
+      return null;
+    }
+
+    readonly_list<origin> sources = the_xref_context.get_sources(the_construct,
+        xref_mode.SUPERTYPE_DECLARATION);
+    if (sources != null) {
+      return new base_string("super");
+    }
+
     return fragment_of_declaration(get_declaration(the_construct), mode);
   }
 
@@ -217,10 +227,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public @Nullable string fragment_of_declaration(@Nullable declaration the_declaration,
       link_mode mode) {
-    if (!publish_generator.GENERATE_XREF) {
-      return null;
-    }
-
     if (the_declaration == null || the_declaration.has_errors()) {
       return null;
     }

@@ -32,14 +32,17 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   private final analysis_context the_analysis_context;
   private final xref_context the_xref_context;
+  private final set<principal_type> all_types;
 
   public populate_xref(analysis_context the_analysis_context, xref_context the_xref_context) {
     this.the_analysis_context = the_analysis_context;
     this.the_xref_context = the_xref_context;
+    this.all_types = new hash_set<principal_type>();
   }
 
   @Override
   public Void process_default(construct c) {
+    process_construct_list(c.children());
     return null;
   }
 
@@ -132,17 +135,37 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_supertype(supertype_construct c) {
-    return process_default(c);
+    @Nullable analyzable the_super_declaration = the_analysis_context.get_analyzable(c);
+    assert the_super_declaration instanceof type_declaration;
+    readonly_list<construct> types = c.types;
+    for (int i = 0; i < types.size(); ++i) {
+      construct the_construct = types.get(i);
+      @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
+      if (the_analyzable != null) {
+        analysis_result result = the_analyzable.analyze();
+        if (result instanceof type_action) {
+          principal_type the_type = ((type_action) result).get_type().principal();
+          the_xref_context.add(the_super_declaration, xref_mode.SUPERTYPE_DECLARATION,
+              the_construct);
+        }
+      }
+    }
+
+    return null;
   }
 
   @Override
   public Void process_type_declaration(type_declaration_construct c) {
     @Nullable analyzable the_declaration = the_analysis_context.get_analyzable(c);
     if (the_declaration instanceof type_declaration) {
+      type_declaration the_type_declaration = (type_declaration) the_declaration;
+      if (all_types.contains(the_type_declaration.get_declared_type())) {
+        return null;
+      }
+      all_types.add(the_type_declaration.get_declared_type());
       the_xref_context.add(the_declaration, xref_mode.DECLARATION, c);
     }
-    //return process_default(c);
-    return null;
+    return process_default(c);
   }
 
   @Override

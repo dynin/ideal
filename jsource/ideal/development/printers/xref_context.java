@@ -96,6 +96,16 @@ public class xref_context extends debuggable {
     return get_mapping(target, num_modes + the_xref_mode.ordinal());
   }
 
+  public @Nullable readonly_list<origin> get_targets(@Nullable origin source,
+      xref_mode the_xref_mode) {
+    return get_mapping_list(source, the_xref_mode.ordinal());
+  }
+
+  public @Nullable readonly_list<origin> get_sources(@Nullable origin target,
+      xref_mode the_xref_mode) {
+    return get_mapping_list(target, num_modes + the_xref_mode.ordinal());
+  }
+
   private void add_mapping(origin source, int slot, origin target) {
     dictionary<origin, list<origin>> the_dictionary = mapping[slot];
     list<origin> the_list = the_dictionary.get(source);

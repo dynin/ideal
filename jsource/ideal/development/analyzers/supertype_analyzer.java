@@ -117,4 +117,9 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     result.multi_pass_analysis(analysis_pass.SUPERTYPE_DECL);
     return result;
   }
+
+  @Override
+  public string to_string() {
+    return utilities.describe(this, the_analyzable);
+  }
 }

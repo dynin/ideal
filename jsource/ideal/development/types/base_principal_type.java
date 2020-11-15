@@ -51,7 +51,7 @@ public abstract class base_principal_type extends base_type implements principal
   public flavor_profile get_flavor_profile() {
     if (the_flavor_profile == null) {
       // TODO: signal error instead of panicing.
-      utilities.panic("Unset profile in " + this);
+      utilities.panic("Unset profile in " + this + " decl " + the_declaration);
     }
     assert the_flavor_profile != null;
     return the_flavor_profile;
@@ -106,9 +106,15 @@ public abstract class base_principal_type extends base_type implements principal
       return;
     }
 
-    if (last_pass.is_before(declaration_pass.TYPES_AND_PROMOTIONS)) {
+    if (last_pass.is_before(declaration_pass.FLAVOR_PROFILE)) {
+      do_declare(declaration_pass.FLAVOR_PROFILE);
+    }
+
+    if (pass.is_after(declaration_pass.FLAVOR_PROFILE) &&
+        last_pass.is_before(declaration_pass.TYPES_AND_PROMOTIONS)) {
       do_declare(declaration_pass.TYPES_AND_PROMOTIONS);
     }
+
     if (pass == declaration_pass.METHODS_AND_VARIABLES &&
         last_pass.is_before(declaration_pass.METHODS_AND_VARIABLES)) {
       do_declare(declaration_pass.METHODS_AND_VARIABLES);

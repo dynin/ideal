@@ -93,7 +93,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     } else if (pass == analysis_pass.BODY_CHECK) {
 
       if (false && !has_errors()) {
-        type_utilities.prepare(declared_in_type(), declaration_pass.TYPES_AND_PROMOTIONS);
+        type_utilities.prepare(declared_in_type(), declaration_pass.FLAVOR_PROFILE);
         action_utilities.process_super_flavors(declared_in_type(),
             subtype_flavor(), get_supertype(), the_origin, get_context());
       }

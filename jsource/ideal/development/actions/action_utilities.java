@@ -210,7 +210,7 @@ public class action_utilities {
 
   public static @Nullable flavor_profile get_profile(supertype_declaration the_supertype) {
     type the_type = the_supertype.get_supertype();
-    type_utilities.prepare(the_type, declaration_pass.TYPES_AND_PROMOTIONS);
+    type_utilities.prepare(the_type, declaration_pass.FLAVOR_PROFILE);
 
     if (!the_type.principal().has_flavor_profile()) {
       return null;

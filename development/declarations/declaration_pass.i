@@ -9,6 +9,7 @@ enum declaration_pass {
   implements deeply_immutable data, stringable, readonly displayable;
 
   NONE;
+  FLAVOR_PROFILE;
   TYPES_AND_PROMOTIONS;
   METHODS_AND_VARIABLES;
 

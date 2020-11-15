@@ -21,6 +21,8 @@ target analyze_all: analyze(ideal);
 
 target print_elements: print_source(ideal.library.elements);
 
+target generate_elements: generate_java(ideal.library.elements);
+
 target generate_library: generate_java(ideal.library);
 
 target generate_runtime: generate_java(ideal.runtime);

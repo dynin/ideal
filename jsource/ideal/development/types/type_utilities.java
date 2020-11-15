@@ -59,11 +59,11 @@ public class type_utilities {
     base_principal_type the_principal = (base_principal_type) the_type;
 
     if (!the_principal.has_flavor_profile()) {
-      if (!the_principal.get_pass().is_before(declaration_pass.TYPES_AND_PROMOTIONS)) {
+      if (!the_principal.get_pass().is_before(declaration_pass.FLAVOR_PROFILE)) {
         utilities.panic("P " + the_principal.get_pass() + " of " + the_principal);
       }
-      assert the_principal.get_pass().is_before(declaration_pass.TYPES_AND_PROMOTIONS);
-      the_principal.process_declaration(declaration_pass.TYPES_AND_PROMOTIONS);
+      assert the_principal.get_pass().is_before(declaration_pass.FLAVOR_PROFILE);
+      the_principal.process_declaration(declaration_pass.FLAVOR_PROFILE);
     }
 
     return the_principal.get_flavor_profile();

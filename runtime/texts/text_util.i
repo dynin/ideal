@@ -85,6 +85,19 @@ namespace text_util {
     return to_fragment(nodes);
   }
 
+  -- TODO: refactor and reuse code.
+  overload text_fragment join(text_fragment first, text_fragment second, text_fragment third,
+      text_fragment fourth) {
+    nodes : base_list[text_node].new();
+
+    append(nodes, first);
+    append(nodes, second);
+    append(nodes, third);
+    append(nodes, fourth);
+
+    return to_fragment(nodes);
+  }
+
   private void append(list[text_node] nodes, text_fragment fragment) {
     if (fragment is string_text_node) {
       if (fragment.is_empty) {

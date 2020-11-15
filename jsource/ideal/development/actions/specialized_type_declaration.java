@@ -99,10 +99,11 @@ public class specialized_type_declaration extends debuggable implements type_dec
 
     //main_type.process_declaration(pass);
 
-    if (last_pass.is_before(declaration_pass.TYPES_AND_PROMOTIONS)) {
-      last_pass = declaration_pass.TYPES_AND_PROMOTIONS;
-      do_process_types_and_promotions();
+    if (last_pass.is_before(declaration_pass.FLAVOR_PROFILE)) {
+      last_pass = declaration_pass.FLAVOR_PROFILE;
+      do_process_flavor_profile();
     }
+
     if (pass == declaration_pass.METHODS_AND_VARIABLES &&
         last_pass.is_before(declaration_pass.METHODS_AND_VARIABLES)) {
       last_pass = declaration_pass.METHODS_AND_VARIABLES;
@@ -110,7 +111,7 @@ public class specialized_type_declaration extends debuggable implements type_dec
     }
   }
 
-  private void do_process_types_and_promotions() {
+  private void do_process_flavor_profile() {
     flavor_profile the_flavor_profile = get_master().get_flavor_profile();
 
     if (ENABLE_SHALLOW && is_collection_type(the_type)) {

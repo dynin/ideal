@@ -14,6 +14,7 @@ import ideal.development.modifiers.*;
 
 public enum declaration_pass implements deeply_immutable_data, stringable, readonly_displayable {
   NONE,
+  FLAVOR_PROFILE,
   TYPES_AND_PROMOTIONS,
   METHODS_AND_VARIABLES;
   public boolean is_before(final declaration_pass other) {

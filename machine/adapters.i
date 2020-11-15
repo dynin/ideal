@@ -7,7 +7,12 @@
 -- Interoperability with Java(tm).
 
 namespace adapters {
-  implicit import ideal.library.elements;
+  import ideal.library.elements.value;
+  import ideal.library.elements.data;
+  import ideal.library.elements.character;
+  import ideal.library.elements.integer;
+  import ideal.library.elements.boolean;
+  import ideal.library.elements.stringable;
 
   package java {
     package builtins {

@@ -340,6 +340,7 @@ public class base_semantics implements semantics {
       analysis_context context) {
 
     kind the_kind = new_type.get_kind();
+
     if (the_kind.is_namespace()) {
       assert !(new_type instanceof parametrized_type);
       if (new_type.has_flavor_profile()) {
@@ -362,7 +363,7 @@ public class base_semantics implements semantics {
     declaration new_type_declaration = new_type.get_declaration();
 
     if (new_type_declaration == null) {
-      assert pass == declaration_pass.TYPES_AND_PROMOTIONS;
+      assert pass == declaration_pass.FLAVOR_PROFILE;
       assert new_type instanceof parametrized_type;
       // or utilities.panic("No declaration for " + new_type);
       parametrized_type ptype = (parametrized_type) new_type;
@@ -389,7 +390,7 @@ public class base_semantics implements semantics {
 
     origin pos = the_type_declaration;
 
-    if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
+    if (pass == declaration_pass.FLAVOR_PROFILE) {
       if (the_kind == procedure_kind &&
           new_type instanceof parametrized_type &&
           new_type.short_name() == common_library.function_name) {
@@ -399,7 +400,7 @@ public class base_semantics implements semantics {
             flavor.immutable_flavor);
         action_utilities.process_super_flavors(new_type, null, procedure_type, pos, context);
       }
-
+    } else if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
       flavor_profile profile;
       if (new_type.has_flavor_profile()) {
         profile = new_type.get_flavor_profile();
@@ -436,7 +437,7 @@ public class base_semantics implements semantics {
               the_supertype, the_supertype_declaration, context);
         }
       }
-    } else {
+    } else if (pass == declaration_pass.METHODS_AND_VARIABLES) {
       // TODO: make this cleaner.
       readonly_list<type> supertypes = action_utilities.get_supertypes(new_type);
       for (int j = 0; j < supertypes.size(); ++j) {
@@ -459,6 +460,8 @@ public class base_semantics implements semantics {
       } else if (the_kind == singleton_kind) {
         context.add(new_type, INSTANCE_NAME, new singleton_value(new_type).to_action(pos));
       }
+    } else {
+      utilities.panic("Unknown declaration pass: " + pass);
     }
   }
 

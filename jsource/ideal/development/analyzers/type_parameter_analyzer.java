@@ -85,7 +85,7 @@ public class type_parameter_analyzer extends declaration_analyzer
           short_name(), parent(), this, this);
 
       if (parameter_analyzable != null) {
-        add_dependence(parameter_analyzable, new_master, declaration_pass.TYPES_AND_PROMOTIONS);
+        add_dependence(parameter_analyzable, new_master, declaration_pass.FLAVOR_PROFILE);
       }
     } else if (pass == analysis_pass.SUPERTYPE_DECL) {
       assert new_master != null;
@@ -121,10 +121,12 @@ public class type_parameter_analyzer extends declaration_analyzer
 
   @Override
   public void process_declaration(declaration_pass pass) {
-    if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
+    if (pass == declaration_pass.FLAVOR_PROFILE) {
       if (!declaration_analysis_in_progress) {
         multi_pass_analysis(analysis_pass.SUPERTYPE_DECL);
       }
+    } else if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
+      // TODO
     } else if (pass == declaration_pass.METHODS_AND_VARIABLES) {
       // do nothing
     } else {

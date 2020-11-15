@@ -62,6 +62,14 @@ public class text_util {
     text_util.append(nodes, third);
     return text_util.to_fragment(nodes);
   }
+  public static text_fragment join(final text_fragment first, final text_fragment second, final text_fragment third, final text_fragment fourth) {
+    final base_list<text_node> nodes = new base_list<text_node>();
+    text_util.append(nodes, first);
+    text_util.append(nodes, second);
+    text_util.append(nodes, third);
+    text_util.append(nodes, fourth);
+    return text_util.to_fragment(nodes);
+  }
   private static void append(final list<text_node> nodes, final text_fragment fragment) {
     if (fragment instanceof string) {
       if (((string) fragment).is_empty()) {

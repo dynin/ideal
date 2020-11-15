@@ -143,6 +143,9 @@ analyze_all: $(IDEAL_TARGET)
 print_elements: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=print_elements
 
+generate_elements: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_elements
+
 generate_library: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_library
 

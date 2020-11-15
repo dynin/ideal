@@ -354,8 +354,10 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       return;
     }
 
-    if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
+    if (pass == declaration_pass.FLAVOR_PROFILE) {
       multi_pass_analysis(analysis_pass.SUPERTYPE_DECL);
+    } else if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
+      // TODO...
     } else if (pass == declaration_pass.METHODS_AND_VARIABLES) {
       //if (!has_processed(analysis_pass.METHOD_AND_VARIABLE_DECL)) {
       // TODO: this needs to be fixed.

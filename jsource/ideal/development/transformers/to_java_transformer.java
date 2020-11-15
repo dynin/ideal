@@ -644,6 +644,7 @@ public class to_java_transformer extends base_transformer {
   @Override
   protected simple_name make_name(simple_name type_name, principal_type the_type,
       type_flavor flavor) {
+    type_utilities.prepare(the_type, declaration_pass.FLAVOR_PROFILE);
     if (flavor == nameonly_flavor || flavor == the_type.get_flavor_profile().default_flavor()) {
       return type_name;
     } else {

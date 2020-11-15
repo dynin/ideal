@@ -57,7 +57,7 @@ public class flavor_analyzer extends single_pass_analyzer {
     }
 
     type the_type = ((type_action) expr_action).get_type();
-    type_utilities.prepare(the_type, declaration_pass.TYPES_AND_PROMOTIONS);
+    type_utilities.prepare(the_type, declaration_pass.FLAVOR_PROFILE);
     flavored_type = the_type.get_flavored(flavor);
     return flavored_type.to_action(this);
   }

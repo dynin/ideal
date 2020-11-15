@@ -86,7 +86,11 @@ public class xref_printer {
         text_util.join(new base_string("Supertypes: "),
             get_links(the_xref_context.get_targets(the_declaration,
                 xref_mode.SUPERTYPE_DECLARATION))));
-    return text_util.join(title_text, declaration_text, supertypes_text);
+    text_fragment subtypes_text = styles.wrap(styles.xref_links_style,
+        text_util.join(new base_string("Subtypes: "),
+            get_links(the_xref_context.get_sources(the_declaration,
+                xref_mode.SUPERTYPE_DECLARATION))));
+    return text_util.join(title_text, declaration_text, supertypes_text, subtypes_text);
   }
 
   private text_fragment get_links(@Nullable readonly_list<origin> links) {

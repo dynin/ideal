@@ -141,7 +141,7 @@ public class publish_generator {
           continue;
         }
         if (previous != null) {
-          the_xref_context.add(previous, xref_mode.SUCCESSOR, sub_declaration);
+          the_xref_context.add_successor(previous, sub_declaration);
         }
         previous = sub_declaration;
       }
@@ -218,11 +218,11 @@ public class publish_generator {
     @Nullable type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
     text_element left = make_nav_cell(
-        the_xref_context.get_source(the_declaration, xref_mode.SUCCESSOR), true,
+        the_xref_context.get_successor(the_declaration), true,
         the_naming_strategy);
     text_element center = make_center_cell(the_type.get_parent(), the_naming_strategy);
     text_element right = make_nav_cell(
-        the_xref_context.get_target(the_declaration, xref_mode.SUCCESSOR), false,
+        the_xref_context.get_predecessor(the_declaration), false,
         the_naming_strategy);
     text_element row = text_util.make_element(TR, new base_list<text_node>(left, center, right));
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);

@@ -83,17 +83,37 @@ public class xref_context extends debuggable {
     return output_types.contains(the_principal_type);
   }
 
-  public void add(origin source, xref_mode the_xref_mode, origin target) {
+  public void add_successor(type_declaration source, type_declaration target) {
+    //System.out.println("SRC " + source + " *SUCCESOR* TGT " + target);
+    add_mapping(source, xref_mode.SUCCESSOR.ordinal(), target);
+    add_mapping(target, num_modes + xref_mode.SUCCESSOR.ordinal(), source);
+  }
+
+  public void add(declaration source, xref_mode the_xref_mode, construct target) {
+    //System.out.println("SRC " + source + " M " + the_xref_mode + " TGT " + target);
     add_mapping(source, the_xref_mode.ordinal(), target);
     add_mapping(target, num_modes + the_xref_mode.ordinal(), source);
   }
 
-  public @Nullable origin get_target(@Nullable origin source, xref_mode the_xref_mode) {
-    return get_mapping(source, the_xref_mode.ordinal());
+  public @Nullable type_declaration get_successor(@Nullable declaration source) {
+    return get_mapping(source, xref_mode.SUCCESSOR.ordinal());
   }
 
-  public @Nullable origin get_source(@Nullable origin target, xref_mode the_xref_mode) {
-    return get_mapping(target, num_modes + the_xref_mode.ordinal());
+  public @Nullable type_declaration get_predecessor(@Nullable declaration target) {
+    return get_mapping(target, num_modes + xref_mode.SUCCESSOR.ordinal());
+  }
+
+  private @Nullable type_declaration get_mapping(@Nullable origin source, int slot) {
+    @Nullable readonly_list<origin> origins = get_mapping_list(source, slot);
+    if (origins == null) {
+      return null;
+    }
+    assert origins.size() <= 1;
+    if (origins.is_empty()) {
+      return null;
+    } else {
+      return (type_declaration) origins.first();
+    }
   }
 
   public @Nullable readonly_list<origin> get_targets(@Nullable origin source,
@@ -127,18 +147,5 @@ public class xref_context extends debuggable {
       return null;
     }
     return the_list;
-  }
-
-  private @Nullable origin get_mapping(@Nullable origin source, int slot) {
-    @Nullable readonly_list<origin> origins = get_mapping_list(source, slot);
-    if (origins == null) {
-      return null;
-    }
-    assert origins.size() <= 1;
-    if (origins.is_empty()) {
-      return null;
-    } else {
-      return origins.first();
-    }
   }
 }

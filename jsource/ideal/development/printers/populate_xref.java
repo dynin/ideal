@@ -135,7 +135,8 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_supertype(supertype_construct c) {
-    @Nullable analyzable the_super_declaration = the_analysis_context.get_analyzable(c);
+    @Nullable declaration the_super_declaration =
+        (declaration) the_analysis_context.get_analyzable(c);
     assert the_super_declaration instanceof type_declaration;
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
@@ -163,7 +164,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
         return null;
       }
       all_types.add(the_type_declaration.get_declared_type());
-      the_xref_context.add(the_declaration, xref_mode.DECLARATION, c);
+      the_xref_context.add(the_type_declaration, xref_mode.DECLARATION, c);
     }
     return process_default(c);
   }

@@ -79,9 +79,10 @@ public class xref_printer {
         the_value_printer.print_value(the_declaration.get_declared_type()));
     text_fragment title_text = styles.wrap(styles.xref_title_style, title);
 
-    origin target = the_xref_context.get_target(the_declaration, xref_mode.DECLARATION);
     text_fragment declaration_text = styles.wrap(styles.xref_links_style,
-        text_util.join(new base_string("Declaration: "), get_link(target)));
+        text_util.join(new base_string("Declaration: "),
+            get_links(the_xref_context.get_targets(the_declaration,
+                xref_mode.DECLARATION))));
     text_fragment supertypes_text = styles.wrap(styles.xref_links_style,
         text_util.join(new base_string("Supertypes: "),
             get_links(the_xref_context.get_targets(the_declaration,
@@ -101,7 +102,13 @@ public class xref_printer {
     list<text_fragment> fragments = new base_list<text_fragment>();
     for (int i = 0; i < links.size(); ++i) {
       fragments.append(new base_string(" "));
-      fragments.append(new base_string(" -" + links.get(i)));
+      origin link = links.get(i);
+      @Nullable declaration the_declaration = origin_to_declaration(link);
+      if (the_declaration != null) {
+        fragments.append(render_link(the_declaration));
+      } else {
+        fragments.append(new base_string("-" + link + "@" + link.getClass()));
+      }
     }
 
     return text_util.join(fragments);
@@ -116,32 +123,9 @@ public class xref_printer {
         the_analysis_context.get_analyzable((construct) the_origin).analyze());
   }
 
-  private text_fragment get_link_supertype(@Nullable origin target) {
-    declaration the_declaration = origin_to_declaration(target);
-
-
+  private text_fragment render_link(declaration the_declaration) {
     if (!(the_declaration instanceof type_declaration)) {
-      return new base_string("" + target);
-    }
-
-    type_declaration the_type_declaration = (type_declaration) the_declaration;
-    principal_type the_type = the_type_declaration.get_declared_type();
-    // TODO: fail gracefully if name is not a simple_name
-    text_fragment the_text =
-        the_naming_strategy.print_simple_name((simple_name) the_type.short_name());
-    @Nullable string link = the_naming_strategy.link_to_declaration(the_type_declaration,
-        link_mode.STYLISH);
-    if (link != null) {
-      the_text = text_util.make_html_link(the_text, link);
-    }
-    return the_text;
-  }
-
-  private text_fragment get_link(@Nullable origin target) {
-    declaration the_declaration = origin_to_declaration(target);
-
-    if (!(the_declaration instanceof type_declaration)) {
-      return new base_string("" + target);
+      return new base_string("" + the_declaration);
     }
 
     type_declaration the_type_declaration = (type_declaration) the_declaration;

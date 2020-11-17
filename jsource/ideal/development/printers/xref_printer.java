@@ -79,48 +79,44 @@ public class xref_printer {
         the_value_printer.print_value(the_declaration.get_declared_type()));
     text_fragment title_text = styles.wrap(styles.xref_title_style, title);
 
-    text_fragment declaration_text = styles.wrap(styles.xref_links_style,
-        text_util.join(new base_string("Declaration: "),
-            get_links(the_xref_context.get_targets(the_declaration,
-                xref_mode.DECLARATION))));
-    text_fragment supertypes_text = styles.wrap(styles.xref_links_style,
-        text_util.join(new base_string("Supertypes: "),
-            get_links(the_xref_context.get_targets(the_declaration,
-                xref_mode.SUPERTYPE_DECLARATION))));
-    text_fragment subtypes_text = styles.wrap(styles.xref_links_style,
-        text_util.join(new base_string("Subtypes: "),
-            get_links(the_xref_context.get_sources(the_declaration,
-                xref_mode.SUPERTYPE_DECLARATION))));
+    text_fragment declaration_text = get_links("Declaration", the_declaration,
+        xref_mode.DECLARATION, true);
+    text_fragment supertypes_text = get_links("Supertypes", the_declaration,
+        xref_mode.SUPERTYPE_DECLARATION, true);
+    text_fragment subtypes_text = get_links("Subtypes", the_declaration,
+        xref_mode.SUPERTYPE_DECLARATION, false);
+
     return text_util.join(title_text, declaration_text, supertypes_text, subtypes_text);
   }
 
-  private text_fragment get_links(@Nullable readonly_list<origin> links) {
-    if (links == null) {
-      return new base_string("");
+  private text_fragment get_links(String name, declaration the_declaration, xref_mode mode,
+      boolean targets) {
+    @Nullable readonly_list<origin> links;
+
+    if (targets) {
+      links = the_xref_context.get_targets(the_declaration, mode);
+    } else {
+      links = the_xref_context.get_sources(the_declaration, mode);
+    }
+
+    if (links == null || links.is_empty()) {
+      return text_util.EMPTY_FRAGMENT;
     }
 
     list<text_fragment> fragments = new base_list<text_fragment>();
+    fragments.append(new base_string(name, ": "));
     for (int i = 0; i < links.size(); ++i) {
-      fragments.append(new base_string(" "));
+      fragments.append(i == 0 ? new base_string(" ") : new base_string(" / "));
       origin link = links.get(i);
-      @Nullable declaration the_declaration = origin_to_declaration(link);
-      if (the_declaration != null) {
-        fragments.append(render_link(the_declaration));
+      @Nullable declaration link_declaration = the_xref_context.origin_to_declaration(link);
+      if (link_declaration != null) {
+        fragments.append(render_link(link_declaration));
       } else {
         fragments.append(new base_string("-" + link + "@" + link.getClass()));
       }
     }
 
-    return text_util.join(fragments);
-  }
-
-  private @Nullable declaration origin_to_declaration(@Nullable origin the_origin) {
-    if (the_origin == null) {
-      return null;
-    }
-
-    return declaration_util.get_declaration(
-        the_analysis_context.get_analyzable((construct) the_origin).analyze());
+    return styles.wrap(styles.xref_links_style, text_util.join(fragments));
   }
 
   private text_fragment render_link(declaration the_declaration) {

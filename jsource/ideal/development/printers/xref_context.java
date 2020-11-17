@@ -92,7 +92,19 @@ public class xref_context extends debuggable {
   public void add(declaration source, xref_mode the_xref_mode, construct target) {
     //System.out.println("SRC " + source + " M " + the_xref_mode + " TGT " + target);
     add_mapping(source, the_xref_mode.ordinal(), target);
-    add_mapping(target, num_modes + the_xref_mode.ordinal(), source);
+    declaration the_declaration = origin_to_declaration(target);
+    if (the_declaration != null) {
+      add_mapping(the_declaration, num_modes + the_xref_mode.ordinal(), source);
+    }
+  }
+
+  public @Nullable declaration origin_to_declaration(origin the_origin) {
+    if (the_origin instanceof declaration) {
+      return (declaration) the_origin;
+    }
+
+    return declaration_util.get_declaration(
+        the_analysis_context.get_analyzable((construct) the_origin).analyze());
   }
 
   public @Nullable type_declaration get_successor(@Nullable declaration source) {

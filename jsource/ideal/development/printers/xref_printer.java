@@ -83,10 +83,14 @@ public class xref_printer {
     fragments.append(styles.wrap(styles.xref_title_style, title));
 
     fragments.append(get_links("Declaration", the_declaration, xref_mode.TYPE_DECLARATION, true));
-    fragments.append(get_links("Supertypes", the_declaration, xref_mode.DIRECT_SUPERTYPE, true));
+    fragments.append(get_links("Direct supertypes", the_declaration, xref_mode.DIRECT_SUPERTYPE,
+        true));
     fragments.append(get_links("All supertypes", the_declaration, xref_mode.INDIRECT_SUPERTYPE,
         true));
-    fragments.append(get_links("Subtypes", the_declaration, xref_mode.DIRECT_SUPERTYPE, false));
+    fragments.append(get_links("Direct subtypes", the_declaration, xref_mode.DIRECT_SUPERTYPE,
+        false));
+    fragments.append(get_links("All subtypes", the_declaration, xref_mode.INDIRECT_SUPERTYPE,
+        false));
 
     return text_util.join(fragments);
   }

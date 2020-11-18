@@ -170,28 +170,46 @@ public class populate_xref extends construct_visitor<Void> implements value {
     the_xref_context.add(the_type_declaration, xref_mode.TYPE_DECLARATION, c);
     process_default(c);
 
-    add_supertypes(the_type_declaration, the_type_declaration, new hash_set<type>());
+    set<principal_type> visited_types = new hash_set<principal_type>();
+    readonly_list<origin> super_types = the_xref_context.get_targets(the_type_declaration,
+        xref_mode.DIRECT_SUPERTYPE);
+    list<type_declaration> super_declarations = new base_list<type_declaration>();
+    if (super_types != null) {
+      for (int i = 0; i < super_types.size(); ++i) {
+        declaration super_declaration = the_xref_context.origin_to_declaration(super_types.get(i));
+        if (super_declaration instanceof type_declaration) {
+          super_declarations.append((type_declaration) super_declaration);
+          principal_type supertype = ((type_declaration) super_declaration).get_declared_type();
+          visited_types.add(supertype);
+        }
+      }
+    }
+
+    add_supertypes(the_type_declaration, the_type_declaration, visited_types);
+    for (int i = 0; i < super_declarations.size(); ++i) {
+      add_supertypes(the_type_declaration, super_declarations.get(i), visited_types);
+    }
 
     return null;
   }
 
   private void add_supertypes(type_declaration documenting_declaration,
-      type_declaration the_type_declaration, set<type> all_types) {
+      type_declaration the_type_declaration, set<principal_type> visited_types) {
 
     readonly_list<declaration> signature = the_type_declaration.get_signature();
     for (int i = 0; i < signature.size(); ++i) {
       declaration member = signature.get(i);
       if (member instanceof supertype_declaration) {
-        type supertype = ((supertype_declaration) member).get_supertype();
-        if (all_types.contains(supertype)) {
+        type super_type = ((supertype_declaration) member).get_supertype();
+        principal_type super_principal = super_type.principal();
+        if (visited_types.contains(super_principal)) {
           continue;
         }
-        all_types.add(supertype);
-        type_declaration super_declaration = (type_declaration)
-            supertype.principal().get_declaration();
-        action super_action = supertype.to_action(super_declaration);
+        visited_types.add(super_principal);
+        type_declaration super_declaration = (type_declaration) super_principal.get_declaration();
+        action super_action = super_type.to_action(super_declaration);
         the_xref_context.add(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE, super_action);
-        add_supertypes(documenting_declaration, super_declaration, all_types);
+        add_supertypes(documenting_declaration, super_declaration, visited_types);
       }
     }
   }

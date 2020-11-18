@@ -19,6 +19,7 @@ import ideal.development.elements.*;
 import ideal.development.components.*;
 import ideal.development.comments.*;
 import ideal.development.names.*;
+import ideal.development.flavors.*;
 import ideal.development.literals.*;
 import ideal.development.scanners.*;
 import ideal.development.modifiers.*;
@@ -75,18 +76,19 @@ public class xref_printer {
       return null;
     }
 
+    list<text_fragment> fragments = new base_list<text_fragment>();
+
     text_fragment title = new base_string(c.kind.to_string(), " ",
         the_value_printer.print_value(the_declaration.get_declared_type()));
-    text_fragment title_text = styles.wrap(styles.xref_title_style, title);
+    fragments.append(styles.wrap(styles.xref_title_style, title));
 
-    text_fragment declaration_text = get_links("Declaration", the_declaration,
-        xref_mode.DECLARATION, true);
-    text_fragment supertypes_text = get_links("Supertypes", the_declaration,
-        xref_mode.SUPERTYPE_DECLARATION, true);
-    text_fragment subtypes_text = get_links("Subtypes", the_declaration,
-        xref_mode.SUPERTYPE_DECLARATION, false);
+    fragments.append(get_links("Declaration", the_declaration, xref_mode.TYPE_DECLARATION, true));
+    fragments.append(get_links("Supertypes", the_declaration, xref_mode.DIRECT_SUPERTYPE, true));
+    fragments.append(get_links("All supertypes", the_declaration, xref_mode.INDIRECT_SUPERTYPE,
+        true));
+    fragments.append(get_links("Subtypes", the_declaration, xref_mode.DIRECT_SUPERTYPE, false));
 
-    return text_util.join(title_text, declaration_text, supertypes_text, subtypes_text);
+    return text_util.join(fragments);
   }
 
   private text_fragment get_links(String name, declaration the_declaration, xref_mode mode,
@@ -110,6 +112,18 @@ public class xref_printer {
       origin link = links.get(i);
       @Nullable declaration link_declaration = the_xref_context.origin_to_declaration(link);
       if (link_declaration != null) {
+        type_flavor the_flavor = null;
+        if (link instanceof flavor_construct) {
+          the_flavor = ((flavor_construct) link).flavor;
+        } else if (link instanceof type_action) {
+          type the_type = ((type_action) link).get_type();
+          if (the_type.get_flavor() != flavor.nameonly_flavor) {
+            the_flavor = the_type.get_flavor();
+          }
+        }
+        if (the_flavor != null) {
+          fragments.append(new base_string(the_flavor.name().to_string(), " "));
+        }
         fragments.append(render_link(link_declaration));
       } else {
         fragments.append(new base_string("-" + link + "@" + link.getClass()));

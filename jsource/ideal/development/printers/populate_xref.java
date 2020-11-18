@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Voidhe Ideal Authors. All rights reserved.
+ * Copyright 2014-2020 The Ideal Authors. All rights reserved.
  *
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file or at
@@ -145,8 +145,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       if (the_analyzable != null) {
         analysis_result result = the_analyzable.analyze();
         if (result instanceof type_action) {
-          principal_type the_type = ((type_action) result).get_type().principal();
-          the_xref_context.add(the_super_declaration, xref_mode.SUPERTYPE_DECLARATION,
+          the_xref_context.add(the_super_declaration, xref_mode.DIRECT_SUPERTYPE,
               the_construct);
         }
       }
@@ -158,15 +157,43 @@ public class populate_xref extends construct_visitor<Void> implements value {
   @Override
   public Void process_type_declaration(type_declaration_construct c) {
     @Nullable analyzable the_declaration = the_analysis_context.get_analyzable(c);
-    if (the_declaration instanceof type_declaration) {
-      type_declaration the_type_declaration = (type_declaration) the_declaration;
-      if (all_types.contains(the_type_declaration.get_declared_type())) {
-        return null;
-      }
-      all_types.add(the_type_declaration.get_declared_type());
-      the_xref_context.add(the_type_declaration, xref_mode.DECLARATION, c);
+    if (!(the_declaration instanceof type_declaration)) {
+      utilities.panic("Type declaration expected, got "+  the_declaration);
     }
-    return process_default(c);
+
+    type_declaration the_type_declaration = (type_declaration) the_declaration;
+    if (all_types.contains(the_type_declaration.get_declared_type())) {
+      return null;
+    }
+
+    all_types.add(the_type_declaration.get_declared_type());
+    the_xref_context.add(the_type_declaration, xref_mode.TYPE_DECLARATION, c);
+    process_default(c);
+
+    add_supertypes(the_type_declaration, the_type_declaration, new hash_set<type>());
+
+    return null;
+  }
+
+  private void add_supertypes(type_declaration documenting_declaration,
+      type_declaration the_type_declaration, set<type> all_types) {
+
+    readonly_list<declaration> signature = the_type_declaration.get_signature();
+    for (int i = 0; i < signature.size(); ++i) {
+      declaration member = signature.get(i);
+      if (member instanceof supertype_declaration) {
+        type supertype = ((supertype_declaration) member).get_supertype();
+        if (all_types.contains(supertype)) {
+          continue;
+        }
+        all_types.add(supertype);
+        type_declaration super_declaration = (type_declaration)
+            supertype.principal().get_declaration();
+        action super_action = supertype.to_action(super_declaration);
+        the_xref_context.add(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE, super_action);
+        add_supertypes(documenting_declaration, super_declaration, all_types);
+      }
+    }
   }
 
   @Override

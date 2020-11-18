@@ -213,7 +213,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     }
 
     readonly_list<origin> sources = the_xref_context.get_sources(the_construct,
-        xref_mode.SUPERTYPE_DECLARATION);
+        xref_mode.DIRECT_SUPERTYPE);
     if (sources != null) {
       return new base_string("super");
     }

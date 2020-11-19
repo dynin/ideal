@@ -113,45 +113,74 @@ public class xref_printer {
     fragments.append(new base_string(name, ": "));
     for (int i = 0; i < links.size(); ++i) {
       fragments.append(i == 0 ? new base_string(" ") : new base_string(" / "));
-      origin link = links.get(i);
-      @Nullable declaration link_declaration = the_xref_context.origin_to_declaration(link);
-      if (link_declaration != null) {
-        type_flavor the_flavor = null;
-        if (link instanceof flavor_construct) {
-          the_flavor = ((flavor_construct) link).flavor;
-        } else if (link instanceof type_action) {
-          type the_type = ((type_action) link).get_type();
-          if (the_type.get_flavor() != flavor.nameonly_flavor) {
-            the_flavor = the_type.get_flavor();
-          }
+      origin the_origin = links.get(i);
+      type_flavor the_flavor = null;
+      if (the_origin instanceof flavor_construct) {
+        the_flavor = ((flavor_construct) the_origin).flavor;
+      } else if (the_origin instanceof type_action) {
+        type the_type = ((type_action) the_origin).get_type();
+        if (the_type.get_flavor() != flavor.nameonly_flavor) {
+          the_flavor = the_type.get_flavor();
         }
-        if (the_flavor != null) {
-          fragments.append(new base_string(the_flavor.name().to_string(), " "));
-        }
-        fragments.append(render_link(link_declaration));
-      } else {
-        fragments.append(new base_string("-" + link + "@" + link.getClass()));
       }
+      if (the_flavor != null) {
+        fragments.append(new base_string(the_flavor.name().to_string(), " "));
+      }
+      fragments.append(render_origin(the_origin));
     }
 
     return styles.wrap(styles.xref_links_style, text_util.join(fragments));
   }
 
-  private text_fragment render_link(declaration the_declaration) {
+  private text_fragment render_origin(origin the_origin) {
+    @Nullable name_construct the_name_construct = xref_context.unwrap_name(the_origin);
+    if (the_name_construct != null) {
+      return render_name(the_name_construct);
+    } else {
+      return render_declaration(the_origin);
+    }
+  }
+
+  private text_fragment render_name(name_construct the_name_construct) {
+    principal_type the_type = the_naming_strategy.get_current_type();
+    text_fragment the_text = print_name(the_name_construct.the_name);
+    @Nullable string link = the_naming_strategy.link_to_type(the_type, link_mode.STYLISH);
+    assert link != null;
+    @Nullable string fragment_id = the_naming_strategy.fragment_of_construct(the_name_construct,
+        link_mode.STYLISH);
+    if (fragment_id != null) {
+      link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
+    }
+    return text_util.make_html_link(the_text, link);
+  }
+
+  private text_fragment render_declaration(origin the_origin) {
+    @Nullable declaration the_declaration = the_xref_context.origin_to_declaration(the_origin);
+
     if (!(the_declaration instanceof type_declaration)) {
       return new base_string("" + the_declaration);
     }
 
     type_declaration the_type_declaration = (type_declaration) the_declaration;
     principal_type the_type = the_type_declaration.get_declared_type();
-    // TODO: fail gracefully if name is not a simple_name
-    text_fragment the_text =
-        the_naming_strategy.print_simple_name((simple_name) the_type.short_name());
+    text_fragment the_text = print_name(the_type.short_name());
     @Nullable string link = the_naming_strategy.link_to_declaration(the_type_declaration,
         link_mode.STYLISH);
     if (link != null) {
+      if (the_origin instanceof type_declaration_construct) {
+        @Nullable string fragment_id = the_naming_strategy.fragment_of_construct(
+            (construct) the_origin, link_mode.STYLISH);
+        if (fragment_id != null) {
+          link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
+        }
+      }
       the_text = text_util.make_html_link(the_text, link);
     }
     return the_text;
+  }
+
+  private text_fragment print_name(action_name the_name) {
+    // TODO: fail gracefully if name is not a simple_name
+    return the_naming_strategy.print_simple_name((simple_name) the_name);
   }
 }

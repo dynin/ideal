@@ -554,12 +554,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   @Override
   public text_fragment process_name(name_construct c) {
     text_fragment name = print_action_name(c.the_name);
-    if (the_assistant != null) {
-      @Nullable string id = the_assistant.fragment_of_construct(c, link_mode.STYLISH);
-      if (id != null) {
-        name = base_element.make(text_library.SPAN, text_library.ID, id, name);
-      }
-    }
+    name = wrap_with_span_id(name, c);
     return make_link(name, c);
   }
 
@@ -755,12 +750,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_space());
 
     text_fragment type_name = print_action_name(c.name);
-    if (the_assistant != null) {
-      @Nullable string id = the_assistant.fragment_of_construct(c, link_mode.STYLISH);
-      if (id != null) {
-        type_name = base_element.make(text_library.SPAN, text_library.ID, id, type_name);
-      }
-    }
+    type_name = wrap_with_span_id(type_name, c);
     // TODO: make the style a parameter
     fragments.append(styles.wrap(styles.type_declaration_name_style, make_xref_link(type_name, c)));
 
@@ -769,6 +759,16 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     }
 
     return text_util.join(fragments);
+  }
+
+  private text_fragment wrap_with_span_id(text_fragment text, construct c) {
+    if (the_assistant != null) {
+      @Nullable string id = the_assistant.fragment_of_construct(c, link_mode.STYLISH);
+      if (id != null) {
+        return base_element.make(text_library.SPAN, text_library.ID, id, text);
+      }
+    }
+    return text;
   }
 
   protected text_fragment print_type_body(readonly_list<construct> constructs) {

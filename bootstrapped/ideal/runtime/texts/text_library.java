@@ -47,6 +47,7 @@ public class text_library {
   public static final text_entity UARR = new text_entity(text_library.HTML_NS, new base_string("^"), new base_string("&uarr;"));
   public static final text_entity RARR = new text_entity(text_library.HTML_NS, new base_string("->"), new base_string("&rarr;"));
   public static final text_entity DARR = new text_entity(text_library.HTML_NS, new base_string("V"), new base_string("&darr;"));
+  public static final string FRAGMENT_SEPARATOR = new base_string("#");
   public static final base_namespace IDEAL_TEXT = new base_namespace(new base_string("itext"));
   public static final base_element_id INDENT = new base_element_id(text_library.IDEAL_TEXT, new base_string("indent"));
 }

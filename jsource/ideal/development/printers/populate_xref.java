@@ -140,7 +140,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
     assert the_super_declaration instanceof type_declaration;
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
-      construct the_construct = types.get(i);
+      @Nullable name_construct the_construct = xref_context.unwrap_name(types.get(i));
+      if (the_construct == null) {
+        continue;
+      }
       @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
       if (the_analyzable != null) {
         analysis_result result = the_analyzable.analyze();
@@ -181,6 +184,8 @@ public class populate_xref extends construct_visitor<Void> implements value {
           super_declarations.append((type_declaration) super_declaration);
           principal_type supertype = ((type_declaration) super_declaration).get_declared_type();
           visited_types.add(supertype);
+        } else {
+          utilities.panic("Super declaration " + super_declaration);
         }
       }
     }
@@ -208,7 +213,8 @@ public class populate_xref extends construct_visitor<Void> implements value {
         visited_types.add(super_principal);
         type_declaration super_declaration = (type_declaration) super_principal.get_declaration();
         action super_action = super_type.to_action(super_declaration);
-        the_xref_context.add(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE, super_action);
+        the_xref_context.add_action(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE,
+            super_action);
         add_supertypes(documenting_declaration, super_declaration, visited_types);
       }
     }

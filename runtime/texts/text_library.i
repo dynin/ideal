@@ -54,6 +54,8 @@ public namespace text_library {
   RARR : text_entity.new(HTML_NS, "->", "&rarr;");
   DARR : text_entity.new(HTML_NS, "V", "&darr;");
 
+  FRAGMENT_SEPARATOR : "#";
+
   IDEAL_TEXT : base_namespace.new("itext");
   INDENT : base_element_id.new(IDEAL_TEXT, "indent");
 }

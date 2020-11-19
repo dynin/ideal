@@ -89,7 +89,16 @@ public class xref_context extends debuggable {
     add_mapping(target, num_modes + xref_mode.SUCCESSOR.ordinal(), source);
   }
 
-  public void add(declaration source, xref_mode the_xref_mode, origin target) {
+  public void add(declaration source, xref_mode the_xref_mode, construct target) {
+    //System.out.println("SRC " + source + " M " + the_xref_mode + " TGT " + target);
+    add_mapping(source, the_xref_mode.ordinal(), target);
+    declaration the_declaration = origin_to_declaration(target);
+    if (the_declaration != null) {
+      add_mapping(the_declaration, num_modes + the_xref_mode.ordinal(), source);
+    }
+  }
+
+  public void add_action(declaration source, xref_mode the_xref_mode, action target) {
     //System.out.println("SRC " + source + " M " + the_xref_mode + " TGT " + target);
     add_mapping(source, the_xref_mode.ordinal(), target);
     declaration the_declaration = origin_to_declaration(target);
@@ -163,5 +172,19 @@ public class xref_context extends debuggable {
       return null;
     }
     return the_list;
+  }
+
+  public static @Nullable name_construct unwrap_name(origin the_origin) {
+    if (the_origin instanceof name_construct) {
+      return (name_construct) the_origin;
+    } else if (the_origin instanceof flavor_construct) {
+      return unwrap_name(((flavor_construct) the_origin).expr);
+    } else if (the_origin instanceof resolve_construct) {
+      return unwrap_name(((resolve_construct) the_origin).name);
+    } else if (the_origin instanceof parameter_construct) {
+      return unwrap_name(((parameter_construct) the_origin).main);
+    } else {
+      return null;
+    }
   }
 }

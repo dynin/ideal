@@ -39,6 +39,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   private final immutable_list<simple_name> current_catalog;
   private final base_printer the_printer;
+  private final dictionary<construct, string> fragments;
+  private final set<string> fragment_ids;
 
   public static function1<string, simple_name> dash_renderer =
       new function1<string, simple_name>() {
@@ -75,6 +77,9 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     this.current_catalog = full_names.slice(0, full_names.size() - 1);
 
     this.the_printer = new base_printer(printer_mode.STYLISH, this);
+
+    fragments = new hash_dictionary<construct, string>();
+    fragment_ids = new hash_set<string>();
   }
 
   public principal_type get_current_type() {
@@ -212,15 +217,58 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       return null;
     }
 
-    return fragment_of_declaration(get_declaration(the_construct), mode);
+    @Nullable string fragment = fragments.get(the_construct);
+    if (fragment == null) {
+      @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
+      if (the_analyzable == null) {
+        // Most likely, this is not_yet_implemented
+      }
+      if (false) {
+        System.out.println("NOFRAG " + current_type + " C " + the_construct +
+            " A " + the_analyzable);
+      }
+      return null;
+    }
+
+    return fragment;
+  }
+
+  public string add_fragment(construct the_construct) {
+    @Nullable string fragment = fragments.get(the_construct);
+    if (fragment != null) {
+      return fragment;
+    }
+
+    if (the_construct instanceof name_construct) {
+      fragment = name_to_id(((name_construct) the_construct).the_name);
+    } else if (the_construct instanceof type_declaration_construct) {
+      fragment = name_to_id(((type_declaration_construct) the_construct).name);
+    } else {
+      utilities.panic("Unknown construct " + the_construct);
+    }
+
+    string result = fragment;
+    int index = 1;
+
+    while (fragment_ids.contains(result)) {
+      index += 1;
+      result = new base_string(fragment, String.valueOf(index));
+    }
+
+    fragments.put(the_construct, result);
+    fragment_ids.add(result);
+
+    return result;
+
+    // return fragment_of_declaration(get_declaration(the_construct));
   }
 
   private string name_to_id(action_name the_action_name) {
     return dash_renderer.call((simple_name) the_action_name);
   }
 
-  public @Nullable string fragment_of_declaration(@Nullable declaration the_declaration,
-      link_mode mode) {
+  /*
+  private @Nullable string fragment_of_declaration(@Nullable declaration the_declaration) {
     if (the_declaration == null || the_declaration.has_errors()) {
       return null;
     }
@@ -238,6 +286,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
     return null;
   }
+  */
 
   @Override
   public @Nullable documentation get_documentation(construct the_construct) {

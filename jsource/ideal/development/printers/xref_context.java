@@ -25,6 +25,7 @@ import ideal.development.declarations.*;
 import ideal.development.actions.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
+import ideal.development.analyzers.*;
 
 import javax.annotation.Nullable;
 
@@ -33,25 +34,33 @@ public class xref_context extends debuggable {
 
   public final analysis_context the_analysis_context;
   private final list<type_declaration_construct> the_output_declarations;
-  private final set<principal_type> output_types;
+  private final dictionary<master_type, naming_strategy> output_types;
   private final dictionary<origin, list<origin>>[] mapping;
 
   public xref_context(analysis_context the_analysis_context) {
     this.the_analysis_context = the_analysis_context;
     this.the_output_declarations = new base_list<type_declaration_construct>();
-    this.output_types = new hash_set<principal_type>();
+    this.output_types = new hash_dictionary<master_type, naming_strategy>();
     mapping = new dictionary[num_modes * 2];
     for (int i = 0; i < mapping.length; ++i) {
       mapping[i] = new list_dictionary<origin, list<origin>>();
     }
   }
 
+  private master_type normalize(principal_type the_principal_type) {
+    if (the_principal_type instanceof master_type) {
+      return (master_type) the_principal_type;
+    } else {
+      return ((parametrized_type) the_principal_type).get_master();
+    }
+  }
+
   public void add_output_declaration(principal_type the_type,
       type_declaration_construct the_declaration_construct) {
-    if (output_types.contains(the_type)) {
+    if (has_output_type(the_type)) {
       return;
     }
-    output_types.add(the_type);
+    output_types.put(normalize(the_type), new naming_strategy(the_type, this));
 
     type_declaration the_type_declaration = declaration_util.to_type_declaration(
         the_analysis_context.get_analyzable(the_declaration_construct));
@@ -80,7 +89,13 @@ public class xref_context extends debuggable {
   }
 
   public boolean has_output_type(principal_type the_principal_type) {
-    return output_types.contains(the_principal_type);
+    return output_types.contains_key(normalize(the_principal_type));
+  }
+
+  public naming_strategy get_naming_strategy(principal_type the_principal_type) {
+    naming_strategy result = output_types.get(normalize(the_principal_type));
+    assert result != null;
+    return result;
   }
 
   public void add_successor(type_declaration source, type_declaration target) {
@@ -172,6 +187,21 @@ public class xref_context extends debuggable {
       return null;
     }
     return the_list;
+  }
+
+  public principal_type get_parent_type(construct the_construct) {
+    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
+    return get_output_type(((base_analyzer) the_analyzable).parent());
+  }
+
+  public @Nullable principal_type get_output_type(@Nullable principal_type the_type) {
+    while (the_type != null) {
+      if (has_output_type(the_type)) {
+        return the_type;
+      }
+      the_type = the_type.get_parent();
+    }
+    return null;
   }
 
   public static @Nullable name_construct unwrap_name(origin the_origin) {

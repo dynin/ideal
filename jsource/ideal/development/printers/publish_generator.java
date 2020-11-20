@@ -45,13 +45,11 @@ public class publish_generator {
   private final analysis_context the_context;
   private final content_writer processor;
   private final xref_context the_xref_context;
-  private final populate_xref the_populate_xref;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
     this.the_context = the_context;
     this.processor = processor;
     this.the_xref_context = new xref_context(the_context);
-    this.the_populate_xref = new populate_xref(the_context, the_xref_context);
   }
 
   public void add_type(principal_type the_type) {
@@ -59,7 +57,6 @@ public class publish_generator {
 
     type_declaration_construct the_declaration_construct = (type_declaration_construct)
         declaration_util.to_type_declaration(the_declaration).deeper_origin();
-    the_populate_xref.process(the_declaration_construct);
 
     if (generate_subpages(the_declaration)) {
       list<construct> namespace_body = new base_list<construct>();
@@ -149,14 +146,23 @@ public class publish_generator {
   }
 
   public void generate_all() {
-    generate_navigation_xref();
     immutable_list<type_declaration_construct> constructs = the_xref_context.output_constructs();
+    for (int i = 0; i < constructs.size(); ++i) {
+      type_declaration_construct the_declaration_construct = constructs.get(i);
+      type_declaration the_type_declaration = declaration_util.to_type_declaration(
+          the_context.get_analyzable(the_declaration_construct));
+      new populate_xref(the_xref_context, the_type_declaration.get_declared_type()).
+          process(the_declaration_construct);
+    }
+
+    generate_navigation_xref();
+
     for (int i = 0; i < constructs.size(); ++i) {
       type_declaration_construct the_declaration_construct = constructs.get(i);
       type_declaration the_declaration = declaration_util.to_type_declaration(
           the_context.get_analyzable(the_declaration_construct));
       generate_markup(new base_list<construct>(the_declaration_construct),
-          new naming_strategy(the_declaration.get_declared_type(), the_xref_context));
+          the_xref_context.get_naming_strategy(the_declaration.get_declared_type()));
     }
   }
 

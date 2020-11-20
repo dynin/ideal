@@ -26,6 +26,7 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
+import ideal.development.analyzers.*;
 import ideal.development.values.*;
 import ideal.development.documenters.*;
 
@@ -91,6 +92,7 @@ public class xref_printer {
         false));
     fragments.append(get_links("All subtypes", the_declaration, xref_mode.INDIRECT_SUPERTYPE,
         false));
+    fragments.append(get_links("Use", the_declaration, xref_mode.USE, true));
 
     return text_util.join(fragments);
   }
@@ -142,12 +144,17 @@ public class xref_printer {
   }
 
   private text_fragment render_name(name_construct the_name_construct) {
-    principal_type the_type = the_naming_strategy.get_current_type();
-    text_fragment the_text = print_name(the_name_construct.the_name);
+    principal_type the_type = the_xref_context.get_parent_type(the_name_construct);
+    text_fragment the_text;
+    if (the_type == the_naming_strategy.get_current_type()) {
+      the_text = print_name(the_name_construct.the_name);
+    } else {
+      the_text = print_name(the_type.short_name());
+    }
     @Nullable string link = the_naming_strategy.link_to_type(the_type, link_mode.STYLISH);
     assert link != null;
-    @Nullable string fragment_id = the_naming_strategy.fragment_of_construct(the_name_construct,
-        link_mode.STYLISH);
+    @Nullable string fragment_id = the_xref_context.get_naming_strategy(the_type).
+        fragment_of_construct(the_name_construct, link_mode.STYLISH);
     if (fragment_id != null) {
       link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
     }

@@ -32,12 +32,12 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   private final analysis_context the_analysis_context;
   private final xref_context the_xref_context;
-  private final set<principal_type> all_types;
+  private final principal_type current_type;
 
-  public populate_xref(analysis_context the_analysis_context, xref_context the_xref_context) {
-    this.the_analysis_context = the_analysis_context;
+  public populate_xref(xref_context the_xref_context, principal_type current_type) {
+    this.the_analysis_context = the_xref_context.the_analysis_context;
     this.the_xref_context = the_xref_context;
-    this.all_types = new hash_set<principal_type>();
+    this.current_type = current_type;
   }
 
   @Override
@@ -100,7 +100,21 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_name(name_construct c) {
-    return process_default(c);
+    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    if (the_analyzable == null) {
+      return null;
+    }
+    analysis_result result = the_analyzable.analyze();
+    if (result instanceof type_action) {
+      principal_type the_type = ((type_action) result).get_type().principal();
+      add_xref(the_type.get_declaration(), xref_mode.USE, c);
+    }
+    return null;
+  }
+
+  private void add_xref(declaration the_declaration, xref_mode mode, construct the_construct) {
+    the_xref_context.add(the_declaration, mode, the_construct);
+    the_xref_context.get_naming_strategy(current_type).add_fragment(the_construct);
   }
 
   @Override
@@ -138,6 +152,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
     @Nullable declaration the_super_declaration =
         (declaration) the_analysis_context.get_analyzable(c);
     assert the_super_declaration instanceof type_declaration;
+    principal_type the_super_type = ((type_declaration) the_super_declaration).get_declared_type();
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
       @Nullable name_construct the_construct = xref_context.unwrap_name(types.get(i));
@@ -148,8 +163,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       if (the_analyzable != null) {
         analysis_result result = the_analyzable.analyze();
         if (result instanceof type_action) {
-          the_xref_context.add(the_super_declaration, xref_mode.DIRECT_SUPERTYPE,
-              the_construct);
+          add_xref(the_super_declaration, xref_mode.DIRECT_SUPERTYPE, the_construct);
         }
       }
     }
@@ -161,16 +175,17 @@ public class populate_xref extends construct_visitor<Void> implements value {
   public Void process_type_declaration(type_declaration_construct c) {
     @Nullable analyzable the_declaration = the_analysis_context.get_analyzable(c);
     if (!(the_declaration instanceof type_declaration)) {
-      utilities.panic("Type declaration expected, got "+  the_declaration);
+      utilities.panic("Type declaration expected, got " +  the_declaration);
     }
 
     type_declaration the_type_declaration = (type_declaration) the_declaration;
-    if (all_types.contains(the_type_declaration.get_declared_type())) {
+    principal_type declared_type = the_type_declaration.get_declared_type();
+
+    if (the_xref_context.has_output_type(declared_type) && declared_type != current_type) {
       return null;
     }
 
-    all_types.add(the_type_declaration.get_declared_type());
-    the_xref_context.add(the_type_declaration, xref_mode.TYPE_DECLARATION, c);
+    add_xref(the_type_declaration, xref_mode.TYPE_DECLARATION, c);
     process_default(c);
 
     set<principal_type> visited_types = new hash_set<principal_type>();

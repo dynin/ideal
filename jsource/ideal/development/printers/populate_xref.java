@@ -33,6 +33,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
   private final analysis_context the_analysis_context;
   private final xref_context the_xref_context;
   private final principal_type current_type;
+  private @Nullable name_construct skip_construct;
 
   public populate_xref(xref_context the_xref_context, principal_type current_type) {
     this.the_analysis_context = the_xref_context.the_analysis_context;
@@ -100,6 +101,9 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_name(name_construct c) {
+    if (c == skip_construct) {
+      return null;
+    }
     @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
     if (the_analyzable == null) {
       return null;
@@ -155,10 +159,13 @@ public class populate_xref extends construct_visitor<Void> implements value {
     principal_type the_super_type = ((type_declaration) the_super_declaration).get_declared_type();
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
-      @Nullable name_construct the_construct = xref_context.unwrap_name(types.get(i));
+      construct type_construct = types.get(i);
+      @Nullable name_construct the_construct = xref_context.unwrap_name(type_construct);
       if (the_construct == null) {
         continue;
       }
+      skip_construct = the_construct;
+      process_default(type_construct);
       @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
       if (the_analyzable != null) {
         analysis_result result = the_analyzable.analyze();
@@ -195,9 +202,11 @@ public class populate_xref extends construct_visitor<Void> implements value {
     if (super_types != null) {
       for (int i = 0; i < super_types.size(); ++i) {
         declaration super_declaration = the_xref_context.origin_to_declaration(super_types.get(i));
-        if (super_declaration instanceof type_declaration) {
-          super_declarations.append((type_declaration) super_declaration);
-          principal_type supertype = ((type_declaration) super_declaration).get_declared_type();
+        type_declaration super_type_declaration  =
+            declaration_util.to_type_declaration(super_declaration);
+        if (super_type_declaration != null) {
+          super_declarations.append(super_type_declaration);
+          principal_type supertype = super_type_declaration.get_declared_type();
           visited_types.add(supertype);
         } else {
           utilities.panic("Super declaration " + super_declaration);
@@ -226,7 +235,9 @@ public class populate_xref extends construct_visitor<Void> implements value {
           continue;
         }
         visited_types.add(super_principal);
-        type_declaration super_declaration = (type_declaration) super_principal.get_declaration();
+        type_declaration super_declaration = declaration_util.to_type_declaration(
+            super_principal.get_declaration());
+        assert super_declaration != null;
         action super_action = super_type.to_action(super_declaration);
         the_xref_context.add_action(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE,
             super_action);

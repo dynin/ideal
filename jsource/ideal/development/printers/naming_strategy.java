@@ -222,6 +222,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
       if (the_analyzable == null) {
         // Most likely, this is not_yet_implemented
+        return null;
       }
       if (false) {
         System.out.println("NOFRAG " + current_type + " C " + the_construct +

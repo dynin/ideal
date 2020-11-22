@@ -33,6 +33,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   public static final string INDEX = new base_string("index");
   public static final simple_name XREF_NAME = simple_name.make("xref");
 
+  public static final boolean DEBUG_FRAGMENTS = true;
+
   private final immutable_list<simple_name> full_names;
   private final principal_type current_type;
   private final xref_context the_xref_context;
@@ -224,7 +226,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
         // Most likely, this is not_yet_implemented
         return null;
       }
-      if (false) {
+      if (DEBUG_FRAGMENTS) {
         System.out.println("NOFRAG " + current_type + " C " + the_construct +
             " A " + the_analyzable);
       }
@@ -238,6 +240,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     @Nullable string fragment = fragments.get(the_construct);
     if (fragment != null) {
       return fragment;
+    }
+
+    if (DEBUG_FRAGMENTS) {
+      System.out.println("FRAG " + current_type + " C " + the_construct);
     }
 
     if (the_construct instanceof name_construct) {

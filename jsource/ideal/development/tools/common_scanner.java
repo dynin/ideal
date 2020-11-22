@@ -165,8 +165,8 @@ public class common_scanner extends base_scanner_config {
     add_flavor(flavor.raw_flavor);
 
     // TODO: process a list of extensions
+    not_yet_implemented_extension.instance.register_syntax_extension(this);
     new cache_extension().register_syntax_extension(this);
-    new not_yet_implemented_extension().register_syntax_extension(this);
     new supertype_of_string_extension().register_syntax_extension(this);
   }
 }

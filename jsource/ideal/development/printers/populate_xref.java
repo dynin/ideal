@@ -25,6 +25,7 @@ import ideal.development.declarations.*;
 import ideal.development.actions.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
+import ideal.development.extensions.*;
 
 import javax.annotation.Nullable;
 
@@ -89,8 +90,25 @@ public class populate_xref extends construct_visitor<Void> implements value {
     return process_default(c);
   }
 
+  private boolean has_not_yet_implemented(readonly_list<annotation_construct> annotations) {
+    // TODO: use list.has()
+    for (int i = 0; i < annotations.size(); ++i) {
+      annotation_construct a = annotations.get(i);
+      if (a instanceof modifier_construct &&
+          ((modifier_construct) a).the_kind ==
+              not_yet_implemented_extension.instance.the_modifier_kind) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Override
   public Void process_procedure(procedure_construct c) {
+    if (has_not_yet_implemented(c.annotations)) {
+      return null;
+    }
+
     return process_default(c);
   }
 
@@ -105,13 +123,16 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
     @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
-    if (the_analyzable == null) {
-      return null;
-    }
+    assert the_analyzable != null;
+
     analysis_result result = the_analyzable.analyze();
     if (result instanceof type_action) {
       principal_type the_type = ((type_action) result).get_type().principal();
       add_xref(the_type.get_declaration(), xref_mode.USE, c);
+    } else {
+      if (naming_strategy.DEBUG_FRAGMENTS) {
+        System.out.println("  RNULL " + c);
+      }
     }
     return null;
   }
@@ -166,6 +187,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       }
       skip_construct = the_construct;
       process_default(type_construct);
+      skip_construct = null;
       @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
       if (the_analyzable != null) {
         analysis_result result = the_analyzable.analyze();
@@ -258,6 +280,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_variable(variable_construct c) {
+    if (has_not_yet_implemented(c.annotations)) {
+      return null;
+    }
+
     return process_default(c);
   }
 

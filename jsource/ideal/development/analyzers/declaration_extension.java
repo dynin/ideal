@@ -40,7 +40,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   private static dictionary<Class, declaration_extension> extension_registry =
       new list_dictionary<Class, declaration_extension>();
 
-  private final extension_modifier_kind the_modifier_kind;
+  public final extension_modifier_kind the_modifier_kind;
   @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
   private @Nullable modifier_construct the_modifier;

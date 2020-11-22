@@ -29,6 +29,8 @@ import ideal.development.analyzers.*;
  */
 public class not_yet_implemented_extension extends declaration_extension {
 
+  public static final not_yet_implemented_extension instance = new not_yet_implemented_extension();
+
   public not_yet_implemented_extension() {
     super("not_yet_implemented");
   }

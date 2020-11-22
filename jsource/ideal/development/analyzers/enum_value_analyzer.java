@@ -27,7 +27,7 @@ import ideal.development.declarations.*;
 
 public class enum_value_analyzer extends declaration_analyzer implements variable_declaration {
 
-  private final action_name the_name;
+  private final name_construct the_name_construct;
   private final @Nullable list_construct parameters;
   private final int ordinal;
   private @Nullable action_parameters the_action_parameters;
@@ -36,12 +36,12 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     super(the_construct);
     assert enum_util.can_be_enum_value(the_construct);
     if (the_construct instanceof name_construct) {
-      the_name = ((name_construct) the_construct).the_name;
+      the_name_construct = (name_construct) the_construct;
       parameters = null;
     } else {
       parameter_construct the_parameter_construct = (parameter_construct) the_construct;
       // TODO: do not panic, report an error here.
-      the_name = ((name_construct) the_parameter_construct.main).the_name;
+      the_name_construct = (name_construct) the_parameter_construct.main;
       // TODO: check for empty parameters...
       parameters = the_parameter_construct.parameters;
     }
@@ -50,7 +50,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
 
   @Override
   public action_name short_name() {
-    return the_name;
+    return the_name_construct.the_name;
   }
 
   @Override
@@ -92,6 +92,9 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       set_annotations(new base_annotation_set(access_modifier.public_modifier,
           new hash_set<modifier_kind>(), null));
+      if (the_name_construct != deeper_origin()) {
+        associate_with_this(the_name_construct);
+      }
       // TODO: ordinal should be correctly computed.
       enum_value the_value = new enum_value(this, ordinal, value_type());
       get_context().add(declared_in_type(), short_name(), the_value.to_action(this));

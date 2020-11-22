@@ -181,7 +181,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
       construct type_construct = types.get(i);
-      @Nullable name_construct the_construct = xref_context.unwrap_name(type_construct);
+      @Nullable name_construct the_construct = printer_util.unwrap_name(type_construct);
       if (the_construct == null) {
         continue;
       }
@@ -202,6 +202,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_type_declaration(type_declaration_construct c) {
+    if (has_not_yet_implemented(c.annotations)) {
+      return null;
+    }
+
     @Nullable analyzable the_declaration = the_analysis_context.get_analyzable(c);
     if (!(the_declaration instanceof type_declaration)) {
       utilities.panic("Type declaration expected, got " +  the_declaration);

@@ -33,14 +33,13 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   public static final string INDEX = new base_string("index");
   public static final simple_name XREF_NAME = simple_name.make("xref");
 
-  public static final boolean DEBUG_FRAGMENTS = true;
+  public static final boolean DEBUG_FRAGMENTS = false;
 
   private final immutable_list<simple_name> full_names;
   private final principal_type current_type;
   private final xref_context the_xref_context;
 
   private final immutable_list<simple_name> current_catalog;
-  private final base_printer the_printer;
   private final dictionary<construct, string> fragments;
   private final set<string> fragment_ids;
 
@@ -78,18 +77,12 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     assert full_names.is_not_empty();
     this.current_catalog = full_names.slice(0, full_names.size() - 1);
 
-    this.the_printer = new base_printer(printer_mode.STYLISH, this);
-
     fragments = new hash_dictionary<construct, string>();
     fragment_ids = new hash_set<string>();
   }
 
   public principal_type get_current_type() {
     return current_type;
-  }
-
-  public base_printer get_printer() {
-    return the_printer;
   }
 
   public immutable_list<simple_name> get_full_names() {
@@ -109,7 +102,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     list<simple_name> xref_names = new base_list<simple_name>();
     xref_names.append_all(target.slice(0, target.size() - 1));
 
-    simple_name last_name = full_names.last();
+    simple_name last_name = target.last();
     xref_names.append(name_utilities.join(last_name, XREF_NAME));
 
     return xref_names;
@@ -146,10 +139,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return new base_string(result.toString());
   }
 
-  public text_fragment print_simple_name(simple_name name) {
-    return the_printer.print_simple_name(name);
-  }
-
   private @Nullable declaration get_declaration(construct the_construct) {
     @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
     if (the_analyzable != null) {
@@ -168,9 +157,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       return null;
     }
 
-    while (the_type != null && !the_xref_context.has_output_type(the_type)) {
-      the_type = the_type.get_parent();
-    }
+    the_type = the_xref_context.get_output_type(the_type);
 
     if (the_type == null) {
       return null;

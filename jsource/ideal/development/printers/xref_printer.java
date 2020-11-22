@@ -135,7 +135,7 @@ public class xref_printer {
   }
 
   private text_fragment render_origin(origin the_origin) {
-    @Nullable name_construct the_name_construct = xref_context.unwrap_name(the_origin);
+    @Nullable name_construct the_name_construct = printer_util.unwrap_name(the_origin);
     if (the_name_construct != null) {
       return render_name(the_name_construct);
     } else {
@@ -186,8 +186,8 @@ public class xref_printer {
     return the_text;
   }
 
-  private text_fragment print_name(action_name the_name) {
+  private static base_string print_name(action_name the_name) {
     // TODO: fail gracefully if name is not a simple_name
-    return the_naming_strategy.print_simple_name((simple_name) the_name);
+    return printer_util.print_simple_name((simple_name) the_name, true);
   }
 }

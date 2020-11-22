@@ -169,9 +169,9 @@ public class publish_generator {
   public void generate_markup(readonly_list<construct> constructs,
       naming_strategy the_naming_strategy) {
 
-    base_printer printer = the_naming_strategy.get_printer();
+    base_printer printer = new base_printer(printer_mode.STYLISH, the_naming_strategy);
     text_fragment body = printer.print_statements(constructs);
-    text_fragment result = render_page(body, the_naming_strategy);
+    text_fragment result = render_page(body, the_naming_strategy, link_mode.STYLISH);
 
     string result_string = text_util.to_markup_string(result);
     processor.write(result_string, the_naming_strategy.get_full_names(), base_extension.HTML);
@@ -183,17 +183,18 @@ public class publish_generator {
     xref_printer the_xref_printer = new xref_printer(the_context, the_xref_context,
         the_naming_strategy);
     text_fragment xref_body = the_xref_printer.print_statements(constructs);
-    text_fragment xref_result = render_page(xref_body, the_naming_strategy);
+    text_fragment xref_result = render_page(xref_body, the_naming_strategy, link_mode.XREF);
 
     string xref_string = text_util.to_markup_string(xref_result);
     processor.write((base_string) xref_string, the_naming_strategy.get_xref_names(),
         base_extension.HTML);
   }
 
-  text_fragment render_page(text_fragment body, naming_strategy the_naming_strategy) {
+  text_fragment render_page(text_fragment body, naming_strategy the_naming_strategy,
+      link_mode mode) {
     body = styles.wrap(styles.main_style, new html_rewriter().rewrite(body));
 
-    text_element navigation = make_navigation(the_naming_strategy);
+    text_element navigation = make_navigation(the_naming_strategy, mode);
     body = text_util.join(navigation, body, navigation);
     return wrap_body(body, the_naming_strategy.get_full_names(), the_naming_strategy);
   }
@@ -219,35 +220,40 @@ public class publish_generator {
     return text_util.join(result);
   }
 
-  private text_element make_navigation(naming_strategy the_naming_strategy) {
+  private text_element make_navigation(naming_strategy the_naming_strategy, link_mode mode) {
     principal_type the_type = the_naming_strategy.get_current_type();
     @Nullable type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
     text_element left = make_nav_cell(
-        the_xref_context.get_successor(the_declaration), true,
-        the_naming_strategy);
-    text_element center = make_center_cell(the_type.get_parent(), the_naming_strategy);
+        the_xref_context.get_predecessor(the_declaration), true,
+        the_naming_strategy, mode);
+    text_element center = make_center_cell(the_type.get_parent(), the_naming_strategy, mode);
     text_element right = make_nav_cell(
-        the_xref_context.get_predecessor(the_declaration), false,
-        the_naming_strategy);
+        the_xref_context.get_successor(the_declaration), false,
+        the_naming_strategy, mode);
     text_element row = text_util.make_element(TR, new base_list<text_node>(left, center, right));
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
   private @Nullable string link_to_type(naming_strategy the_naming_strategy,
-      principal_type the_type) {
-    return the_naming_strategy.link_to_declaration(the_type.get_declaration(), link_mode.STYLISH);
+      principal_type the_type, link_mode mode) {
+    return the_naming_strategy.link_to_declaration(the_type.get_declaration(), mode);
+  }
+
+  private static base_string print_name(action_name the_name) {
+    // TODO: fail gracefully if name is not a simple_name
+    return printer_util.print_simple_name((simple_name) the_name, true);
   }
 
   private text_element make_nav_cell(@Nullable origin the_origin, boolean left,
-      naming_strategy the_naming_strategy) {
+      naming_strategy the_naming_strategy, link_mode mode) {
     @Nullable principal_type the_type = the_origin instanceof type_declaration ?
         ((type_declaration) the_origin).get_declared_type() : null;
     text_fragment the_text;
 
     if (the_type != null) {
-      the_text = the_naming_strategy.print_simple_name((simple_name) the_type.short_name());
-      @Nullable string link = link_to_type(the_naming_strategy, the_type);
+      the_text = print_name(the_type.short_name());
+      @Nullable string link = link_to_type(the_naming_strategy, the_type, mode);
       if (link != null) {
         the_text = text_util.make_html_link(the_text, link);
       }
@@ -265,15 +271,15 @@ public class publish_generator {
   }
 
   private text_element make_center_cell(@Nullable principal_type the_type,
-      naming_strategy the_naming_strategy) {
+      naming_strategy the_naming_strategy, link_mode mode) {
     text_fragment the_text = null;
     principal_type current_type = the_type;
 
     while (current_type != null) {
       action_name current_name = current_type.short_name();
       if (current_name instanceof simple_name) {
-        text_fragment name_text = the_naming_strategy.print_simple_name((simple_name) current_name);
-        @Nullable string link = link_to_type(the_naming_strategy, current_type);
+        text_fragment name_text = print_name(current_name);
+        @Nullable string link = link_to_type(the_naming_strategy, current_type, mode);
         if (link != null) {
           name_text = text_util.make_html_link(name_text, link);
         }

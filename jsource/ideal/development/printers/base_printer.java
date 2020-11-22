@@ -488,18 +488,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   public text_fragment print_simple_name(simple_name name) {
-    readonly_list<string> segments = name.segments;
-    StringBuilder s = new StringBuilder();
-
-    for (int i = 0; i < segments.size(); ++i) {
-      s.append(utilities.s(segments.get(i)));
-      if (i < segments.size() - 1) {
-        // TODO: output nbsp's; more control?
-        s.append(is_stylish_mode() ? ' ' : '_');
-      }
-    }
-
-    return print_word(new base_string(s.toString()));
+    return print_word(printer_util.print_simple_name(name, is_stylish_mode()));
   }
 
   public text_fragment print_action_name(action_name id) {

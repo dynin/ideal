@@ -203,18 +203,4 @@ public class xref_context extends debuggable {
     }
     return null;
   }
-
-  public static @Nullable name_construct unwrap_name(origin the_origin) {
-    if (the_origin instanceof name_construct) {
-      return (name_construct) the_origin;
-    } else if (the_origin instanceof flavor_construct) {
-      return unwrap_name(((flavor_construct) the_origin).expr);
-    } else if (the_origin instanceof resolve_construct) {
-      return unwrap_name(((resolve_construct) the_origin).name);
-    } else if (the_origin instanceof parameter_construct) {
-      return unwrap_name(((parameter_construct) the_origin).main);
-    } else {
-      return null;
-    }
-  }
 }

@@ -152,8 +152,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return null;
   }
 
-  public @Nullable string link_to_type(@Nullable principal_type the_type, link_mode mode) {
-    if (!publish_generator.GENERATE_XREF && mode == link_mode.XREF) {
+  public @Nullable string link_to_type(@Nullable principal_type the_type, printer_mode mode) {
+    if (!publish_generator.GENERATE_XREF && mode == printer_mode.XREF) {
       return null;
     }
 
@@ -165,7 +165,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
     readonly_list<simple_name> target_name = type_utilities.get_full_names(the_type);
     if (target_name.is_not_empty()) {
-      if (mode == link_mode.XREF) {
+      if (mode == printer_mode.XREF) {
         target_name = make_xref_target(target_name);
       }
       return link_to_resource(target_name, base_extension.HTML);
@@ -175,12 +175,12 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   @Override
-  public @Nullable string link_to_construct(construct the_construct, link_mode mode) {
+  public @Nullable string link_to_construct(construct the_construct, printer_mode mode) {
     return link_to_declaration(get_declaration(the_construct), mode);
   }
 
   public @Nullable string link_to_declaration(@Nullable declaration the_declaration,
-      link_mode mode) {
+      printer_mode mode) {
 
     if (the_declaration == null || the_declaration.has_errors()) {
       return null;
@@ -201,7 +201,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   @Override
-  public @Nullable string fragment_of_construct(construct the_construct, link_mode mode) {
+  public @Nullable string fragment_of_construct(construct the_construct, printer_mode mode) {
     if (!publish_generator.GENERATE_XREF) {
       return null;
     }

@@ -35,9 +35,11 @@ import ideal.development.documenters.*;
  */
 public class xref_printer {
 
+  // TODO: factor out
   private final analysis_context the_analysis_context;
   private final xref_context the_xref_context;
   private final naming_strategy the_naming_strategy;
+  // TODO: retire
   private final value_printer the_value_printer = new base_value_printer(null);
 
   public xref_printer(analysis_context the_analysis_context, xref_context the_xref_context,
@@ -151,10 +153,10 @@ public class xref_printer {
     } else {
       the_text = print_name(the_type.short_name());
     }
-    @Nullable string link = the_naming_strategy.link_to_type(the_type, link_mode.STYLISH);
+    @Nullable string link = the_naming_strategy.link_to_type(the_type, printer_mode.STYLISH);
     assert link != null;
     @Nullable string fragment_id = the_xref_context.get_naming_strategy(the_type).
-        fragment_of_construct(the_name_construct, link_mode.STYLISH);
+        fragment_of_construct(the_name_construct, printer_mode.STYLISH);
     if (fragment_id != null) {
       link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
     }
@@ -172,11 +174,11 @@ public class xref_printer {
     principal_type the_type = the_type_declaration.get_declared_type();
     text_fragment the_text = print_name(the_type.short_name());
     @Nullable string link = the_naming_strategy.link_to_declaration(the_type_declaration,
-        link_mode.STYLISH);
+        printer_mode.STYLISH);
     if (link != null) {
       if (the_origin instanceof type_declaration_construct) {
         @Nullable string fragment_id = the_naming_strategy.fragment_of_construct(
-            (construct) the_origin, link_mode.STYLISH);
+            (construct) the_origin, printer_mode.STYLISH);
         if (fragment_id != null) {
           link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
         }

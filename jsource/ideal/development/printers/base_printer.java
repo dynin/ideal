@@ -57,7 +57,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   public boolean is_stylish_mode() {
-    return the_mode == printer_mode.STYLISH;
+    return the_mode == printer_mode.STYLISH || the_mode == printer_mode.XREF;
   }
 
   public text_fragment print(construct c) {
@@ -522,7 +522,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   protected text_fragment make_link(text_fragment the_text, construct the_construct) {
     if (the_assistant != null) {
-      @Nullable string link = the_assistant.link_to_construct(the_construct, link_mode.STYLISH);
+      @Nullable string link = the_assistant.link_to_construct(the_construct, printer_mode.STYLISH);
       if (link != null) {
         return text_util.make_html_link(the_text, link);
       }
@@ -532,7 +532,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   protected text_fragment make_xref_link(text_fragment the_text, construct the_construct) {
     if (the_assistant != null) {
-      @Nullable string link = the_assistant.link_to_construct(the_construct, link_mode.XREF);
+      @Nullable string link = the_assistant.link_to_construct(the_construct, printer_mode.XREF);
       if (link != null) {
         return text_util.make_html_link(the_text, link);
       }
@@ -752,7 +752,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   private text_fragment wrap_with_span_id(text_fragment text, construct c) {
     if (the_assistant != null) {
-      @Nullable string id = the_assistant.fragment_of_construct(c, link_mode.STYLISH);
+      @Nullable string id = the_assistant.fragment_of_construct(c, printer_mode.STYLISH);
       if (id != null) {
         return base_element.make(text_library.SPAN, text_library.ID, id, text);
       }

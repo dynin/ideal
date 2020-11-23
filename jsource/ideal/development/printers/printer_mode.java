@@ -13,5 +13,6 @@ package ideal.development.printers;
  */
 public enum printer_mode {
   CURLY,
-  STYLISH;
+  STYLISH,
+  XREF;
 }

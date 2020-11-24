@@ -141,7 +141,8 @@ public class java_printer extends base_printer {
   }
 
   @Override
-  protected text_fragment print_type_body(readonly_list<construct> constructs) {
+  protected text_fragment print_type_body(type_declaration_construct the_declaration) {
+    readonly_list<construct> constructs = the_declaration.body;
     // TODO: use filters.
     list<construct> enum_values = new base_list<construct>();
     list<construct> filtered_body = new base_list<construct>();

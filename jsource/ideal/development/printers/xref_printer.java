@@ -35,8 +35,7 @@ import ideal.development.documenters.*;
  */
 public class xref_printer extends base_printer {
 
-  // TODO: retire
-  private final value_printer the_value_printer = new base_value_printer(null);
+  private static final string_text_node XREF_SEPARATOR = new base_string(" / ");
 
   public xref_printer(naming_strategy the_naming_strategy) {
     super(printer_mode.XREF, the_naming_strategy);
@@ -56,30 +55,15 @@ public class xref_printer extends base_printer {
   }
 
   @Override
-  public @Nullable text_fragment print(construct c) {
-    if (c instanceof type_declaration_construct) {
-      return process_type_declaration((type_declaration_construct) c);
-    }
-    return null;
-  }
+  protected text_fragment print_type_body(type_declaration_construct the_construct) {
+    analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
 
-  @Override
-  public text_fragment process_type_declaration(type_declaration_construct c) {
-    analyzable a = the_analysis_context().get_analyzable(c);
-    if (!(a instanceof type_declaration)) {
-      return null;
-    }
-
-    type_declaration the_declaration = (type_declaration) a;
+    type_declaration the_declaration = (type_declaration) the_analyzable;
     if (the_declaration.has_errors()) {
-      return null;
+      return text_util.EMPTY_FRAGMENT;
     }
 
     list<text_fragment> fragments = new base_list<text_fragment>();
-
-    text_fragment title = new base_string(c.kind.to_string(), " ",
-        the_value_printer.print_value(the_declaration.get_declared_type()));
-    fragments.append(styles.wrap(styles.xref_title_style, title));
 
     fragments.append(get_links("Declaration", the_declaration, xref_mode.TYPE_DECLARATION, true));
     fragments.append(get_links("Direct supertypes", the_declaration, xref_mode.DIRECT_SUPERTYPE,
@@ -110,9 +94,11 @@ public class xref_printer extends base_printer {
     }
 
     list<text_fragment> fragments = new base_list<text_fragment>();
-    fragments.append(new base_string(name, ": "));
+
+    fragments.append(styles.wrap(styles.xref_name_style, new base_string(name, ":")));
+
     for (int i = 0; i < links.size(); ++i) {
-      fragments.append(i == 0 ? new base_string(" ") : new base_string(" / "));
+      fragments.append(i == 0 ? print_space() : XREF_SEPARATOR);
       origin the_origin = links.get(i);
       type_flavor the_flavor = null;
       if (the_origin instanceof flavor_construct) {

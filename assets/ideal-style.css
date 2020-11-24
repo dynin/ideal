@@ -94,16 +94,14 @@ span:target {
   margin-right: 0.1em;
 }
 
-.xref-title {
-  margin-top: 1em;
-  margin-bottom: 1em;
-  font-size: larger;
-  font-weight: bolder;
-}
-
 .xref-links {
   margin-left: 1.0em;
+  margin-top: 0.5em;
   margin-bottom: 0.5em;
+}
+
+.xref-name {
+  font-style: italic;
 }
 
 .main {

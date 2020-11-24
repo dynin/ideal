@@ -760,7 +760,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     return text;
   }
 
-  protected text_fragment print_type_body(readonly_list<construct> constructs) {
+  protected text_fragment print_type_body(type_declaration_construct the_declaration) {
+    readonly_list<construct> constructs = the_declaration.body;
     @Nullable text_fragment body_statements;
     if (constructs.is_empty()) {
       body_statements = null;
@@ -781,7 +782,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_documentation(c.annotations, c));
 
     fragments.append(styles.wrap(styles.type_declaration_style,
-        text_util.join(print_type_start(c), print_type_body(c.body))));
+        text_util.join(print_type_start(c), print_type_body(c))));
 
     return print_line(text_util.join(fragments));
   }

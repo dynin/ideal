@@ -180,8 +180,7 @@ public class publish_generator {
       return;
     }
 
-    xref_printer the_xref_printer = new xref_printer(the_context, the_xref_context,
-        the_naming_strategy);
+    xref_printer the_xref_printer = new xref_printer(the_naming_strategy);
     text_fragment xref_body = the_xref_printer.print_statements(constructs);
     text_fragment xref_result = render_page(xref_body, the_naming_strategy, printer_mode.XREF);
 

@@ -93,7 +93,11 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return make_xref_target(full_names).frozen_copy();
   }
 
-  private analysis_context the_analysis_context() {
+  public xref_context the_xref_context() {
+    return the_xref_context;
+  }
+
+  public analysis_context the_analysis_context() {
     return the_xref_context.the_analysis_context;
   }
 

@@ -31,8 +31,8 @@ import ideal.development.documenters.*;
  */
 public class base_printer extends construct_visitor<text_fragment> implements printer {
 
-  private final printer_mode the_mode;
-  private final @Nullable printer_assistant the_assistant;
+  protected final printer_mode the_mode;
+  protected final @Nullable printer_assistant the_assistant;
 
   private static final string_text_node SPACE = new base_string(" ");
   // TODO: define token

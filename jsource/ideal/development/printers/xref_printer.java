@@ -33,34 +33,29 @@ import ideal.development.documenters.*;
 /**
  * Render the cross-references page.
  */
-public class xref_printer {
+public class xref_printer extends base_printer {
 
-  // TODO: factor out
-  private final analysis_context the_analysis_context;
-  private final xref_context the_xref_context;
-  private final naming_strategy the_naming_strategy;
   // TODO: retire
   private final value_printer the_value_printer = new base_value_printer(null);
 
-  public xref_printer(analysis_context the_analysis_context, xref_context the_xref_context,
-      naming_strategy the_naming_strategy) {
-    this.the_analysis_context = the_analysis_context;
-    this.the_xref_context = the_xref_context;
-    this.the_naming_strategy = the_naming_strategy;
+  public xref_printer(naming_strategy the_naming_strategy) {
+    super(printer_mode.XREF, the_naming_strategy);
+    assert the_naming_strategy != null;
   }
 
-  public text_fragment print_statements(readonly_list<? extends construct> statements) {
-    list<text_fragment> fragments = new base_list<text_fragment>();
-    for (int i = 0; i < statements.size(); ++i) {
-      construct the_statement = statements.get(i);
-      text_fragment printed = print(the_statement);
-      if (printed != null) {
-        fragments.append(printed);
-      }
-    }
-    return text_util.join(fragments);
+  private naming_strategy the_naming_strategy() {
+    return (naming_strategy) the_assistant;
   }
 
+  private xref_context the_xref_context() {
+    return the_naming_strategy().the_xref_context();
+  }
+
+  private analysis_context the_analysis_context() {
+    return the_naming_strategy().the_analysis_context();
+  }
+
+  @Override
   public @Nullable text_fragment print(construct c) {
     if (c instanceof type_declaration_construct) {
       return process_type_declaration((type_declaration_construct) c);
@@ -68,8 +63,9 @@ public class xref_printer {
     return null;
   }
 
+  @Override
   public text_fragment process_type_declaration(type_declaration_construct c) {
-    analyzable a = the_analysis_context.get_analyzable(c);
+    analyzable a = the_analysis_context().get_analyzable(c);
     if (!(a instanceof type_declaration)) {
       return null;
     }
@@ -104,9 +100,9 @@ public class xref_printer {
     @Nullable readonly_list<origin> links;
 
     if (targets) {
-      links = the_xref_context.get_targets(the_declaration, mode);
+      links = the_xref_context().get_targets(the_declaration, mode);
     } else {
-      links = the_xref_context.get_sources(the_declaration, mode);
+      links = the_xref_context().get_sources(the_declaration, mode);
     }
 
     if (links == null || links.is_empty()) {
@@ -146,16 +142,16 @@ public class xref_printer {
   }
 
   private text_fragment render_name(name_construct the_name_construct) {
-    principal_type the_type = the_xref_context.get_parent_type(the_name_construct);
+    principal_type the_type = the_xref_context().get_parent_type(the_name_construct);
     text_fragment the_text;
-    if (the_type == the_naming_strategy.get_current_type()) {
-      the_text = print_name(the_name_construct.the_name);
+    if (the_type == the_naming_strategy().get_current_type()) {
+      the_text = print_action_name(the_name_construct.the_name);
     } else {
-      the_text = print_name(the_type.short_name());
+      the_text = print_action_name(the_type.short_name());
     }
-    @Nullable string link = the_naming_strategy.link_to_type(the_type, printer_mode.STYLISH);
+    @Nullable string link = the_naming_strategy().link_to_type(the_type, printer_mode.STYLISH);
     assert link != null;
-    @Nullable string fragment_id = the_xref_context.get_naming_strategy(the_type).
+    @Nullable string fragment_id = the_xref_context().get_naming_strategy(the_type).
         fragment_of_construct(the_name_construct, printer_mode.STYLISH);
     if (fragment_id != null) {
       link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
@@ -164,7 +160,7 @@ public class xref_printer {
   }
 
   private text_fragment render_declaration(origin the_origin) {
-    @Nullable declaration the_declaration = the_xref_context.origin_to_declaration(the_origin);
+    @Nullable declaration the_declaration = the_xref_context().origin_to_declaration(the_origin);
 
     if (!(the_declaration instanceof type_declaration)) {
       return new base_string("" + the_declaration);
@@ -172,12 +168,12 @@ public class xref_printer {
 
     type_declaration the_type_declaration = (type_declaration) the_declaration;
     principal_type the_type = the_type_declaration.get_declared_type();
-    text_fragment the_text = print_name(the_type.short_name());
-    @Nullable string link = the_naming_strategy.link_to_declaration(the_type_declaration,
+    text_fragment the_text = print_action_name(the_type.short_name());
+    @Nullable string link = the_naming_strategy().link_to_declaration(the_type_declaration,
         printer_mode.STYLISH);
     if (link != null) {
       if (the_origin instanceof type_declaration_construct) {
-        @Nullable string fragment_id = the_naming_strategy.fragment_of_construct(
+        @Nullable string fragment_id = the_naming_strategy().fragment_of_construct(
             (construct) the_origin, printer_mode.STYLISH);
         if (fragment_id != null) {
           link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
@@ -186,10 +182,5 @@ public class xref_printer {
       the_text = text_util.make_html_link(the_text, link);
     }
     return the_text;
-  }
-
-  private static base_string print_name(action_name the_name) {
-    // TODO: fail gracefully if name is not a simple_name
-    return printer_util.print_simple_name((simple_name) the_name, true);
   }
 }

@@ -143,19 +143,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return new base_string(result.toString());
   }
 
-  private @Nullable declaration get_declaration(construct the_construct) {
-    @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
-    if (the_analyzable != null) {
-      @Nullable declaration the_declaration;
-      if (the_analyzable instanceof declaration) {
-        return (declaration) the_analyzable;
-      } else {
-        return declaration_util.get_declaration(the_analyzable.analyze());
-      }
-    }
-    return null;
-  }
-
   public @Nullable string link_to_type(@Nullable principal_type the_type, printer_mode mode) {
     if (!publish_generator.GENERATE_XREF && mode == printer_mode.XREF) {
       return null;
@@ -180,27 +167,67 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   @Override
   public @Nullable string link_to_construct(construct the_construct, printer_mode mode) {
-    return link_to_declaration(get_declaration(the_construct), mode);
-  }
-
-  public @Nullable string link_to_declaration(@Nullable declaration the_declaration,
-      printer_mode mode) {
-
-    if (the_declaration == null || the_declaration.has_errors()) {
+    @Nullable principal_type output_type = the_xref_context.get_enclosing_type(the_construct);
+    if (output_type == null) {
+      // Most likely, this is not_yet_implemented
+      return null;
+    }
+    @Nullable string link = link_to_type(output_type, mode);
+    if (link == null) {
       return null;
     }
 
-    if (the_declaration instanceof type_announcement) {
-      type_announcement the_type_announcement = (type_announcement) the_declaration;
-      return link_to_type(the_type_announcement.get_declared_type(), mode);
+    naming_strategy target_naming = the_xref_context.get_naming_strategy(output_type);
+    assert target_naming != null;
+    @Nullable string fragment_id = target_naming.fragment_of_construct(the_construct, mode);
+    if (fragment_id != null) {
+      link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
+    }
+
+    return link;
+  }
+
+  @Override
+  public @Nullable string link_to_declaration(construct the_construct, printer_mode mode) {
+    return declaration_link(the_xref_context.origin_to_declaration(the_construct), mode);
+  }
+
+  public @Nullable string declaration_link(@Nullable declaration the_declaration,
+      printer_mode mode) {
+    if (the_declaration == null) {
+      return null;
     }
 
     if (the_declaration instanceof type_declaration &&
-        !(the_declaration instanceof type_parameter_declaration)) {
-      type_declaration the_type_declaration = (type_declaration) the_declaration;
-      return link_to_type(the_type_declaration.get_declared_type(), mode);
+        the_xref_context.has_output_type(
+            ((type_declaration) the_declaration).get_declared_type())) {
+      return link_to_type(((type_declaration) the_declaration).get_declared_type(), mode);
     }
 
+    if (the_declaration instanceof variable_declaration) {
+      if (((variable_declaration) the_declaration).get_category() == variable_category.LOCAL) {
+        return null;
+      }
+    }
+
+    if (the_declaration instanceof procedure_declaration) {
+      return null;
+    }
+
+    construct declaration_construct = find_construct(the_declaration.deeper_origin());
+    if (declaration_construct instanceof parameter_construct) {
+      declaration_construct = ((parameter_construct) declaration_construct).main;
+    }
+    return link_to_construct(declaration_construct, mode);
+  }
+
+  private @Nullable construct find_construct(@Nullable origin the_origin) {
+    while (the_origin != null) {
+      if (the_origin instanceof construct) {
+        return (construct) the_origin;
+      }
+      the_origin = the_origin.deeper_origin();
+    }
     return null;
   }
 
@@ -220,6 +247,9 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       if (DEBUG_FRAGMENTS) {
         System.out.println("NOFRAG " + current_type + " C " + the_construct +
             " A " + the_analyzable);
+        if (!(the_construct instanceof type_announcement_construct)) {
+          utilities.panic("No fragment found");
+        }
       }
       return null;
     }
@@ -229,21 +259,30 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public string add_fragment(construct the_construct) {
     @Nullable string fragment = fragments.get(the_construct);
-    if (fragment != null) {
-      return fragment;
-    }
+    assert fragment == null;
 
     if (DEBUG_FRAGMENTS) {
       System.out.println("FRAG " + current_type + " C " + the_construct);
     }
 
+    action_name name = null;
     if (the_construct instanceof name_construct) {
-      fragment = name_to_id(((name_construct) the_construct).the_name);
+      name = ((name_construct) the_construct).the_name;
     } else if (the_construct instanceof type_declaration_construct) {
-      fragment = name_to_id(((type_declaration_construct) the_construct).name);
+      name = ((type_declaration_construct) the_construct).name;
+    } else if (the_construct instanceof variable_construct) {
+      name = ((variable_construct) the_construct).name;
+      // TODO: skip local variables
     } else {
       utilities.panic("Unknown construct " + the_construct);
     }
+
+    if (name instanceof special_name) {
+      // TODO: handle special names such as super and new
+      return null;
+    }
+
+    fragment = name_to_id(name);
 
     string result = fragment;
     int index = 1;
@@ -253,42 +292,28 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       result = new base_string(fragment, String.valueOf(index));
     }
 
+    if (DEBUG_FRAGMENTS) {
+      System.out.println("PUTFRAG " + current_type + " C " + the_construct + " R " + result);
+    }
+
     fragments.put(the_construct, result);
     fragment_ids.add(result);
 
     return result;
-
-    // return fragment_of_declaration(get_declaration(the_construct));
   }
 
   private string name_to_id(action_name the_action_name) {
     return dash_renderer.call((simple_name) the_action_name);
   }
 
-  /*
-  private @Nullable string fragment_of_declaration(@Nullable declaration the_declaration) {
-    if (the_declaration == null || the_declaration.has_errors()) {
+  @Override
+  public @Nullable documentation get_documentation(construct the_construct) {
+    @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
+    if (the_analyzable == null) {
       return null;
     }
 
-    if (the_declaration instanceof type_announcement) {
-      type_announcement the_type_announcement = (type_announcement) the_declaration;
-      return name_to_id(the_type_announcement.short_name());
-    }
-
-    if (the_declaration instanceof type_declaration &&
-        !(the_declaration instanceof type_parameter_declaration)) {
-      type_declaration the_type_declaration = (type_declaration) the_declaration;
-      return name_to_id(the_type_declaration.short_name());
-    }
-
-    return null;
-  }
-  */
-
-  @Override
-  public @Nullable documentation get_documentation(construct the_construct) {
-    @Nullable declaration the_declaration = get_declaration(the_construct);
+    declaration the_declaration = (declaration) the_analyzable;
     if (the_declaration instanceof procedure_declaration) {
       return ((procedure_declaration) the_declaration).annotations().the_documentation();
     } else {

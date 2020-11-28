@@ -111,6 +111,9 @@ public class publish_generator {
 
   private boolean generate_subpages(type_declaration the_type_declaration) {
     readonly_list<declaration> signature = the_type_declaration.get_signature();
+    if (signature.is_empty()) {
+      return false;
+    }
     for (int i = 0; i < signature.size(); ++i) {
       declaration the_declaration = signature.get(i);
       if (the_declaration instanceof type_announcement ||
@@ -234,11 +237,6 @@ public class publish_generator {
     return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
-  private @Nullable string link_to_type(naming_strategy the_naming_strategy,
-      principal_type the_type, printer_mode mode) {
-    return the_naming_strategy.link_to_declaration(the_type.get_declaration(), mode);
-  }
-
   private static base_string print_name(action_name the_name) {
     // TODO: fail gracefully if name is not a simple_name
     return printer_util.print_simple_name((simple_name) the_name, true);
@@ -252,7 +250,7 @@ public class publish_generator {
 
     if (the_type != null) {
       the_text = print_name(the_type.short_name());
-      @Nullable string link = link_to_type(the_naming_strategy, the_type, mode);
+      @Nullable string link = the_naming_strategy.link_to_type(the_type, mode);
       if (link != null) {
         the_text = text_util.make_html_link(the_text, link);
       }
@@ -278,7 +276,7 @@ public class publish_generator {
       action_name current_name = current_type.short_name();
       if (current_name instanceof simple_name) {
         text_fragment name_text = print_name(current_name);
-        @Nullable string link = link_to_type(the_naming_strategy, current_type, mode);
+        @Nullable string link = the_naming_strategy.link_to_type(current_type, mode);
         if (link != null) {
           name_text = text_util.make_html_link(name_text, link);
         }

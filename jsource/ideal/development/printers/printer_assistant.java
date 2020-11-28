@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
  */
 public interface printer_assistant {
   @Nullable string link_to_construct(construct the_construct, printer_mode mode);
+  @Nullable string link_to_declaration(construct the_construct, printer_mode mode);
   @Nullable string fragment_of_construct(construct the_construct, printer_mode mode);
   @Nullable documentation get_documentation(construct the_construct);
 }

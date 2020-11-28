@@ -243,7 +243,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       for (int i = 0; i < params.size(); ++i) {
         construct c = params.get(i);
         if (c instanceof variable_construct) {
-          fragments.append(print_var((variable_construct) c));
+          fragments.append(process_variable((variable_construct) c));
         } else {
           fragments.append(print(c));
         }
@@ -268,7 +268,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     return false;
   }
 
-  public text_fragment print_var(variable_construct c) {
+  @Override
+  public text_fragment process_variable(variable_construct c) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
     fragments.append(print_documentation(c.annotations, c));
@@ -279,7 +280,10 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       fragments.append(print_space());
     }
 
-    fragments.append(styles.wrap(styles.var_declaration_name_style, print_action_name(c.name)));
+    text_fragment var_name = print_action_name(c.name);
+    var_name = wrap_with_span_id(var_name, c);
+    fragments.append(styles.wrap(styles.var_declaration_name_style,
+        make_declaration_link(var_name, c)));
 
     fragments.append(print_modifiers(c.post_annotations, false));
 
@@ -522,7 +526,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   protected text_fragment make_link(text_fragment the_text, construct the_construct) {
     if (the_assistant != null) {
-      @Nullable string link = the_assistant.link_to_construct(the_construct, printer_mode.STYLISH);
+      @Nullable string link = the_assistant.link_to_declaration(the_construct,
+          printer_mode.STYLISH);
       if (link != null) {
         return text_util.make_html_link(the_text, link);
       }
@@ -530,9 +535,14 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     return the_text;
   }
 
-  protected text_fragment make_xref_link(text_fragment the_text, construct the_construct) {
+  protected text_fragment make_declaration_link(text_fragment the_text, construct the_construct) {
     if (the_assistant != null) {
-      @Nullable string link = the_assistant.link_to_construct(the_construct, printer_mode.XREF);
+      printer_mode link_mode = (the_mode == printer_mode.XREF) ? printer_mode.STYLISH :
+          printer_mode.XREF;
+      @Nullable string link = the_assistant.link_to_construct(the_construct, link_mode);
+      if (link == null && naming_strategy.DEBUG_FRAGMENTS) {
+        System.out.println("NOLINK " + the_construct + " TEXT " + the_text);
+      }
       if (link != null) {
         return text_util.make_html_link(the_text, link);
       }
@@ -543,8 +553,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   @Override
   public text_fragment process_name(name_construct c) {
     text_fragment name = print_action_name(c.the_name);
-    name = wrap_with_span_id(name, c);
-    return make_link(name, c);
+    if (c.the_name instanceof simple_name) {
+      name = wrap_with_span_id(name, c);
+      return make_link(name, c);
+    } else {
+      return name;
+    }
   }
 
   public text_fragment process_question(conditional_construct c) {
@@ -741,7 +755,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     text_fragment type_name = print_action_name(c.name);
     type_name = wrap_with_span_id(type_name, c);
     // TODO: make the style a parameter
-    fragments.append(styles.wrap(styles.type_declaration_name_style, make_xref_link(type_name, c)));
+    fragments.append(styles.wrap(styles.type_declaration_name_style,
+        make_declaration_link(type_name, c)));
 
     if (c.has_parameters()) {
       fragments.append(print_type_parameters(c.parameters));
@@ -850,10 +865,5 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   public token_type enum_separator_token(boolean last_value) {
     return punctuation.SEMICOLON;
-  }
-
-  @Override
-  public text_fragment process_variable(variable_construct c) {
-    return print_var(c);
   }
 }

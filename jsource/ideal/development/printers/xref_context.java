@@ -125,14 +125,22 @@ public class xref_context extends debuggable {
   public @Nullable declaration origin_to_declaration(origin the_origin) {
     if (the_origin instanceof declaration) {
       return (declaration) the_origin;
-    }
+    } else if (the_origin instanceof construct) {
+      @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(
+          (construct) the_origin);
 
-    if (the_origin instanceof construct) {
-      return declaration_util.get_declaration(
-          the_analysis_context.get_analyzable((construct) the_origin).analyze());
-    }
+      if (the_analyzable == null) {
+        return null;
+      }
 
-    return declaration_util.get_declaration(the_origin);
+      if (the_analyzable instanceof declaration) {
+        return (declaration) the_analyzable;
+      } else {
+        return declaration_util.get_declaration(the_analyzable.analyze());
+      }
+    } else {
+      return declaration_util.get_declaration(the_origin);
+    }
   }
 
   public @Nullable type_declaration get_successor(@Nullable declaration source) {
@@ -189,9 +197,21 @@ public class xref_context extends debuggable {
     return the_list;
   }
 
-  public principal_type get_parent_type(construct the_construct) {
+  public @Nullable principal_type get_enclosing_type(construct the_construct) {
     @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
-    return get_output_type(((base_analyzer) the_analyzable).parent());
+    if (the_analyzable == null) {
+      return null;
+    }
+
+    principal_type result;
+    if (the_analyzable instanceof type_announcement) {
+      result = ((type_announcement) the_analyzable).get_declared_type();
+    } else if (the_analyzable instanceof type_declaration) {
+      result = ((type_declaration) the_analyzable).get_declared_type();
+    } else {
+      result = ((base_analyzer) the_analyzable).parent();
+    }
+    return get_output_type(result);
   }
 
   public @Nullable principal_type get_output_type(@Nullable principal_type the_type) {

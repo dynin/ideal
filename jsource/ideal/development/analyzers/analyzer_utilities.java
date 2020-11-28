@@ -203,7 +203,7 @@ public class analyzer_utilities {
     return (dispatch_action) actions.first();
   }
 
-  public static void add_instance_variable(variable_declaration the_variable,
+  public static instance_variable add_instance_variable(variable_declaration the_variable,
       analysis_context the_context) {
     assert the_variable.get_category() == variable_category.INSTANCE;
     principal_type parent_type = the_variable.declared_in_type();
@@ -211,8 +211,8 @@ public class analyzer_utilities {
 
     // All instance variables can be read
     type flavored_from = parent_type.get_flavored(dispatch_flavor);
-    dispatch_action the_dispatch = new dispatch_action(
-        new instance_variable(the_variable, dispatch_flavor), flavored_from);
+    instance_variable primary_action = new instance_variable(the_variable, dispatch_flavor);
+    dispatch_action the_dispatch = new dispatch_action(primary_action, flavored_from);
     the_context.add(flavored_from, the_name, the_dispatch);
 
     if (the_variable.reference_type().get_flavor() == mutable_flavor &&
@@ -225,6 +225,8 @@ public class analyzer_utilities {
       the_context.add(parent_type.get_flavored(raw_flavor), the_name,
           new instance_variable(the_variable, mutable_flavor));
     }
+
+    return primary_action;
   }
 
   public static readonly_list<declaration> do_find_overriden(procedure_declaration the_procedure) {

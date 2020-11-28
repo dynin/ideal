@@ -233,7 +233,7 @@ public class variable_analyzer extends declaration_analyzer
     var_reference_type = library().get_reference(reference_flavor, var_value_type);
 
     if (get_category() == variable_category.INSTANCE) {
-      analyzer_utilities.add_instance_variable(this, get_context());
+      the_variable_action = analyzer_utilities.add_instance_variable(this, get_context());
     } else {
       if (get_category() == variable_category.LOCAL) {
         the_variable_action = new local_variable(this, reference_flavor);

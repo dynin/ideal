@@ -65,7 +65,7 @@ public class xref_printer extends base_printer {
 
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(get_links("Declaration", the_declaration, xref_mode.TYPE_DECLARATION, true));
+    fragments.append(get_links("Declaration", the_declaration, xref_mode.DECLARATION, true));
     fragments.append(get_links("Direct supertypes", the_declaration, xref_mode.DIRECT_SUPERTYPE,
         true));
     fragments.append(get_links("All supertypes", the_declaration, xref_mode.INDIRECT_SUPERTYPE,
@@ -76,7 +76,42 @@ public class xref_printer extends base_printer {
         false));
     fragments.append(get_links("Use", the_declaration, xref_mode.USE, true));
 
+    fragments.append(super.print_type_body(the_construct));
+
     return text_util.join(fragments);
+  }
+
+  @Override
+  public text_fragment process_variable(variable_construct c) {
+    text_fragment variable_text = super.process_variable(c);
+
+    if (printer_util.has_not_yet_implemented(c.annotations)) {
+      return variable_text;
+    }
+
+    analyzable the_analyzable = the_analysis_context().get_analyzable(c);
+
+    declaration the_declaration = (declaration) the_analyzable;
+    if (the_declaration.has_errors() || the_declaration instanceof type_parameter_declaration) {
+      return variable_text;
+    }
+
+    list<text_fragment> fragments = new base_list<text_fragment>(variable_text);
+    fragments.append(get_links("Declaration", the_declaration, xref_mode.DECLARATION, true));
+    // TODO: print override
+    fragments.append(get_links("Use", the_declaration, xref_mode.USE, true));
+
+    return text_util.join(fragments);
+  }
+
+  @Override
+  public text_fragment process_supertype(supertype_construct c) {
+    return text_util.EMPTY_FRAGMENT;
+  }
+
+  @Override
+  public text_fragment process_procedure(procedure_construct c) {
+    return text_util.EMPTY_FRAGMENT;
   }
 
   private text_fragment get_links(String name, declaration the_declaration, xref_mode mode,
@@ -128,21 +163,20 @@ public class xref_printer extends base_printer {
   }
 
   private text_fragment render_name(name_construct the_name_construct) {
-    principal_type the_type = the_xref_context().get_parent_type(the_name_construct);
+    principal_type the_type = the_xref_context().get_enclosing_type(the_name_construct);
     text_fragment the_text;
     if (the_type == the_naming_strategy().get_current_type()) {
       the_text = print_action_name(the_name_construct.the_name);
     } else {
       the_text = print_action_name(the_type.short_name());
     }
-    @Nullable string link = the_naming_strategy().link_to_type(the_type, printer_mode.STYLISH);
-    assert link != null;
-    @Nullable string fragment_id = the_xref_context().get_naming_strategy(the_type).
-        fragment_of_construct(the_name_construct, printer_mode.STYLISH);
-    if (fragment_id != null) {
-      link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
+    @Nullable string link = the_naming_strategy().link_to_construct(the_name_construct,
+        printer_mode.STYLISH);
+    if (link != null) {
+      return text_util.make_html_link(the_text, link);
+    } else {
+      return the_text;
     }
-    return text_util.make_html_link(the_text, link);
   }
 
   private text_fragment render_declaration(origin the_origin) {
@@ -155,18 +189,12 @@ public class xref_printer extends base_printer {
     type_declaration the_type_declaration = (type_declaration) the_declaration;
     principal_type the_type = the_type_declaration.get_declared_type();
     text_fragment the_text = print_action_name(the_type.short_name());
-    @Nullable string link = the_naming_strategy().link_to_declaration(the_type_declaration,
+    @Nullable string link = the_naming_strategy().declaration_link(the_declaration,
         printer_mode.STYLISH);
     if (link != null) {
-      if (the_origin instanceof type_declaration_construct) {
-        @Nullable string fragment_id = the_naming_strategy().fragment_of_construct(
-            (construct) the_origin, printer_mode.STYLISH);
-        if (fragment_id != null) {
-          link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
-        }
-      }
-      the_text = text_util.make_html_link(the_text, link);
+      return text_util.make_html_link(the_text, link);
+    } else {
+      return the_text;
     }
-    return the_text;
   }
 }

@@ -122,6 +122,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     local_variable_declaration list_declaration =
         new local_variable_declaration(analyzer_utilities.PRIVATE_FINAL_MODIFIERS, list_name,
         flavor.immutable_flavor, list_type, new base_analyzable_action(init_action), the_origin);
+    maybe_associate_var(list_declaration);
 
     local_variable_declaration index_declaration = new local_variable_declaration(
         analyzer_utilities.PRIVATE_MODIFIERS, index_name,
@@ -217,6 +218,12 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
       return element_type_of_list(param);
     } else {
       return null;
+    }
+  }
+
+  private void maybe_associate_var(local_variable_declaration list_declaration) {
+    if (source instanceof list_iteration_construct) {
+      get_context().put_analyzable(((list_iteration_construct) source).var_decl, list_declaration);
     }
   }
 }

@@ -90,22 +90,9 @@ public class populate_xref extends construct_visitor<Void> implements value {
     return process_default(c);
   }
 
-  private boolean has_not_yet_implemented(readonly_list<annotation_construct> annotations) {
-    // TODO: use list.has()
-    for (int i = 0; i < annotations.size(); ++i) {
-      annotation_construct a = annotations.get(i);
-      if (a instanceof modifier_construct &&
-          ((modifier_construct) a).the_kind ==
-              not_yet_implemented_extension.instance.the_modifier_kind) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   @Override
   public Void process_procedure(procedure_construct c) {
-    if (has_not_yet_implemented(c.annotations)) {
+    if (printer_util.has_not_yet_implemented(c.annotations)) {
       return null;
     }
 
@@ -119,21 +106,27 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_name(name_construct c) {
-    if (c == skip_construct) {
+    if (c == skip_construct || !(c.the_name instanceof simple_name)) {
       return null;
     }
     @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
     assert the_analyzable != null;
 
     analysis_result result = the_analyzable.analyze();
-    if (result instanceof type_action) {
-      principal_type the_type = ((type_action) result).get_type().principal();
-      add_xref(the_type.get_declaration(), xref_mode.USE, c);
-    } else {
-      if (naming_strategy.DEBUG_FRAGMENTS) {
-        System.out.println("  RNULL " + c);
-      }
+    if (result instanceof value_action &&
+        ((value_action) result).result() instanceof singleton_value) {
+      // TODO: better handle synthetic code.
+      declaration the_declaration =
+          ((value_action) result).result().type_bound().principal().get_declaration();
+      assert the_declaration != null;
+      add_xref(the_declaration, xref_mode.USE, c);
+      return null;
     }
+
+    declaration the_declaration = the_xref_context.origin_to_declaration(c);
+    assert the_declaration != null;
+    add_xref(the_declaration, xref_mode.USE, c);
+
     return null;
   }
 
@@ -202,7 +195,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_type_declaration(type_declaration_construct c) {
-    if (has_not_yet_implemented(c.annotations)) {
+    if (printer_util.has_not_yet_implemented(c.annotations)) {
       return null;
     }
 
@@ -218,7 +211,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
-    add_xref(the_type_declaration, xref_mode.TYPE_DECLARATION, c);
+    add_xref(the_type_declaration, xref_mode.DECLARATION, c);
     process_default(c);
 
     set<principal_type> visited_types = new hash_set<principal_type>();
@@ -284,8 +277,18 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_variable(variable_construct c) {
-    if (has_not_yet_implemented(c.annotations)) {
+    if (printer_util.has_not_yet_implemented(c.annotations)) {
       return null;
+    }
+
+    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    if (!(the_analyzable instanceof declaration)) {
+      utilities.panic("Declaration expected, got " +  the_analyzable);
+    }
+
+    declaration the_declaration = (declaration) the_analyzable;
+    if (!the_declaration.has_errors()) {
+      add_xref(the_declaration, xref_mode.DECLARATION, c);
     }
 
     return process_default(c);

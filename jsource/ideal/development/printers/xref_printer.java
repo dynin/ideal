@@ -181,14 +181,20 @@ public class xref_printer extends base_printer {
 
   private text_fragment render_declaration(origin the_origin) {
     @Nullable declaration the_declaration = the_xref_context().origin_to_declaration(the_origin);
+    action_name name;
 
-    if (!(the_declaration instanceof type_declaration)) {
-      return new base_string("" + the_declaration);
+    if (the_declaration instanceof type_declaration) {
+      name = ((type_declaration) the_declaration).short_name();
+    } else if (the_declaration instanceof type_announcement) {
+      name = ((type_announcement) the_declaration).short_name();
+    } else if (the_declaration instanceof variable_declaration) {
+      name = ((variable_declaration) the_declaration).short_name();
+    } else {
+      utilities.panic("Unrecognized declaration " + the_declaration);
+      return null;
     }
 
-    type_declaration the_type_declaration = (type_declaration) the_declaration;
-    principal_type the_type = the_type_declaration.get_declared_type();
-    text_fragment the_text = print_action_name(the_type.short_name());
+    text_fragment the_text = print_action_name(name);
     @Nullable string link = the_naming_strategy().declaration_link(the_declaration,
         printer_mode.STYLISH);
     if (link != null) {

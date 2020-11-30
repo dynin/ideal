@@ -211,24 +211,14 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     }
 
     if (the_declaration instanceof procedure_declaration) {
-      return null;
+      // generate procedure link
     }
 
-    construct declaration_construct = find_construct(the_declaration.deeper_origin());
+    construct declaration_construct = printer_util.find_construct(the_declaration);
     if (declaration_construct instanceof parameter_construct) {
       declaration_construct = ((parameter_construct) declaration_construct).main;
     }
     return link_to_construct(declaration_construct, mode);
-  }
-
-  private @Nullable construct find_construct(@Nullable origin the_origin) {
-    while (the_origin != null) {
-      if (the_origin instanceof construct) {
-        return (construct) the_origin;
-      }
-      the_origin = the_origin.deeper_origin();
-    }
-    return null;
   }
 
   @Override
@@ -273,6 +263,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     } else if (the_construct instanceof variable_construct) {
       name = ((variable_construct) the_construct).name;
       // TODO: skip local variables
+    } else if (the_construct instanceof procedure_construct) {
+      name = ((procedure_construct) the_construct).name;
     } else {
       utilities.panic("Unknown construct " + the_construct);
     }

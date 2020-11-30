@@ -442,8 +442,10 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       fragments.append(print_space());
     }
 
+    text_fragment proc_name = print_action_name(c.name);
+    proc_name = wrap_with_span_id(proc_name, c);
     fragments.append(styles.wrap(styles.procedure_declaration_name_style,
-        print_action_name(c.name)));
+        make_declaration_link(proc_name, c)));
 
     if (c.parameters != null) {
       fragments.append(print(c.parameters));

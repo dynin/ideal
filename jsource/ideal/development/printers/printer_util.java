@@ -73,4 +73,14 @@ public class printer_util {
       return null;
     }
   }
+
+  public static @Nullable construct find_construct(@Nullable origin the_origin) {
+    while (the_origin != null) {
+      if (the_origin instanceof construct) {
+        return (construct) the_origin;
+      }
+      the_origin = the_origin.deeper_origin();
+    }
+    return null;
+  }
 }

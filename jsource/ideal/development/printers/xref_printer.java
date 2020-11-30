@@ -92,7 +92,13 @@ public class xref_printer extends base_printer {
     analyzable the_analyzable = the_analysis_context().get_analyzable(c);
 
     declaration the_declaration = (declaration) the_analyzable;
-    if (the_declaration.has_errors() || the_declaration instanceof type_parameter_declaration) {
+    if (the_declaration == null) {
+      // parameter in a non-implemented method
+      return variable_text;
+    }
+    if (the_declaration.has_errors() ||
+        the_declaration instanceof type_parameter_declaration ||
+        ((variable_declaration) the_declaration).get_category() == variable_category.LOCAL) {
       return variable_text;
     }
 
@@ -111,6 +117,36 @@ public class xref_printer extends base_printer {
 
   @Override
   public text_fragment process_procedure(procedure_construct c) {
+    text_fragment procedure_text = super.process_procedure(c);
+
+    if (printer_util.has_not_yet_implemented(c.annotations)) {
+      return procedure_text;
+    }
+
+    analyzable the_analyzable = the_analysis_context().get_analyzable(c);
+
+    declaration the_declaration = (declaration) the_analyzable;
+    if (the_declaration.has_errors()) {
+      return procedure_text;
+    }
+
+    list<text_fragment> fragments = new base_list<text_fragment>(procedure_text);
+    fragments.append(get_links("Declaration", the_declaration, xref_mode.DECLARATION, true));
+    fragments.append(get_links("Direct overrides", the_declaration, xref_mode.DIRECT_OVERRIDE,
+        true));
+    fragments.append(get_links("Indirectly overrides", the_declaration, xref_mode.INDIRECT_OVERRIDE,
+        true));
+    fragments.append(get_links("Directly overriden by", the_declaration, xref_mode.DIRECT_OVERRIDE,
+        false));
+    fragments.append(get_links("Indirectly overriden by", the_declaration,
+        xref_mode.INDIRECT_OVERRIDE, false));
+    fragments.append(get_links("Use", the_declaration, xref_mode.USE, true));
+
+    return text_util.join(fragments);
+  }
+
+  @Override
+  public text_fragment print_procedure_body(@Nullable construct body) {
     return text_util.EMPTY_FRAGMENT;
   }
 
@@ -147,18 +183,18 @@ public class xref_printer extends base_printer {
       if (the_flavor != null) {
         fragments.append(new base_string(the_flavor.name().to_string(), " "));
       }
-      fragments.append(render_origin(the_origin));
+      fragments.append(render_origin(the_origin, mode));
     }
 
     return styles.wrap(styles.xref_links_style, text_util.join(fragments));
   }
 
-  private text_fragment render_origin(origin the_origin) {
+  private text_fragment render_origin(origin the_origin, xref_mode mode) {
     @Nullable name_construct the_name_construct = printer_util.unwrap_name(the_origin);
     if (the_name_construct != null) {
       return render_name(the_name_construct);
     } else {
-      return render_declaration(the_origin);
+      return render_declaration(the_origin, mode);
     }
   }
 
@@ -179,7 +215,7 @@ public class xref_printer extends base_printer {
     }
   }
 
-  private text_fragment render_declaration(origin the_origin) {
+  private text_fragment render_declaration(origin the_origin, xref_mode mode) {
     @Nullable declaration the_declaration = the_xref_context().origin_to_declaration(the_origin);
     action_name name;
 
@@ -189,6 +225,13 @@ public class xref_printer extends base_printer {
       name = ((type_announcement) the_declaration).short_name();
     } else if (the_declaration instanceof variable_declaration) {
       name = ((variable_declaration) the_declaration).short_name();
+    } else if (the_declaration instanceof procedure_declaration) {
+      procedure_declaration the_procedure_declaration = (procedure_declaration) the_declaration;
+      if (mode == xref_mode.DIRECT_OVERRIDE || mode == xref_mode.INDIRECT_OVERRIDE) {
+        name = the_procedure_declaration.declared_in_type().short_name();
+      } else {
+        name = the_procedure_declaration.short_name();
+      }
     } else {
       utilities.panic("Unrecognized declaration " + the_declaration);
       return null;
@@ -201,6 +244,15 @@ public class xref_printer extends base_printer {
       return text_util.make_html_link(the_text, link);
     } else {
       return the_text;
+    }
+  }
+
+  @Override
+  public text_fragment print_special_name(special_name name) {
+    if (name == special_name.IMPLICIT_CALL) {
+      return print_word("constructor");
+    } else {
+      return super.print_special_name(name);
     }
   }
 }

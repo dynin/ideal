@@ -96,7 +96,55 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
+    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    if (!(the_analyzable instanceof declaration)) {
+      utilities.panic("Declaration expected, got " +  the_analyzable);
+    }
+
+    procedure_declaration the_procedure_declaration = (procedure_declaration) the_analyzable;
+    if (the_procedure_declaration.has_errors()) {
+      return null;
+    }
+
+    add_xref(the_procedure_declaration, xref_mode.DECLARATION, c);
+
+    set<declaration> visited = new hash_set<declaration>();
+    visited.add(the_procedure_declaration);
+
+    readonly_list<declaration> overriden = the_procedure_declaration.get_overriden();
+    add_overriden(the_procedure_declaration, visited, overriden, true, 0);
+    add_overriden(the_procedure_declaration, visited, overriden, false, 0);
+
     return process_default(c);
+  }
+
+  // TODO: convert direct/depth into a 3-state enum
+  private void add_overriden(procedure_declaration the_procedure_declaration,
+      set<declaration> visited, readonly_list<declaration> overriden_declarations, boolean direct,
+      int depth) {
+    for (int i = 0; i < overriden_declarations.size(); ++i) {
+      declaration overriden_declaration = overriden_declarations.get(i);
+      if (direct) {
+        visited.add(overriden_declaration);
+        construct overriden_construct = printer_util.find_construct(overriden_declaration);
+        the_xref_context.add(the_procedure_declaration, xref_mode.DIRECT_OVERRIDE,
+            overriden_construct);
+      } else {
+        if (depth > 0) {
+          if (visited.contains(overriden_declaration)) {
+            continue;
+          }
+          visited.add(overriden_declaration);
+          construct overriden_construct = printer_util.find_construct(overriden_declaration);
+          the_xref_context.add(the_procedure_declaration, xref_mode.INDIRECT_OVERRIDE,
+              overriden_construct);
+        }
+        if (overriden_declaration instanceof procedure_declaration) {
+          add_overriden(the_procedure_declaration, visited,
+              ((procedure_declaration) overriden_declaration).get_overriden(), false, depth + 1);
+        }
+      }
+    }
   }
 
   @Override

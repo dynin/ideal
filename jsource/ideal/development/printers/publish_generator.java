@@ -56,14 +56,14 @@ public class publish_generator {
     type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
     type_declaration_construct the_declaration_construct = (type_declaration_construct)
-        printer_util.to_type_declaration(the_declaration).deeper_origin();
+        declaration_util.to_type_declaration(the_declaration).deeper_origin();
 
     if (generate_subpages(the_declaration)) {
       list<construct> namespace_body = new base_list<construct>();
       readonly_list<declaration> signature = the_declaration.get_signature();
       for (int i = 0; i < signature.size(); ++i) {
         @Nullable type_declaration sub_declaration =
-            printer_util.to_type_declaration(signature.get(i));
+            declaration_util.to_type_declaration(signature.get(i));
 
         if (sub_declaration == null) {
           continue;
@@ -136,7 +136,7 @@ public class publish_generator {
       @Nullable type_declaration previous = null;
       for (int j = 0; j < signature.size(); ++j) {
         @Nullable type_declaration sub_declaration =
-            printer_util.to_type_declaration(signature.get(j));
+            declaration_util.to_type_declaration(signature.get(j));
         if (sub_declaration == null) {
           continue;
         }
@@ -152,7 +152,7 @@ public class publish_generator {
     immutable_list<type_declaration_construct> constructs = the_xref_context.output_constructs();
     for (int i = 0; i < constructs.size(); ++i) {
       type_declaration_construct the_declaration_construct = constructs.get(i);
-      type_declaration the_type_declaration = printer_util.to_type_declaration(
+      type_declaration the_type_declaration = declaration_util.to_type_declaration(
           the_context.get_analyzable(the_declaration_construct));
       new populate_xref(the_xref_context, the_type_declaration.get_declared_type()).
           process(the_declaration_construct);
@@ -162,7 +162,7 @@ public class publish_generator {
 
     for (int i = 0; i < constructs.size(); ++i) {
       type_declaration_construct the_declaration_construct = constructs.get(i);
-      type_declaration the_declaration = printer_util.to_type_declaration(
+      type_declaration the_declaration = declaration_util.to_type_declaration(
           the_context.get_analyzable(the_declaration_construct));
       generate_markup(new base_list<construct>(the_declaration_construct),
           the_xref_context.get_naming_strategy(the_declaration.get_declared_type()));

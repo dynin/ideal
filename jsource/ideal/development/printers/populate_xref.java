@@ -270,7 +270,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       for (int i = 0; i < super_types.size(); ++i) {
         declaration super_declaration = the_xref_context.origin_to_declaration(super_types.get(i));
         type_declaration super_type_declaration  =
-            printer_util.to_type_declaration(super_declaration);
+            declaration_util.to_type_declaration(super_declaration);
         if (super_type_declaration != null) {
           super_declarations.append(super_type_declaration);
           principal_type supertype = super_type_declaration.get_declared_type();
@@ -302,7 +302,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
           continue;
         }
         visited_types.add(super_master);
-        type_declaration super_declaration = printer_util.to_type_declaration(
+        type_declaration super_declaration = declaration_util.to_type_declaration(
             super_master.get_declaration());
         assert super_declaration != null;
         action super_action = super_type.to_action(super_declaration);

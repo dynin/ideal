@@ -83,7 +83,8 @@ public class specialized_procedure extends debuggable implements procedure_decla
     procedure_action = analyzer_utilities.add_procedure(this, the_overloaded_procedure, context);
   }
 
-  public procedure_declaration get_main() {
+  @Override
+  public procedure_declaration master_declaration() {
     return main;
   }
 

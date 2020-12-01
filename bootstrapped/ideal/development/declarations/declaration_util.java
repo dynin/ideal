@@ -33,9 +33,9 @@ public class declaration_util {
   }
   public static @Nullable type_declaration to_type_declaration(final @Nullable origin the_origin) {
     if (the_origin instanceof type_declaration) {
-      return ((type_declaration) the_origin);
+      return ((type_declaration) the_origin).master_declaration();
     } else if (the_origin instanceof type_announcement) {
-      return ((type_announcement) the_origin).get_type_declaration();
+      return ((type_announcement) the_origin).get_type_declaration().master_declaration();
     } else {
       return null;
     }

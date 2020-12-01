@@ -121,6 +121,11 @@ public class procedure_analyzer extends declaration_analyzer
     return parameter_variables;
   }
 
+  @Override
+  public procedure_declaration master_declaration() {
+    return this;
+  }
+
   public @Nullable analyzable get_body() {
     return body;
   }

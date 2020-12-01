@@ -28,16 +28,18 @@ namespace declaration_util {
     return missing.instance;
   }
 
+  --- Convert an |origin| into a master type declaration, or return |null| on failure.
   type_declaration or null to_type_declaration(origin or null the_origin) {
     if (the_origin is type_declaration) {
-      return the_origin;
+      return the_origin.master_declaration;
     } else if (the_origin is type_announcement) {
-      return the_origin.get_type_declaration;
+      return the_origin.get_type_declaration.master_declaration;
     } else {
       return missing.instance;
     }
   }
 
+  --- Get a master type declaration associated with this type.
   type_declaration or null get_type_declaration(type the_type) {
     return to_type_declaration(the_type.principal.get_declaration);
   }

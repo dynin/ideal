@@ -62,7 +62,7 @@ public class xref_context extends debuggable {
     }
     output_types.put(normalize(the_type), new naming_strategy(the_type, this));
 
-    type_declaration the_type_declaration = printer_util.to_type_declaration(
+    type_declaration the_type_declaration = declaration_util.to_type_declaration(
         the_analysis_context.get_analyzable(the_declaration_construct));
     assert the_type_declaration != null;
     assert the_type_declaration.get_declared_type() == the_type;
@@ -87,7 +87,7 @@ public class xref_context extends debuggable {
 
     for (int i = 0; i < the_output_declarations.size(); ++i) {
       type_declaration_construct the_declaration_construct = the_output_declarations.get(i);
-      type_declaration the_type_declaration = printer_util.to_type_declaration(
+      type_declaration the_type_declaration = declaration_util.to_type_declaration(
           the_analysis_context.get_analyzable(the_declaration_construct));
       assert the_type_declaration != null;
       declarations.append(the_type_declaration);

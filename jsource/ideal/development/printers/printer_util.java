@@ -84,13 +84,4 @@ public class printer_util {
     }
     return null;
   }
-
-  public static @Nullable type_declaration to_type_declaration(@Nullable origin the_origin) {
-    @Nullable type_declaration result = declaration_util.to_type_declaration(the_origin);
-    if (result != null) {
-      return result.master_declaration();
-    } else {
-      return null;
-    }
-  }
 }

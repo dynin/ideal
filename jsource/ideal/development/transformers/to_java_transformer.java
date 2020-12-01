@@ -322,7 +322,7 @@ public class to_java_transformer extends base_transformer {
       } else if (overriden_declaration instanceof procedure_declaration) {
         procedure_declaration super_procedure = (procedure_declaration) overriden_declaration;
         if (super_procedure instanceof specialized_procedure) {
-          super_procedure = ((specialized_procedure) super_procedure).get_main();
+          super_procedure = ((specialized_procedure) super_procedure).master_declaration();
         }
         type return_type = super_procedure.get_return_type();
         if (return_type.principal().get_declaration() instanceof type_parameter_declaration) {

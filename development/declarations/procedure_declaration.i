@@ -18,6 +18,7 @@ interface procedure_declaration {
   readonly list[type] get_argument_types;
   type get_procedure_type;
   readonly list[variable_declaration] get_parameter_variables;
+  procedure_declaration master_declaration;
   boolean overrides_variable;
   readonly list[declaration] get_overriden;
   action or null procedure_action;

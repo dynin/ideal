@@ -45,6 +45,11 @@ public class specialized_type_declaration extends debuggable implements type_dec
     action_utilities.add_promotion(the_analysis_context, the_type, get_master(), this);
   }
 
+  @Override
+  public type_declaration master_declaration() {
+    return main_declaration;
+  }
+
   public master_type get_master() {
     return the_type.get_master();
   }

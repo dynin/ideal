@@ -56,17 +56,25 @@ public class xref_context extends debuggable {
   }
 
   public void add_output_declaration(principal_type the_type,
-      type_declaration_construct the_declaration_construct) {
+      @Nullable type_declaration_construct the_declaration_construct) {
     if (has_output_type(the_type)) {
       return;
     }
     output_types.put(normalize(the_type), new naming_strategy(the_type, this));
 
-    type_declaration the_type_declaration = declaration_util.to_type_declaration(
+    type_declaration the_type_declaration = printer_util.to_type_declaration(
         the_analysis_context.get_analyzable(the_declaration_construct));
     assert the_type_declaration != null;
     assert the_type_declaration.get_declared_type() == the_type;
     the_output_declarations.append(the_declaration_construct);
+  }
+
+  // This is used in -pretty-print.
+  public void add_named_output(principal_type the_type, immutable_list<simple_name> full_names) {
+    if (has_output_type(the_type)) {
+      return;
+    }
+    output_types.put(normalize(the_type), new naming_strategy(full_names, the_type, this));
   }
 
   public immutable_list<type_declaration_construct> output_constructs() {
@@ -79,7 +87,7 @@ public class xref_context extends debuggable {
 
     for (int i = 0; i < the_output_declarations.size(); ++i) {
       type_declaration_construct the_declaration_construct = the_output_declarations.get(i);
-      type_declaration the_type_declaration = declaration_util.to_type_declaration(
+      type_declaration the_type_declaration = printer_util.to_type_declaration(
           the_analysis_context.get_analyzable(the_declaration_construct));
       assert the_type_declaration != null;
       declarations.append(the_type_declaration);

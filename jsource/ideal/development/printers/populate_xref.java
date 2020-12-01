@@ -215,10 +215,9 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_supertype(supertype_construct c) {
-    @Nullable declaration the_super_declaration =
-        (declaration) the_analysis_context.get_analyzable(c);
-    assert the_super_declaration instanceof type_declaration;
-    principal_type the_super_type = ((type_declaration) the_super_declaration).get_declared_type();
+    @Nullable type_declaration the_super_declaration =
+        ((type_declaration) the_analysis_context.get_analyzable(c)).master_declaration();
+    principal_type the_super_type = the_super_declaration.get_declared_type();
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
       construct type_construct = types.get(i);
@@ -252,7 +251,8 @@ public class populate_xref extends construct_visitor<Void> implements value {
       utilities.panic("Type declaration expected, got " +  the_declaration);
     }
 
-    type_declaration the_type_declaration = (type_declaration) the_declaration;
+    type_declaration the_type_declaration = ((type_declaration) the_declaration).
+        master_declaration();
     principal_type declared_type = the_type_declaration.get_declared_type();
 
     if (the_xref_context.has_output_type(declared_type) && declared_type != current_type) {
@@ -262,7 +262,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
     add_xref(the_type_declaration, xref_mode.DECLARATION, c);
     process_default(c);
 
-    set<principal_type> visited_types = new hash_set<principal_type>();
+    set<master_type> visited_types = new hash_set<master_type>();
     readonly_list<origin> super_types = the_xref_context.get_targets(the_type_declaration,
         xref_mode.DIRECT_SUPERTYPE);
     list<type_declaration> super_declarations = new base_list<type_declaration>();
@@ -270,11 +270,11 @@ public class populate_xref extends construct_visitor<Void> implements value {
       for (int i = 0; i < super_types.size(); ++i) {
         declaration super_declaration = the_xref_context.origin_to_declaration(super_types.get(i));
         type_declaration super_type_declaration  =
-            declaration_util.to_type_declaration(super_declaration);
+            printer_util.to_type_declaration(super_declaration);
         if (super_type_declaration != null) {
           super_declarations.append(super_type_declaration);
           principal_type supertype = super_type_declaration.get_declared_type();
-          visited_types.add(supertype);
+          visited_types.add(to_master(supertype));
         } else {
           utilities.panic("Super declaration " + super_declaration);
         }
@@ -290,26 +290,35 @@ public class populate_xref extends construct_visitor<Void> implements value {
   }
 
   private void add_supertypes(type_declaration documenting_declaration,
-      type_declaration the_type_declaration, set<principal_type> visited_types) {
+      type_declaration the_type_declaration, set<master_type> visited_types) {
 
     readonly_list<declaration> signature = the_type_declaration.get_signature();
     for (int i = 0; i < signature.size(); ++i) {
       declaration member = signature.get(i);
       if (member instanceof supertype_declaration) {
         type super_type = ((supertype_declaration) member).get_supertype();
-        principal_type super_principal = super_type.principal();
-        if (visited_types.contains(super_principal)) {
+        master_type super_master = to_master(super_type);
+        if (visited_types.contains(super_master)) {
           continue;
         }
-        visited_types.add(super_principal);
-        type_declaration super_declaration = declaration_util.to_type_declaration(
-            super_principal.get_declaration());
+        visited_types.add(super_master);
+        type_declaration super_declaration = printer_util.to_type_declaration(
+            super_master.get_declaration());
         assert super_declaration != null;
         action super_action = super_type.to_action(super_declaration);
         the_xref_context.add_action(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE,
             super_action);
         add_supertypes(documenting_declaration, super_declaration, visited_types);
       }
+    }
+  }
+
+  private master_type to_master(type the_type) {
+    the_type = the_type.principal();
+    if (the_type instanceof master_type) {
+      return (master_type) the_type;
+    } else {
+      return ((parametrized_type) the_type).get_master();
     }
   }
 

@@ -20,6 +20,7 @@ public interface readonly_type_declaration extends readonly_declaration, any_typ
   annotation_set annotations();
   principal_type get_declared_type();
   principal_type declared_in_type();
+  type_declaration master_declaration();
   @Nullable readonly_list<type_parameter_declaration> get_parameters();
   readonly_list<declaration> get_signature();
 }

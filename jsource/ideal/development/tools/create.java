@@ -152,11 +152,12 @@ class create {
       content_writer the_writer = new content_writer(cm.output_catalog(),
           naming_strategy.dash_renderer);
       publish_generator the_generator = new publish_generator(the_context, the_writer);
+      xref_context the_xref_context = the_generator.the_xref_context;
       immutable_list<simple_name> test_name =
           new base_list<simple_name>(simple_name.make("test")).frozen_copy();
-      naming_strategy the_naming_strategy = new naming_strategy(test_name, cm.root,
-          new xref_context(the_context));
-      the_generator.generate_markup(constructs, the_naming_strategy);
+      the_xref_context.add_named_output(cm.root, test_name);
+      new populate_xref(the_xref_context, cm.root).process_construct_list(constructs);
+      the_generator.generate_markup(constructs, the_xref_context.get_naming_strategy(cm.root));
     }
 
     if (cm.has_errors()) {

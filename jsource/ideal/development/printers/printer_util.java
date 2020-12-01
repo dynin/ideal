@@ -24,6 +24,7 @@ import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
+import ideal.development.declarations.*;
 import ideal.development.extensions.*;
 import ideal.development.documenters.*;
 
@@ -82,5 +83,14 @@ public class printer_util {
       the_origin = the_origin.deeper_origin();
     }
     return null;
+  }
+
+  public static @Nullable type_declaration to_type_declaration(@Nullable origin the_origin) {
+    @Nullable type_declaration result = declaration_util.to_type_declaration(the_origin);
+    if (result != null) {
+      return result.master_declaration();
+    } else {
+      return null;
+    }
   }
 }

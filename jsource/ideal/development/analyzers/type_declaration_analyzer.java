@@ -139,6 +139,11 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     return types;
   }
 
+  @Override
+  public type_declaration master_declaration() {
+    return this;
+  }
+
   private boolean has_supertype_declarations() {
     // TODO: use collection.has()
     for (int i = 0; i < body.size(); ++i) {

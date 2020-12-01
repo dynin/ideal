@@ -67,6 +67,7 @@ TEST_STRING = $(TEST_DIR)/string.i
 SHOWCASE_DIR = showcase
 CIRCLE = $(SHOWCASE_DIR)/circle.i
 HELLO = $(SHOWCASE_DIR)/hello.i
+XREFTEST = $(SHOWCASE_DIR)/xreftest.i
 
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \
@@ -178,6 +179,9 @@ dir: $(IDEAL_TARGET) $(ONETWO)
 
 circle: $(IDEAL_TARGET) $(CIRCLE)
 	$(CREATE) $(FLAGS_RUN) -input=$(CIRCLE)
+
+xreftest: $(IDEAL_TARGET) $(XREFTEST)
+	$(CREATE) -pretty-print -input=$(XREFTEST)
 
 tc: $(IDEAL_TARGET) $(TESTCACHE)
 	$(CREATE) $(FLAGS_RUN) -input=$(TESTCACHE)

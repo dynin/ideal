@@ -13,6 +13,7 @@ interface type_declaration {
   annotation_set annotations;
   principal_type get_declared_type;
   override principal_type declared_in_type;
+  type_declaration master_declaration;
   readonly list[type_parameter_declaration] or null get_parameters;
   readonly list[declaration] get_signature;
   -- TODO: this may be a misleading name for this method, rename.

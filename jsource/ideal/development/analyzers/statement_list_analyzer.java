@@ -112,7 +112,6 @@ public class statement_list_analyzer extends single_pass_analyzer {
     } else {
       return action_plus_constraints.make_result(result, constraint_collection);
     }
-
   }
 
   @Override

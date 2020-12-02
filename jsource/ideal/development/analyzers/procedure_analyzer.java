@@ -188,7 +188,12 @@ public class procedure_analyzer extends declaration_analyzer
             body_statements = new base_list<analyzable>(original_body);
           }
         } else {
-          body_statements = new base_list<analyzable>(original_body);
+          analyzable expression_body = original_body;
+          if (category != procedure_category.CONSTRUCTOR &&
+              !(expression_body instanceof return_analyzer)) {
+            expression_body = new return_analyzer(expression_body, this);
+          }
+          body_statements = new base_list<analyzable>(expression_body);
         }
         if (category == procedure_category.CONSTRUCTOR) {
           body_statements = rewrite_ctor_body(body_statements);

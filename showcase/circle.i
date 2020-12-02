@@ -40,13 +40,9 @@ datatype circle {
     this.diameter = diameter;
   }
 
-  implement readonly reference[integer] width() {
-    return diameter;
-  }
+  override integer width() => diameter;
 
-  implement readonly reference[integer] height() {
-    return diameter;
-  }
+  override integer height() => diameter;
 
   void scale(integer factor) {
     diameter *= factor;

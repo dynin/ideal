@@ -15,42 +15,42 @@
     </table>
     <div class='main'>
       <div>
-       <span class='var-declaration-name'>one</span> : 1
+       <span class='var-declaration-name'><span id='one'>one</span></span> : 1
       </div>
       <div>
-       <span class='var-declaration-name'>two</span> : 2
+       <span class='var-declaration-name'><span id='two'>two</span></span> : 2
       </div>
       <div>
-       <a href='ideal/library/elements/integer.html'>integer</a> <span class='var-declaration-name'>three</span> : plus(one, two)
+       <span id='integer'>integer</span> <span class='var-declaration-name'><span id='three'>three</span></span> : <span id='plus'>plus</span>(<span id='one2'>one</span>, <span id='two2'>two</span>)
       </div>
       <div class='procedure-declaration'>
-       <a href='ideal/library/elements/integer.html'>integer</a> <span class='procedure-declaration-name'>double</span>(<a href='ideal/library/elements/integer.html'>integer</a> <span class='var-declaration-name'>x</span>)
+       <span id='integer2'>integer</span> <span class='procedure-declaration-name'><span id='double'>double</span></span>(<span id='integer3'>integer</span> <span class='var-declaration-name'><span id='x'>x</span></span>)
         <div class='indent'>
           <div>
-           return plus(x, x)
+           return <span id='plus2'>plus</span>(<span id='x2'>x</span>, <span id='x3'>x</span>)
           </div>
         </div>
       </div>
       <div class='procedure-declaration'>
-       <a href='ideal/library/elements/integer.html'>integer</a> <span class='procedure-declaration-name'>add5</span>(<a href='ideal/library/elements/integer.html'>integer</a> <span class='var-declaration-name'>y</span>)
+       <span id='integer4'>integer</span> <span class='procedure-declaration-name'><span id='add5'>add5</span></span>(<span id='integer5'>integer</span> <span class='var-declaration-name'><span id='y'>y</span></span>)
         <div class='indent'>
           <div>
-           return plus(y, 5)
+           return <span id='plus3'>plus</span>(<span id='y2'>y</span>, 5)
           </div>
         </div>
       </div>
       <div>
-       println(double(double(three)))
+       <span id='println'>println</span>(<span id='double2'>double</span>(<span id='double3'>double</span>(<span id='three2'>three</span>)))
       </div>
       <div>
-       println(plus(add5(three), two))
+       <span id='println2'>println</span>(<span id='plus4'>plus</span>(<span id='add52'>add5</span>(<span id='three3'>three</span>), <span id='two3'>two</span>))
       </div>
       <div>
-       println(7, &quot; &quot;, add5(63))
+       <span id='println3'>println</span>(7, &quot; &quot;, <span id='add53'>add5</span>(63))
       </div>
       <div class='indent'>
         <div>
-         println(one, &quot; &quot;, plus(one, one), &quot; &quot;, one)
+         <span id='println4'>println</span>(<span id='one3'>one</span>, &quot; &quot;, <span id='plus5'>plus</span>(<span id='one4'>one</span>, <span id='one5'>one</span>), &quot; &quot;, <span id='one6'>one</span>)
         </div>
       </div>
     </div>
@@ -79,6 +79,47 @@
       </tr>
     </table>
     <div class='main'>
+      <div>
+       <span class='var-declaration-name'><span id='one'>one</span></span> : 1
+      </div>
+      <div>
+       <span class='var-declaration-name'><span id='two'>two</span></span> : 2
+      </div>
+      <div>
+       <span id='integer'>integer</span> <span class='var-declaration-name'><span id='three'>three</span></span> : <span id='plus'>plus</span>(<span id='one2'>one</span>, <span id='two2'>two</span>)
+      </div>
+      <div class='procedure-declaration'>
+       <span id='integer2'>integer</span> <span class='procedure-declaration-name'><span id='double'>double</span></span>(<span id='integer3'>integer</span> <span class='var-declaration-name'><span id='x'>x</span></span>)
+      </div>
+      <div class='xref-links'>
+       <span class='xref-name'>Declaration:</span> double
+      </div>
+      <div class='xref-links'>
+       <span class='xref-name'>Use:</span> double / double
+      </div>
+      <div class='procedure-declaration'>
+       <span id='integer4'>integer</span> <span class='procedure-declaration-name'><span id='add5'>add5</span></span>(<span id='integer5'>integer</span> <span class='var-declaration-name'><span id='y'>y</span></span>)
+      </div>
+      <div class='xref-links'>
+       <span class='xref-name'>Declaration:</span> add5
+      </div>
+      <div class='xref-links'>
+       <span class='xref-name'>Use:</span> add5 / add5
+      </div>
+      <div>
+       <span id='println'>println</span>(<span id='double2'>double</span>(<span id='double3'>double</span>(<span id='three2'>three</span>)))
+      </div>
+      <div>
+       <span id='println2'>println</span>(<span id='plus4'>plus</span>(<span id='add52'>add5</span>(<span id='three3'>three</span>), <span id='two3'>two</span>))
+      </div>
+      <div>
+       <span id='println3'>println</span>(7, &quot; &quot;, <span id='add53'>add5</span>(63))
+      </div>
+      <div class='indent'>
+        <div>
+         <span id='println4'>println</span>(<span id='one3'>one</span>, &quot; &quot;, <span id='plus5'>plus</span>(<span id='one4'>one</span>, <span id='one5'>one</span>), &quot; &quot;, <span id='one6'>one</span>)
+        </div>
+      </div>
     </div>
     <table class='nav-table'>
       <tr>

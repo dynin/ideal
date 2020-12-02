@@ -26,6 +26,7 @@ import ideal.development.actions.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.extensions.*;
+import ideal.development.notifications.*;
 
 import javax.annotation.Nullable;
 
@@ -161,6 +162,9 @@ public class populate_xref extends construct_visitor<Void> implements value {
     assert the_analyzable != null;
 
     analysis_result result = the_analyzable.analyze();
+    if (result instanceof error_signal) {
+      return null;
+    }
     if (result instanceof value_action &&
         ((value_action) result).result() instanceof singleton_value) {
       // TODO: better handle synthetic code.
@@ -185,6 +189,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_import(import_construct c) {
+    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    if (the_analyzable == null || ((import_declaration) the_analyzable).has_errors()) {
+      return null;
+    }
     return process_default(c);
   }
 
@@ -205,6 +213,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_resolve(resolve_construct c) {
+    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    if (the_analyzable == null || the_analyzable.analyze() instanceof error_signal) {
+      return null;
+    }
     return process_default(c);
   }
 
@@ -253,6 +265,9 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
     type_declaration the_type_declaration = ((type_declaration) the_declaration).
         master_declaration();
+    if (the_type_declaration.has_errors()) {
+      return null;
+    }
     principal_type declared_type = the_type_declaration.get_declared_type();
 
     if (the_xref_context.has_output_type(declared_type) && declared_type != current_type) {
@@ -295,7 +310,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
     readonly_list<declaration> signature = the_type_declaration.get_signature();
     for (int i = 0; i < signature.size(); ++i) {
       declaration member = signature.get(i);
-      if (member instanceof supertype_declaration) {
+      if (member instanceof supertype_declaration && !member.has_errors()) {
         type super_type = ((supertype_declaration) member).get_supertype();
         master_type super_master = to_master(super_type);
         if (visited_types.contains(super_master)) {

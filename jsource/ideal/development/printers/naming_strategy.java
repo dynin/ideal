@@ -23,6 +23,8 @@ import ideal.development.comments.*;
 import ideal.development.constructs.*;
 import ideal.development.declarations.*;
 import ideal.development.actions.*;
+import ideal.development.analyzers.*;
+import ideal.development.actions.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 
@@ -167,6 +169,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   @Override
   public @Nullable string link_to_construct(construct the_construct, printer_mode mode) {
+    assert the_construct != null;
     @Nullable principal_type output_type = the_xref_context.get_enclosing_type(the_construct);
     if (output_type == null) {
       // Most likely, this is not_yet_implemented
@@ -194,7 +197,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public @Nullable string declaration_link(@Nullable declaration the_declaration,
       printer_mode mode) {
-    if (the_declaration == null) {
+    if (the_declaration == null || the_declaration instanceof builtin_declaration) {
       return null;
     }
 

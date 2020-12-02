@@ -65,4 +65,9 @@ public class list_action extends base_action {
 
     return result;
   }
+
+  @Override
+  public string to_string() {
+    return utilities.describe(this, new base_string("" + subactions.size()));
+  }
 }

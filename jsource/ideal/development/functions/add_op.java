@@ -17,6 +17,7 @@ import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import ideal.development.analyzers.*;
 
 public class add_op extends base_number_op {
   public add_op() {
@@ -26,5 +27,10 @@ public class add_op extends base_number_op {
   @Override
   protected Integer apply(int first, int second) {
     return first + second;
+  }
+
+  @Override
+  public declaration get_declaration() {
+    return builtin_declaration.instance;
   }
 }

@@ -50,4 +50,9 @@ public class info_fn extends base_procedure {
 
     return library().void_instance();
   }
+
+  @Override
+  public declaration get_declaration() {
+    return builtin_declaration.instance;
+  }
 }

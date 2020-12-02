@@ -206,8 +206,13 @@ public class xref_context extends debuggable {
   }
 
   public @Nullable principal_type get_enclosing_type(construct the_construct) {
+    assert the_construct != null;
     @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
     if (the_analyzable == null) {
+      return null;
+    }
+
+    if (the_analyzable instanceof declaration && ((declaration) the_analyzable).has_errors()) {
       return null;
     }
 

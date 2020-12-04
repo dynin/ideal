@@ -8,17 +8,12 @@
 ---
 --- @see http://en.wikipedia.org/wiki/Circle-ellipse_problem
 
-datatype ellipse {
+-- Constructor is generated using auto_constructor extension.
+auto_constructor datatype ellipse {
   implements stringable;
 
   integer width;
   integer height;
-
-  -- TODO: generated constructor
-  public ellipse(integer width, integer height) {
-    this.width = width;
-    this.height = height;
-  }
 
   void scale(integer horizontal, integer vertical) {
     width *= horizontal;
@@ -30,18 +25,13 @@ datatype ellipse {
   }
 }
 
-datatype circle {
+-- Constructor is generated using auto_constructor extension.
+auto_constructor datatype circle {
   implements readonly ellipse;
 
   integer diameter;
 
-  -- TODO: generated constructor
-  public circle(integer diameter) {
-    this.diameter = diameter;
-  }
-
   override integer width() => diameter;
-
   override integer height() => diameter;
 
   void scale(integer factor) {

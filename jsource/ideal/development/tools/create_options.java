@@ -19,6 +19,7 @@ class create_options {
   public boolean RUN;
   public boolean PRINT;
   public boolean PRETTY_PRINT;
+  public boolean GENERATE;
 
   public boolean CURE_UNDECLARED;
   public boolean HIDE_DECLARATIONS;

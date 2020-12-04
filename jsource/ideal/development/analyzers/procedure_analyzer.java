@@ -308,6 +308,14 @@ public class procedure_analyzer extends declaration_analyzer
     proc_args = new base_list<type>();
     for (int i = 0; i < parameter_variables.size(); ++i) {
       variable_declaration the_argument = parameter_variables.get(i);
+      if (the_argument instanceof variable_analyzer) {
+        // TODO: should analyze at analysis_pass.METHOD_AND_VARIABLE_DECL
+        @Nullable error_signal new_error = find_error((variable_analyzer) the_argument);
+        if (new_error != null) {
+          new_error = new error_signal(messages.error_in_fn_param, new_error, source);
+          handle_error(new_error);
+        }
+      }
       if (the_argument.declared_as_reference()) {
         proc_args.append(the_argument.reference_type());
       } else {

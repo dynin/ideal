@@ -164,6 +164,14 @@ class create {
       return status.error;
     }
 
+    if (options.GENERATE) {
+      content_writer the_writer = new content_writer(cm.output_catalog(),
+          naming_strategy.dash_renderer);
+      java_generator generator = new java_generator(java_library.get_instance(), the_context,
+         the_writer);
+      generator.generate_top_level(cm.root, constructs, new empty<import_construct>());
+    }
+
     if (options.target != null) {
       create_util.progress("TARGETS");
       readonly_list<target_declaration> targets = find_targets(constructs, the_context);

@@ -133,18 +133,10 @@ public class variable_analyzer extends declaration_analyzer
         category = variable_category.INSTANCE;
       }
 
-      if (get_category() != variable_category.LOCAL) {
-        return process_declaration();
-      }
+      return process_declaration();
     }
 
     if (pass == analysis_pass.BODY_CHECK) {
-      if (get_category() == variable_category.LOCAL) {
-        signal result = process_declaration();
-        if (result instanceof error_signal) {
-          return result;
-        }
-      }
       if (init != null) {
         if (has_errors(init)) {
           return report_error(new error_signal(messages.error_in_initializer, init, this));

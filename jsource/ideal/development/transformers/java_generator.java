@@ -67,7 +67,7 @@ public class java_generator {
     }
   }
 
-  private void generate_top_level(principal_type the_type, readonly_list<construct> constructs,
+  public void generate_top_level(principal_type the_type, readonly_list<construct> constructs,
       readonly_list<import_construct> imports) {
 
     if (skip_type(the_type)) {

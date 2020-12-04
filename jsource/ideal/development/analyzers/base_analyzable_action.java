@@ -48,6 +48,12 @@ public class base_analyzable_action extends debuggable implements analyzable_act
   }
 
   @Override
+  public boolean has_errors() {
+    return the_action.result().type_bound() == core_types.error_type();
+  }
+
+
+  @Override
   public action analyze() {
     return get_action();
   }

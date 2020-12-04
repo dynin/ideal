@@ -44,7 +44,7 @@ public class conditional_analyzer extends single_pass_analyzer {
   @Override
   protected analysis_result do_single_pass_analysis() {
     origin the_origin = this;
-    if (has_errors(condition)) {
+    if (has_analysis_errors(condition)) {
       return new error_signal(messages.error_in_conditional, condition, the_origin);
     }
 

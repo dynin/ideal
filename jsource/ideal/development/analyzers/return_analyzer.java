@@ -41,7 +41,7 @@ public class return_analyzer extends single_pass_analyzer {
   protected analysis_result do_single_pass_analysis() {
     // TODO: handle null return, check return type.
     assert the_expression != null;
-    if (has_errors(the_expression)) {
+    if (has_analysis_errors(the_expression)) {
       return new error_signal(new base_string("Error in return expression"), the_expression, this);
     }
 

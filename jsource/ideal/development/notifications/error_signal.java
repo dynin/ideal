@@ -47,6 +47,11 @@ public class error_signal extends debuggable implements signal, analyzable {
   }
 
   @Override
+  public boolean has_errors() {
+    return true;
+  }
+
+  @Override
   public error_signal analyze() {
     return this;
   }

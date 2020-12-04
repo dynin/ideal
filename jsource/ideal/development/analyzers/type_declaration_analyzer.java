@@ -282,7 +282,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
         for (int i = 0; i < parameters.size(); ++i) {
           type_parameter_analyzer tvar = parameters.get(i);
-          if (has_errors(tvar, pass)) {
+          if (has_analysis_errors(tvar, pass)) {
             parameter_builder.append(core_types.error_type());
           } else {
             parameter_builder.append(tvar.get_declared_type());
@@ -428,7 +428,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         flavor.deeply_immutable_flavor, library().immutable_integer_type(),
         the_origin);
 
-    if (has_errors(ordinal_declaration)) {
+    if (has_analysis_errors(ordinal_declaration)) {
       utilities.panic("Error in ordinal field declaration");
     }
 
@@ -438,7 +438,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         flavor.deeply_immutable_flavor, library().immutable_string_type(),
         the_origin);
 
-    if (has_errors(name_declaration)) {
+    if (has_analysis_errors(name_declaration)) {
       utilities.panic("Error in name field declaration");
     }
   }
@@ -459,7 +459,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     for (int i = 0; i < body.size(); ++i) {
       analyzable a = body.get(i);
-      if (a instanceof supertype_analyzer && !has_errors(a)) {
+      if (a instanceof supertype_analyzer && !has_analysis_errors(a)) {
         supertype_analyzer the_supertype_analyzer = (supertype_analyzer) a;
         if (the_supertype_analyzer.subtype_flavor() == null) {
           @Nullable flavor_profile super_profile =

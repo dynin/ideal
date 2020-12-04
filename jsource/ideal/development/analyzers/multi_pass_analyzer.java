@@ -102,7 +102,7 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
     analyze(a, pass);
   }
 
-  protected boolean has_errors(analyzable a, analysis_pass pass) {
+  protected boolean has_analysis_errors(analyzable a, analysis_pass pass) {
     return analyze(a, pass) instanceof error_signal;
   }
 
@@ -143,9 +143,7 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
     return do_get_result();
   }
 
-  // TODO: move this to annotation so that declaration interface can be simplified.
-  // Right now, procedure_declaration expects this.
-  // (Also: name clashes with has_errors(analyzable a, analysis_pass pass) above.)
+  @Override
   public boolean has_errors() {
     return last_error != null;
   }

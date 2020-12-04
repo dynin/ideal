@@ -10,10 +10,10 @@
 interface declaration {
   extends origin;
 
-  -- The named parent type in which this declaration belongs.
+  --- The named parent type in which this declaration belongs.
   principal_type declared_in_type;
 
-  -- If true, this declaration has errors and further processing should be skipped.
+  --- If true, this declaration has errors and further processing should be skipped.
   boolean has_errors;
 
   -- TODO: expose this if we need to.

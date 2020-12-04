@@ -171,7 +171,7 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     }
   }
 
-  protected boolean has_errors(analyzable the_analyzable) {
+  protected boolean has_analysis_errors(analyzable the_analyzable) {
     init_context(the_analyzable);
     return the_analyzable.analyze() instanceof error_signal;
   }

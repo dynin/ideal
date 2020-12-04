@@ -138,7 +138,7 @@ public class variable_analyzer extends declaration_analyzer
 
     if (pass == analysis_pass.BODY_CHECK) {
       if (init != null) {
-        if (has_errors(init)) {
+        if (has_analysis_errors(init)) {
           return report_error(new error_signal(messages.error_in_initializer, init, this));
         }
         set_init();
@@ -165,7 +165,7 @@ public class variable_analyzer extends declaration_analyzer
     if (variable_type != null) {
       add_dependence(variable_type, null, declaration_pass.TYPES_AND_PROMOTIONS);
 
-      if (has_errors(variable_type)) {
+      if (has_analysis_errors(variable_type)) {
         return report_error(new error_signal(messages.error_in_var_type, variable_type, this));
       }
 
@@ -178,7 +178,7 @@ public class variable_analyzer extends declaration_analyzer
       }
     } else {
       if (init != null) {
-        if (has_errors(init)) {
+        if (has_analysis_errors(init)) {
           return report_error(new error_signal(messages.error_in_initializer, init, this));
         }
         set_init();

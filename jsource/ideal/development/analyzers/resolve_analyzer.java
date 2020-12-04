@@ -92,7 +92,7 @@ public class resolve_analyzer extends single_pass_analyzer {
     action from_action;
 
     if (from != null) {
-      if (has_errors(from)) {
+      if (has_analysis_errors(from)) {
         return new error_signal(messages.error_in_source, from, the_origin);
       }
       from_action = analyzer_utilities.to_value(action_not_error(from), get_context(), the_origin);

@@ -110,7 +110,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       readonly_list<analyzable> the_constructor_parameters = make_list(parameters.elements);
       parameter_analyzer ctor_call = new parameter_analyzer(ctor_expression,
           the_constructor_parameters, pos);
-      if (!has_errors(ctor_call, pass)) {
+      if (!has_analysis_errors(ctor_call, pass)) {
         the_action_parameters = ctor_call.get_parameters();
       }
     }

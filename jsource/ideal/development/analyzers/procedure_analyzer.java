@@ -140,7 +140,7 @@ public class procedure_analyzer extends declaration_analyzer
     if (has_errors() || body == null) {
       return null;
     }
-    if (has_errors(body)) {
+    if (has_analysis_errors(body)) {
       return null;
     }
     return action_not_error(body);

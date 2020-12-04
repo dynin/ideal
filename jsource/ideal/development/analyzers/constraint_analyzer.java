@@ -34,7 +34,7 @@ public class constraint_analyzer extends single_pass_analyzer {
 
   @Override
   protected analysis_result do_single_pass_analysis() {
-    if (has_errors(expression)) {
+    if (has_analysis_errors(expression)) {
       return new error_signal(new base_string("Error in assert"), expression, this);
     }
 

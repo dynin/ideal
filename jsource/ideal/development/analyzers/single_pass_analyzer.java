@@ -72,6 +72,7 @@ public abstract class single_pass_analyzer extends base_analyzer {
     return saved_result;
   }
 
+  @Override
   public boolean has_errors() {
     return saved_result instanceof error_signal;
   }

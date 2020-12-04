@@ -50,7 +50,7 @@ public class target_declaration extends declaration_analyzer<target_construct> {
     analyze_and_ignore_errors(expression, pass);
     
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
-      if (has_errors(expression)) {
+      if (has_analysis_errors(expression)) {
         return new error_signal(new base_string("Error in target expression"), expression, this);
       }
 

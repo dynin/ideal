@@ -49,7 +49,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
 
     } else if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
 
-      if (has_errors(type_analyzable)) {
+      if (has_analysis_errors(type_analyzable)) {
         error_signal result = new error_signal(new base_string("Error in import type"),
             type_analyzable, this);
         add_error(parent(), the_name, result);
@@ -82,7 +82,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
 
   @Override
   public type get_type() {
-    if (!has_errors(type_analyzable)) {
+    if (!has_analysis_errors(type_analyzable)) {
       action the_action = action_not_error(type_analyzable);
       if (the_action instanceof type_action) {
         return ((type_action) the_action).get_type();

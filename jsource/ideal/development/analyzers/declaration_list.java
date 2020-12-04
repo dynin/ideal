@@ -64,7 +64,7 @@ public class declaration_list extends multi_pass_analyzer implements declaration
     error_signal error = null;
 
     for (int i = 0; i < the_elements.size(); ++i) {
-      if (has_errors(the_elements.get(i), pass) && error == null) {
+      if (has_analysis_errors(the_elements.get(i), pass) && error == null) {
         error = new error_signal(messages.error_in_list, the_elements.get(i), this);
       }
     }
@@ -77,7 +77,7 @@ public class declaration_list extends multi_pass_analyzer implements declaration
     list<action> actions = new base_list<action>();
     for (int i = 0; i < the_elements.size(); ++i) {
       analyzable element = the_elements.get(i);
-      if (!has_errors(element)) {
+      if (!has_analysis_errors(element)) {
         actions.append(action_not_error(element));
       }
     }

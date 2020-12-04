@@ -124,7 +124,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       return process_type_declaration((type_declaration_analyzer) the_declaration, pass);
     }
 
-    if (has_errors(get_declaration(), pass)) {
+    if (has_analysis_errors(get_declaration(), pass)) {
       return find_error(get_declaration());
     }
 

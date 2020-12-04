@@ -10,6 +10,9 @@
 interface analyzable {
   extends origin;
 
+  --- If true, this analyzable has errors and further processing should be skipped.
+  boolean has_errors;
+
   --- Convert this object into an action.
   --- If there is an error this method returns an |error_signal|.
   analysis_result analyze();

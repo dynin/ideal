@@ -60,24 +60,7 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_procedure(procedure_construct source) {
-    procedure_analyzer result = new procedure_analyzer(source);
-    // TODO: switch to using annotation set.
-    // TODO: handle more than one extension on the same procedure_analyzer.
-    @Nullable readonly_list<annotation_construct> annotations = result.annotations_list();
-    if (result != null) {
-      for (int i = 0; i < annotations.size(); ++i) {
-        annotation_construct annotation = annotations.get(i);
-        if (annotation instanceof modifier_construct) {
-          modifier_kind the_kind = ((modifier_construct) annotation).the_kind;
-          if (the_kind instanceof extension_modifier_kind) {
-            return ((extension_modifier_kind) the_kind).make_extension(result,
-                (modifier_construct) annotation);
-          }
-        }
-      }
-    }
-
-    return result;
+    return handle_extension(new procedure_analyzer(source), source.annotations);
   }
 
   @Override
@@ -150,24 +133,7 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_type_declaration(type_declaration_construct source) {
-    type_declaration_analyzer result = new type_declaration_analyzer(source);
-    // TODO: switch to using annotation set.
-    // TODO: handle more than one extension on the same type_declaration_analyzer.
-    @Nullable readonly_list<annotation_construct> annotations = result.annotations_list();
-    if (result != null) {
-      for (int i = 0; i < annotations.size(); ++i) {
-        annotation_construct annotation = annotations.get(i);
-        if (annotation instanceof modifier_construct) {
-          modifier_kind the_kind = ((modifier_construct) annotation).the_kind;
-          if (the_kind instanceof extension_modifier_kind) {
-            return ((extension_modifier_kind) the_kind).make_extension(result,
-                (modifier_construct) annotation);
-          }
-        }
-      }
-    }
-
-    return result;
+    return handle_extension(new type_declaration_analyzer(source), source.annotations);
   }
 
   @Override
@@ -182,24 +148,7 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_variable(variable_construct source) {
-    variable_analyzer result = new variable_analyzer(source);
-    // TODO: switch to using annotation set.
-    // TODO: handle more than one extension on the same variable_analyzer.
-    @Nullable readonly_list<annotation_construct> annotations = result.annotations_list();
-    if (result != null) {
-      for (int i = 0; i < annotations.size(); ++i) {
-        annotation_construct annotation = annotations.get(i);
-        if (annotation instanceof modifier_construct) {
-          modifier_kind the_kind = ((modifier_construct) annotation).the_kind;
-          if (the_kind instanceof extension_modifier_kind) {
-            return ((extension_modifier_kind) the_kind).make_extension(result,
-                (modifier_construct) annotation);
-          }
-        }
-      }
-    }
-
-    return result;
+    return handle_extension(new variable_analyzer(source), source.annotations);
   }
 
   @Override
@@ -210,5 +159,34 @@ public class dispatcher extends construct_visitor<analyzable> {
   @Override
   public analyzable process_jump(jump_construct the_jump) {
     return new jump_analyzer(the_jump);
+  }
+
+  private @Nullable analyzable handle_extension(declaration_analyzer the_declaration,
+      readonly_list<annotation_construct> annotations) {
+
+    @Nullable extension_kind the_extension_kind = null;
+    @Nullable modifier_construct the_modifier_construct = null;
+
+    for (int i = 0; i < annotations.size(); ++i) {
+      annotation_construct annotation = annotations.get(i);
+      if (annotation instanceof modifier_construct) {
+        modifier_kind the_kind = ((modifier_construct) annotation).the_kind;
+        if (the_kind instanceof extension_kind) {
+          if (the_extension_kind == null) {
+            the_extension_kind = (extension_kind) the_kind;
+            the_modifier_construct = (modifier_construct) annotation;
+          } else {
+            // TODO: report the error instead, don't panic
+            utilities.panic("More than one extension for " + the_declaration);
+          }
+        }
+      }
+    }
+
+    if (the_extension_kind != null) {
+      return the_extension_kind.make_extension(the_declaration, the_modifier_construct);
+    } else {
+      return the_declaration;
+    }
   }
 }

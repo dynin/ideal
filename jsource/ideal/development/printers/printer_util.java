@@ -39,7 +39,7 @@ public class printer_util {
       annotation_construct a = annotations.get(i);
       if (a instanceof modifier_construct &&
           ((modifier_construct) a).the_kind ==
-              not_yet_implemented_extension.instance.the_modifier_kind) {
+              not_yet_implemented_extension.instance.the_extension_kind) {
         return true;
       }
     }

@@ -40,7 +40,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   private static dictionary<Class, declaration_extension> extension_registry =
       new list_dictionary<Class, declaration_extension>();
 
-  public final extension_modifier_kind the_modifier_kind;
+  public final extension_kind the_extension_kind;
   @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
   private @Nullable modifier_construct the_modifier;
@@ -52,17 +52,17 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     this_class = getClass();
     if (extension_registry.contains_key(this_class)) {
       declaration_extension master_declaration = extension_registry.get(this_class);
-      the_modifier_kind = master_declaration.the_modifier_kind;
+      the_extension_kind = master_declaration.the_extension_kind;
     } else {
-      the_modifier_kind =
-          new extension_modifier_kind(new base_string(modifier_kind_name), this_class);
+      the_extension_kind =
+          new extension_kind(new base_string(modifier_kind_name), this_class);
     }
     is_expanded_set = false;
   }
 
   @Override
   public void register_syntax_extension(scanner_config the_scanner_config) {
-    the_scanner_config.add_modifier(the_modifier_kind);
+    the_scanner_config.add_modifier(the_extension_kind);
   }
 
   @Override

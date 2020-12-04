@@ -22,10 +22,10 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 
-public class extension_modifier_kind extends base_modifier_kind {
+public class extension_kind extends base_modifier_kind {
   private final Class extension_class;
 
-  public extension_modifier_kind(string name, Class extension_class) {
+  public extension_kind(string name, Class extension_class) {
     super(name);
     this.extension_class = extension_class;
   }

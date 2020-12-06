@@ -339,6 +339,17 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_type_announcement(type_announcement_construct c) {
+    @Nullable analyzable the_declaration = the_analysis_context.get_analyzable(c);
+
+    /*
+    if (!(the_declaration instanceof type_announcement)) {
+      utilities.panic("Type announcement expected, got " +  the_declaration);
+    }
+    */
+
+    // TODO: introduce a special xref_mode for announcements.
+    add_xref((declaration) the_declaration, xref_mode.USE, c);
+
     return process_default(c);
   }
 

@@ -141,6 +141,9 @@ public abstract class base_analysis_context extends debuggable implements analys
 
   @Override
   public void put_analyzable(construct c, analyzable a) {
+    // TODO: overwriting an existing construct shouldn't happen,
+    // but maybe fail gracefully here?
+    assert eval_bindings.get(c) == null;
     eval_bindings.put(c, a);
   }
 

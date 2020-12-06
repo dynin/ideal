@@ -218,7 +218,7 @@ public class xref_context extends debuggable {
 
     principal_type result;
     if (the_analyzable instanceof type_announcement) {
-      result = ((type_announcement) the_analyzable).get_declared_type();
+      result = ((type_announcement) the_analyzable).declared_in_type();
     } else if (the_analyzable instanceof type_declaration) {
       result = ((type_declaration) the_analyzable).get_declared_type();
     } else {

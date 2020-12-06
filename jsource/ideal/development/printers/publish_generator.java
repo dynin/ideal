@@ -45,11 +45,13 @@ public class publish_generator {
   private final analysis_context the_context;
   private final content_writer processor;
   public final xref_context the_xref_context;
+  private final list<type_declaration_construct> extra_declarations;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
     this.the_context = the_context;
     this.processor = processor;
     this.the_xref_context = new xref_context(the_context);
+    this.extra_declarations = new base_list<type_declaration_construct>();
   }
 
   public void add_type(principal_type the_type) {
@@ -75,6 +77,7 @@ public class publish_generator {
         namespace_body.append(the_announcement);
         the_context.put_analyzable(the_announcement, (type_declaration_analyzer) sub_declaration);
       }
+      extra_declarations.append(the_declaration_construct);
       type_declaration_construct namespace_declaration =
           new type_declaration_construct(the_declaration_construct.annotations,
               the_declaration_construct.kind, the_declaration_construct.name,
@@ -148,14 +151,21 @@ public class publish_generator {
     }
   }
 
+  private void populate_declaration(type_declaration_construct the_declaration_construct) {
+    type_declaration the_type_declaration = declaration_util.to_type_declaration(
+        the_context.get_analyzable(the_declaration_construct));
+    new populate_xref(the_xref_context, the_type_declaration.get_declared_type()).
+        process(the_declaration_construct);
+  }
+
   public void generate_all() {
     immutable_list<type_declaration_construct> constructs = the_xref_context.output_constructs();
     for (int i = 0; i < constructs.size(); ++i) {
-      type_declaration_construct the_declaration_construct = constructs.get(i);
-      type_declaration the_type_declaration = declaration_util.to_type_declaration(
-          the_context.get_analyzable(the_declaration_construct));
-      new populate_xref(the_xref_context, the_type_declaration.get_declared_type()).
-          process(the_declaration_construct);
+      populate_declaration(constructs.get(i));
+    }
+    // TODO: just populate announcements here.
+    for (int i = 0; i < extra_declarations.size(); ++i) {
+      populate_declaration(extra_declarations.get(i));
     }
 
     generate_navigation_xref();

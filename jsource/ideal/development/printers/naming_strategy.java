@@ -207,6 +207,13 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       return link_to_type(((type_declaration) the_declaration).get_declared_type(), mode);
     }
 
+    if (the_declaration instanceof type_announcement) {
+      type_announcement the_type_announcement = (type_announcement) the_declaration;
+      if (!the_xref_context.has_output_type(the_type_announcement.declared_in_type())) {
+        return null;
+      }
+    }
+
     if (the_declaration instanceof variable_declaration) {
       if (((variable_declaration) the_declaration).get_category() == variable_category.LOCAL) {
         return null;
@@ -237,13 +244,13 @@ public class naming_strategy extends debuggable implements printer_assistant, im
         // Most likely, this is not_yet_implemented
         return null;
       }
+
       if (DEBUG_FRAGMENTS) {
         System.out.println("NOFRAG " + current_type + " C " + the_construct +
             " A " + the_analyzable);
-        if (!(the_construct instanceof type_announcement_construct)) {
-          utilities.panic("No fragment found");
-        }
       }
+
+      utilities.panic("No fragment found for " + the_construct);
       return null;
     }
 
@@ -263,6 +270,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       name = ((name_construct) the_construct).the_name;
     } else if (the_construct instanceof type_declaration_construct) {
       name = ((type_declaration_construct) the_construct).name;
+    } else if (the_construct instanceof type_announcement_construct) {
+      name = ((type_announcement_construct) the_construct).name;
     } else if (the_construct instanceof variable_construct) {
       name = ((variable_construct) the_construct).name;
       // TODO: skip local variables

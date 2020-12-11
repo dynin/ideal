@@ -42,16 +42,16 @@ public class publish_generator {
   public static final simple_name ASSETS_NAME = simple_name.make("assets");
   public static final simple_name IDEAL_STYLE_NAME = simple_name.make("ideal_style");
 
-  private final analysis_context the_context;
-  private final content_writer processor;
   public final xref_context the_xref_context;
-  private final list<type_declaration_construct> extra_declarations;
+  private final content_writer processor;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
-    this.the_context = the_context;
-    this.processor = processor;
     this.the_xref_context = new xref_context(the_context);
-    this.extra_declarations = new base_list<type_declaration_construct>();
+    this.processor = processor;
+  }
+
+  public analysis_context the_analysis_context() {
+    return the_xref_context.the_analysis_context;
   }
 
   public void add_type(principal_type the_type) {
@@ -64,25 +64,34 @@ public class publish_generator {
       list<construct> namespace_body = new base_list<construct>();
       readonly_list<declaration> signature = the_declaration.get_signature();
       for (int i = 0; i < signature.size(); ++i) {
-        @Nullable type_declaration sub_declaration =
-            declaration_util.to_type_declaration(signature.get(i));
+        declaration signature_declaration = signature.get(i);
+        if (signature_declaration instanceof type_announcement) {
+          @Nullable type_declaration the_type_declaration =
+              declaration_util.to_type_declaration(signature_declaration);
+          assert the_type_declaration != null;
+          type_announcement_construct the_announcement =
+              (type_announcement_construct) signature_declaration.deeper_origin();
 
-        if (sub_declaration == null) {
-          continue;
+          add_type(the_type_declaration.get_declared_type());
+          namespace_body.append(the_announcement);
+        } else if (signature_declaration instanceof type_declaration) {
+          @Nullable type_declaration the_type_declaration =
+              declaration_util.to_type_declaration(signature_declaration);
+          assert the_type_declaration != null;
+
+          add_type(the_type_declaration.get_declared_type());
+
+          type_announcement_construct the_announcement = to_announcement(the_type_declaration);
+          namespace_body.append(the_announcement);
+          the_analysis_context().put_analyzable(the_announcement,
+              (type_declaration_analyzer) the_type_declaration);
         }
-
-        add_type(sub_declaration.get_declared_type());
-
-        type_announcement_construct the_announcement = to_announcement(sub_declaration);
-        namespace_body.append(the_announcement);
-        the_context.put_analyzable(the_announcement, (type_declaration_analyzer) sub_declaration);
       }
-      extra_declarations.append(the_declaration_construct);
       type_declaration_construct namespace_declaration =
           new type_declaration_construct(the_declaration_construct.annotations,
               the_declaration_construct.kind, the_declaration_construct.name,
               the_declaration_construct.parameters, namespace_body, the_declaration_construct);
-      the_context.put_analyzable(namespace_declaration, (analyzable) the_declaration);
+      the_analysis_context().put_analyzable(namespace_declaration, (analyzable) the_declaration);
       the_xref_context.add_output_declaration(the_type, namespace_declaration);
     } else {
       the_xref_context.add_output_declaration(the_type, the_declaration_construct);
@@ -153,7 +162,7 @@ public class publish_generator {
 
   private void populate_declaration(type_declaration_construct the_declaration_construct) {
     type_declaration the_type_declaration = declaration_util.to_type_declaration(
-        the_context.get_analyzable(the_declaration_construct));
+        the_analysis_context().get_analyzable(the_declaration_construct));
     new populate_xref(the_xref_context, the_type_declaration.get_declared_type()).
         process(the_declaration_construct);
   }
@@ -163,17 +172,13 @@ public class publish_generator {
     for (int i = 0; i < constructs.size(); ++i) {
       populate_declaration(constructs.get(i));
     }
-    // TODO: just populate announcements here.
-    for (int i = 0; i < extra_declarations.size(); ++i) {
-      populate_declaration(extra_declarations.get(i));
-    }
 
     generate_navigation_xref();
 
     for (int i = 0; i < constructs.size(); ++i) {
       type_declaration_construct the_declaration_construct = constructs.get(i);
       type_declaration the_declaration = declaration_util.to_type_declaration(
-          the_context.get_analyzable(the_declaration_construct));
+          the_analysis_context().get_analyzable(the_declaration_construct));
       generate_markup(new base_list<construct>(the_declaration_construct),
           the_xref_context.get_naming_strategy(the_declaration.get_declared_type()));
     }

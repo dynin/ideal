@@ -348,7 +348,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
     */
 
     // TODO: introduce a special xref_mode for announcements.
-    add_xref((declaration) the_declaration, xref_mode.USE, c);
+    add_xref((declaration) the_declaration, xref_mode.ANNOUNCEMENT, c);
 
     return process_default(c);
   }
@@ -385,5 +385,12 @@ public class populate_xref extends construct_visitor<Void> implements value {
   @Override
   public Void process_jump(jump_construct c) {
     return process_default(c);
+  }
+
+  private void alias_xref(construct new_construct, construct the_construct) {
+    naming_strategy the_naming_strategy = the_xref_context.get_naming_strategy(current_type);
+    string fragment = the_naming_strategy.fragment_of_construct(new_construct, printer_mode.XREF);
+    assert fragment != null;
+    the_naming_strategy.add_fragment_alias(the_construct, fragment);
   }
 }

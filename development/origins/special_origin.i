@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
---- Special origin lebal, such as source for referencing builtin types.
+--- Special origin label, such as source for referencing builtin types.
 class special_origin {
   extends debuggable;
   implements mutable origin, deeply_immutable data, stringable;

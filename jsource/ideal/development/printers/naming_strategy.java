@@ -211,6 +211,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       type_announcement the_type_announcement = (type_announcement) the_declaration;
       if (!the_xref_context.has_output_type(the_type_announcement.declared_in_type())) {
         return null;
+      } else {
+        return link_to_type(the_type_announcement.get_declared_type(), mode);
       }
     }
 
@@ -257,6 +259,23 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return fragment;
   }
 
+  private action_name name_of_construct(construct the_construct) {
+    if (the_construct instanceof name_construct) {
+      return ((name_construct) the_construct).the_name;
+    } else if (the_construct instanceof type_declaration_construct) {
+      return ((type_declaration_construct) the_construct).name;
+    } else if (the_construct instanceof type_announcement_construct) {
+      return ((type_announcement_construct) the_construct).name;
+    } else if (the_construct instanceof variable_construct) {
+      return ((variable_construct) the_construct).name;
+    } else if (the_construct instanceof procedure_construct) {
+      return ((procedure_construct) the_construct).name;
+    } else {
+      utilities.panic("Unknown construct " + the_construct);
+      return null;
+    }
+  }
+
   public string add_fragment(construct the_construct) {
     @Nullable string fragment = fragments.get(the_construct);
     assert fragment == null;
@@ -265,21 +284,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       System.out.println("FRAG " + current_type + " C " + the_construct);
     }
 
-    action_name name = null;
-    if (the_construct instanceof name_construct) {
-      name = ((name_construct) the_construct).the_name;
-    } else if (the_construct instanceof type_declaration_construct) {
-      name = ((type_declaration_construct) the_construct).name;
-    } else if (the_construct instanceof type_announcement_construct) {
-      name = ((type_announcement_construct) the_construct).name;
-    } else if (the_construct instanceof variable_construct) {
-      name = ((variable_construct) the_construct).name;
-      // TODO: skip local variables
-    } else if (the_construct instanceof procedure_construct) {
-      name = ((procedure_construct) the_construct).name;
-    } else {
-      utilities.panic("Unknown construct " + the_construct);
-    }
+    action_name name = name_of_construct(the_construct);
 
     if (name instanceof special_name) {
       // TODO: handle special names such as super and new
@@ -304,6 +309,12 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     fragment_ids.add(result);
 
     return result;
+  }
+
+  public void add_fragment_alias(construct the_construct, string fragment) {
+    @Nullable string old_fragment = fragments.get(the_construct);
+    assert old_fragment == null;
+    fragments.put(the_construct, fragment);
   }
 
   private string name_to_id(action_name the_action_name) {

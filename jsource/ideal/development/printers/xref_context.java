@@ -56,7 +56,7 @@ public class xref_context extends debuggable {
   }
 
   public void add_output_declaration(principal_type the_type,
-      @Nullable type_declaration_construct the_declaration_construct) {
+      type_declaration_construct the_declaration_construct) {
     if (has_output_type(the_type)) {
       return;
     }

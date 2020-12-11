@@ -14,6 +14,7 @@ package ideal.development.printers;
 public enum xref_mode {
   SUCCESSOR,
   DECLARATION,
+  ANNOUNCEMENT,
   USE,
   DIRECT_SUPERTYPE,
   INDIRECT_SUPERTYPE,

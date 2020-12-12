@@ -66,40 +66,40 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
     </table>
     <div class='main'>
       <div>
-       import java &bull; util &bull; List
+       import <span id='java'>java</span> &bull; <span id='util'>util</span> &bull; <span id='List'>List</span>
       </div>
       <div>
-       import java &bull; util &bull; ArrayList
+       import <span id='java2'>java</span> &bull; <span id='util2'>util</span> &bull; <span id='ArrayList'>ArrayList</span>
       </div>
       <div>
-       implicit import ideal &bull; concepts
+       implicit import <span id='ideal'>ideal</span> &bull; <span id='concepts'>concepts</span>
       </div>
       <div>
-       implicit import ideal &bull; constructs
+       implicit import <span id='ideal2'>ideal</span> &bull; <span id='constructs'>constructs</span>
       </div>
       <div>
-       import ideal &bull; concepts &bull; type
+       import <span id='ideal3'>ideal</span> &bull; <span id='concepts2'>concepts</span> &bull; <span id='type'>type</span>
       </div>
       <div>
-       import ideal &bull; scanners &bull; scanner element
+       import <span id='ideal4'>ideal</span> &bull; <span id='scanners'>scanners</span> &bull; <span id='scanner-element'>scanner element</span>
       </div>
       <div>
-       import ideal &bull; semantics &bull; lookup row
+       import <span id='ideal5'>ideal</span> &bull; <span id='semantics'>semantics</span> &bull; <span id='lookup-row'>lookup row</span>
       </div>
       <div class='type-declaration'>
-       public class <span class='type-declaration-name'><span id='sequence'>sequence</span></span>[readonly data <span class='var-declaration-name'><span id='element'>element</span></span>]
+       public class <span class='type-declaration-name'><span id='sequence'>sequence</span></span>[<span id='readonly-data'>readonly data</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
         <div class='indent'>
           <div>
            implements <span class='supertype-declaration-name'>readonly data</span>
           </div>
           <div>
-           private List <span class='var-declaration-name'>list</span>
+           private <span id='List2'>List</span> <span class='var-declaration-name'>list</span>
           </div>
           <div class='procedure-declaration'>
            public overload <span class='procedure-declaration-name'><span id='sequence2'>sequence</span></span>()
             <div class='indent'>
               <div>
-               <span class='var-declaration-name'>list</span> : ArrayList &bull; new()
+               <span class='var-declaration-name'>list</span> : <span id='ArrayList2'>ArrayList</span> &bull; new()
               </div>
             </div>
           </div>
@@ -251,7 +251,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='boolean'>boolean</span> <span class='procedure-declaration-name'><span id='empty'>empty</span></span> =&gt; list &bull; isEmpty()
+           public <span id='boolean'>boolean</span> <span class='procedure-declaration-name'><span id='empty'>empty</span></span> =&gt; <span id='list'>list</span> &bull; <span id='isEmpty'>isEmpty</span>()
           </div>
           <div class='procedure-declaration'>
            public <span id='boolean2'>boolean</span> <span class='procedure-declaration-name'><span id='is-not-empty'>is not empty</span></span> =&gt; !<span id='empty2'>empty</span>()
@@ -268,7 +268,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
            public <span id='void'>void</span> <span class='procedure-declaration-name'><span id='append24'>append</span></span>(<span id='element25'>element</span> <span class='var-declaration-name'><span id='t'>t</span></span>)
             <div class='indent'>
               <div>
-               list &bull; add(<span id='t2'>t</span>)
+               <span id='list2'>list</span> &bull; <span id='add'>add</span>(<span id='t2'>t</span>)
               </div>
             </div>
           </div>
@@ -276,7 +276,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
            public <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='append-all3'>append all</span></span>(<span id='sequence13'>sequence</span> <span class='var-declaration-name'><span id='s'>s</span></span>)
             <div class='indent'>
               <div>
-               list &bull; addAll(s &bull; list)
+               <span id='list3'>list</span> &bull; <span id='addAll'>addAll</span>(<span id='s2'>s</span> &bull; <span id='list4'>list</span>)
               </div>
             </div>
           </div>
@@ -374,28 +374,28 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
     </table>
     <div class='main'>
       <div>
-       import java &bull; util &bull; List
+       import <span id='java'>java</span> &bull; <span id='util'>util</span> &bull; <span id='List'>List</span>
       </div>
       <div>
-       import java &bull; util &bull; ArrayList
+       import <span id='java2'>java</span> &bull; <span id='util2'>util</span> &bull; <span id='ArrayList'>ArrayList</span>
       </div>
       <div>
-       implicit import ideal &bull; concepts
+       implicit import <span id='ideal'>ideal</span> &bull; <span id='concepts'>concepts</span>
       </div>
       <div>
-       implicit import ideal &bull; constructs
+       implicit import <span id='ideal2'>ideal</span> &bull; <span id='constructs'>constructs</span>
       </div>
       <div>
-       import ideal &bull; concepts &bull; type
+       import <span id='ideal3'>ideal</span> &bull; <span id='concepts2'>concepts</span> &bull; <span id='type'>type</span>
       </div>
       <div>
-       import ideal &bull; scanners &bull; scanner element
+       import <span id='ideal4'>ideal</span> &bull; <span id='scanners'>scanners</span> &bull; <span id='scanner-element'>scanner element</span>
       </div>
       <div>
-       import ideal &bull; semantics &bull; lookup row
+       import <span id='ideal5'>ideal</span> &bull; <span id='semantics'>semantics</span> &bull; <span id='lookup-row'>lookup row</span>
       </div>
       <div class='type-declaration'>
-       public class <span class='type-declaration-name'><span id='sequence'>sequence</span></span>[readonly data <span class='var-declaration-name'><span id='element'>element</span></span>]
+       public class <span class='type-declaration-name'><span id='sequence'>sequence</span></span>[<span id='readonly-data'>readonly data</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> sequence
         </div>
@@ -406,7 +406,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
           <div>
           </div>
           <div>
-           private List <span class='var-declaration-name'>list</span>
+           private <span id='List2'>List</span> <span class='var-declaration-name'>list</span>
           </div>
           <div class='procedure-declaration'>
            public overload <span class='procedure-declaration-name'><span id='sequence2'>sequence</span></span>()

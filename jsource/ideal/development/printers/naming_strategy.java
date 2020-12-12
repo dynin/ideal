@@ -242,14 +242,14 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     @Nullable string fragment = fragments.get(the_construct);
     if (fragment == null) {
       @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
-      if (the_analyzable == null) {
+      if (the_analyzable == null || the_analyzable.has_errors()) {
         // Most likely, this is not_yet_implemented
         return null;
       }
 
       if (DEBUG_FRAGMENTS) {
         System.out.println("NOFRAG " + current_type + " C " + the_construct +
-            " A " + the_analyzable);
+            " A " + the_analyzable + " AA " + the_analyzable.analyze());
       }
 
       utilities.panic("No fragment found for " + the_construct);

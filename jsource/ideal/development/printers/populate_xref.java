@@ -158,13 +158,15 @@ public class populate_xref extends construct_visitor<Void> implements value {
     if (c == skip_construct || !(c.the_name instanceof simple_name)) {
       return null;
     }
-    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
-    assert the_analyzable != null;
 
-    analysis_result result = the_analyzable.analyze();
-    if (result instanceof error_signal) {
+    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    if (the_analyzable == null || the_analyzable.has_errors()) {
+      add_fragment(c);
       return null;
     }
+
+    analysis_result result = the_analyzable.analyze();
+
     if (result instanceof value_action &&
         ((value_action) result).result() instanceof singleton_value) {
       // TODO: better handle synthetic code.
@@ -183,16 +185,16 @@ public class populate_xref extends construct_visitor<Void> implements value {
   }
 
   private void add_xref(declaration the_declaration, xref_mode mode, construct the_construct) {
+    add_fragment(the_construct);
     the_xref_context.add(the_declaration, mode, the_construct);
+  }
+
+  private void add_fragment(construct the_construct) {
     the_xref_context.get_naming_strategy(current_type).add_fragment(the_construct);
   }
 
   @Override
   public Void process_import(import_construct c) {
-    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
-    if (the_analyzable == null || ((import_declaration) the_analyzable).has_errors()) {
-      return null;
-    }
     return process_default(c);
   }
 
@@ -213,10 +215,6 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_resolve(resolve_construct c) {
-    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
-    if (the_analyzable == null || the_analyzable.analyze() instanceof error_signal) {
-      return null;
-    }
     return process_default(c);
   }
 

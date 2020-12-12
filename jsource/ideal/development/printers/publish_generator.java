@@ -99,26 +99,19 @@ public class publish_generator {
   }
 
   private type_announcement_construct to_announcement(type_declaration the_type_declaration) {
-    @Nullable text_fragment summary_text = null;
-    @Nullable documentation the_documentation =
-        the_type_declaration.annotations().the_documentation();
-    if (the_documentation != null) {
-      summary_text = the_documentation.section(documentation_section.SUMMARY);
-    }
+    origin the_origin = the_type_declaration;
+    @Nullable comment_construct the_comment_construct = printer_util.extract_summary(
+        the_type_declaration.annotations(), the_origin);
 
     readonly_list<annotation_construct> annotations;
-    if (summary_text == null) {
-      annotations = new empty<annotation_construct>();
+    if (the_comment_construct != null) {
+      annotations = new base_list<annotation_construct>(the_comment_construct);
     } else {
-      // TODO: handle text_fragment here.
-      string summary = (base_string) summary_text;
-      comment the_comment = new comment(comment_type.BLOCK_DOC_COMMENT, summary, summary);
-      annotations = new base_list<annotation_construct>(
-          new comment_construct(the_comment, the_type_declaration));
+      annotations = new empty<annotation_construct>();
     }
 
     return new type_announcement_construct(annotations, the_type_declaration.get_kind(),
-            the_type_declaration.short_name(), the_type_declaration);
+            the_type_declaration.short_name(), the_origin);
   }
 
   private boolean generate_subpages(type_declaration the_type_declaration) {

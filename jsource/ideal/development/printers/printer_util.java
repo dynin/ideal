@@ -84,4 +84,27 @@ public class printer_util {
     }
     return null;
   }
+
+  public static @Nullable comment_construct extract_summary(@Nullable annotation_set annotations,
+      origin the_origin) {
+
+    if (annotations == null) {
+      return null;
+    }
+
+    @Nullable documentation the_documentation = annotations.the_documentation();
+    if (the_documentation == null) {
+      return null;
+    }
+
+    @Nullable text_fragment summary_text = the_documentation.section(documentation_section.SUMMARY);
+    if (summary_text == null) {
+      return null;
+    }
+
+    // TODO: handle text_fragment here.
+    string summary = (base_string) summary_text;
+    comment the_comment = new comment(comment_type.BLOCK_DOC_COMMENT, summary, summary);
+    return new comment_construct(the_comment, the_origin);
+  }
 }

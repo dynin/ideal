@@ -331,6 +331,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     declaration the_declaration = (declaration) the_analyzable;
     if (the_declaration instanceof procedure_declaration) {
       return ((procedure_declaration) the_declaration).annotations().the_documentation();
+    } else if (the_declaration instanceof type_announcement) {
+      type_declaration the_type_declaration =
+          ((type_announcement) the_declaration).get_type_declaration();
+      return printer_util.extract_summary(the_type_declaration.annotations(), the_declaration);
     } else {
       return null;
     }

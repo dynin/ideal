@@ -66,7 +66,7 @@ public class xref_printer extends base_printer {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
     fragments.append(get_links("Declaration", the_declaration, xref_mode.DECLARATION, true));
-    fragments.append(get_links("Announcments", the_declaration, xref_mode.ANNOUNCEMENT, true));
+    fragments.append(get_links("Announcements", the_declaration, xref_mode.ANNOUNCEMENT, true));
     fragments.append(get_links("Direct supertypes", the_declaration, xref_mode.DIRECT_SUPERTYPE,
         true));
     fragments.append(get_links("All supertypes", the_declaration, xref_mode.INDIRECT_SUPERTYPE,

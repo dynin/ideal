@@ -817,8 +817,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_simple_name(c.kind.name()));
     fragments.append(print_space());
 
-    fragments.append(styles.wrap(styles.type_declaration_name_style,
-        make_link(print_action_name(c.name), c)));
+    text_fragment type_name = print_action_name(c.name);
+    type_name = wrap_with_span_id(type_name, c);
+    fragments.append(styles.wrap(styles.type_announcement_name_style, make_link(type_name, c)));
 
     return text_util.join(fragments);
   }

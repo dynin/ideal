@@ -77,6 +77,11 @@ span:target {
   margin-right: 0.2em;
 }
 
+.type-announcement-name {
+  font-weight: bolder;
+  margin-right: 0.2em;
+}
+
 .supertype-declaration-name {
   font-weight: bolder;
 }

@@ -192,7 +192,14 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   @Override
   public @Nullable string link_to_declaration(construct the_construct, printer_mode mode) {
-    return declaration_link(the_xref_context.origin_to_declaration(the_construct), mode);
+    if (the_construct instanceof type_announcement_construct) {
+      type_announcement the_type_announcement = (type_announcement)
+          the_xref_context.origin_to_declaration(the_construct);
+      assert the_type_announcement != null;
+      return link_to_type(the_type_announcement.get_declared_type(), mode);
+    } else {
+      return declaration_link(the_xref_context.origin_to_declaration(the_construct), mode);
+    }
   }
 
   public @Nullable string declaration_link(@Nullable declaration the_declaration,
@@ -211,8 +218,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       type_announcement the_type_announcement = (type_announcement) the_declaration;
       if (!the_xref_context.has_output_type(the_type_announcement.declared_in_type())) {
         return null;
-      } else {
-        return link_to_type(the_type_announcement.get_declared_type(), mode);
       }
     }
 

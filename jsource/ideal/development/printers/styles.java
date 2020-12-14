@@ -31,6 +31,9 @@ public class styles {
   public static final text_element type_declaration_name_style =
       make_span(new base_string("type-declaration-name"));
 
+  public static final text_element type_announcement_name_style =
+      make_span(new base_string("type-announcement-name"));
+
   public static final text_element supertype_declaration_name_style =
       make_span(new base_string("supertype-declaration-name"));
 

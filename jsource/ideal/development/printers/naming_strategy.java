@@ -190,6 +190,27 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return link;
   }
 
+  public @Nullable string link_to_type_declaration(type_declaration the_type_declaration,
+      type_declaration_construct the_declaration_construct, printer_mode mode) {
+    principal_type output_type = the_type_declaration.get_declared_type();
+    assert the_xref_context.has_output_type(output_type);
+
+    @Nullable string link = link_to_type(output_type, mode);
+    if (link == null) {
+      return null;
+    }
+
+    naming_strategy target_naming = the_xref_context.get_naming_strategy(output_type);
+    assert target_naming != null;
+    @Nullable string fragment_id = target_naming.fragment_of_construct(the_declaration_construct,
+        mode);
+    if (fragment_id != null) {
+      link = new base_string(link, text_library.FRAGMENT_SEPARATOR, fragment_id);
+    }
+
+    return link;
+  }
+
   @Override
   public @Nullable string link_to_declaration(construct the_construct, printer_mode mode) {
     if (the_construct instanceof type_announcement_construct) {
@@ -208,10 +229,11 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       return null;
     }
 
-    if (the_declaration instanceof type_declaration &&
-        the_xref_context.has_output_type(
-            ((type_declaration) the_declaration).get_declared_type())) {
-      return link_to_type(((type_declaration) the_declaration).get_declared_type(), mode);
+    if (the_declaration instanceof type_declaration) {
+      type_declaration the_type_declaration = (type_declaration) the_declaration;
+      if (the_xref_context.has_output_type(the_type_declaration.get_declared_type())) {
+        return link_to_type(the_type_declaration.get_declared_type(), mode);
+      }
     }
 
     if (the_declaration instanceof type_announcement) {

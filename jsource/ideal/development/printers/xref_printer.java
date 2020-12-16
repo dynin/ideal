@@ -219,9 +219,18 @@ public class xref_printer extends base_printer {
   private text_fragment render_declaration(origin the_origin, xref_mode mode) {
     @Nullable declaration the_declaration = the_xref_context().origin_to_declaration(the_origin);
     action_name name;
+    @Nullable string link = null;
 
     if (the_declaration instanceof type_declaration) {
-      name = ((type_declaration) the_declaration).short_name();
+      type_declaration the_type_declaration = (type_declaration) the_declaration;
+      name = the_type_declaration.short_name();
+      if (the_xref_context().has_output_type(the_type_declaration.get_declared_type())) {
+        type_declaration_construct the_construct =
+            (type_declaration_construct) printer_util.find_construct(the_origin);
+        assert the_construct != null;
+        link = the_naming_strategy().link_to_type_declaration(the_type_declaration,
+            the_construct, printer_mode.STYLISH);
+      }
     } else if (the_declaration instanceof type_announcement) {
       name = ((type_announcement) the_declaration).short_name();
     } else if (the_declaration instanceof variable_declaration) {
@@ -239,8 +248,9 @@ public class xref_printer extends base_printer {
     }
 
     text_fragment the_text = print_action_name(name);
-    @Nullable string link = the_naming_strategy().declaration_link(the_declaration,
-        printer_mode.STYLISH);
+    if (link == null) {
+      link = the_naming_strategy().declaration_link(the_declaration, printer_mode.STYLISH);
+    }
     if (link != null) {
       return text_util.make_html_link(the_text, link);
     } else {

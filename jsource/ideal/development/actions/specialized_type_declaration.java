@@ -85,6 +85,16 @@ public class specialized_type_declaration extends debuggable implements type_dec
   }
 
   @Override
+  public analysis_result analyze() {
+    return common_library.get_instance().noop(this);
+  }
+
+  @Override
+  public analyzable specialize(specialization_context context, principal_type new_parent) {
+    return this;
+  }
+
+  @Override
   public future<analysis_result> process_type(declaration_pass pass) {
     process_declaration(pass);
     return new base_future<analysis_result>(common_library.get_instance().noop(this));

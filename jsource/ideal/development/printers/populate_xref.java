@@ -337,22 +337,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_type_announcement(type_announcement_construct c) {
-    /*
-    TODO: avoid simple_type_announcement.
     type_declaration the_type_declaration =
         declaration_util.to_type_declaration(the_analysis_context.get_analyzable(c));
     assert the_type_declaration != null;
     add_xref(the_type_declaration, xref_mode.ANNOUNCEMENT, c);
-    */
-
-    @Nullable analyzable the_declaration = the_analysis_context.get_analyzable(c);
-
-    if (!(the_declaration instanceof type_announcement)) {
-      utilities.panic("Type announcement expected, got " +  the_declaration);
-    }
-
-    add_xref(((type_announcement) the_declaration).get_type_declaration(),
-        xref_mode.ANNOUNCEMENT, c);
 
     return process_default(c);
   }

@@ -84,8 +84,6 @@ public class publish_generator {
           type_announcement_construct the_announcement = to_announcement(the_type_declaration);
           namespace_body.append(the_announcement);
           the_analysis_context().put_analyzable(the_announcement,
-              // TODO: avoid simple_type_announcement.
-              //(type_declaration_analyzer) the_type_declaration);
               new simple_type_announcement(the_type_declaration, the_announcement));
         }
       }

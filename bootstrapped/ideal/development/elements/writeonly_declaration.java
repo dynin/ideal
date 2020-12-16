@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface writeonly_declaration extends writeonly_origin, any_declaration { }
+public interface writeonly_declaration extends writeonly_analyzable, any_declaration { }

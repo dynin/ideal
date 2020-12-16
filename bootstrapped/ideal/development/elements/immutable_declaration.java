@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface immutable_declaration extends immutable_origin, readonly_declaration { }
+public interface immutable_declaration extends immutable_analyzable, readonly_declaration { }

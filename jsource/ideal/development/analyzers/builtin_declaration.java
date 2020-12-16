@@ -45,6 +45,16 @@ public class builtin_declaration implements declaration {
   }
 
   @Override
+  public analysis_result analyze() {
+    return common_library.get_instance().noop(this);
+  }
+
+  @Override
+  public analyzable specialize(specialization_context context, principal_type new_parent) {
+    return this;
+  }
+
+  @Override
   public string to_string() {
     return new base_string("<builtin_declaration>");
   }

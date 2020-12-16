@@ -27,7 +27,7 @@ import ideal.development.declarations.*;
 public class type_announcement_analyzer extends declaration_analyzer<type_announcement_construct>
     implements type_announcement {
 
-  private @Nullable type_declaration type_declaration;
+  private @Nullable type_declaration the_type_declaration;
   private @Nullable analyzable external_declaration;
   private @Nullable principal_type inside_type;
   private @Nullable readonly_list<construct> external_body;
@@ -72,7 +72,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         principal_type the_type = the_action.result().type_bound().principal();
         declaration the_declaration = the_type.get_declaration();
         if (the_declaration != null) {
-          type_declaration = (type_declaration) the_declaration;
+          the_type_declaration = (type_declaration) the_declaration;
         } else {
           ((base_principal_type) the_type).set_declaration(this);
         }
@@ -82,9 +82,9 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     }
 
     if (pass == analysis_pass.TYPE_DECL) {
-      if (type_declaration != null) {
+      if (the_type_declaration != null) {
         inside_type = make_inside_type(parent(), this);
-        external_declaration = (type_declaration_analyzer) type_declaration;
+        external_declaration = (type_declaration_analyzer) the_type_declaration;
       } else {
         external_body = get_context().load_type_body(source);
 
@@ -119,12 +119,12 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
 
             assert declaration.body != null;
 
-            type_declaration_analyzer the_type_declaration =
+            type_declaration_analyzer the_type_declaration_analyzer =
                 new type_declaration_analyzer(declaration);
-            subdeclarations.append(the_type_declaration);
+            subdeclarations.append(the_type_declaration_analyzer);
             // TODO: signal error
-            assert the_type_declaration != null;
-            type_declaration = the_type_declaration;
+            assert the_type_declaration_analyzer != null;
+            the_type_declaration = the_type_declaration_analyzer;
           } else {
             return new error_signal(
                 new base_string("Type declaration or import expected"), the_construct);
@@ -162,14 +162,14 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
       return external_body;
     } else {
       return new base_list<construct>(
-          (type_declaration_construct) type_declaration.deeper_origin());
+          (type_declaration_construct) the_type_declaration.deeper_origin());
     }
   }
 
   @Override
   public type_declaration get_type_declaration() {
-    assert type_declaration != null;
-    return type_declaration;
+    assert the_type_declaration != null;
+    return the_type_declaration;
   }
 
   @Override
@@ -179,7 +179,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
 
   @Override
   public principal_type get_declared_type() {
-    return type_declaration.get_declared_type();
+    return the_type_declaration.get_declared_type();
   }
 
   @Override

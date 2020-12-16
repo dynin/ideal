@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.printers;
+package ideal.development.analyzers;
 
 import ideal.library.elements.*;
 import ideal.library.texts.*;
@@ -28,7 +28,7 @@ import ideal.development.declarations.*;
 import ideal.development.extensions.*;
 import ideal.development.documenters.*;
 
-public class simple_type_announcement extends debuggable implements type_announcement, analyzable {
+public class simple_type_announcement extends debuggable implements type_announcement {
   private final type_declaration the_type_declaration;
   private final origin the_origin;
 

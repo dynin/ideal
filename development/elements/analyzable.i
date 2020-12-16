@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
---- A data object that can be analyzed and convrted into an action.
+--- A data object that can be analyzed and converted into an action.
 --- The analisys may require some context, such as the parent frame;
 --- see |ideal.development.analyzers.base_analyzer| for details.
 interface analyzable {

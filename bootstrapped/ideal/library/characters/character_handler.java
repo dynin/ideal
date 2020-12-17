@@ -5,6 +5,9 @@ package ideal.library.characters;
 import ideal.library.elements.*;
 
 public interface character_handler extends deeply_immutable_data {
-  boolean is_upper_case(char c);
-  char to_lower_case(char c);
+  boolean is_letter(char the_character);
+  boolean is_letter_or_digit(char the_character);
+  boolean is_whitespace(char the_character);
+  boolean is_upper_case(char the_character);
+  char to_lower_case(char the_character);
 }

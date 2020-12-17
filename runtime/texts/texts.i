@@ -6,6 +6,7 @@
 
 namespace texts {
   implicit import ideal.library.elements;
+  implicit import ideal.library.characters;
   implicit import ideal.library.texts;
   implicit import ideal.runtime.elements;
   import ideal.library.channels.output;
@@ -24,10 +25,13 @@ namespace texts {
   class plain_formatter;
   class markup_formatter;
 
+  class markup_grammar;
+
   namespace text_library;
   namespace text_util;
 
   class test_elements;
   class test_plain_text;
   class test_markup_text;
+  class test_markup_grammar;
 }

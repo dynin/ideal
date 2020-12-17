@@ -3,6 +3,7 @@
 package ideal.runtime.texts;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;

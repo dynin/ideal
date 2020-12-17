@@ -11,7 +11,11 @@ package characters {
   interface character_handler {
     extends deeply_immutable data;
 
-    boolean is_upper_case(character c);
-    character to_lower_case(character c);
+    boolean is_letter(character the_character) pure;
+    boolean is_letter_or_digit(character the_character) pure;
+    boolean is_whitespace(character the_character) pure;
+    boolean is_upper_case(character the_character) pure;
+
+    character to_lower_case(character the_character);
   }
 }

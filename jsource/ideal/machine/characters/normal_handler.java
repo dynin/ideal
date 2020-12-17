@@ -14,6 +14,21 @@ public class normal_handler implements character_handler {
   public static final normal_handler instance = new normal_handler();
 
   @Override
+  public boolean is_letter(char the_character) {
+    return Character.isLetter(the_character);
+  }
+
+  @Override
+  public boolean is_letter_or_digit(char the_character) {
+    return Character.isLetterOrDigit(the_character);
+  }
+
+  @Override
+  public boolean is_whitespace(char the_character) {
+    return Character.isWhitespace(the_character);
+  }
+
+  @Override
   public boolean is_upper_case(char c) {
     return Character.isUpperCase(c);
   }

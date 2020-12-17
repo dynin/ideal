@@ -4,14 +4,9 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace runtime {
-  namespace elements;
-  namespace patterns;
-  namespace characters;
-  namespace texts;
-  namespace reflections;
-  namespace channels;
-  namespace resources;
-  namespace logs;
-  namespace graphs;
+namespace characters {
+  implicit import ideal.library.elements;
+  implicit import ideal.library.characters;
+
+  class test_character_handler;
 }

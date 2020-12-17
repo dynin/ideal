@@ -10,6 +10,7 @@ package ideal.development.tests;
 
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
+import ideal.runtime.characters.*;
 import ideal.runtime.patterns.*;
 import ideal.runtime.resources.*;
 import ideal.runtime.channels.*;
@@ -45,9 +46,12 @@ public class main {
     new test_hash_dictionary().run_all_tests();
     new test_hash_set().run_all_tests();
 
+    new test_character_handler().run_all_tests();
+
     new test_elements().run_all_tests();
     new test_plain_text().run_all_tests();
     new test_markup_text().run_all_tests();
+    new test_markup_grammar().run_all_tests();
 
     new test_display().run_all_tests();
 

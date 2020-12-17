@@ -4,13 +4,16 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
+implicit import ideal.library.elements;
+implicit import ideal.library.characters;
+implicit import ideal.library.texts;
+implicit import ideal.runtime.elements;
+
 --- The grammar for a subset of XML.
----
---- Used https://cs.lmu.edu/~ray/notes/xmlgrammar/ as a reference.
-class markup_grammar {
+class testparser {
   character_handler the_character_handler;
 
-  markup_grammar(character_handler the_character_handler) {
+  testparser(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
   }
 

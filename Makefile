@@ -68,6 +68,7 @@ SHOWCASE_DIR = showcase
 CIRCLE = $(SHOWCASE_DIR)/circle.i
 HELLO = $(SHOWCASE_DIR)/hello.i
 XREFTEST = $(SHOWCASE_DIR)/xreftest.i
+TESTPARSER = $(SHOWCASE_DIR)/testparser.i
 
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \
@@ -182,6 +183,10 @@ circle: $(IDEAL_TARGET) $(CIRCLE)
 
 xreftest: $(IDEAL_TARGET) $(XREFTEST)
 	$(CREATE) -pretty-print -input=$(XREFTEST)
+
+testparser: $(IDEAL_TARGET) $(TESPARSER)
+	$(CREATE) -generate -input=$(TESTPARSER) | tee $(GENERATED_DIR)/testparser.java
+	$(JAVAC) $(GENERATED_DIR)/testparser.java
 
 tc: $(IDEAL_TARGET) $(TESTCACHE)
 	$(CREATE) $(FLAGS_RUN) -input=$(TESTCACHE)

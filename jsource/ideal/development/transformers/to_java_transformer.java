@@ -51,6 +51,7 @@ public class to_java_transformer extends base_transformer {
   private set<principal_type> imported_names;
   private mapping mapping_strategy;
   private principal_type package_type;
+  private @Nullable principal_type enclosing_type;
   private @Nullable procedure_declaration the_enclosing_procedure;
 
   private static simple_name SET_NAME = simple_name.make("set");
@@ -771,6 +772,9 @@ public class to_java_transformer extends base_transformer {
       return null;
     }
 
+    @Nullable principal_type old_enclosing_type = enclosing_type;
+    enclosing_type = declared_type;
+
     if (declared_in_type.get_kind() == class_kind) {
       // Introduce inner type.
       append_static(annotations, the_origin);
@@ -965,6 +969,8 @@ public class to_java_transformer extends base_transformer {
           concrete_mode ? the_kind : interface_kind, flavored_name, type_parameters,
           flavored_body, the_origin));
     }
+
+    enclosing_type = old_enclosing_type;
 
     return type_decls;
   }
@@ -1184,6 +1190,9 @@ public class to_java_transformer extends base_transformer {
     procedure_declaration the_procedure =
         (procedure_declaration) declaration_util.get_declaration(the_action);
 
+    @Nullable principal_type old_enclosing_type = enclosing_type;
+    enclosing_type = the_procedure.get_procedure_type().principal();
+
     construct procedure_type = make_type(the_procedure.get_procedure_type(), the_origin);
     construct new_construct = new operator_construct(operator.ALLOCATE, procedure_type, the_origin);
     construct with_parens = new parameter_construct(new_construct, make_parens(the_origin),
@@ -1229,6 +1238,8 @@ public class to_java_transformer extends base_transformer {
         new empty<annotation_construct>(),
         new block_construct(body, the_origin),
         the_origin);
+
+    enclosing_type = old_enclosing_type;
 
     return new parameter_construct(with_parens,
         new list_construct(new base_list<construct>(the_call), grouping_type.BRACES, false,
@@ -1897,6 +1908,13 @@ public class to_java_transformer extends base_transformer {
         construct from = transform_and_maybe_rewrite(the_variable_action.from);
         construct result = new resolve_construct(from, name, the_origin);
         return maybe_call(the_variable_action, result, the_origin);
+      } else if (the_variable_action instanceof local_variable &&
+          the_variable_action.short_name() == special_name.THIS) {
+        principal_type this_type = the_variable_action.value_type().principal();
+        if (this_type != enclosing_type) {
+          name_construct from = new name_construct(this_type.short_name(), the_origin);
+          return new resolve_construct(from, name, the_origin);
+        }
       }
       return name;
     }

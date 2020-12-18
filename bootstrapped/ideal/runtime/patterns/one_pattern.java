@@ -16,6 +16,13 @@ public abstract class one_pattern<element_type> extends base_pattern<element_typ
   public @Override boolean is_viable_prefix(final readonly_list<element_type> the_list) {
     return the_list.is_empty() || (the_list.size() == 1 && this.matches(the_list.first()));
   }
+  public @Override @Nullable Integer match_prefix(final readonly_list<element_type> the_list) {
+    if (the_list.is_not_empty() && this.matches(the_list.first())) {
+      return 1;
+    } else {
+      return null;
+    }
+  }
   public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final int start_index) {
     for (int i = start_index; i < the_list.size(); i += 1) {
       if (this.matches(the_list.get(i))) {

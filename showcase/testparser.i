@@ -42,4 +42,8 @@ class testparser {
 
     return input.slice(begin, end);
   }
+
+  nonnegative or null match_prefix(readonly list[character] the_list) {
+    return missing.instance;
+  }
 }

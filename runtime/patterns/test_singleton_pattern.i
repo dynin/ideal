@@ -23,6 +23,15 @@ class test_singleton_pattern {
     assert !the_pattern.is_viable_prefix("xx");
   }
 
+  testcase test_match_prefix() {
+    the_pattern : singleton_pattern[character].new('x');
+
+    assert the_pattern.match_prefix("") is null;
+    assert the_pattern.match_prefix("x") == 1;
+    assert the_pattern.match_prefix("y") is null;
+    assert the_pattern.match_prefix("xx") == 1;
+  }
+
   testcase test_find_first() {
     the_pattern : singleton_pattern[character].new('x');
 

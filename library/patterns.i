@@ -11,7 +11,14 @@ package patterns {
   interface pattern[contravariant readonly value element_type] {
     extends predicate[readonly list[element_type]];
 
+    --- Check whether the given list can be a start of the sequence that matches this pattern.
     boolean is_viable_prefix(readonly list[element_type] the_list);
+
+    --- Returns the maximum number of the elements of a given list that matches the pattern,
+    --- or |null| if there is no prefix match.
+    nonnegative or null match_prefix(readonly list[element_type] the_list);
+
+    --- Gets the first non-empty match for this pattern.
     -- TODO: default null for start_index
     range or null find_first(readonly list[element_type] the_list, nonnegative start_index);
 
@@ -22,7 +29,7 @@ package patterns {
   interface reversible_pattern[contravariant readonly value element_type] {
     extends pattern[element_type];
 
-    --- Gets the last match in the end-to-start direction.
+    --- Gets the last non-empty match in the end-to-start direction.
     --- When |end_index| is specified, it defines the element index after the last element
     --- index after the one being matched.  If |end_index| is null, it defaults to
     --- |the_list.size|.

@@ -19,6 +19,14 @@ abstract class one_pattern[readonly value element_type] {
     return the_list.is_empty || (the_list.size == 1 && matches(the_list.first));
   }
 
+  implement nonnegative or null match_prefix(readonly list[element_type] the_list) {
+    if (the_list.is_not_empty && matches(the_list.first)) {
+      return 1;
+    } else {
+      return missing.instance;
+    }
+  }
+
   -- TODO: default start_index to 0.
   implement range or null find_first(readonly list[element_type] the_list,
       nonnegative start_index) {

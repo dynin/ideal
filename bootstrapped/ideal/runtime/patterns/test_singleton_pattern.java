@@ -16,6 +16,9 @@ public class test_singleton_pattern {
     ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_viable_prefix");
     test_viable_prefix();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_match_prefix");
+    test_match_prefix();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_find_first");
     test_find_first();
     ideal.machine.elements.runtime_util.end_test();
@@ -38,6 +41,13 @@ public class test_singleton_pattern {
     assert the_pattern.is_viable_prefix(new base_string("x"));
     assert !the_pattern.is_viable_prefix(new base_string("y"));
     assert !the_pattern.is_viable_prefix(new base_string("xx"));
+  }
+  public void test_match_prefix() {
+    final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
+    assert the_pattern.match_prefix(new base_string("")) == null;
+    assert the_pattern.match_prefix(new base_string("x")) == 1;
+    assert the_pattern.match_prefix(new base_string("y")) == null;
+    assert the_pattern.match_prefix(new base_string("xx")) == 1;
   }
   public void test_find_first() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');

@@ -27,6 +27,15 @@ class test_predicate_pattern {
     assert !the_pattern.is_viable_prefix("aa");
   }
 
+  testcase test_match_prefix() {
+    the_pattern : predicate_pattern[character].new(test_predicate);
+
+    assert the_pattern.match_prefix("") is null;
+    assert the_pattern.match_prefix("a") == 1;
+    assert the_pattern.match_prefix("x") is null;
+    assert the_pattern.match_prefix("abcdef") == 1;
+  }
+
   testcase test_find_first() {
     the_pattern : predicate_pattern[character].new(test_predicate);
 

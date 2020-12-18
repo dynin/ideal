@@ -16,6 +16,9 @@ public class test_predicate_pattern {
     ideal.machine.elements.runtime_util.start_test("test_predicate_pattern.test_viable_prefix");
     test_viable_prefix();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_predicate_pattern.test_match_prefix");
+    test_match_prefix();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_predicate_pattern.test_find_first");
     test_find_first();
     ideal.machine.elements.runtime_util.end_test();
@@ -49,6 +52,17 @@ public class test_predicate_pattern {
     assert the_pattern.is_viable_prefix(new base_string("a"));
     assert !the_pattern.is_viable_prefix(new base_string("y"));
     assert !the_pattern.is_viable_prefix(new base_string("aa"));
+  }
+  public void test_match_prefix() {
+    final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_predicate_pattern.this.test_predicate(first);
+      }
+    });
+    assert the_pattern.match_prefix(new base_string("")) == null;
+    assert the_pattern.match_prefix(new base_string("a")) == 1;
+    assert the_pattern.match_prefix(new base_string("x")) == null;
+    assert the_pattern.match_prefix(new base_string("abcdef")) == 1;
   }
   public void test_find_first() {
     final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {

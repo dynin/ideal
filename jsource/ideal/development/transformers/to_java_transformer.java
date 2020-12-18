@@ -409,7 +409,8 @@ public class to_java_transformer extends base_transformer {
       type return_type = the_procedure.get_return_type();
       if (type_utilities.is_union(return_type)) {
         annotations.append(make_nullable(the_origin));
-        ret = make_type(remove_null_type(return_type), the_origin);
+        ret = make_type_with_mapping(remove_null_type(return_type), the_origin,
+            mapping.MAP_TO_WRAPPER_TYPE);
       } else if (library().is_reference_type(return_type)) {
         type_flavor ref_flavor = return_type.get_flavor();
         ret = make_type(return_type, the_origin);

@@ -13,7 +13,10 @@ namespace patterns {
   class one_pattern;
   class singleton_pattern;
   class predicate_pattern;
+  class base_repeat_pattern;
+  class repeat_pattern;
 
   class test_singleton_pattern;
   class test_predicate_pattern;
+  class test_repeat_pattern;
 }

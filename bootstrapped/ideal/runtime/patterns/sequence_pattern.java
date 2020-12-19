@@ -30,6 +30,9 @@ public class sequence_pattern<element_type> extends base_pattern<element_type> {
         return false;
       }
       prefix += match;
+      if (prefix == the_list.size()) {
+        return true;
+      }
       index += 1;
     }
     assert index == this.patterns_list.size() - 1;

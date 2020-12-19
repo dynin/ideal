@@ -36,6 +36,9 @@ class sequence_pattern[readonly value element_type] {
         return false;
       }
       prefix += match;
+      if (prefix == the_list.size) {
+        return true;
+      }
       index += 1;
     }
 

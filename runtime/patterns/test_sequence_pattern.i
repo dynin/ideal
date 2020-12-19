@@ -32,6 +32,20 @@ class test_sequence_pattern {
     return sequence_pattern[character].new(patterns_list);
   }
 
+  sequence_pattern[character] make_pattern2() {
+    pattern[character] match_one_or_more_a : repeat_pattern[character].new(match_a, false);
+    pattern[character] match_one_or_more_b : repeat_pattern[character].new(match_b, false);
+    pattern[character] match_one_or_more_c : repeat_pattern[character].new(match_c, false);
+
+    -- TODO: use array creation expression.
+    list[pattern[character]] patterns_list : base_list[pattern[character]].new(
+        match_one_or_more_a,
+        match_one_or_more_b,
+        match_one_or_more_c
+    );
+    return sequence_pattern[character].new(patterns_list);
+  }
+
   testcase test_match() {
     the_pattern : make_pattern();
 
@@ -58,6 +72,19 @@ class test_sequence_pattern {
     assert !the_pattern.is_viable_prefix("bbb");
     assert !the_pattern.is_viable_prefix("bcc");
     assert !the_pattern.is_viable_prefix("Ccc");
+
+    the_pattern2 : make_pattern2();
+
+    assert the_pattern2.is_viable_prefix("");
+    assert the_pattern2.is_viable_prefix("a");
+    assert the_pattern2.is_viable_prefix("aAa");
+    assert the_pattern2.is_viable_prefix("aabb");
+    assert the_pattern2.is_viable_prefix("aaBcc");
+    assert !the_pattern2.is_viable_prefix("x");
+    assert !the_pattern2.is_viable_prefix("xyz");
+    assert !the_pattern2.is_viable_prefix("bbb");
+    assert !the_pattern2.is_viable_prefix("bcc");
+    assert !the_pattern2.is_viable_prefix("Ccc");
   }
 
   testcase test_match_prefix() {

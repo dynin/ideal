@@ -54,6 +54,25 @@ public class test_sequence_pattern {
     final list<pattern<Character>> patterns_list = new base_list<pattern<Character>>(match_one_or_more_a, match_zero_or_more_b, match_one_or_more_c);
     return new sequence_pattern<Character>(patterns_list);
   }
+  public sequence_pattern<Character> make_pattern2() {
+    final pattern<Character> match_one_or_more_a = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_sequence_pattern.this.match_a(first);
+      }
+    }, false);
+    final pattern<Character> match_one_or_more_b = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_sequence_pattern.this.match_b(first);
+      }
+    }, false);
+    final pattern<Character> match_one_or_more_c = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_sequence_pattern.this.match_c(first);
+      }
+    }, false);
+    final list<pattern<Character>> patterns_list = new base_list<pattern<Character>>(match_one_or_more_a, match_one_or_more_b, match_one_or_more_c);
+    return new sequence_pattern<Character>(patterns_list);
+  }
   public void test_match() {
     final sequence_pattern<Character> the_pattern = this.make_pattern();
     assert the_pattern.call(new base_string("abc"));
@@ -77,6 +96,17 @@ public class test_sequence_pattern {
     assert !the_pattern.is_viable_prefix(new base_string("bbb"));
     assert !the_pattern.is_viable_prefix(new base_string("bcc"));
     assert !the_pattern.is_viable_prefix(new base_string("Ccc"));
+    final sequence_pattern<Character> the_pattern2 = this.make_pattern2();
+    assert the_pattern2.is_viable_prefix(new base_string(""));
+    assert the_pattern2.is_viable_prefix(new base_string("a"));
+    assert the_pattern2.is_viable_prefix(new base_string("aAa"));
+    assert the_pattern2.is_viable_prefix(new base_string("aabb"));
+    assert the_pattern2.is_viable_prefix(new base_string("aaBcc"));
+    assert !the_pattern2.is_viable_prefix(new base_string("x"));
+    assert !the_pattern2.is_viable_prefix(new base_string("xyz"));
+    assert !the_pattern2.is_viable_prefix(new base_string("bbb"));
+    assert !the_pattern2.is_viable_prefix(new base_string("bcc"));
+    assert !the_pattern2.is_viable_prefix(new base_string("Ccc"));
   }
   public void test_match_prefix() {
     final sequence_pattern<Character> the_pattern = this.make_pattern();

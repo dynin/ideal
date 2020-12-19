@@ -16,6 +16,7 @@ package patterns {
 
     --- Returns the maximum number of the elements of a given list that matches the pattern,
     --- or |null| if there is no prefix match.
+    --- This is a greedy match: it mtaches the longest prefix.
     nonnegative or null match_prefix(readonly list[element_type] the_list);
 
     --- Gets the first non-empty match for this pattern.

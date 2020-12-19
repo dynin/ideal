@@ -15,8 +15,10 @@ namespace patterns {
   class predicate_pattern;
   class base_repeat_pattern;
   class repeat_pattern;
+  class sequence_pattern;
 
   class test_singleton_pattern;
   class test_predicate_pattern;
   class test_repeat_pattern;
+  class test_sequence_pattern;
 }

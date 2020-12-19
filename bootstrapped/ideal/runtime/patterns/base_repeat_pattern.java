@@ -57,7 +57,7 @@ public abstract class base_repeat_pattern<element_type> extends base_pattern<ele
     }
     return null;
   }
-  public @Override @Nullable range find_last(final readonly_list<element_type> the_list, @Nullable Integer end_index) {
+  public @Override @Nullable range find_last(final readonly_list<element_type> the_list, final @Nullable Integer end_index) {
     int i;
     if (end_index == null) {
       i = the_list.size() - 1;

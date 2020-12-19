@@ -40,7 +40,7 @@ abstract class one_pattern[readonly value element_type] {
 
   -- TODO: default end_index to missing.
   implement range or null find_last(readonly list[element_type] the_list,
-      var nonnegative or null end_index) {
+      nonnegative or null end_index) {
     var integer i;
     if (end_index is null) {
       i = the_list.size - 1;

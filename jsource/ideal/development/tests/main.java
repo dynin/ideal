@@ -59,6 +59,7 @@ public class main {
     new test_predicate_pattern().run_all_tests();
     new test_repeat_pattern().run_all_tests();
     new test_sequence_pattern().run_all_tests();
+    new test_procedure_matcher().run_all_tests();
 
     new test_resolver().run_all_tests();
 

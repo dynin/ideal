@@ -37,4 +37,13 @@ package patterns {
     -- TODO: default null for end_index
     range or null find_last(readonly list[element_type] the_list, nonnegative or null end_index);
   }
+
+  --- A matcher is a pattern with an associated parse procedure that generates a result.
+  interface matcher[contravariant readonly value element_type, covariant any value result_type] {
+    extends pattern[element_type];
+
+    --- Parse the list and produce a result.
+    --- Assumes this pattern matches the list.
+    result_type parse(readonly list[element_type] the_list);
+  }
 }

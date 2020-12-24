@@ -7,30 +7,62 @@ import ideal.library.characters.*;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
+import ideal.library.patterns.*;
+import ideal.runtime.patterns.*;
 
 public class markup_grammar {
   public final character_handler the_character_handler;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
   }
-  public boolean is_letter(final char the_character) {
-    return this.the_character_handler.is_letter(the_character);
+  public boolean name_start(final char c) {
+    return this.the_character_handler.is_letter(c) || c == '_' || c == ':';
   }
-  public string parse(final string input) {
-    final function1<Boolean, Character> is_whitespace = new function1<Boolean, Character>() {
+  public boolean name_char(final char c) {
+    return this.the_character_handler.is_letter(c) || c == '.' || c == '-' || c == '_' || c == ':';
+  }
+  private pattern<Character> one(final function1<Boolean, Character> the_predicate) {
+    return new predicate_pattern<Character>(the_predicate);
+  }
+  private pattern<Character> zero_or_more(final function1<Boolean, Character> the_predicate) {
+    return new repeat_pattern<Character>(the_predicate, false);
+  }
+  private string as_string_procedure(final readonly_list<Character> the_character_list) {
+    return (base_string) the_character_list.frozen_copy();
+  }
+  private matcher<Character, string> as_string(final pattern<Character> the_pattern) {
+    return new procedure_matcher<Character, string>(the_pattern, new function1<string, readonly_list<Character>>() {
+      @Override public string call(readonly_list<Character> first) {
+        return markup_grammar.this.as_string_procedure(first);
+      }
+    });
+  }
+  private pattern<Character> space_opt() {
+    return this.zero_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.the_character_handler.is_whitespace(first);
       }
-    };
-    int index = 0;
-    while (index < input.size() && is_whitespace.call(input.get(index))) {
-      index += 1;
-    }
-    final int begin = index;
-    while (index < input.size() && this.is_letter(input.get(index))) {
-      index += 1;
-    }
-    final int end = index;
-    return input.slice(begin, end);
+    });
+  }
+  private matcher<Character, string> name() {
+    return this.as_string(new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.one(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return markup_grammar.this.name_start(first);
+      }
+    }), this.zero_or_more(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return markup_grammar.this.name_char(first);
+      }
+    }) }))));
+  }
+  private string select_2nd(final readonly_list<any_value> the_list) {
+    return (string) the_list.get(1);
+  }
+  public matcher<Character, string> document() {
+    return new sequence_matcher<Character, string>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.space_opt(), this.name(), this.space_opt() })), new function1<string, readonly_list<any_value>>() {
+      @Override public string call(readonly_list<any_value> first) {
+        return markup_grammar.this.select_2nd(first);
+      }
+    });
   }
 }

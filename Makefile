@@ -162,6 +162,9 @@ test_runtime: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
 
+compile_runtime:
+	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
+
 generate_cache: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_cache
 

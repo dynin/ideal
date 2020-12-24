@@ -16,9 +16,9 @@ public class test_markup_grammar {
     ideal.machine.elements.runtime_util.end_test();
   }
   public void test_simple_parse() {
-    final markup_grammar the_markup_grammar = new markup_grammar(normal_handler.instance);
+    final ideal.library.patterns.matcher<Character, string> the_markup_matcher = new markup_grammar(normal_handler.instance).document();
     final string input = new base_string("  markup  ");
-    final string output = the_markup_grammar.parse(input);
+    final string output = the_markup_matcher.parse(input);
     assert ideal.machine.elements.runtime_util.values_equal(output, new base_string("markup"));
   }
 }

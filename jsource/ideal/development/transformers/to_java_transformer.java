@@ -198,8 +198,10 @@ public class to_java_transformer extends base_transformer {
   public construct process_list_initializer_action(list_initializer_action initializer) {
     origin the_origin = initializer;
     type element_type = initializer.element_type;
-    construct type_name = make_type(element_type, the_origin);
-    construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
+    // Java doesn't like array creation with generic params.
+    // javac complains with: "error: generic array creation".
+    construct type_name_no_params = make_type(element_type, false, the_origin);
+    construct alloc = new operator_construct(operator.ALLOCATE, type_name_no_params, the_origin);
     list_construct empty_brackets = new list_construct(new empty<construct>(),
         grouping_type.BRACKETS, false, the_origin);
     construct alloc_array = new parameter_construct(alloc, empty_brackets, the_origin);
@@ -209,6 +211,7 @@ public class to_java_transformer extends base_transformer {
         the_origin);
     construct alloc_call = new parameter_construct(alloc_array, elements, the_origin);
 
+    construct type_name = make_type(element_type, the_origin);
     construct array_name = make_type(java_library.array_class(), the_origin);
     list_construct array_params = new list_construct(new base_list<construct>(type_name),
         grouping_type.ANGLE_BRACKETS, false, the_origin);
@@ -488,6 +491,10 @@ public class to_java_transformer extends base_transformer {
 
   @Override
   protected construct make_type(type the_type, origin the_origin) {
+    return make_type(the_type, true, the_origin);
+  }
+
+  protected construct make_type(type the_type, boolean include_parameters, origin the_origin) {
     principal_type principal = the_type.principal();
     type_flavor the_flavor = the_type.get_flavor();
 
@@ -526,7 +533,7 @@ public class to_java_transformer extends base_transformer {
         the_flavor), the_origin);
     name = make_full_name(name, principal, the_origin);
 
-    if (principal instanceof parametrized_type) {
+    if (include_parameters && principal instanceof parametrized_type) {
       immutable_list<abstract_value> type_params =
           ((parametrized_type) principal).get_parameters().internal_access();
       list<construct> params = new base_list<construct>();

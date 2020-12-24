@@ -10,11 +10,11 @@ class repeat_pattern[readonly equality_comparable element_type] {
 
   -- TODO: use the predicate type.
   private function[boolean, element_type] the_predicate;
-  private boolean is_match_empty;
+  private boolean do_match_empty;
 
-  repeat_pattern(function[boolean, element_type] the_predicate, boolean is_match_empty) {
+  repeat_pattern(function[boolean, element_type] the_predicate, boolean do_match_empty) {
     this.the_predicate = the_predicate;
-    this.is_match_empty = is_match_empty;
+    this.do_match_empty = do_match_empty;
   }
 
   implement boolean matches(element_type the_element) {
@@ -22,6 +22,6 @@ class repeat_pattern[readonly equality_comparable element_type] {
   }
 
   implement boolean match_empty() {
-    return is_match_empty;
+    return do_match_empty;
   }
 }

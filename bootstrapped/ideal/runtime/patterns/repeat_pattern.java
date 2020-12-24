@@ -8,15 +8,15 @@ import ideal.runtime.elements.*;
 
 public class repeat_pattern<element_type> extends base_repeat_pattern<element_type> {
   private final function1<Boolean, element_type> the_predicate;
-  private final boolean is_match_empty;
-  public repeat_pattern(final function1<Boolean, element_type> the_predicate, final boolean is_match_empty) {
+  private final boolean do_match_empty;
+  public repeat_pattern(final function1<Boolean, element_type> the_predicate, final boolean do_match_empty) {
     this.the_predicate = the_predicate;
-    this.is_match_empty = is_match_empty;
+    this.do_match_empty = do_match_empty;
   }
   public @Override boolean matches(final element_type the_element) {
     return this.the_predicate.call(the_element);
   }
   public @Override boolean match_empty() {
-    return this.is_match_empty;
+    return this.do_match_empty;
   }
 }

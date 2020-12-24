@@ -26,8 +26,11 @@ namespace flavor {
   type_flavor deeply_immutable_flavor : type_flavor_impl.new("deeply_immutable",
       flavor_profiles.deeply_immutable_profile, [immutable_flavor, ]);
 
+  -- TODO: raw flavor should be special, allowing write access to final (non-var) fields.
+  -- Constructor procedures should verify that all invariants are satisfied.
+  -- For now, just allow promotions from raw flavor to mutable flavor.
   type_flavor raw_flavor : type_flavor_impl.new("raw", flavor_profiles.mutable_profile,
-      [writeonly_flavor, ]);
+      [mutable_flavor, ]);
 
   all_flavors : [
     nameonly_flavor, any_flavor, readonly_flavor, writeonly_flavor,

@@ -8,10 +8,10 @@ class test_markup_grammar {
   import ideal.machine.characters.normal_handler;
 
   testcase test_simple_parse() {
-    the_markup_matcher : markup_grammar.new(normal_handler.instance).document();
+    document_matcher : markup_grammar.new(normal_handler.instance).document_matcher;
 
     input : "  markup  ";
-    output : the_markup_matcher.parse(input);
+    output : document_matcher.parse(input);
 
     assert output == "markup";
   }

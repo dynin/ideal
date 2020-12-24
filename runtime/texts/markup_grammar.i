@@ -12,11 +12,11 @@ class markup_grammar {
   implicit import ideal.runtime.patterns;
 
   character_handler the_character_handler;
---  matcher[character, string] document_matcher;
+  matcher[character, string] document_matcher;
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
---    this.document_matcher = this.document();
+    this.document_matcher = this.document();
   }
 
   boolean name_start(character c) pure {
@@ -53,7 +53,7 @@ class markup_grammar {
 
   private string select_2nd(readonly list[any value] the_list) pure => the_list[1] as string;
 
-  public matcher[character, string] document() {
+  private matcher[character, string] document() {
     return sequence_matcher[character, string].new([ space_opt(), name(), space_opt() ],
         select_2nd);
   }

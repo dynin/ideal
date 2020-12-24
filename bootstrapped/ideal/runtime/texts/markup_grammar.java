@@ -12,8 +12,10 @@ import ideal.runtime.patterns.*;
 
 public class markup_grammar {
   public final character_handler the_character_handler;
+  public final matcher<Character, string> document_matcher;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
+    this.document_matcher = this.document();
   }
   public boolean name_start(final char c) {
     return this.the_character_handler.is_letter(c) || c == '_' || c == ':';
@@ -58,7 +60,7 @@ public class markup_grammar {
   private string select_2nd(final readonly_list<any_value> the_list) {
     return (string) the_list.get(1);
   }
-  public matcher<Character, string> document() {
+  private matcher<Character, string> document() {
     return new sequence_matcher<Character, string>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.space_opt(), this.name(), this.space_opt() })), new function1<string, readonly_list<any_value>>() {
       @Override public string call(readonly_list<any_value> first) {
         return markup_grammar.this.select_2nd(first);

@@ -16,9 +16,16 @@ public class test_markup_grammar {
     ideal.machine.elements.runtime_util.end_test();
   }
   public void test_simple_parse() {
-    final ideal.library.patterns.matcher<Character, string> document_matcher = new markup_grammar(normal_handler.instance).document_matcher;
-    final string input = new base_string("  markup  ");
-    final string output = document_matcher.parse(input);
-    assert ideal.machine.elements.runtime_util.values_equal(output, new base_string("markup"));
+    final markup_grammar grammar = new markup_grammar(normal_handler.instance);
+    final ideal.library.patterns.pattern<Character> document_pattern = grammar.document_pattern;
+    assert document_pattern.call(new base_string("<html>foo</html>"));
+    assert document_pattern.call(new base_string("  <html>foo</html>  "));
+    assert !document_pattern.call(new base_string("  <html>Hello <em>world!</em></html>  "));
+    assert !document_pattern.call(new base_string("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  "));
+    assert !document_pattern.call(new base_string(" no markup "));
+    assert !document_pattern.call(new base_string("  <html>foo  "));
+    assert !document_pattern.call(new base_string("  <html>foo<bar>  "));
+    assert !document_pattern.call(new base_string("  <>foo  "));
+    assert document_pattern.call(new base_string("  <abc>foo</def>  "));
   }
 }

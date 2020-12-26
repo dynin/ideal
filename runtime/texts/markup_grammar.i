@@ -55,7 +55,7 @@ class markup_grammar {
     return zero_or_more(the_character_handler.is_whitespace);
   }
 
-  public matcher[character, string] name() pure {
+  protected matcher[character, string] name() pure {
     return as_string(sequence_pattern[character].new([ one(name_start), zero_or_more(name_char) ]));
   }
 
@@ -73,7 +73,7 @@ class markup_grammar {
     return one_char('/');
   }
 
-  public pattern[character] start_tag() {
+  protected pattern[character] start_tag() {
     return sequence_pattern[character].new([
         lt(), name(), space_opt(), gt()
     ]);

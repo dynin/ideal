@@ -13,6 +13,7 @@ class test_markup_grammar {
 
     assert document_pattern("<html>foo</html>");
     assert document_pattern("  <html>foo</html>  ");
+    assert document_pattern("  <html  >foo</html  >  ");
 
     -- TODO: these should succeed.
     assert !document_pattern("  <html>Hello <em>world!</em></html>  ");

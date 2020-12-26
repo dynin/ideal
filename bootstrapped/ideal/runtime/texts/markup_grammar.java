@@ -52,7 +52,7 @@ public class markup_grammar {
       }
     });
   }
-  public matcher<Character, string> name() {
+  protected matcher<Character, string> name() {
     return this.as_string(new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.one(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.name_start(first);
@@ -75,7 +75,7 @@ public class markup_grammar {
   protected pattern<Character> slash() {
     return this.one_char('/');
   }
-  public pattern<Character> start_tag() {
+  protected pattern<Character> start_tag() {
     return new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.lt(), this.name(), this.space_opt(), this.gt() })));
   }
   protected pattern<Character> end_tag() {

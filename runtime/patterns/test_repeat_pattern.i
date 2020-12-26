@@ -69,6 +69,7 @@ class test_repeat_pattern {
 
   testcase test_find_first() {
     the_pattern : repeat_pattern[character].new(test_predicate, false);
+    -- TODO: test pattern with do_match_empty.
 
     assert the_pattern.find_first("", 0) is null;
     assert the_pattern.find_first("foo", 0) is null;
@@ -92,6 +93,7 @@ class test_repeat_pattern {
 
   testcase test_find_last() {
     the_pattern : repeat_pattern[character].new(test_predicate, false);
+    -- TODO: test pattern with do_match_empty.
 
     assert the_pattern.find_last("", missing.instance) is null;
     assert the_pattern.find_last("foo", missing.instance) is null;

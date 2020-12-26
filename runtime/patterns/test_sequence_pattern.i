@@ -124,6 +124,19 @@ class test_sequence_pattern {
     assert match3.end == 5;
   }
 
+  testcase test_find_first_more() {
+    pattern[character] match_zero_or_more_b : repeat_pattern[character].new(match_b, true);
+    pattern[character] match_one_or_more_c : repeat_pattern[character].new(match_c, false);
+
+    pattern[character] beta :
+        sequence_pattern[character].new([match_zero_or_more_b, match_one_or_more_c]);
+
+    match : beta.find_first("aaabbbAAACCCBBB", 9);
+    assert match is_not null;
+    assert match.begin == 9;
+    assert match.end == 12;
+  }
+
   testcase test_split() {
     the_pattern : make_pattern();
 

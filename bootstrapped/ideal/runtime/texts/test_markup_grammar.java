@@ -20,6 +20,7 @@ public class test_markup_grammar {
     final ideal.library.patterns.pattern<Character> document_pattern = grammar.document_pattern;
     assert document_pattern.call(new base_string("<html>foo</html>"));
     assert document_pattern.call(new base_string("  <html>foo</html>  "));
+    assert document_pattern.call(new base_string("  <html  >foo</html  >  "));
     assert !document_pattern.call(new base_string("  <html>Hello <em>world!</em></html>  "));
     assert !document_pattern.call(new base_string("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  "));
     assert !document_pattern.call(new base_string(" no markup "));

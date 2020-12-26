@@ -50,6 +50,14 @@ abstract class base_repeat_pattern[readonly value element_type] {
   -- TODO: default start_index to 0.
   implement range or null find_first(readonly list[element_type] the_list,
       nonnegative start_index) {
+    if (match_empty()) {
+      if (start_index >= the_list.size) {
+        return missing.instance;
+      } else if (!matches(the_list[start_index])) {
+        return base_range.new(start_index, start_index);
+      }
+    }
+
     for (var nonnegative i : start_index; i < the_list.size; i += 1) {
       if (matches(the_list[i])) {
         start_range : i;
@@ -60,6 +68,7 @@ abstract class base_repeat_pattern[readonly value element_type] {
         return base_range.new(start_range, i);
       }
     }
+
     return missing.instance;
   }
 
@@ -72,6 +81,17 @@ abstract class base_repeat_pattern[readonly value element_type] {
     } else {
       assert end_index <= the_list.size;
       i = end_index - 1;
+    }
+
+    if (match_empty()) {
+      if (i < 0) {
+        return missing.instance;
+      }
+
+      assert i is nonnegative;
+      if (!matches(the_list[i])) {
+        return base_range.new(i + 1, i + 1);
+      }
     }
 
     for (; i >= 0; i -= 1) {

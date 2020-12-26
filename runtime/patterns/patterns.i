@@ -18,6 +18,7 @@ namespace patterns {
   class sequence_pattern;
   class procedure_matcher;
   class sequence_matcher;
+  class option_pattern;
 
   class test_singleton_pattern;
   class test_predicate_pattern;
@@ -25,4 +26,5 @@ namespace patterns {
   class test_sequence_pattern;
   class test_procedure_matcher;
   class test_sequence_matcher;
+  class test_option_pattern;
 }

@@ -22,6 +22,9 @@ public class test_sequence_pattern {
     ideal.machine.elements.runtime_util.start_test("test_sequence_pattern.test_find_first");
     test_find_first();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_sequence_pattern.test_find_first_more");
+    test_find_first_more();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_sequence_pattern.test_split");
     test_split();
     ideal.machine.elements.runtime_util.end_test();
@@ -137,6 +140,23 @@ public class test_sequence_pattern {
     assert match3 != null;
     assert match3.begin() == 3;
     assert match3.end() == 5;
+  }
+  public void test_find_first_more() {
+    final pattern<Character> match_zero_or_more_b = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_sequence_pattern.this.match_b(first);
+      }
+    }, true);
+    final pattern<Character> match_one_or_more_c = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_sequence_pattern.this.match_c(first);
+      }
+    }, false);
+    final pattern<Character> beta = new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ match_zero_or_more_b, match_one_or_more_c })));
+    final @Nullable range match = beta.find_first(new base_string("aaabbbAAACCCBBB"), 9);
+    assert match != null;
+    assert match.begin() == 9;
+    assert match.end() == 12;
   }
   public void test_split() {
     final sequence_pattern<Character> the_pattern = this.make_pattern();

@@ -45,10 +45,9 @@ public abstract class base_repeat_pattern<element_type> extends base_pattern<ele
     }
   }
   public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final int start_index) {
+    assert start_index <= the_list.size();
     if (this.match_empty()) {
-      if (start_index >= the_list.size()) {
-        return null;
-      } else if (!this.matches(the_list.get(start_index))) {
+      if (start_index == the_list.size() || !this.matches(the_list.get(start_index))) {
         return new base_range(start_index, start_index);
       }
     }
@@ -74,11 +73,12 @@ public abstract class base_repeat_pattern<element_type> extends base_pattern<ele
     }
     if (this.match_empty()) {
       if (i < 0) {
-        return null;
-      }
-      assert i >= 0;
-      if (!this.matches(the_list.get(i))) {
-        return new base_range(i + 1, i + 1);
+        return new base_range(0, 0);
+      } else {
+        assert i >= 0;
+        if (!this.matches(the_list.get(i))) {
+          return new base_range(i + 1, i + 1);
+        }
       }
     }
     for (; i >= 0; i -= 1) {

@@ -28,11 +28,6 @@ class test_option_pattern {
     pattern[character] beta :
         sequence_pattern[character].new([match_zero_or_more_b, match_one_or_more_c]);
 
-    match5 : beta.find_first("aaabbbAAACCCBBB", 9);
-    assert match5 is_not null;
-    assert match5.begin == 9;
-    assert match5.end == 12;
-
     return option_pattern[character].new([alpha, beta]);
   }
 

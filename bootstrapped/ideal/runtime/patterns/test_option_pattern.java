@@ -53,10 +53,6 @@ public class test_option_pattern {
     }, false);
     final pattern<Character> alpha = new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ match_one_or_more_a, match_zero_or_more_b })));
     final pattern<Character> beta = new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ match_zero_or_more_b, match_one_or_more_c })));
-    final @Nullable range match5 = beta.find_first(new base_string("aaabbbAAACCCBBB"), 9);
-    assert match5 != null;
-    assert match5.begin() == 9;
-    assert match5.end() == 12;
     return new option_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ alpha, beta })));
   }
   public void test_match() {

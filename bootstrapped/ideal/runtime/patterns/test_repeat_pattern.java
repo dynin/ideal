@@ -125,6 +125,27 @@ public class test_repeat_pattern {
     assert match3 != null;
     assert match3.begin() == 5;
     assert match3.end() == 8;
+    final repeat_pattern<Character> the_pattern2 = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_repeat_pattern.this.test_predicate(first);
+      }
+    }, true);
+    final @Nullable range match4 = the_pattern2.find_first(new base_string(""), 0);
+    assert match4 != null;
+    assert match4.begin() == 0;
+    assert match4.end() == 0;
+    final @Nullable range match5 = the_pattern2.find_first(new base_string("xyz"), 2);
+    assert match5 != null;
+    assert match5.begin() == 2;
+    assert match5.end() == 2;
+    final @Nullable range match6 = the_pattern2.find_first(new base_string("xabcd"), 1);
+    assert match6 != null;
+    assert match6.begin() == 1;
+    assert match6.end() == 4;
+    final @Nullable range match7 = the_pattern2.find_first(new base_string("ayzzybacy"), 2);
+    assert match7 != null;
+    assert match7.begin() == 2;
+    assert match7.end() == 2;
   }
   public void test_find_last() {
     final repeat_pattern<Character> the_pattern = new repeat_pattern<Character>(new function1<Boolean, Character>() {
@@ -152,6 +173,27 @@ public class test_repeat_pattern {
     assert match4 != null;
     assert match4.begin() == 5;
     assert match4.end() == 8;
+    final repeat_pattern<Character> the_pattern2 = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_repeat_pattern.this.test_predicate(first);
+      }
+    }, true);
+    final @Nullable range match5 = the_pattern2.find_last(new base_string(""), null);
+    assert match5 != null;
+    assert match5.begin() == 0;
+    assert match5.end() == 0;
+    final @Nullable range match6 = the_pattern2.find_last(new base_string("foobar"), 2);
+    assert match6 != null;
+    assert match6.begin() == 2;
+    assert match6.end() == 2;
+    final @Nullable range match7 = the_pattern2.find_last(new base_string("foobar"), 5);
+    assert match7 != null;
+    assert match7.begin() == 3;
+    assert match7.end() == 5;
+    final @Nullable range match8 = the_pattern2.find_last(new base_string("ayzzyabcy"), null);
+    assert match8 != null;
+    assert match8.begin() == 9;
+    assert match8.end() == 9;
   }
   public void test_split() {
     final repeat_pattern<Character> the_pattern = new repeat_pattern<Character>(new function1<Boolean, Character>() {

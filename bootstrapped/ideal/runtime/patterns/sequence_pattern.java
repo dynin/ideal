@@ -54,6 +54,7 @@ public class sequence_pattern<element_type> extends base_pattern<element_type> {
   }
   public @Override @Nullable range find_first(final readonly_list<element_type> the_list, int start_index) {
     while (true) {
+      assert start_index <= the_list.size();
       final @Nullable range first_match = this.patterns_list.get(0).find_first(the_list, start_index);
       if (first_match == null) {
         return null;
@@ -63,6 +64,9 @@ public class sequence_pattern<element_type> extends base_pattern<element_type> {
         return new base_range(first_match.begin(), rest_match);
       }
       start_index = first_match.begin() + 1;
+      if (start_index > the_list.size()) {
+        return null;
+      }
     }
   }
 }

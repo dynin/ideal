@@ -69,7 +69,6 @@ class test_repeat_pattern {
 
   testcase test_find_first() {
     the_pattern : repeat_pattern[character].new(test_predicate, false);
-    -- TODO: test pattern with do_match_empty.
 
     assert the_pattern.find_first("", 0) is null;
     assert the_pattern.find_first("foo", 0) is null;
@@ -89,6 +88,28 @@ class test_repeat_pattern {
     assert match3 is_not null;
     assert match3.begin == 5;
     assert match3.end == 8;
+
+    the_pattern2 : repeat_pattern[character].new(test_predicate, true);
+
+    match4 : the_pattern2.find_first("", 0);
+    assert match4 is_not null;
+    assert match4.begin == 0;
+    assert match4.end == 0;
+
+    match5 : the_pattern2.find_first("xyz", 2);
+    assert match5 is_not null;
+    assert match5.begin == 2;
+    assert match5.end == 2;
+
+    match6 : the_pattern2.find_first("xabcd", 1);
+    assert match6 is_not null;
+    assert match6.begin == 1;
+    assert match6.end == 4;
+
+    match7 : the_pattern2.find_first("ayzzybacy", 2);
+    assert match7 is_not null;
+    assert match7.begin == 2;
+    assert match7.end == 2;
   }
 
   testcase test_find_last() {
@@ -119,6 +140,28 @@ class test_repeat_pattern {
     assert match4 is_not null;
     assert match4.begin == 5;
     assert match4.end == 8;
+
+    the_pattern2 : repeat_pattern[character].new(test_predicate, true);
+
+    match5 : the_pattern2.find_last("", missing.instance);
+    assert match5 is_not null;
+    assert match5.begin == 0;
+    assert match5.end == 0;
+
+    match6 : the_pattern2.find_last("foobar", 2);
+    assert match6 is_not null;
+    assert match6.begin == 2;
+    assert match6.end == 2;
+
+    match7 : the_pattern2.find_last("foobar", 5);
+    assert match7 is_not null;
+    assert match7.begin == 3;
+    assert match7.end == 5;
+
+    match8 : the_pattern2.find_last("ayzzyabcy", missing.instance);
+    assert match8 is_not null;
+    assert match8.begin == 9;
+    assert match8.end == 9;
   }
 
   testcase test_split() {

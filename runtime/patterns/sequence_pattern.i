@@ -66,8 +66,7 @@ class sequence_pattern[readonly value element_type] {
 
   implement range or null find_first(readonly list[element_type] the_list,
       var nonnegative start_index) {
-    loop {
-      assert start_index <= the_list.size;
+    while (start_index <= the_list.size) {
       first_match : patterns_list[0].find_first(the_list, start_index);
       if (first_match is null) {
         return missing.instance;
@@ -77,9 +76,7 @@ class sequence_pattern[readonly value element_type] {
         return base_range.new(first_match.begin, rest_match);
       }
       start_index = first_match.begin + 1;
-      if (start_index > the_list.size) {
-        return missing.instance;
-      }
     }
+    return missing.instance;
   }
 }

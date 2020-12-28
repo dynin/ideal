@@ -49,7 +49,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
         final pattern<element_type> option = option_list.get(option_index);
         final @Nullable Integer match = option.match_prefix(the_list);
         if (match != null) {
-          if (result == null ? true : result < match) {
+          if (result == null || result < match) {
             result = match;
           }
         }

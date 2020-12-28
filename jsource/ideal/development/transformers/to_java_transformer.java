@@ -1605,6 +1605,10 @@ public class to_java_transformer extends base_transformer {
       return new operator_construct(operator.LOGICAL_AND,
           transform_action(the_conditional.condition),
           transform_action(the_conditional.then_action), the_origin);
+    } else if (is_value(the_conditional.then_action, library().true_value())) {
+      return new operator_construct(operator.LOGICAL_OR,
+          transform_action(the_conditional.condition),
+          transform_action(the_conditional.else_action), the_origin);
     }
 
     // TODO: infer is_statement from conditional_action

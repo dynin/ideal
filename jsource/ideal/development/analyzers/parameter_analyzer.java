@@ -64,10 +64,13 @@ public class parameter_analyzer extends single_pass_analyzer {
 
   @Override
   protected analysis_result do_single_pass_analysis() {
-    if (is_logical_and()) {
-      analyzable logical_and_conditional = rewrite_logical_and();
-      init_context(logical_and_conditional);
-      return logical_and_conditional.analyze();
+    if (is_logical_operator()) {
+      // We handle logical and-or (&& - ||) here.
+      // We do this because when typechecking the coniditional,
+      // analysis of the conditional expression may affect analysis of then/else expressions.
+      analyzable logical_operator = rewrite_logical_operator();
+      init_context(logical_operator);
+      return logical_operator.analyze();
     }
 
     list<action> param_actions = new base_list<action>();
@@ -136,18 +139,30 @@ public class parameter_analyzer extends single_pass_analyzer {
     return result;
   }
 
-  private boolean is_logical_and() {
-    return main_analyzable instanceof resolve_analyzer &&
-        ((resolve_analyzer) main_analyzable).short_name() == operator.LOGICAL_AND;
+  private boolean is_logical_operator() {
+    if (main_analyzable instanceof resolve_analyzer) {
+      action_name name = ((resolve_analyzer) main_analyzable).short_name();
+      return name == operator.LOGICAL_AND || name == operator.LOGICAL_OR;
+    }
+    return false;
   }
 
-  private conditional_analyzer rewrite_logical_and() {
+  private conditional_analyzer rewrite_logical_operator() {
     origin the_origin = this;
     assert analyzable_parameters.size() == 2;
     analyzable first = analyzable_parameters.get(0);
     analyzable second = analyzable_parameters.get(1);
-    analyzable false_value = base_analyzable_action.from(library().false_value(), the_origin);
-    return new conditional_analyzer(first, second, false_value, the_origin);
+    action_name name = ((resolve_analyzer) main_analyzable).short_name();
+    if (name == operator.LOGICAL_AND) {
+      analyzable false_value = base_analyzable_action.from(library().false_value(), the_origin);
+      return new conditional_analyzer(first, second, false_value, the_origin);
+    } else if (name == operator.LOGICAL_OR) {
+      analyzable true_value = base_analyzable_action.from(library().true_value(), the_origin);
+      return new conditional_analyzer(first, true_value, second, the_origin);
+    } else {
+      utilities.panic("Unknown logical operator");
+      return null;
+    }
   }
 
   @Override

@@ -44,8 +44,7 @@ class option_pattern[readonly value element_type] {
       match : option.match_prefix(the_list);
       if (match is_not null) {
         -- Match the longest subsequence
-        -- TODO: use result is null || result < match
-        if (result is null ? true : result < match) {
+        if (result is null || result < match) {
           result = match;
         }
       }

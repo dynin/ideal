@@ -9,10 +9,13 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 
 public class option_pattern<element_type> extends base_pattern<element_type> {
-  public final immutable_list<pattern<element_type>> options;
+  protected final list<pattern<element_type>> options;
   public option_pattern(final readonly_collection<pattern<element_type>> options) {
-    assert options.is_not_empty();
-    this.options = options.elements();
+    this.options = new base_list<pattern<element_type>>();
+    this.options.append_all(options.elements());
+  }
+  public void add_option(final pattern<element_type> option) {
+    this.options.append(option);
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
     {

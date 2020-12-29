@@ -25,7 +25,7 @@ public class test_sequence_matcher {
     return (base_string) char_list.frozen_copy();
   }
   public matcher<Character, string> make_matcher(final function1<Boolean, Character> the_predicate) {
-    return new procedure_matcher<Character, string>(new repeat_pattern<Character>(the_predicate, false), new procedure1<string, readonly_list<Character>>() {
+    return new procedure_matcher<Character, string>(new repeat_element<Character>(the_predicate, false), new procedure1<string, readonly_list<Character>>() {
       @Override public string call(readonly_list<Character> first) {
         return test_sequence_matcher.this.as_string(first);
       }

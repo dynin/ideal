@@ -6,17 +6,82 @@ import ideal.library.elements.*;
 import ideal.library.patterns.*;
 import ideal.runtime.elements.*;
 
-public class repeat_pattern<element_type> extends base_repeat_pattern<element_type> {
-  private final function1<Boolean, element_type> the_predicate;
-  private final boolean do_match_empty;
-  public repeat_pattern(final function1<Boolean, element_type> the_predicate, final boolean do_match_empty) {
-    this.the_predicate = the_predicate;
+import javax.annotation.Nullable;
+
+public class repeat_pattern<element_type> extends base_pattern<element_type> {
+  public final pattern<element_type> the_pattern;
+  public final boolean do_match_empty;
+  public repeat_pattern(final pattern<element_type> the_pattern, final boolean do_match_empty) {
+    this.the_pattern = the_pattern;
     this.do_match_empty = do_match_empty;
   }
-  public @Override boolean matches(final element_type the_element) {
-    return this.the_predicate.call(the_element);
+  public @Override Boolean call(final readonly_list<element_type> the_list) {
+    int index = 0;
+    while (index < the_list.size()) {
+      final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
+      if (match == null) {
+        return false;
+      }
+      assert match > 0;
+      index += match;
+    }
+    return index > 0 || this.do_match_empty;
   }
-  public @Override boolean match_empty() {
-    return this.do_match_empty;
+  public @Override boolean is_viable_prefix(final readonly_list<element_type> the_list) {
+    if (the_list.is_empty()) {
+      return true;
+    }
+    int index = 0;
+    while (index < the_list.size()) {
+      final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
+      if (match == null) {
+        break;
+      }
+      assert match > 0;
+      index += match;
+    }
+    return index == the_list.size() || this.the_pattern.is_viable_prefix(the_list.skip(index));
+  }
+  public @Override @Nullable Integer match_prefix(final readonly_list<element_type> the_list) {
+    int index = 0;
+    while (index < the_list.size()) {
+      final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
+      if (match == null) {
+        break;
+      }
+      assert match > 0;
+      index += match;
+    }
+    if (index == 0 && !this.do_match_empty) {
+      return null;
+    } else {
+      return index;
+    }
+  }
+  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final int start_index) {
+    assert start_index <= the_list.size();
+    if (this.do_match_empty) {
+      if (start_index == the_list.size() || this.the_pattern.match_prefix(the_list.skip(start_index)) == null) {
+        return new base_range(start_index, start_index);
+      }
+    }
+    for (int i = start_index; i < the_list.size(); i += 1) {
+      final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(i));
+      if (match != null) {
+        final int start_range = i;
+        assert match > 0;
+        i += match;
+        while (i < the_list.size()) {
+          final @Nullable Integer next_match = this.the_pattern.match_prefix(the_list.skip(i));
+          if (next_match == null) {
+            break;
+          }
+          assert next_match > 0;
+          i += next_match;
+        }
+        return new base_range(start_range, i);
+      }
+    }
+    return null;
   }
 }

@@ -13,18 +13,20 @@ namespace patterns {
   class one_pattern;
   class singleton_pattern;
   class predicate_pattern;
-  class base_repeat_pattern;
-  class repeat_pattern;
+  class base_repeat_element;
+  class repeat_element;
   class sequence_pattern;
   class procedure_matcher;
   class sequence_matcher;
   class option_pattern;
+  class repeat_pattern;
 
   class test_singleton_pattern;
   class test_predicate_pattern;
-  class test_repeat_pattern;
+  class test_repeat_element;
   class test_sequence_pattern;
   class test_procedure_matcher;
   class test_sequence_matcher;
   class test_option_pattern;
+  class test_repeat_pattern;
 }

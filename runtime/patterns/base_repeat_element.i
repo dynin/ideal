@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 --- Base pattern for matching a repeated element.
-abstract class base_repeat_pattern[readonly value element_type] {
+abstract class base_repeat_element[readonly value element_type] {
   implements reversible_pattern[element_type];
   extends base_pattern[element_type];
 

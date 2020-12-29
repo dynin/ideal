@@ -22,194 +22,133 @@ public class test_repeat_pattern {
     ideal.machine.elements.runtime_util.start_test("test_repeat_pattern.test_find_first");
     test_find_first();
     ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_repeat_pattern.test_find_last");
-    test_find_last();
-    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_repeat_pattern.test_split");
     test_split();
     ideal.machine.elements.runtime_util.end_test();
   }
-  private boolean test_predicate(final char c) {
-    return c == 'a' || c == 'b' || c == 'c';
+  private boolean match_a(final char c) {
+    return c == 'a' || c == 'A';
+  }
+  private boolean match_b(final char c) {
+    return c == 'b' || c == 'B';
+  }
+  private boolean match_c(final char c) {
+    return c == 'c' || c == 'C';
+  }
+  public repeat_pattern<Character> make_pattern(final boolean do_match_empty) {
+    final pattern<Character> match_one_or_more_a = new repeat_element<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_repeat_pattern.this.match_a(first);
+      }
+    }, false);
+    final pattern<Character> match_zero_or_more_b = new repeat_element<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_repeat_pattern.this.match_b(first);
+      }
+    }, true);
+    final pattern<Character> match_one_or_more_c = new repeat_element<Character>(new function1<Boolean, Character>() {
+      @Override public Boolean call(Character first) {
+        return test_repeat_pattern.this.match_c(first);
+      }
+    }, false);
+    final immutable_list<pattern<Character>> patterns_list = new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ match_one_or_more_a, match_zero_or_more_b, match_one_or_more_c }));
+    return new repeat_pattern<Character>(new sequence_pattern<Character>(patterns_list), do_match_empty);
   }
   public void test_match() {
-    final repeat_pattern<Character> zero_or_more = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, true);
-    final repeat_pattern<Character> one_or_more = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, false);
-    assert zero_or_more.call(new base_string(""));
-    assert zero_or_more.call(new base_string("a"));
-    assert zero_or_more.call(new base_string("abca"));
-    assert !zero_or_more.call(new base_string("abcda"));
-    assert !zero_or_more.call(new base_string("y"));
-    assert !zero_or_more.call(new base_string("xab"));
-    assert !one_or_more.call(new base_string(""));
-    assert one_or_more.call(new base_string("a"));
-    assert one_or_more.call(new base_string("abca"));
-    assert !one_or_more.call(new base_string("abcda"));
-    assert !one_or_more.call(new base_string("y"));
-    assert !one_or_more.call(new base_string("xab"));
+    final repeat_pattern<Character> the_pattern = this.make_pattern(true);
+    assert the_pattern.call(new base_string(""));
+    assert the_pattern.call(new base_string("abc"));
+    assert the_pattern.call(new base_string("AC"));
+    assert the_pattern.call(new base_string("AaaCcc"));
+    assert the_pattern.call(new base_string("AaaBBBCcc"));
+    assert the_pattern.call(new base_string("abcabc"));
+    assert the_pattern.call(new base_string("ACacABC"));
+    assert !the_pattern.call(new base_string("bac"));
+    assert !the_pattern.call(new base_string("aabb"));
+    assert !the_pattern.call(new base_string("aaca"));
+    assert !the_pattern.call(new base_string("aacabbbca"));
   }
   public void test_viable_prefix() {
-    final repeat_pattern<Character> zero_or_more = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, true);
-    final repeat_pattern<Character> one_or_more = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, false);
-    assert zero_or_more.is_viable_prefix(new base_string(""));
-    assert zero_or_more.is_viable_prefix(new base_string("a"));
-    assert zero_or_more.is_viable_prefix(new base_string("ab"));
-    assert !zero_or_more.is_viable_prefix(new base_string("y"));
-    assert !zero_or_more.is_viable_prefix(new base_string("ay"));
-    assert one_or_more.is_viable_prefix(new base_string(""));
-    assert one_or_more.is_viable_prefix(new base_string("a"));
-    assert one_or_more.is_viable_prefix(new base_string("ab"));
-    assert !one_or_more.is_viable_prefix(new base_string("y"));
-    assert !one_or_more.is_viable_prefix(new base_string("ay"));
+    final repeat_pattern<Character> the_pattern = this.make_pattern(true);
+    assert the_pattern.is_viable_prefix(new base_string(""));
+    assert the_pattern.is_viable_prefix(new base_string("a"));
+    assert the_pattern.is_viable_prefix(new base_string("aAa"));
+    assert the_pattern.is_viable_prefix(new base_string("aabb"));
+    assert the_pattern.is_viable_prefix(new base_string("aacc"));
+    assert the_pattern.is_viable_prefix(new base_string("aaBcc"));
+    assert the_pattern.is_viable_prefix(new base_string("abcacab"));
+    assert the_pattern.is_viable_prefix(new base_string("abbccaa"));
+    assert the_pattern.is_viable_prefix(new base_string("ABCACAC"));
+    assert !the_pattern.is_viable_prefix(new base_string("x"));
+    assert !the_pattern.is_viable_prefix(new base_string("xyz"));
+    assert !the_pattern.is_viable_prefix(new base_string("bbb"));
+    assert !the_pattern.is_viable_prefix(new base_string("bcc"));
+    assert !the_pattern.is_viable_prefix(new base_string("Ccc"));
+    assert !the_pattern.is_viable_prefix(new base_string("Abcabcb"));
   }
   public void test_match_prefix() {
-    final repeat_pattern<Character> zero_or_more = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, true);
-    final repeat_pattern<Character> one_or_more = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, false);
-    assert zero_or_more.match_prefix(new base_string("")) == 0;
-    assert zero_or_more.match_prefix(new base_string("a")) == 1;
-    assert zero_or_more.match_prefix(new base_string("abc")) == 3;
-    assert zero_or_more.match_prefix(new base_string("abcdef")) == 3;
-    assert zero_or_more.match_prefix(new base_string("x")) == 0;
-    assert zero_or_more.match_prefix(new base_string("xabc")) == 0;
-    assert zero_or_more.match_prefix(new base_string("abcabc")) == 6;
-    assert one_or_more.match_prefix(new base_string("")) == null;
-    assert one_or_more.match_prefix(new base_string("a")) == 1;
-    assert one_or_more.match_prefix(new base_string("abc")) == 3;
-    assert one_or_more.match_prefix(new base_string("abcdef")) == 3;
-    assert one_or_more.match_prefix(new base_string("x")) == null;
-    assert one_or_more.match_prefix(new base_string("xabc")) == null;
-    assert one_or_more.match_prefix(new base_string("abcabc")) == 6;
+    final repeat_pattern<Character> the_pattern = this.make_pattern(false);
+    assert the_pattern.match_prefix(new base_string("")) == null;
+    assert the_pattern.match_prefix(new base_string("a")) == null;
+    assert the_pattern.match_prefix(new base_string("ab")) == null;
+    assert the_pattern.match_prefix(new base_string("x")) == null;
+    assert the_pattern.match_prefix(new base_string("xabc")) == null;
+    assert the_pattern.match_prefix(new base_string("abc")) == 3;
+    assert the_pattern.match_prefix(new base_string("abcdef")) == 3;
+    assert the_pattern.match_prefix(new base_string("aAbBcCdef")) == 6;
+    assert the_pattern.match_prefix(new base_string("aAbCdef")) == 4;
+    assert the_pattern.match_prefix(new base_string("aaabbbcccddd")) == 9;
+    assert the_pattern.match_prefix(new base_string("abcacaxyz")) == 5;
+    assert the_pattern.match_prefix(new base_string("ACACABCfoo")) == 7;
+    assert the_pattern.match_prefix(new base_string("ACfoo")) == 2;
+    final repeat_pattern<Character> the_pattern2 = this.make_pattern(true);
+    assert the_pattern2.match_prefix(new base_string("")) == 0;
+    assert the_pattern2.match_prefix(new base_string("a")) == 0;
+    assert the_pattern2.match_prefix(new base_string("ab")) == 0;
+    assert the_pattern2.match_prefix(new base_string("x")) == 0;
+    assert the_pattern2.match_prefix(new base_string("xabc")) == 0;
+    assert the_pattern2.match_prefix(new base_string("abc")) == 3;
+    assert the_pattern2.match_prefix(new base_string("abcdef")) == 3;
+    assert the_pattern2.match_prefix(new base_string("aAbBcCdef")) == 6;
+    assert the_pattern2.match_prefix(new base_string("aAbCdef")) == 4;
+    assert the_pattern2.match_prefix(new base_string("aaabbbcccddd")) == 9;
+    assert the_pattern2.match_prefix(new base_string("abcacaxyz")) == 5;
+    assert the_pattern2.match_prefix(new base_string("ACACABCfoo")) == 7;
+    assert the_pattern2.match_prefix(new base_string("ACfoo")) == 2;
   }
   public void test_find_first() {
-    final repeat_pattern<Character> the_pattern = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, false);
+    final repeat_pattern<Character> the_pattern = this.make_pattern(false);
     assert the_pattern.find_first(new base_string(""), 0) == null;
     assert the_pattern.find_first(new base_string("foo"), 0) == null;
-    assert the_pattern.find_first(new base_string("bfoo"), 1) == null;
-    final @Nullable range match = the_pattern.find_first(new base_string("a"), 0);
+    assert the_pattern.find_first(new base_string("abcfoo"), 3) == null;
+    final @Nullable range match = the_pattern.find_first(new base_string("xxaabbcczz"), 0);
     assert match != null;
-    assert match.begin() == 0;
-    assert match.end() == 1;
-    final @Nullable range match2 = the_pattern.find_first(new base_string("-abc-"), 0);
+    assert match.begin() == 2;
+    assert match.end() == 8;
+    final @Nullable range match2 = the_pattern.find_first(new base_string("xxabbbcccAAACCCBBB"), 1);
     assert match2 != null;
-    assert match2.begin() == 1;
-    assert match2.end() == 4;
-    final @Nullable range match3 = the_pattern.find_first(new base_string("ayzzybacy"), 2);
+    assert match2.begin() == 2;
+    assert match2.end() == 15;
+    final @Nullable range match3 = the_pattern.find_first(new base_string("fooACABCxyzABC"), 0);
     assert match3 != null;
-    assert match3.begin() == 5;
+    assert match3.begin() == 3;
     assert match3.end() == 8;
-    final repeat_pattern<Character> the_pattern2 = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, true);
-    final @Nullable range match4 = the_pattern2.find_first(new base_string(""), 0);
+    final @Nullable range match4 = the_pattern.find_first(new base_string("aaabbbCCCAAACCCBBB"), 9);
     assert match4 != null;
-    assert match4.begin() == 0;
-    assert match4.end() == 0;
-    final @Nullable range match5 = the_pattern2.find_first(new base_string("xyz"), 2);
-    assert match5 != null;
-    assert match5.begin() == 2;
-    assert match5.end() == 2;
-    final @Nullable range match6 = the_pattern2.find_first(new base_string("xabcd"), 1);
-    assert match6 != null;
-    assert match6.begin() == 1;
-    assert match6.end() == 4;
-    final @Nullable range match7 = the_pattern2.find_first(new base_string("ayzzybacy"), 2);
-    assert match7 != null;
-    assert match7.begin() == 2;
-    assert match7.end() == 2;
-  }
-  public void test_find_last() {
-    final repeat_pattern<Character> the_pattern = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, false);
-    assert the_pattern.find_last(new base_string(""), null) == null;
-    assert the_pattern.find_last(new base_string("foo"), null) == null;
-    assert the_pattern.find_last(new base_string("foo"), 3) == null;
-    assert the_pattern.find_last(new base_string("fooc"), 3) == null;
-    final @Nullable range match = the_pattern.find_last(new base_string("c"), 1);
-    assert match != null;
-    assert match.begin() == 0;
-    assert match.end() == 1;
-    final @Nullable range match2 = the_pattern.find_last(new base_string("ayzzzby"), 6);
-    assert match2 != null;
-    assert match2.begin() == 5;
-    assert match2.end() == 6;
-    final @Nullable range match3 = the_pattern.find_last(new base_string("abczyby"), 4);
-    assert match3 != null;
-    assert match3.begin() == 0;
-    assert match3.end() == 3;
-    final @Nullable range match4 = the_pattern.find_last(new base_string("ayzzyabcy"), null);
-    assert match4 != null;
-    assert match4.begin() == 5;
-    assert match4.end() == 8;
-    final repeat_pattern<Character> the_pattern2 = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, true);
-    final @Nullable range match5 = the_pattern2.find_last(new base_string(""), null);
-    assert match5 != null;
-    assert match5.begin() == 0;
-    assert match5.end() == 0;
-    final @Nullable range match6 = the_pattern2.find_last(new base_string("foobar"), 2);
-    assert match6 != null;
-    assert match6.begin() == 2;
-    assert match6.end() == 2;
-    final @Nullable range match7 = the_pattern2.find_last(new base_string("foobar"), 5);
-    assert match7 != null;
-    assert match7.begin() == 3;
-    assert match7.end() == 5;
-    final @Nullable range match8 = the_pattern2.find_last(new base_string("ayzzyabcy"), null);
-    assert match8 != null;
-    assert match8.begin() == 9;
-    assert match8.end() == 9;
+    assert match4.begin() == 9;
+    assert match4.end() == 15;
   }
   public void test_split() {
-    final repeat_pattern<Character> the_pattern = new repeat_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
-        return test_repeat_pattern.this.test_predicate(first);
-      }
-    }, false);
+    final repeat_pattern<Character> the_pattern = this.make_pattern(false);
     final immutable_list<immutable_list<Character>> split0 = the_pattern.split(new base_string("foo"));
     assert split0.size() == 1;
     assert this.equals(split0.get(0), new base_string("foo"));
-    final immutable_list<immutable_list<Character>> split1 = the_pattern.split(new base_string("fooabcxyzc"));
+    final immutable_list<immutable_list<Character>> split1 = the_pattern.split(new base_string("fooACxyzABC"));
     assert split1.size() == 3;
     assert this.equals(split1.get(0), new base_string("foo"));
     assert this.equals(split1.get(1), new base_string("xyz"));
     assert this.equals(split1.get(2), new base_string(""));
-    final immutable_list<immutable_list<Character>> split2 = the_pattern.split(new base_string("ab1bc2ca3"));
+    final immutable_list<immutable_list<Character>> split2 = the_pattern.split(new base_string("aaabc1ac2ABC3"));
     assert split2.size() == 4;
     assert this.equals(split2.get(0), new base_string(""));
     assert this.equals(split2.get(1), new base_string("1"));

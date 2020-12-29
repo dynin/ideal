@@ -33,7 +33,7 @@ public class markup_grammar {
     return new singleton_pattern<Character>(the_character);
   }
   protected pattern<Character> zero_or_more(final function1<Boolean, Character> the_predicate) {
-    return new repeat_pattern<Character>(the_predicate, true);
+    return new repeat_element<Character>(the_predicate, true);
   }
   protected string as_string_procedure(final readonly_list<Character> the_character_list) {
     return (base_string) the_character_list.frozen_copy();

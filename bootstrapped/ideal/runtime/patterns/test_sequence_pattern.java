@@ -39,17 +39,17 @@ public class test_sequence_pattern {
     return c == 'c' || c == 'C';
   }
   public sequence_pattern<Character> make_pattern() {
-    final pattern<Character> match_one_or_more_a = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_one_or_more_a = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_a(first);
       }
     }, false);
-    final pattern<Character> match_zero_or_more_b = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_zero_or_more_b = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_b(first);
       }
     }, true);
-    final pattern<Character> match_one_or_more_c = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_one_or_more_c = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_c(first);
       }
@@ -58,17 +58,17 @@ public class test_sequence_pattern {
     return new sequence_pattern<Character>(patterns_list);
   }
   public sequence_pattern<Character> make_pattern2() {
-    final pattern<Character> match_one_or_more_a = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_one_or_more_a = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_a(first);
       }
     }, false);
-    final pattern<Character> match_one_or_more_b = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_one_or_more_b = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_b(first);
       }
     }, false);
-    final pattern<Character> match_one_or_more_c = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_one_or_more_c = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_c(first);
       }
@@ -142,12 +142,12 @@ public class test_sequence_pattern {
     assert match3.end() == 5;
   }
   public void test_find_first_more() {
-    final pattern<Character> match_zero_or_more_b = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_zero_or_more_b = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_b(first);
       }
     }, true);
-    final pattern<Character> match_one_or_more_c = new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    final pattern<Character> match_one_or_more_c = new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_sequence_pattern.this.match_c(first);
       }

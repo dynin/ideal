@@ -8,11 +8,15 @@
 class option_pattern[readonly value element_type] {
   extends base_pattern[element_type];
 
-  immutable list[pattern[element_type]] options;
+  protected list[pattern[element_type]] options;
 
   option_pattern(readonly collection[pattern[element_type]] options) {
-    assert options.is_not_empty;
-    this.options = options.elements;
+    this.options = base_list[pattern[element_type]].new();
+    this.options.append_all(options.elements);
+  }
+
+  void add_option(pattern[element_type] option) {
+    options.append(option);
   }
 
   implement implicit boolean call(readonly list[element_type] the_list) {

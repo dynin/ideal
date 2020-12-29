@@ -19,9 +19,9 @@ class test_option_pattern {
   }
 
   option_pattern[character] make_pattern() {
-    pattern[character] match_one_or_more_a : repeat_pattern[character].new(match_a, false);
-    pattern[character] match_zero_or_more_b : repeat_pattern[character].new(match_b, true);
-    pattern[character] match_one_or_more_c : repeat_pattern[character].new(match_c, false);
+    pattern[character] match_one_or_more_a : repeat_element[character].new(match_a, false);
+    pattern[character] match_zero_or_more_b : repeat_element[character].new(match_b, true);
+    pattern[character] match_one_or_more_c : repeat_element[character].new(match_c, false);
 
     pattern[character] alpha :
         sequence_pattern[character].new([match_one_or_more_a, match_zero_or_more_b]);

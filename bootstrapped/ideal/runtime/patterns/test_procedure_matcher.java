@@ -33,7 +33,7 @@ public class test_procedure_matcher {
     return (base_string) char_list.frozen_copy();
   }
   public matcher<Character, string> make_matcher() {
-    return new procedure_matcher<Character, string>(new repeat_pattern<Character>(new function1<Boolean, Character>() {
+    return new procedure_matcher<Character, string>(new repeat_element<Character>(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return test_procedure_matcher.this.test_predicate(first);
       }

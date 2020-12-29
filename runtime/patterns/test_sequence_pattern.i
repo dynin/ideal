@@ -19,9 +19,9 @@ class test_sequence_pattern {
   }
 
   sequence_pattern[character] make_pattern() {
-    pattern[character] match_one_or_more_a : repeat_pattern[character].new(match_a, false);
-    pattern[character] match_zero_or_more_b : repeat_pattern[character].new(match_b, true);
-    pattern[character] match_one_or_more_c : repeat_pattern[character].new(match_c, false);
+    pattern[character] match_one_or_more_a : repeat_element[character].new(match_a, false);
+    pattern[character] match_zero_or_more_b : repeat_element[character].new(match_b, true);
+    pattern[character] match_one_or_more_c : repeat_element[character].new(match_c, false);
 
     -- TODO: use array creation expression.
     list[pattern[character]] patterns_list : base_list[pattern[character]].new(
@@ -33,9 +33,9 @@ class test_sequence_pattern {
   }
 
   sequence_pattern[character] make_pattern2() {
-    pattern[character] match_one_or_more_a : repeat_pattern[character].new(match_a, false);
-    pattern[character] match_one_or_more_b : repeat_pattern[character].new(match_b, false);
-    pattern[character] match_one_or_more_c : repeat_pattern[character].new(match_c, false);
+    pattern[character] match_one_or_more_a : repeat_element[character].new(match_a, false);
+    pattern[character] match_one_or_more_b : repeat_element[character].new(match_b, false);
+    pattern[character] match_one_or_more_c : repeat_element[character].new(match_c, false);
 
     -- TODO: use array creation expression.
     list[pattern[character]] patterns_list : base_list[pattern[character]].new(
@@ -125,8 +125,8 @@ class test_sequence_pattern {
   }
 
   testcase test_find_first_more() {
-    pattern[character] match_zero_or_more_b : repeat_pattern[character].new(match_b, true);
-    pattern[character] match_one_or_more_c : repeat_pattern[character].new(match_c, false);
+    pattern[character] match_zero_or_more_b : repeat_element[character].new(match_b, true);
+    pattern[character] match_one_or_more_c : repeat_element[character].new(match_c, false);
 
     pattern[character] beta :
         sequence_pattern[character].new([match_zero_or_more_b, match_one_or_more_c]);

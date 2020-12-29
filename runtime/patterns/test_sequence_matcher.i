@@ -24,7 +24,7 @@ class test_sequence_matcher {
 
   matcher[character, string] make_matcher(function[boolean, character] the_predicate) {
     return procedure_matcher[character, string].new(
-        repeat_pattern[character].new(the_predicate, false), as_string);
+        repeat_element[character].new(the_predicate, false), as_string);
   }
 
   string match_procedure(readonly list[any value] the_list) {

@@ -40,7 +40,7 @@ class markup_grammar {
   }
 
   protected pattern[character] zero_or_more(function[boolean, character] the_predicate) pure {
-    return repeat_pattern[character].new(the_predicate, true);
+    return repeat_element[character].new(the_predicate, true);
   }
 
   protected string as_string_procedure(readonly list[character] the_character_list) pure {

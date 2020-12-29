@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM='find_in'
-TO='find_first'
+FROM='repeat_pattern'
+TO='repeat_element'
 
 #cd $HOME/Projects/ideal
 

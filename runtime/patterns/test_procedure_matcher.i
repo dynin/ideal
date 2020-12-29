@@ -16,7 +16,7 @@ class test_procedure_matcher {
 
   matcher[character, string] make_matcher() {
     return procedure_matcher[character, string].new(
-        repeat_pattern[character].new(test_predicate, false), as_string);
+        repeat_element[character].new(test_predicate, false), as_string);
   }
 
   testcase test_match() {

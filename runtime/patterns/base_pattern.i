@@ -17,6 +17,8 @@ abstract class base_pattern[readonly value element_type] {
     loop {
       match : find_first(the_list, index);
       if (match is_not null) {
+        -- Match range must be non-empty.
+        assert match.is_not_empty;
         result.append(the_list.slice(index, match.begin));
         index = match.end;
       } else {

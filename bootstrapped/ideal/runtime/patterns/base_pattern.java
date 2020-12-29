@@ -15,6 +15,7 @@ public abstract class base_pattern<element_type> implements pattern<element_type
     while (true) {
       final @Nullable range match = this.find_first(the_list, index);
       if (match != null) {
+        assert match.is_not_empty();
         result.append(the_list.slice(index, match.begin()));
         index = match.end();
       } else {

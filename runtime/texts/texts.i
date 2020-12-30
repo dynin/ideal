@@ -29,6 +29,7 @@ namespace texts {
 
   namespace text_library;
   namespace text_util;
+  namespace character_patterns;
 
   class test_elements;
   class test_plain_text;

@@ -10,6 +10,7 @@
 class markup_grammar {
   implicit import ideal.library.patterns;
   implicit import ideal.runtime.patterns;
+  implicit import character_patterns;
 
   character_handler the_character_handler;
   pattern[character] document_pattern;
@@ -31,36 +32,6 @@ class markup_grammar {
     return c != '<' && c != '&';
   }
 
-  protected pattern[character] one(function[boolean, character] the_predicate) pure {
-    return predicate_pattern[character].new(the_predicate);
-  }
-
-  protected pattern[character] one_character(character the_character) pure {
-    return singleton_pattern[character].new(the_character);
-  }
-
-  protected pattern[character] zero_or_more(function[boolean, character] the_predicate) pure {
-    return repeat_element[character].new(the_predicate, true);
-  }
-
-  protected pattern[character] repeat_or_none(pattern[character] the_pattern) pure {
-    return repeat_pattern[character].new(the_pattern, true);
-  }
-
-  protected pattern[character] sequence(readonly list[pattern[character]] patterns_list) {
-    return sequence_pattern[character].new(patterns_list);
-  }
-
-  protected string as_string_procedure(readonly list[character] the_character_list) pure {
-    return the_character_list.frozen_copy() as base_string;
-  }
-
-  protected matcher[character, string] as_string(pattern[character] the_pattern) pure {
-    return procedure_matcher[character, string].new(the_pattern, as_string_procedure);
-  }
-
-  protected string select_2nd(readonly list[any value] the_list) pure => the_list[1] as string;
-
   protected pattern[character] document() {
     space_opt : zero_or_more(the_character_handler.is_whitespace);
     name : as_string(sequence_pattern[character].new([ one(name_start), zero_or_more(name_char) ]));
@@ -68,9 +39,9 @@ class markup_grammar {
     gt : one_character('>');
     slash : one_character('/');
 
-    char_data_opt : zero_or_more(content_char);
     empty_element : sequence([ lt, name, space_opt, slash, gt]);
-    element : option_pattern[character].new([empty_element, ]);
+    element : option([empty_element, ]);
+    char_data_opt : zero_or_more(content_char);
     content : sequence([ char_data_opt, repeat_or_none(sequence([ element, char_data_opt ])) ]);
 
     start_tag : sequence([ lt, name, space_opt, gt ]);

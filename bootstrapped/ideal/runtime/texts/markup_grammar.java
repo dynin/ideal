@@ -29,11 +29,17 @@ public class markup_grammar {
   protected pattern<Character> one(final function1<Boolean, Character> the_predicate) {
     return new predicate_pattern<Character>(the_predicate);
   }
-  protected pattern<Character> one_char(final char the_character) {
+  protected pattern<Character> one_character(final char the_character) {
     return new singleton_pattern<Character>(the_character);
   }
   protected pattern<Character> zero_or_more(final function1<Boolean, Character> the_predicate) {
     return new repeat_element<Character>(the_predicate, true);
+  }
+  protected pattern<Character> repeat_or_none(final pattern<Character> the_pattern) {
+    return new repeat_pattern<Character>(the_pattern, true);
+  }
+  protected pattern<Character> sequence(final readonly_list<pattern<Character>> patterns_list) {
+    return new sequence_pattern<Character>(patterns_list);
   }
   protected string as_string_procedure(final readonly_list<Character> the_character_list) {
     return (base_string) the_character_list.frozen_copy();
@@ -45,15 +51,16 @@ public class markup_grammar {
       }
     });
   }
-  protected pattern<Character> space_opt() {
-    return this.zero_or_more(new function1<Boolean, Character>() {
+  protected string select_2nd(final readonly_list<any_value> the_list) {
+    return (string) the_list.get(1);
+  }
+  protected pattern<Character> document() {
+    final pattern<Character> space_opt = this.zero_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.the_character_handler.is_whitespace(first);
       }
     });
-  }
-  protected matcher<Character, string> name() {
-    return this.as_string(new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.one(new function1<Boolean, Character>() {
+    final matcher<Character, string> name = this.as_string(new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.one(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.name_start(first);
       }
@@ -62,39 +69,20 @@ public class markup_grammar {
         return markup_grammar.this.name_char(first);
       }
     }) }))));
-  }
-  protected string select_2nd(final readonly_list<any_value> the_list) {
-    return (string) the_list.get(1);
-  }
-  protected pattern<Character> lt() {
-    return this.one_char('<');
-  }
-  protected pattern<Character> gt() {
-    return this.one_char('>');
-  }
-  protected pattern<Character> slash() {
-    return this.one_char('/');
-  }
-  protected pattern<Character> start_tag() {
-    return new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.lt(), this.name(), this.space_opt(), this.gt() })));
-  }
-  protected pattern<Character> end_tag() {
-    return new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.lt(), this.slash(), this.name(), this.space_opt(), this.gt() })));
-  }
-  protected pattern<Character> char_data() {
-    return this.zero_or_more(new function1<Boolean, Character>() {
+    final pattern<Character> lt = this.one_character('<');
+    final pattern<Character> gt = this.one_character('>');
+    final pattern<Character> slash = this.one_character('/');
+    final pattern<Character> char_data_opt = this.zero_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_char(first);
       }
     });
-  }
-  protected pattern<Character> content() {
-    return this.char_data();
-  }
-  protected pattern<Character> element() {
-    return new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.start_tag(), this.content(), this.end_tag() })));
-  }
-  protected pattern<Character> document() {
-    return new sequence_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.space_opt(), this.element(), this.space_opt() })));
+    final pattern<Character> empty_element = this.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, space_opt, slash, gt })));
+    final option_pattern<Character> element = new option_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ empty_element })));
+    final pattern<Character> content = this.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ char_data_opt, this.repeat_or_none(this.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ element, char_data_opt })))) })));
+    final pattern<Character> start_tag = this.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, space_opt, gt })));
+    final pattern<Character> end_tag = this.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, slash, name, space_opt, gt })));
+    element.add_option(this.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ start_tag, content, end_tag }))));
+    return this.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, element, space_opt })));
   }
 }

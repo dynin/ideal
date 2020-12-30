@@ -51,7 +51,6 @@ public class main {
     new test_elements().run_all_tests();
     new test_plain_text().run_all_tests();
     new test_markup_text().run_all_tests();
-    new test_markup_grammar().run_all_tests();
 
     new test_display().run_all_tests();
 
@@ -63,6 +62,8 @@ public class main {
     new test_sequence_matcher().run_all_tests();
     new test_option_pattern().run_all_tests();
     new test_repeat_pattern().run_all_tests();
+
+    new test_markup_grammar().run_all_tests();
 
     new test_resolver().run_all_tests();
 

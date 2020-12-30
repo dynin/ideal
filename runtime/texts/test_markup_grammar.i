@@ -14,10 +14,12 @@ class test_markup_grammar {
     assert document_pattern("<html>foo</html>");
     assert document_pattern("  <html>foo</html>  ");
     assert document_pattern("  <html  >foo</html  >  ");
+    assert document_pattern("  <html  />  ");
+    assert document_pattern("<html/>");
 
-    -- TODO: these should succeed.
-    assert !document_pattern("  <html>Hello <em>world!</em></html>  ");
-    assert !document_pattern("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  ");
+    assert document_pattern("  <html>Hello <em>world!</em></html>  ");
+    assert document_pattern("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  ");
+    assert document_pattern("  <html><body > <p>Hello<br />world!</p> </body ></html>  ");
 
     assert !document_pattern(" no markup ");
     assert !document_pattern("  <html>foo  ");

@@ -1,7 +1,7 @@
 
 Doc comment structure:
 
---- #Copyright 2014-2020 The Ideal Authors. All rights reserved.
+--- #Copyright 2014-2021 The Ideal Authors. All rights reserved.
 ---
 --- #License
 ---   Use of this source code is governed by a BSD-style

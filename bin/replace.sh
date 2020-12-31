@@ -1,12 +1,12 @@
 #!/bin/sh
 
-FROM='repeat_pattern'
-TO='repeat_element'
+FROM='2020'
+TO='2021'
 
 #cd $HOME/Projects/ideal
 
-ALLFILES="`find library runtime machine development -name \*.i` \
-    `find jsource bootstrapped experimental/coach -name \*.java` \
+ALLFILES="`find library runtime machine development experimental showcase -name \*.i` \
+    `find jsource bootstrapped -name \*.java` \
     jsource/ideal/*/*/*.cup \
     testdata/* \
     Makefile"

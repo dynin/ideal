@@ -22,6 +22,10 @@ namespace character_patterns {
     return repeat_element[character].new(the_predicate, true);
   }
 
+  pattern[character] one_or_more(function[boolean, character] the_predicate) pure {
+    return repeat_element[character].new(the_predicate, false);
+  }
+
   pattern[character] repeat_or_none(pattern[character] the_pattern) pure {
     return repeat_pattern[character].new(the_pattern, true);
   }

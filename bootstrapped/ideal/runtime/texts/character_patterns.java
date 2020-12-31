@@ -20,6 +20,9 @@ public class character_patterns {
   public static pattern<Character> zero_or_more(final function1<Boolean, Character> the_predicate) {
     return new repeat_element<Character>(the_predicate, true);
   }
+  public static pattern<Character> one_or_more(final function1<Boolean, Character> the_predicate) {
+    return new repeat_element<Character>(the_predicate, false);
+  }
   public static pattern<Character> repeat_or_none(final pattern<Character> the_pattern) {
     return new repeat_pattern<Character>(the_pattern, true);
   }

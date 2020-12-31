@@ -32,19 +32,45 @@ class markup_grammar {
     return c != '<' && c != '&';
   }
 
+  protected boolean content_not_apos(character c) pure {
+    return c != '<' && c != '&' && c != '\'';
+  }
+
+  protected boolean content_not_quot(character c) pure {
+    return c != '<' && c != '&' && c != '"';
+  }
+
   protected pattern[character] document() {
-    space_opt : zero_or_more(the_character_handler.is_whitespace);
-    name : as_string(sequence_pattern[character].new([ one(name_start), zero_or_more(name_char) ]));
     lt : one_character('<');
     gt : one_character('>');
     slash : one_character('/');
+    amp : one_character('&');
+    semicolon : one_character(';');
+    quot : one_character('"');
+    apos : one_character('\'');
+    eq : one_character('=');
 
-    empty_element : sequence([ lt, name, space_opt, slash, gt]);
+    space_opt : zero_or_more(the_character_handler.is_whitespace);
+    name : as_string(sequence_pattern[character].new([ one(name_start), zero_or_more(name_char) ]));
+
+    entity_ref : sequence([ amp, name, semicolon ]);
+    equals : sequence([ space_opt, eq, space_opt ]);
+    attribute_value_in_quot : sequence([ quot,
+        repeat_or_none(option([one_or_more(content_not_quot), entity_ref])), quot ]);
+    attribute_value_in_apos : sequence([ apos,
+        repeat_or_none(option([one_or_more(content_not_apos), entity_ref])), apos ]);
+    attribute_value : option([ attribute_value_in_quot, attribute_value_in_apos ]);
+    attribute : sequence([ name, equals, attribute_value ]);
+    attributes : repeat_or_none(sequence([ space_opt, attribute ]));
+
+    empty_element : sequence([ lt, name, attributes, space_opt, slash, gt ]);
     element : option([empty_element, ]);
     char_data_opt : zero_or_more(content_char);
-    content : sequence([ char_data_opt, repeat_or_none(sequence([ element, char_data_opt ])) ]);
+    content_element : option([ element, entity_ref ]);
+    content_tail : repeat_or_none(sequence([ content_element, char_data_opt ]));
+    content : sequence([ char_data_opt, content_tail ]);
 
-    start_tag : sequence([ lt, name, space_opt, gt ]);
+    start_tag : sequence([ lt, name, attributes, space_opt, gt ]);
     end_tag : sequence([ lt, slash, name, space_opt, gt ]);
     element.add_option(sequence([ start_tag, content, end_tag ]));
 

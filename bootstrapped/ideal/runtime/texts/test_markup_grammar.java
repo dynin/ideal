@@ -21,15 +21,26 @@ public class test_markup_grammar {
     assert document_pattern.call(new base_string("<html>foo</html>"));
     assert document_pattern.call(new base_string("  <html>foo</html>  "));
     assert document_pattern.call(new base_string("  <html  >foo</html  >  "));
+    assert document_pattern.call(new base_string("  <html  >Hello &amp; goodbye!</html  >  "));
     assert document_pattern.call(new base_string("  <html  />  "));
     assert document_pattern.call(new base_string("<html/>"));
     assert document_pattern.call(new base_string("  <html>Hello <em>world!</em></html>  "));
     assert document_pattern.call(new base_string("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  "));
     assert document_pattern.call(new base_string("  <html><body > <p>Hello<br />world!</p> </body ></html>  "));
+    assert document_pattern.call(new base_string("  <html><body > Hello &lt;world!&gt; </body ></html>  "));
+    assert document_pattern.call(new base_string("<html><p class=\'klass\'>foo</p></html>"));
+    assert document_pattern.call(new base_string("<html><a class = \'klass\' href = \'link\'>bar</a></html>"));
+    assert document_pattern.call(new base_string("<html><p class = \'value\">==\' attr=\"foo\'\">foo</p></html>"));
+    assert document_pattern.call(new base_string("<html><p class = \'***\' attr=\"baz\">foo</p></html>"));
     assert !document_pattern.call(new base_string(" no markup "));
     assert !document_pattern.call(new base_string("  <html>foo  "));
     assert !document_pattern.call(new base_string("  <html>foo<bar>  "));
     assert !document_pattern.call(new base_string("  <>foo  "));
+    assert !document_pattern.call(new base_string("  &amp;<html>foo</html>  "));
+    assert !document_pattern.call(new base_string("<html><p class=\'klass\">foo</p></html>"));
+    assert !document_pattern.call(new base_string("<html><p class=\'klass\'>foo</p class=\"foo\"></html>"));
+    assert !document_pattern.call(new base_string("<html foo= ><p class=\'klass\'>foo</p></html>"));
+    assert !document_pattern.call(new base_string("<html foo=bar><p class=\'klass\'>foo</p></html>"));
     assert document_pattern.call(new base_string("  <abc>foo</def>  "));
   }
 }

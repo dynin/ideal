@@ -208,10 +208,12 @@ public class analyzer_utilities {
     assert the_variable.get_category() == variable_category.INSTANCE;
     principal_type parent_type = the_variable.declared_in_type();
     action_name the_name = the_variable.short_name();
+    boolean is_mutable_var = the_variable.annotations().has(general_modifier.mutable_var_modifier);
 
     // All instance variables can be read
     type flavored_from = parent_type.get_flavored(dispatch_flavor);
-    instance_variable primary_action = new instance_variable(the_variable, dispatch_flavor);
+    instance_variable primary_action = new instance_variable(the_variable, is_mutable_var ?
+        mutable_flavor : dispatch_flavor);
     dispatch_action the_dispatch = new dispatch_action(primary_action, flavored_from);
     the_context.add(flavored_from, the_name, the_dispatch);
 

@@ -18,6 +18,7 @@ public class general_modifier {
   public static final modifier_kind explicit_modifier = new base_modifier_kind(new base_string("explicit"));
   public static final modifier_kind synthetic_modifier = new base_modifier_kind(new base_string("synthetic"));
   public static final modifier_kind varargs_modifier = new base_modifier_kind(new base_string("varargs"));
+  public static final modifier_kind mutable_var_modifier = new base_modifier_kind(new base_string("mutable_var"));
   public static final modifier_kind override_modifier = new base_modifier_kind(new base_string("override"));
   public static final modifier_kind overload_modifier = new base_modifier_kind(new base_string("overload"));
   public static final modifier_kind implement_modifier = new base_modifier_kind(new base_string("implement"));

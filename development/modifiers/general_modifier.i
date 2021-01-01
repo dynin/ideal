@@ -23,6 +23,7 @@ namespace general_modifier {
 
   modifier_kind varargs_modifier : base_modifier_kind.new("varargs");
 
+  modifier_kind mutable_var_modifier : base_modifier_kind.new("mutable_var");
   modifier_kind override_modifier : base_modifier_kind.new("override");
   modifier_kind overload_modifier : base_modifier_kind.new("overload");
   modifier_kind implement_modifier : base_modifier_kind.new("implement");

@@ -75,6 +75,11 @@ class markup_grammar {
     element.add_option(sequence([ start_tag, content, end_tag ]));
 
     -- sequence_matcher[character, string].new([ space_opt, element, space_opt ], select_2nd);
-    return sequence([ space_opt, element, space_opt ]);
+    result : sequence([ space_opt, element, space_opt ]);
+
+    -- TODO: cast should be redundant.
+    (result as validatable).validate();
+
+    return result;
   }
 }

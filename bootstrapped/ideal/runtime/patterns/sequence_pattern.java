@@ -10,9 +10,23 @@ import javax.annotation.Nullable;
 
 public class sequence_pattern<element_type> extends base_pattern<element_type> {
   public final immutable_list<pattern<element_type>> patterns_list;
+  private boolean validated;
   public sequence_pattern(final readonly_list<pattern<element_type>> patterns_list) {
-    assert patterns_list.is_not_empty();
     this.patterns_list = patterns_list.frozen_copy();
+  }
+  public @Override void validate() {
+    if (this.validated) {
+      return;
+    }
+    this.validated = true;
+    assert this.patterns_list.is_not_empty();
+    {
+      final readonly_list<pattern<element_type>> the_pattern_list = this.patterns_list;
+      for (int the_pattern_index = 0; the_pattern_index < the_pattern_list.size(); the_pattern_index += 1) {
+        final pattern<element_type> the_pattern = the_pattern_list.get(the_pattern_index);
+        ((validatable) the_pattern).validate();
+      }
+    }
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
     final @Nullable Integer match = this.match_prefix(the_list);

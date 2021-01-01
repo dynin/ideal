@@ -9,6 +9,7 @@ namespace patterns {
   implicit import ideal.library.patterns;
   implicit import ideal.runtime.elements;
 
+  interface validatable;
   class base_pattern;
   class one_pattern;
   class singleton_pattern;

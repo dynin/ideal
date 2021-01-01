@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public abstract class base_pattern<element_type> implements pattern<element_type> {
+public abstract class base_pattern<element_type> implements validatable, pattern<element_type> {
   public @Override immutable_list<immutable_list<element_type>> split(final immutable_list<element_type> the_list) {
     final base_list<immutable_list<element_type>> result = new base_list<immutable_list<element_type>>();
     int index = 0;

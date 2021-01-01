@@ -6,7 +6,7 @@
 
 --- A matcher that combines a pattern and a parse procedure.
 class procedure_matcher[readonly value element_type, any value result_type] {
-  implements matcher[element_type, result_type];
+  implements validatable, matcher[element_type, result_type];
 
   pattern[element_type] the_pattern;
   procedure[result_type, readonly list[element_type]] parser;
@@ -15,6 +15,10 @@ class procedure_matcher[readonly value element_type, any value result_type] {
       procedure[result_type, readonly list[element_type]] parser) {
     this.the_pattern = the_pattern;
     this.parser = parser;
+  }
+
+  implement void validate() {
+    (the_pattern as validatable).validate();
   }
 
   implement implicit boolean call(readonly list[element_type] the_list) {

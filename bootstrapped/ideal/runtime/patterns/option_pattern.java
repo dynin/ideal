@@ -10,12 +10,28 @@ import javax.annotation.Nullable;
 
 public class option_pattern<element_type> extends base_pattern<element_type> {
   protected final list<pattern<element_type>> options;
+  private boolean validated;
   public option_pattern(final readonly_collection<pattern<element_type>> options) {
     this.options = new base_list<pattern<element_type>>();
     this.options.append_all(options.elements());
   }
   public void add_option(final pattern<element_type> option) {
     this.options.append(option);
+  }
+  public @Override void validate() {
+    if (this.validated) {
+      return;
+    }
+    this.validated = true;
+    assert this.options.size() > 1;
+    {
+      final readonly_list<pattern<element_type>> option_list = this.options;
+      for (int option_index = 0; option_index < option_list.size(); option_index += 1) {
+        final pattern<element_type> option = option_list.get(option_index);
+        ((validatable) option).validate();
+        assert !option.call(new empty<element_type>());
+      }
+    }
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
     {

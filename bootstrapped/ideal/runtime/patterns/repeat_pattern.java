@@ -15,6 +15,9 @@ public class repeat_pattern<element_type> extends base_pattern<element_type> {
     this.the_pattern = the_pattern;
     this.do_match_empty = do_match_empty;
   }
+  public @Override void validate() {
+    ((validatable) this.the_pattern).validate();
+  }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
     int index = 0;
     while (index < the_list.size()) {

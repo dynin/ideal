@@ -9,6 +9,7 @@ class option_pattern[readonly value element_type] {
   extends base_pattern[element_type];
 
   protected list[pattern[element_type]] options;
+  private mutable_var boolean validated;
 
   option_pattern(readonly collection[pattern[element_type]] options) {
     this.options = base_list[pattern[element_type]].new();
@@ -17,6 +18,19 @@ class option_pattern[readonly value element_type] {
 
   void add_option(pattern[element_type] option) {
     options.append(option);
+  }
+
+  implement void validate() {
+    if (validated) {
+      return;
+    }
+    validated = true;
+    assert options.size > 1;
+    for (option : options) {
+      (option as validatable).validate();
+      -- Empty pattern cannot match one of the options.
+      assert !option(empty[element_type].new());
+    }
   }
 
   implement implicit boolean call(readonly list[element_type] the_list) {

@@ -240,7 +240,8 @@ public class variable_analyzer extends declaration_analyzer
   }
 
   private boolean is_immutable() {
-    return !annotations().has(general_modifier.var_modifier);
+    return !annotations().has(general_modifier.var_modifier) &&
+           !annotations().has(general_modifier.mutable_var_modifier);
   }
 
   private error_signal report_error(error_signal signal) {

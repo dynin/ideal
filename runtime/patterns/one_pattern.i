@@ -58,4 +58,7 @@ abstract class one_pattern[readonly value element_type] {
 
     return missing.instance;
   }
+
+  implement void validate() {
+  }
 }

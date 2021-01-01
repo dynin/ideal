@@ -9,10 +9,21 @@ class sequence_pattern[readonly value element_type] {
   extends base_pattern[element_type];
 
   immutable list[pattern[element_type]] patterns_list;
+  private mutable_var boolean validated;
 
   sequence_pattern(readonly list[pattern[element_type]] patterns_list) {
-    assert patterns_list.is_not_empty;
     this.patterns_list = patterns_list.frozen_copy();
+  }
+
+  implement void validate() {
+    if (validated) {
+      return;
+    }
+    validated = true;
+    assert patterns_list.is_not_empty;
+    for (the_pattern : patterns_list) {
+      (the_pattern as validatable).validate();
+    }
   }
 
   implement implicit boolean call(readonly list[element_type] the_list) {

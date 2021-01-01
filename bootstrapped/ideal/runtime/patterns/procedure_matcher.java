@@ -8,12 +8,15 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class procedure_matcher<element_type, result_type> implements matcher<element_type, result_type> {
+public class procedure_matcher<element_type, result_type> implements validatable, matcher<element_type, result_type> {
   public final pattern<element_type> the_pattern;
   public final procedure1<result_type, readonly_list<element_type>> parser;
   public procedure_matcher(final pattern<element_type> the_pattern, final procedure1<result_type, readonly_list<element_type>> parser) {
     this.the_pattern = the_pattern;
     this.parser = parser;
+  }
+  public @Override void validate() {
+    ((validatable) this.the_pattern).validate();
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
     return this.the_pattern.call(the_list);

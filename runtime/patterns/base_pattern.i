@@ -6,7 +6,7 @@
 
 --- Code shared by patterns: |split|, more in the futurte.
 abstract class base_pattern[readonly value element_type] {
-  implements pattern[element_type];
+  implements validatable, pattern[element_type];
 
   implement immutable list[immutable list[element_type]] split(
       immutable list[element_type] the_list) {

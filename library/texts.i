@@ -64,10 +64,4 @@ package texts {
     extends identifier;
     string short_name;
   }
-
-  interface character_traits {
-    boolean is_letter(character the_character) pure;
-    boolean is_letter_or_digit(character the_character) pure;
-    boolean is_whitespace(character the_character) pure;
-  }
 }

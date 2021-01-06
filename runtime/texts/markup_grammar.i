@@ -13,11 +13,27 @@ class markup_grammar {
   implicit import character_patterns;
 
   character_handler the_character_handler;
-  pattern[character] document_pattern;
+  dictionary[string, special_text] entities;
+  var pattern[character] document_pattern;
+  var matcher[character, special_text] entity_ref;
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
-    this.document_pattern = this.document();
+    this.entities = hash_dictionary[string, special_text].new();
+  }
+
+  private boolean is_completed => document_pattern is_not null;
+
+  public void add_entities(readonly collection[special_text] new_entities) {
+    assert !is_completed();
+    for (the_entity : new_entities.elements) {
+      this.entities.put(the_entity.name, the_entity);
+    }
+  }
+
+  public void complete() {
+    assert !is_completed();
+    document_pattern = document();
   }
 
   protected boolean name_start(character c) pure {
@@ -40,6 +56,14 @@ class markup_grammar {
     return c != '<' && c != '&' && c != '"';
   }
 
+  special_text make_entity_2nd(readonly list[any value] the_list) pure {
+    string entity_name : the_list[1] as string;
+    entity : entities.get(entity_name);
+    -- TODO: report error to user
+    assert entity is_not null;
+    return entity;
+  }
+
   protected pattern[character] document() {
     lt : one_character('<');
     gt : one_character('>');
@@ -53,7 +77,9 @@ class markup_grammar {
     space_opt : zero_or_more(the_character_handler.is_whitespace);
     name : as_string(sequence_pattern[character].new([ one(name_start), zero_or_more(name_char) ]));
 
-    entity_ref : sequence([ amp, name, semicolon ]);
+    entity_ref = sequence_matcher[character, special_text].new([ amp, name, semicolon ],
+        make_entity_2nd);
+
     equals : sequence([ space_opt, eq, space_opt ]);
     attribute_value_in_quot : sequence([ quot,
         repeat_or_none(option([one_or_more(content_not_quot), entity_ref])), quot ]);
@@ -66,7 +92,8 @@ class markup_grammar {
     empty_element : sequence([ lt, name, attributes, space_opt, slash, gt ]);
     element : option([empty_element, ]);
     char_data_opt : zero_or_more(content_char);
-    content_element : option([ element, entity_ref ]);
+    pattern[character] entity_ref_pattern : entity_ref;
+    content_element : option([ element, entity_ref_pattern ]);
     content_tail : repeat_or_none(sequence([ content_element, char_data_opt ]));
     content : sequence([ char_data_opt, content_tail ]);
 

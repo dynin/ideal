@@ -62,7 +62,7 @@ class test_markup_text {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
-    the_entity : text_entity.new(text_library.IDEAL_TEXT, "*", "&middot;");
+    the_entity : text_entity.new(text_library.IDEAL_TEXT, "*", "middot");
 
     the_formatter.write("one" as base_string);
     the_formatter.write(the_entity);

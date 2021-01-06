@@ -11,11 +11,32 @@ import ideal.library.patterns.*;
 import ideal.runtime.patterns.*;
 import ideal.runtime.texts.character_patterns.*;
 
+import javax.annotation.Nullable;
+
 public class markup_grammar {
   public final character_handler the_character_handler;
-  public final pattern<Character> document_pattern;
+  public final dictionary<string, special_text> entities;
+  public pattern<Character> document_pattern;
+  public matcher<Character, special_text> entity_ref;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
+    this.entities = new hash_dictionary<string, special_text>();
+  }
+  private boolean is_completed() {
+    return this.document_pattern != null;
+  }
+  public void add_entities(final readonly_collection<special_text> new_entities) {
+    assert !this.is_completed();
+    {
+      final readonly_list<special_text> the_entity_list = new_entities.elements();
+      for (int the_entity_index = 0; the_entity_index < the_entity_list.size(); the_entity_index += 1) {
+        final special_text the_entity = the_entity_list.get(the_entity_index);
+        this.entities.put(the_entity.name(), the_entity);
+      }
+    }
+  }
+  public void complete() {
+    assert !this.is_completed();
     this.document_pattern = this.document();
   }
   protected boolean name_start(final char c) {
@@ -32,6 +53,12 @@ public class markup_grammar {
   }
   protected boolean content_not_quot(final char c) {
     return c != '<' && c != '&' && c != '\"';
+  }
+  public special_text make_entity_2nd(final readonly_list<any_value> the_list) {
+    final string entity_name = (string) the_list.get(1);
+    final @Nullable special_text entity = this.entities.get(entity_name);
+    assert entity != null;
+    return entity;
   }
   protected pattern<Character> document() {
     final pattern<Character> lt = character_patterns.one_character('<');
@@ -56,18 +83,22 @@ public class markup_grammar {
         return markup_grammar.this.name_char(first);
       }
     }) }))));
-    final pattern<Character> entity_ref = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ amp, name, semicolon })));
+    this.entity_ref = new sequence_matcher<Character, special_text>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ amp, name, semicolon })), new function1<special_text, readonly_list<any_value>>() {
+      @Override public special_text call(readonly_list<any_value> first) {
+        return markup_grammar.this.make_entity_2nd(first);
+      }
+    });
     final pattern<Character> equals = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, eq, space_opt })));
     final pattern<Character> attribute_value_in_quot = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ quot, character_patterns.repeat_or_none(character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ character_patterns.one_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_not_quot(first);
       }
-    }), entity_ref })))), quot })));
+    }), this.entity_ref })))), quot })));
     final pattern<Character> attribute_value_in_apos = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ apos, character_patterns.repeat_or_none(character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ character_patterns.one_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_not_apos(first);
       }
-    }), entity_ref })))), apos })));
+    }), this.entity_ref })))), apos })));
     final option_pattern<Character> attribute_value = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ attribute_value_in_quot, attribute_value_in_apos })));
     final pattern<Character> attribute = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })));
     final pattern<Character> attributes = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, attribute }))));
@@ -78,7 +109,8 @@ public class markup_grammar {
         return markup_grammar.this.content_char(first);
       }
     });
-    final option_pattern<Character> content_element = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ element, entity_ref })));
+    final pattern<Character> entity_ref_pattern = this.entity_ref;
+    final option_pattern<Character> content_element = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ element, entity_ref_pattern })));
     final pattern<Character> content_tail = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ content_element, char_data_opt }))));
     final pattern<Character> content = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ char_data_opt, content_tail })));
     final pattern<Character> start_tag = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, gt })));

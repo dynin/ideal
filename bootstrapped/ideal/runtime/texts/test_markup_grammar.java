@@ -7,17 +7,41 @@ import ideal.library.characters.*;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
+import ideal.runtime.texts.text_library.*;
 import ideal.machine.characters.normal_handler;
 
 public class test_markup_grammar {
   public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_entity_ref");
+    test_entity_ref();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_simple_parse");
     test_simple_parse();
     ideal.machine.elements.runtime_util.end_test();
   }
-  public void test_simple_parse() {
+  public markup_grammar make_grammar() {
     final markup_grammar grammar = new markup_grammar(normal_handler.instance);
-    final ideal.library.patterns.pattern<Character> document_pattern = grammar.document_pattern;
+    grammar.add_entities(text_library.HTML_ENTITIES);
+    grammar.complete();
+    return grammar;
+  }
+  public void test_entity_ref() {
+    final ideal.library.patterns.matcher<Character, special_text> entity_ref = this.make_grammar().entity_ref;
+    assert entity_ref.call(new base_string("&lt;"));
+    assert entity_ref.call(new base_string("&amp;"));
+    assert entity_ref.call(new base_string("&bull;"));
+    assert !entity_ref.call(new base_string("foo"));
+    assert !entity_ref.call(new base_string("&foo"));
+    assert !entity_ref.call(new base_string("foo;"));
+    assert entity_ref.parse(new base_string("&lt;")) == text_library.LT;
+    assert entity_ref.parse(new base_string("&gt;")) == text_library.GT;
+    assert entity_ref.parse(new base_string("&apos;")) == text_library.APOS;
+    assert entity_ref.parse(new base_string("&quot;")) == text_library.QUOT;
+    assert entity_ref.parse(new base_string("&mdash;")) == text_library.MDASH;
+    assert entity_ref.parse(new base_string("&nbsp;")) == text_library.NBSP;
+  }
+  public void test_simple_parse() {
+    final ideal.library.patterns.pattern<Character> document_pattern = this.make_grammar().document_pattern;
     assert document_pattern.call(new base_string("<html>foo</html>"));
     assert document_pattern.call(new base_string("  <html>foo</html>  "));
     assert document_pattern.call(new base_string("  <html  >foo</html  >  "));

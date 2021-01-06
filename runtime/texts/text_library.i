@@ -43,16 +43,28 @@ public namespace text_library {
   REL : base_attribute_id.new(HTML_NS, "rel");
   TYPE : base_attribute_id.new(HTML_NS, "style");
 
-  BULL : text_entity.new(HTML_NS, "*", "&bull;");
-  MIDDOT : text_entity.new(HTML_NS, ".", "&middot;");
-  MDASH : text_entity.new(HTML_NS, "--", "&mdash;");
-  NBSP : text_entity.new(HTML_NS, " ", "&nbsp;");
-  THINSP : text_entity.new(HTML_NS, " ", "&thinsp;");
+  LT : text_entity.new(HTML_NS, "<", "lt");
+  GT : text_entity.new(HTML_NS, ">", "gt");
+  APOS : text_entity.new(HTML_NS, "'", "apos");
+  QUOT : text_entity.new(HTML_NS, "\"", "quot");
 
-  LARR : text_entity.new(HTML_NS, "<-", "&larr;");
-  UARR : text_entity.new(HTML_NS, "^", "&uarr;");
-  RARR : text_entity.new(HTML_NS, "->", "&rarr;");
-  DARR : text_entity.new(HTML_NS, "V", "&darr;");
+  BULL : text_entity.new(HTML_NS, "*", "bull");
+  MIDDOT : text_entity.new(HTML_NS, ".", "middot");
+  MDASH : text_entity.new(HTML_NS, "--", "mdash");
+  NBSP : text_entity.new(HTML_NS, " ", "nbsp");
+  THINSP : text_entity.new(HTML_NS, " ", "thinsp;");
+
+  LARR : text_entity.new(HTML_NS, "<-", "larr");
+  UARR : text_entity.new(HTML_NS, "^", "uarr");
+  RARR : text_entity.new(HTML_NS, "->", "rarr");
+  DARR : text_entity.new(HTML_NS, "V", "darr");
+
+  immutable list[special_text] HTML_ENTITIES : [
+    LT, GT, APOS, QUOT,
+    BULL, MIDDOT, MDASH, NBSP, THINSP,
+    LARR, UARR, RARR, DARR
+    -- TODO: the cast should be redundant; use deeply_immutable
+  ] as immutable list[special_text];
 
   FRAGMENT_SEPARATOR : "#";
 

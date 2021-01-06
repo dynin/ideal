@@ -73,7 +73,7 @@ class test_plain_text {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
-    fragment : text_entity.new(text_library.IDEAL_TEXT, "*", "&middot;");
+    fragment : text_entity.new(text_library.IDEAL_TEXT, "*", "middot");
 
     the_formatter.write("one" as base_string);
     the_formatter.write(fragment);

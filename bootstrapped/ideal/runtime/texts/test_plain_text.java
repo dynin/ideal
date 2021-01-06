@@ -88,7 +88,7 @@ public class test_plain_text {
   public void test_writer_fragment() {
     final string_writer the_writer = new string_writer();
     final plain_formatter the_formatter = new plain_formatter(the_writer);
-    final text_entity fragment = new text_entity(text_library.IDEAL_TEXT, new base_string("*"), new base_string("&middot;"));
+    final text_entity fragment = new text_entity(text_library.IDEAL_TEXT, new base_string("*"), new base_string("middot"));
     the_formatter.write((base_string) new base_string("one"));
     the_formatter.write(fragment);
     the_formatter.write((base_string) new base_string("two"));

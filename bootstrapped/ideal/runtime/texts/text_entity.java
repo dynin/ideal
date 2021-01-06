@@ -11,19 +11,22 @@ import ideal.library.channels.output;
 public class text_entity extends debuggable implements special_text, reference_equality {
   private final text_namespace the_namespace;
   private final string plain_text;
-  private final string markup;
-  public text_entity(final text_namespace the_namespace, final string plain_text, final string markup) {
+  private final string markup_name;
+  public text_entity(final text_namespace the_namespace, final string plain_text, final string markup_name) {
     this.the_namespace = the_namespace;
     this.plain_text = plain_text;
-    this.markup = markup;
+    this.markup_name = markup_name;
+  }
+  public @Override string name() {
+    return this.markup_name;
   }
   public @Override string to_plain_text() {
     return this.plain_text;
   }
   public @Override string to_markup() {
-    return this.markup;
+    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate('&', this.markup_name), ';');
   }
   public @Override string to_string() {
-    return this.markup;
+    return this.to_markup();
   }
 }

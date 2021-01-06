@@ -5,11 +5,36 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 class test_markup_grammar {
+  implicit import ideal.runtime.texts.text_library;
   import ideal.machine.characters.normal_handler;
 
-  testcase test_simple_parse() {
+  markup_grammar make_grammar() {
     grammar : markup_grammar.new(normal_handler.instance);
-    document_pattern : grammar.document_pattern;
+    grammar.add_entities(text_library.HTML_ENTITIES);
+    grammar.complete();
+    return grammar;
+  }
+
+  testcase test_entity_ref() {
+    entity_ref : make_grammar().entity_ref;
+
+    assert entity_ref("&lt;");
+    assert entity_ref("&amp;");
+    assert entity_ref("&bull;");
+    assert !entity_ref("foo");
+    assert !entity_ref("&foo");
+    assert !entity_ref("foo;");
+
+    assert entity_ref.parse("&lt;") == LT;
+    assert entity_ref.parse("&gt;") == GT;
+    assert entity_ref.parse("&apos;") == APOS;
+    assert entity_ref.parse("&quot;") == QUOT;
+    assert entity_ref.parse("&mdash;") == MDASH;
+    assert entity_ref.parse("&nbsp;") == NBSP;
+  }
+
+  testcase test_simple_parse() {
+    document_pattern : make_grammar().document_pattern;
 
     assert document_pattern("<html>foo</html>");
     assert document_pattern("  <html>foo</html>  ");

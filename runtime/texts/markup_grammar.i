@@ -16,6 +16,8 @@ class markup_grammar {
   dictionary[string, special_text] entities;
   var pattern[character] document_pattern;
   var matcher[character, special_text] entity_ref;
+  var matcher[character, string] quot_attr_value;
+  var matcher[character, string] apos_attr_value;
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
@@ -80,11 +82,17 @@ class markup_grammar {
     entity_ref = sequence_matcher[character, special_text].new([ amp, name, semicolon ],
         make_entity_2nd);
 
+
     equals : sequence([ space_opt, eq, space_opt ]);
-    attribute_value_in_quot : sequence([ quot,
-        repeat_or_none(option([one_or_more(content_not_quot), entity_ref])), quot ]);
-    attribute_value_in_apos : sequence([ apos,
-        repeat_or_none(option([one_or_more(content_not_apos), entity_ref])), apos ]);
+
+    quot_attr_value = as_string(one_or_more(content_not_quot));
+    pattern[character] qav : quot_attr_value;
+    attribute_value_in_quot : sequence([ quot, repeat_or_none(option([qav, entity_ref])), quot ]);
+
+    apos_attr_value = as_string(one_or_more(content_not_apos));
+    pattern[character] aav : apos_attr_value;
+    attribute_value_in_apos : sequence([ apos, repeat_or_none(option([aav, entity_ref])), apos ]);
+
     attribute_value : option([ attribute_value_in_quot, attribute_value_in_apos ]);
     attribute : sequence([ name, equals, attribute_value ]);
     attributes : repeat_or_none(sequence([ space_opt, attribute ]));

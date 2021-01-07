@@ -15,6 +15,9 @@ public class test_markup_grammar {
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_entity_ref");
     test_entity_ref();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_attribute_value");
+    test_attribute_value();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_simple_parse");
     test_simple_parse();
     ideal.machine.elements.runtime_util.end_test();
@@ -39,6 +42,21 @@ public class test_markup_grammar {
     assert entity_ref.parse(new base_string("&quot;")) == text_library.QUOT;
     assert entity_ref.parse(new base_string("&mdash;")) == text_library.MDASH;
     assert entity_ref.parse(new base_string("&nbsp;")) == text_library.NBSP;
+  }
+  public void test_attribute_value() {
+    final markup_grammar grammar = this.make_grammar();
+    final ideal.library.patterns.matcher<Character, string> quot_attr_value = grammar.quot_attr_value;
+    assert quot_attr_value.call(new base_string("foo"));
+    assert quot_attr_value.call(new base_string("*bar*"));
+    assert quot_attr_value.call(new base_string("\'baz\'"));
+    assert !quot_attr_value.call(new base_string("&lt;"));
+    assert !quot_attr_value.call(new base_string("\"a"));
+    final ideal.library.patterns.matcher<Character, string> apos_attr_value = grammar.apos_attr_value;
+    assert apos_attr_value.call(new base_string("foo"));
+    assert apos_attr_value.call(new base_string("*bar*"));
+    assert apos_attr_value.call(new base_string("\"baz\""));
+    assert !apos_attr_value.call(new base_string("&lt;"));
+    assert !apos_attr_value.call(new base_string("\'a"));
   }
   public void test_simple_parse() {
     final ideal.library.patterns.pattern<Character> document_pattern = this.make_grammar().document_pattern;

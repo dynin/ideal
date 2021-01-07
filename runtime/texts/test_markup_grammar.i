@@ -33,6 +33,25 @@ class test_markup_grammar {
     assert entity_ref.parse("&nbsp;") == NBSP;
   }
 
+  testcase test_attribute_value() {
+    grammar : make_grammar();
+    quot_attr_value : grammar.quot_attr_value;
+
+    assert quot_attr_value("foo");
+    assert quot_attr_value("*bar*");
+    assert quot_attr_value("'baz'");
+    assert !quot_attr_value("&lt;");
+    assert !quot_attr_value("\"a");
+
+    apos_attr_value : grammar.apos_attr_value;
+
+    assert apos_attr_value("foo");
+    assert apos_attr_value("*bar*");
+    assert apos_attr_value("\"baz\"");
+    assert !apos_attr_value("&lt;");
+    assert !apos_attr_value("'a");
+  }
+
   testcase test_simple_parse() {
     document_pattern : make_grammar().document_pattern;
 

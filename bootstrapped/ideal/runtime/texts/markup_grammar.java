@@ -18,6 +18,8 @@ public class markup_grammar {
   public final dictionary<string, special_text> entities;
   public pattern<Character> document_pattern;
   public matcher<Character, special_text> entity_ref;
+  public matcher<Character, string> quot_attr_value;
+  public matcher<Character, string> apos_attr_value;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
     this.entities = new hash_dictionary<string, special_text>();
@@ -89,16 +91,20 @@ public class markup_grammar {
       }
     });
     final pattern<Character> equals = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, eq, space_opt })));
-    final pattern<Character> attribute_value_in_quot = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ quot, character_patterns.repeat_or_none(character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ character_patterns.one_or_more(new function1<Boolean, Character>() {
+    this.quot_attr_value = character_patterns.as_string(character_patterns.one_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_not_quot(first);
       }
-    }), this.entity_ref })))), quot })));
-    final pattern<Character> attribute_value_in_apos = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ apos, character_patterns.repeat_or_none(character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ character_patterns.one_or_more(new function1<Boolean, Character>() {
+    }));
+    final pattern<Character> qav = this.quot_attr_value;
+    final pattern<Character> attribute_value_in_quot = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ quot, character_patterns.repeat_or_none(character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ qav, this.entity_ref })))), quot })));
+    this.apos_attr_value = character_patterns.as_string(character_patterns.one_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_not_apos(first);
       }
-    }), this.entity_ref })))), apos })));
+    }));
+    final pattern<Character> aav = this.apos_attr_value;
+    final pattern<Character> attribute_value_in_apos = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ apos, character_patterns.repeat_or_none(character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ aav, this.entity_ref })))), apos })));
     final option_pattern<Character> attribute_value = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ attribute_value_in_quot, attribute_value_in_apos })));
     final pattern<Character> attribute = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })));
     final pattern<Character> attributes = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, attribute }))));

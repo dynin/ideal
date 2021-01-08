@@ -63,6 +63,7 @@ public class main {
     new test_option_pattern().run_all_tests();
     new test_repeat_pattern().run_all_tests();
     new test_option_matcher().run_all_tests();
+    new test_repeat_matcher().run_all_tests();
 
     new test_markup_grammar().run_all_tests();
 

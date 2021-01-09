@@ -40,6 +40,13 @@ public class text_util {
     }
   }
   public static text_fragment join(final readonly_list<text_fragment> fragments) {
+    if (fragments.size() <= 1) {
+      if (fragments.is_empty()) {
+        return text_util.EMPTY_FRAGMENT;
+      } else {
+        return fragments.get(0);
+      }
+    }
     final base_list<text_node> nodes = new base_list<text_node>();
     {
       final readonly_list<text_fragment> fragment_list = fragments;

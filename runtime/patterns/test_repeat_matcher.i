@@ -22,16 +22,17 @@ class test_repeat_matcher {
     return char_list.frozen_copy() as base_string;
   }
 
-  private class string_matcher {
-    extends repeat_matcher[character, string];
-
-    string_matcher(matcher[character, string] the_pattern, boolean do_match_empty) {
-      super(the_pattern, do_match_empty);
+  -- TODO: use list.join() when it's implemented.
+  private string join_list(readonly list[string] strings) {
+    var string result : "";
+    for (the_string : strings) {
+      if (result.is_empty) {
+        result = the_string;
+      } else {
+        result = result ++ "/" ++ the_string;
+      }
     }
-
-    implement protected string combine(string first, string second) {
-      return first ++ "/" ++ second;
-    }
+    return result;
   }
 
   -- TODO: should be matcher[character, string]
@@ -49,11 +50,13 @@ class test_repeat_matcher {
     return result;
   }
 
-  repeat_matcher[character, string] make_pattern(boolean do_match_empty) {
+  matcher[character, string] make_pattern(boolean do_match_empty) {
     matcher_list : [ make_matcher(match_a), make_matcher(match_b), make_matcher(match_c) ];
 
-    return string_matcher.new(
-        sequence_matcher[character, string].new(matcher_list, match_procedure), do_match_empty);
+    return repeat_matcher[character, string, string].new(
+        sequence_matcher[character, string].new(matcher_list, match_procedure),
+        do_match_empty,
+        join_list);
   }
 
   testcase test_match() {

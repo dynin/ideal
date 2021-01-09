@@ -7,6 +7,7 @@ import ideal.library.characters.*;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
+import ideal.machine.channels.string_writer;
 
 public class base_list_text_node extends debuggable implements list_text_node {
   private final immutable_list<text_node> the_nodes;
@@ -23,6 +24,14 @@ public class base_list_text_node extends debuggable implements list_text_node {
     return this.the_nodes;
   }
   public @Override string to_string() {
-    return new base_string("base_list_text_node...");
+    final string_writer the_writer = new string_writer();
+    {
+      final readonly_list<text_node> node_list = this.the_nodes;
+      for (int node_index = 0; node_index < node_list.size(); node_index += 1) {
+        final text_node node = node_list.get(node_index);
+        the_writer.write_all(node.to_string());
+      }
+    }
+    return the_writer.elements();
   }
 }

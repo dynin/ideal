@@ -9,6 +9,8 @@ class base_list_text_node {
   extends debuggable;
   implements list_text_node;
 
+  import ideal.machine.channels.string_writer;
+
   private immutable list[text_node] the_nodes;
 
   public base_list_text_node(readonly list[text_node] the_nodes) {
@@ -28,7 +30,10 @@ class base_list_text_node {
   }
 
   override string to_string() {
-    -- TODO: return the_nodes.to_string() ?..
-    return "base_list_text_node...";
+    the_writer : string_writer.new();
+    for (node : the_nodes) {
+      the_writer.write_all(node.to_string);
+    }
+    return the_writer.elements();
   }
 }

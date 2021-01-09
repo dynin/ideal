@@ -56,6 +56,14 @@ namespace text_util {
   }
 
   overload text_fragment join(readonly list[text_fragment] fragments) {
+    if (fragments.size <= 1) {
+      if (fragments.is_empty) {
+        return EMPTY_FRAGMENT;
+      } else {
+        return fragments[0];
+      }
+    }
+
     nodes : base_list[text_node].new();
 
     for (fragment : fragments) {

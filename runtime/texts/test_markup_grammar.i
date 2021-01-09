@@ -50,6 +50,26 @@ class test_markup_grammar {
     assert apos_attr_value("\"baz\"");
     assert !apos_attr_value("&lt;");
     assert !apos_attr_value("'a");
+
+    attribute_value_in_quot : grammar.attribute_value_in_quot;
+
+    assert attribute_value_in_quot.parse("\"\"").to_string == "";
+    assert attribute_value_in_quot.parse("\"foo\"").to_string == "foo";
+    assert attribute_value_in_quot.parse("\"&lt;\"").to_string == "&lt;";
+    assert attribute_value_in_quot.parse("\"foo&lt;bar\"").to_string == "foo&lt;bar";
+    assert attribute_value_in_quot.parse("\"&quot;-&apos;\"").to_string == "&quot;-&apos;";
+    assert attribute_value_in_quot.parse("\"&lt;foo&gt;bar'baz\"").to_string ==
+        "&lt;foo&gt;bar'baz";
+
+    attribute_value_in_apos : grammar.attribute_value_in_apos;
+
+    assert attribute_value_in_apos.parse("''").to_string == "";
+    assert attribute_value_in_apos.parse("'foo'").to_string == "foo";
+    assert attribute_value_in_apos.parse("'&lt;'").to_string == "&lt;";
+    assert attribute_value_in_apos.parse("'foo&lt;bar'").to_string == "foo&lt;bar";
+    assert attribute_value_in_apos.parse("'&quot;-&apos;'").to_string == "&quot;-&apos;";
+    assert attribute_value_in_apos.parse("'&lt;foo&gt;bar\"baz'").to_string ==
+        "&lt;foo&gt;bar\"baz";
   }
 
   testcase test_simple_parse() {

@@ -8,13 +8,15 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public abstract class repeat_matcher<element_type, result_type> extends repeat_pattern<element_type> implements matcher<element_type, result_type> {
-  public repeat_matcher(final matcher<element_type, result_type> the_pattern, final boolean do_match_empty) {
+public class repeat_matcher<element_type, result_type, intermediate_type> extends repeat_pattern<element_type> implements matcher<element_type, result_type> {
+  public final procedure1<result_type, readonly_list<intermediate_type>> list_converter;
+  public repeat_matcher(final matcher<element_type, intermediate_type> the_pattern, final boolean do_match_empty, final procedure1<result_type, readonly_list<intermediate_type>> list_converter) {
     super(the_pattern, do_match_empty);
+    this.list_converter = list_converter;
   }
-  public @Override @Nullable result_type parse(final readonly_list<element_type> the_list) {
+  public @Override result_type parse(final readonly_list<element_type> the_list) {
     int index = 0;
-    @Nullable result_type result = null;
+    final base_list<intermediate_type> intermediate_list = new base_list<intermediate_type>();
     while (index < the_list.size()) {
       final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
       if (match == null) {
@@ -24,15 +26,10 @@ public abstract class repeat_matcher<element_type, result_type> extends repeat_p
         }
       }
       assert match > 0;
-      final result_type matched = ((matcher<element_type, result_type>) this.the_pattern).parse(the_list.slice(index, index + match));
-      if (result == null) {
-        result = matched;
-      } else if (matched != null) {
-        result = this.combine(result, matched);
-      }
+      final intermediate_type matched = ((matcher<element_type, intermediate_type>) this.the_pattern).parse(the_list.slice(index, index + match));
+      intermediate_list.append(matched);
       index += match;
     }
-    return result;
+    return this.list_converter.call(intermediate_list);
   }
-  protected abstract result_type combine(result_type first, result_type second);
 }

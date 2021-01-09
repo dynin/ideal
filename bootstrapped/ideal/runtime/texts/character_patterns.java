@@ -32,6 +32,22 @@ public class character_patterns {
   public static option_pattern<Character> option(final readonly_list<pattern<Character>> patterns_list) {
     return new option_pattern<Character>(patterns_list);
   }
+  public static option_matcher<Character, text_fragment> option_fragment_list(final readonly_list<matcher<Character, text_fragment>> matchers) {
+    return new option_matcher<Character, text_fragment>(matchers);
+  }
+  public static option_matcher<Character, text_fragment> option_fragment(final matcher<Character, string> attr_value, final matcher<Character, special_text> entity_ref) {
+    return character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ (matcher<Character, text_fragment>) (matcher) entity_ref, (matcher<Character, text_fragment>) (matcher) attr_value })));
+  }
+  public static text_fragment join_fragments(final readonly_list<text_fragment> fragments) {
+    return text_util.join(fragments);
+  }
+  public static matcher<Character, text_fragment> repeat_or_none_fragment(final matcher<Character, text_fragment> the_matcher) {
+    return new repeat_matcher<Character, text_fragment, text_fragment>(the_matcher, true, new procedure1<text_fragment, readonly_list<text_fragment>>() {
+      @Override public text_fragment call(readonly_list<text_fragment> first) {
+        return character_patterns.join_fragments(first);
+      }
+    });
+  }
   public static string as_string_procedure(final readonly_list<Character> the_character_list) {
     return (base_string) the_character_list.frozen_copy();
   }
@@ -42,7 +58,10 @@ public class character_patterns {
       }
     });
   }
-  public static string select_2nd(final readonly_list<any_value> the_list) {
+  public static string select_2nd_string(final readonly_list<any_value> the_list) {
     return (string) the_list.get(1);
+  }
+  public static text_fragment select_2nd_text_fragment(final readonly_list<any_value> the_list) {
+    return (text_fragment) the_list.get(1);
   }
 }

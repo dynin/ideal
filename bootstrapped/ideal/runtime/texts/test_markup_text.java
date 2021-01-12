@@ -59,7 +59,7 @@ public class test_markup_text {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
     the_formatter.write((base_string) new base_string("foo"));
-    the_formatter.write(base_element.make(text_library.BR, text_library.CLEAR, new base_string("all"), null));
+    the_formatter.write(base_element.make(text_library.BR, text_library.CLEAR, (base_string) new base_string("all"), null));
     the_formatter.write((base_string) new base_string("bar\n"));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo<br clear=\'all\' />\nbar\n"), the_writer.elements());
   }

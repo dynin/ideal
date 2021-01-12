@@ -93,7 +93,7 @@ class markup_formatter {
   }
 
   private void write_start_tag(text_element element,
-      readonly dictionary[attribute_id, string] attributes) {
+      readonly dictionary[attribute_id, attribute_fragment] attributes) {
     write_string(OPEN_START_TAG);
     write_escaped(element.get_id.short_name);
     write_tag_attributes(attributes);
@@ -107,19 +107,20 @@ class markup_formatter {
   }
 
   private void write_self_closing_tag(text_element element,
-      readonly dictionary[attribute_id, string] attributes) {
+      readonly dictionary[attribute_id, attribute_fragment] attributes) {
     write_string(OPEN_START_TAG);
     write_escaped(element.get_id.short_name);
     write_tag_attributes(attributes);
     write_string(CLOSE_SELF_CLOSING_TAG);
   }
 
-  private void write_tag_attributes(readonly dictionary[attribute_id, string] attributes) {
+  private void write_tag_attributes(
+      readonly dictionary[attribute_id, attribute_fragment] attributes) {
     for (attribute : attributes.elements) {
       write_string(ATTRIBUTE_SEPARATOR);
       write_escaped(attribute.key.short_name);
       write_string(ATTRIBUTE_START);
-      write_escaped(attribute.value);
+      process(attribute.value);
       write_string(ATTRIBUTE_END);
     }
   }

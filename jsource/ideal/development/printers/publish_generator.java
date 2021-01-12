@@ -306,7 +306,8 @@ public class publish_generator {
     // TODO: introduce constants.
     base_string css_href = the_naming_strategy.link_to_resource(
         new base_list<simple_name>(ASSETS_NAME, IDEAL_STYLE_NAME), base_extension.CSS);
-    list_dictionary<attribute_id, string> attributes = new list_dictionary<attribute_id, string>();
+    list_dictionary<attribute_id, attribute_fragment> attributes =
+        new list_dictionary<attribute_id, attribute_fragment>();
     attributes.put(HREF, css_href);
     attributes.put(REL, new base_string("stylesheet"));
     attributes.put(TYPE, new base_string("text/css"));

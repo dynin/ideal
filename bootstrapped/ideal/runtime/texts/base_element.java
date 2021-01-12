@@ -12,26 +12,26 @@ import javax.annotation.Nullable;
 
 public class base_element extends debuggable implements text_element {
   private final element_id id;
-  private final immutable_dictionary<attribute_id, string> the_attributes;
+  private final immutable_dictionary<attribute_id, attribute_fragment> the_attributes;
   private final @Nullable text_fragment the_children;
   public base_element(final element_id id) {
-    this(id, new list_dictionary<attribute_id, string>(), null);
+    this(id, new list_dictionary<attribute_id, attribute_fragment>(), null);
   }
-  public base_element(final element_id id, final readonly_dictionary<attribute_id, string> attributes, final @Nullable text_fragment children) {
+  public base_element(final element_id id, final readonly_dictionary<attribute_id, attribute_fragment> attributes, final @Nullable text_fragment children) {
     this.id = id;
     this.the_attributes = attributes.frozen_copy();
     this.the_children = children;
   }
   public static text_element make(final element_id id, final @Nullable text_fragment children) {
-    return new base_element(id, new list_dictionary<attribute_id, string>(), children);
+    return new base_element(id, new list_dictionary<attribute_id, attribute_fragment>(), children);
   }
-  public static text_element make(final element_id id, final attribute_id attr, final string value, final @Nullable text_fragment children) {
-    return new base_element(id, new list_dictionary<attribute_id, string>(attr, value), children);
+  public static text_element make(final element_id id, final attribute_id attr, final attribute_fragment value, final @Nullable text_fragment children) {
+    return new base_element(id, new list_dictionary<attribute_id, attribute_fragment>(attr, value), children);
   }
   public @Override element_id get_id() {
     return this.id;
   }
-  public @Override immutable_dictionary<attribute_id, string> attributes() {
+  public @Override immutable_dictionary<attribute_id, attribute_fragment> attributes() {
     return this.the_attributes;
   }
   public @Override @Nullable text_fragment children() {

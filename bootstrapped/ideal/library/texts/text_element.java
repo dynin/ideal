@@ -8,6 +8,6 @@ import javax.annotation.Nullable;
 
 public interface text_element extends text_node {
   element_id get_id();
-  immutable_dictionary<attribute_id, string> attributes();
+  immutable_dictionary<attribute_id, attribute_fragment> attributes();
   @Nullable text_fragment children();
 }

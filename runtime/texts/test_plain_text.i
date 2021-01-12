@@ -121,7 +121,7 @@ class test_plain_text {
     text_element hi : base_element.make(text_library.UNDERLINE, "hi" as base_string);
     -- TODO: Implement empty dictionary
     text_element mid : base_element.new(text_library.UNDERLINE2,
-        list_dictionary[attribute_id, string].new(),
+        list_dictionary[attribute_id, attribute_fragment].new(),
         base_list_text_node.make("start " as base_string, hi, " end" as base_string));
     the_formatter.write(text_util.join("foo " as base_string, mid, " bar" as base_string));
     the_formatter.write(base_element.make(text_library.BR, missing.instance));

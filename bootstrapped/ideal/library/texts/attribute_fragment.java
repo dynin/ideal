@@ -4,4 +4,4 @@ package ideal.library.texts;
 
 import ideal.library.elements.*;
 
-public interface string_text_node extends text_node, attribute_fragment { }
+public interface attribute_fragment extends text_fragment { }

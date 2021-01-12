@@ -66,7 +66,12 @@ class summary_extractor {
     return process_list(nodes_list.nodes);
   }
 
+  protected override string process_attributes(list_attribute_fragment fragments) {
+    return "";
+  }
+
   protected override string process_special(special_text t) {
+    -- TODO: remain a special_text.
     return t.to_plain_text;
   }
 }

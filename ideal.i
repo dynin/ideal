@@ -40,8 +40,7 @@ target generate_development: generate_java(ideal.development);
 
 target generate_cache: generate_java(ideal.development.flavors.base_flavor_profile);
 
-target generate_all: generate_java(ideal.library, ideal.runtime);
---target generate_all: generate_java(ideal.runtime.channels.output_transformer);
+target generate_all: generate_java(ideal.library, ideal.runtime, ideal.development);
 
 target print_declarations: generate_java(ideal.development.declarations.type_declaration);
 

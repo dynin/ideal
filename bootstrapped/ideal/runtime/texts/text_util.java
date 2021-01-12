@@ -118,9 +118,9 @@ public class text_util {
     } else {
       child_fragment = null;
     }
-    return new base_element(id, new list_dictionary<attribute_id, string>(), child_fragment);
+    return new base_element(id, new list_dictionary<attribute_id, attribute_fragment>(), child_fragment);
   }
   public static text_element make_html_link(final text_fragment text, final string link_target) {
-    return base_element.make(text_library.A, text_library.HREF, link_target, text);
+    return base_element.make(text_library.A, text_library.HREF, (base_string) link_target, text);
   }
 }

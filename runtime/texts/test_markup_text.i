@@ -52,7 +52,7 @@ class test_markup_text {
 
     the_formatter.write("foo" as base_string);
     the_formatter.write(base_element.make(text_library.BR,
-        text_library.CLEAR, "all", missing.instance));
+        text_library.CLEAR, "all" as base_string, missing.instance));
     the_formatter.write("bar\n" as base_string);
 
     assert "foo<br clear='all' />\nbar\n" == the_writer.elements();

@@ -51,12 +51,13 @@ abstract class text_formatter {
   override abstract void process_special(special_text t);
 
   override void process_nodes(list_text_node nodes) {
-    process_all(nodes.nodes);
+    -- TODO: this cast should be redundant.
+    write_all(nodes.nodes as readonly list[text_fragment]);
   }
 
-  protected void process_all(readonly list[text_node] nodes) {
+  override void process_attributes(list_attribute_fragment fragments) {
     -- TODO: this cast should be redundant.
-    write_all(nodes as readonly list[text_fragment]);
+    write_all(fragments.fragments as readonly list[text_fragment]);
   }
 
   protected void write_string(string the_string) {

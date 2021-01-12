@@ -159,12 +159,12 @@ namespace origin_printer {
       highlighted : text_util.join(highlight_prefix as base_string,
           underlined_element, highlight_suffix as base_string);
       highlighted_element = base_element.new(text_library.UNDERLINE2,
-          list_dictionary[attribute_id, string].new(), highlighted);
+          list_dictionary[attribute_id, attribute_fragment].new(), highlighted);
     }
     -- TODO: the casts are redundant
     text_line : text_util.join(prefix as base_string, highlighted_element, suffix as base_string);
 
     return base_element.new(text_library.DIV,
-          list_dictionary[attribute_id, string].new(), text_line);
+          list_dictionary[attribute_id, attribute_fragment].new(), text_line);
   }
 }

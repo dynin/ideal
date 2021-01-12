@@ -152,10 +152,12 @@ namespace text_util {
       child_fragment = missing.instance;
     }
     -- TODO: use empty dictionary
-    return base_element.new(id, list_dictionary[attribute_id, string].new(), child_fragment);
+    return base_element.new(id, list_dictionary[attribute_id, attribute_fragment].new(),
+        child_fragment);
   }
 
   text_element make_html_link(text_fragment text, string link_target) {
-    return base_element.make(text_library.A, text_library.HREF, link_target, text);
+    -- TODO: cast is redundant.
+    return base_element.make(text_library.A, text_library.HREF, link_target as base_string, text);
   }
 }

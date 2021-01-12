@@ -4,7 +4,7 @@ package ideal.library.texts;
 
 import ideal.library.elements.*;
 
-public interface special_text extends text_node, deeply_immutable_reference_equality {
+public interface special_text extends text_node, attribute_fragment, deeply_immutable_reference_equality {
   string name();
   string to_plain_text();
   string to_markup();

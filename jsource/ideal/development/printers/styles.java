@@ -80,12 +80,13 @@ public class styles {
       return wrap(element, fragment);
     }
     assert element.children() == null;
-    dictionary<attribute_id, string> attributes = new list_dictionary<attribute_id, string>();
+    dictionary<attribute_id, attribute_fragment> attributes =
+        new list_dictionary<attribute_id, attribute_fragment>();
     attributes.put(text_library.ID, id);
-    readonly_list<dictionary.entry<attribute_id, string>> style_attributes =
+    readonly_list<dictionary.entry<attribute_id, attribute_fragment>> style_attributes =
         element.attributes().elements();
     for (int i = 0; i < style_attributes.size(); ++i) {
-      dictionary.entry<attribute_id, string> entry = style_attributes.get(i);
+      dictionary.entry<attribute_id, attribute_fragment> entry = style_attributes.get(i);
       attributes.put(entry.key(), entry.value());
     }
     return new base_element(element.get_id(), attributes, fragment);

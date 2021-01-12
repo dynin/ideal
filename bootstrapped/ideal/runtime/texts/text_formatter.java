@@ -46,11 +46,12 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
   public abstract @Override Void process_element(text_element element);
   public abstract @Override Void process_special(special_text t);
   public @Override Void process_nodes(final list_text_node nodes) {
-    this.process_all(nodes.nodes());
+    this.write_all((readonly_list<text_fragment>) (readonly_list) nodes.nodes());
     return null;
   }
-  protected void process_all(final readonly_list<text_node> nodes) {
-    this.write_all((readonly_list<text_fragment>) (readonly_list) nodes);
+  public @Override Void process_attributes(final list_attribute_fragment fragments) {
+    this.write_all((readonly_list<text_fragment>) (readonly_list) fragments.fragments());
+    return null;
   }
   protected void write_string(final string the_string) {
     int index = 0;

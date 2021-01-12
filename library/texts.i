@@ -14,6 +14,12 @@ package texts {
     extends stringable;
   }
 
+  --- An attribute fragment can be a string, or a special text instance (such as an entity),
+  --- or a list of the above.
+  interface attribute_fragment {
+    extends text_fragment;
+  }
+
   --- A text node can be a text element, string, or a special text.
   interface text_node {
     extends text_fragment;
@@ -27,7 +33,7 @@ package texts {
     extends text_node;
 
     element_id get_id;
-    immutable dictionary[attribute_id, string] attributes;
+    immutable dictionary[attribute_id, attribute_fragment] attributes;
     immutable text_fragment or null children;
   }
 
@@ -37,8 +43,14 @@ package texts {
     immutable list[text_node] nodes;
   }
 
+  interface list_attribute_fragment {
+    extends attribute_fragment;
+
+    immutable list[attribute_fragment] fragments;
+  }
+
   interface special_text {
-    extends text_node;
+    extends text_node, attribute_fragment;
     implements reference_equality;
 
     string name;
@@ -47,7 +59,7 @@ package texts {
   }
 
   supertype_of_string interface string_text_node {
-    extends text_node, string;
+    extends text_node, attribute_fragment, string;
   }
 
   interface element_id {

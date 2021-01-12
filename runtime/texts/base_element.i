@@ -10,15 +10,16 @@ class base_element {
   implements text_element;
 
   private element_id id;
-  private immutable dictionary[attribute_id, string] the_attributes;
+  private immutable dictionary[attribute_id, attribute_fragment] the_attributes;
   private text_fragment or null the_children;
 
   overload base_element(element_id id) {
     -- TODO: Implement empty dictionary
-    this(id, list_dictionary[attribute_id, string].new(), missing.instance);
+    this(id, list_dictionary[attribute_id, attribute_fragment].new(), missing.instance);
   }
 
-  public overload base_element(element_id id, readonly dictionary[attribute_id, string] attributes,
+  public overload base_element(element_id id,
+      readonly dictionary[attribute_id, attribute_fragment] attributes,
       text_fragment or null children) {
     this.id = id;
     this.the_attributes = attributes.frozen_copy();
@@ -26,17 +27,18 @@ class base_element {
   }
 
   static overload text_element make(element_id id, text_fragment or null children) {
-    return base_element.new(id, list_dictionary[attribute_id, string].new(), children);
+    return base_element.new(id, list_dictionary[attribute_id, attribute_fragment].new(), children);
   }
 
   static overload text_element make(element_id id, attribute_id attr,
-      string value, text_fragment or null children) {
-    return base_element.new(id, list_dictionary[attribute_id, string].new(attr, value), children);
+      attribute_fragment value, text_fragment or null children) {
+    return base_element.new(id, list_dictionary[attribute_id, attribute_fragment].new(attr, value),
+        children);
   }
 
   override element_id get_id => id;
 
-  override immutable dictionary[attribute_id, string] attributes => the_attributes;
+  override immutable dictionary[attribute_id, attribute_fragment] attributes => the_attributes;
 
   override immutable text_fragment or null children => the_children;
 

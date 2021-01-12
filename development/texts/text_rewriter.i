@@ -13,7 +13,7 @@ abstract class text_rewriter {
   }
 
   protected abstract text_fragment rewrite_element(element_id id,
-      immutable dictionary[attribute_id, string] attributes,
+      immutable dictionary[attribute_id, attribute_fragment] attributes,
       text_fragment or null children);
 
   -- TODO: inherit protected access modifier from supertype.
@@ -41,5 +41,16 @@ abstract class text_rewriter {
     }
 
     return text_util.join(result);
+  }
+
+  protected override text_fragment process_attributes(list_attribute_fragment fragments) {
+    result : base_list[attribute_fragment].new();
+
+    for (source : fragments.fragments) {
+      -- TODO: fail in a better way?
+      result.append(process(source) as attribute_fragment);
+    }
+
+    return base_list_attribute_fragment.new(result);
   }
 }

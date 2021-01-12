@@ -49,6 +49,9 @@ public class summary_extractor extends text_visitor<string> {
   protected @Override string process_nodes(final list_text_node nodes_list) {
     return this.process_list(nodes_list.nodes());
   }
+  protected @Override string process_attributes(final list_attribute_fragment fragments) {
+    return new base_string("");
+  }
   protected @Override string process_special(final special_text t) {
     return t.to_plain_text();
   }

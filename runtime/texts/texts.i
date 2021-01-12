@@ -18,6 +18,7 @@ namespace texts {
 
   class base_element;
   class base_list_text_node;
+  class base_list_attribute_fragment;
   class underline_style;
   class text_visitor;
 

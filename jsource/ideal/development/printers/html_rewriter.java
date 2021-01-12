@@ -24,7 +24,7 @@ public class html_rewriter extends text_rewriter {
 
   @Override
   protected text_fragment rewrite_element(element_id id,
-      immutable_dictionary<attribute_id, string> attributes,
+      immutable_dictionary<attribute_id, attribute_fragment> attributes,
       @Nullable text_fragment children) {
 
     if (id == text_library.INDENT) {

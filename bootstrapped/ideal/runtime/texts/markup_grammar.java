@@ -20,8 +20,8 @@ public class markup_grammar {
   public matcher<Character, special_text> entity_ref;
   public matcher<Character, string> quot_attr_value;
   public matcher<Character, string> apos_attr_value;
-  public matcher<Character, text_fragment> attribute_value_in_quot;
-  public matcher<Character, text_fragment> attribute_value_in_apos;
+  public matcher<Character, attribute_fragment> attribute_value_in_quot;
+  public matcher<Character, attribute_fragment> attribute_value_in_apos;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
     this.entities = new hash_dictionary<string, special_text>();
@@ -98,9 +98,9 @@ public class markup_grammar {
         return markup_grammar.this.content_not_quot(first);
       }
     }));
-    this.attribute_value_in_quot = new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ quot, character_patterns.repeat_or_none_fragment(character_patterns.option_fragment(this.quot_attr_value, this.entity_ref)), quot })), new function1<text_fragment, readonly_list<any_value>>() {
-      @Override public text_fragment call(readonly_list<any_value> first) {
-        return character_patterns.select_2nd_text_fragment(first);
+    this.attribute_value_in_quot = new sequence_matcher<Character, attribute_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ quot, character_patterns.repeat_or_none_fragment(character_patterns.option_fragment(this.quot_attr_value, this.entity_ref)), quot })), new function1<attribute_fragment, readonly_list<any_value>>() {
+      @Override public attribute_fragment call(readonly_list<any_value> first) {
+        return character_patterns.select_2nd_attribute_fragment(first);
       }
     });
     this.apos_attr_value = character_patterns.as_string(character_patterns.one_or_more(new function1<Boolean, Character>() {
@@ -108,12 +108,12 @@ public class markup_grammar {
         return markup_grammar.this.content_not_apos(first);
       }
     }));
-    this.attribute_value_in_apos = new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ apos, character_patterns.repeat_or_none_fragment(character_patterns.option_fragment(this.apos_attr_value, this.entity_ref)), apos })), new function1<text_fragment, readonly_list<any_value>>() {
-      @Override public text_fragment call(readonly_list<any_value> first) {
-        return character_patterns.select_2nd_text_fragment(first);
+    this.attribute_value_in_apos = new sequence_matcher<Character, attribute_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ apos, character_patterns.repeat_or_none_fragment(character_patterns.option_fragment(this.apos_attr_value, this.entity_ref)), apos })), new function1<attribute_fragment, readonly_list<any_value>>() {
+      @Override public attribute_fragment call(readonly_list<any_value> first) {
+        return character_patterns.select_2nd_attribute_fragment(first);
       }
     });
-    final option_matcher<Character, text_fragment> attribute_value = character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ this.attribute_value_in_quot, this.attribute_value_in_apos })));
+    final option_matcher<Character, attribute_fragment> attribute_value = character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ this.attribute_value_in_quot, this.attribute_value_in_apos })));
     final pattern<Character> attribute = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })));
     final pattern<Character> attributes = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, attribute }))));
     final pattern<Character> empty_element = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, slash, gt })));

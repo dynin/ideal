@@ -57,14 +57,14 @@ public class test_markup_grammar {
     assert apos_attr_value.call(new base_string("\"baz\""));
     assert !apos_attr_value.call(new base_string("&lt;"));
     assert !apos_attr_value.call(new base_string("\'a"));
-    final ideal.library.patterns.matcher<Character, text_fragment> attribute_value_in_quot = grammar.attribute_value_in_quot;
+    final ideal.library.patterns.matcher<Character, attribute_fragment> attribute_value_in_quot = grammar.attribute_value_in_quot;
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"\"")).to_string(), new base_string(""));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"foo\"")).to_string(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"&lt;\"")).to_string(), new base_string("&lt;"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"foo&lt;bar\"")).to_string(), new base_string("foo&lt;bar"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"&quot;-&apos;\"")).to_string(), new base_string("&quot;-&apos;"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"&lt;foo&gt;bar\'baz\"")).to_string(), new base_string("&lt;foo&gt;bar\'baz"));
-    final ideal.library.patterns.matcher<Character, text_fragment> attribute_value_in_apos = grammar.attribute_value_in_apos;
+    final ideal.library.patterns.matcher<Character, attribute_fragment> attribute_value_in_apos = grammar.attribute_value_in_apos;
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'\'")).to_string(), new base_string(""));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'foo\'")).to_string(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'&lt;\'")).to_string(), new base_string("&lt;"));

@@ -56,6 +56,7 @@ namespace text_util {
   }
 
   overload text_fragment join(readonly list[text_fragment] fragments) {
+    -- TODO: reevaluate whether this optimization is needed.
     if (fragments.size <= 1) {
       if (fragments.is_empty) {
         return EMPTY_FRAGMENT;
@@ -104,6 +105,20 @@ namespace text_util {
     append(nodes, fourth);
 
     return to_fragment(nodes);
+  }
+
+  attribute_fragment join_attributes(readonly list[attribute_fragment] fragments) {
+    if (fragments.size == 1) {
+      return fragments.first;
+    }
+
+    result_fragments : base_list[attribute_fragment].new();
+
+    for (fragment : fragments) {
+      result_fragments.append(fragment);
+    }
+
+    return base_list_attribute_fragment.new(result_fragments);
   }
 
   private void append(list[text_node] nodes, text_fragment fragment) {

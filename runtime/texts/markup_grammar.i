@@ -18,8 +18,8 @@ class markup_grammar {
   var matcher[character, special_text] entity_ref;
   var matcher[character, string] quot_attr_value;
   var matcher[character, string] apos_attr_value;
-  var matcher[character, text_fragment] attribute_value_in_quot;
-  var matcher[character, text_fragment] attribute_value_in_apos;
+  var matcher[character, attribute_fragment] attribute_value_in_quot;
+  var matcher[character, attribute_fragment] attribute_value_in_apos;
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
@@ -88,14 +88,14 @@ class markup_grammar {
     equals : sequence([ space_opt, eq, space_opt ]);
 
     quot_attr_value = as_string(one_or_more(content_not_quot));
-    attribute_value_in_quot = sequence_matcher[character, text_fragment].new([ quot,
+    attribute_value_in_quot = sequence_matcher[character, attribute_fragment].new([ quot,
         repeat_or_none_fragment(option_fragment(quot_attr_value, entity_ref)), quot ],
-        select_2nd_text_fragment);
+        select_2nd_attribute_fragment);
 
     apos_attr_value = as_string(one_or_more(content_not_apos));
-    attribute_value_in_apos = sequence_matcher[character, text_fragment].new([ apos,
+    attribute_value_in_apos = sequence_matcher[character, attribute_fragment].new([ apos,
         repeat_or_none_fragment(option_fragment(apos_attr_value, entity_ref)), apos ],
-        select_2nd_text_fragment);
+        select_2nd_attribute_fragment);
 
     attribute_value : option_fragment_list([ attribute_value_in_quot, attribute_value_in_apos ]);
     attribute : sequence([ name, equals, attribute_value ]);

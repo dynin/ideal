@@ -78,6 +78,20 @@ public class text_util {
     text_util.append(nodes, fourth);
     return text_util.to_fragment(nodes);
   }
+  public static attribute_fragment join_attributes(final readonly_list<attribute_fragment> fragments) {
+    if (fragments.size() == 1) {
+      return fragments.first();
+    }
+    final base_list<attribute_fragment> result_fragments = new base_list<attribute_fragment>();
+    {
+      final readonly_list<attribute_fragment> fragment_list = fragments;
+      for (int fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
+        final attribute_fragment fragment = fragment_list.get(fragment_index);
+        result_fragments.append(fragment);
+      }
+    }
+    return new base_list_attribute_fragment(result_fragments);
+  }
   private static void append(final list<text_node> nodes, final text_fragment fragment) {
     if (fragment instanceof string) {
       if (((string) fragment).is_empty()) {

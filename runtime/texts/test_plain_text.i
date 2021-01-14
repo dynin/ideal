@@ -90,7 +90,7 @@ class test_plain_text {
 
     world_string : "world" as base_string;
     br : base_element.make(text_library.BR, missing.instance);
-    the_formatter.write(base_element.make(text_library.UNDERLINE,
+    the_formatter.write(base_element.make(text_library.U,
         base_list_text_node.make(world_string, br, FOO)));
     the_formatter.write(" bar" as base_string);
     the_formatter.write(base_element.make(text_library.BR, missing.instance));
@@ -106,7 +106,7 @@ class test_plain_text {
 
     world_string : "world" as base_string;
     br : base_element.make(text_library.BR, missing.instance);
-    the_formatter.write(base_element.make(text_library.UNDERLINE2,
+    the_formatter.write(base_element.make(text_library.U2,
         base_list_text_node.make(world_string, br, FOO)));
     the_formatter.write(" bar" as base_string);
     the_formatter.write(base_element.make(text_library.BR, missing.instance));
@@ -118,9 +118,9 @@ class test_plain_text {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
-    text_element hi : base_element.make(text_library.UNDERLINE, "hi" as base_string);
+    text_element hi : base_element.make(text_library.U, "hi" as base_string);
     -- TODO: Implement empty dictionary
-    text_element mid : base_element.new(text_library.UNDERLINE2,
+    text_element mid : base_element.new(text_library.U2,
         list_dictionary[attribute_id, attribute_fragment].new(),
         base_list_text_node.make("start " as base_string, hi, " end" as base_string));
     the_formatter.write(text_util.join("foo " as base_string, mid, " bar" as base_string));

@@ -30,9 +30,9 @@ public namespace text_library {
   EM : base_element_id.new(HTML_NS, "em");
   A : base_element_id.new(HTML_NS, "a");
   B : base_element_id.new(HTML_NS, "b");
-  UNDERLINE : base_element_id.new(HTML_NS, "u");
+  U : base_element_id.new(HTML_NS, "u");
   -- TODO: use some other type of emphasis...
-  UNDERLINE2 : base_element_id.new(HTML_NS, "u2");
+  U2 : base_element_id.new(HTML_NS, "u2");
 
   ID : base_attribute_id.new(HTML_NS, "id");
   NAME : base_attribute_id.new(HTML_NS, "name");
@@ -58,6 +58,15 @@ public namespace text_library {
   UARR : text_entity.new(HTML_NS, "^", "uarr");
   RARR : text_entity.new(HTML_NS, "->", "rarr");
   DARR : text_entity.new(HTML_NS, "V", "darr");
+
+  immutable list[element_id] HTML_ELEMENTS : [
+    HTML, HEAD, TITLE, LINK, BODY,
+    P, DIV, H1, H2, PRE,
+    TABLE, TR, TH, TD,
+    SPAN, BR, EM, A, B, U
+    -- TODO: include U2?
+    -- TODO: the cast should be redundant; use deeply_immutable
+  ] as immutable list[element_id];
 
   immutable list[special_text] HTML_ENTITIES : [
     LT, GT, APOS, QUOT,

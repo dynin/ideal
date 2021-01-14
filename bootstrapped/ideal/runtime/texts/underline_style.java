@@ -26,7 +26,7 @@ public class underline_style extends debuggable implements deeply_immutable_data
   private static final char DASH = '-';
   static {
     underline_style.all_styles = new list_dictionary<element_id, underline_style>();
-    underline_style.register(new underline_style(text_library.UNDERLINE, underline_style.CARET));
-    underline_style.register(new underline_style(text_library.UNDERLINE2, underline_style.DASH));
+    underline_style.register(new underline_style(text_library.U, underline_style.CARET));
+    underline_style.register(new underline_style(text_library.U2, underline_style.DASH));
   }
 }

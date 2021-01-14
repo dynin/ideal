@@ -150,7 +150,7 @@ namespace origin_printer {
     }
 
     -- TODO: the cast is redundant
-    underlined_element : base_element.make(text_library.UNDERLINE, underlined as base_string);
+    underlined_element : base_element.make(text_library.U, underlined as base_string);
     var text_element highlighted_element;
     if (highlight_prefix.is_empty && highlight_suffix.is_empty) {
       highlighted_element = underlined_element;
@@ -158,7 +158,7 @@ namespace origin_printer {
       -- TODO: the casts are redundant
       highlighted : text_util.join(highlight_prefix as base_string,
           underlined_element, highlight_suffix as base_string);
-      highlighted_element = base_element.new(text_library.UNDERLINE2,
+      highlighted_element = base_element.new(text_library.U2,
           list_dictionary[attribute_id, attribute_fragment].new(), highlighted);
     }
     -- TODO: the casts are redundant

@@ -13,6 +13,7 @@ class markup_grammar {
   implicit import character_patterns;
 
   character_handler the_character_handler;
+  dictionary[string, element_id] element_ids;
   dictionary[string, special_text] entities;
   var pattern[character] document_pattern;
   var matcher[character, special_text] entity_ref;
@@ -20,18 +21,30 @@ class markup_grammar {
   var matcher[character, string] apos_attr_value;
   var matcher[character, attribute_fragment] attribute_value_in_quot;
   var matcher[character, attribute_fragment] attribute_value_in_apos;
+  var matcher[character, text_element] empty_element;
+
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
-    this.entities = hash_dictionary[string, special_text].new();
+    element_ids = hash_dictionary[string, element_id].new();
+    entities = hash_dictionary[string, special_text].new();
   }
 
   private boolean is_completed => document_pattern is_not null;
 
+  public void add_elements(readonly collection[element_id] new_element_ids) {
+    assert !is_completed();
+    for (the_element_id : new_element_ids.elements) {
+      assert !element_ids.contains_key(the_element_id.short_name);
+      element_ids.put(the_element_id.short_name, the_element_id);
+    }
+  }
+
   public void add_entities(readonly collection[special_text] new_entities) {
     assert !is_completed();
     for (the_entity : new_entities.elements) {
-      this.entities.put(the_entity.name, the_entity);
+      assert !entities.contains_key(the_entity.name);
+      entities.put(the_entity.name, the_entity);
     }
   }
 
@@ -58,6 +71,14 @@ class markup_grammar {
 
   protected boolean content_not_quot(character c) pure {
     return c != '<' && c != '&' && c != '"';
+  }
+
+  text_element match_empty_element(readonly list[any value] the_list) pure {
+    string element_name : the_list[1] as string;
+    element_id : element_ids.get(element_name);
+    -- TODO: report error to user
+    assert element_id is_not null;
+    return base_element.new(element_id);
   }
 
   special_text make_entity_2nd(readonly list[any value] the_list) pure {
@@ -101,8 +122,10 @@ class markup_grammar {
     attribute : sequence([ name, equals, attribute_value ]);
     attributes : repeat_or_none(sequence([ space_opt, attribute ]));
 
-    empty_element : sequence([ lt, name, attributes, space_opt, slash, gt ]);
-    element : option([empty_element, ]);
+    empty_element = sequence_matcher[character, text_element].new(
+        [ lt, name, attributes, space_opt, slash, gt ],
+        match_empty_element);
+    element : option([empty_element as pattern[character], ]);
     char_data_opt : zero_or_more(content_char);
     pattern[character] entity_ref_pattern : entity_ref;
     content_element : option([ element, entity_ref_pattern ]);

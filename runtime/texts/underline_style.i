@@ -33,7 +33,7 @@ class underline_style {
 
   static {
     all_styles = list_dictionary[element_id, underline_style].new();
-    register(underline_style.new(text_library.UNDERLINE, CARET));
-    register(underline_style.new(text_library.UNDERLINE2, DASH));
+    register(underline_style.new(text_library.U, CARET));
+    register(underline_style.new(text_library.U2, DASH));
   }
 }

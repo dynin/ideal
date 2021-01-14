@@ -123,13 +123,13 @@ public class origin_printer {
         }
       }
     }
-    final text_element underlined_element = base_element.make(text_library.UNDERLINE, (base_string) underlined);
+    final text_element underlined_element = base_element.make(text_library.U, (base_string) underlined);
     text_element highlighted_element;
     if (highlight_prefix.is_empty() && highlight_suffix.is_empty()) {
       highlighted_element = underlined_element;
     } else {
       final text_fragment highlighted = text_util.join((base_string) highlight_prefix, underlined_element, (base_string) highlight_suffix);
-      highlighted_element = new base_element(text_library.UNDERLINE2, new list_dictionary<attribute_id, attribute_fragment>(), highlighted);
+      highlighted_element = new base_element(text_library.U2, new list_dictionary<attribute_id, attribute_fragment>(), highlighted);
     }
     final text_fragment text_line = text_util.join((base_string) prefix, highlighted_element, (base_string) suffix);
     return new base_element(text_library.DIV, new list_dictionary<attribute_id, attribute_fragment>(), text_line);

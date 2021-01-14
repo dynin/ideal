@@ -10,6 +10,7 @@ class test_markup_grammar {
 
   markup_grammar make_grammar() {
     grammar : markup_grammar.new(normal_handler.instance);
+    grammar.add_elements(text_library.HTML_ELEMENTS);
     grammar.add_entities(text_library.HTML_ENTITIES);
     grammar.complete();
     return grammar;
@@ -70,6 +71,19 @@ class test_markup_grammar {
     assert attribute_value_in_apos.parse("'&quot;-&apos;'").to_string == "&quot;-&apos;";
     assert attribute_value_in_apos.parse("'&lt;foo&gt;bar\"baz'").to_string ==
         "&lt;foo&gt;bar\"baz";
+  }
+
+  testcase test_empty_element() {
+    empty_element : make_grammar().empty_element;
+
+    assert empty_element("<html/>");
+    assert empty_element("<body />");
+    assert !empty_element("<html>");
+    assert !empty_element("bar");
+    assert !empty_element("&lt;html&gt;");
+
+    assert empty_element.parse("<html/>").get_id == text_library.HTML;
+    assert empty_element.parse("<body />").get_id == text_library.BODY;
   }
 
   testcase test_simple_parse() {

@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 public class markup_grammar {
   public final character_handler the_character_handler;
+  public final dictionary<string, element_id> element_ids;
   public final dictionary<string, special_text> entities;
   public pattern<Character> document_pattern;
   public matcher<Character, special_text> entity_ref;
@@ -22,12 +23,25 @@ public class markup_grammar {
   public matcher<Character, string> apos_attr_value;
   public matcher<Character, attribute_fragment> attribute_value_in_quot;
   public matcher<Character, attribute_fragment> attribute_value_in_apos;
+  public matcher<Character, text_element> empty_element;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
+    this.element_ids = new hash_dictionary<string, element_id>();
     this.entities = new hash_dictionary<string, special_text>();
   }
   private boolean is_completed() {
     return this.document_pattern != null;
+  }
+  public void add_elements(final readonly_collection<element_id> new_element_ids) {
+    assert !this.is_completed();
+    {
+      final readonly_list<element_id> the_element_id_list = new_element_ids.elements();
+      for (int the_element_id_index = 0; the_element_id_index < the_element_id_list.size(); the_element_id_index += 1) {
+        final element_id the_element_id = the_element_id_list.get(the_element_id_index);
+        assert !this.element_ids.contains_key(the_element_id.short_name());
+        this.element_ids.put(the_element_id.short_name(), the_element_id);
+      }
+    }
   }
   public void add_entities(final readonly_collection<special_text> new_entities) {
     assert !this.is_completed();
@@ -35,6 +49,7 @@ public class markup_grammar {
       final readonly_list<special_text> the_entity_list = new_entities.elements();
       for (int the_entity_index = 0; the_entity_index < the_entity_list.size(); the_entity_index += 1) {
         final special_text the_entity = the_entity_list.get(the_entity_index);
+        assert !this.entities.contains_key(the_entity.name());
         this.entities.put(the_entity.name(), the_entity);
       }
     }
@@ -57,6 +72,12 @@ public class markup_grammar {
   }
   protected boolean content_not_quot(final char c) {
     return c != '<' && c != '&' && c != '\"';
+  }
+  public text_element match_empty_element(final readonly_list<any_value> the_list) {
+    final string element_name = (string) the_list.get(1);
+    final @Nullable element_id element_id = this.element_ids.get(element_name);
+    assert element_id != null;
+    return new base_element(element_id);
   }
   public special_text make_entity_2nd(final readonly_list<any_value> the_list) {
     final string entity_name = (string) the_list.get(1);
@@ -116,8 +137,12 @@ public class markup_grammar {
     final option_matcher<Character, attribute_fragment> attribute_value = character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ this.attribute_value_in_quot, this.attribute_value_in_apos })));
     final pattern<Character> attribute = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })));
     final pattern<Character> attributes = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, attribute }))));
-    final pattern<Character> empty_element = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, slash, gt })));
-    final option_pattern<Character> element = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ empty_element })));
+    this.empty_element = new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, slash, gt })), new function1<text_element, readonly_list<any_value>>() {
+      @Override public text_element call(readonly_list<any_value> first) {
+        return markup_grammar.this.match_empty_element(first);
+      }
+    });
+    final option_pattern<Character> element = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) this.empty_element })));
     final pattern<Character> char_data_opt = character_patterns.zero_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_char(first);

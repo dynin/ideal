@@ -18,12 +18,16 @@ public class test_markup_grammar {
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_attribute_value");
     test_attribute_value();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_empty_element");
+    test_empty_element();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_simple_parse");
     test_simple_parse();
     ideal.machine.elements.runtime_util.end_test();
   }
   public markup_grammar make_grammar() {
     final markup_grammar grammar = new markup_grammar(normal_handler.instance);
+    grammar.add_elements(text_library.HTML_ELEMENTS);
     grammar.add_entities(text_library.HTML_ENTITIES);
     grammar.complete();
     return grammar;
@@ -71,6 +75,16 @@ public class test_markup_grammar {
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'foo&lt;bar\'")).to_string(), new base_string("foo&lt;bar"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'&quot;-&apos;\'")).to_string(), new base_string("&quot;-&apos;"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'&lt;foo&gt;bar\"baz\'")).to_string(), new base_string("&lt;foo&gt;bar\"baz"));
+  }
+  public void test_empty_element() {
+    final ideal.library.patterns.matcher<Character, text_element> empty_element = this.make_grammar().empty_element;
+    assert empty_element.call(new base_string("<html/>"));
+    assert empty_element.call(new base_string("<body />"));
+    assert !empty_element.call(new base_string("<html>"));
+    assert !empty_element.call(new base_string("bar"));
+    assert !empty_element.call(new base_string("&lt;html&gt;"));
+    assert empty_element.parse(new base_string("<html/>")).get_id() == text_library.HTML;
+    assert empty_element.parse(new base_string("<body />")).get_id() == text_library.BODY;
   }
   public void test_simple_parse() {
     final ideal.library.patterns.pattern<Character> document_pattern = this.make_grammar().document_pattern;

@@ -41,7 +41,7 @@ public namespace text_library {
   STYLE : base_attribute_id.new(HTML_NS, "style");
   HREF : base_attribute_id.new(HTML_NS, "href");
   REL : base_attribute_id.new(HTML_NS, "rel");
-  TYPE : base_attribute_id.new(HTML_NS, "style");
+  TYPE : base_attribute_id.new(HTML_NS, "type");
 
   LT : text_entity.new(HTML_NS, "<", "lt");
   GT : text_entity.new(HTML_NS, ">", "gt");
@@ -67,6 +67,11 @@ public namespace text_library {
     -- TODO: include U2?
     -- TODO: the cast should be redundant; use deeply_immutable
   ] as immutable list[element_id];
+
+  immutable list[attribute_id] HTML_ATTRIBUTES : [
+    ID, NAME, CLEAR, CLASS, STYLE, HREF, REL, TYPE
+    -- TODO: the cast should be redundant; use deeply_immutable
+  ] as immutable list[attribute_id];
 
   immutable list[special_text] HTML_ENTITIES : [
     LT, GT, APOS, QUOT,

@@ -38,7 +38,7 @@ public class text_library {
   public static final base_attribute_id STYLE = new base_attribute_id(text_library.HTML_NS, new base_string("style"));
   public static final base_attribute_id HREF = new base_attribute_id(text_library.HTML_NS, new base_string("href"));
   public static final base_attribute_id REL = new base_attribute_id(text_library.HTML_NS, new base_string("rel"));
-  public static final base_attribute_id TYPE = new base_attribute_id(text_library.HTML_NS, new base_string("style"));
+  public static final base_attribute_id TYPE = new base_attribute_id(text_library.HTML_NS, new base_string("type"));
   public static final text_entity LT = new text_entity(text_library.HTML_NS, new base_string("<"), new base_string("lt"));
   public static final text_entity GT = new text_entity(text_library.HTML_NS, new base_string(">"), new base_string("gt"));
   public static final text_entity APOS = new text_entity(text_library.HTML_NS, new base_string("\'"), new base_string("apos"));
@@ -53,6 +53,7 @@ public class text_library {
   public static final text_entity RARR = new text_entity(text_library.HTML_NS, new base_string("->"), new base_string("rarr"));
   public static final text_entity DARR = new text_entity(text_library.HTML_NS, new base_string("V"), new base_string("darr"));
   public static final immutable_list<element_id> HTML_ELEMENTS = (immutable_list<element_id>) (immutable_list) new base_immutable_list<base_element_id>(new ideal.machine.elements.array<base_element_id>(new base_element_id[]{ text_library.HTML, text_library.HEAD, text_library.TITLE, text_library.LINK, text_library.BODY, text_library.P, text_library.DIV, text_library.H1, text_library.H2, text_library.PRE, text_library.TABLE, text_library.TR, text_library.TH, text_library.TD, text_library.SPAN, text_library.BR, text_library.EM, text_library.A, text_library.B, text_library.U }));
+  public static final immutable_list<attribute_id> HTML_ATTRIBUTES = (immutable_list<attribute_id>) (immutable_list) new base_immutable_list<base_attribute_id>(new ideal.machine.elements.array<base_attribute_id>(new base_attribute_id[]{ text_library.ID, text_library.NAME, text_library.CLEAR, text_library.CLASS, text_library.STYLE, text_library.HREF, text_library.REL, text_library.TYPE }));
   public static final immutable_list<special_text> HTML_ENTITIES = (immutable_list<special_text>) (immutable_list) new base_immutable_list<text_entity>(new ideal.machine.elements.array<text_entity>(new text_entity[]{ text_library.LT, text_library.GT, text_library.APOS, text_library.QUOT, text_library.BULL, text_library.MIDDOT, text_library.MDASH, text_library.NBSP, text_library.THINSP, text_library.LARR, text_library.UARR, text_library.RARR, text_library.DARR }));
   public static final string FRAGMENT_SEPARATOR = new base_string("#");
   public static final base_namespace IDEAL_TEXT = new base_namespace(new base_string("itext"));

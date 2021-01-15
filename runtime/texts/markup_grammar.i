@@ -14,6 +14,7 @@ class markup_grammar {
 
   character_handler the_character_handler;
   dictionary[string, element_id] element_ids;
+  dictionary[string, attribute_id] attribute_ids;
   dictionary[string, special_text] entities;
   var pattern[character] document_pattern;
   var matcher[character, special_text] entity_ref;
@@ -21,12 +22,13 @@ class markup_grammar {
   var matcher[character, string] apos_attr_value;
   var matcher[character, attribute_fragment] attribute_value_in_quot;
   var matcher[character, attribute_fragment] attribute_value_in_apos;
+  var matcher[character, attribute_state] attribute;
   var matcher[character, text_element] empty_element;
-
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
     element_ids = hash_dictionary[string, element_id].new();
+    attribute_ids = hash_dictionary[string, attribute_id].new();
     entities = hash_dictionary[string, special_text].new();
   }
 
@@ -37,6 +39,14 @@ class markup_grammar {
     for (the_element_id : new_element_ids.elements) {
       assert !element_ids.contains_key(the_element_id.short_name);
       element_ids.put(the_element_id.short_name, the_element_id);
+    }
+  }
+
+  public void add_attributes(readonly collection[attribute_id] new_attribute_ids) {
+    assert !is_completed();
+    for (the_attribute_id : new_attribute_ids.elements) {
+      assert !attribute_ids.contains_key(the_attribute_id.short_name);
+      attribute_ids.put(the_attribute_id.short_name, the_attribute_id);
     }
   }
 
@@ -89,6 +99,26 @@ class markup_grammar {
     return entity;
   }
 
+  class attribute_state {
+    attribute_id id;
+    attribute_fragment value;
+
+    -- TODO: autogenerate constructor.
+    attribute_state(attribute_id id, attribute_fragment value) {
+      this.id = id;
+      this.value = value;
+    }
+  }
+
+  attribute_state make_attribute(readonly list[any value] the_list) pure {
+    string attribute_name : the_list[0] as string;
+    id : attribute_ids.get(attribute_name);
+    -- TODO: report error to user
+    assert id is_not null;
+    attribute_fragment value : the_list[2] as attribute_fragment;
+    return attribute_state.new(id, value);
+  }
+
   protected pattern[character] document() {
     lt : one_character('<');
     gt : one_character('>');
@@ -119,7 +149,8 @@ class markup_grammar {
         select_2nd_attribute_fragment);
 
     attribute_value : option_fragment_list([ attribute_value_in_quot, attribute_value_in_apos ]);
-    attribute : sequence([ name, equals, attribute_value ]);
+    attribute = sequence_matcher[character, attribute_state].new(
+        [ name, equals, attribute_value ], make_attribute);
     attributes : repeat_or_none(sequence([ space_opt, attribute ]));
 
     empty_element = sequence_matcher[character, text_element].new(

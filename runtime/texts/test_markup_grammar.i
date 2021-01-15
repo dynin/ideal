@@ -11,6 +11,7 @@ class test_markup_grammar {
   markup_grammar make_grammar() {
     grammar : markup_grammar.new(normal_handler.instance);
     grammar.add_elements(text_library.HTML_ELEMENTS);
+    grammar.add_attributes(text_library.HTML_ATTRIBUTES);
     grammar.add_entities(text_library.HTML_ENTITIES);
     grammar.complete();
     return grammar;
@@ -71,6 +72,26 @@ class test_markup_grammar {
     assert attribute_value_in_apos.parse("'&quot;-&apos;'").to_string == "&quot;-&apos;";
     assert attribute_value_in_apos.parse("'&lt;foo&gt;bar\"baz'").to_string ==
         "&lt;foo&gt;bar\"baz";
+  }
+
+  testcase test_attribute() {
+    attribute : make_grammar().attribute;
+
+    assert attribute("id = '68'");
+    assert attribute("href = \"https://ideal.org/\"");
+    assert attribute("clear='all'");
+    assert !attribute("<html>");
+    assert !attribute("foo");
+    assert !attribute("bar =");
+    assert !attribute("&lt;name&gt; = 'value'");
+
+    attribute0 : attribute.parse("id = '68'");
+    assert attribute0.id == text_library.ID;
+    assert (attribute0.value as string) == "68";
+
+    attribute1 : attribute.parse("href = \"https://ideal.org/\"");
+    assert attribute1.id == text_library.HREF;
+    assert (attribute1.value as string) == "https://ideal.org/";
   }
 
   testcase test_empty_element() {

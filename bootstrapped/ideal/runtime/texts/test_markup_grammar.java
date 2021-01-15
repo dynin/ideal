@@ -18,6 +18,9 @@ public class test_markup_grammar {
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_attribute_value");
     test_attribute_value();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_attribute");
+    test_attribute();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_empty_element");
     test_empty_element();
     ideal.machine.elements.runtime_util.end_test();
@@ -28,6 +31,7 @@ public class test_markup_grammar {
   public markup_grammar make_grammar() {
     final markup_grammar grammar = new markup_grammar(normal_handler.instance);
     grammar.add_elements(text_library.HTML_ELEMENTS);
+    grammar.add_attributes(text_library.HTML_ATTRIBUTES);
     grammar.add_entities(text_library.HTML_ENTITIES);
     grammar.complete();
     return grammar;
@@ -75,6 +79,22 @@ public class test_markup_grammar {
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'foo&lt;bar\'")).to_string(), new base_string("foo&lt;bar"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'&quot;-&apos;\'")).to_string(), new base_string("&quot;-&apos;"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'&lt;foo&gt;bar\"baz\'")).to_string(), new base_string("&lt;foo&gt;bar\"baz"));
+  }
+  public void test_attribute() {
+    final ideal.library.patterns.matcher<Character, markup_grammar.attribute_state> attribute = this.make_grammar().attribute;
+    assert attribute.call(new base_string("id = \'68\'"));
+    assert attribute.call(new base_string("href = \"https://ideal.org/\""));
+    assert attribute.call(new base_string("clear=\'all\'"));
+    assert !attribute.call(new base_string("<html>"));
+    assert !attribute.call(new base_string("foo"));
+    assert !attribute.call(new base_string("bar ="));
+    assert !attribute.call(new base_string("&lt;name&gt; = \'value\'"));
+    final markup_grammar.attribute_state attribute0 = attribute.parse(new base_string("id = \'68\'"));
+    assert attribute0.id == text_library.ID;
+    assert ideal.machine.elements.runtime_util.values_equal(((string) attribute0.value), new base_string("68"));
+    final markup_grammar.attribute_state attribute1 = attribute.parse(new base_string("href = \"https://ideal.org/\""));
+    assert attribute1.id == text_library.HREF;
+    assert ideal.machine.elements.runtime_util.values_equal(((string) attribute1.value), new base_string("https://ideal.org/"));
   }
   public void test_empty_element() {
     final ideal.library.patterns.matcher<Character, text_element> empty_element = this.make_grammar().empty_element;

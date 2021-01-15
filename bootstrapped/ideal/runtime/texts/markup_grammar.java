@@ -16,6 +16,7 @@ import javax.annotation.Nullable;
 public class markup_grammar {
   public final character_handler the_character_handler;
   public final dictionary<string, element_id> element_ids;
+  public final dictionary<string, attribute_id> attribute_ids;
   public final dictionary<string, special_text> entities;
   public pattern<Character> document_pattern;
   public matcher<Character, special_text> entity_ref;
@@ -23,10 +24,12 @@ public class markup_grammar {
   public matcher<Character, string> apos_attr_value;
   public matcher<Character, attribute_fragment> attribute_value_in_quot;
   public matcher<Character, attribute_fragment> attribute_value_in_apos;
+  public matcher<Character, markup_grammar.attribute_state> attribute;
   public matcher<Character, text_element> empty_element;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
     this.element_ids = new hash_dictionary<string, element_id>();
+    this.attribute_ids = new hash_dictionary<string, attribute_id>();
     this.entities = new hash_dictionary<string, special_text>();
   }
   private boolean is_completed() {
@@ -40,6 +43,17 @@ public class markup_grammar {
         final element_id the_element_id = the_element_id_list.get(the_element_id_index);
         assert !this.element_ids.contains_key(the_element_id.short_name());
         this.element_ids.put(the_element_id.short_name(), the_element_id);
+      }
+    }
+  }
+  public void add_attributes(final readonly_collection<attribute_id> new_attribute_ids) {
+    assert !this.is_completed();
+    {
+      final readonly_list<attribute_id> the_attribute_id_list = new_attribute_ids.elements();
+      for (int the_attribute_id_index = 0; the_attribute_id_index < the_attribute_id_list.size(); the_attribute_id_index += 1) {
+        final attribute_id the_attribute_id = the_attribute_id_list.get(the_attribute_id_index);
+        assert !this.attribute_ids.contains_key(the_attribute_id.short_name());
+        this.attribute_ids.put(the_attribute_id.short_name(), the_attribute_id);
       }
     }
   }
@@ -84,6 +98,21 @@ public class markup_grammar {
     final @Nullable special_text entity = this.entities.get(entity_name);
     assert entity != null;
     return entity;
+  }
+  public static class attribute_state {
+    public final attribute_id id;
+    public final attribute_fragment value;
+    public attribute_state(final attribute_id id, final attribute_fragment value) {
+      this.id = id;
+      this.value = value;
+    }
+  }
+  public markup_grammar.attribute_state make_attribute(final readonly_list<any_value> the_list) {
+    final string attribute_name = (string) the_list.get(0);
+    final @Nullable attribute_id id = this.attribute_ids.get(attribute_name);
+    assert id != null;
+    final attribute_fragment value = (attribute_fragment) the_list.get(2);
+    return new markup_grammar.attribute_state(id, value);
   }
   protected pattern<Character> document() {
     final pattern<Character> lt = character_patterns.one_character('<');
@@ -135,8 +164,12 @@ public class markup_grammar {
       }
     });
     final option_matcher<Character, attribute_fragment> attribute_value = character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ this.attribute_value_in_quot, this.attribute_value_in_apos })));
-    final pattern<Character> attribute = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })));
-    final pattern<Character> attributes = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, attribute }))));
+    this.attribute = new sequence_matcher<Character, markup_grammar.attribute_state>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })), new function1<markup_grammar.attribute_state, readonly_list<any_value>>() {
+      @Override public markup_grammar.attribute_state call(readonly_list<any_value> first) {
+        return markup_grammar.this.make_attribute(first);
+      }
+    });
+    final pattern<Character> attributes = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, this.attribute }))));
     this.empty_element = new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, slash, gt })), new function1<text_element, readonly_list<any_value>>() {
       @Override public text_element call(readonly_list<any_value> first) {
         return markup_grammar.this.match_empty_element(first);

@@ -48,6 +48,16 @@ public class character_patterns {
       }
     });
   }
+  public static immutable_list<attribute_state> cast_attributes(final readonly_list<attribute_state> attributes) {
+    return (immutable_list<attribute_state>) (immutable_list) attributes.elements();
+  }
+  public static matcher<Character, immutable_list<attribute_state>> repeat_or_none_attribute(final matcher<Character, attribute_state> the_matcher) {
+    return new repeat_matcher<Character, immutable_list<attribute_state>, attribute_state>(the_matcher, true, new procedure1<immutable_list<attribute_state>, readonly_list<attribute_state>>() {
+      @Override public immutable_list<attribute_state> call(readonly_list<attribute_state> first) {
+        return character_patterns.cast_attributes(first);
+      }
+    });
+  }
   public static string as_string_procedure(final readonly_list<Character> the_character_list) {
     return (base_string) the_character_list.frozen_copy();
   }
@@ -57,9 +67,6 @@ public class character_patterns {
         return character_patterns.as_string_procedure(first);
       }
     });
-  }
-  public static string select_2nd_string(final readonly_list<any_value> the_list) {
-    return (string) the_list.get(1);
   }
   public static attribute_fragment select_2nd_attribute_fragment(final readonly_list<any_value> the_list) {
     return (attribute_fragment) the_list.get(1);

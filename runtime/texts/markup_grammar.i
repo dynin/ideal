@@ -88,7 +88,15 @@ class markup_grammar {
     element_id : element_ids.get(element_name);
     -- TODO: report error to user
     assert element_id is_not null;
-    return base_element.new(element_id);
+
+    attributes : the_list[2] as immutable list[attribute_state];
+    dictionary[attribute_id, attribute_fragment] attributes_dictionary :
+        list_dictionary[attribute_id, attribute_fragment].new();
+    for (attribute : attributes) {
+      attributes_dictionary.put(attribute.id, attribute.value);
+    }
+
+    return base_element.new(element_id, attributes_dictionary, missing.instance);
   }
 
   special_text make_entity_2nd(readonly list[any value] the_list) pure {
@@ -99,17 +107,6 @@ class markup_grammar {
     return entity;
   }
 
-  class attribute_state {
-    attribute_id id;
-    attribute_fragment value;
-
-    -- TODO: autogenerate constructor.
-    attribute_state(attribute_id id, attribute_fragment value) {
-      this.id = id;
-      this.value = value;
-    }
-  }
-
   attribute_state make_attribute(readonly list[any value] the_list) pure {
     string attribute_name : the_list[0] as string;
     id : attribute_ids.get(attribute_name);
@@ -118,6 +115,9 @@ class markup_grammar {
     attribute_fragment value : the_list[2] as attribute_fragment;
     return attribute_state.new(id, value);
   }
+
+  attribute_state select_2nd_attribute_state(readonly list[any value] the_list) pure =>
+      the_list[1] as attribute_state;
 
   protected pattern[character] document() {
     lt : one_character('<');
@@ -135,7 +135,6 @@ class markup_grammar {
     entity_ref = sequence_matcher[character, special_text].new([ amp, name, semicolon ],
         make_entity_2nd);
 
-
     equals : sequence([ space_opt, eq, space_opt ]);
 
     quot_attr_value = as_string(one_or_more(content_not_quot));
@@ -151,7 +150,9 @@ class markup_grammar {
     attribute_value : option_fragment_list([ attribute_value_in_quot, attribute_value_in_apos ]);
     attribute = sequence_matcher[character, attribute_state].new(
         [ name, equals, attribute_value ], make_attribute);
-    attributes : repeat_or_none(sequence([ space_opt, attribute ]));
+    attributes : repeat_or_none_attribute(
+        sequence_matcher[character, attribute_state].new([ space_opt, attribute ],
+            select_2nd_attribute_state));
 
     empty_element = sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, slash, gt ],

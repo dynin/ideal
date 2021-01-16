@@ -81,30 +81,47 @@ public class test_markup_grammar {
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'&lt;foo&gt;bar\"baz\'")).to_string(), new base_string("&lt;foo&gt;bar\"baz"));
   }
   public void test_attribute() {
-    final ideal.library.patterns.matcher<Character, markup_grammar.attribute_state> attribute = this.make_grammar().attribute;
+    final ideal.library.patterns.matcher<Character, attribute_state> attribute = this.make_grammar().attribute;
     assert attribute.call(new base_string("id = \'68\'"));
-    assert attribute.call(new base_string("href = \"https://ideal.org/\""));
+    assert attribute.call(new base_string("href = \"https://theideal.org/\""));
     assert attribute.call(new base_string("clear=\'all\'"));
     assert !attribute.call(new base_string("<html>"));
     assert !attribute.call(new base_string("foo"));
     assert !attribute.call(new base_string("bar ="));
     assert !attribute.call(new base_string("&lt;name&gt; = \'value\'"));
-    final markup_grammar.attribute_state attribute0 = attribute.parse(new base_string("id = \'68\'"));
+    final attribute_state attribute0 = attribute.parse(new base_string("id = \'68\'"));
     assert attribute0.id == text_library.ID;
     assert ideal.machine.elements.runtime_util.values_equal(((string) attribute0.value), new base_string("68"));
-    final markup_grammar.attribute_state attribute1 = attribute.parse(new base_string("href = \"https://ideal.org/\""));
+    final attribute_state attribute1 = attribute.parse(new base_string("href = \"https://theideal.org/\""));
     assert attribute1.id == text_library.HREF;
-    assert ideal.machine.elements.runtime_util.values_equal(((string) attribute1.value), new base_string("https://ideal.org/"));
+    assert ideal.machine.elements.runtime_util.values_equal(((string) attribute1.value), new base_string("https://theideal.org/"));
   }
   public void test_empty_element() {
     final ideal.library.patterns.matcher<Character, text_element> empty_element = this.make_grammar().empty_element;
     assert empty_element.call(new base_string("<html/>"));
-    assert empty_element.call(new base_string("<body />"));
+    assert empty_element.call(new base_string("<body class=\"foo\" />"));
     assert !empty_element.call(new base_string("<html>"));
     assert !empty_element.call(new base_string("bar"));
     assert !empty_element.call(new base_string("&lt;html&gt;"));
-    assert empty_element.parse(new base_string("<html/>")).get_id() == text_library.HTML;
-    assert empty_element.parse(new base_string("<body />")).get_id() == text_library.BODY;
+    final text_element element0 = empty_element.parse(new base_string("<html/>"));
+    assert element0.get_id() == text_library.HTML;
+    assert element0.children() == null;
+    assert element0.attributes().is_empty();
+    final text_element element1 = empty_element.parse(new base_string("<body class=\"foo\" />"));
+    assert element1.get_id() == text_library.BODY;
+    assert element1.children() == null;
+    assert element1.attributes().size() == 1;
+    assert element1.attributes().elements().get(0).key() == text_library.CLASS;
+    assert ideal.machine.elements.runtime_util.values_equal((base_string) element1.attributes().elements().get(0).value(), new base_string("foo"));
+    final text_element element2 = empty_element.parse(new base_string("<a class=\'foo\' href=\'https://theideal.org/\'/>"));
+    assert element2.get_id() == text_library.A;
+    assert element2.children() == null;
+    assert element2.attributes().size() == 2;
+    final immutable_list<dictionary.entry<attribute_id, attribute_fragment>> attributes = element2.attributes().elements();
+    assert attributes.get(0).key() == text_library.CLASS;
+    assert ideal.machine.elements.runtime_util.values_equal((base_string) attributes.get(0).value(), new base_string("foo"));
+    assert attributes.get(1).key() == text_library.HREF;
+    assert ideal.machine.elements.runtime_util.values_equal((base_string) attributes.get(1).value(), new base_string("https://theideal.org/"));
   }
   public void test_simple_parse() {
     final ideal.library.patterns.pattern<Character> document_pattern = this.make_grammar().document_pattern;

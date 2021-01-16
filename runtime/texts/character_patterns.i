@@ -65,6 +65,16 @@ namespace character_patterns {
         join_fragments);
   }
 
+  immutable list[attribute_state] cast_attributes(readonly list[attribute_state] attributes) {
+    return attributes.elements as immutable list[attribute_state];
+  }
+
+  matcher[character, immutable list[attribute_state]] repeat_or_none_attribute(
+      matcher[character, attribute_state] the_matcher) pure {
+    return repeat_matcher[character, immutable list[attribute_state], attribute_state].new(
+        the_matcher, true, cast_attributes);
+  }
+
   string as_string_procedure(readonly list[character] the_character_list) pure {
     return the_character_list.frozen_copy() as base_string;
   }
@@ -72,8 +82,6 @@ namespace character_patterns {
   matcher[character, string] as_string(pattern[character] the_pattern) pure {
     return procedure_matcher[character, string].new(the_pattern, as_string_procedure);
   }
-
-  string select_2nd_string(readonly list[any value] the_list) pure => the_list[1] as string;
 
   attribute_fragment select_2nd_attribute_fragment(readonly list[any value] the_list) pure =>
       the_list[1] as attribute_fragment;

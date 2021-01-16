@@ -78,7 +78,7 @@ class test_markup_grammar {
     attribute : make_grammar().attribute;
 
     assert attribute("id = '68'");
-    assert attribute("href = \"https://ideal.org/\"");
+    assert attribute("href = \"https://theideal.org/\"");
     assert attribute("clear='all'");
     assert !attribute("<html>");
     assert !attribute("foo");
@@ -89,22 +89,41 @@ class test_markup_grammar {
     assert attribute0.id == text_library.ID;
     assert (attribute0.value as string) == "68";
 
-    attribute1 : attribute.parse("href = \"https://ideal.org/\"");
+    attribute1 : attribute.parse("href = \"https://theideal.org/\"");
     assert attribute1.id == text_library.HREF;
-    assert (attribute1.value as string) == "https://ideal.org/";
+    assert (attribute1.value as string) == "https://theideal.org/";
   }
 
   testcase test_empty_element() {
     empty_element : make_grammar().empty_element;
 
     assert empty_element("<html/>");
-    assert empty_element("<body />");
+    assert empty_element("<body class=\"foo\" />");
     assert !empty_element("<html>");
     assert !empty_element("bar");
     assert !empty_element("&lt;html&gt;");
 
-    assert empty_element.parse("<html/>").get_id == text_library.HTML;
-    assert empty_element.parse("<body />").get_id == text_library.BODY;
+    element0 : empty_element.parse("<html/>");
+    assert element0.get_id == text_library.HTML;
+    assert element0.children is null;
+    assert element0.attributes.is_empty;
+
+    element1 : empty_element.parse("<body class=\"foo\" />");
+    assert element1.get_id == text_library.BODY;
+    assert element1.children is null;
+    assert element1.attributes.size == 1;
+    assert element1.attributes.elements[0].key == text_library.CLASS;
+    assert element1.attributes.elements[0].value as base_string == "foo";
+
+    element2 : empty_element.parse("<a class='foo' href='https://theideal.org/'/>");
+    assert element2.get_id == text_library.A;
+    assert element2.children is null;
+    assert element2.attributes.size == 2;
+    attributes : element2.attributes.elements;
+    assert attributes[0].key == text_library.CLASS;
+    assert attributes[0].value as base_string == "foo";
+    assert attributes[1].key == text_library.HREF;
+    assert attributes[1].value as base_string == "https://theideal.org/";
   }
 
   testcase test_simple_parse() {

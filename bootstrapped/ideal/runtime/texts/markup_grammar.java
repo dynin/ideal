@@ -24,7 +24,7 @@ public class markup_grammar {
   public matcher<Character, string> apos_attr_value;
   public matcher<Character, attribute_fragment> attribute_value_in_quot;
   public matcher<Character, attribute_fragment> attribute_value_in_apos;
-  public matcher<Character, markup_grammar.attribute_state> attribute;
+  public matcher<Character, attribute_state> attribute;
   public matcher<Character, text_element> empty_element;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
@@ -91,7 +91,16 @@ public class markup_grammar {
     final string element_name = (string) the_list.get(1);
     final @Nullable element_id element_id = this.element_ids.get(element_name);
     assert element_id != null;
-    return new base_element(element_id);
+    final immutable_list<attribute_state> attributes = (immutable_list<attribute_state>) the_list.get(2);
+    final dictionary<attribute_id, attribute_fragment> attributes_dictionary = new list_dictionary<attribute_id, attribute_fragment>();
+    {
+      final readonly_list<attribute_state> attribute_list = attributes;
+      for (int attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
+        final attribute_state attribute = attribute_list.get(attribute_index);
+        attributes_dictionary.put(attribute.id, attribute.value);
+      }
+    }
+    return new base_element(element_id, attributes_dictionary, null);
   }
   public special_text make_entity_2nd(final readonly_list<any_value> the_list) {
     final string entity_name = (string) the_list.get(1);
@@ -99,20 +108,15 @@ public class markup_grammar {
     assert entity != null;
     return entity;
   }
-  public static class attribute_state {
-    public final attribute_id id;
-    public final attribute_fragment value;
-    public attribute_state(final attribute_id id, final attribute_fragment value) {
-      this.id = id;
-      this.value = value;
-    }
-  }
-  public markup_grammar.attribute_state make_attribute(final readonly_list<any_value> the_list) {
+  public attribute_state make_attribute(final readonly_list<any_value> the_list) {
     final string attribute_name = (string) the_list.get(0);
     final @Nullable attribute_id id = this.attribute_ids.get(attribute_name);
     assert id != null;
     final attribute_fragment value = (attribute_fragment) the_list.get(2);
-    return new markup_grammar.attribute_state(id, value);
+    return new attribute_state(id, value);
+  }
+  public attribute_state select_2nd_attribute_state(final readonly_list<any_value> the_list) {
+    return (attribute_state) the_list.get(1);
   }
   protected pattern<Character> document() {
     final pattern<Character> lt = character_patterns.one_character('<');
@@ -164,12 +168,16 @@ public class markup_grammar {
       }
     });
     final option_matcher<Character, attribute_fragment> attribute_value = character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ this.attribute_value_in_quot, this.attribute_value_in_apos })));
-    this.attribute = new sequence_matcher<Character, markup_grammar.attribute_state>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })), new function1<markup_grammar.attribute_state, readonly_list<any_value>>() {
-      @Override public markup_grammar.attribute_state call(readonly_list<any_value> first) {
+    this.attribute = new sequence_matcher<Character, attribute_state>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })), new function1<attribute_state, readonly_list<any_value>>() {
+      @Override public attribute_state call(readonly_list<any_value> first) {
         return markup_grammar.this.make_attribute(first);
       }
     });
-    final pattern<Character> attributes = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, this.attribute }))));
+    final matcher<Character, immutable_list<attribute_state>> attributes = character_patterns.repeat_or_none_attribute(new sequence_matcher<Character, attribute_state>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, this.attribute })), new function1<attribute_state, readonly_list<any_value>>() {
+      @Override public attribute_state call(readonly_list<any_value> first) {
+        return markup_grammar.this.select_2nd_attribute_state(first);
+      }
+    }));
     this.empty_element = new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, slash, gt })), new function1<text_element, readonly_list<any_value>>() {
       @Override public text_element call(readonly_list<any_value> first) {
         return markup_grammar.this.match_empty_element(first);

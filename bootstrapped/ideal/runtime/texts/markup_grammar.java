@@ -26,6 +26,7 @@ public class markup_grammar {
   public matcher<Character, attribute_fragment> attribute_value_in_apos;
   public matcher<Character, attribute_state> attribute;
   public matcher<Character, text_element> empty_element;
+  public matcher<Character, text_fragment> content;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
     this.element_ids = new hash_dictionary<string, element_id>();
@@ -118,6 +119,10 @@ public class markup_grammar {
   public attribute_state select_2nd_attribute_state(final readonly_list<any_value> the_list) {
     return (attribute_state) the_list.get(1);
   }
+  public text_fragment join2(final readonly_list<any_value> the_list) {
+    assert the_list.size() == 2;
+    return text_util.join((text_fragment) the_list.get(0), (text_fragment) the_list.get(1));
+  }
   protected pattern<Character> document() {
     final pattern<Character> lt = character_patterns.one_character('<');
     final pattern<Character> gt = character_patterns.one_character('>');
@@ -183,19 +188,26 @@ public class markup_grammar {
         return markup_grammar.this.match_empty_element(first);
       }
     });
-    final option_pattern<Character> element = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) this.empty_element })));
-    final pattern<Character> char_data_opt = character_patterns.zero_or_more(new function1<Boolean, Character>() {
+    final option_matcher<Character, text_fragment> element = character_patterns.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ (matcher<Character, text_fragment>) (matcher) this.empty_element })));
+    final matcher<Character, string> char_data_opt = character_patterns.as_string(character_patterns.zero_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_char(first);
       }
+    }));
+    final option_matcher<Character, text_fragment> content_element = character_patterns.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ element, (matcher<Character, text_fragment>) (matcher) this.entity_ref })));
+    final matcher<Character, text_fragment> content_tail = character_patterns.repeat_or_none_text(new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) content_element, char_data_opt })), new function1<text_fragment, readonly_list<any_value>>() {
+      @Override public text_fragment call(readonly_list<any_value> first) {
+        return markup_grammar.this.join2(first);
+      }
+    }));
+    this.content = new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ char_data_opt, (pattern<Character>) content_tail })), new function1<text_fragment, readonly_list<any_value>>() {
+      @Override public text_fragment call(readonly_list<any_value> first) {
+        return markup_grammar.this.join2(first);
+      }
     });
-    final pattern<Character> entity_ref_pattern = this.entity_ref;
-    final option_pattern<Character> content_element = character_patterns.option(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ element, entity_ref_pattern })));
-    final pattern<Character> content_tail = character_patterns.repeat_or_none(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ content_element, char_data_opt }))));
-    final pattern<Character> content = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ char_data_opt, content_tail })));
     final pattern<Character> start_tag = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, gt })));
     final pattern<Character> end_tag = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, slash, name, space_opt, gt })));
-    element.add_option(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ start_tag, content, end_tag }))));
+    element.add_option(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ start_tag, this.content, end_tag }))));
     final pattern<Character> result = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, element, space_opt })));
     ((validatable) result).validate();
     return result;

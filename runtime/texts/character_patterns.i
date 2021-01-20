@@ -44,6 +44,11 @@ namespace character_patterns {
     return option_matcher[character, attribute_fragment].new(matchers);
   }
 
+  option_matcher[character, text_fragment] option_text_fragment(
+      readonly list[matcher[character, text_fragment]] matchers) {
+    return option_matcher[character, text_fragment].new(matchers);
+  }
+
   -- TODO: the conversions should be inferred.
   option_matcher[character, attribute_fragment] option_fragment(
       matcher[character, string] attr_value,
@@ -63,6 +68,17 @@ namespace character_patterns {
       matcher[character, attribute_fragment] the_matcher) pure {
     return repeat_matcher[character, attribute_fragment, attribute_fragment].new(the_matcher, true,
         join_fragments);
+  }
+
+  -- TODO: wrapper function is redundant
+  text_fragment join_fragments_text(readonly list[text_fragment] fragments) {
+    return text_util.join(fragments);
+  }
+
+  matcher[character, text_fragment] repeat_or_none_text(
+      matcher[character, text_fragment] the_matcher) pure {
+    return repeat_matcher[character, text_fragment, text_fragment].new(the_matcher, true,
+        join_fragments_text);
   }
 
   immutable list[attribute_state] cast_attributes(readonly list[attribute_state] attributes) {

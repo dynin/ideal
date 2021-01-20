@@ -35,6 +35,9 @@ public class character_patterns {
   public static option_matcher<Character, attribute_fragment> option_fragment_list(final readonly_list<matcher<Character, attribute_fragment>> matchers) {
     return new option_matcher<Character, attribute_fragment>(matchers);
   }
+  public static option_matcher<Character, text_fragment> option_text_fragment(final readonly_list<matcher<Character, text_fragment>> matchers) {
+    return new option_matcher<Character, text_fragment>(matchers);
+  }
   public static option_matcher<Character, attribute_fragment> option_fragment(final matcher<Character, string> attr_value, final matcher<Character, special_text> entity_ref) {
     return character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ (matcher<Character, attribute_fragment>) (matcher) entity_ref, (matcher<Character, attribute_fragment>) (matcher) attr_value })));
   }
@@ -45,6 +48,16 @@ public class character_patterns {
     return new repeat_matcher<Character, attribute_fragment, attribute_fragment>(the_matcher, true, new procedure1<attribute_fragment, readonly_list<attribute_fragment>>() {
       @Override public attribute_fragment call(readonly_list<attribute_fragment> first) {
         return character_patterns.join_fragments(first);
+      }
+    });
+  }
+  public static text_fragment join_fragments_text(final readonly_list<text_fragment> fragments) {
+    return text_util.join(fragments);
+  }
+  public static matcher<Character, text_fragment> repeat_or_none_text(final matcher<Character, text_fragment> the_matcher) {
+    return new repeat_matcher<Character, text_fragment, text_fragment>(the_matcher, true, new procedure1<text_fragment, readonly_list<text_fragment>>() {
+      @Override public text_fragment call(readonly_list<text_fragment> first) {
+        return character_patterns.join_fragments_text(first);
       }
     });
   }

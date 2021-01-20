@@ -24,6 +24,9 @@ public class test_markup_grammar {
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_empty_element");
     test_empty_element();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_content");
+    test_content();
+    ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_simple_parse");
     test_simple_parse();
     ideal.machine.elements.runtime_util.end_test();
@@ -122,6 +125,12 @@ public class test_markup_grammar {
     assert ideal.machine.elements.runtime_util.values_equal((base_string) attributes.get(0).value(), new base_string("foo"));
     assert attributes.get(1).key() == text_library.HREF;
     assert ideal.machine.elements.runtime_util.values_equal((base_string) attributes.get(1).value(), new base_string("https://theideal.org/"));
+  }
+  public void test_content() {
+    final ideal.library.patterns.matcher<Character, text_fragment> content = this.make_grammar().content;
+    assert content.call(new base_string("  hello, world!"));
+    assert content.call(new base_string("&lt;html&gt;"));
+    assert !content.call(new base_string("<bar>"));
   }
   public void test_simple_parse() {
     final ideal.library.patterns.pattern<Character> document_pattern = this.make_grammar().document_pattern;

@@ -24,6 +24,7 @@ class markup_grammar {
   var matcher[character, attribute_fragment] attribute_value_in_apos;
   var matcher[character, attribute_state] attribute;
   var matcher[character, text_element] empty_element;
+  var matcher[character, text_fragment] content;
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
@@ -119,6 +120,11 @@ class markup_grammar {
   attribute_state select_2nd_attribute_state(readonly list[any value] the_list) pure =>
       the_list[1] as attribute_state;
 
+  text_fragment join2(readonly list[any value] the_list) pure {
+    assert the_list.size == 2;
+    return text_util.join(the_list[0] as text_fragment, the_list[1] as text_fragment);
+  }
+
   protected pattern[character] document() {
     lt : one_character('<');
     gt : one_character('>');
@@ -157,12 +163,14 @@ class markup_grammar {
     empty_element = sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, slash, gt ],
         match_empty_element);
-    element : option([empty_element as pattern[character], ]);
-    char_data_opt : zero_or_more(content_char);
-    pattern[character] entity_ref_pattern : entity_ref;
-    content_element : option([ element, entity_ref_pattern ]);
-    content_tail : repeat_or_none(sequence([ content_element, char_data_opt ]));
-    content : sequence([ char_data_opt, content_tail ]);
+    element : option_text_fragment([empty_element as matcher[character, text_fragment], ]);
+    char_data_opt : as_string(zero_or_more(content_char));
+    content_element : option_text_fragment([ element,
+        entity_ref as matcher[character, text_fragment] ]);
+    content_tail : repeat_or_none_text(sequence_matcher[character, text_fragment].new(
+        [ content_element as pattern[character], char_data_opt ], join2));
+    content = sequence_matcher[character, text_fragment].new([ char_data_opt,
+        content_tail as pattern[character]], join2);
 
     start_tag : sequence([ lt, name, attributes, space_opt, gt ]);
     end_tag : sequence([ lt, slash, name, space_opt, gt ]);

@@ -126,6 +126,14 @@ class test_markup_grammar {
     assert attributes[1].value as base_string == "https://theideal.org/";
   }
 
+  testcase test_content() {
+    content : make_grammar().content;
+
+    assert content("  hello, world!");
+    assert content("&lt;html&gt;");
+    assert !content("<bar>");
+  }
+
   testcase test_simple_parse() {
     document_pattern : make_grammar().document_pattern;
 

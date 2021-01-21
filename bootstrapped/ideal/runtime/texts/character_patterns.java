@@ -38,6 +38,9 @@ public class character_patterns {
   public static option_matcher<Character, text_fragment> option_text_fragment(final readonly_list<matcher<Character, text_fragment>> matchers) {
     return new option_matcher<Character, text_fragment>(matchers);
   }
+  public static option_matcher<Character, text_element> option_text_element(final readonly_list<matcher<Character, text_element>> matchers) {
+    return new option_matcher<Character, text_element>(matchers);
+  }
   public static option_matcher<Character, attribute_fragment> option_fragment(final matcher<Character, string> attr_value, final matcher<Character, special_text> entity_ref) {
     return character_patterns.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ (matcher<Character, attribute_fragment>) (matcher) entity_ref, (matcher<Character, attribute_fragment>) (matcher) attr_value })));
   }

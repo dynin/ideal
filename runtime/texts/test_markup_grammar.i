@@ -7,6 +7,7 @@
 class test_markup_grammar {
   implicit import ideal.runtime.texts.text_library;
   import ideal.machine.characters.normal_handler;
+  import ideal.machine.channels.string_writer;
 
   markup_grammar make_grammar() {
     grammar : markup_grammar.new(normal_handler.instance);
@@ -135,36 +136,46 @@ class test_markup_grammar {
   }
 
   testcase test_simple_parse() {
-    document_pattern : make_grammar().document_pattern;
+    document_matcher : make_grammar().document_matcher;
 
-    assert document_pattern("<html>foo</html>");
-    assert document_pattern("  <html>foo</html>  ");
-    assert document_pattern("  <html  >foo</html  >  ");
-    assert document_pattern("  <html  >Hello &amp; goodbye!</html  >  ");
-    assert document_pattern("  <html  />  ");
-    assert document_pattern("<html/>");
+    assert document_matcher("<html>foo</html>");
+    assert document_matcher("  <html>foo</html>  ");
+    assert document_matcher("  <html  >foo</html  >  ");
+    assert document_matcher("  <html  >Hello &amp; goodbye!</html  >  ");
+    assert document_matcher("  <html  />  ");
+    assert document_matcher("<html/>");
 
-    assert document_pattern("  <html>Hello <em>world!</em></html>  ");
-    assert document_pattern("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  ");
-    assert document_pattern("  <html><body > <p>Hello<br />world!</p> </body ></html>  ");
+    assert document_matcher("  <html>Hello <em>world!</em></html>  ");
+    assert document_matcher("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  ");
+    assert document_matcher("  <html><body > <p>Hello<br />world!</p> </body ></html>  ");
 
-    assert document_pattern("  <html><body > Hello &lt;world!&gt; </body ></html>  ");
-    assert document_pattern("<html><p class='klass'>foo</p></html>");
-    assert document_pattern("<html><a class = 'klass' href = 'link'>bar</a></html>");
-    assert document_pattern("<html><p class = 'value\">==' attr=\"foo'\">foo</p></html>");
-    assert document_pattern("<html><p class = '***' attr=\"baz\">foo</p></html>");
+    assert document_matcher("  <html><body > Hello &lt;world!&gt; </body ></html>  ");
+    assert document_matcher("<html><p class='klass'>foo</p></html>");
+    assert document_matcher("<html><a class = 'klass' href = 'link'>bar</a></html>");
+    assert document_matcher("<html><p class = 'value\">==' attr=\"foo'\">foo</p></html>");
+    assert document_matcher("<html><p class = '***' attr=\"baz\">foo</p></html>");
 
-    assert !document_pattern(" no markup ");
-    assert !document_pattern("  <html>foo  ");
-    assert !document_pattern("  <html>foo<bar>  ");
-    assert !document_pattern("  <>foo  ");
-    assert !document_pattern("  &amp;<html>foo</html>  ");
-    assert !document_pattern("<html><p class='klass\">foo</p></html>");
-    assert !document_pattern("<html><p class='klass'>foo</p class=\"foo\"></html>");
-    assert !document_pattern("<html foo= ><p class='klass'>foo</p></html>");
-    assert !document_pattern("<html foo=bar><p class='klass'>foo</p></html>");
+    assert !document_matcher(" no markup ");
+    assert !document_matcher("  <html>foo  ");
+    assert !document_matcher("  <html>foo<bar>  ");
+    assert !document_matcher("  <>foo  ");
+    assert !document_matcher("  &amp;<html>foo</html>  ");
+    assert !document_matcher("<html><p class='klass\">foo</p></html>");
+    assert !document_matcher("<html><p class='klass'>foo</p class=\"foo\"></html>");
+    assert !document_matcher("<html foo= ><p class='klass'>foo</p></html>");
+    assert !document_matcher("<html foo=bar><p class='klass'>foo</p></html>");
 
     -- TODO: this should fail.
-    assert document_pattern("  <abc>foo</def>  ");
+    assert document_matcher("  <abc>foo</def>  ");
+
+    assert matches(document_matcher.parse("  <html>foo</html>  "), "<html>\nfoo\n</html>\n");
+  }
+
+  private boolean matches(text_element the_text_element, string expected) {
+    the_writer : string_writer.new();
+    -- TODO: introduce a parameter to skip newlines.
+    the_formatter : markup_formatter.new(the_writer, "");
+    the_formatter.write(the_text_element);
+    return the_writer.elements() == expected;
   }
 }

@@ -18,7 +18,7 @@ public class markup_grammar {
   public final dictionary<string, element_id> element_ids;
   public final dictionary<string, attribute_id> attribute_ids;
   public final dictionary<string, special_text> entities;
-  public pattern<Character> document_pattern;
+  public matcher<Character, text_element> document_matcher;
   public matcher<Character, special_text> entity_ref;
   public matcher<Character, string> quot_attr_value;
   public matcher<Character, string> apos_attr_value;
@@ -34,7 +34,7 @@ public class markup_grammar {
     this.entities = new hash_dictionary<string, special_text>();
   }
   private boolean is_completed() {
-    return this.document_pattern != null;
+    return this.document_matcher != null;
   }
   public void add_elements(final readonly_collection<element_id> new_element_ids) {
     assert !this.is_completed();
@@ -71,7 +71,7 @@ public class markup_grammar {
   }
   public void complete() {
     assert !this.is_completed();
-    this.document_pattern = this.document();
+    this.document_matcher = this.document();
   }
   protected boolean name_start(final char c) {
     return this.the_character_handler.is_letter(c) || c == '_' || c == ':';
@@ -88,7 +88,7 @@ public class markup_grammar {
   protected boolean content_not_quot(final char c) {
     return c != '<' && c != '&' && c != '\"';
   }
-  public text_element match_empty_element(final readonly_list<any_value> the_list) {
+  public text_element match_start_element(final readonly_list<any_value> the_list) {
     final string element_name = (string) the_list.get(1);
     final @Nullable element_id element_id = this.element_ids.get(element_name);
     assert element_id != null;
@@ -102,6 +102,11 @@ public class markup_grammar {
       }
     }
     return new base_element(element_id, attributes_dictionary, null);
+  }
+  public text_element match_text_element(final readonly_list<any_value> the_list) {
+    final text_element start_tag = (text_element) the_list.get(0);
+    final text_fragment text_content = (text_fragment) the_list.get(1);
+    return new base_element(start_tag.get_id(), start_tag.attributes(), text_content);
   }
   public special_text make_entity_2nd(final readonly_list<any_value> the_list) {
     final string entity_name = (string) the_list.get(1);
@@ -119,11 +124,14 @@ public class markup_grammar {
   public attribute_state select_2nd_attribute_state(final readonly_list<any_value> the_list) {
     return (attribute_state) the_list.get(1);
   }
+  public text_element select_2nd_text_element(final readonly_list<any_value> the_list) {
+    return (text_element) the_list.get(1);
+  }
   public text_fragment join2(final readonly_list<any_value> the_list) {
     assert the_list.size() == 2;
     return text_util.join((text_fragment) the_list.get(0), (text_fragment) the_list.get(1));
   }
-  protected pattern<Character> document() {
+  protected matcher<Character, text_element> document() {
     final pattern<Character> lt = character_patterns.one_character('<');
     final pattern<Character> gt = character_patterns.one_character('>');
     final pattern<Character> slash = character_patterns.one_character('/');
@@ -185,16 +193,17 @@ public class markup_grammar {
     }));
     this.empty_element = new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, slash, gt })), new function1<text_element, readonly_list<any_value>>() {
       @Override public text_element call(readonly_list<any_value> first) {
-        return markup_grammar.this.match_empty_element(first);
+        return markup_grammar.this.match_start_element(first);
       }
     });
-    final option_matcher<Character, text_fragment> element = character_patterns.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ (matcher<Character, text_fragment>) (matcher) this.empty_element })));
+    final option_matcher<Character, text_element> element = character_patterns.option_text_element(new base_immutable_list<matcher<Character, text_element>>(new ideal.machine.elements.array<matcher<Character, text_element>>(new matcher[]{ (matcher<Character, text_element>) (matcher) this.empty_element })));
+    final matcher<Character, text_fragment> element_fragment = (matcher<Character, text_fragment>) (option_matcher<Character, text_fragment>) (option_matcher) element;
+    final option_matcher<Character, text_fragment> content_element = character_patterns.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ element_fragment, (matcher<Character, text_fragment>) (matcher) this.entity_ref })));
     final matcher<Character, string> char_data_opt = character_patterns.as_string(character_patterns.zero_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_char(first);
       }
     }));
-    final option_matcher<Character, text_fragment> content_element = character_patterns.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ element, (matcher<Character, text_fragment>) (matcher) this.entity_ref })));
     final matcher<Character, text_fragment> content_tail = character_patterns.repeat_or_none_text(new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) content_element, char_data_opt })), new function1<text_fragment, readonly_list<any_value>>() {
       @Override public text_fragment call(readonly_list<any_value> first) {
         return markup_grammar.this.join2(first);
@@ -205,11 +214,23 @@ public class markup_grammar {
         return markup_grammar.this.join2(first);
       }
     });
-    final pattern<Character> start_tag = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, gt })));
+    final pattern<Character> start_tag = new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, name, attributes, space_opt, gt })), new function1<text_element, readonly_list<any_value>>() {
+      @Override public text_element call(readonly_list<any_value> first) {
+        return markup_grammar.this.match_start_element(first);
+      }
+    });
     final pattern<Character> end_tag = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ lt, slash, name, space_opt, gt })));
-    element.add_option(character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ start_tag, this.content, end_tag }))));
-    final pattern<Character> result = character_patterns.sequence(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, element, space_opt })));
-    ((validatable) result).validate();
+    element.add_option(new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ start_tag, this.content, end_tag })), new function1<text_element, readonly_list<any_value>>() {
+      @Override public text_element call(readonly_list<any_value> first) {
+        return markup_grammar.this.match_text_element(first);
+      }
+    }));
+    final sequence_matcher<Character, text_element> result = new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, element, space_opt })), new function1<text_element, readonly_list<any_value>>() {
+      @Override public text_element call(readonly_list<any_value> first) {
+        return markup_grammar.this.select_2nd_text_element(first);
+      }
+    });
+    result.validate();
     return result;
   }
 }

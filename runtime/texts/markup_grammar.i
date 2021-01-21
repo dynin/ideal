@@ -16,7 +16,7 @@ class markup_grammar {
   dictionary[string, element_id] element_ids;
   dictionary[string, attribute_id] attribute_ids;
   dictionary[string, special_text] entities;
-  var pattern[character] document_pattern;
+  var matcher[character, text_element] document_matcher;
   var matcher[character, special_text] entity_ref;
   var matcher[character, string] quot_attr_value;
   var matcher[character, string] apos_attr_value;
@@ -33,7 +33,7 @@ class markup_grammar {
     entities = hash_dictionary[string, special_text].new();
   }
 
-  private boolean is_completed => document_pattern is_not null;
+  private boolean is_completed => document_matcher is_not null;
 
   public void add_elements(readonly collection[element_id] new_element_ids) {
     assert !is_completed();
@@ -61,7 +61,7 @@ class markup_grammar {
 
   public void complete() {
     assert !is_completed();
-    document_pattern = document();
+    document_matcher = document();
   }
 
   protected boolean name_start(character c) pure {
@@ -84,7 +84,7 @@ class markup_grammar {
     return c != '<' && c != '&' && c != '"';
   }
 
-  text_element match_empty_element(readonly list[any value] the_list) pure {
+  text_element match_start_element(readonly list[any value] the_list) pure {
     string element_name : the_list[1] as string;
     element_id : element_ids.get(element_name);
     -- TODO: report error to user
@@ -98,6 +98,13 @@ class markup_grammar {
     }
 
     return base_element.new(element_id, attributes_dictionary, missing.instance);
+  }
+
+  text_element match_text_element(readonly list[any value] the_list) pure {
+    start_tag : the_list[0] as text_element;
+    text_content : the_list[1] as text_fragment;
+    -- TODO: verify end tag
+    return base_element.new(start_tag.get_id, start_tag.attributes, text_content);
   }
 
   special_text make_entity_2nd(readonly list[any value] the_list) pure {
@@ -120,12 +127,15 @@ class markup_grammar {
   attribute_state select_2nd_attribute_state(readonly list[any value] the_list) pure =>
       the_list[1] as attribute_state;
 
+  text_element select_2nd_text_element(readonly list[any value] the_list) pure =>
+      the_list[1] as text_element;
+
   text_fragment join2(readonly list[any value] the_list) pure {
     assert the_list.size == 2;
     return text_util.join(the_list[0] as text_fragment, the_list[1] as text_fragment);
   }
 
-  protected pattern[character] document() {
+  protected matcher[character, text_element] document() {
     lt : one_character('<');
     gt : one_character('>');
     slash : one_character('/');
@@ -162,25 +172,29 @@ class markup_grammar {
 
     empty_element = sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, slash, gt ],
-        match_empty_element);
-    element : option_text_fragment([empty_element as matcher[character, text_fragment], ]);
+        match_start_element);
+    element : option_text_element([empty_element as matcher[character, text_element], ]);
+    -- TODO: fix the cast in Java generator.
+    element_fragment : element as option_matcher[character, text_fragment] as
+        matcher[character, text_fragment];
+    content_element : option_text_fragment([element_fragment,
+        entity_ref as matcher[character, text_fragment]]);
     char_data_opt : as_string(zero_or_more(content_char));
-    content_element : option_text_fragment([ element,
-        entity_ref as matcher[character, text_fragment] ]);
     content_tail : repeat_or_none_text(sequence_matcher[character, text_fragment].new(
         [ content_element as pattern[character], char_data_opt ], join2));
     content = sequence_matcher[character, text_fragment].new([ char_data_opt,
         content_tail as pattern[character]], join2);
 
-    start_tag : sequence([ lt, name, attributes, space_opt, gt ]);
+    pattern[character] start_tag : sequence_matcher[character, text_element].new(
+        [ lt, name, attributes, space_opt, gt ], match_start_element);
     end_tag : sequence([ lt, slash, name, space_opt, gt ]);
-    element.add_option(sequence([ start_tag, content, end_tag ]));
+    element.add_option(sequence_matcher[character, text_element].new(
+        [ start_tag, content, end_tag ], match_text_element));
 
-    -- sequence_matcher[character, string].new([ space_opt, element, space_opt ], select_2nd);
-    result : sequence([ space_opt, element, space_opt ]);
+    result : sequence_matcher[character, text_element].new([ space_opt, element, space_opt ],
+        select_2nd_text_element);
 
-    -- TODO: cast should be redundant.
-    (result as validatable).validate();
+    result.validate();
 
     return result;
   }

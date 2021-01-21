@@ -49,6 +49,11 @@ namespace character_patterns {
     return option_matcher[character, text_fragment].new(matchers);
   }
 
+  option_matcher[character, text_element] option_text_element(
+      readonly list[matcher[character, text_element]] matchers) {
+    return option_matcher[character, text_element].new(matchers);
+  }
+
   -- TODO: the conversions should be inferred.
   option_matcher[character, attribute_fragment] option_fragment(
       matcher[character, string] attr_value,

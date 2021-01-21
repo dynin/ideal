@@ -9,6 +9,7 @@ import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 import ideal.runtime.texts.text_library.*;
 import ideal.machine.characters.normal_handler;
+import ideal.machine.channels.string_writer;
 
 public class test_markup_grammar {
   public void run_all_tests() {
@@ -133,30 +134,37 @@ public class test_markup_grammar {
     assert !content.call(new base_string("<bar>"));
   }
   public void test_simple_parse() {
-    final ideal.library.patterns.pattern<Character> document_pattern = this.make_grammar().document_pattern;
-    assert document_pattern.call(new base_string("<html>foo</html>"));
-    assert document_pattern.call(new base_string("  <html>foo</html>  "));
-    assert document_pattern.call(new base_string("  <html  >foo</html  >  "));
-    assert document_pattern.call(new base_string("  <html  >Hello &amp; goodbye!</html  >  "));
-    assert document_pattern.call(new base_string("  <html  />  "));
-    assert document_pattern.call(new base_string("<html/>"));
-    assert document_pattern.call(new base_string("  <html>Hello <em>world!</em></html>  "));
-    assert document_pattern.call(new base_string("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  "));
-    assert document_pattern.call(new base_string("  <html><body > <p>Hello<br />world!</p> </body ></html>  "));
-    assert document_pattern.call(new base_string("  <html><body > Hello &lt;world!&gt; </body ></html>  "));
-    assert document_pattern.call(new base_string("<html><p class=\'klass\'>foo</p></html>"));
-    assert document_pattern.call(new base_string("<html><a class = \'klass\' href = \'link\'>bar</a></html>"));
-    assert document_pattern.call(new base_string("<html><p class = \'value\">==\' attr=\"foo\'\">foo</p></html>"));
-    assert document_pattern.call(new base_string("<html><p class = \'***\' attr=\"baz\">foo</p></html>"));
-    assert !document_pattern.call(new base_string(" no markup "));
-    assert !document_pattern.call(new base_string("  <html>foo  "));
-    assert !document_pattern.call(new base_string("  <html>foo<bar>  "));
-    assert !document_pattern.call(new base_string("  <>foo  "));
-    assert !document_pattern.call(new base_string("  &amp;<html>foo</html>  "));
-    assert !document_pattern.call(new base_string("<html><p class=\'klass\">foo</p></html>"));
-    assert !document_pattern.call(new base_string("<html><p class=\'klass\'>foo</p class=\"foo\"></html>"));
-    assert !document_pattern.call(new base_string("<html foo= ><p class=\'klass\'>foo</p></html>"));
-    assert !document_pattern.call(new base_string("<html foo=bar><p class=\'klass\'>foo</p></html>"));
-    assert document_pattern.call(new base_string("  <abc>foo</def>  "));
+    final ideal.library.patterns.matcher<Character, text_element> document_matcher = this.make_grammar().document_matcher;
+    assert document_matcher.call(new base_string("<html>foo</html>"));
+    assert document_matcher.call(new base_string("  <html>foo</html>  "));
+    assert document_matcher.call(new base_string("  <html  >foo</html  >  "));
+    assert document_matcher.call(new base_string("  <html  >Hello &amp; goodbye!</html  >  "));
+    assert document_matcher.call(new base_string("  <html  />  "));
+    assert document_matcher.call(new base_string("<html/>"));
+    assert document_matcher.call(new base_string("  <html>Hello <em>world!</em></html>  "));
+    assert document_matcher.call(new base_string("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  "));
+    assert document_matcher.call(new base_string("  <html><body > <p>Hello<br />world!</p> </body ></html>  "));
+    assert document_matcher.call(new base_string("  <html><body > Hello &lt;world!&gt; </body ></html>  "));
+    assert document_matcher.call(new base_string("<html><p class=\'klass\'>foo</p></html>"));
+    assert document_matcher.call(new base_string("<html><a class = \'klass\' href = \'link\'>bar</a></html>"));
+    assert document_matcher.call(new base_string("<html><p class = \'value\">==\' attr=\"foo\'\">foo</p></html>"));
+    assert document_matcher.call(new base_string("<html><p class = \'***\' attr=\"baz\">foo</p></html>"));
+    assert !document_matcher.call(new base_string(" no markup "));
+    assert !document_matcher.call(new base_string("  <html>foo  "));
+    assert !document_matcher.call(new base_string("  <html>foo<bar>  "));
+    assert !document_matcher.call(new base_string("  <>foo  "));
+    assert !document_matcher.call(new base_string("  &amp;<html>foo</html>  "));
+    assert !document_matcher.call(new base_string("<html><p class=\'klass\">foo</p></html>"));
+    assert !document_matcher.call(new base_string("<html><p class=\'klass\'>foo</p class=\"foo\"></html>"));
+    assert !document_matcher.call(new base_string("<html foo= ><p class=\'klass\'>foo</p></html>"));
+    assert !document_matcher.call(new base_string("<html foo=bar><p class=\'klass\'>foo</p></html>"));
+    assert document_matcher.call(new base_string("  <abc>foo</def>  "));
+    assert this.matches(document_matcher.parse(new base_string("  <html>foo</html>  ")), new base_string("<html>\nfoo\n</html>\n"));
+  }
+  private boolean matches(final text_element the_text_element, final string expected) {
+    final string_writer the_writer = new string_writer();
+    final markup_formatter the_formatter = new markup_formatter(the_writer, new base_string(""));
+    the_formatter.write(the_text_element);
+    return ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), expected);
   }
 }

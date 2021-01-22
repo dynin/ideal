@@ -159,11 +159,20 @@ public class test_markup_grammar {
     assert !document_matcher.call(new base_string("<html foo= ><p class=\'klass\'>foo</p></html>"));
     assert !document_matcher.call(new base_string("<html foo=bar><p class=\'klass\'>foo</p></html>"));
     assert document_matcher.call(new base_string("  <abc>foo</def>  "));
-    assert this.matches(document_matcher.parse(new base_string("  <html>foo</html>  ")), new base_string("<html>\nfoo\n</html>\n"));
+    assert this.matches(document_matcher.parse(new base_string("  <html>foo</html>  ")), new base_string("<html>foo</html>"));
+    assert this.matches(document_matcher.parse(new base_string("  <html  >Hello &amp; goodbye!</html  >  ")), new base_string("<html>Hello &amp; goodbye!</html>"));
+    assert this.matches(document_matcher.parse(new base_string("  <html  />  ")), new base_string("<html />"));
+    assert this.matches(document_matcher.parse(new base_string("  <html>Hello <em>world!</em></html>  ")), new base_string("<html>Hello <em>world!</em></html>"));
+    assert this.matches(document_matcher.parse(new base_string("  <html><body > <p>Hello<br />world!</p> </body ></html>  ")), new base_string("<html><body> <p>Hello<br />world!</p> </body></html>"));
+    assert this.matches(document_matcher.parse(new base_string("<html><p class=\'klass\'>foo</p></html>")), new base_string("<html><p class=\'klass\'>foo</p></html>"));
+    assert this.matches(document_matcher.parse(new base_string("<html><p id=\'f&amp;f\'>foo</p></html>")), new base_string("<html><p id=\'f&amp;f\'>foo</p></html>"));
+    assert this.matches(document_matcher.parse(new base_string("<html><a class = \'klass\' href = \'link\'>bar</a></html>")), new base_string("<html><a class=\'klass\' href=\'link\'>bar</a></html>"));
+    assert this.matches(document_matcher.parse(new base_string("<html><p class = \'value\">==\' id=\"foo\'\">foo</p></html>")), new base_string("<html><p class=\'value&quot;&gt;==\' id=\'foo&apos;\'>foo</p></html>"));
+    assert this.matches(document_matcher.parse(new base_string("<html><p class = \'***\' id=\"baz\">foo</p></html>")), new base_string("<html><p class=\'***\' id=\'baz\'>foo</p></html>"));
   }
   private boolean matches(final text_element the_text_element, final string expected) {
     final string_writer the_writer = new string_writer();
-    final markup_formatter the_formatter = new markup_formatter(the_writer, new base_string(""));
+    final markup_formatter the_formatter = new markup_formatter(the_writer, new base_string(""), false);
     the_formatter.write(the_text_element);
     return ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), expected);
   }

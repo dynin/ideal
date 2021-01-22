@@ -18,6 +18,8 @@ public abstract class text_visitor<result_type> {
       return this.process_nodes(((list_text_node) fragment));
     } else if (fragment instanceof special_text) {
       return this.process_special(((special_text) fragment));
+    } else if (fragment instanceof list_attribute_fragment) {
+      return this.process_attributes(((list_attribute_fragment) fragment));
     } else {
       {
         utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown fragment: "), fragment));

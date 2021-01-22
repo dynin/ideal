@@ -16,6 +16,8 @@ abstract class text_visitor[value result_type] {
       return process_nodes(fragment);
     } else if (fragment is special_text) {
       return process_special(fragment);
+    } else if (fragment is list_attribute_fragment) {
+      return process_attributes(fragment);
     } else {
       utilities.panic("Unknown fragment: " ++ fragment);
     }

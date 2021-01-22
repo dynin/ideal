@@ -21,18 +21,23 @@ public class markup_formatter extends text_formatter {
   public static final string CLOSE_TAG = new base_string(">");
   public static final string CLOSE_SELF_CLOSING_TAG = new base_string(" />");
   public static final string DEFAULT_INDENT = new base_string(" ");
-  public markup_formatter(final output<Character> out, final string spaces) {
+  private final boolean write_newlines;
+  public markup_formatter(final output<Character> out, final string spaces, final boolean write_newlines) {
     super(out, spaces);
+    this.write_newlines = write_newlines;
+  }
+  public markup_formatter(final output<Character> out, final string spaces) {
+    this(out, spaces, true);
   }
   public markup_formatter(final output<Character> out) {
-    this(out, markup_formatter.DEFAULT_INDENT);
+    this(out, markup_formatter.DEFAULT_INDENT, true);
   }
   public @Override Void process_string(final string s) {
     this.write_escaped(s);
     return null;
   }
   public @Override Void process_element(final text_element element) {
-    final boolean is_block = text_util.is_block(element);
+    final boolean is_block = this.write_newlines && text_util.is_block(element);
     final immutable_dictionary<attribute_id, attribute_fragment> attributes = element.attributes();
     final @Nullable text_fragment children = element.children();
     if (children == null) {

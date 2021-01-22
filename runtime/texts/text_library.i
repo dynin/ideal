@@ -43,6 +43,7 @@ public namespace text_library {
   REL : base_attribute_id.new(HTML_NS, "rel");
   TYPE : base_attribute_id.new(HTML_NS, "type");
 
+  AMP : text_entity.new(HTML_NS, "&", "amp");
   LT : text_entity.new(HTML_NS, "<", "lt");
   GT : text_entity.new(HTML_NS, ">", "gt");
   APOS : text_entity.new(HTML_NS, "'", "apos");
@@ -74,7 +75,7 @@ public namespace text_library {
   ] as immutable list[attribute_id];
 
   immutable list[special_text] HTML_ENTITIES : [
-    LT, GT, APOS, QUOT,
+    AMP, LT, GT, APOS, QUOT,
     BULL, MIDDOT, MDASH, NBSP, THINSP,
     LARR, UARR, RARR, DARR
     -- TODO: the cast should be redundant; use deeply_immutable

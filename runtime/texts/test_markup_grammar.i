@@ -148,8 +148,8 @@ class test_markup_grammar {
     assert document_matcher("  <html>Hello <em>world!</em></html>  ");
     assert document_matcher("  <html><body ><p>Hello <em >world!</em ></p></body ></html>  ");
     assert document_matcher("  <html><body > <p>Hello<br />world!</p> </body ></html>  ");
-
     assert document_matcher("  <html><body > Hello &lt;world!&gt; </body ></html>  ");
+
     assert document_matcher("<html><p class='klass'>foo</p></html>");
     assert document_matcher("<html><a class = 'klass' href = 'link'>bar</a></html>");
     assert document_matcher("<html><p class = 'value\">==' attr=\"foo'\">foo</p></html>");
@@ -168,13 +168,34 @@ class test_markup_grammar {
     -- TODO: this should fail.
     assert document_matcher("  <abc>foo</def>  ");
 
-    assert matches(document_matcher.parse("  <html>foo</html>  "), "<html>\nfoo\n</html>\n");
+    assert matches(document_matcher.parse("  <html>foo</html>  "), "<html>foo</html>");
+    assert matches(document_matcher.parse("  <html  >Hello &amp; goodbye!</html  >  "),
+        "<html>Hello &amp; goodbye!</html>");
+    assert matches(document_matcher.parse("  <html  />  "), "<html />");
+
+    assert matches(document_matcher.parse("  <html>Hello <em>world!</em></html>  "),
+        "<html>Hello <em>world!</em></html>");
+    assert matches(document_matcher.parse(
+        "  <html><body > <p>Hello<br />world!</p> </body ></html>  "),
+        "<html><body> <p>Hello<br />world!</p> </body></html>");
+
+    assert matches(document_matcher.parse("<html><p class='klass'>foo</p></html>"),
+        "<html><p class='klass'>foo</p></html>");
+    assert matches(document_matcher.parse("<html><p id='f&amp;f'>foo</p></html>"),
+        "<html><p id='f&amp;f'>foo</p></html>");
+    assert matches(document_matcher.parse("<html><a class = 'klass' href = 'link'>bar</a></html>"),
+        "<html><a class='klass' href='link'>bar</a></html>");
+    assert matches(document_matcher.parse(
+        "<html><p class = 'value\">==' id=\"foo'\">foo</p></html>"),
+        "<html><p class='value&quot;&gt;==' id='foo&apos;'>foo</p></html>");
+    assert matches(document_matcher.parse(
+        "<html><p class = '***' id=\"baz\">foo</p></html>"),
+        "<html><p class='***' id='baz'>foo</p></html>");
   }
 
   private boolean matches(text_element the_text_element, string expected) {
     the_writer : string_writer.new();
-    -- TODO: introduce a parameter to skip newlines.
-    the_formatter : markup_formatter.new(the_writer, "");
+    the_formatter : markup_formatter.new(the_writer, "", false);
     the_formatter.write(the_text_element);
     return the_writer.elements() == expected;
   }

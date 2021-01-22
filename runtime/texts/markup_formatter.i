@@ -22,12 +22,19 @@ class markup_formatter {
 
   static DEFAULT_INDENT : " ";
 
-  overload markup_formatter(output[character] out, string spaces) {
+  private boolean write_newlines;
+
+  overload markup_formatter(output[character] out, string spaces, boolean write_newlines) {
     super(out, spaces);
+    this.write_newlines = write_newlines;
+  }
+
+  overload markup_formatter(output[character] out, string spaces) {
+    this(out, spaces, true);
   }
 
   overload markup_formatter(output[character] out) {
-    this(out, DEFAULT_INDENT);
+    this(out, DEFAULT_INDENT, true);
   }
 
   override void process_string(string s) {
@@ -35,7 +42,7 @@ class markup_formatter {
   }
 
   override void process_element(text_element element) {
-    is_block : text_util.is_block(element);
+    is_block : write_newlines && text_util.is_block(element);
 
     attributes : element.attributes;
     children : element.children;

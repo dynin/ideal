@@ -1,0 +1,10 @@
+#!/bin/sh
+
+ALLFILES="`find library runtime machine development experimental showcase -name \*.i` \
+    `find jsource -name \*.java` \
+    jsource/ideal/*/*/*.cup \
+    testdata/* \
+    Makefile"
+#`find jsource bootstrapped -name \*.java` \
+
+grep $1 $ALLFILES

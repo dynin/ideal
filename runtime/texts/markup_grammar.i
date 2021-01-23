@@ -25,6 +25,7 @@ class markup_grammar {
   var matcher[character, attribute_state] attribute;
   var matcher[character, text_element] empty_element;
   var matcher[character, text_fragment] content;
+  var markup_parser parser;
 
   markup_grammar(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
@@ -110,8 +111,12 @@ class markup_grammar {
   special_text make_entity_2nd(readonly list[any value] the_list) pure {
     string entity_name : the_list[1] as string;
     entity : entities.get(entity_name);
-    -- TODO: report error to user
-    assert entity is_not null;
+
+    if (entity is null) {
+      parser.report_error("Unrecognized entity: " ++ entity_name);
+      return text_library.ERROR_ENTITY;
+    }
+
     return entity;
   }
 
@@ -197,5 +202,10 @@ class markup_grammar {
     result.validate();
 
     return result;
+  }
+
+  text_element parse(string text, markup_parser parser) {
+    this.parser = parser;
+    return document_matcher.parse(text);
   }
 }

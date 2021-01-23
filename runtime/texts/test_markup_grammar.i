@@ -9,6 +9,8 @@ class test_markup_grammar {
   import ideal.machine.characters.normal_handler;
   import ideal.machine.channels.string_writer;
 
+  var string error_message;
+
   markup_grammar make_grammar() {
     grammar : markup_grammar.new(normal_handler.instance);
     grammar.add_elements(text_library.HTML_ELEMENTS);
@@ -136,7 +138,8 @@ class test_markup_grammar {
   }
 
   testcase test_simple_parse() {
-    document_matcher : make_grammar().document_matcher;
+    grammar : make_grammar();
+    document_matcher : grammar.document_matcher;
 
     assert document_matcher("<html>foo</html>");
     assert document_matcher("  <html>foo</html>  ");
@@ -191,6 +194,14 @@ class test_markup_grammar {
     assert matches(document_matcher.parse(
         "<html><p class = '***' id=\"baz\">foo</p></html>"),
         "<html><p class='***' id='baz'>foo</p></html>");
+
+    parser : markup_parser.new(grammar, report_error);
+    result : parser.parse("<html>&bug;</html>");
+    assert error_message == "Unrecognized entity: bug";
+  }
+
+  private void report_error(string error_message) {
+    this.error_message = error_message;
   }
 
   private boolean matches(text_element the_text_element, string expected) {

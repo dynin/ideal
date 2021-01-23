@@ -27,6 +27,7 @@ namespace texts {
   class markup_formatter;
 
   class attribute_state;
+  class markup_parser;
   class markup_grammar;
 
   namespace text_library;

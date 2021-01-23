@@ -27,6 +27,7 @@ public class markup_grammar {
   public matcher<Character, attribute_state> attribute;
   public matcher<Character, text_element> empty_element;
   public matcher<Character, text_fragment> content;
+  public markup_parser parser;
   public markup_grammar(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
     this.element_ids = new hash_dictionary<string, element_id>();
@@ -111,7 +112,10 @@ public class markup_grammar {
   public special_text make_entity_2nd(final readonly_list<any_value> the_list) {
     final string entity_name = (string) the_list.get(1);
     final @Nullable special_text entity = this.entities.get(entity_name);
-    assert entity != null;
+    if (entity == null) {
+      this.parser.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized entity: "), entity_name));
+      return text_library.ERROR_ENTITY;
+    }
     return entity;
   }
   public attribute_state make_attribute(final readonly_list<any_value> the_list) {
@@ -232,5 +236,9 @@ public class markup_grammar {
     });
     result.validate();
     return result;
+  }
+  public text_element parse(final string text, final markup_parser parser) {
+    this.parser = parser;
+    return this.document_matcher.parse(text);
   }
 }

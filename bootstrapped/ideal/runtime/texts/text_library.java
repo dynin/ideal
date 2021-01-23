@@ -59,4 +59,5 @@ public class text_library {
   public static final string FRAGMENT_SEPARATOR = new base_string("#");
   public static final base_namespace IDEAL_TEXT = new base_namespace(new base_string("itext"));
   public static final base_element_id INDENT = new base_element_id(text_library.IDEAL_TEXT, new base_string("indent"));
+  public static final text_entity ERROR_ENTITY = new text_entity(text_library.IDEAL_TEXT, new base_string("*error*"), new base_string("error"));
 }

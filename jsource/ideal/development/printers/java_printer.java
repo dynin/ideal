@@ -30,7 +30,7 @@ public class java_printer extends base_printer {
 
   @Override
   public text_fragment print_infix(operator_construct c) {
-    if (c.the_operator != operator.AS_OPERATOR) {
+    if (!(c.the_operator instanceof cast_type)) {
       return super.print_infix(c);
     } else {
       list<text_fragment> fragments = new base_list<text_fragment>();

@@ -18,6 +18,7 @@ package names {
   class operator_type;
   namespace punctuation;
   class operator;
+  class cast_type;
   class keyword;
   namespace keywords;
   class special_name;

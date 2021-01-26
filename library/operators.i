@@ -10,7 +10,8 @@ package operators {
   any value assign(any value lvalue mutable, any value rvalue);
 
   -- NOTE: fix types.
-  any value as_operator(any value the_value, entity the_type) pure;
+  any value soft_cast(any value the_value, entity the_type) pure;
+  any value hard_cast(any value the_value, entity the_type) pure;
 
   -- NOTE: fix types.
   any value allocate(any value type);

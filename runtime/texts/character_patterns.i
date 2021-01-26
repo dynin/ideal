@@ -59,8 +59,8 @@ namespace character_patterns {
       matcher[character, string] attr_value,
       matcher[character, special_text] entity_ref) {
     return option_fragment_list([
-        entity_ref as matcher[character, attribute_fragment],
-        attr_value as matcher[character, attribute_fragment],
+        entity_ref !> matcher[character, attribute_fragment],
+        attr_value !> matcher[character, attribute_fragment],
     ]);
   }
 
@@ -87,7 +87,7 @@ namespace character_patterns {
   }
 
   immutable list[attribute_state] cast_attributes(readonly list[attribute_state] attributes) {
-    return attributes.elements as immutable list[attribute_state];
+    return attributes.elements !> immutable list[attribute_state];
   }
 
   matcher[character, immutable list[attribute_state]] repeat_or_none_attribute(
@@ -97,7 +97,7 @@ namespace character_patterns {
   }
 
   string as_string_procedure(readonly list[character] the_character_list) pure {
-    return the_character_list.frozen_copy() as base_string;
+    return the_character_list.frozen_copy() !> base_string;
   }
 
   matcher[character, string] as_string(pattern[character] the_pattern) pure {
@@ -105,5 +105,5 @@ namespace character_patterns {
   }
 
   attribute_fragment select_2nd_attribute_fragment(readonly list[any value] the_list) pure =>
-      the_list[1] as attribute_fragment;
+      the_list[1] !> attribute_fragment;
 }

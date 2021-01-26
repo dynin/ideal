@@ -28,11 +28,15 @@ import ideal.development.notifications.*;
 public class cast_op extends binary_procedure {
 
   // TODO: this should use any flavor, not readonly.
-  public cast_op() {
-    super(operator.AS_OPERATOR, true,
+  public cast_op(cast_type the_cast_type) {
+    super(the_cast_type, true,
         library().value_type().get_flavored(flavor.any_flavor),
         library().value_type().get_flavored(flavor.any_flavor),
         core_types.any_type());
+  }
+
+  cast_type the_cast_type() {
+    return (cast_type) name();
   }
 
   @Override
@@ -54,7 +58,7 @@ public class cast_op extends binary_procedure {
     }
 
     // TODO: check that expression.result() is a subtype of the_type...
-    return new cast_action(first, the_type, pos);
+    return new cast_action(first, the_type, the_cast_type(), pos);
   }
 
   @Override

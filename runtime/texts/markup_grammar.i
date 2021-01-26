@@ -86,12 +86,12 @@ class markup_grammar {
   }
 
   text_element match_start_element(readonly list[any value] the_list) pure {
-    string element_name : the_list[1] as string;
+    string element_name : the_list[1] !> string;
     element_id : element_ids.get(element_name);
     -- TODO: report error to user
     assert element_id is_not null;
 
-    attributes : the_list[2] as immutable list[attribute_state];
+    attributes : the_list[2] !> immutable list[attribute_state];
     dictionary[attribute_id, attribute_fragment] attributes_dictionary :
         list_dictionary[attribute_id, attribute_fragment].new();
     for (attribute : attributes) {
@@ -102,14 +102,14 @@ class markup_grammar {
   }
 
   text_element match_text_element(readonly list[any value] the_list) pure {
-    start_tag : the_list[0] as text_element;
-    text_content : the_list[1] as text_fragment;
+    start_tag : the_list[0] !> text_element;
+    text_content : the_list[1] !> text_fragment;
     -- TODO: verify end tag
     return base_element.new(start_tag.get_id, start_tag.attributes, text_content);
   }
 
   special_text make_entity_2nd(readonly list[any value] the_list) pure {
-    string entity_name : the_list[1] as string;
+    string entity_name : the_list[1] !> string;
     entity : entities.get(entity_name);
 
     if (entity is null) {
@@ -121,23 +121,23 @@ class markup_grammar {
   }
 
   attribute_state make_attribute(readonly list[any value] the_list) pure {
-    string attribute_name : the_list[0] as string;
+    string attribute_name : the_list[0] !> string;
     id : attribute_ids.get(attribute_name);
     -- TODO: report error to user
     assert id is_not null;
-    attribute_fragment value : the_list[2] as attribute_fragment;
+    attribute_fragment value : the_list[2] !> attribute_fragment;
     return attribute_state.new(id, value);
   }
 
   attribute_state select_2nd_attribute_state(readonly list[any value] the_list) pure =>
-      the_list[1] as attribute_state;
+      the_list[1] !> attribute_state;
 
   text_element select_2nd_text_element(readonly list[any value] the_list) pure =>
-      the_list[1] as text_element;
+      the_list[1] !> text_element;
 
   text_fragment join2(readonly list[any value] the_list) pure {
     assert the_list.size == 2;
-    return text_util.join(the_list[0] as text_fragment, the_list[1] as text_fragment);
+    return text_util.join(the_list[0] !> text_fragment, the_list[1] !> text_fragment);
   }
 
   protected matcher[character, text_element] document() {
@@ -178,17 +178,17 @@ class markup_grammar {
     empty_element = sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, slash, gt ],
         match_start_element);
-    element : option_text_element([empty_element as matcher[character, text_element], ]);
+    element : option_text_element([empty_element, ]);
     -- TODO: fix the cast in Java generator.
-    element_fragment : element as option_matcher[character, text_fragment] as
+    element_fragment : element !> option_matcher[character, text_fragment] !>
         matcher[character, text_fragment];
     content_element : option_text_fragment([element_fragment,
-        entity_ref as matcher[character, text_fragment]]);
+        entity_ref !> matcher[character, text_fragment]]);
     char_data_opt : as_string(zero_or_more(content_char));
     content_tail : repeat_or_none_text(sequence_matcher[character, text_fragment].new(
-        [ content_element as pattern[character], char_data_opt ], join2));
+        [ content_element .> pattern[character], char_data_opt ], join2));
     content = sequence_matcher[character, text_fragment].new([ char_data_opt,
-        content_tail as pattern[character]], join2);
+        content_tail .> pattern[character]], join2);
 
     pattern[character] start_tag : sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, gt ], match_start_element);

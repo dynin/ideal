@@ -224,7 +224,9 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(new is_op(operator.IS_OPERATOR, false));
     add_operator(new is_op(operator.IS_NOT_OPERATOR, true));
 
-    add_operator(new cast_op());
+    add_operator(new cast_op(operator.SOFT_CAST));
+    add_operator(new cast_op(operator.HARD_CAST));
+
     add_operator(new assign_op());
     add_operator(new add_op());
 

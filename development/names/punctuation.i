@@ -44,6 +44,9 @@ namespace punctuation {
   GREATER_THAN : punctuation_type.new(">", base_symbols.GREATER_THAN);
   LESS_THAN_EQUALS : punctuation_type.new("<=", base_symbols.LESS_THAN_EQUALS);
   GREATER_THAN_EQUALS : punctuation_type.new(">=", base_symbols.GREATER_THAN_EQUALS);
+  DOT_GREATER_THAN : punctuation_type.new(".>", base_symbols.DOT_GREATER_THAN);
+  EXCLAMATION_GREATER_THAN : punctuation_type.new("!>", base_symbols.EXCLAMATION_GREATER_THAN);
+  QUESTION_MARK_GREATER_THAN : punctuation_type.new("?>", base_symbols.QUESTION_MARK_GREATER_THAN);
   MINUS_MINUS : punctuation_type.new("--"); -- base_symbols.MINUS_MINUS
   AMPERSAND : punctuation_type.new("&", base_symbols.AMPERSAND);
   CARET : punctuation_type.new("^", base_symbols.CARET);

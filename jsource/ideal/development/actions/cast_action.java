@@ -14,6 +14,7 @@ import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
+import ideal.development.names.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
@@ -22,11 +23,13 @@ import ideal.development.flavors.*;
 public class cast_action extends base_action {
   public final action expression;
   public final type the_type;
+  public final cast_type the_cast_type;
 
-  public cast_action(action expression, type the_type, origin source) {
+  public cast_action(action expression, type the_type, cast_type the_cast_type, origin source) {
     super(source);
     this.expression = expression;
     this.the_type = the_type;
+    this.the_cast_type = the_cast_type;
     if (the_type != library().immutable_void_type()) {
       assert the_type.is_subtype_of(library().value_type().get_flavored(flavor.any_flavor));
     }

@@ -67,6 +67,9 @@ public class common_scanner extends base_scanner_config {
     add_punctuation(punctuation.LESS_THAN_EQUALS);
     add_punctuation(punctuation.GREATER_THAN_EQUALS);
 
+    add_punctuation(punctuation.DOT_GREATER_THAN);
+    add_punctuation(punctuation.EXCLAMATION_GREATER_THAN);
+
     add_punctuation(punctuation.AMPERSAND);
     add_punctuation(punctuation.CARET);
     add_punctuation(punctuation.VERTICAL_BAR);

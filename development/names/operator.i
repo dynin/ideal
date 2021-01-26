@@ -15,7 +15,7 @@ class operator {
   final token_type name;
   final simple_name alpha_name;
 
-  overload private operator(operator_type the_operator_type, token_type name, string alpha_name) {
+  overload protected operator(operator_type the_operator_type, token_type name, string alpha_name) {
     this.the_operator_type = the_operator_type;
     this.name = name;
     this.alpha_name = simple_name.make(alpha_name);
@@ -62,7 +62,9 @@ class operator {
   static CONCATENATE_ASSIGN : operator.new(INFIX, punctuation.PLUS_PLUS_EQUALS,
       "concatenate_assign");
 
-  static AS_OPERATOR : operator.new(INFIX, keywords.AS, "as_operator");
+  static SOFT_CAST : cast_type.new(punctuation.DOT_GREATER_THAN, "soft_cast");
+  static HARD_CAST : cast_type.new(punctuation.EXCLAMATION_GREATER_THAN, "hard_cast");
+
   static IS_OPERATOR : operator.new(INFIX, keywords.IS, "is_operator");
   static IS_NOT_OPERATOR : operator.new(INFIX, keywords.IS_NOT, "is_not_operator");
 

@@ -262,7 +262,7 @@ public class to_java_transformer extends base_transformer {
     type the_original_type = result_type(the_narrow_action.expression);
     type the_narrowed_type = the_narrow_action.the_type;
     if (should_introduce_cast(the_original_type, the_narrowed_type)) {
-      construct cast = new operator_construct(operator.AS_OPERATOR, expression,
+      construct cast = new operator_construct(operator.HARD_CAST, expression,
           make_type(the_narrowed_type, the_origin), the_origin);
       return new list_construct(new base_list<construct>(cast), grouping_type.PARENS, false,
           the_origin);
@@ -1375,8 +1375,9 @@ public class to_java_transformer extends base_transformer {
       base_list<construct> arguments_constructs =
           new base_list<construct>(transform_action(lhs), rhs);
       return new operator_construct(operator.ASSIGN, arguments_constructs, the_origin);
-    } else if (the_operator == operator.AS_OPERATOR) {
-      return transform_cast(arguments.get(0), get_type(arguments.get(1)), the_origin);
+    } else if (the_operator instanceof cast_type) {
+      return transform_cast(arguments.get(0), get_type(arguments.get(1)), (cast_type) the_operator,
+          the_origin);
     } else if (the_operator == operator.IS_OPERATOR) {
       return transform_is(false, arguments.get(0), get_type(arguments.get(1)), the_origin);
     } else if (the_operator == operator.IS_NOT_OPERATOR) {
@@ -1426,7 +1427,8 @@ public class to_java_transformer extends base_transformer {
     return make_call(values_equal, transform_parameters(arguments), the_origin);
   }
 
-  public construct transform_cast(action expression, type the_type, origin the_origin) {
+  public construct transform_cast(action expression, type the_type, cast_type the_cast_type,
+      origin the_origin) {
     type expression_type = result_type(expression);
 
     construct transformed_expression = transform_action(expression);
@@ -1447,12 +1449,12 @@ public class to_java_transformer extends base_transformer {
             ((parametrized_type) type_principal).get_master()) {
       master_type the_master = ((parametrized_type) type_principal).get_master();
       type intermediate_type = the_master.get_flavored(the_type.get_flavor());
-      transformed_expression = new operator_construct(operator.AS_OPERATOR,
+      transformed_expression = new operator_construct(operator.HARD_CAST,
         new base_list<construct>(transformed_expression, make_type(intermediate_type, the_origin)),
             the_origin);
     }
 
-    return new operator_construct(operator.AS_OPERATOR,
+    return new operator_construct(the_cast_type,
         new base_list<construct>(transformed_expression, transformed_type), the_origin);
   }
 
@@ -1990,7 +1992,8 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct process_cast(cast_action the_cast_action, origin the_origin) {
-    return transform_cast(the_cast_action.expression, the_cast_action.the_type, the_origin);
+    return transform_cast(the_cast_action.expression, the_cast_action.the_type,
+        the_cast_action.the_cast_type, the_origin);
   }
 
   private construct process_is_operator(is_action the_is_action, origin the_origin) {

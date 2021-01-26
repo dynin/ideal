@@ -13,7 +13,7 @@ public class operator extends debuggable implements action_name {
   public final operator_type the_operator_type;
   public final token_type name;
   public final simple_name alpha_name;
-  private operator(final operator_type the_operator_type, final token_type name, final string alpha_name) {
+  protected operator(final operator_type the_operator_type, final token_type name, final string alpha_name) {
     this.the_operator_type = the_operator_type;
     this.name = name;
     this.alpha_name = simple_name.make(alpha_name);
@@ -50,7 +50,8 @@ public class operator extends debuggable implements action_name {
   public static final operator SUBTRACT_ASSIGN = new operator(operator_type.INFIX, punctuation.MINUS_EQUALS, new base_string("subtract_assign"));
   public static final operator MULTIPLY_ASSIGN = new operator(operator_type.INFIX, punctuation.ASTERISK_EQUALS, new base_string("multiply_assign"));
   public static final operator CONCATENATE_ASSIGN = new operator(operator_type.INFIX, punctuation.PLUS_PLUS_EQUALS, new base_string("concatenate_assign"));
-  public static final operator AS_OPERATOR = new operator(operator_type.INFIX, keywords.AS, new base_string("as_operator"));
+  public static final cast_type SOFT_CAST = new cast_type(punctuation.DOT_GREATER_THAN, new base_string("soft_cast"));
+  public static final cast_type HARD_CAST = new cast_type(punctuation.EXCLAMATION_GREATER_THAN, new base_string("hard_cast"));
   public static final operator IS_OPERATOR = new operator(operator_type.INFIX, keywords.IS, new base_string("is_operator"));
   public static final operator IS_NOT_OPERATOR = new operator(operator_type.INFIX, keywords.IS_NOT, new base_string("is_not_operator"));
   public static final operator ALLOCATE = new operator(operator_type.PREFIX, keywords.NEW, new base_string("allocate"));

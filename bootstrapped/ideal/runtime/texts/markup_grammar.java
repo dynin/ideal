@@ -200,7 +200,7 @@ public class markup_grammar {
         return markup_grammar.this.match_start_element(first);
       }
     });
-    final option_matcher<Character, text_element> element = character_patterns.option_text_element(new base_immutable_list<matcher<Character, text_element>>(new ideal.machine.elements.array<matcher<Character, text_element>>(new matcher[]{ (matcher<Character, text_element>) (matcher) this.empty_element })));
+    final option_matcher<Character, text_element> element = character_patterns.option_text_element(new base_immutable_list<matcher<Character, text_element>>(new ideal.machine.elements.array<matcher<Character, text_element>>(new matcher[]{ this.empty_element })));
     final matcher<Character, text_fragment> element_fragment = (matcher<Character, text_fragment>) (option_matcher<Character, text_fragment>) (option_matcher) element;
     final option_matcher<Character, text_fragment> content_element = character_patterns.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ element_fragment, (matcher<Character, text_fragment>) (matcher) this.entity_ref })));
     final matcher<Character, string> char_data_opt = character_patterns.as_string(character_patterns.zero_or_more(new function1<Boolean, Character>() {

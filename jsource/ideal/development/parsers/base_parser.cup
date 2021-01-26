@@ -40,6 +40,7 @@ terminal token<string>  PLUS, MINUS, ASTERISK, SLASH, PERCENT;
 // relational_expression
 terminal token<string>  LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS;
 terminal token<keyword>  AS, IS, IS_NOT;
+terminal token<string>  DOT_GREATER_THAN, EXCLAMATION_GREATER_THAN, QUESTION_MARK_GREATER_THAN;
 terminal token<string>  EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS; // equality_expression
 terminal token<string>  AMPERSAND; // and_expression
 terminal token<string>  CARET; // exclusive_or_expression
@@ -110,7 +111,8 @@ precedence left VERTICAL_BAR;
 precedence left CARET;
 precedence left AMPERSAND;
 precedence left EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS;
-precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AS, IS, IS_NOT;
+precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AS, IS, IS_NOT,
+    DOT_GREATER_THAN, EXCLAMATION_GREATER_THAN, QUESTION_MARK_GREATER_THAN;
 precedence left PLUS, MINUS, PLUS_PLUS;
 precedence left ASTERISK, SLASH, PERCENT;
 precedence left EXCLAMATION_MARK, MINUS;
@@ -387,8 +389,12 @@ expression ::=  name:n
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.LESS_EQUAL); :}
         |       expression:e1 GREATER_THAN_EQUALS:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.GREATER_EQUAL); :}
+        |       expression:e DOT_GREATER_THAN:op expression:t
+                {: RESULT = parser_util.make_op(e, op, t, operator.SOFT_CAST); :}
+        |       expression:e EXCLAMATION_GREATER_THAN:op expression:t
+                {: RESULT = parser_util.make_op(e, op, t, operator.HARD_CAST); :}
         |       expression:e AS:op expression:t
-                {: RESULT = parser_util.make_op(e, op, t, operator.AS_OPERATOR); :}
+                {: RESULT = parser_util.make_op(e, op, t, operator.HARD_CAST); :}
         |       expression:e1 IS:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.IS_OPERATOR); :}
         |       expression:e1 IS_NOT:op expression:e2

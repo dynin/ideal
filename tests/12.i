@@ -126,6 +126,12 @@ void test_and() {
     string svar : value;
     println(value);
   }
+
+  string sval : "data";
+  --deeply_immutable data dcast : sval .> deeply_immutable data;
+  dcast : sval .> deeply_immutable data;
+  string ocast : dcast !> string;
+  println(ocast);
 }
 A.new().method(1);
 B.new().method(2);

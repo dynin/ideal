@@ -35,8 +35,12 @@ public class cast_op extends binary_procedure {
         core_types.any_type());
   }
 
-  cast_type the_cast_type() {
+  public cast_type the_cast_type() {
     return (cast_type) name();
+  }
+
+  public boolean is_soft_cast() {
+    return the_cast_type() == operator.SOFT_CAST;
   }
 
   @Override
@@ -55,6 +59,14 @@ public class cast_op extends binary_procedure {
 
     if (!the_type.is_subtype_of(library().value_type().get_flavored(flavor.any_flavor))) {
       return new error_signal(new base_string("Expected value subtype, got " + the_type), pos);
+    }
+
+    if (is_soft_cast()) {
+      if (!context.can_promote(first, the_type)) {
+        return new error_signal(new base_string("Can't promote " + first.result() +
+            " in soft cast to " + the_type), pos);
+      }
+      first = context.promote(first, the_type, pos);
     }
 
     // TODO: check that expression.result() is a subtype of the_type...

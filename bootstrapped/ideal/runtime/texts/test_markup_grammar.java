@@ -31,6 +31,9 @@ public class test_markup_grammar {
     ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_simple_parse");
     test_simple_parse();
     ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_parse_errors");
+    test_parse_errors();
+    ideal.machine.elements.runtime_util.end_test();
   }
   public string error_message;
   public markup_grammar make_grammar() {
@@ -171,17 +174,25 @@ public class test_markup_grammar {
     assert this.matches(document_matcher.parse(new base_string("<html><a class = \'klass\' href = \'link\'>bar</a></html>")), new base_string("<html><a class=\'klass\' href=\'link\'>bar</a></html>"));
     assert this.matches(document_matcher.parse(new base_string("<html><p class = \'value\">==\' id=\"foo\'\">foo</p></html>")), new base_string("<html><p class=\'value&quot;&gt;==\' id=\'foo&apos;\'>foo</p></html>"));
     assert this.matches(document_matcher.parse(new base_string("<html><p class = \'***\' id=\"baz\">foo</p></html>")), new base_string("<html><p class=\'***\' id=\'baz\'>foo</p></html>"));
+  }
+  public void test_parse_errors() {
+    final markup_grammar grammar = this.make_grammar();
     final markup_parser parser = new markup_parser(grammar, new procedure1<Void, string>() {
       @Override public Void call(string first) {
         test_markup_grammar.this.report_error(first);
         return null;
       }
     });
-    final text_element result = parser.parse(new base_string("<html>&bug;</html>"));
-    assert ideal.machine.elements.runtime_util.values_equal(this.error_message, new base_string("Unrecognized entity: bug"));
+    assert this.matches_with_error(parser.parse(new base_string("<html>&bug;</html>")), new base_string("<html>&_error_;</html>"), new base_string("Unrecognized entity: bug"));
+    assert this.matches_with_error(parser.parse(new base_string("<html><foo>Hello!</foo></html>")), new base_string("<html><_error_>Hello!</_error_></html>"), new base_string("Unrecognized element name: foo"));
+    assert this.matches_with_error(parser.parse(new base_string("<html><b attr=\"value\">Hello!</b></html>")), new base_string("<html><b _error_=\'value\'>Hello!</b></html>"), new base_string("Unrecognized attribute name: attr"));
+    assert this.matches_with_error(parser.parse(new base_string("<html><a>Hello!</b></html>")), new base_string("<html><a>Hello!</a></html>"), new base_string("Mismatched element name: start a, end b"));
   }
   private void report_error(final string error_message) {
     this.error_message = error_message;
+  }
+  private boolean matches_with_error(final text_element the_text_element, final string expected, final string expected_error) {
+    return this.matches(the_text_element, expected) && ideal.machine.elements.runtime_util.values_equal(this.error_message, expected_error);
   }
   private boolean matches(final text_element the_text_element, final string expected) {
     final string_writer the_writer = new string_writer();

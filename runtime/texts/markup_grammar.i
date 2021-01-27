@@ -10,7 +10,6 @@
 class markup_grammar {
   implicit import ideal.library.patterns;
   implicit import ideal.runtime.patterns;
-  implicit import character_patterns;
 
   character_handler the_character_handler;
   dictionary[string, element_id] element_ids;
@@ -85,13 +84,110 @@ class markup_grammar {
     return c != '<' && c != '&' && c != '"';
   }
 
-  text_element match_start_element(readonly list[any value] the_list) pure {
-    string element_name : the_list[1] !> string;
-    element_id : element_ids.get(element_name);
-    -- TODO: report error to user
-    assert element_id is_not null;
+  pattern[character] one(function[boolean, character] the_predicate) pure {
+    return predicate_pattern[character].new(the_predicate);
+  }
 
+  pattern[character] one_character(character the_character) pure {
+    return singleton_pattern[character].new(the_character);
+  }
+
+  pattern[character] zero_or_more(function[boolean, character] the_predicate) pure {
+    return repeat_element[character].new(the_predicate, true);
+  }
+
+  pattern[character] one_or_more(function[boolean, character] the_predicate) pure {
+    return repeat_element[character].new(the_predicate, false);
+  }
+
+  pattern[character] repeat_or_none(pattern[character] the_pattern) pure {
+    return repeat_pattern[character].new(the_pattern, true);
+  }
+
+  -- TODO: return sequence_pattern[character] (which breaks list initializer.)
+  pattern[character] sequence(readonly list[pattern[character]] patterns_list) pure {
+    return sequence_pattern[character].new(patterns_list);
+  }
+
+  option_pattern[character] option(readonly list[pattern[character]] patterns_list) pure {
+    return option_pattern[character].new(patterns_list);
+  }
+
+  option_matcher[character, attribute_fragment] option_fragment_list(
+      readonly list[matcher[character, attribute_fragment]] matchers) pure {
+    return option_matcher[character, attribute_fragment].new(matchers);
+  }
+
+  option_matcher[character, text_fragment] option_text_fragment(
+      readonly list[matcher[character, text_fragment]] matchers) pure {
+    return option_matcher[character, text_fragment].new(matchers);
+  }
+
+  option_matcher[character, text_element] option_text_element(
+      readonly list[matcher[character, text_element]] matchers) pure {
+    return option_matcher[character, text_element].new(matchers);
+  }
+
+  -- TODO: the conversions should be inferred.
+  option_matcher[character, attribute_fragment] option_fragment(
+      matcher[character, string] attr_value,
+      matcher[character, special_text] entity_ref) pure {
+    return option_fragment_list([
+        entity_ref !> matcher[character, attribute_fragment],
+        attr_value !> matcher[character, attribute_fragment],
+    ]);
+  }
+
+  -- TODO: wrapper function is redundant
+  attribute_fragment join_fragments(readonly list[attribute_fragment] fragments) pure {
+    return text_util.join_attributes(fragments);
+  }
+
+  matcher[character, attribute_fragment] repeat_or_none_fragment(
+      matcher[character, attribute_fragment] the_matcher) pure {
+    return repeat_matcher[character, attribute_fragment, attribute_fragment].new(the_matcher, true,
+        join_fragments);
+  }
+
+  -- TODO: wrapper function is redundant
+  text_fragment join_fragments_text(readonly list[text_fragment] fragments) pure {
+    return text_util.join(fragments);
+  }
+
+  matcher[character, text_fragment] repeat_or_none_text(
+      matcher[character, text_fragment] the_matcher) pure {
+    return repeat_matcher[character, text_fragment, text_fragment].new(the_matcher, true,
+        join_fragments_text);
+  }
+
+  immutable list[attribute_state] cast_attributes(readonly list[attribute_state] attributes) pure {
+    return attributes.elements !> immutable list[attribute_state];
+  }
+
+  matcher[character, immutable list[attribute_state]] repeat_or_none_attribute(
+      matcher[character, attribute_state] the_matcher) pure {
+    return repeat_matcher[character, immutable list[attribute_state], attribute_state].new(
+        the_matcher, true, cast_attributes);
+  }
+
+  string as_string_procedure(readonly list[character] the_character_list) pure {
+    return the_character_list.frozen_copy() !> base_string;
+  }
+
+  matcher[character, string] as_string(pattern[character] the_pattern) pure {
+    return procedure_matcher[character, string].new(the_pattern, as_string_procedure);
+  }
+
+  text_element match_start_element(readonly list[any value] the_list) pure {
+    element_name : the_list[1] !> string;
     attributes : the_list[2] !> immutable list[attribute_state];
+
+    element_id : element_ids.get(element_name);
+    if (element_id is null) {
+      parser.report_error("Unrecognized element name: " ++ element_name);
+      return base_element.new(text_library.ERROR_ELEMENT);
+    }
+
     dictionary[attribute_id, attribute_fragment] attributes_dictionary :
         list_dictionary[attribute_id, attribute_fragment].new();
     for (attribute : attributes) {
@@ -104,7 +200,14 @@ class markup_grammar {
   text_element match_text_element(readonly list[any value] the_list) pure {
     start_tag : the_list[0] !> text_element;
     text_content : the_list[1] !> text_fragment;
-    -- TODO: verify end tag
+    end_tag_name : the_list[2] !> string;
+
+    start_tag_name : start_tag.get_id.short_name;
+    if (start_tag.get_id != text_library.ERROR_ELEMENT && start_tag_name != end_tag_name) {
+      parser.report_error("Mismatched element name: start " ++ start_tag_name ++ ", end " ++
+          end_tag_name);
+    }
+
     return base_element.new(start_tag.get_id, start_tag.attributes, text_content);
   }
 
@@ -122,12 +225,19 @@ class markup_grammar {
 
   attribute_state make_attribute(readonly list[any value] the_list) pure {
     string attribute_name : the_list[0] !> string;
-    id : attribute_ids.get(attribute_name);
-    -- TODO: report error to user
-    assert id is_not null;
     attribute_fragment value : the_list[2] !> attribute_fragment;
+    id : attribute_ids.get(attribute_name);
+    if (id is null) {
+      parser.report_error("Unrecognized attribute name: " ++ attribute_name);
+      return attribute_state.new(text_library.ERROR_ATTRIBUTE, value);
+    }
     return attribute_state.new(id, value);
   }
+
+  string select_end_tag(readonly list[any value] the_list) pure => the_list[2] !> string;
+
+  attribute_fragment select_2nd_attribute_fragment(readonly list[any value] the_list) pure =>
+      the_list[1] !> attribute_fragment;
 
   attribute_state select_2nd_attribute_state(readonly list[any value] the_list) pure =>
       the_list[1] !> attribute_state;
@@ -192,7 +302,8 @@ class markup_grammar {
 
     pattern[character] start_tag : sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, gt ], match_start_element);
-    end_tag : sequence([ lt, slash, name, space_opt, gt ]);
+    end_tag : sequence_matcher[character, string].new([ lt, slash, name, space_opt, gt ],
+        select_end_tag);
     element.add_option(sequence_matcher[character, text_element].new(
         [ start_tag, content, end_tag ], match_text_element));
 

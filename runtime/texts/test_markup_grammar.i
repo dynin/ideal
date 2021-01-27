@@ -194,14 +194,29 @@ class test_markup_grammar {
     assert matches(document_matcher.parse(
         "<html><p class = '***' id=\"baz\">foo</p></html>"),
         "<html><p class='***' id='baz'>foo</p></html>");
+  }
 
+  testcase test_parse_errors() {
+    grammar : make_grammar();
     parser : markup_parser.new(grammar, report_error);
-    result : parser.parse("<html>&bug;</html>");
-    assert error_message == "Unrecognized entity: bug";
+
+    assert matches_with_error(parser.parse("<html>&bug;</html>"), "<html>&_error_;</html>",
+        "Unrecognized entity: bug");
+    assert matches_with_error(parser.parse("<html><foo>Hello!</foo></html>"),
+        "<html><_error_>Hello!</_error_></html>", "Unrecognized element name: foo");
+    assert matches_with_error(parser.parse("<html><b attr=\"value\">Hello!</b></html>"),
+        "<html><b _error_='value'>Hello!</b></html>", "Unrecognized attribute name: attr");
+    assert matches_with_error(parser.parse("<html><a>Hello!</b></html>"),
+        "<html><a>Hello!</a></html>", "Mismatched element name: start a, end b");
   }
 
   private void report_error(string error_message) {
     this.error_message = error_message;
+  }
+
+  private boolean matches_with_error(text_element the_text_element, string expected,
+      string expected_error) {
+    return matches(the_text_element, expected) && error_message == expected_error;
   }
 
   private boolean matches(text_element the_text_element, string expected) {

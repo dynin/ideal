@@ -86,5 +86,7 @@ public namespace text_library {
   IDEAL_TEXT : base_namespace.new("itext");
   INDENT : base_element_id.new(IDEAL_TEXT, "indent");
 
-  ERROR_ENTITY : text_entity.new(IDEAL_TEXT, "*error*", "error");
+  ERROR_ELEMENT : base_element_id.new(IDEAL_TEXT, "_error_");
+  ERROR_ATTRIBUTE : base_attribute_id.new(IDEAL_TEXT, "_error_");
+  ERROR_ENTITY : text_entity.new(IDEAL_TEXT, "_error_", "_error_");
 }

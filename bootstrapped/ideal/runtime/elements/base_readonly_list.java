@@ -49,7 +49,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
       assert this.writable;
       final int extra_size = new_elements.size();
       this.reserve_and_move(index, extra_size);
-      final array<element_type> new_elements_array = ((base_readonly_list<element_type>) new_elements).state.the_elements;
+      final array<element_type> new_elements_array = ((base_readonly_list<element_type>) (base_readonly_list) new_elements).state.the_elements;
       new_elements_array.copy(0, this.the_elements, index, extra_size);
     }
     public void insert(final int index, final element_type element) {

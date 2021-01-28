@@ -26,7 +26,7 @@ public class repeat_matcher<element_type, result_type, intermediate_type> extend
         }
       }
       assert match > 0;
-      final intermediate_type matched = ((matcher<element_type, intermediate_type>) this.the_pattern).parse(the_list.slice(index, index + match));
+      final intermediate_type matched = ((matcher<element_type, intermediate_type>) (matcher) this.the_pattern).parse(the_list.slice(index, index + match));
       intermediate_list.append(matched);
       index += match;
     }

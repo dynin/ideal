@@ -290,19 +290,19 @@ public class markup_grammar {
       }
     });
     final option_matcher<Character, text_element> element = this.option_text_element(new base_immutable_list<matcher<Character, text_element>>(new ideal.machine.elements.array<matcher<Character, text_element>>(new matcher[]{ this.empty_element })));
-    final matcher<Character, text_fragment> element_fragment = (matcher<Character, text_fragment>) (option_matcher<Character, text_fragment>) (option_matcher) element;
+    final matcher<Character, text_fragment> element_fragment = (matcher<Character, text_fragment>) (matcher) element;
     final option_matcher<Character, text_fragment> content_element = this.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ element_fragment, (matcher<Character, text_fragment>) (matcher) this.entity_ref })));
     final matcher<Character, string> char_data_opt = this.as_string(this.zero_or_more(new function1<Boolean, Character>() {
       @Override public Boolean call(Character first) {
         return markup_grammar.this.content_char(first);
       }
     }));
-    final matcher<Character, text_fragment> content_tail = this.repeat_or_none_text(new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) content_element, char_data_opt })), new function1<text_fragment, readonly_list<any_value>>() {
+    final matcher<Character, text_fragment> content_tail = this.repeat_or_none_text(new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) (pattern) content_element, char_data_opt })), new function1<text_fragment, readonly_list<any_value>>() {
       @Override public text_fragment call(readonly_list<any_value> first) {
         return markup_grammar.this.join2(first);
       }
     }));
-    this.content = new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ char_data_opt, (pattern<Character>) content_tail })), new function1<text_fragment, readonly_list<any_value>>() {
+    this.content = new sequence_matcher<Character, text_fragment>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ char_data_opt, (pattern<Character>) (pattern) content_tail })), new function1<text_fragment, readonly_list<any_value>>() {
       @Override public text_fragment call(readonly_list<any_value> first) {
         return markup_grammar.this.join2(first);
       }

@@ -100,7 +100,7 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
     return false;
   }
   public @Override immutable_set<key_type> keys() {
-    final set<key_type> result = new hash_set<key_type>((equivalence_with_hash<key_type>) this.equivalence);
+    final set<key_type> result = new hash_set<key_type>((equivalence_with_hash<key_type>) (equivalence_with_hash) this.equivalence);
     for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
       result.add(entry.key());
     }

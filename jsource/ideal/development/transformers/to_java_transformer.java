@@ -1444,9 +1444,13 @@ public class to_java_transformer extends base_transformer {
     principal_type type_principal = the_type.principal();
 
     if (expression_principal instanceof parametrized_type &&
-        type_principal instanceof parametrized_type &&
-        ((parametrized_type) expression_principal).get_master() ==
-            ((parametrized_type) type_principal).get_master()) {
+        type_principal instanceof parametrized_type) {
+      // && ((parametrized_type) expression_principal).get_master() ==
+      //    ((parametrized_type) type_principal).get_master()
+      // Note that with the above constraints, some Java generic casts
+      // do not work. Rather than trying to figure out when exactly double casts
+      // are necessary with generic types, we always introduce double casts.
+      // There shouldn't be semantic problems with it, just minor overhead.
       master_type the_master = ((parametrized_type) type_principal).get_master();
       type intermediate_type = the_master.get_flavored(the_type.get_flavor());
       transformed_expression = new operator_construct(operator.HARD_CAST,

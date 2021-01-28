@@ -12,10 +12,10 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
     super(equivalence);
   }
   public list_dictionary() {
-    super((equivalence_relation<key_type>) runtime_util.default_equivalence);
+    super((equivalence_relation<key_type>) (equivalence_relation) runtime_util.default_equivalence);
   }
   public list_dictionary(final key_type the_key, final value_type the_value) {
-    super(the_key, the_value, (equivalence_relation<key_type>) runtime_util.default_equivalence);
+    super(the_key, the_value, (equivalence_relation<key_type>) (equivalence_relation) runtime_util.default_equivalence);
   }
   public @Override immutable_dictionary<key_type, value_type> frozen_copy() {
     return new immutable_list_dictionary<key_type, value_type>(this);

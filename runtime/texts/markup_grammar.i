@@ -289,9 +289,7 @@ class markup_grammar {
         [ lt, name, attributes, space_opt, slash, gt ],
         match_start_element);
     element : option_text_element([empty_element, ]);
-    -- TODO: fix the cast in Java generator.
-    element_fragment : element !> option_matcher[character, text_fragment] !>
-        matcher[character, text_fragment];
+    element_fragment : element !> matcher[character, text_fragment];
     content_element : option_text_fragment([element_fragment,
         entity_ref !> matcher[character, text_fragment]]);
     char_data_opt : as_string(zero_or_more(content_char));

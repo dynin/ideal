@@ -28,7 +28,7 @@ public class simple_reference<value_type> extends debuggable implements referenc
     this.the_value = new_value;
   }
   public @Override value_wrapper<value_type> get() {
-    return (value_wrapper<value_type>) this.the_value;
+    return (value_wrapper<value_type>) (value_wrapper) this.the_value;
   }
   public @Override void set(final value_wrapper<value_type> new_value) {
     this.the_value = new_value;

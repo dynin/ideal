@@ -260,7 +260,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
            public element <span class='procedure-declaration-name'>get</span>(int <span class='var-declaration-name'>index</span>)
             <div class='indent'>
               <div>
-               return list &bull; get(index) as element
+               return list &bull; get(index) !&gt; element
               </div>
             </div>
           </div>
@@ -337,7 +337,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
              for int <span class='var-declaration-name'>i</span> : 0; i &lt; list &bull; size(); i += 1
               <div class='indent'>
                 <div>
-                 function &bull; display(writer, list &bull; get(i) as element, options)
+                 function &bull; display(writer, list &bull; get(i) !&gt; element, options)
                 </div>
               </div>
               <div>

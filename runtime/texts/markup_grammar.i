@@ -308,9 +308,14 @@ class markup_grammar {
     result : sequence_matcher[character, text_element].new([ space_opt, element, space_opt ],
         select_2nd_text_element);
 
+    update_matchers();
+
     result.validate();
 
     return result;
+  }
+
+  void update_matchers() {
   }
 
   text_element parse(string text, markup_parser parser) {

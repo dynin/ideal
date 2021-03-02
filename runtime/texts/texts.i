@@ -27,8 +27,11 @@ namespace texts {
   class markup_formatter;
 
   class attribute_state;
-  class markup_parser;
   class markup_grammar;
+  class markup_parser;
+
+  class doc_grammar;
+  class doc_parser;
 
   namespace text_library;
   namespace text_util;
@@ -37,4 +40,5 @@ namespace texts {
   class test_plain_text;
   class test_markup_text;
   class test_markup_grammar;
+  class test_doc_grammar;
 }

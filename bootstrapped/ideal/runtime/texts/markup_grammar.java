@@ -327,9 +327,11 @@ public class markup_grammar {
         return markup_grammar.this.select_2nd_text_element(first);
       }
     });
+    this.update_matchers();
     result.validate();
     return result;
   }
+  public void update_matchers() { }
   public text_element parse(final string text, final markup_parser parser) {
     this.parser = parser;
     return this.document_matcher.parse(text);

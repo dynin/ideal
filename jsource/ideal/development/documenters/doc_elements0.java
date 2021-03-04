@@ -12,7 +12,7 @@ import ideal.library.elements.*;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
-public class doc_elements {
+public class doc_elements0 {
 
   public static final text_namespace DOC_NS = new base_namespace(new base_string("ideal-doc"));
 

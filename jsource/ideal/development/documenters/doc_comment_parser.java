@@ -35,9 +35,9 @@ public class doc_comment_parser {
         if (c1 == '|') {
           append_string(result, sb);
           if (!in_code) {
-            result.append(new start_element(doc_elements.CODE));
+            result.append(new start_element(doc_elements0.CODE));
           } else {
-            result.append(new end_element(doc_elements.CODE));
+            result.append(new end_element(doc_elements0.CODE));
           }
           in_code = !in_code;
         } else {
@@ -66,7 +66,7 @@ public class doc_comment_parser {
       }
 
       string tag_name = new base_string(tag);
-      element_id tag_id = doc_elements.WHITELIST.get(tag_name);
+      element_id tag_id = doc_elements0.WHITELIST.get(tag_name);
 
       if (tag_id == null) {
         // TODO: Should report error and continue...

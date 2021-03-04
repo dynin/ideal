@@ -66,6 +66,7 @@ public class test_doc_grammar {
     assert this.matches(content_matcher.parse(new base_string("<html><a class = \'klass\' href = \'link\'>bar</a></html>")), new base_string("<html><a class=\'klass\' href=\'link\'>bar</a></html>"));
     assert this.matches(content_matcher.parse(new base_string("<html><p class = \'value\">==\' id=\"foo\'\">foo</p></html>")), new base_string("<html><p class=\'value&quot;&gt;==\' id=\'foo&apos;\'>foo</p></html>"));
     assert this.matches(content_matcher.parse(new base_string("<html><p class = \'***\' id=\"baz\">foo</p></html>")), new base_string("<html><p class=\'***\' id=\'baz\'>foo</p></html>"));
+    assert this.matches(content_matcher.parse(new base_string(" |<em>Hello</em>, world!| ")), new base_string(" <code><em>Hello</em>, world!</code> "));
   }
   public void test_parse_errors() {
     final doc_grammar grammar = this.make_grammar();

@@ -22,6 +22,7 @@ class markup_grammar {
   var matcher[character, attribute_fragment] attribute_value_in_quot;
   var matcher[character, attribute_fragment] attribute_value_in_apos;
   var matcher[character, attribute_state] attribute;
+  var option_matcher[character, text_element] element;
   var matcher[character, text_element] empty_element;
   var matcher[character, text_fragment] content;
   var markup_parser parser;
@@ -288,7 +289,7 @@ class markup_grammar {
     empty_element = sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, slash, gt ],
         match_start_element);
-    element : option_text_element([empty_element, ]);
+    element = option_text_element([empty_element, ]);
     element_fragment : element !> matcher[character, text_fragment];
     content_element : option_text_fragment([element_fragment,
         entity_ref !> matcher[character, text_fragment]]);

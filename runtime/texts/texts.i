@@ -30,11 +30,12 @@ namespace texts {
   class markup_grammar;
   class markup_parser;
 
-  class doc_grammar;
-  class doc_parser;
-
   namespace text_library;
   namespace text_util;
+
+  class doc_grammar;
+  class doc_parser;
+  namespace doc_elements;
 
   class test_elements;
   class test_plain_text;

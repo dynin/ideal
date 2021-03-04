@@ -15,7 +15,21 @@ class doc_grammar {
     super(the_character_handler);
   }
 
+  override boolean content_char(character c) pure {
+    return c != '|' && super.content_char(c);
+  }
+
+  text_element match_vbar_element(readonly list[any value] the_list) pure {
+    text_content : the_list[1] !> text_fragment;
+
+    return base_element.make(doc_elements.CODE, text_content);
+  }
+
   override void update_matchers() {
+    vbar : one_character('|');
+
+    element.add_option(sequence_matcher[character, text_element].new(
+        [ vbar, content, vbar ], match_vbar_element));
   }
 
   text_fragment parse_content(string text, doc_parser parser) {

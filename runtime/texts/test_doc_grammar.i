@@ -78,6 +78,9 @@ class test_doc_grammar {
     assert matches(content_matcher.parse(
         "<html><p class = '***' id=\"baz\">foo</p></html>"),
         "<html><p class='***' id='baz'>foo</p></html>");
+
+    assert matches(content_matcher.parse(" |<em>Hello</em>, world!| "),
+        " <code><em>Hello</em>, world!</code> ");
   }
 
   testcase test_parse_errors() {

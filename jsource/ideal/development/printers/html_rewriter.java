@@ -29,8 +29,8 @@ public class html_rewriter extends text_rewriter {
 
     if (id == text_library.INDENT) {
       return styles.wrap(styles.indent_style, children);
-    } else if (id.get_namespace() == doc_elements.DOC_NS) {
-      if (id == doc_elements.CODE) {
+    } else if (id.get_namespace() == doc_elements0.DOC_NS) {
+      if (id == doc_elements0.CODE) {
         return styles.wrap(styles.code_style, children);
       } else {
         return styles.wrap(styles.documentation_note_style, children);

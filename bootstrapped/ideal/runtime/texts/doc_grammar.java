@@ -14,7 +14,21 @@ public class doc_grammar extends markup_grammar {
   public doc_grammar(final character_handler the_character_handler) {
     super(the_character_handler);
   }
-  public @Override void update_matchers() { }
+  public @Override boolean content_char(final char c) {
+    return c != '|' && super.content_char(c);
+  }
+  public text_element match_vbar_element(final readonly_list<any_value> the_list) {
+    final text_fragment text_content = (text_fragment) the_list.get(1);
+    return base_element.make(doc_elements.CODE, text_content);
+  }
+  public @Override void update_matchers() {
+    final pattern<Character> vbar = this.one_character('|');
+    this.element.add_option(new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ vbar, this.content, vbar })), new function1<text_element, readonly_list<any_value>>() {
+      @Override public text_element call(readonly_list<any_value> first) {
+        return doc_grammar.this.match_vbar_element(first);
+      }
+    }));
+  }
   public text_fragment parse_content(final string text, final doc_parser parser) {
     this.parser = parser;
     return this.content.parse(text);

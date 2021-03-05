@@ -13,6 +13,11 @@ import ideal.runtime.patterns.*;
 public class doc_grammar extends markup_grammar {
   public doc_grammar(final character_handler the_character_handler) {
     super(the_character_handler);
+    this.add_elements(text_library.HTML_ELEMENTS);
+    this.add_attributes(text_library.HTML_ATTRIBUTES);
+    this.add_entities(text_library.HTML_ENTITIES);
+    this.add_elements(doc_elements.HTML_ELEMENTS);
+    this.complete();
   }
   public @Override boolean content_char(final char c) {
     return c != '|' && super.content_char(c);

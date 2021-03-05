@@ -12,12 +12,7 @@ class test_doc_grammar {
   var string error_message;
 
   doc_grammar make_grammar() {
-    grammar : doc_grammar.new(normal_handler.instance);
-    grammar.add_elements(text_library.HTML_ELEMENTS);
-    grammar.add_attributes(text_library.HTML_ATTRIBUTES);
-    grammar.add_entities(text_library.HTML_ENTITIES);
-    grammar.complete();
-    return grammar;
+    return doc_grammar.new(normal_handler.instance);
   }
 
   testcase test_simple_parse() {
@@ -51,6 +46,7 @@ class test_doc_grammar {
     assert !content_matcher("<html><p class='klass'>foo</p class=\"foo\"></html>");
     assert !content_matcher("<html foo= ><p class='klass'>foo</p></html>");
     assert !content_matcher("<html foo=bar><p class='klass'>foo</p></html>");
+    assert !content_matcher("  foo| unmatched  ");
 
     -- TODO: this should fail.
     assert content_matcher("  <abc>foo</def>  ");
@@ -81,6 +77,13 @@ class test_doc_grammar {
 
     assert matches(content_matcher.parse(" |<em>Hello</em>, world!| "),
         " <code><em>Hello</em>, world!</code> ");
+    assert matches(content_matcher.parse("doc <p class='klass'>foo: |bar|</p>"),
+        "doc <p class='klass'>foo: <code>bar</code></p>");
+    assert matches(content_matcher.parse("<j class = 'klass' href = 'link'>bar |foo|</j>"),
+        "<j class='klass' href='link'>bar <code>foo</code></j>");
+    assert matches(content_matcher.parse(
+        "<c><p class = 'value\">==' id=\"foo'\">foo</p></c> |bar| "),
+        "<c><p class='value&quot;&gt;==' id='foo&apos;'>foo</p></c> <code>bar</code> ");
   }
 
   testcase test_parse_errors() {

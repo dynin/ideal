@@ -22,12 +22,7 @@ public class test_doc_grammar {
   }
   public string error_message;
   public doc_grammar make_grammar() {
-    final doc_grammar grammar = new doc_grammar(normal_handler.instance);
-    grammar.add_elements(text_library.HTML_ELEMENTS);
-    grammar.add_attributes(text_library.HTML_ATTRIBUTES);
-    grammar.add_entities(text_library.HTML_ENTITIES);
-    grammar.complete();
-    return grammar;
+    return new doc_grammar(normal_handler.instance);
   }
   public void test_simple_parse() {
     final doc_grammar grammar = this.make_grammar();
@@ -55,6 +50,7 @@ public class test_doc_grammar {
     assert !content_matcher.call(new base_string("<html><p class=\'klass\'>foo</p class=\"foo\"></html>"));
     assert !content_matcher.call(new base_string("<html foo= ><p class=\'klass\'>foo</p></html>"));
     assert !content_matcher.call(new base_string("<html foo=bar><p class=\'klass\'>foo</p></html>"));
+    assert !content_matcher.call(new base_string("  foo| unmatched  "));
     assert content_matcher.call(new base_string("  <abc>foo</def>  "));
     assert this.matches(content_matcher.parse(new base_string("  <html>foo</html>  ")), new base_string("  <html>foo</html>  "));
     assert this.matches(content_matcher.parse(new base_string("  <html  >Hello &amp; goodbye!</html  >  ")), new base_string("  <html>Hello &amp; goodbye!</html>  "));
@@ -67,6 +63,9 @@ public class test_doc_grammar {
     assert this.matches(content_matcher.parse(new base_string("<html><p class = \'value\">==\' id=\"foo\'\">foo</p></html>")), new base_string("<html><p class=\'value&quot;&gt;==\' id=\'foo&apos;\'>foo</p></html>"));
     assert this.matches(content_matcher.parse(new base_string("<html><p class = \'***\' id=\"baz\">foo</p></html>")), new base_string("<html><p class=\'***\' id=\'baz\'>foo</p></html>"));
     assert this.matches(content_matcher.parse(new base_string(" |<em>Hello</em>, world!| ")), new base_string(" <code><em>Hello</em>, world!</code> "));
+    assert this.matches(content_matcher.parse(new base_string("doc <p class=\'klass\'>foo: |bar|</p>")), new base_string("doc <p class=\'klass\'>foo: <code>bar</code></p>"));
+    assert this.matches(content_matcher.parse(new base_string("<j class = \'klass\' href = \'link\'>bar |foo|</j>")), new base_string("<j class=\'klass\' href=\'link\'>bar <code>foo</code></j>"));
+    assert this.matches(content_matcher.parse(new base_string("<c><p class = \'value\">==\' id=\"foo\'\">foo</p></c> |bar| ")), new base_string("<c><p class=\'value&quot;&gt;==\' id=\'foo&apos;\'>foo</p></c> <code>bar</code> "));
   }
   public void test_parse_errors() {
     final doc_grammar grammar = this.make_grammar();

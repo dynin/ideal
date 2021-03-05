@@ -18,7 +18,7 @@ abstract class text_rewriter {
 
   -- TODO: inherit protected access modifier from supertype.
   protected override text_fragment process_string(string s) {
-    return s as base_string;
+    return s !> base_string;
   }
 
   protected override text_fragment process_element(text_element element) {
@@ -48,7 +48,7 @@ abstract class text_rewriter {
 
     for (source : fragments.fragments) {
       -- TODO: fail in a better way?
-      result.append(process(source) as attribute_fragment);
+      result.append(process(source) !> attribute_fragment);
     }
 
     return base_list_attribute_fragment.new(result);

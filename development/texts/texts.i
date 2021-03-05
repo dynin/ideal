@@ -17,5 +17,4 @@ package texts {
   class string_event;
   class start_element;
   class end_element;
-  class text_rewriter;
 }

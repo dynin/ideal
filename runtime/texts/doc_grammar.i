@@ -13,6 +13,13 @@ class doc_grammar {
 
   doc_grammar(character_handler the_character_handler) {
     super(the_character_handler);
+
+    add_elements(text_library.HTML_ELEMENTS);
+    add_attributes(text_library.HTML_ATTRIBUTES);
+    add_entities(text_library.HTML_ENTITIES);
+    add_elements(doc_elements.HTML_ELEMENTS);
+
+    complete();
   }
 
   override boolean content_char(character c) pure {

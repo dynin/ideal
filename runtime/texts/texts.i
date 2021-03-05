@@ -21,6 +21,7 @@ namespace texts {
   class base_list_attribute_fragment;
   class underline_style;
   class text_visitor;
+  class text_rewriter;
 
   class text_formatter;
   class plain_formatter;

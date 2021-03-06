@@ -34,13 +34,8 @@ namespace texts {
   namespace text_library;
   namespace text_util;
 
-  class doc_grammar;
-  class doc_parser;
-  namespace doc_elements;
-
   class test_elements;
   class test_plain_text;
   class test_markup_text;
   class test_markup_grammar;
-  class test_doc_grammar;
 }

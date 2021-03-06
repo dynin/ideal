@@ -19,6 +19,7 @@ import ideal.runtime.logs.test_display;
 import ideal.development.names.*;
 import ideal.development.futures.*;
 import ideal.development.origins.*;
+import ideal.development.documenters.*;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;

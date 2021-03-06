@@ -108,7 +108,8 @@ BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/modifiers/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/declarations/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/kinds/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/development/origins/*.java
+    $(BOOTSTRAPPED_DIR)/ideal/development/origins/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/development/documenters/*.java
 
 DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/constructs/*.java \
@@ -127,7 +128,6 @@ DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/extensions/*.java \
     $(JSOURCE_DIR)/ideal/development/targets/*.java \
     $(JSOURCE_DIR)/ideal/development/parsers/*.java \
-    $(JSOURCE_DIR)/ideal/development/documenters/*.java \
     $(JSOURCE_DIR)/ideal/development/tools/*.java \
     $(JSOURCE_DIR)/ideal/development/tests/*.java
 

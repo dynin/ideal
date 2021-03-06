@@ -17,4 +17,5 @@ namespace development {
   package declarations;
   package kinds;
   package origins;
+  package documenters;
 }

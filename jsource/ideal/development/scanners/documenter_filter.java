@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.documenters;
+package ideal.development.scanners;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
@@ -14,7 +14,6 @@ import ideal.machine.channels.string_writer;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
-import ideal.development.scanners.*;
 
 public class documenter_filter {
 

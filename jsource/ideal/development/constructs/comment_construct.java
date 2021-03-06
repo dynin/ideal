@@ -32,7 +32,7 @@ public class comment_construct extends base_construct
   @Override
   public @Nullable text_fragment section(documentation_section the_section) {
     if (the_text == null) {
-      the_text = doc_comment_parser.parse(the_comment.content);
+      the_text = doc_comment_processor.parse(the_comment.content);
     }
 
     switch (the_section) {

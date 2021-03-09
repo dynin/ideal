@@ -14,7 +14,6 @@ import ideal.machine.channels.string_writer;
 import javax.annotation.Nullable;
 
 public class doc_comment_processor {
-  public static @Nullable doc_grammar the_grammar;
   public static @Nullable string saved_error;
   public static text_fragment parse(final string source) {
     final doc_parser parser = new doc_parser(doc_comment_processor.get_grammar(), new procedure1<Void, string>() {
@@ -27,14 +26,17 @@ public class doc_comment_processor {
     assert doc_comment_processor.saved_error == null;
     return result;
   }
+  private static @Nullable doc_grammar generated_get_grammar_cache;
   private static doc_grammar get_grammar() {
-    if (doc_comment_processor.the_grammar == null) {
-      final doc_grammar result = new doc_grammar(normal_handler.instance);
-      doc_comment_processor.the_grammar = result;
-      return result;
-    } else {
-      return (doc_grammar) doc_comment_processor.the_grammar;
+    @Nullable doc_grammar result = doc_comment_processor.generated_get_grammar_cache;
+    if (result == null) {
+      result = doc_comment_processor.generated_get_grammar_compute();
+      doc_comment_processor.generated_get_grammar_cache = result;
     }
+    return result;
+  }
+  private static doc_grammar generated_get_grammar_compute() {
+    return new doc_grammar(normal_handler.instance);
   }
   private static void report_error(final string error_message) {
     doc_comment_processor.saved_error = error_message;

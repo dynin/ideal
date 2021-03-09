@@ -287,6 +287,10 @@ document_librun: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_librun \
             -output=$(PRETTY_DIR)
 
+document_development: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_development \
+            -output=$(PRETTY_DIR)
+
 document_all: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_all \
             -output=$(PRETTY_DIR)

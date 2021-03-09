@@ -96,11 +96,18 @@ public class cache_extension extends declaration_extension {
           the_origin);
     }
 
+    boolean is_static = the_procedure.annotations().has(general_modifier.static_modifier);
+
+    annotation_set variable_annotations = is_static ?
+        analyzer_utilities.PRIVATE_STATIC_VAR_MODIFIERS : analyzer_utilities.PRIVATE_VAR_MODIFIERS;
+    annotation_set procedure_annotations = is_static ?
+        analyzer_utilities.PRIVATE_STATIC_MODIFIERS : analyzer_utilities.PRIVATE_MODIFIERS;
+
     type variable_type = type_utilities.make_union(new base_list<abstract_value>(
         return_type, library().immutable_null_type()));
 
     // Generate the field that contains the cached value
-    variable_analyzer field = new variable_analyzer(analyzer_utilities.PRIVATE_VAR_MODIFIERS,
+    variable_analyzer field = new variable_analyzer(variable_annotations,
         to_analyzable(variable_type), generated_field_name, null, the_origin);
 
     // Generate the procedure that encapsulates caching logic
@@ -148,7 +155,7 @@ public class cache_extension extends declaration_extension {
 
     // The compute procedure is just renamed original procedure made private
     procedure_analyzer compute_procedure = new procedure_analyzer(
-        analyzer_utilities.PRIVATE_MODIFIERS, to_analyzable(return_type), generated_procedure_name,
+        procedure_annotations, to_analyzable(return_type), generated_procedure_name,
         new empty<variable_declaration>(), the_procedure.get_body(), the_origin);
 
     // We replace the original declaration with three: one field and two procedures

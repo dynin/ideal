@@ -34,6 +34,7 @@ public class analyzer_utilities {
   public static final origin UNINITIALIZED_POSITION =
       new special_origin(new base_string("[uninitialized]"));
 
+  // TODO: move to i.d.modifiers
   public static final annotation_set PUBLIC_MODIFIERS =
       new base_annotation_set(access_modifier.public_modifier,
           new hash_set<modifier_kind>(), null);
@@ -50,10 +51,26 @@ public class analyzer_utilities {
       new base_annotation_set(access_modifier.private_modifier,
           make_singleton(general_modifier.final_modifier), null);
 
+  public static final annotation_set PRIVATE_STATIC_MODIFIERS =
+      new base_annotation_set(access_modifier.private_modifier,
+          make_singleton(general_modifier.static_modifier), null);
+
+  public static final annotation_set PRIVATE_STATIC_VAR_MODIFIERS =
+    new base_annotation_set(access_modifier.private_modifier,
+          make_double(general_modifier.static_modifier, general_modifier.var_modifier), null);
+
   // TODO: implement singleton collection
   private static readonly_set<modifier_kind> make_singleton(modifier_kind the_modifier) {
     set<modifier_kind> result = new hash_set<modifier_kind>();
     result.add(the_modifier);
+    return result;
+  }
+
+  private static readonly_set<modifier_kind> make_double(modifier_kind the_modifier0,
+      modifier_kind the_modifier1) {
+    set<modifier_kind> result = new hash_set<modifier_kind>();
+    result.add(the_modifier0);
+    result.add(the_modifier1);
     return result;
   }
 

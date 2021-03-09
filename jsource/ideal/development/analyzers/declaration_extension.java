@@ -90,7 +90,8 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     is_expanded_set = true;
     this.expanded = expanded;
     if (expanded instanceof analyzable) {
-      analyze_and_ignore_errors((analyzable) expanded, last_pass);
+      analysis_pass current_pass = analysis_pass.values()[last_pass.ordinal() + 1];
+      analyze_and_ignore_errors((analyzable) expanded, current_pass);
     }
   }
 

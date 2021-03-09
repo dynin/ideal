@@ -8,7 +8,6 @@ class doc_comment_processor {
   import ideal.machine.characters.normal_handler;
   import ideal.machine.channels.string_writer;
 
-  static var doc_grammar or null the_grammar;
   static var string or null saved_error;
 
   public static text_fragment parse(string source) {
@@ -18,15 +17,8 @@ class doc_comment_processor {
     return result;
   }
 
-  -- Lazily initialize grammar
-  private static doc_grammar get_grammar() {
-    if (the_grammar is null) {
-      result : doc_grammar.new(normal_handler.instance);
-      the_grammar = result;
-      return result;
-    } else {
-      return the_grammar !> doc_grammar;
-    }
+  private static cache doc_grammar get_grammar() {
+    return doc_grammar.new(normal_handler.instance);
   }
 
   private static void report_error(string error_message) {

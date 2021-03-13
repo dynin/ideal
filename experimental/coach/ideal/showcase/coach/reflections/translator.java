@@ -42,9 +42,8 @@ public class translator {
     principal_type parent = creator.new_block(name, context);
     list<notification> notifications = new base_list<notification>();
     creator.set_notification_handler(new appender<notification>(notifications));
-    list<construct> declarations = creator.process_source(source, parent, context);
     type_declaration_analyzer world_declaration =
-        create_manager.get_declaration(declarations, context);
+        reflect_util.get_world(creator, source, parent, context);
 
     boolean compile_ok = notifications.is_empty() && world_declaration != null;
 

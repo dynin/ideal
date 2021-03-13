@@ -143,8 +143,10 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
       if (before == null) {
         context.put_analyzable(source, the_analyzable);
       } else if (before != the_analyzable) {
-        // TODO: eliminate this workaround.
-        if (false && ! (source instanceof extension_construct)) {
+        if (the_analyzable instanceof declaration_extension) {
+          //log.debug("Override for " + source + ": " + before + " & " + the_analyzable);
+          //context.put_analyzable(source, the_analyzable);
+        } else {
           utilities.panic("Dup for " + source + ": " + before + " & " + the_analyzable);
         }
       }
@@ -165,9 +167,8 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     @Nullable analyzable before = context.get_analyzable(source);
     if (before == null) {
       context.put_analyzable(source, this);
-      // TODO: handle extensions in a cleaner way
     } else if (before != this && !(before instanceof declaration_extension)) {
-      utilities.panic("Dup for " + source + ": " + before + " & " + this);
+      utilities.panic("Dup in associate_with_this: for " + source + ": " + before + " & " + this);
     }
   }
 

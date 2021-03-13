@@ -113,7 +113,7 @@ class create {
     }
 
     analysis_context the_context = cm.get_analysis_context();
-    multi_pass_analyzer body =
+    declaration_list body =
         new declaration_list(constructs, cm.root, the_context, input);
 
     immutable_list<analysis_pass> passes = analysis_pass.all();
@@ -174,7 +174,7 @@ class create {
 
     if (options.target != null) {
       create_util.progress("TARGETS");
-      readonly_list<target_declaration> targets = find_targets(constructs, the_context);
+      readonly_list<target_declaration> targets = find_targets(body);
 
       for (int i = 0; i < targets.size(); ++i) {
         if (utilities.eq(targets.get(i).short_name().to_string(), options.target)) {
@@ -204,16 +204,13 @@ class create {
     return extensions;
   }
 
-  private readonly_list<target_declaration> find_targets(readonly_list<construct> constructs,
-      analysis_context context) {
+  private readonly_list<target_declaration> find_targets(declaration_list body) {
     list<target_declaration> results = new base_list<target_declaration>();
     // TODO: replace with list.filter() and list.map();
-    for (int i = 0; i < constructs.size(); ++i) {
-      construct c = constructs.get(i);
-      if (c instanceof target_construct) {
-        target_construct tc = (target_construct) c;
-        analyzable a = context.get_analyzable(tc);
-        assert (a instanceof target_declaration);
+    readonly_list<analyzable> elements = body.elements();
+    for (int i = 0; i < elements.size(); ++i) {
+      analyzable a = elements.get(i);
+      if (a instanceof target_declaration) {
         results.append((target_declaration) a);
       }
     }

@@ -46,7 +46,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   public final principal_type root;
   private final resource_catalog top_catalog;
   public final analysis_context bootstrap_context;
-  private final origin root_origin;
+  public final origin root_origin;
   private final scanner_config scanner;
   private output_counter<notification> notifications;
   private @Nullable resource_catalog output_catalog;
@@ -120,15 +120,6 @@ public class create_manager implements target_manager, type_bootstrapper {
     return loader.parse(tokens);
   }
 
-  public list<construct> process_source(source_content source, principal_type parent,
-      analysis_context context) {
-    list<construct> constructs = parse(source);
-    if (constructs != null) {
-      check(new declaration_list(constructs, parent, context, root_origin));
-    }
-    return constructs;
-  }
-
   public void process_bootstrap(boolean load_library) {
     // TODO: resolve interdependency.
     process_type_operators();
@@ -187,7 +178,6 @@ public class create_manager implements target_manager, type_bootstrapper {
     the_analyzer.multi_pass_analysis(pass);
 
     assert the_type.get_declaration() != null;
-    assert bootstrap_context.get_analyzable(the_declaration) != null;
 
     if (has_errors()) {
       utilities.panic("Errors bootstrapping " + the_type.short_name());
@@ -290,7 +280,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     readonly_list<construct> flattened = ...flatten(constructs);
     for (int i = 0; i < flattened.size(); ++i) {
       construct the_construct = flattened.get(i);
-      @Nullable analyzable the_analyzable = context.get_analyzable(the_construct);
+      @Nullable analyzable the_analyzable = context.get__analyzable(the_construct);
       if (the_analyzable == null) {
         new base_notification(
             new base_string("Not analyzed " + the_construct), the_construct).report();
@@ -368,26 +358,5 @@ public class create_manager implements target_manager, type_bootstrapper {
     }
 
     bootstrap_context.add(parent, the_operator, operator_procedure.to_action(the_action));
-  }
-
-  public static @Nullable type_declaration_analyzer get_declaration(list<construct> constructs,
-      analysis_context context) {
-
-    if (constructs == null) {
-      return null;
-    }
-
-    if (constructs.size() != 1) {
-      log.error("Exactly one declaration expected.");
-      return null;
-    }
-
-    analyzable a = context.get_analyzable(constructs.first());
-    if (! (a instanceof type_declaration_analyzer)) {
-      log.error("Type declaration expected.");
-      return null;
-    }
-
-    return (type_declaration_analyzer) a;
   }
 }

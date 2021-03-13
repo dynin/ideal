@@ -176,6 +176,9 @@ generate_cache: $(IDEAL_TARGET)
 12: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -debug-constructs -input=$(ONETWO)
 
+reflect: $(IDEAL_TARGET)
+	$(CREATE) $(FLAGS_RUN) -debug-progress -debug-reflect -input=showcase/reflect.i
+
 s: $(IDEAL_TARGET) $(TEST_STRING)
 	$(CREATE) -debug-progress -input=$(TEST_STRING)
 

@@ -57,9 +57,7 @@ public class reflect_util {
     analysis_context context = manager.get_analysis_context();
     principal_type parent = manager.new_block(new base_string("reflect"), context);
 
-    list<construct> decl = manager.process_source(input, parent, context);
-    type_declaration world_decl = create_manager.get_declaration(decl, context);
-    assert world_decl != null;
+    type_declaration world_decl = get_world(manager, input, parent, context);
 
     output<text_fragment> out = new plain_formatter(standard_channels.stdout);
     reflect_util reflect = new reflect_util();
@@ -68,6 +66,28 @@ public class reflect_util {
       out.write(reflect.render_world(world_decl));
     }
     out.sync();
+  }
+
+  public static type_declaration_analyzer get_world(create_manager manager, source_content input,
+      principal_type parent, analysis_context context) {
+    list<construct> constructs = manager.parse(input);
+    assert constructs != null;
+    declaration_list decls = new declaration_list(constructs, parent, context, manager.root_origin);
+    manager.check(decls);
+
+    readonly_list<analyzable> elements = decls.elements();
+    if (elements.size() != 1) {
+      log.error("Exactly one declaration expected.");
+      return null;
+    }
+
+    analyzable a = elements.first();
+    if (! (a instanceof type_declaration_analyzer)) {
+      log.error("Type declaration expected.");
+      return null;
+    }
+
+    return (type_declaration_analyzer) a;
   }
 
   private text_fragment print_world(type_declaration world_declaration) {

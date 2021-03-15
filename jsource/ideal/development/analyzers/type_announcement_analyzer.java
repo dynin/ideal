@@ -30,7 +30,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   private @Nullable type_declaration the_type_declaration;
   private @Nullable analyzable external_declaration;
   private @Nullable principal_type inside_type;
-  private @Nullable readonly_list<construct> external_body;
+  private @Nullable readonly_list<declaration> declarations;
   private boolean announcement_analysis_in_progress;
 
   public type_announcement_analyzer(type_announcement_construct source) {
@@ -84,9 +84,10 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     if (pass == analysis_pass.TYPE_DECL) {
       if (the_type_declaration != null) {
         inside_type = make_inside_type(parent(), this);
-        external_declaration = (type_declaration_analyzer) the_type_declaration;
+        external_declaration = the_type_declaration;
+        declarations = new base_list<declaration>(the_type_declaration);
       } else {
-        external_body = get_context().load_type_body(source);
+        readonly_list<construct> external_body = get_context().load_type_body(source);
 
         if (external_body == null) {
           // Assume the error has been reported.
@@ -98,7 +99,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
           return new error_signal(new base_string("External declaration expected"), this);
         }
 
-        list<analyzable> subdeclarations = new base_list<analyzable>();
+        list<declaration> subdeclarations = new base_list<declaration>();
 
         for (int i = 0; i < external_body.size(); ++i) {
           construct the_construct = external_body.get(i);
@@ -132,7 +133,8 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         }
 
         inside_type = make_inside_type(parent(), this);
-        external_declaration = new declaration_list(subdeclarations, this);
+        declarations = subdeclarations;
+        external_declaration = new declaration_list((list<analyzable>)(list)subdeclarations, this);
         init_context(external_declaration);
       }
     }
@@ -157,15 +159,6 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     return external_declaration.analyze();
   }
 
-  public readonly_list<construct> get_external_body() {
-    if (external_body != null) {
-      return external_body;
-    } else {
-      return new base_list<construct>(
-          (type_declaration_construct) the_type_declaration.deeper_origin());
-    }
-  }
-
   @Override
   public type_declaration get_type_declaration() {
     assert the_type_declaration != null;
@@ -180,6 +173,12 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   @Override
   public principal_type get_declared_type() {
     return the_type_declaration.get_declared_type();
+  }
+
+  @Override
+  public readonly_list<declaration> external_declarations() {
+    assert declarations != null;
+    return declarations;
   }
 
   @Override

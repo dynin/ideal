@@ -82,7 +82,7 @@ public class java_generator {
         } else if (the_declaration instanceof type_announcement) {
           type_announcement the_type_announcement = (type_announcement) the_declaration;
           generate_top_level(the_type_announcement.get_declared_type(),
-              the_type_announcement.get_type_declaration().get_signature(), all_imports);
+              the_type_announcement.external_declarations(), all_imports);
         }
       }
     } else {

@@ -18,4 +18,5 @@ public interface readonly_type_announcement extends readonly_declaration, any_ty
   annotation_set annotations();
   principal_type get_declared_type();
   type_declaration get_type_declaration();
+  readonly_list<declaration> external_declarations();
 }

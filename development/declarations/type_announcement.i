@@ -14,5 +14,6 @@ interface type_announcement {
   principal_type get_declared_type;
 
   type_declaration get_type_declaration;
+  readonly list[declaration] external_declarations;
   void load_type();
 }

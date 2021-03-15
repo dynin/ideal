@@ -77,6 +77,11 @@ public class simple_type_announcement extends debuggable implements type_announc
   }
 
   @Override
+  public readonly_list<declaration> external_declarations() {
+    return new base_list<declaration>(the_type_declaration);
+  }
+
+  @Override
   public analysis_result analyze() {
     return ok_signal.instance;
   }

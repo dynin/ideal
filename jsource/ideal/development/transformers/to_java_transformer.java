@@ -45,7 +45,6 @@ public class to_java_transformer extends base_transformer {
   }
 
   private final java_library java_library;
-  private final analysis_context context;
   private list<construct> common_headers;
   private set<principal_type> implicit_names;
   private set<principal_type> imported_names;
@@ -64,9 +63,8 @@ public class to_java_transformer extends base_transformer {
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
   private static simple_name LIST_NAME = simple_name.make("list");
 
-  public to_java_transformer(java_library java_library, analysis_context context) {
+  public to_java_transformer(java_library java_library) {
     this.java_library = java_library;
-    this.context = context;
     this.mapping_strategy = mapping.MAP_TO_PRIMITIVE_TYPE;
 
     common_headers = new base_list<construct>();
@@ -79,7 +77,7 @@ public class to_java_transformer extends base_transformer {
     imported_names = new hash_set<principal_type>();
   }
 
-  public void set_type_context(principal_type main_type, readonly_list<import_construct> imports,
+  public void set_type_context(principal_type main_type, readonly_list<import_declaration> imports,
       origin the_origin) {
     package_type = main_type.get_parent();
 
@@ -99,8 +97,7 @@ public class to_java_transformer extends base_transformer {
 
       // TODO: refactor as a filter
       for (int i = 0; i < imports.size(); ++i) {
-        import_declaration the_import_declaration =
-            (import_declaration) context.get_analyzable(imports.get(i));
+        import_declaration the_import_declaration = imports.get(i);
         import_construct the_import = process_import(the_import_declaration);
         principal_type imported_type = (principal_type) the_import_declaration.get_type();
         if (imported_type == java_library.builtins_package() ||
@@ -123,7 +120,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   protected common_library library() {
-    return context.language().library();
+    return common_library.get_instance();
   }
 
   @Override

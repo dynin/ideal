@@ -35,25 +35,19 @@ import ideal.development.declarations.*;
 public class java_generator {
 
   private final java_library java_adapter;
-  private final analysis_context context;
   private final content_writer processor;
   private final java_printer printer;
 
-  public java_generator(java_library java_adapter, analysis_context context,
-      content_writer processor) {
+  public java_generator(java_library java_adapter, content_writer processor) {
     this.java_adapter = java_adapter;
-    this.context = context;
     this.processor = processor;
     this.printer = new java_printer(printer_mode.CURLY);
   }
 
   public void generate_for_type(principal_type the_type) {
     type_declaration the_type_declaration = get_type_declaration(the_type.get_declaration());
-    type_declaration_construct the_construct =
-        (type_declaration_construct) the_type_declaration.deeper_origin();
-
-    generate_top_level(the_type, new base_list<construct>(the_construct),
-        new empty<import_construct>());
+    generate_top_level(the_type, new base_list<declaration>(the_type_declaration),
+        new empty<import_declaration>());
   }
 
   private type_declaration get_type_declaration(declaration the_declaration) {
@@ -67,37 +61,32 @@ public class java_generator {
     }
   }
 
-  public void generate_top_level(principal_type the_type, readonly_list<construct> constructs,
-      readonly_list<import_construct> imports) {
+  public void generate_top_level(principal_type the_type, readonly_list<declaration> declarations,
+      readonly_list<import_declaration> imports) {
 
     if (skip_type(the_type)) {
       return;
     }
 
-    list<import_construct> all_imports = new base_list<import_construct>();
+    list<import_declaration> all_imports = new base_list<import_declaration>();
     all_imports.append_all(imports);
 
-    if (the_type.get_kind().is_namespace() && has_subtypes(constructs)) {
-      filter_imports(constructs, all_imports, false);
-      for (int i = 0; i < constructs.size(); ++i) {
-        construct the_construct = constructs.get(i);
-        if (the_construct instanceof type_declaration_construct) {
-          type_declaration_construct the_declaration = (type_declaration_construct) the_construct;
-          type_declaration_analyzer declaration_analyzer =
-              (type_declaration_analyzer) context.get_analyzable(the_declaration);
-          principal_type declared_type = declaration_analyzer.get_declared_type();
-          generate_top_level(declared_type, the_declaration.body, all_imports);
-        } else if (the_construct instanceof type_announcement_construct) {
-          type_announcement_construct the_declaration =
-              (type_announcement_construct) the_construct;
-          type_announcement_analyzer announced_analyzer =
-              (type_announcement_analyzer) context.get_analyzable(the_declaration);
-          generate_top_level(announced_analyzer.get_declared_type(),
-              announced_analyzer.get_external_body(), all_imports);
+    if (the_type.get_kind().is_namespace() && has_subtypes(declarations)) {
+      filter_imports(declarations, all_imports, false);
+      for (int i = 0; i < declarations.size(); ++i) {
+        declaration the_declaration = declarations.get(i);
+        if (the_declaration instanceof type_declaration) {
+          type_declaration the_type_declaration = (type_declaration) the_declaration;
+          principal_type declared_type = the_type_declaration.get_declared_type();
+          generate_top_level(declared_type, the_type_declaration.get_signature(), all_imports);
+        } else if (the_declaration instanceof type_announcement) {
+          type_announcement the_type_announcement = (type_announcement) the_declaration;
+          generate_top_level(the_type_announcement.get_declared_type(),
+              the_type_announcement.get_type_declaration().get_signature(), all_imports);
         }
       }
     } else {
-      filter_imports(constructs, all_imports, true);
+      filter_imports(declarations, all_imports, true);
       type_declaration the_declaration = get_type_declaration(the_type.get_declaration());
       assert the_declaration != null;
       generate_sources(the_type, the_declaration, all_imports);
@@ -108,26 +97,25 @@ public class java_generator {
     return the_type == common_library.get_instance().operators_package();
   }
 
-  // TODO: this should use declarations and not constructs...
-  private void filter_imports(readonly_list<construct> declarations, list<import_construct> imports,
-      boolean recursive) {
+  private void filter_imports(readonly_list<declaration> declarations,
+      list<import_declaration> imports, boolean recursive) {
     // TODO: reimplement using list.filter()
     for (int i = 0; i < declarations.size(); ++i) {
-      construct the_declaration = declarations.get(i);
-      if (the_declaration instanceof import_construct) {
-        imports.append((import_construct) the_declaration);
-      } else if (recursive && the_declaration instanceof type_declaration_construct) {
-        filter_imports(((type_declaration_construct) the_declaration).body, imports, recursive);
+      declaration the_declaration = declarations.get(i);
+      if (the_declaration instanceof import_declaration) {
+        imports.append((import_declaration) the_declaration);
+      } else if (recursive && the_declaration instanceof type_declaration) {
+        filter_imports(((type_declaration) the_declaration).get_signature(), imports, recursive);
       }
     }
   }
 
-  private boolean has_subtypes(readonly_list<construct> declarations) {
+  private boolean has_subtypes(readonly_list<declaration> declarations) {
     // TODO: reimplement using list.has()
     for (int i = 0; i < declarations.size(); ++i) {
-      construct the_declaration = declarations.get(i);
-      if (the_declaration instanceof type_declaration_construct ||
-          the_declaration instanceof type_announcement_construct) {
+      declaration the_declaration = declarations.get(i);
+      if (the_declaration instanceof type_declaration ||
+          the_declaration instanceof type_announcement) {
         return true;
       }
     }
@@ -135,9 +123,9 @@ public class java_generator {
   }
 
   private void generate_sources(principal_type main_type, type_declaration main_decl,
-      readonly_list<import_construct> all_imports) {
+      readonly_list<import_declaration> all_imports) {
     origin the_origin = main_decl;
-    to_java_transformer to_java = new to_java_transformer(java_adapter, context);
+    to_java_transformer to_java = new to_java_transformer(java_adapter);
     to_java.set_type_context(main_type, all_imports, the_origin);
     readonly_list<construct> generated = to_java.transform1(main_decl);
 

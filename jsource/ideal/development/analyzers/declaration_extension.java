@@ -162,8 +162,8 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   }
 
   protected void display_code(declaration code) {
-    readonly_list<construct> constructs = new to_java_transformer(java_library.get_instance(),
-        get_context()).transform1(code);
+    readonly_list<construct> constructs = new to_java_transformer(java_library.get_instance()).
+        transform1(code);
     output<text_fragment> out = new plain_formatter(standard_channels.stdout);
     if (false) {
       out.write(runtime_util.display(constructs));

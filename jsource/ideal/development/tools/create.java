@@ -167,9 +167,8 @@ class create {
     if (options.GENERATE) {
       content_writer the_writer = new content_writer(cm.output_catalog(),
           naming_strategy.dash_renderer);
-      java_generator generator = new java_generator(java_library.get_instance(), the_context,
-         the_writer);
-      generator.generate_top_level(cm.root, constructs, new empty<import_construct>());
+      java_generator generator = new java_generator(java_library.get_instance(), the_writer);
+      generator.generate_top_level(cm.root, body.declarations(), new empty<import_declaration>());
     }
 
     if (options.target != null) {

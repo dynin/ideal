@@ -24,15 +24,18 @@ public class base_annotation_set extends debuggable implements annotation_set {
   private final access_modifier access_level;
   private final immutable_set<modifier_kind> the_modifiers;
   private final @Nullable documentation the_documentation;
+  private final immutable_list<origin> origins;
 
   public base_annotation_set(access_modifier access_level,
       readonly_set<modifier_kind> the_modifiers,
-      @Nullable documentation the_documentation) {
+      @Nullable documentation the_documentation,
+      immutable_list<origin> origins) {
     assert access_level != null;
 
     this.access_level = access_level;
     this.the_modifiers = the_modifiers.frozen_copy();
     this.the_documentation = the_documentation;
+    this.origins = origins;
   }
 
   @Override
@@ -51,11 +54,16 @@ public class base_annotation_set extends debuggable implements annotation_set {
     return the_documentation;
   }
 
+  @Override
+  public immutable_list<origin> origins() {
+    return origins;
+  }
+
   public readonly_list<modifier_kind> modifiers() {
     return the_modifiers.elements();
   }
 
   public base_annotation_set update_documentation(@Nullable documentation new_documentation) {
-    return new base_annotation_set(access_level, the_modifiers, new_documentation);
+    return new base_annotation_set(access_level, the_modifiers, new_documentation, origins);
   }
 }

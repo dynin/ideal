@@ -49,6 +49,12 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(external_declaration);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
     assert !announcement_analysis_in_progress;
     announcement_analysis_in_progress = true;

@@ -42,6 +42,13 @@ public class conditional_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit(condition);
+    the_visitor.visit(then_branch);
+    the_visitor.visit(else_branch);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     origin the_origin = this;
     if (has_analysis_errors(condition)) {

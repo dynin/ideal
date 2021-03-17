@@ -31,6 +31,9 @@ public class literal_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) { }
+
+  @Override
   protected action do_single_pass_analysis() {
     if (the_literal instanceof integer_literal) {
       int the_value = ((integer_literal) the_literal).the_value();

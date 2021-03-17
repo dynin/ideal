@@ -18,4 +18,5 @@ public interface annotation_set extends immutable_data {
   access_modifier access_level();
   boolean has(modifier_kind the_kind);
   @Nullable documentation the_documentation();
+  immutable_list<origin> origins();
 }

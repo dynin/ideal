@@ -126,7 +126,8 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
       access_level = default_access;
     }
 
-    the_annotation_set = new base_annotation_set(access_level, modifiers, the_documentation);
+    the_annotation_set = new base_annotation_set(access_level, modifiers, the_documentation,
+        (immutable_list<origin>) (immutable_list) annotations.frozen_copy());
   }
 
   protected @Nullable type_flavor process_flavor(

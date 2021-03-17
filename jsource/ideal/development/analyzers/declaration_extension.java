@@ -105,6 +105,15 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     }
   }
 
+  @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    if (is_expanded_set) {
+      the_visitor.visit(expanded);
+    } else {
+      the_visitor.visit(the_declaration);
+    }
+  }
+
   protected signal do_multi_pass_analysis(analysis_pass pass) {
     if (has_errors()) {
       return ok_signal.instance;

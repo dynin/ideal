@@ -67,6 +67,12 @@ public class local_variable_declaration extends single_pass_analyzer
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations);
+    the_visitor.visit(init_analyzable);
+  }
+
+  @Override
   public local_variable_declaration specialize(specialization_context context,
       principal_type new_parent) {
     @Nullable principal_type parent_type = (principal_type) context.lookup(this.declared_in_type());

@@ -60,6 +60,11 @@ public class declaration_list extends multi_pass_analyzer implements declaration
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_all(the_elements);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
     error_signal error = null;
 

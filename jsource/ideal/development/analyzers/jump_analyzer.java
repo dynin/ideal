@@ -35,6 +35,9 @@ public class jump_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) { }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
 
     @Nullable loop_action the_loop = analyzer_utilities.get_enclosing_loop(this);

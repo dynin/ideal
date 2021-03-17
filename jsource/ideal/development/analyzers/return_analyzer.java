@@ -38,6 +38,11 @@ public class return_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit(the_expression);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     // TODO: handle null return, check return type.
     assert the_expression != null;

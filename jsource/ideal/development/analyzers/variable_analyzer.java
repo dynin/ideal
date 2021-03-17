@@ -113,6 +113,13 @@ public class variable_analyzer extends declaration_analyzer
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(variable_type);
+    the_visitor.visit(init);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {

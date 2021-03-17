@@ -11,4 +11,5 @@ interface annotation_set {
   access_modifier access_level;
   boolean has(modifier_kind the_kind);
   documentation or null the_documentation;
+  immutable list[origin] origins;
 }

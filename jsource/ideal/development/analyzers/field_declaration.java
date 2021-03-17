@@ -121,6 +121,12 @@ public class field_declaration extends single_pass_analyzer
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations);
+    // TODO: traverse init?
+  }
+
+  @Override
   public analysis_result do_single_pass_analysis() {
     origin the_origin = this;
 

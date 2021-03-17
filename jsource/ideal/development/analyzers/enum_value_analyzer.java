@@ -30,6 +30,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   private final name_construct the_name_construct;
   private final @Nullable list_construct parameters;
   private final int ordinal;
+  private @Nullable parameter_analyzer constructor_call;
   private @Nullable action_parameters the_action_parameters;
 
   public enum_value_analyzer(construct the_construct, int ordinal) {
@@ -87,11 +88,18 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(constructor_call);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       set_annotations(new base_annotation_set(access_modifier.public_modifier,
-          new hash_set<modifier_kind>(), null));
+          new hash_set<modifier_kind>(), null, new empty<origin>()));
+      // TODO: make thsi work with analyzer_visitor.
       if (the_name_construct != deeper_origin()) {
         associate_with_this(the_name_construct);
       }
@@ -108,10 +116,9 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
           new allocate_action(declared_in_type(), pos));
       analyzable ctor_expression = new resolve_analyzer(allocate, special_name.IMPLICIT_CALL, pos);
       readonly_list<analyzable> the_constructor_parameters = make_list(parameters.elements);
-      parameter_analyzer ctor_call = new parameter_analyzer(ctor_expression,
-          the_constructor_parameters, pos);
-      if (!has_analysis_errors(ctor_call, pass)) {
-        the_action_parameters = ctor_call.get_parameters();
+      constructor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters, pos);
+      if (!has_analysis_errors(constructor_call, pass)) {
+        the_action_parameters = constructor_call.get_parameters();
       }
     }
 

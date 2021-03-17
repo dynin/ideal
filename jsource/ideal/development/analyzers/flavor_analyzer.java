@@ -42,6 +42,11 @@ public class flavor_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit(expression);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     @Nullable error_signal expr_error = find_error(expression);
 

@@ -155,6 +155,14 @@ public class procedure_analyzer extends declaration_analyzer
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(return_analyzable);
+    the_visitor.visit_all((readonly_list<analyzable>) (readonly_list) parameter_variables);
+    the_visitor.visit(body);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
@@ -662,7 +670,7 @@ public class procedure_analyzer extends declaration_analyzer
 
   @Override
   public string to_string() {
-    return utilities.describe(this, new base_string(declared_in_type().short_name().to_string(),
-        ".", original_name().to_string()));
+    return utilities.describe(this, new base_string(parent_name(), ".",
+        original_name().to_string()));
   }
 }

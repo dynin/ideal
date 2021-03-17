@@ -53,6 +53,11 @@ public class statement_list_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_all(the_elements);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     list<action> actions = new base_list<action>();
     analysis_context current_context = get_context();

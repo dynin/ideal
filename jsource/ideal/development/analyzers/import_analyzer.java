@@ -32,6 +32,12 @@ public class import_analyzer extends declaration_analyzer<import_construct>
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(type_analyzable);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.TYPE_DECL) {

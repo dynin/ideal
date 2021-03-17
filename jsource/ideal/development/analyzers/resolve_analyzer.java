@@ -86,6 +86,11 @@ public class resolve_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit(from);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     origin the_origin = this;
     type from_type;

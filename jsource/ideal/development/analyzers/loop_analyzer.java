@@ -51,6 +51,11 @@ public class loop_analyzer extends single_pass_analyzer implements declaration {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit(body);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     if (inside == null) {
       inside = make_block(LOOP_NAME, this);

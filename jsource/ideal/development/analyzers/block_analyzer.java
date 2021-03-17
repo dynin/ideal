@@ -89,6 +89,12 @@ public class block_analyzer extends declaration_analyzer<origin>
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(body);
+  }
+
+  @Override
   protected analysis_result do_get_result() {
     analysis_result result = body.analyze();
     assert !(result instanceof error_signal);

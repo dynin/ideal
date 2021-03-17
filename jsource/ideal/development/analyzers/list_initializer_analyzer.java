@@ -39,6 +39,11 @@ public class list_initializer_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_all(analyzable_parameters);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     parameter_actions = new base_list<action>();
     error_signal error = null;

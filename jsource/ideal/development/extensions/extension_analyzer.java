@@ -39,6 +39,12 @@ public abstract class extension_analyzer extends single_pass_analyzer {
     return expanded;
   }
 
+  @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit(expand());
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     analyzable expanded = expand();
     @Nullable error_signal error = find_error(expanded);

@@ -54,6 +54,14 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     return source;
   }
 
+  public void traverse(analyzer_visitor the_visitor) {
+    the_visitor.pre_visit(this);
+    traverse_children(the_visitor);
+    the_visitor.post_visit(this);
+  }
+
+  protected abstract void traverse_children(analyzer_visitor the_visitor);
+
   public static analyzable make(construct new_construct) {
     return new dispatcher().process(new_construct);
   }
@@ -91,6 +99,18 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
       utilities.panic("Parent not set in " + this);
     }
     return parent;
+  }
+
+  public string parent_name() {
+    if (parent == null) {
+      return new base_string("<parent>");
+    }
+
+    if (parent.short_name() == INSIDE_NAME) {
+      return parent.get_parent().short_name().to_string();
+    } else {
+      return parent.short_name().to_string();
+    }
   }
 
   protected void do_add_dependence(@Nullable principal_type the_principal, declaration_pass pass) {

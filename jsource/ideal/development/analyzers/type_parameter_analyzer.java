@@ -74,6 +74,12 @@ public class type_parameter_analyzer extends declaration_analyzer
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(parameter_analyzable);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {

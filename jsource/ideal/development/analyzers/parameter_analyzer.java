@@ -63,6 +63,12 @@ public class parameter_analyzer extends single_pass_analyzer {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit(main_analyzable);
+    the_visitor.visit_all(analyzable_parameters);
+  }
+
+  @Override
   protected analysis_result do_single_pass_analysis() {
     if (is_logical_operator()) {
       // We handle logical and-or (&& - ||) here.

@@ -265,32 +265,6 @@ public class create_manager implements target_manager, type_bootstrapper {
     bootstrap_context.add(root, the_target.name(), the_target.to_action(root_origin));
   }
 
-  /*
-  public void process_project(list<construct> constructs, analysis_context context) {
-    declaration_list body =
-        new declaration_list(constructs, root, context, root_origin);
-    check(body);
-    if (!has_errors()) {
-      ensure_everything_is_analyzed(constructs, context);
-    }
-  }
-
-  protected void ensure_everything_is_analyzed(list<construct> constructs,
-      analysis_context context) {
-    readonly_list<construct> flattened = ...flatten(constructs);
-    for (int i = 0; i < flattened.size(); ++i) {
-      construct the_construct = flattened.get(i);
-      @Nullable analyzable the_analyzable = context.get__analyzable(the_construct);
-      if (the_analyzable == null) {
-        new base_notification(
-            new base_string("Not analyzed " + the_construct), the_construct).report();
-      } else if (the_analyzable.deeper_origin() != the_construct) {
-        // TODO: enforce 1:1 mapping...
-      }
-    }
-  }
-  */
-
   public @Nullable readonly_list<construct> load_type_body(
       type_announcement_construct the_declaration) {
 

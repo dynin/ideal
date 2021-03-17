@@ -46,6 +46,12 @@ public class target_declaration extends declaration_analyzer<target_construct> {
   }
 
   @Override
+  protected void traverse_children(analyzer_visitor the_visitor) {
+    the_visitor.visit_annotations(annotations());
+    the_visitor.visit(expression);
+  }
+
+  @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
     analyze_and_ignore_errors(expression, pass);
     

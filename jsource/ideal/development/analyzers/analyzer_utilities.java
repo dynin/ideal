@@ -37,27 +37,28 @@ public class analyzer_utilities {
   // TODO: move to i.d.modifiers
   public static final annotation_set PUBLIC_MODIFIERS =
       new base_annotation_set(access_modifier.public_modifier,
-          new hash_set<modifier_kind>(), null);
+          new hash_set<modifier_kind>(), null, new empty<origin>());
 
   public static final annotation_set PRIVATE_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
-          new hash_set<modifier_kind>(), null);
+          new hash_set<modifier_kind>(), null, new empty<origin>());
 
   public static final annotation_set PRIVATE_VAR_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
-          make_singleton(general_modifier.var_modifier), null);
+          make_singleton(general_modifier.var_modifier), null, new empty<origin>());
 
   public static final annotation_set PRIVATE_FINAL_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
-          make_singleton(general_modifier.final_modifier), null);
+          make_singleton(general_modifier.final_modifier), null, new empty<origin>());
 
   public static final annotation_set PRIVATE_STATIC_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
-          make_singleton(general_modifier.static_modifier), null);
+          make_singleton(general_modifier.static_modifier), null, new empty<origin>());
 
   public static final annotation_set PRIVATE_STATIC_VAR_MODIFIERS =
     new base_annotation_set(access_modifier.private_modifier,
-          make_double(general_modifier.static_modifier, general_modifier.var_modifier), null);
+          make_double(general_modifier.static_modifier, general_modifier.var_modifier), null,
+          new empty<origin>());
 
   // TODO: implement singleton collection
   private static readonly_set<modifier_kind> make_singleton(modifier_kind the_modifier) {

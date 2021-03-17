@@ -91,6 +91,7 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
       associate_with_this(annotations.get(i));
     }
 
+    list<origin> origins = new base_list<origin>();
     @Nullable access_modifier access_level = null;
     set<modifier_kind> modifiers = new hash_set<modifier_kind>();
     @Nullable documentation the_documentation = null;
@@ -99,20 +100,23 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
       annotation_construct the_annotation = annotations.get(i);
 
       if (the_annotation instanceof modifier_construct) {
-        modifier_kind the_modifier = ((modifier_construct) the_annotation).the_kind;
-        if (the_modifier instanceof access_modifier) {
+        modifier_kind the_modifier_kind = ((modifier_construct) the_annotation).the_kind;
+        if (the_modifier_kind instanceof access_modifier) {
           if (access_level == null) {
-            access_level = (access_modifier) the_modifier;
+            access_level = (access_modifier) the_modifier_kind;
           } else {
             // duplicate modifier
             new base_notification(messages.duplicate_access, the_annotation).report();
           }
+        } else if (the_modifier_kind instanceof extension_kind) {
+          // Skip extensions, and skip them in origins
+          continue;
         } else {
           // TODO: on duplicates, report an error instead...
           //new base_notification(error_message, annotations.get(i)).report();
-          assert !modifiers.contains(the_modifier);
+          assert !modifiers.contains(the_modifier_kind);
 
-          modifiers.add(the_modifier);
+          modifiers.add(the_modifier_kind);
         }
       } else {
         assert the_annotation instanceof comment_construct;
@@ -120,6 +124,8 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
         assert the_documentation == null;
         the_documentation = (comment_construct) the_annotation;
       }
+
+      origins.append(the_annotation);
     }
 
     if (access_level == null) {
@@ -127,7 +133,7 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
     }
 
     the_annotation_set = new base_annotation_set(access_level, modifiers, the_documentation,
-        (immutable_list<origin>) (immutable_list) annotations.frozen_copy());
+        origins.frozen_copy());
   }
 
   protected @Nullable type_flavor process_flavor(

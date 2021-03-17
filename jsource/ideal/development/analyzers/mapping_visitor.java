@@ -43,7 +43,14 @@ public class mapping_visitor extends analyzer_visitor {
   public void post_visit(base_analyzer the_analyzable) {
   }
 
-  public void visit_annotations(annotation_set the_annotation_set) {
+  public void visit_annotations(base_analyzer the_analyzable, annotation_set the_annotation_set) {
+    immutable_list<origin> origins =  the_annotation_set.origins();
+    for (int i = 0; i < origins.size(); ++i) {
+      origin the_origin = origins.get(i);
+      if (the_origin instanceof construct) {
+        put_analyzable((construct) the_origin, the_analyzable);
+      }
+    }
   }
 
   public @Nullable analyzable get_analyzable(construct c) {
@@ -51,7 +58,9 @@ public class mapping_visitor extends analyzer_visitor {
   }
 
   public void put_analyzable(construct c, analyzable a) {
-    assert mapping.get(c) == null;
+    if (mapping.get(c) != null) {
+      utilities.panic("C " + c + " OLD " + mapping.get(c) + " NEW " + a);
+    }
     mapping.put(c, a);
   }
 

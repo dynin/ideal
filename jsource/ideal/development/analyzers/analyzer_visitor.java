@@ -47,8 +47,8 @@ public abstract class analyzer_visitor extends debuggable {
     }
   }
 
-  public void visit_annotations(annotation_set the_annotation_set) {
-  }
+  public abstract void visit_annotations(base_analyzer the_analyzable,
+      annotation_set the_annotation_set);
 
   @Override
   public string to_string() {

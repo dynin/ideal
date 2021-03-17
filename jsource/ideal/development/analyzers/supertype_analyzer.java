@@ -60,7 +60,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
   @Override
   protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(annotations());
+    the_visitor.visit_annotations(this, annotations());
     the_visitor.visit(the_analyzable);
   }
 

@@ -89,7 +89,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
 
   @Override
   protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(annotations());
+    the_visitor.visit_annotations(this, annotations());
     the_visitor.visit(constructor_call);
   }
 

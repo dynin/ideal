@@ -70,7 +70,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     if (the_modifier != null) {
       return the_modifier;
     } else {
-      return this.deeper_origin();
+      return super.deeper_origin();
     }
   }
 
@@ -107,11 +107,8 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   @Override
   protected void traverse_children(analyzer_visitor the_visitor) {
-    if (is_expanded_set) {
-      the_visitor.visit(expanded);
-    } else {
-      the_visitor.visit(the_declaration);
-    }
+    assert is_expanded_set;
+    the_visitor.visit(expanded);
   }
 
   protected signal do_multi_pass_analysis(analysis_pass pass) {

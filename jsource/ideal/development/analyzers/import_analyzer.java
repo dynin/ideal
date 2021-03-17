@@ -33,7 +33,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
 
   @Override
   protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(annotations());
+    the_visitor.visit_annotations(this, annotations());
     the_visitor.visit(type_analyzable);
   }
 

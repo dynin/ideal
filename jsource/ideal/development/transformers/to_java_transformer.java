@@ -548,14 +548,14 @@ public class to_java_transformer extends base_transformer {
   }
 
   protected construct make_flavored_and_parametrized_type(principal_type principal,
-      type_flavor flavor, @Nullable list_construct type_parameters, origin the_origin) {
+      type_flavor flavor, @Nullable readonly_list<construct> type_parameters, origin the_origin) {
     construct name = new name_construct(make_name(get_simple_name(principal), principal,
         flavor), the_origin);
 
     if (type_parameters != null) {
       list<construct> parameters = new base_list<construct>();
-      for (int i = 0; i < type_parameters.elements.size(); ++i) {
-        construct parameter = type_parameters.elements.get(i);
+      for (int i = 0; i < type_parameters.size(); ++i) {
+        construct parameter = type_parameters.get(i);
         if (parameter instanceof variable_construct) {
           parameters.append(new name_construct(((variable_construct) parameter).name, the_origin));
         } else {
@@ -794,13 +794,11 @@ public class to_java_transformer extends base_transformer {
 
     simple_name type_name = (simple_name) the_type_declaration.short_name();
 
-    @Nullable list_construct type_parameters = null;
+    @Nullable readonly_list<construct> type_parameters = null;
 
     if (the_type_declaration.get_parameters() != null) {
-      type_parameters = new list_construct(
-          transform_parameters_with_mapping(the_type_declaration.get_parameters(),
-              mapping.MAP_TO_WRAPPER_TYPE),
-          grouping_type.ANGLE_BRACKETS, false, the_origin);
+      type_parameters = transform_parameters_with_mapping(the_type_declaration.get_parameters(),
+              mapping.MAP_TO_WRAPPER_TYPE);
     }
 
     dictionary<type_flavor, list<construct>> flavored_bodies =
@@ -1112,8 +1110,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     simple_name type_name = make_procedure_name(is_function, arity);
-    return new type_declaration_construct(annotations, interface_kind, type_name,
-        new list_construct(type_parameters, grouping_type.ANGLE_BRACKETS, false, the_origin),
+    return new type_declaration_construct(annotations, interface_kind, type_name, type_parameters,
         type_body, the_origin);
   }
 

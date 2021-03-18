@@ -17,12 +17,12 @@ public class type_declaration_construct extends base_construct {
   public final readonly_list<annotation_construct> annotations;
   public final kind kind;
   public final action_name name;
-  public final @Nullable list_construct parameters;
+  public final @Nullable readonly_list<construct> parameters;
   public final readonly_list<construct> body;
   public type_declaration_construct(readonly_list<annotation_construct> annotations,
                                     kind kind,
                                     action_name name,
-                                    @Nullable list_construct parameters,
+                                    @Nullable readonly_list<construct> parameters,
                                     readonly_list<construct> body,
                                     origin pos) {
     super(pos);
@@ -33,7 +33,7 @@ public class type_declaration_construct extends base_construct {
     this.body = body;
 
     // TODO: we should signal error instead.
-    assert parameters == null || parameters.elements.is_not_empty();
+    assert parameters == null || parameters.is_not_empty();
 
     assert body != null;
   }
@@ -47,7 +47,7 @@ public class type_declaration_construct extends base_construct {
 
     do_append_all(result, annotations);
     if (parameters != null) {
-      result.append(parameters);
+      result.append_all(parameters);
     }
     if (body != null) {
       result.append_all(body);

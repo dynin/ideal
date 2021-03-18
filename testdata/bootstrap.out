@@ -127,24 +127,20 @@
     ]
     kind: reference_kind
     name: reference
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: flavor_construct {
-            flavor: any
-            expr: name_construct {
-              the_name: value
-            }
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: flavor_construct {
+          flavor: any
+          expr: name_construct {
+            the_name: value
           }
-          name: value_type
-          post_annotations: [ ]
-          init: <null>
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: value_type
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -888,30 +884,26 @@
     ]
     kind: procedure_kind
     name: procedure
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: ret
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: arg1
-          post_annotations: [ ]
-          init: <null>
+        name: ret
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: arg1
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -929,39 +921,35 @@
     annotations: [ ]
     kind: procedure_kind
     name: procedure
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: ret
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: arg1
-          post_annotations: [ ]
-          init: <null>
+        name: ret
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: arg2
-          post_annotations: [ ]
-          init: <null>
+        name: arg1
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: arg2
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -994,30 +982,26 @@
     ]
     kind: procedure_kind
     name: function
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: ret
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: arg1
-          post_annotations: [ ]
-          init: <null>
+        name: ret
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: arg1
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1062,39 +1046,35 @@
     annotations: [ ]
     kind: procedure_kind
     name: function
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: ret
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: arg1
-          post_annotations: [ ]
-          init: <null>
+        name: ret
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: entity
-          }
-          name: arg2
-          post_annotations: [ ]
-          init: <null>
+        name: arg1
+        post_annotations: [ ]
+        init: <null>
+      }
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: entity
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: arg2
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1142,21 +1122,17 @@
     annotations: [ ]
     kind: concept
     name: predicate
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1188,21 +1164,17 @@
     annotations: [ ]
     kind: concept
     name: relation
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1252,21 +1224,17 @@
     ]
     kind: concept
     name: equivalence_relation
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1310,21 +1278,17 @@
     ]
     kind: interface
     name: collection
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1635,21 +1599,17 @@
     annotations: [ ]
     kind: interface
     name: collection_with_equivalence
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1859,21 +1819,17 @@
     annotations: [ ]
     kind: interface
     name: collection
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: data
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: data
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -1891,21 +1847,17 @@
     annotations: [ ]
     kind: interface
     name: list
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -2205,21 +2157,17 @@
     annotations: [ ]
     kind: interface
     name: list_with_equivalence
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -2448,21 +2396,17 @@
     annotations: [ ]
     kind: interface
     name: input
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]
@@ -2542,21 +2486,17 @@
     annotations: [ ]
     kind: concept
     name: output
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: value
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]

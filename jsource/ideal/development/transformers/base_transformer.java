@@ -264,13 +264,8 @@ public class base_transformer extends declaration_visitor<Object> {
 
   public Object process_type(type_declaration the_type) {
     origin the_origin = the_type;
-    @Nullable list_construct parameters = null;
-    if (the_type.get_parameters() != null)  {
-      parameters = new list_construct(transform_list(the_type.get_parameters()),
-          grouping_type.PARENS, false, the_origin);
-    }
     return new type_declaration_construct(to_annotations(the_type.annotations(), false, the_origin),
-        the_type.get_kind(), the_type.short_name(), parameters,
+        the_type.get_kind(), the_type.short_name(), transform_list(the_type.get_parameters()),
         transform_list(the_type.get_signature()), the_origin);
   }
 

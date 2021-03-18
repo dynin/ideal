@@ -264,7 +264,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       }
 
       if (has_parameters()) {
-        parameters = make_var_list(source.parameters.elements, pass);
+        parameters = make_var_list(source.parameters, pass);
       }
 
       if (body == null) {

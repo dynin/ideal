@@ -87,9 +87,8 @@ public class java_printer extends base_printer {
   }
 
   @Override
-  protected text_fragment print_type_parameters(list_construct parameters_list) {
+  protected text_fragment print_type_parameters(readonly_list<construct> parameters) {
     list<text_fragment> fragments = new base_list<text_fragment>();
-    readonly_list<construct> parameters = parameters_list.elements;
 
     for (int i = 0; i < parameters.size(); ++i) {
       construct c = parameters.get(i);

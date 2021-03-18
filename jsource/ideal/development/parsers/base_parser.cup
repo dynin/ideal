@@ -164,7 +164,8 @@ type_declaration ::=
                 annotations_opt:m KIND:k name:n parameters_opt:p
                     OPEN_BRACE:ob statements_opt:st CLOSE_BRACE:cb
                 // TODO: use fragment origin
-                {: RESULT = new type_declaration_construct(m, k.payload(), n.the_name, p, st, n); :}
+                {: RESULT = new type_declaration_construct(m, k.payload(), n.the_name,
+                    parser_util.type_parameters(p), st, n); :}
         ;
 
 type_announcement ::=

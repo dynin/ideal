@@ -65,4 +65,19 @@ public class parser_util {
   public static construct make_op(token op_token, construct e, operator op) {
     return new operator_construct(op, e, new fragment_origin(op_token, op_token, e));
   }
+
+  public static @Nullable readonly_list<construct> type_parameters(
+      @Nullable list_construct constructs) {
+
+    if (constructs == null) {
+      return null;
+    }
+
+    // TODO: signal error instead of failing an assertion.
+    assert constructs.elements.is_not_empty();
+    assert constructs.grouping == grouping_type.BRACKETS;
+    assert !constructs.has_trailing_comma;
+
+    return constructs.elements;
+  }
 }

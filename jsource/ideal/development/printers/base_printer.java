@@ -464,6 +464,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_list(list_construct c) {
+    // TODO: handle has_trailing_comma
     return print_params(c.elements, c.grouping);
   }
 
@@ -742,8 +743,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     return text_util.join(fragments);
   }
 
-  protected text_fragment print_type_parameters(list_construct parameters_list) {
-    return process_list(parameters_list);
+  protected text_fragment print_type_parameters(readonly_list<construct> parameters) {
+    return print_params(parameters, grouping_type.BRACKETS);
   }
 
   protected text_fragment print_type_start(type_declaration_construct c) {

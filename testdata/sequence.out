@@ -125,21 +125,17 @@
     ]
     kind: class
     name: sequence
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: readonly_data
-          }
-          name: element
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: readonly_data
         }
-      ]
-      grouping: brackets
-      has_trailing_comma: false
-    }
+        name: element
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     body: [
       supertype_construct {
         annotations: [ ]

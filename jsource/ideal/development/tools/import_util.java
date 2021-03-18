@@ -90,8 +90,7 @@ public class import_util {
       params.append(get_var(param, index++, pos));
     }
 
-    procedure_construct result = new procedure_construct(annotations, ret, name,
-        new list_construct(params, grouping_type.PARENS, false, pos),
+    procedure_construct result = new procedure_construct(annotations, ret, name, params,
         new empty<annotation_construct>(), null, pos);
 
     return result;

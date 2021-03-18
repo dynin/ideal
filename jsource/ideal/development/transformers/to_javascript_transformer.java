@@ -197,8 +197,7 @@ public class to_javascript_transformer {
     readonly_list<annotation_construct> post_annotations = new empty<annotation_construct>();
     @Nullable construct body = to_body(procedure.get_body_action());
 
-    return new procedure_construct(annotations, null, name,
-        new list_construct(parameters, grouping_type.PARENS, false, pos),
+    return new procedure_construct(annotations, null, name, parameters,
         post_annotations, body, pos);
   }
 

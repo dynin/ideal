@@ -229,14 +229,9 @@ public class base_transformer extends declaration_visitor<Object> {
 
   public construct process_procedure(procedure_declaration the_procedure) {
     origin the_origin = the_procedure;
-    grouping_type grouping = grouping_type.PARENS;
-    boolean has_trailing_comma = false;
-    list_construct parameters = new list_construct(
-        transform_list(the_procedure.get_parameter_variables()),
-            grouping, has_trailing_comma, the_origin);
     return new procedure_construct(to_annotations(the_procedure.annotations(), false, the_origin),
         make_type(the_procedure.get_return_type(), the_origin), the_procedure.original_name(),
-        parameters, new empty<annotation_construct>(),
+        transform_list(the_procedure.get_parameter_variables()), new empty<annotation_construct>(),
         transform_action(the_procedure.get_body_action()), the_origin);
   }
 

@@ -38,7 +38,7 @@ public class parser_util {
         // TODO: notify user instead of failing cast
         name_construct nc = (name_construct) pc.main;
         // TODO: origin...
-        return new procedure_construct(annotations, null, nc.the_name, pc.parameters,
+        return new procedure_construct(annotations, null, nc.the_name, pc.parameters.elements,
             new empty<annotation_construct>(), body, expression.deeper_origin());
       }
     }
@@ -76,6 +76,20 @@ public class parser_util {
     // TODO: signal error instead of failing an assertion.
     assert constructs.elements.is_not_empty();
     assert constructs.grouping == grouping_type.BRACKETS;
+    assert !constructs.has_trailing_comma;
+
+    return constructs.elements;
+  }
+
+  public static @Nullable readonly_list<construct> procedure_parameters(
+      @Nullable list_construct constructs) {
+
+    if (constructs == null) {
+      return null;
+    }
+
+    // TODO: signal error instead of failing an assertion.
+    assert constructs.grouping == grouping_type.PARENS;
     assert !constructs.has_trailing_comma;
 
     return constructs.elements;

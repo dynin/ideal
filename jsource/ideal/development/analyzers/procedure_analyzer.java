@@ -32,7 +32,7 @@ public class procedure_analyzer extends declaration_analyzer
   @dont_display private final @Nullable readonly_list<annotation_construct> annotations;
   @dont_display private final @Nullable analyzable ret;
   private final simple_name original_name;
-  @dont_display private final @Nullable list_construct parameters_construct;
+  @dont_display private final @Nullable readonly_list<construct> parameters;
   @dont_display private final @Nullable readonly_list<annotation_construct> post_annotations;
   @dont_display private final @Nullable analyzable original_body;
   @dont_display private action_name name;
@@ -61,7 +61,7 @@ public class procedure_analyzer extends declaration_analyzer
 
     // TODO: handle namespace in the name...
     original_name = (simple_name) source.name;
-    parameters_construct = source.parameters;
+    parameters = source.parameters;
     post_annotations = source.post_annotations;
     if (source.body != null) {
       original_body = make(source.body);
@@ -78,7 +78,7 @@ public class procedure_analyzer extends declaration_analyzer
     this.annotations = null;
     this.ret = ret;
     this.original_name = original_name;
-    this.parameters_construct = null;
+    this.parameters = null;
     this.parameter_variables = parameter_variables;
     this.post_annotations = null;
     this.original_body = original_body;
@@ -227,7 +227,7 @@ public class procedure_analyzer extends declaration_analyzer
     return ok_signal.instance;
   }
 
-  private @Nullable error_signal process_parameters(readonly_list<construct> parameters) {
+  private @Nullable error_signal process_parameters() {
     list<variable_declaration> result = new base_list<variable_declaration>();
     error_signal arg_error = null;
 
@@ -302,8 +302,8 @@ public class procedure_analyzer extends declaration_analyzer
     }
 
     if (parameter_variables == null) {
-      if (parameters_construct != null) {
-        @Nullable error_signal parameters_error = process_parameters(parameters_construct.elements);
+      if (parameters != null) {
+        @Nullable error_signal parameters_error = process_parameters();
         if (parameters_error != null) {
           add_error(declared_in_type(), name, parameters_error);
           return parameters_error;

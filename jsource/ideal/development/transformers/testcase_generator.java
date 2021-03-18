@@ -77,9 +77,8 @@ public class testcase_generator {
     return new procedure_construct(new base_list<annotation_construct>(
         new modifier_construct(access_modifier.public_modifier, source)),
         new name_construct(common_library.get_instance().void_type().short_name(), source),
-        RUN_ALL_TESTS,
-        new list_construct(new empty<construct>(), grouping_type.PARENS, false, source),
-        new empty<annotation_construct>(), new block_construct(test_calls, source), source);
+        RUN_ALL_TESTS, new empty<construct>(), new empty<annotation_construct>(),
+        new block_construct(test_calls, source), source);
   }
 
   public static boolean has_testcases(type_declaration the_type_declaration) {

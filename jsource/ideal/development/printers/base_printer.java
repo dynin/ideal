@@ -448,7 +448,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
         make_declaration_link(proc_name, c)));
 
     if (c.parameters != null) {
-      fragments.append(print(c.parameters));
+      fragments.append(print_params(c.parameters, grouping_type.PARENS));
     }
 
     fragments.append(print_modifiers(c.post_annotations, false));

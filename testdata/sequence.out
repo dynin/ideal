@@ -171,11 +171,7 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -217,21 +213,17 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: n1
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -276,30 +268,26 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n2
-              post_annotations: [ ]
-              init: <null>
+            name: n1
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: n2
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -358,30 +346,26 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: sequence
-              }
-              name: ns1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: sequence
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n2
-              post_annotations: [ ]
-              init: <null>
+            name: ns1
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: n2
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -440,30 +424,26 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: sequence
-              }
-              name: ns2
-              post_annotations: [ ]
-              init: <null>
+            name: n1
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: sequence
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: ns2
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -522,39 +502,35 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n2
-              post_annotations: [ ]
-              init: <null>
+            name: n1
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n3
-              post_annotations: [ ]
-              init: <null>
+            name: n2
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: n3
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -627,48 +603,44 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n2
-              post_annotations: [ ]
-              init: <null>
+            name: n1
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n3
-              post_annotations: [ ]
-              init: <null>
+            name: n2
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n4
-              post_annotations: [ ]
-              init: <null>
+            name: n3
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: n4
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -755,57 +727,53 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n2
-              post_annotations: [ ]
-              init: <null>
+            name: n1
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n3
-              post_annotations: [ ]
-              init: <null>
+            name: n2
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n4
-              post_annotations: [ ]
-              init: <null>
+            name: n3
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n5
-              post_annotations: [ ]
-              init: <null>
+            name: n4
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: n5
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -906,66 +874,62 @@
         ]
         ret: <null>
         name: sequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n1
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n2
-              post_annotations: [ ]
-              init: <null>
+            name: n1
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n3
-              post_annotations: [ ]
-              init: <null>
+            name: n2
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n4
-              post_annotations: [ ]
-              init: <null>
+            name: n3
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n5
-              post_annotations: [ ]
-              init: <null>
+            name: n4
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: n6
-              post_annotations: [ ]
-              init: <null>
+            name: n5
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: n6
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1079,11 +1043,7 @@
           the_name: int
         }
         name: size
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1178,21 +1138,17 @@
           the_name: element
         }
         name: get
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: int
-              }
-              name: index
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: int
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: index
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1243,21 +1199,17 @@
           the_name: void
         }
         name: append
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: t
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: t
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1294,21 +1246,17 @@
           the_name: void
         }
         name: append_all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: sequence
-              }
-              name: s
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: sequence
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: s
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1350,30 +1298,26 @@
           the_name: sequence
         }
         name: subsequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: int
-              }
-              name: begin
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: int
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: int
-              }
-              name: end
-              post_annotations: [ ]
-              init: <null>
+            name: begin
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: int
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: end
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1553,21 +1497,17 @@
           the_name: sequence
         }
         name: subsequence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: int
-              }
-              name: begin
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: int
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: begin
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1611,11 +1551,7 @@
           the_name: void
         }
         name: test
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]
@@ -1669,30 +1605,26 @@
           the_name: void
         }
         name: _display
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: display_writer
-              }
-              name: writer
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: display_writer
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: display_context
-              }
-              name: options
-              post_annotations: [ ]
-              init: <null>
+            name: writer
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: display_context
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: options
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: block_construct {
           annotations: [ ]

@@ -177,7 +177,8 @@ type_announcement ::=
 procedure_declaration ::=
                 annotations_opt:m expression:t name:n parameters:p post_annotations_opt:pm
                     procedure_body:b
-                {: RESULT = new procedure_construct(m, t, n.the_name, p, pm, b, n); :}
+                {: RESULT = new procedure_construct(m, t, n.the_name,
+                    parser_util.procedure_parameters(p), pm, b, n); :}
         |       annotations_opt:m expression:t name:n post_annotations_opt:pm
                     EQUALS_GREATER_THAN:egt expression:e SEMICOLON:s
                 {: RESULT = new procedure_construct(m, t, n.the_name, null, pm, e, n); :}

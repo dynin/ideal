@@ -454,8 +454,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     // Note: the flavor is always missing.
-    return new procedure_construct(annotations, ret, name,
-        new list_construct(parameters, grouping_type.PARENS, false, the_origin),
+    return new procedure_construct(annotations, ret, name, parameters,
         new empty<annotation_construct>(), body, the_origin);
   }
 
@@ -1016,7 +1015,7 @@ public class to_java_transformer extends base_transformer {
     return new procedure_construct(annotations,
         make_type(return_type, the_origin),
         the_variable.short_name(),
-        make_parens(the_origin),
+        new empty<construct>(),
         new empty<annotation_construct>(),
         null,
         the_origin);
@@ -1105,8 +1104,7 @@ public class to_java_transformer extends base_transformer {
 
     if (!is_function) {
       type_body.append(new procedure_construct(empty_annotations, return_construct,
-          CALL_NAME, new list_construct(call_parameters, grouping_type.PARENS, false, the_origin),
-          empty_annotations, null, the_origin));
+          CALL_NAME, call_parameters, empty_annotations, null, the_origin));
     }
 
     simple_name type_name = make_procedure_name(is_function, arity);
@@ -1236,7 +1234,7 @@ public class to_java_transformer extends base_transformer {
         make_type_with_mapping(the_procedure.get_return_type(), the_origin,
             mapping.MAP_TO_WRAPPER_TYPE),
         CALL_NAME,
-        new list_construct(declaration_arguments, grouping_type.PARENS, false, the_origin),
+        declaration_arguments,
         new empty<annotation_construct>(),
         new block_construct(body, the_origin),
         the_origin);

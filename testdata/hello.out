@@ -13,11 +13,7 @@
       the_name: void
     }
     name: main
-    parameters: list_construct {
-      elements: [ ]
-      grouping: parens
-      has_trailing_comma: false
-    }
+    parameters: [ ]
     post_annotations: [ ]
     body: block_construct {
       annotations: [ ]

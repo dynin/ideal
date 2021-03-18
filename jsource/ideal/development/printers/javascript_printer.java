@@ -49,7 +49,7 @@ public class javascript_printer extends base_printer {
           print_action_name(c.name)));
     }
 
-    fragments.append(print(c.parameters));
+    fragments.append(print_params(c.parameters, grouping_type.PARENS));
 
     if (FUNCTIONS_IN_OBJECT) {
       fragments.append(print_block(((block_construct) c.body).body, true, false));

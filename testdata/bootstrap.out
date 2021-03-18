@@ -158,11 +158,7 @@
           the_name: value_type
         }
         name: get
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -176,21 +172,17 @@
           the_name: void
         }
         name: set
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: value_type
-              }
-              name: new_value
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: value_type
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: new_value
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: writeonly
@@ -267,11 +259,7 @@
           the_name: data
         }
         name: copy
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -289,11 +277,7 @@
           the_name: data
         }
         name: deep_copy
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -314,11 +298,7 @@
           }
         }
         name: frozen_copy
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -339,11 +319,7 @@
           }
         }
         name: deep_frozen_copy
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -395,11 +371,7 @@
           the_name: string
         }
         name: to_string
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1344,11 +1316,7 @@
           }
         }
         name: elements
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1362,32 +1330,28 @@
           the_name: boolean
         }
         name: has
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: predicate
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: predicate
               }
-              name: p
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: p
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1401,32 +1365,28 @@
           the_name: boolean
         }
         name: all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: predicate
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: predicate
               }
-              name: p
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: p
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1454,32 +1414,28 @@
           }
         }
         name: filter
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: predicate
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: predicate
               }
-              name: p
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: p
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1507,32 +1463,28 @@
           }
         }
         name: filter
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: predicate
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: predicate
               }
-              name: p
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: p
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: immutable
@@ -1546,32 +1498,28 @@
           the_name: void
         }
         name: remove
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: predicate
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: predicate
               }
-              name: p
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: p
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -1581,11 +1529,7 @@
           the_name: void
         }
         name: clear
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [
           modifier_construct {
             the_kind: writeonly
@@ -1658,21 +1602,17 @@
           the_name: boolean
         }
         name: contains
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: e
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: e
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1686,32 +1626,28 @@
           the_name: boolean
         }
         name: contains_all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: collection
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: collection
               }
-              name: c
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: c
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1725,21 +1661,17 @@
           the_name: void
         }
         name: remove_one
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: e
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: e
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -1749,32 +1681,28 @@
           the_name: void
         }
         name: remove_all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: collection
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: collection
               }
-              name: c
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: c
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -1784,32 +1712,28 @@
           the_name: void
         }
         name: retain_all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: collection
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: collection
               }
-              name: c
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: c
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -1901,21 +1825,17 @@
           }
         }
         name: get
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: nonnegative
-              }
-              name: index
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: index
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [
           modifier_construct {
             the_kind: readonly
@@ -1929,21 +1849,17 @@
           the_name: void
         }
         name: append
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: e
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: e
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -1953,21 +1869,17 @@
           the_name: void
         }
         name: prepend
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: e
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: e
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -1977,30 +1889,26 @@
           the_name: void
         }
         name: insert
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: nonnegative
-              }
-              name: index
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
             }
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: element
-              }
-              name: e
-              post_annotations: [ ]
-              init: <null>
+            name: index
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: element
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: e
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2010,35 +1918,31 @@
           the_name: void
         }
         name: append_all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: flavor_construct {
-                flavor: readonly
-                expr: parameter_construct {
-                  main: name_construct {
-                    the_name: list
-                  }
-                  parameters: list_construct {
-                    elements: [
-                      name_construct {
-                        the_name: element
-                      }
-                    ]
-                    grouping: brackets
-                    has_trailing_comma: false
-                  }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: flavor_construct {
+              flavor: readonly
+              expr: parameter_construct {
+                main: name_construct {
+                  the_name: list
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                  has_trailing_comma: false
                 }
               }
-              name: c
-              post_annotations: [ ]
-              init: <null>
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: c
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2048,35 +1952,31 @@
           the_name: void
         }
         name: prepend_all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: flavor_construct {
-                flavor: readonly
-                expr: parameter_construct {
-                  main: name_construct {
-                    the_name: list
-                  }
-                  parameters: list_construct {
-                    elements: [
-                      name_construct {
-                        the_name: element
-                      }
-                    ]
-                    grouping: brackets
-                    has_trailing_comma: false
-                  }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: flavor_construct {
+              flavor: readonly
+              expr: parameter_construct {
+                main: name_construct {
+                  the_name: list
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                  has_trailing_comma: false
                 }
               }
-              name: c
-              post_annotations: [ ]
-              init: <null>
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: c
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2086,44 +1986,40 @@
           the_name: void
         }
         name: insert_all
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: nonnegative
-              }
-              name: index
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
             }
-            variable_construct {
-              annotations: [ ]
-              type: flavor_construct {
-                flavor: readonly
-                expr: parameter_construct {
-                  main: name_construct {
-                    the_name: list
-                  }
-                  parameters: list_construct {
-                    elements: [
-                      name_construct {
-                        the_name: element
-                      }
-                    ]
-                    grouping: brackets
-                    has_trailing_comma: false
-                  }
+            name: index
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: flavor_construct {
+              flavor: readonly
+              expr: parameter_construct {
+                main: name_construct {
+                  the_name: list
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                  has_trailing_comma: false
                 }
               }
-              name: c
-              post_annotations: [ ]
-              init: <null>
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: c
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2133,21 +2029,17 @@
           the_name: element
         }
         name: remove_at
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: nonnegative
-              }
-              name: index
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: index
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2215,32 +2107,28 @@
         annotations: [ ]
         ret: <null>
         name: list_with_equivalence
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: parameter_construct {
-                main: name_construct {
-                  the_name: equivalence_relation
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: equivalence_relation
               }
-              name: element_equivalence
-              post_annotations: [ ]
-              init: <null>
+              parameters: list_construct {
+                elements: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
+                has_trailing_comma: false
+              }
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: element_equivalence
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2360,11 +2248,7 @@
           the_name: void
         }
         name: close
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2382,11 +2266,7 @@
           the_name: void
         }
         name: sync
-        parameters: list_construct {
-          elements: [ ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+        parameters: [ ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2462,21 +2342,17 @@
           }
         }
         name: read
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: name_construct {
-                the_name: positive
-              }
-              name: max
-              post_annotations: [ ]
-              init: <null>
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: positive
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: max
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }
@@ -2541,35 +2417,31 @@
           the_name: void
         }
         name: write
-        parameters: list_construct {
-          elements: [
-            variable_construct {
-              annotations: [ ]
-              type: flavor_construct {
-                flavor: readonly
-                expr: parameter_construct {
-                  main: name_construct {
-                    the_name: list
-                  }
-                  parameters: list_construct {
-                    elements: [
-                      name_construct {
-                        the_name: element
-                      }
-                    ]
-                    grouping: brackets
-                    has_trailing_comma: false
-                  }
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: flavor_construct {
+              flavor: readonly
+              expr: parameter_construct {
+                main: name_construct {
+                  the_name: list
+                }
+                parameters: list_construct {
+                  elements: [
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                  grouping: brackets
+                  has_trailing_comma: false
                 }
               }
-              name: c
-              post_annotations: [ ]
-              init: <null>
             }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+            name: c
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
         post_annotations: [ ]
         body: <null>
       }

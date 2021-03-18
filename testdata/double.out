@@ -62,21 +62,17 @@
       the_name: integer
     }
     name: double
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: integer
-          }
-          name: x
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: integer
         }
-      ]
-      grouping: parens
-      has_trailing_comma: false
-    }
+        name: x
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     post_annotations: [ ]
     body: block_construct {
       annotations: [ ]
@@ -109,21 +105,17 @@
       the_name: integer
     }
     name: add5
-    parameters: list_construct {
-      elements: [
-        variable_construct {
-          annotations: [ ]
-          type: name_construct {
-            the_name: integer
-          }
-          name: y
-          post_annotations: [ ]
-          init: <null>
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: integer
         }
-      ]
-      grouping: parens
-      has_trailing_comma: false
-    }
+        name: y
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
     post_annotations: [ ]
     body: block_construct {
       annotations: [ ]

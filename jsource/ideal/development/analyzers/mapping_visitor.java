@@ -59,7 +59,11 @@ public class mapping_visitor extends analyzer_visitor {
 
   public void put_analyzable(construct c, analyzable a) {
     if (mapping.get(c) != null) {
-      utilities.panic("C " + c + " OLD " + mapping.get(c) + " NEW " + a);
+      if (c instanceof supertype_construct) {
+        // TODO: handle multiple supertypes
+      } else {
+        utilities.panic("C " + c + " OLD " + mapping.get(c) + " NEW " + a);
+      }
     }
     mapping.put(c, a);
   }

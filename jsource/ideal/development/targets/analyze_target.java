@@ -57,9 +57,10 @@ public class analyze_target extends type_processor_target {
     }
 
     mapping.visit(the_declaration);
+    ensure_is_analyzed((construct) the_declaration.deeper_origin());
 
-    if (true) {
-      ensure_is_analyzed((construct) the_declaration.deeper_origin());
+    if (the_manager.has_errors()) {
+      return;
     }
 
     // TODO: only do this in verbose mode

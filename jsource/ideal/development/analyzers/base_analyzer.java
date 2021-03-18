@@ -163,7 +163,8 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
       if (before == null) {
         context.put_analyzable(source, the_analyzable);
       } else if (before != the_analyzable) {
-        if (the_analyzable instanceof declaration_extension) {
+        if (the_analyzable instanceof declaration_extension ||
+            source instanceof supertype_construct) {
           //log.debug("Override for " + source + ": " + before + " & " + the_analyzable);
           //context.put_analyzable(source, the_analyzable);
         } else {

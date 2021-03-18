@@ -34,11 +34,11 @@ public class parser_util {
       @Nullable construct body) {
     if (expression instanceof parameter_construct) {
       parameter_construct pc = (parameter_construct) expression;
-      if (annotations.is_not_empty() || body != null || has_variables(pc.parameters.elements)) {
+      if (annotations.is_not_empty() || body != null || has_variables(pc.parameters)) {
         // TODO: notify user instead of failing cast
         name_construct nc = (name_construct) pc.main;
         // TODO: origin...
-        return new procedure_construct(annotations, null, nc.the_name, pc.parameters.elements,
+        return new procedure_construct(annotations, null, nc.the_name, pc.parameters,
             new empty<annotation_construct>(), body, expression.deeper_origin());
       }
     }
@@ -93,5 +93,16 @@ public class parser_util {
     assert !constructs.has_trailing_comma;
 
     return constructs.elements;
+  }
+
+  public static parameter_construct make_parameter(construct main, list_construct constructs,
+      origin the_origin) {
+
+    // TODO: signal error instead of failing an assertion.
+    assert constructs.grouping == grouping_type.PARENS ||
+           constructs.grouping == grouping_type.BRACKETS;
+    assert !constructs.has_trailing_comma;
+
+    return new parameter_construct(main, constructs.elements, constructs.grouping, the_origin);
   }
 }

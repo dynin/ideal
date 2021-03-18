@@ -199,35 +199,28 @@ public class to_java_transformer extends base_transformer {
     // javac complains with: "error: generic array creation".
     construct type_name_no_params = make_type(element_type, false, the_origin);
     construct alloc = new operator_construct(operator.ALLOCATE, type_name_no_params, the_origin);
-    list_construct empty_brackets = new list_construct(new empty<construct>(),
-        grouping_type.BRACKETS, false, the_origin);
-    construct alloc_array = new parameter_construct(alloc, empty_brackets, the_origin);
+    construct alloc_array = new parameter_construct(alloc, new empty<construct>(),
+        grouping_type.BRACKETS, the_origin);
     // TODO: handle promotions
-    list_construct elements = new list_construct(
-        transform_parameters(initializer.parameter_actions), grouping_type.BRACES, false,
-        the_origin);
-    construct alloc_call = new parameter_construct(alloc_array, elements, the_origin);
+    construct alloc_call = new parameter_construct(alloc_array,
+        transform_parameters(initializer.parameter_actions), grouping_type.BRACES, the_origin);
 
     construct type_name = make_type(element_type, the_origin);
     construct array_name = make_type(java_library.array_class(), the_origin);
-    list_construct array_params = new list_construct(new base_list<construct>(type_name),
-        grouping_type.ANGLE_BRACKETS, false, the_origin);
-    construct param_array = new parameter_construct(array_name, array_params, the_origin);
+    construct param_array = new parameter_construct(array_name, new base_list<construct>(type_name),
+        grouping_type.ANGLE_BRACKETS, the_origin);
     construct alloc_array2 = new operator_construct(operator.ALLOCATE, param_array, the_origin);
-    list_construct new_array_params = new list_construct(new base_list<construct>(alloc_call),
-        grouping_type.PARENS, false, the_origin);
-    construct array_call = new parameter_construct(alloc_array2, new_array_params, the_origin);
+    construct array_call = new parameter_construct(alloc_array2,
+        new base_list<construct>(alloc_call), grouping_type.PARENS, the_origin);
 
     // TODO: import type if needed
     // construct list_name = make_type(java_library.base_immutable_list_class(), the_origin);
     construct list_name = new name_construct(simple_name.make("base_immutable_list"), the_origin);
-    list_construct list_params = new list_construct(new base_list<construct>(type_name),
-        grouping_type.ANGLE_BRACKETS, false, the_origin);
-    construct param_list = new parameter_construct(list_name, list_params, the_origin);
+    construct param_list = new parameter_construct(list_name, new base_list<construct>(type_name),
+        grouping_type.ANGLE_BRACKETS, the_origin);
     construct alloc_list = new operator_construct(operator.ALLOCATE, param_list, the_origin);
-    list_construct new_params = new list_construct(new base_list<construct>(array_call),
-        grouping_type.PARENS, false, the_origin);
-    return new parameter_construct(alloc_list, new_params, the_origin);
+    return new parameter_construct(alloc_list, new base_list<construct>(array_call),
+        grouping_type.PARENS, the_origin);
   }
 
   public @Nullable list_construct process_parameters(
@@ -307,9 +300,7 @@ public class to_java_transformer extends base_transformer {
 
   private construct make_parametrized_type(construct main, readonly_list<construct> parameters,
       origin the_origin) {
-    return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.ANGLE_BRACKETS, false, the_origin),
-        the_origin);
+    return new parameter_construct(main, parameters, grouping_type.ANGLE_BRACKETS, the_origin);
   }
 
   private boolean should_use_wrapper_in_return(procedure_declaration the_declaration) {
@@ -419,7 +410,7 @@ public class to_java_transformer extends base_transformer {
             ret = ((flavor_construct) ret).expr;
           }
           assert ret instanceof parameter_construct;
-          readonly_list<construct> ret_parameters = ((parameter_construct) ret).parameters.elements;
+          readonly_list<construct> ret_parameters = ((parameter_construct) ret).parameters;
           assert ret_parameters.size() == 1;
           ret = ret_parameters.first();
           if (ref_flavor == writeonly_flavor) {
@@ -1081,8 +1072,7 @@ public class to_java_transformer extends base_transformer {
     if (is_function) {
       construct superprocedure = new parameter_construct(
           new name_construct(make_procedure_name(false, arity), the_origin),
-          new list_construct(supertype_parameters, grouping_type.ANGLE_BRACKETS, false, the_origin),
-          the_origin);
+          supertype_parameters, grouping_type.ANGLE_BRACKETS, the_origin);
       extends_types.append(superprocedure);
     }
 
@@ -1195,8 +1185,8 @@ public class to_java_transformer extends base_transformer {
 
     construct procedure_type = make_type(the_procedure.get_procedure_type(), the_origin);
     construct new_construct = new operator_construct(operator.ALLOCATE, procedure_type, the_origin);
-    construct with_parens = new parameter_construct(new_construct, make_parens(the_origin),
-        the_origin);
+    construct with_parens = new parameter_construct(new_construct, new base_list<construct>(),
+        grouping_type.PARENS, the_origin);
 
     readonly_list<annotation_construct> annotations = new base_list<annotation_construct>(
         new modifier_construct(override_modifier, the_origin),
@@ -1217,10 +1207,8 @@ public class to_java_transformer extends base_transformer {
     }
 
     list<construct> body = new base_list<construct>();
-    construct body_call = new parameter_construct(
-            transform_action(the_action),
-            new list_construct(call_arguments, grouping_type.PARENS, false, the_origin),
-            the_origin);
+    construct body_call = new parameter_construct(transform_action(the_action), call_arguments,
+        grouping_type.PARENS, the_origin);
     if (the_procedure.get_return_type() == library().immutable_void_type()) {
       // We need this because the return type is Void, not void
       body.append(body_call);
@@ -1241,9 +1229,8 @@ public class to_java_transformer extends base_transformer {
 
     enclosing_type = old_enclosing_type;
 
-    return new parameter_construct(with_parens,
-        new list_construct(new base_list<construct>(the_call), grouping_type.BRACES, false,
-            the_origin), the_origin);
+    return new parameter_construct(with_parens, new base_list<construct>(the_call),
+        grouping_type.BRACES, the_origin);
   }
 
   @Override
@@ -1274,8 +1261,7 @@ public class to_java_transformer extends base_transformer {
   private construct do_explicitly_derefence(construct the_construct, origin the_origin) {
     construct get_construct = new resolve_construct(the_construct,
         new name_construct(common_library.get_name, the_origin), the_origin);
-    return new parameter_construct(get_construct,
-        new list_construct(new empty<construct>(), grouping_type.PARENS, false, the_origin),
+    return new parameter_construct(get_construct, new empty<construct>(), grouping_type.PARENS,
         the_origin);
   }
 
@@ -1685,8 +1671,7 @@ public class to_java_transformer extends base_transformer {
 
   private static construct make_call(construct main, readonly_list<construct> parameters,
       origin the_origin) {
-    return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.PARENS, false, the_origin), the_origin);
+    return new parameter_construct(main, parameters, grouping_type.PARENS, the_origin);
   }
 
   private static construct make_null(origin the_origin) {
@@ -2117,11 +2102,10 @@ public class to_java_transformer extends base_transformer {
       grouping_type grouping = grouping_type.PARENS;
       construct the_construct = get_construct(the_enum_value);
       if (the_construct instanceof parameter_construct) {
-        grouping = ((parameter_construct) the_construct).parameters.grouping;
+        grouping = ((parameter_construct) the_construct).grouping;
       }
-      return new parameter_construct(the_name, new list_construct(
-          transform_parameters(the_enum_value.get_parameters().params()),
-              grouping, false, the_origin), the_origin);
+      return new parameter_construct(the_name, 
+          transform_parameters(the_enum_value.get_parameters().params()), grouping, the_origin);
     } else {
       return the_name;
     }

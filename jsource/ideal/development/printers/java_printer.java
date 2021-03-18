@@ -174,10 +174,10 @@ public class java_printer extends base_printer {
 
   @Override
   public text_fragment process_parameter(parameter_construct c) {
-    if (c.parameters.grouping == grouping_type.BRACES &&
-        c.parameters.elements.is_not_empty() &&
-        c.parameters.elements.first() instanceof procedure_construct) {
-      return text_util.join(print(c.main), print_block(c.parameters.elements, true, false));
+    if (c.grouping == grouping_type.BRACES &&
+        c.parameters.is_not_empty() &&
+        c.parameters.first() instanceof procedure_construct) {
+      return text_util.join(print(c.main), print_block(c.parameters, true, false));
     } else {
       return super.process_parameter(c);
     }

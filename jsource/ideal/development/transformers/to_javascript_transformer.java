@@ -255,8 +255,7 @@ public class to_javascript_transformer {
       }
     }
 
-    return new parameter_construct(main, new list_construct(params, grouping_type.PARENS, false,
-        pos), pos);
+    return new parameter_construct(main, params, grouping_type.PARENS, pos);
   }
 
   public construct to_construct(dispatch_action the_action) {
@@ -284,9 +283,8 @@ public class to_javascript_transformer {
       string field_name = the_name.to_string();
       construct field_value = new literal_construct(new quoted_literal(field_name,
           punctuation.SINGLE_QUOTE), pos);
-      return new parameter_construct(get_field,
-          new list_construct(new base_list<construct>(field_value), grouping_type.PARENS, false,
-              pos), pos);
+      return new parameter_construct(get_field, new base_list<construct>(field_value),
+          grouping_type.PARENS, pos);
     }
   }
 

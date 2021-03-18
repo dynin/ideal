@@ -42,18 +42,15 @@
       main: name_construct {
         the_name: plus
       }
-      parameters: list_construct {
-        elements: [
-          name_construct {
-            the_name: one
-          }
-          name_construct {
-            the_name: two
-          }
-        ]
-        grouping: parens
-        has_trailing_comma: false
-      }
+      parameters: [
+        name_construct {
+          the_name: one
+        }
+        name_construct {
+          the_name: two
+        }
+      ]
+      grouping: parens
     }
   }
   procedure_construct {
@@ -82,18 +79,15 @@
             main: name_construct {
               the_name: plus
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: x
-                }
-                name_construct {
-                  the_name: x
-                }
-              ]
-              grouping: parens
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: x
+              }
+              name_construct {
+                the_name: x
+              }
+            ]
+            grouping: parens
           }
         }
       ]
@@ -125,141 +119,114 @@
             main: name_construct {
               the_name: plus
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: y
-                }
-                literal_construct {
-                  the_literal: integer_literal {
-                    the_value: 5
-                    image: "5"
-                  }
-                }
-              ]
-              grouping: parens
-              has_trailing_comma: false
-            }
-          }
-        }
-      ]
-    }
-  }
-  parameter_construct {
-    main: name_construct {
-      the_name: println
-    }
-    parameters: list_construct {
-      elements: [
-        parameter_construct {
-          main: name_construct {
-            the_name: double
-          }
-          parameters: list_construct {
-            elements: [
-              parameter_construct {
-                main: name_construct {
-                  the_name: double
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: three
-                    }
-                  ]
-                  grouping: parens
-                  has_trailing_comma: false
-                }
-              }
-            ]
-            grouping: parens
-            has_trailing_comma: false
-          }
-        }
-      ]
-      grouping: parens
-      has_trailing_comma: false
-    }
-  }
-  parameter_construct {
-    main: name_construct {
-      the_name: println
-    }
-    parameters: list_construct {
-      elements: [
-        parameter_construct {
-          main: name_construct {
-            the_name: plus
-          }
-          parameters: list_construct {
-            elements: [
-              parameter_construct {
-                main: name_construct {
-                  the_name: add5
-                }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: three
-                    }
-                  ]
-                  grouping: parens
-                  has_trailing_comma: false
-                }
-              }
+            parameters: [
               name_construct {
-                the_name: two
+                the_name: y
               }
-            ]
-            grouping: parens
-            has_trailing_comma: false
-          }
-        }
-      ]
-      grouping: parens
-      has_trailing_comma: false
-    }
-  }
-  parameter_construct {
-    main: name_construct {
-      the_name: println
-    }
-    parameters: list_construct {
-      elements: [
-        literal_construct {
-          the_literal: integer_literal {
-            the_value: 7
-            image: "7"
-          }
-        }
-        literal_construct {
-          the_literal: quoted_literal {
-            value: " "
-            with_escapes: " "
-            quote: "
-          }
-        }
-        parameter_construct {
-          main: name_construct {
-            the_name: add5
-          }
-          parameters: list_construct {
-            elements: [
               literal_construct {
                 the_literal: integer_literal {
-                  the_value: 63
-                  image: "63"
+                  the_value: 5
+                  image: "5"
                 }
               }
             ]
             grouping: parens
-            has_trailing_comma: false
           }
         }
       ]
-      grouping: parens
-      has_trailing_comma: false
     }
+  }
+  parameter_construct {
+    main: name_construct {
+      the_name: println
+    }
+    parameters: [
+      parameter_construct {
+        main: name_construct {
+          the_name: double
+        }
+        parameters: [
+          parameter_construct {
+            main: name_construct {
+              the_name: double
+            }
+            parameters: [
+              name_construct {
+                the_name: three
+              }
+            ]
+            grouping: parens
+          }
+        ]
+        grouping: parens
+      }
+    ]
+    grouping: parens
+  }
+  parameter_construct {
+    main: name_construct {
+      the_name: println
+    }
+    parameters: [
+      parameter_construct {
+        main: name_construct {
+          the_name: plus
+        }
+        parameters: [
+          parameter_construct {
+            main: name_construct {
+              the_name: add5
+            }
+            parameters: [
+              name_construct {
+                the_name: three
+              }
+            ]
+            grouping: parens
+          }
+          name_construct {
+            the_name: two
+          }
+        ]
+        grouping: parens
+      }
+    ]
+    grouping: parens
+  }
+  parameter_construct {
+    main: name_construct {
+      the_name: println
+    }
+    parameters: [
+      literal_construct {
+        the_literal: integer_literal {
+          the_value: 7
+          image: "7"
+        }
+      }
+      literal_construct {
+        the_literal: quoted_literal {
+          value: " "
+          with_escapes: " "
+          quote: "
+        }
+      }
+      parameter_construct {
+        main: name_construct {
+          the_name: add5
+        }
+        parameters: [
+          literal_construct {
+            the_literal: integer_literal {
+              the_value: 63
+              image: "63"
+            }
+          }
+        ]
+        grouping: parens
+      }
+    ]
+    grouping: parens
   }
   block_construct {
     annotations: [ ]
@@ -268,49 +235,43 @@
         main: name_construct {
           the_name: println
         }
-        parameters: list_construct {
-          elements: [
-            name_construct {
-              the_name: one
+        parameters: [
+          name_construct {
+            the_name: one
+          }
+          literal_construct {
+            the_literal: quoted_literal {
+              value: " "
+              with_escapes: " "
+              quote: "
             }
-            literal_construct {
-              the_literal: quoted_literal {
-                value: " "
-                with_escapes: " "
-                quote: "
+          }
+          parameter_construct {
+            main: name_construct {
+              the_name: plus
+            }
+            parameters: [
+              name_construct {
+                the_name: one
               }
-            }
-            parameter_construct {
-              main: name_construct {
-                the_name: plus
+              name_construct {
+                the_name: one
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: one
-                  }
-                  name_construct {
-                    the_name: one
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+            ]
+            grouping: parens
+          }
+          literal_construct {
+            the_literal: quoted_literal {
+              value: " "
+              with_escapes: " "
+              quote: "
             }
-            literal_construct {
-              the_literal: quoted_literal {
-                value: " "
-                with_escapes: " "
-                quote: "
-              }
-            }
-            name_construct {
-              the_name: one
-            }
-          ]
-          grouping: parens
-          has_trailing_comma: false
-        }
+          }
+          name_construct {
+            the_name: one
+          }
+        ]
+        grouping: parens
       }
     ]
   }

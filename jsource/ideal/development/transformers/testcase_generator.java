@@ -112,7 +112,6 @@ public class testcase_generator {
 
   private static construct make_call(construct main, readonly_list<construct> parameters,
       origin source) {
-    return new parameter_construct(main,
-        new list_construct(parameters, grouping_type.PARENS, false, source), source);
+    return new parameter_construct(main, parameters, grouping_type.PARENS, source);
   }
 }

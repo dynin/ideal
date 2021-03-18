@@ -22,19 +22,16 @@
           main: name_construct {
             the_name: inform
           }
-          parameters: list_construct {
-            elements: [
-              literal_construct {
-                the_literal: quoted_literal {
-                  value: "Hello, world!"
-                  with_escapes: "Hello, world!"
-                  quote: "
-                }
+          parameters: [
+            literal_construct {
+              the_literal: quoted_literal {
+                value: "Hello, world!"
+                with_escapes: "Hello, world!"
+                quote: "
               }
-            ]
-            grouping: parens
-            has_trailing_comma: false
-          }
+            }
+          ]
+          grouping: parens
         }
       ]
     }

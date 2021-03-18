@@ -531,15 +531,12 @@
           main: name_construct {
             the_name: equivalence_relation
           }
-          parameters: list_construct {
-            elements: [
-              name_construct {
-                the_name: equality_comparable
-              }
-            ]
-            grouping: brackets
-            has_trailing_comma: false
-          }
+          parameters: [
+            name_construct {
+              the_name: equality_comparable
+            }
+          ]
+          grouping: brackets
         }
         name: equivalence
         post_annotations: [ ]
@@ -984,18 +981,15 @@
             main: name_construct {
               the_name: procedure
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: ret
-                }
-                name_construct {
-                  the_name: arg1
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: ret
+              }
+              name_construct {
+                the_name: arg1
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -1057,21 +1051,18 @@
             main: name_construct {
               the_name: procedure
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: ret
-                }
-                name_construct {
-                  the_name: arg1
-                }
-                name_construct {
-                  the_name: arg2
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: ret
+              }
+              name_construct {
+                the_name: arg1
+              }
+              name_construct {
+                the_name: arg2
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -1115,18 +1106,15 @@
             main: name_construct {
               the_name: function
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: boolean
-                }
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: boolean
+              }
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -1157,21 +1145,18 @@
             main: name_construct {
               the_name: function
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: boolean
-                }
-                name_construct {
-                  the_name: element
-                }
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: boolean
+              }
+              name_construct {
+                the_name: element
+              }
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -1217,15 +1202,12 @@
             main: name_construct {
               the_name: relation
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -1304,15 +1286,12 @@
             main: name_construct {
               the_name: list
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         }
         name: elements
@@ -1337,15 +1316,12 @@
               main: name_construct {
                 the_name: predicate
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: p
             post_annotations: [ ]
@@ -1372,15 +1348,12 @@
               main: name_construct {
                 the_name: predicate
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: p
             post_annotations: [ ]
@@ -1402,15 +1375,12 @@
             main: name_construct {
               the_name: collection
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         }
         name: filter
@@ -1421,15 +1391,12 @@
               main: name_construct {
                 the_name: predicate
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: p
             post_annotations: [ ]
@@ -1451,15 +1418,12 @@
             main: name_construct {
               the_name: collection
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         }
         name: filter
@@ -1470,15 +1434,12 @@
               main: name_construct {
                 the_name: predicate
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: p
             post_annotations: [ ]
@@ -1505,15 +1466,12 @@
               main: name_construct {
                 the_name: predicate
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: p
             post_annotations: [ ]
@@ -1564,15 +1522,12 @@
             main: name_construct {
               the_name: collection
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -1582,15 +1537,12 @@
           main: name_construct {
             the_name: equivalence_relation
           }
-          parameters: list_construct {
-            elements: [
-              name_construct {
-                the_name: element
-              }
-            ]
-            grouping: brackets
-            has_trailing_comma: false
-          }
+          parameters: [
+            name_construct {
+              the_name: element
+            }
+          ]
+          grouping: brackets
         }
         name: element_equivalence
         post_annotations: [ ]
@@ -1633,15 +1585,12 @@
               main: name_construct {
                 the_name: collection
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: c
             post_annotations: [ ]
@@ -1688,15 +1637,12 @@
               main: name_construct {
                 the_name: collection
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: c
             post_annotations: [ ]
@@ -1719,15 +1665,12 @@
               main: name_construct {
                 the_name: collection
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: c
             post_annotations: [ ]
@@ -1792,15 +1735,12 @@
             main: name_construct {
               the_name: collection
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -1814,15 +1754,12 @@
           main: name_construct {
             the_name: reference
           }
-          parameters: list_construct {
-            elements: [
-              name_construct {
-                the_name: element
-              }
-            ]
-            grouping: brackets
-            has_trailing_comma: false
-          }
+          parameters: [
+            name_construct {
+              the_name: element
+            }
+          ]
+          grouping: brackets
         }
         name: get
         parameters: [
@@ -1927,15 +1864,12 @@
                 main: name_construct {
                   the_name: list
                 }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+                parameters: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
               }
             }
             name: c
@@ -1961,15 +1895,12 @@
                 main: name_construct {
                   the_name: list
                 }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+                parameters: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
               }
             }
             name: c
@@ -2004,15 +1935,12 @@
                 main: name_construct {
                   the_name: list
                 }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+                parameters: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
               }
             }
             name: c
@@ -2070,15 +1998,12 @@
             main: name_construct {
               the_name: collection_with_equivalence
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -2091,15 +2016,12 @@
             main: name_construct {
               the_name: list
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         ]
       }
@@ -2114,15 +2036,12 @@
               main: name_construct {
                 the_name: equivalence_relation
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: element
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: element
+                }
+              ]
+              grouping: brackets
             }
             name: element_equivalence
             post_annotations: [ ]
@@ -2209,15 +2128,12 @@
               main: name_construct {
                 the_name: list
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: character
-                  }
-                ]
-                grouping: brackets
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: character
+                }
+              ]
+              grouping: brackets
             }
           }
         ]
@@ -2330,15 +2246,12 @@
             main: name_construct {
               the_name: list
             }
-            parameters: list_construct {
-              elements: [
-                name_construct {
-                  the_name: element
-                }
-              ]
-              grouping: brackets
-              has_trailing_comma: false
-            }
+            parameters: [
+              name_construct {
+                the_name: element
+              }
+            ]
+            grouping: brackets
           }
         }
         name: read
@@ -2426,15 +2339,12 @@
                 main: name_construct {
                   the_name: list
                 }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: element
-                    }
-                  ]
-                  grouping: brackets
-                  has_trailing_comma: false
-                }
+                parameters: [
+                  name_construct {
+                    the_name: element
+                  }
+                ]
+                grouping: brackets
               }
             }
             name: c

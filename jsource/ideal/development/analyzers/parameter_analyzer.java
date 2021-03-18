@@ -38,7 +38,7 @@ public class parameter_analyzer extends single_pass_analyzer {
   }
 
   public parameter_analyzer(parameter_construct source) {
-    this(make(source.main), make_list(source.parameters.elements), source);
+    this(make(source.main), make_list(source.parameters), source);
   }
 
   public parameter_analyzer(operator_construct source) {

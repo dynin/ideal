@@ -135,15 +135,12 @@
           main: name_construct {
             the_name: list
           }
-          parameters: list_construct {
-            elements: [
-              name_construct {
-                the_name: exercise
-              }
-            ]
-            grouping: brackets
-            has_trailing_comma: false
-          }
+          parameters: [
+            name_construct {
+              the_name: exercise
+            }
+          ]
+          grouping: brackets
         }
         name: exercises
         post_annotations: [ ]
@@ -189,15 +186,12 @@
           main: name_construct {
             the_name: list
           }
-          parameters: list_construct {
-            elements: [
-              name_construct {
-                the_name: workout
-              }
-            ]
-            grouping: brackets
-            has_trailing_comma: false
-          }
+          parameters: [
+            name_construct {
+              the_name: workout
+            }
+          ]
+          grouping: brackets
         }
         name: workouts
         post_annotations: [ ]

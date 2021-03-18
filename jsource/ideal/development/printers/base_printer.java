@@ -676,7 +676,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_parameter(parameter_construct c) {
-    return text_util.join(print(c.main), process_list(c.parameters));
+    return text_util.join(print(c.main), print_params(c.parameters, c.grouping));
   }
 
   @Override

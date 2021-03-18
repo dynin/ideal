@@ -28,7 +28,7 @@ import ideal.development.declarations.*;
 public class enum_value_analyzer extends declaration_analyzer implements variable_declaration {
 
   private final name_construct the_name_construct;
-  private final @Nullable list_construct parameters;
+  private final @Nullable readonly_list<construct> parameters;
   private final int ordinal;
   private @Nullable parameter_analyzer constructor_call;
   private @Nullable action_parameters the_action_parameters;
@@ -115,7 +115,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       analyzable allocate = new base_analyzable_action(
           new allocate_action(declared_in_type(), pos));
       analyzable ctor_expression = new resolve_analyzer(allocate, special_name.IMPLICIT_CALL, pos);
-      readonly_list<analyzable> the_constructor_parameters = make_list(parameters.elements);
+      readonly_list<analyzable> the_constructor_parameters = make_list(parameters);
       constructor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters, pos);
       if (!has_analysis_errors(constructor_call, pass)) {
         the_action_parameters = constructor_call.get_parameters();

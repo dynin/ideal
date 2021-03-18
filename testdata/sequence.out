@@ -192,11 +192,8 @@
                     }
                   }
                 }
-                parameters: list_construct {
-                  elements: [ ]
-                  grouping: parens
-                  has_trailing_comma: false
-                }
+                parameters: [ ]
+                grouping: parens
               }
             }
           ]
@@ -234,25 +231,19 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -298,39 +289,30 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n2
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -376,39 +358,30 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append_all
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: ns1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: ns1
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n2
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -454,39 +427,30 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append_all
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: ns2
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: ns2
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -541,53 +505,41 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n2
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n3
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -651,67 +603,52 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n2
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n3
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n4
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n4
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -784,81 +721,63 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n2
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n3
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n4
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n4
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n5
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n5
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -940,95 +859,74 @@
                   name: "this"
                 }
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n1
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n1
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n2
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n2
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n3
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n3
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n4
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n4
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n5
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n5
+                }
+              ]
+              grouping: parens
             }
             parameter_construct {
               main: name_construct {
                 the_name: append
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: n6
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: n6
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -1058,11 +956,8 @@
                     the_name: size
                   }
                 }
-                parameters: list_construct {
-                  elements: [ ]
-                  grouping: parens
-                  has_trailing_comma: false
-                }
+                parameters: [ ]
+                grouping: parens
               }
             }
           ]
@@ -1089,11 +984,8 @@
               the_name: isEmpty
             }
           }
-          parameters: list_construct {
-            elements: [ ]
-            grouping: parens
-            has_trailing_comma: false
-          }
+          parameters: [ ]
+          grouping: parens
         }
       }
       procedure_construct {
@@ -1119,11 +1011,8 @@
               main: name_construct {
                 the_name: empty
               }
-              parameters: list_construct {
-                elements: [ ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [ ]
+              grouping: parens
             }
           ]
         }
@@ -1170,15 +1059,12 @@
                         the_name: get
                       }
                     }
-                    parameters: list_construct {
-                      elements: [
-                        name_construct {
-                          the_name: index
-                        }
-                      ]
-                      grouping: parens
-                      has_trailing_comma: false
-                    }
+                    parameters: [
+                      name_construct {
+                        the_name: index
+                      }
+                    ]
+                    grouping: parens
                   }
                   name_construct {
                     the_name: element
@@ -1223,15 +1109,12 @@
                   the_name: add
                 }
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: t
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: t
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -1270,20 +1153,17 @@
                   the_name: addAll
                 }
               }
-              parameters: list_construct {
-                elements: [
-                  resolve_construct {
-                    qualifier: name_construct {
-                      the_name: s
-                    }
-                    name: name_construct {
-                      the_name: list
-                    }
+              parameters: [
+                resolve_construct {
+                  qualifier: name_construct {
+                    the_name: s
                   }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+                  name: name_construct {
+                    the_name: list
+                  }
+                }
+              ]
+              grouping: parens
             }
           ]
         }
@@ -1362,11 +1242,8 @@
                         main: name_construct {
                           the_name: size
                         }
-                        parameters: list_construct {
-                          elements: [ ]
-                          grouping: parens
-                          has_trailing_comma: false
-                        }
+                        parameters: [ ]
+                        grouping: parens
                       }
                     ]
                   }
@@ -1391,11 +1268,8 @@
                     }
                   }
                 }
-                parameters: list_construct {
-                  elements: [ ]
-                  grouping: parens
-                  has_trailing_comma: false
-                }
+                parameters: [ ]
+                grouping: parens
               }
             }
             for_construct {
@@ -1455,26 +1329,20 @@
                         the_name: append
                       }
                     }
-                    parameters: list_construct {
-                      elements: [
-                        parameter_construct {
-                          main: name_construct {
-                            the_name: get
-                          }
-                          parameters: list_construct {
-                            elements: [
-                              name_construct {
-                                the_name: i
-                              }
-                            ]
-                            grouping: parens
-                            has_trailing_comma: false
-                          }
+                    parameters: [
+                      parameter_construct {
+                        main: name_construct {
+                          the_name: get
                         }
-                      ]
-                      grouping: parens
-                      has_trailing_comma: false
-                    }
+                        parameters: [
+                          name_construct {
+                            the_name: i
+                          }
+                        ]
+                        grouping: parens
+                      }
+                    ]
+                    grouping: parens
                   }
                 ]
               }
@@ -1517,25 +1385,19 @@
                 main: name_construct {
                   the_name: subsequence
                 }
-                parameters: list_construct {
-                  elements: [
-                    name_construct {
-                      the_name: begin
+                parameters: [
+                  name_construct {
+                    the_name: begin
+                  }
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: size
                     }
-                    parameter_construct {
-                      main: name_construct {
-                        the_name: size
-                      }
-                      parameters: list_construct {
-                        elements: [ ]
-                        grouping: parens
-                        has_trailing_comma: false
-                      }
-                    }
-                  ]
-                  grouping: parens
-                  has_trailing_comma: false
-                }
+                    parameters: [ ]
+                    grouping: parens
+                  }
+                ]
+                grouping: parens
               }
             }
           ]
@@ -1567,11 +1429,8 @@
                     main: name_construct {
                       the_name: test
                     }
-                    parameters: list_construct {
-                      elements: [ ]
-                      grouping: parens
-                      has_trailing_comma: false
-                    }
+                    parameters: [ ]
+                    grouping: parens
                   }
                 ]
               }
@@ -1582,11 +1441,8 @@
                     main: name_construct {
                       the_name: test
                     }
-                    parameters: list_construct {
-                      elements: [ ]
-                      grouping: parens
-                      has_trailing_comma: false
-                    }
+                    parameters: [ ]
+                    grouping: parens
                   }
                 ]
               }
@@ -1645,22 +1501,16 @@
                     the_name: name
                   }
                 }
-                parameters: list_construct {
-                  elements: [
-                    parameter_construct {
-                      main: name_construct {
-                        the_name: getClass
-                      }
-                      parameters: list_construct {
-                        elements: [ ]
-                        grouping: parens
-                        has_trailing_comma: false
-                      }
+                parameters: [
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: getClass
                     }
-                  ]
-                  grouping: parens
-                  has_trailing_comma: false
-                }
+                    parameters: [ ]
+                    grouping: parens
+                  }
+                ]
+                grouping: parens
               }
             }
             parameter_construct {
@@ -1672,15 +1522,12 @@
                   the_name: start_list
                 }
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: id
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: id
+                }
+              ]
+              grouping: parens
             }
             for_construct {
               init: variable_construct {
@@ -1716,11 +1563,8 @@
                         the_name: size
                       }
                     }
-                    parameters: list_construct {
-                      elements: [ ]
-                      grouping: parens
-                      has_trailing_comma: false
-                    }
+                    parameters: [ ]
+                    grouping: parens
                   }
                 ]
               }
@@ -1754,49 +1598,43 @@
                         the_name: display
                       }
                     }
-                    parameters: list_construct {
-                      elements: [
-                        name_construct {
-                          the_name: writer
+                    parameters: [
+                      name_construct {
+                        the_name: writer
+                      }
+                      operator_construct {
+                        the_operator: cast_type {
+                          the_operator_type: infix
+                          name: !>
+                          alpha_name: hard_cast
                         }
-                        operator_construct {
-                          the_operator: cast_type {
-                            the_operator_type: infix
-                            name: !>
-                            alpha_name: hard_cast
+                        arguments: [
+                          parameter_construct {
+                            main: resolve_construct {
+                              qualifier: name_construct {
+                                the_name: list
+                              }
+                              name: name_construct {
+                                the_name: get
+                              }
+                            }
+                            parameters: [
+                              name_construct {
+                                the_name: i
+                              }
+                            ]
+                            grouping: parens
                           }
-                          arguments: [
-                            parameter_construct {
-                              main: resolve_construct {
-                                qualifier: name_construct {
-                                  the_name: list
-                                }
-                                name: name_construct {
-                                  the_name: get
-                                }
-                              }
-                              parameters: list_construct {
-                                elements: [
-                                  name_construct {
-                                    the_name: i
-                                  }
-                                ]
-                                grouping: parens
-                                has_trailing_comma: false
-                              }
-                            }
-                            name_construct {
-                              the_name: element
-                            }
-                          ]
-                        }
-                        name_construct {
-                          the_name: options
-                        }
-                      ]
-                      grouping: parens
-                      has_trailing_comma: false
-                    }
+                          name_construct {
+                            the_name: element
+                          }
+                        ]
+                      }
+                      name_construct {
+                        the_name: options
+                      }
+                    ]
+                    grouping: parens
                   }
                 ]
               }
@@ -1810,15 +1648,12 @@
                   the_name: end_list
                 }
               }
-              parameters: list_construct {
-                elements: [
-                  name_construct {
-                    the_name: id
-                  }
-                ]
-                grouping: parens
-                has_trailing_comma: false
-              }
+              parameters: [
+                name_construct {
+                  the_name: id
+                }
+              ]
+              grouping: parens
             }
           ]
         }

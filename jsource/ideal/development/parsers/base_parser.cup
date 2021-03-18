@@ -362,7 +362,7 @@ expression ::=  name:n
         |       expression:e1 DOT:d expression:e2
                 {: RESULT = new resolve_construct(e1, e2, new fragment_origin(e1, d, e2)); :}
         |       expression:e parameters:p
-                {: RESULT = new parameter_construct(e, p, new fragment_origin(e, p, p)); :}
+                {: RESULT = parser_util.make_parameter(e, p, new fragment_origin(e, p, p)); :}
         |       EXCLAMATION_MARK:op expression:e
                 {: RESULT = parser_util.make_op(op, e, operator.LOGICAL_NOT); :}
         |       MINUS:op expression:e

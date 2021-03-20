@@ -14,30 +14,26 @@ import ideal.development.elements.*;
 
 public class resolve_construct extends base_construct {
   public final construct qualifier;
-  public final construct name;
-  public resolve_construct(construct qualifier, construct name, origin pos) {
+  public action_name the_name;
+
+  public resolve_construct(construct qualifier, action_name the_name, origin pos) {
     super(pos);
     assert qualifier != null;
-    assert name != null;
+    assert the_name != null;
     this.qualifier = qualifier;
-    this.name = name;
+    this.the_name = the_name;
   }
 
   public readonly_list<construct> children() {
     list<construct> result = new base_list<construct>();
 
     result.append(qualifier);
-    result.append(name);
 
     return result;
   }
 
   @Override
   public string to_string() {
-    if (name instanceof stringable) {
-      return utilities.describe(this, (stringable) name);
-    } else {
-      return super.to_string();
-    }
+    return utilities.describe(this, the_name);
   }
 }

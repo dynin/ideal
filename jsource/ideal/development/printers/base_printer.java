@@ -553,15 +553,19 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     return the_text;
   }
 
-  @Override
-  public text_fragment process_name(name_construct c) {
-    text_fragment name = print_action_name(c.the_name);
-    if (c.the_name instanceof simple_name) {
+  protected text_fragment make_name(action_name the_name, construct c) {
+    text_fragment name = print_action_name(the_name);
+    if (the_name instanceof simple_name) {
       name = wrap_with_span_id(name, c);
       return make_link(name, c);
     } else {
       return name;
     }
+  }
+
+  @Override
+  public text_fragment process_name(name_construct c) {
+    return make_name(c.the_name, c);
   }
 
   public text_fragment process_question(conditional_construct c) {
@@ -696,7 +700,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_resolve(resolve_construct c) {
-    return text_util.join(print(c.qualifier), print_connector_dot(), print(c.name));
+    return text_util.join(print(c.qualifier), print_connector_dot(), make_name(c.the_name, c));
   }
 
   public text_fragment print_connector_dot() {

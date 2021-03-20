@@ -191,28 +191,39 @@ public class xref_printer extends base_printer {
   }
 
   private text_fragment render_origin(origin the_origin, xref_mode mode) {
-    @Nullable name_construct the_name_construct = printer_util.unwrap_name(the_origin);
-    if (the_name_construct != null) {
-      return render_name(the_name_construct);
+    @Nullable construct the_construct = printer_util.unwrap_name(the_origin);
+    if (the_construct != null) {
+      return render_name(the_construct);
     } else {
       return render_declaration(the_origin, mode);
     }
   }
 
-  private text_fragment render_name(name_construct the_name_construct) {
-    principal_type the_type = the_xref_context().get_enclosing_type(the_name_construct);
+  private text_fragment render_name(construct the_construct) {
+    principal_type the_type = the_xref_context().get_enclosing_type(the_construct);
     text_fragment the_text;
     if (the_type == the_naming_strategy().get_current_type()) {
-      the_text = print_action_name(the_name_construct.the_name);
+      the_text = print_action_name(get_name(the_construct));
     } else {
       the_text = print_action_name(the_type.short_name());
     }
-    @Nullable string link = the_naming_strategy().link_to_construct(the_name_construct,
+    @Nullable string link = the_naming_strategy().link_to_construct(the_construct,
         printer_mode.STYLISH);
     if (link != null) {
       return text_util.make_html_link(the_text, link);
     } else {
       return the_text;
+    }
+  }
+
+  private action_name get_name(construct the_construct) {
+    if (the_construct instanceof name_construct) {
+      return ((name_construct) the_construct).the_name;
+    } else if (the_construct instanceof resolve_construct) {
+      return ((resolve_construct) the_construct).the_name;
+    } else {
+      utilities.panic("get_name() failed for " + the_construct);
+      return null;
     }
   }
 

@@ -101,7 +101,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
     if (c instanceof name_construct) {
       return ((name_construct) c).the_name;
     } else if (c instanceof resolve_construct) {
-      return get_action_name(((resolve_construct) c).name);
+      return ((resolve_construct) c).the_name;
     } else {
       return null;
     }

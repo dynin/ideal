@@ -201,18 +201,26 @@ public class base_transformer extends declaration_visitor<Object> {
     }
   }
 
-  private construct make_full_name(construct name, principal_type the_type, origin the_origin) {
-    @Nullable principal_type parent = the_type.get_parent();
-    if (parent == null || parent == core_types.root_type()) {
-      return name;
+  protected static construct make_resolve(@Nullable construct qualifier, action_name the_name,
+      origin the_origin) {
+    if (qualifier == null) {
+      return new name_construct(the_name, the_origin);
+    } else {
+      return new resolve_construct(qualifier, the_name, the_origin);
+    }
+  }
+
+  private @Nullable construct make_full_name(principal_type the_type, origin the_origin) {
+    if (the_type == null || the_type == core_types.root_type()) {
+      return null;
     }
 
-    if (! (parent.short_name() instanceof simple_name)) {
-      utilities.panic("Full name of " + the_type + ", parent " + parent);
+    if (! (the_type.short_name() instanceof simple_name)) {
+      utilities.panic("Full name of " + the_type);
     }
 
-    construct parent_name = new name_construct(parent.short_name(), the_origin);
-    return make_full_name(new resolve_construct(parent_name, name, the_origin), parent, the_origin);
+    return make_resolve(make_full_name(the_type.get_parent(), the_origin), the_type.short_name(),
+        the_origin);
   }
 
   protected construct make_type(type the_type, origin the_origin) {
@@ -222,9 +230,8 @@ public class base_transformer extends declaration_visitor<Object> {
       principal = remove_null_type(principal).principal();
     }
 
-    construct name = new name_construct(make_name(get_simple_name(principal), principal,
-        the_type.get_flavor()), the_origin);
-    return make_full_name(name, principal, the_origin);
+    action_name the_name = make_name(get_simple_name(principal), principal, the_type.get_flavor());
+    return make_resolve(make_full_name(principal.get_parent(), the_origin), the_name, the_origin);
   }
 
   public construct process_procedure(procedure_declaration the_procedure) {

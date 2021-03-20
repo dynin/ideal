@@ -251,7 +251,7 @@ public class to_javascript_transformer {
     if (proc instanceof procedure_with_this) {
       procedure_with_this pt = (procedure_with_this) proc;
       if (pt.this_action != null) {
-        main = new resolve_construct(to_construct_action(pt.this_action), main, pos);
+        main = new resolve_construct(to_construct_action(pt.this_action), the_name, pos);
       }
     }
 
@@ -275,11 +275,9 @@ public class to_javascript_transformer {
     simple_name the_name = (simple_name) fa.short_name();
 
     if (ACCESS_FIELDS_DIRECTLY) {
-      construct name = new name_construct(the_name, pos);
-      return new resolve_construct(from, name, pos);
+      return new resolve_construct(from, the_name, pos);
     } else {
-      construct name = new name_construct(GET_FIELD, pos);
-      construct get_field = new resolve_construct(from, name, pos);
+      construct get_field = new resolve_construct(from, GET_FIELD, pos);
       string field_name = the_name.to_string();
       construct field_value = new literal_construct(new quoted_literal(field_name,
           punctuation.SINGLE_QUOTE), pos);

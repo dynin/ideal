@@ -359,8 +359,9 @@ expression ::=  name:n
                 {: RESULT = v; :}
         |       parameters:p
                 {: RESULT = p; :}
-        |       expression:e1 DOT:d expression:e2
-                {: RESULT = new resolve_construct(e1, e2, new fragment_origin(e1, d, e2)); :}
+        |       expression:e DOT:d name:n
+                {: // TODO: use general expression instead of name
+                  RESULT = new resolve_construct(e, n.the_name, new fragment_origin(e, d, n)); :}
         |       expression:e parameters:p
                 {: RESULT = parser_util.make_parameter(e, p, new fragment_origin(e, p, p)); :}
         |       EXCLAMATION_MARK:op expression:e

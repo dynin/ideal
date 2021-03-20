@@ -27,7 +27,6 @@ public class resolve_analyzer extends single_pass_analyzer {
   public static boolean HIDE_DECLARATIONS;
 
   private @Nullable analyzable from;
-  private @Nullable construct the_name_construct;
   private @Nullable action_name the_name;
   private @Nullable action main_candidate;
   private declaration_pass resolve_pass;
@@ -42,7 +41,7 @@ public class resolve_analyzer extends single_pass_analyzer {
   public resolve_analyzer(resolve_construct source) {
     super(source);
     from = make(source.qualifier);
-    the_name_construct = source.name;
+    the_name = source.the_name;
     this.resolve_pass = declaration_pass.METHODS_AND_VARIABLES;
   }
 
@@ -55,12 +54,6 @@ public class resolve_analyzer extends single_pass_analyzer {
   }
 
   public action_name short_name() {
-    if (the_name == null) {
-      assert the_name_construct != null;
-      // TODO: should this ever fail?
-      assert the_name_construct instanceof name_construct;
-      return ((name_construct) the_name_construct).the_name;
-    }
     return the_name;
   }
 
@@ -106,15 +99,6 @@ public class resolve_analyzer extends single_pass_analyzer {
       assert the_name != null;
       from_action = null;
       from_type = (the_name instanceof operator) ? library().operators_package() : parent();
-    }
-
-    if (the_name == null) {
-      assert the_name_construct != null;
-      associate_with_this(the_name_construct);
-      if (!(the_name_construct instanceof name_construct)) {
-        return new error_signal(messages.identifier_expected, the_name_construct);
-      }
-      the_name = ((name_construct) the_name_construct).the_name;
     }
 
     declaration the_declaration = from_type.principal().get_declaration();

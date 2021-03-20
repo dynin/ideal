@@ -41,10 +41,8 @@ public class testcase_generator {
     origin source = the_type_declaration;
     construct runtime_util_name = make_type(
         java_library.get_instance().runtime_util_class(), source);
-    construct start_construct = new resolve_construct(runtime_util_name,
-          new name_construct(START_TEST, source), source);
-    construct end_construct = new resolve_construct(runtime_util_name,
-          new name_construct(END_TEST, source), source);
+    construct start_construct = new resolve_construct(runtime_util_name, START_TEST, source);
+    construct end_construct = new resolve_construct(runtime_util_name, END_TEST, source);
     string type_name = the_type_declaration.short_name().to_string();
 
     readonly_list<procedure_declaration> procedures =
@@ -93,17 +91,17 @@ public class testcase_generator {
     return false;
   }
 
-  private static construct make_type(principal_type the_type, origin source) {
+  private static construct make_type(principal_type the_type, origin the_origin) {
     immutable_list<simple_name> full_name = type_utilities.get_full_names(the_type);
     assert full_name.is_not_empty();
 
     @Nullable construct result = null;
     for (int i = 0; i < full_name.size(); ++i) {
-      name_construct the_construct = new name_construct(full_name.get(i), source);
+      simple_name the_name = full_name.get(i);
       if (result == null) {
-        result = the_construct;
+        result = new name_construct(the_name, the_origin);
       } else {
-        result = new resolve_construct(result, the_construct, source);
+        result = new resolve_construct(result, the_name, the_origin);
       }
     }
 

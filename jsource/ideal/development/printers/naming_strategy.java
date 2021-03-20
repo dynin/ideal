@@ -289,6 +289,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   private action_name name_of_construct(construct the_construct) {
     if (the_construct instanceof name_construct) {
       return ((name_construct) the_construct).the_name;
+    } else if (the_construct instanceof resolve_construct) {
+      return ((resolve_construct) the_construct).the_name;
     } else if (the_construct instanceof type_declaration_construct) {
       return ((type_declaration_construct) the_construct).name;
     } else if (the_construct instanceof type_announcement_construct) {

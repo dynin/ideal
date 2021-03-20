@@ -35,7 +35,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
   private final analysis_context the_analysis_context;
   private final xref_context the_xref_context;
   private final principal_type current_type;
-  private @Nullable name_construct skip_construct;
+  private @Nullable construct skip_construct;
 
   public populate_xref(xref_context the_xref_context, principal_type current_type) {
     this.the_analysis_context = the_xref_context.the_analysis_context;
@@ -159,6 +159,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
+    return populate_name(c);
+  }
+
+  public Void populate_name(construct c) {
     @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
     if (the_analyzable == null || the_analyzable.has_errors()) {
       add_fragment(c);
@@ -215,7 +219,13 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_resolve(resolve_construct c) {
-    return process_default(c);
+    process(c.qualifier);
+
+    if (c != skip_construct && c.the_name instanceof simple_name) {
+      populate_name(c);
+    }
+
+    return null;
   }
 
   @Override
@@ -231,7 +241,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
       construct type_construct = types.get(i);
-      @Nullable name_construct the_construct = printer_util.unwrap_name(type_construct);
+      @Nullable construct the_construct = printer_util.unwrap_name(type_construct);
       if (the_construct == null) {
         continue;
       }

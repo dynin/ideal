@@ -14,13 +14,9 @@
         qualifier: name_construct {
           the_name: java
         }
-        name: name_construct {
-          the_name: util
-        }
+        the_name: util
       }
-      name: name_construct {
-        the_name: List
-      }
+      the_name: List
     }
   }
   import_construct {
@@ -30,13 +26,9 @@
         qualifier: name_construct {
           the_name: java
         }
-        name: name_construct {
-          the_name: util
-        }
+        the_name: util
       }
-      name: name_construct {
-        the_name: ArrayList
-      }
+      the_name: ArrayList
     }
   }
   import_construct {
@@ -49,24 +41,32 @@
       qualifier: name_construct {
         the_name: ideal
       }
-      name: name_construct {
+      the_name: concepts
+    }
+  }
+  import_construct {
+    annotations: [
+      modifier_construct {
+        the_kind: <implicit>
+      }
+    ]
+    type: resolve_construct {
+      qualifier: name_construct {
+        the_name: ideal
+      }
+      the_name: constructs
+    }
+  }
+  import_construct {
+    annotations: [ ]
+    type: resolve_construct {
+      qualifier: resolve_construct {
+        qualifier: name_construct {
+          the_name: ideal
+        }
         the_name: concepts
       }
-    }
-  }
-  import_construct {
-    annotations: [
-      modifier_construct {
-        the_kind: <implicit>
-      }
-    ]
-    type: resolve_construct {
-      qualifier: name_construct {
-        the_name: ideal
-      }
-      name: name_construct {
-        the_name: constructs
-      }
+      the_name: type
     }
   }
   import_construct {
@@ -76,13 +76,9 @@
         qualifier: name_construct {
           the_name: ideal
         }
-        name: name_construct {
-          the_name: concepts
-        }
+        the_name: scanners
       }
-      name: name_construct {
-        the_name: type
-      }
+      the_name: scanner_element
     }
   }
   import_construct {
@@ -92,29 +88,9 @@
         qualifier: name_construct {
           the_name: ideal
         }
-        name: name_construct {
-          the_name: scanners
-        }
+        the_name: semantics
       }
-      name: name_construct {
-        the_name: scanner_element
-      }
-    }
-  }
-  import_construct {
-    annotations: [ ]
-    type: resolve_construct {
-      qualifier: resolve_construct {
-        qualifier: name_construct {
-          the_name: ideal
-        }
-        name: name_construct {
-          the_name: semantics
-        }
-      }
-      name: name_construct {
-        the_name: lookup_row
-      }
+      the_name: lookup_row
     }
   }
   type_declaration_construct {
@@ -186,10 +162,8 @@
                   qualifier: name_construct {
                     the_name: ArrayList
                   }
-                  name: name_construct {
-                    the_name: special_name {
-                      name: "new"
-                    }
+                  the_name: special_name {
+                    name: "new"
                   }
                 }
                 parameters: [ ]
@@ -952,9 +926,7 @@
                   qualifier: name_construct {
                     the_name: list
                   }
-                  name: name_construct {
-                    the_name: size
-                  }
+                  the_name: size
                 }
                 parameters: [ ]
                 grouping: parens
@@ -980,9 +952,7 @@
             qualifier: name_construct {
               the_name: list
             }
-            name: name_construct {
-              the_name: isEmpty
-            }
+            the_name: isEmpty
           }
           parameters: [ ]
           grouping: parens
@@ -1055,9 +1025,7 @@
                       qualifier: name_construct {
                         the_name: list
                       }
-                      name: name_construct {
-                        the_name: get
-                      }
+                      the_name: get
                     }
                     parameters: [
                       name_construct {
@@ -1105,9 +1073,7 @@
                 qualifier: name_construct {
                   the_name: list
                 }
-                name: name_construct {
-                  the_name: add
-                }
+                the_name: add
               }
               parameters: [
                 name_construct {
@@ -1149,18 +1115,14 @@
                 qualifier: name_construct {
                   the_name: list
                 }
-                name: name_construct {
-                  the_name: addAll
-                }
+                the_name: addAll
               }
               parameters: [
                 resolve_construct {
                   qualifier: name_construct {
                     the_name: s
                   }
-                  name: name_construct {
-                    the_name: list
-                  }
+                  the_name: list
                 }
               ]
               grouping: parens
@@ -1262,10 +1224,8 @@
                   qualifier: name_construct {
                     the_name: sequence
                   }
-                  name: name_construct {
-                    the_name: special_name {
-                      name: "new"
-                    }
+                  the_name: special_name {
+                    name: "new"
                   }
                 }
                 parameters: [ ]
@@ -1325,9 +1285,7 @@
                       qualifier: name_construct {
                         the_name: result
                       }
-                      name: name_construct {
-                        the_name: append
-                      }
+                      the_name: append
                     }
                     parameters: [
                       parameter_construct {
@@ -1497,9 +1455,7 @@
                   qualifier: name_construct {
                     the_name: display_function
                   }
-                  name: name_construct {
-                    the_name: name
-                  }
+                  the_name: name
                 }
                 parameters: [
                   parameter_construct {
@@ -1518,9 +1474,7 @@
                 qualifier: name_construct {
                   the_name: writer
                 }
-                name: name_construct {
-                  the_name: start_list
-                }
+                the_name: start_list
               }
               parameters: [
                 name_construct {
@@ -1559,9 +1513,7 @@
                       qualifier: name_construct {
                         the_name: list
                       }
-                      name: name_construct {
-                        the_name: size
-                      }
+                      the_name: size
                     }
                     parameters: [ ]
                     grouping: parens
@@ -1594,9 +1546,7 @@
                       qualifier: name_construct {
                         the_name: function
                       }
-                      name: name_construct {
-                        the_name: display
-                      }
+                      the_name: display
                     }
                     parameters: [
                       name_construct {
@@ -1614,9 +1564,7 @@
                               qualifier: name_construct {
                                 the_name: list
                               }
-                              name: name_construct {
-                                the_name: get
-                              }
+                              the_name: get
                             }
                             parameters: [
                               name_construct {
@@ -1644,9 +1592,7 @@
                 qualifier: name_construct {
                   the_name: writer
                 }
-                name: name_construct {
-                  the_name: end_list
-                }
+                the_name: end_list
               }
               parameters: [
                 name_construct {

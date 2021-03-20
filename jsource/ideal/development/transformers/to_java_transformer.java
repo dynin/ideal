@@ -516,9 +516,9 @@ public class to_java_transformer extends base_transformer {
       the_flavor = removed_null.get_flavor();
     }
 
-    construct name = new name_construct(make_name(get_simple_name(principal), principal,
-        the_flavor), the_origin);
-    name = make_full_name(name, principal, the_origin);
+    action_name the_name = make_name(get_simple_name(principal), principal, the_flavor);
+    construct name = make_resolve(make_parent_name(principal, false, the_origin), the_name,
+        the_origin);
 
     if (include_parameters && principal instanceof parametrized_type) {
       immutable_list<abstract_value> type_params =
@@ -582,59 +582,46 @@ public class to_java_transformer extends base_transformer {
     return the_type == java_library.java_package() || the_type == java_library.javax_package();
   }
 
-  protected construct make_full_name(construct name, principal_type the_type, origin the_origin) {
-    if (imported_names.contains(the_type)) {
-      return name;
-    }
+  protected @Nullable construct make_parent_name(principal_type the_type, boolean is_import,
+      origin the_origin) {
+    if (!is_import) {
+      if (imported_names.contains(the_type)) {
+        return null;
+      }
 
-    if (the_type instanceof parametrized_type) {
-      master_type the_master_type = ((parametrized_type) the_type).get_master();
-      if (imported_names.contains(the_master_type)) {
-        return name;
+      if (the_type instanceof parametrized_type) {
+        master_type the_master_type = ((parametrized_type) the_type).get_master();
+        if (imported_names.contains(the_master_type)) {
+          return null;
+        }
       }
     }
 
     if (the_type.get_declaration() instanceof type_parameter_declaration) {
-      return name;
+      return null;
     }
 
     if (is_top_package(the_type)) {
-      return name;
+      return null;
     }
 
     @Nullable principal_type parent = the_type.get_parent();
-    if (parent == null || implicit_names.contains(parent)) {
-      return name;
+    if (parent == null || parent == core_types.root_type() ||
+        (!is_import && implicit_names.contains(parent))) {
+      return null;
     }
 
     if (! (parent.short_name() instanceof simple_name)) {
       utilities.panic("Full name of " + the_type + ", parent " + parent);
     }
 
-    construct parent_name = new name_construct(parent.short_name(), the_origin);
-    return make_full_name(new resolve_construct(parent_name, name, the_origin), parent, the_origin);
+    return make_resolve(make_parent_name(parent, is_import, the_origin), parent.short_name(),
+        the_origin);
   }
 
   protected construct make_imported_type(principal_type the_type, origin the_origin) {
-    construct name = new name_construct(get_simple_name(the_type), the_origin);
-    name = make_imported_full_name(name, the_type, the_origin);
-
-    return name;
-  }
-
-  protected construct make_imported_full_name(construct name, principal_type the_type,
-      origin the_origin) {
-    @Nullable principal_type parent = the_type.get_parent();
-    if (parent == null) {
-      return name;
-    }
-
-    if (! (parent.short_name() instanceof simple_name)) {
-      utilities.panic("Full name of " + the_type + ", parent " + parent);
-    }
-
-    construct parent_name = new name_construct(parent.short_name(), the_origin);
-    return make_full_name(new resolve_construct(parent_name, name, the_origin), parent, the_origin);
+    action_name the_name = get_simple_name(the_type);
+    return make_resolve(make_parent_name(the_type, true, the_origin), the_name, the_origin);
   }
 
   @Override
@@ -1259,8 +1246,8 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct do_explicitly_derefence(construct the_construct, origin the_origin) {
-    construct get_construct = new resolve_construct(the_construct,
-        new name_construct(common_library.get_name, the_origin), the_origin);
+    construct get_construct = new resolve_construct(the_construct, common_library.get_name,
+        the_origin);
     return new parameter_construct(get_construct, new empty<construct>(), grouping_type.PARENS,
         the_origin);
   }
@@ -1336,8 +1323,7 @@ public class to_java_transformer extends base_transformer {
             construct main = transform_action(lhs2.the_procedure_action);
             readonly_list<construct> set_params =
                 new base_list<construct>(transform_action(plhs.first()), rhs);
-            construct set = new resolve_construct(main, new name_construct(SET_NAME, the_origin),
-                the_origin);
+            construct set = new resolve_construct(main, SET_NAME, the_origin);
             return make_call(set, set_params, the_origin);
           }
         }
@@ -1345,8 +1331,7 @@ public class to_java_transformer extends base_transformer {
       if (is_explicit_reference(lhs)) {
         construct main = transform_action(lhs);
         readonly_list<construct> set_params = new base_list<construct>(rhs);
-        construct set = new resolve_construct(main, new name_construct(SET_NAME, the_origin),
-            the_origin);
+        construct set = new resolve_construct(main, SET_NAME, the_origin);
         return make_call(set, set_params, the_origin);
       }
       // TODO: this should be generic...
@@ -1373,7 +1358,7 @@ public class to_java_transformer extends base_transformer {
     } else if (the_operator == operator.CONCATENATE) {
       if (!is_string_type(arguments.get(0)) || !is_string_type(arguments.get(1))) {
         construct concatenation = new resolve_construct(make_type(java_library.runtime_util_class(),
-            the_origin), new name_construct(CONCATENATE_NAME, the_origin), the_origin);
+            the_origin), CONCATENATE_NAME, the_origin);
         return make_call(concatenation, transform_parameters(arguments), the_origin);
       }
     }
@@ -1401,7 +1386,7 @@ public class to_java_transformer extends base_transformer {
 
   private construct objects_equal(readonly_list<action> arguments, origin the_origin) {
     construct values_equal = new resolve_construct(make_type(java_library.runtime_util_class(),
-        the_origin), new name_construct(OBJECTS_EQUAL_NAME, the_origin), the_origin);
+        the_origin), OBJECTS_EQUAL_NAME, the_origin);
     return make_call(values_equal, transform_parameters(arguments), the_origin);
   }
 
@@ -1728,19 +1713,17 @@ public class to_java_transformer extends base_transformer {
         return make_null(the_origin);
       }
       construct type_construct = make_type(singleton_type, the_origin);
-      construct name_construct = new name_construct(type_kinds.INSTANCE_NAME, the_origin);
-      return new resolve_construct(type_construct, name_construct, the_origin);
+      return new resolve_construct(type_construct, type_kinds.INSTANCE_NAME, the_origin);
     } else if (the_value instanceof integer_value) {
       integer_value the_integer_value = (integer_value) the_value;
       return new literal_construct(new integer_literal(the_integer_value.unwrap()), the_origin);
     } else if (the_value instanceof enum_value) {
       enum_value the_enum_value = (enum_value) the_value;
-      construct the_name_construct = new name_construct(the_enum_value.short_name(), the_origin);
       if (the_enum_value.type_bound() == library().immutable_boolean_type()) {
-        return the_name_construct;
+        return new name_construct(the_enum_value.short_name(), the_origin);
       } else {
         return new resolve_construct(make_type(the_enum_value.type_bound(), the_origin),
-            the_name_construct, the_origin);
+            the_enum_value.short_name(), the_origin);
       }
     } else if (the_value instanceof string_value) {
       string_value the_string_value = (string_value) the_value;
@@ -1760,17 +1743,15 @@ public class to_java_transformer extends base_transformer {
       return result;
     } else if (the_value instanceof base_procedure) {
       base_procedure the_procedure = (base_procedure) the_value;
-      construct the_name_construct =
-          new name_construct(map_name(the_procedure.name()), the_origin);
+      action_name the_name = map_name(the_procedure.name());
       procedure_declaration the_procedure_declaration =
           (procedure_declaration) the_procedure.get_declaration();
-    //System.out.println("PROC: " + the_procedure_declaration);
       if (the_procedure_declaration == null) {
-        return the_name_construct;
+        return new name_construct(the_name, the_origin);
       } else {
         return new resolve_construct(
             make_type(the_procedure_declaration.declared_in_type(), the_origin),
-            the_name_construct, the_origin);
+            the_name, the_origin);
       }
     } else if (the_value instanceof procedure_with_this) {
       procedure_with_this the_procedure_with_this = (procedure_with_this) the_value;
@@ -1781,8 +1762,7 @@ public class to_java_transformer extends base_transformer {
       if (the_action_name == special_name.IMPLICIT_CALL) {
         return this_construct;
       } else {
-        construct name = new name_construct(map_name(the_action_name), the_origin);
-        return new resolve_construct(this_construct, name, the_origin);
+        return new resolve_construct(this_construct, map_name(the_action_name), the_origin);
       }
     } else if (the_value instanceof loop_jump_wrapper) {
       loop_jump_wrapper the_loop_jump_wrapper = (loop_jump_wrapper) the_value;
@@ -1861,24 +1841,22 @@ public class to_java_transformer extends base_transformer {
       action primary = the_dispatch_action.get_primary();
       if (primary instanceof variable_action) {
         variable_action the_variable_action = (variable_action) primary;
-        name_construct the_name_construct =
-            new name_construct(map_name(the_variable_action.short_name()), the_origin);
+        action_name the_name = map_name(the_variable_action.short_name());
         construct result;
         if (from_construct == null) {
-          result = the_name_construct;
+          result = new name_construct(the_name, the_origin);
         } else {
-          result = new resolve_construct(from_construct, the_name_construct, the_origin);
+          result = new resolve_construct(from_construct, the_name, the_origin);
         }
         return maybe_call(the_variable_action, result, the_origin);
       } else if (primary instanceof value_action) {
         base_procedure the_procedure = (base_procedure) ((value_action) primary).the_value;
         action_name the_name = map_name(the_procedure.name());
         if (the_name != special_name.IMPLICIT_CALL) {
-          name_construct the_name_construct = new name_construct(the_name, the_origin);
           if (from_construct == null) {
-            return the_name_construct;
+            return new name_construct(the_name, the_origin);
           } else {
-            return new resolve_construct(from_construct, the_name_construct, the_origin);
+            return new resolve_construct(from_construct, the_name, the_origin);
           }
         } else {
           return from_construct;
@@ -1892,26 +1870,25 @@ public class to_java_transformer extends base_transformer {
     if (the_action instanceof variable_action) {
       variable_action the_variable_action = (variable_action) the_action;
       // TODO: handle from
-      name_construct name = new name_construct(map_name(the_variable_action.short_name()),
-          the_origin);
+      action_name the_name = map_name(the_variable_action.short_name());
       if (the_variable_action instanceof static_variable) {
         return new resolve_construct(
             make_type(the_variable_action.the_declaration.declared_in_type(), the_origin),
-            name, the_origin);
+            the_name, the_origin);
       } else if (the_variable_action instanceof instance_variable) {
         assert the_variable_action.from != null;
         construct from = transform_and_maybe_rewrite(the_variable_action.from);
-        construct result = new resolve_construct(from, name, the_origin);
+        construct result = new resolve_construct(from, the_name, the_origin);
         return maybe_call(the_variable_action, result, the_origin);
       } else if (the_variable_action instanceof local_variable &&
           the_variable_action.short_name() == special_name.THIS) {
         principal_type this_type = the_variable_action.value_type().principal();
         if (this_type != enclosing_type) {
           name_construct from = new name_construct(this_type.short_name(), the_origin);
-          return new resolve_construct(from, name, the_origin);
+          return new resolve_construct(from, the_name, the_origin);
         }
       }
-      return name;
+      return new name_construct(the_name, the_origin);
     }
 
     if (the_action instanceof bound_procedure) {
@@ -2060,8 +2037,7 @@ public class to_java_transformer extends base_transformer {
       procedure_declaration proc_decl = (procedure_declaration) the_declaration;
       if (proc_decl.get_category() != procedure_category.CONSTRUCTOR &&
           proc_decl.annotations().has(implicit_modifier) && parameters.size() == 1) {
-        main = new resolve_construct(main, new name_construct(proc_decl.original_name(),
-            the_origin), the_origin);
+        main = new resolve_construct(main, proc_decl.original_name(), the_origin);
       } else if (proc_decl.short_name() == special_name.IMPLICIT_CALL) {
         procedure_with_this the_procedure_with_this = (procedure_with_this) the_procedure;
         assert the_procedure_with_this != null;
@@ -2072,7 +2048,7 @@ public class to_java_transformer extends base_transformer {
 
     // TODO: better way to detect procedure variables?
     if (is_procedure_variable(declaration_util.get_declaration(the_procedure_action))) {
-      main = new resolve_construct(main, new name_construct(CALL_NAME, the_origin), the_origin);
+      main = new resolve_construct(main, CALL_NAME, the_origin);
     }
 
     construct transformed = make_call(main, parameters, the_origin);

@@ -188,8 +188,10 @@ public class procedure_analyzer extends declaration_analyzer
 
       if (original_body != null) {
         readonly_list<analyzable> body_statements;
+        origin body_origin = this;
         if (original_body instanceof block_analyzer) {
           analyzable inside_body = ((block_analyzer) original_body).get_body();
+          body_origin = original_body.deeper_origin();
           if (inside_body instanceof statement_list_analyzer) {
             body_statements = ((statement_list_analyzer) inside_body).elements();
           } else {
@@ -207,7 +209,7 @@ public class procedure_analyzer extends declaration_analyzer
         if (category == procedure_category.CONSTRUCTOR) {
           body_statements = rewrite_ctor_body(body_statements);
         }
-        body = new statement_list_analyzer(body_statements, this);
+        body = new statement_list_analyzer(body_statements, body_origin);
       }
 
       return process_declaration();

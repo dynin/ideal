@@ -12,11 +12,7 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-import javax.annotation.Nullable;
-
-public interface annotation_set extends immutable_data {
-  access_modifier access_level();
+public interface annotation_set extends analyzable, analysis_result, readonly_annotation_set, writeonly_annotation_set {
   boolean has(modifier_kind the_kind);
-  @Nullable documentation the_documentation();
-  immutable_list<origin> origins();
+  @Override analysis_result analyze();
 }

@@ -6,10 +6,14 @@
 
 --- Annotation and documentation associated with a declaration.
 interface annotation_set {
-  extends immutable data;
+  extends analyzable, analysis_result;
 
   access_modifier access_level;
   boolean has(modifier_kind the_kind);
   documentation or null the_documentation;
   immutable list[origin] origins;
+
+  override analysis_result analyze();
+  override analyzable specialize(specialization_context context,
+      principal_type new_parent) pure;
 }

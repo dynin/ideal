@@ -12,4 +12,4 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface deeply_immutable_annotation_set extends deeply_immutable_analyzable, deeply_immutable_analysis_result, immutable_annotation_set { }
+public interface writeonly_annotation_set extends writeonly_analyzable, writeonly_analysis_result, any_annotation_set { }

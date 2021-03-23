@@ -55,12 +55,38 @@ public class base_annotation_set extends debuggable implements annotation_set {
   }
 
   @Override
+  public origin deeper_origin() {
+    // TODO: update this.
+    if (origins.is_empty()) {
+      return null;
+    } else {
+      return origins.first();
+    }
+  }
+
+  // TODO: drop this.
+  @Override
   public immutable_list<origin> origins() {
     return origins;
   }
 
   public readonly_list<modifier_kind> modifiers() {
     return the_modifiers.elements();
+  }
+
+  @Override
+  public boolean has_errors() {
+    return false;
+  }
+
+  @Override
+  public base_annotation_set analyze() {
+    return this;
+  }
+
+  @Override
+  public base_annotation_set specialize(specialization_context context, principal_type new_parent) {
+    return this;
   }
 
   public base_annotation_set update_documentation(@Nullable documentation new_documentation) {

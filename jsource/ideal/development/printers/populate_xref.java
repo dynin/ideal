@@ -155,18 +155,18 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_name(name_construct c) {
-    if (c == skip_construct || !(c.the_name instanceof simple_name)) {
-      return null;
+    if (c != skip_construct && c.the_name instanceof simple_name) {
+      populate_name(c);
     }
 
-    return populate_name(c);
+    return null;
   }
 
-  public Void populate_name(construct c) {
+  public void populate_name(construct c) {
     @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
     if (the_analyzable == null || the_analyzable.has_errors()) {
       add_fragment(c);
-      return null;
+      return;
     }
 
     analysis_result result = the_analyzable.analyze();
@@ -178,14 +178,12 @@ public class populate_xref extends construct_visitor<Void> implements value {
           ((value_action) result).result().type_bound().principal().get_declaration();
       assert the_declaration != null;
       add_xref(the_declaration, xref_mode.USE, c);
-      return null;
+      return;
     }
 
     declaration the_declaration = the_xref_context.origin_to_declaration(c);
     assert the_declaration != null;
     add_xref(the_declaration, xref_mode.USE, c);
-
-    return null;
   }
 
   private void add_xref(declaration the_declaration, xref_mode mode, construct the_construct) {

@@ -57,7 +57,6 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
   public void traverse(analyzer_visitor the_visitor) {
     the_visitor.pre_visit(this);
     traverse_children(the_visitor);
-    the_visitor.post_visit(this);
   }
 
   protected abstract void traverse_children(analyzer_visitor the_visitor);

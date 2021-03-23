@@ -25,6 +25,7 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 import ideal.development.comments.*;
+import ideal.development.extensions.not_yet_implemented_extension;
 
 public class mapping_visitor extends analyzer_visitor {
 
@@ -40,9 +41,6 @@ public class mapping_visitor extends analyzer_visitor {
     put_analyzable((construct) the_origin, the_analyzable);
   }
 
-  public void post_visit(base_analyzer the_analyzable) {
-  }
-
   public void visit_annotations(base_analyzer the_analyzable, annotation_set the_annotation_set) {
     immutable_list<origin> origins =  the_annotation_set.origins();
     for (int i = 0; i < origins.size(); ++i) {
@@ -53,20 +51,42 @@ public class mapping_visitor extends analyzer_visitor {
     }
   }
 
-  public @Nullable analyzable get_analyzable(construct c) {
-    return mapping.get(c);
+  public @Nullable analyzable get_analyzable(construct the_construct) {
+    return mapping.get(the_construct);
   }
 
-  public void put_analyzable(construct c, analyzable a) {
-    if (mapping.get(c) != null) {
-      if (c instanceof supertype_construct) {
+  public void put_analyzable(construct the_construct, analyzable the_analyzable) {
+    if (mapping.get(the_construct) != null) {
+      if (the_construct instanceof supertype_construct) {
         // TODO: handle multiple supertypes
       } else {
-        utilities.panic("C " + c + " OLD " + mapping.get(c) + " NEW " + a);
+        utilities.panic("C " + the_construct + " OLD " + mapping.get(the_construct) + " NEW " +
+            the_analyzable);
       }
     }
-    mapping.put(c, a);
+
+    // TODO: add a boolean flag to declaration_extension
+    if (the_analyzable instanceof not_yet_implemented_extension) {
+      declaration_extension the_extension = (declaration_extension) the_analyzable;
+      declaration the_declaration = the_extension.get_declaration();
+      origin the_origin = the_declaration.deeper_origin();
+      if (the_origin instanceof construct) {
+        deep_map((construct) the_origin, the_declaration);
+      }
+    }
+
+    mapping.put(the_construct, the_analyzable);
   }
+
+  private void deep_map(construct the_construct, analyzable the_analyzable) {
+    put_analyzable(the_construct, the_analyzable);
+    readonly_list<construct> children = the_construct.children();
+    for (int i = 0; i < children.size(); ++i) {
+      deep_map(children.get(i), the_analyzable);
+    }
+  }
+
+
 
   @Override
   public string to_string() {

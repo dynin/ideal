@@ -35,8 +35,6 @@ public abstract class analyzer_visitor extends debuggable {
 
   public abstract void pre_visit(base_analyzer the_analyzable);
 
-  public abstract void post_visit(base_analyzer the_analyzable);
-
   public void visit_all(@Nullable readonly_list<analyzable> analyzables) {
     if (analyzables == null) {
       return;

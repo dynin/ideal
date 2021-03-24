@@ -25,13 +25,19 @@ import ideal.development.declarations.*;
 
 public class base_analyzable_action extends debuggable implements analyzable_action {
   private final action the_action;
+  private final @Nullable analyzable child;
 
-  public base_analyzable_action(action the_action) {
+  public base_analyzable_action(action the_action, @Nullable analyzable child) {
     if (the_action instanceof analyzable) {
       // TODO: may be do a static method that enforces this?
       utilities.panic("Don't wrap " + the_action);
     }
     this.the_action = the_action;
+    this.child = child;
+  }
+
+  public base_analyzable_action(action the_action) {
+    this(the_action, null);
   }
 
   public static analyzable_action from(abstract_value value, origin the_origin) {
@@ -60,7 +66,11 @@ public class base_analyzable_action extends debuggable implements analyzable_act
 
   @Override
   public readonly_list<analyzable> children() {
-    return new empty<analyzable>();
+    if (child != null) {
+      return new base_list<analyzable>(child);
+    } else {
+      return new empty<analyzable>();
+    }
   }
 
   @Override

@@ -119,9 +119,16 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
         new type_parameters(new base_list<abstract_value>(element_type))).get_flavored(
         flavor.readonly_flavor);
 
+    origin list_origin;
+    if (source instanceof list_iteration_construct) {
+      list_origin = ((list_iteration_construct) source).var_decl;
+    } else {
+      list_origin = the_origin;
+    }
     local_variable_declaration list_declaration =
         new local_variable_declaration(analyzer_utilities.PRIVATE_FINAL_MODIFIERS, list_name,
-        flavor.immutable_flavor, list_type, new base_analyzable_action(init_action), the_origin);
+        flavor.immutable_flavor, list_type, new base_analyzable_action(init_action, init),
+        list_origin);
     maybe_associate_var(list_declaration);
 
     local_variable_declaration index_declaration = new local_variable_declaration(
@@ -168,14 +175,18 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
         annotations, element_name, flavor.immutable_flavor, element_type, element_get, the_origin);
 
     list<analyzable> body_list = new base_list<analyzable>(element_declaration);
+    origin body_origin;
     if (body instanceof block_analyzer) {
-      body_list.append(((block_analyzer) body).get_body());
+      block_analyzer the_block_analyzer = (block_analyzer) body;
+      body_list.append(the_block_analyzer.get_body());
+      body_origin = the_block_analyzer.source;
     } else {
       body_list.append(body);
+      body_origin = the_origin;
     }
     statement_list_analyzer body_statements = new statement_list_analyzer(body_list, the_origin);
 
-    block_analyzer body_block = new block_analyzer(body_statements, the_origin);
+    block_analyzer body_block = new block_analyzer(body_statements, body_origin);
 
     for_analyzer for_statement = new for_analyzer(
         index_declaration,

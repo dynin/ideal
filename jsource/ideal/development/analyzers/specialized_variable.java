@@ -94,6 +94,11 @@ public class specialized_variable extends debuggable implements variable_declara
   }
 
   @Override
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
+
+  @Override
   public specialized_variable specialize(specialization_context context,
       principal_type new_parent) {
     utilities.panic("specialized_variable.specialize() not implemented");

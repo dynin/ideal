@@ -6,4 +6,5 @@ import ideal.library.elements.*;
 
 public interface analyzable extends origin, readonly_analyzable, writeonly_analyzable {
   analysis_result analyze();
+  readonly_list<analyzable> children();
 }

@@ -12,7 +12,7 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface annotation_set extends analyzable, analysis_result, readonly_annotation_set, writeonly_annotation_set {
+public interface annotation_set extends analyzable, analysis_result, data, readonly_annotation_set, writeonly_annotation_set {
   boolean has(modifier_kind the_kind);
   @Override analysis_result analyze();
 }

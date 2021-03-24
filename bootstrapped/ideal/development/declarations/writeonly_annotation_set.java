@@ -12,4 +12,4 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface writeonly_annotation_set extends writeonly_analyzable, writeonly_analysis_result, any_annotation_set { }
+public interface writeonly_annotation_set extends writeonly_analyzable, writeonly_analysis_result, writeonly_data, any_annotation_set { }

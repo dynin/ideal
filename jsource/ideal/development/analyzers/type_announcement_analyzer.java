@@ -49,11 +49,13 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit(external_declaration);
-    // TODO: casts are redundant.
-    //the_visitor.visit_all((readonly_list<analyzable>) (readonly_list) external_declarations());
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+    result.append(annotations());
+    if (external_declaration != null) {
+      result.append(external_declaration);
+    }
+    return result;
   }
 
   @Override

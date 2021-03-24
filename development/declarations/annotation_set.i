@@ -7,6 +7,7 @@
 --- Annotation and documentation associated with a declaration.
 interface annotation_set {
   extends analyzable, analysis_result;
+  extends data;
 
   access_modifier access_level;
   boolean has(modifier_kind the_kind);

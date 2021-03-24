@@ -46,9 +46,11 @@ public class target_declaration extends declaration_analyzer<target_construct> {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit(expression);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+    result.append(annotations());
+    result.append(expression);
+    return result;
   }
 
   @Override

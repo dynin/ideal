@@ -35,7 +35,9 @@ public class jump_analyzer extends single_pass_analyzer {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) { }
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
 
   @Override
   protected analysis_result do_single_pass_analysis() {

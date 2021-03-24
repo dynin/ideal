@@ -51,8 +51,8 @@ public class loop_analyzer extends single_pass_analyzer implements declaration {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit(body);
+  public readonly_list<analyzable> children() {
+    return new base_list<analyzable>(body);
   }
 
   @Override

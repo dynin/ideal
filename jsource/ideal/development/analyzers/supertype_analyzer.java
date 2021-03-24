@@ -59,9 +59,11 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit(the_analyzable);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+    result.append(annotations());
+    result.append(the_analyzable);
+    return result;
   }
 
   @Override

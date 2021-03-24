@@ -12,4 +12,4 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 
-public interface any_annotation_set extends any_analyzable, any_analysis_result { }
+public interface any_annotation_set extends any_analyzable, any_analysis_result, any_data { }

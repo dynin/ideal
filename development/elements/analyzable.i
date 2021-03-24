@@ -17,5 +17,8 @@ interface analyzable {
   --- If there is an error this method returns an |error_signal|.
   analysis_result analyze();
 
+  --- Get direct children in the tree of |analyzable|s.
+  readonly list[analyzable] children();
+
   analyzable specialize(specialization_context context, principal_type new_parent) pure;
 }

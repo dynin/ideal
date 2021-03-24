@@ -144,6 +144,11 @@ public class specialized_procedure extends debuggable implements procedure_decla
   }
 
   @Override
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
+
+  @Override
   public specialized_procedure specialize(specialization_context dictionary,
       principal_type new_parent) {
     utilities.panic("specialized_procedure.specialize() not implemented");

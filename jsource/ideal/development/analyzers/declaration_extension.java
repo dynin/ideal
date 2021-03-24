@@ -106,9 +106,13 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
+  public readonly_list<analyzable> children() {
     assert is_expanded_set;
-    the_visitor.visit(expanded);
+    if (expanded != null) {
+      return new base_list<analyzable>(expanded);
+    } else {
+      return new empty<analyzable>();
+    }
   }
 
   protected signal do_multi_pass_analysis(analysis_pass pass) {

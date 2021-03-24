@@ -59,6 +59,11 @@ public class base_analyzable_action extends debuggable implements analyzable_act
   }
 
   @Override
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
+
+  @Override
   public analyzable specialize(specialization_context context, principal_type new_parent) {
     return this;
   }

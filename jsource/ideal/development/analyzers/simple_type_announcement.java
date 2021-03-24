@@ -87,6 +87,11 @@ public class simple_type_announcement extends debuggable implements type_announc
   }
 
   @Override
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
+
+  @Override
   public analyzable specialize(specialization_context context, principal_type new_parent) {
     return this;
   }

@@ -32,9 +32,8 @@ public class import_analyzer extends declaration_analyzer<import_construct>
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit(type_analyzable);
+  public readonly_list<analyzable> children() {
+    return new base_list<analyzable>(annotations(), type_analyzable);
   }
 
   @Override

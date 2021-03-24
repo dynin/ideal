@@ -53,8 +53,8 @@ public class statement_list_analyzer extends single_pass_analyzer {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_all(the_elements);
+  public readonly_list<analyzable> children() {
+    return the_elements;
   }
 
   @Override

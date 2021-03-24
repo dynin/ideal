@@ -60,8 +60,8 @@ public class declaration_list extends multi_pass_analyzer implements declaration
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_all(the_elements);
+  public readonly_list<analyzable> children() {
+    return the_elements;
   }
 
   @Override

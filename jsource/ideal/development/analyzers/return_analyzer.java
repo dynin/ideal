@@ -38,8 +38,12 @@ public class return_analyzer extends single_pass_analyzer {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit(the_expression);
+  public readonly_list<analyzable> children() {
+    if (the_expression != null) {
+      return new base_list<analyzable>(the_expression);
+    } else {
+      return new empty<analyzable>();
+    }
   }
 
   @Override

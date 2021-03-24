@@ -185,10 +185,18 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit_all((readonly_list<analyzable>) (readonly_list) parameters);
-    the_visitor.visit_all(body);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+
+    result.append(annotations());
+    if (parameters != null) {
+      result.append_all((readonly_list<analyzable>) (readonly_list) parameters);
+    }
+    if (body != null) {
+      result.append_all(body);
+    }
+
+    return result;
   }
 
   @Override

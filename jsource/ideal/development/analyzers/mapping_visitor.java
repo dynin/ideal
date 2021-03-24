@@ -27,21 +27,31 @@ import ideal.development.declarations.*;
 import ideal.development.comments.*;
 import ideal.development.extensions.not_yet_implemented_extension;
 
-public class mapping_visitor extends analyzer_visitor {
+public class mapping_visitor extends debuggable {
 
   private final dictionary<construct, analyzable> mapping =
       new hash_dictionary<construct, analyzable>();
 
-  public void pre_visit(base_analyzer the_analyzable) {
+  public void visit(analyzable the_analyzable) {
     origin the_origin = the_analyzable.deeper_origin();
-    if (!(the_origin instanceof construct)) {
+    if (the_origin instanceof construct) {
       // System.out.println("A " + the_analyzable + " O " + the_origin);
-      return;
+      put_analyzable((construct) the_origin, the_analyzable);
     }
-    put_analyzable((construct) the_origin, the_analyzable);
+
+    readonly_list<analyzable> children = the_analyzable.children();
+
+    for (int i = 0; i < children.size(); ++i) {
+      analyzable child = children.get(i);
+      if (child instanceof annotation_set) {
+        visit_annotations(the_analyzable, (annotation_set) child);
+      } else {
+        visit(child);
+      }
+    }
   }
 
-  public void visit_annotations(base_analyzer the_analyzable, annotation_set the_annotation_set) {
+  private void visit_annotations(analyzable the_analyzable, annotation_set the_annotation_set) {
     immutable_list<origin> origins =  the_annotation_set.origins();
     for (int i = 0; i < origins.size(); ++i) {
       origin the_origin = origins.get(i);
@@ -85,8 +95,6 @@ public class mapping_visitor extends analyzer_visitor {
       deep_map(children.get(i), the_analyzable);
     }
   }
-
-
 
   @Override
   public string to_string() {

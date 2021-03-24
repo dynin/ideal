@@ -57,6 +57,11 @@ public class error_signal extends debuggable implements signal, analyzable {
   }
 
   @Override
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
+
+  @Override
   public analyzable specialize(specialization_context context, principal_type new_parent) {
     return this;
   }

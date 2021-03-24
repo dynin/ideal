@@ -155,11 +155,19 @@ public class procedure_analyzer extends declaration_analyzer
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit(return_analyzable);
-    the_visitor.visit_all((readonly_list<analyzable>) (readonly_list) parameter_variables);
-    the_visitor.visit(body);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+
+    result.append(annotations());
+    if (return_analyzable != null) {
+      result.append(return_analyzable);
+    }
+    result.append_all((readonly_list<analyzable>) (readonly_list) parameter_variables);
+    if (body != null) {
+      result.append(body);
+    }
+
+    return result;
   }
 
   @Override

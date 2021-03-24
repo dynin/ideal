@@ -215,6 +215,11 @@ public class specialized_type_declaration extends debuggable implements type_dec
   }
 
   @Override
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
+
+  @Override
   public origin deeper_origin() {
     return main_declaration;
   }

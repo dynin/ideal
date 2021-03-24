@@ -39,8 +39,8 @@ public class list_initializer_analyzer extends single_pass_analyzer {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_all(analyzable_parameters);
+  public readonly_list<analyzable> children() {
+    return analyzable_parameters;
   }
 
   @Override

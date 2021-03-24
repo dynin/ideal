@@ -113,10 +113,16 @@ public class variable_analyzer extends declaration_analyzer
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit(variable_type);
-    the_visitor.visit(init);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+    result.append(annotations());
+    if (variable_type != null) {
+      result.append(variable_type);
+    }
+    if (init != null) {
+      result.append(init);
+    }
+    return result;
   }
 
   @Override

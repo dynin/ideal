@@ -63,10 +63,13 @@ public class parameter_analyzer extends single_pass_analyzer {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit(main_analyzable);
-    the_visitor.visit_all(analyzable_parameters);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+    result.append(main_analyzable);
+    result.append_all(analyzable_parameters);
+    return result;
   }
+
 
   @Override
   protected analysis_result do_single_pass_analysis() {

@@ -75,6 +75,11 @@ public class base_annotation_set extends debuggable implements annotation_set {
   }
 
   @Override
+  public readonly_list<analyzable> children() {
+    return new empty<analyzable>();
+  }
+
+  @Override
   public boolean has_errors() {
     return false;
   }

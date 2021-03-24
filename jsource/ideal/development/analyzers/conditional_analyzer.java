@@ -42,10 +42,14 @@ public class conditional_analyzer extends single_pass_analyzer {
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit(condition);
-    the_visitor.visit(then_branch);
-    the_visitor.visit(else_branch);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+    result.append(condition);
+    result.append(then_branch);
+    if (else_branch != null) {
+      result.append(else_branch);
+    }
+    return result;
   }
 
   @Override

@@ -67,9 +67,8 @@ public class local_variable_declaration extends single_pass_analyzer
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations);
-    the_visitor.visit(init_analyzable);
+  public readonly_list<analyzable> children() {
+    return new base_list<analyzable>(annotations, init_analyzable);
   }
 
   @Override

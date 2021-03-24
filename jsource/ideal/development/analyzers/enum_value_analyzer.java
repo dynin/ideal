@@ -88,9 +88,15 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   }
 
   @Override
-  protected void traverse_children(analyzer_visitor the_visitor) {
-    the_visitor.visit_annotations(this, annotations());
-    the_visitor.visit(constructor_call);
+  public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
+
+    result.append(annotations());
+    if (constructor_call != null) {
+      result.append(constructor_call);
+    }
+
+    return result;
   }
 
   @Override
@@ -99,7 +105,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       set_annotations(new base_annotation_set(access_modifier.public_modifier,
           new hash_set<modifier_kind>(), null, new empty<origin>()));
-      // TODO: make thsi work with analyzer_visitor.
+      // TODO: make thsi work with mapping_visitor.
       if (the_name_construct != deeper_origin()) {
         associate_with_this(the_name_construct);
       }

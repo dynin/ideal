@@ -64,8 +64,6 @@ public class base_annotation_set extends debuggable implements annotation_set {
     }
   }
 
-  // TODO: drop this.
-  @Override
   public immutable_list<origin> origins() {
     return origins;
   }

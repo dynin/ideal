@@ -43,16 +43,16 @@ public class mapping_visitor extends debuggable {
 
     for (int i = 0; i < children.size(); ++i) {
       analyzable child = children.get(i);
-      if (child instanceof annotation_set) {
-        visit_annotations(the_analyzable, (annotation_set) child);
+      if (child instanceof base_annotation_set) {
+        visit_annotations(the_analyzable, (base_annotation_set) child);
       } else {
         visit(child);
       }
     }
   }
 
-  private void visit_annotations(analyzable the_analyzable, annotation_set the_annotation_set) {
-    immutable_list<origin> origins =  the_annotation_set.origins();
+  private void visit_annotations(analyzable the_analyzable, base_annotation_set annotations) {
+    immutable_list<origin> origins =  annotations.origins();
     for (int i = 0; i < origins.size(); ++i) {
       origin the_origin = origins.get(i);
       if (the_origin instanceof construct) {

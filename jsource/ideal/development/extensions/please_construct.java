@@ -35,7 +35,7 @@ public class please_construct extends extension_construct {
 
   @Override
   public analyzable to_analyzable() {
-    return base_analyzer.make(the_statement);
+    return new grouping_analyzer(base_analyzer.make(the_statement), this);
   }
 
   @Override
@@ -58,5 +58,10 @@ public class please_construct extends extension_construct {
   @Override
   public construct transform(transformer the_transformer) {
     return new please_construct(the_transformer.transform(the_statement), this);
+  }
+
+  @Override
+  public string to_string() {
+    return utilities.describe(this, the_statement.to_string());
   }
 }

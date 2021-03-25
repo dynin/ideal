@@ -156,7 +156,8 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
         context.put_analyzable(source, the_analyzable);
       } else if (before != the_analyzable) {
         if (the_analyzable instanceof declaration_extension ||
-            source instanceof supertype_construct) {
+            source instanceof supertype_construct ||
+            before instanceof enum_value_analyzer) {
           //log.debug("Override for " + source + ": " + before + " & " + the_analyzable);
           //context.put_analyzable(source, the_analyzable);
         } else {

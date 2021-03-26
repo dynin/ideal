@@ -1791,11 +1791,32 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
+  // This cleans up grouping_analyzers generated when processing please_construct.
+  private @Nullable construct strip_grouping(action the_action) {
+    if (the_action instanceof extension_action) {
+      analyzable extension_analyzable = ((extension_action) the_action).get_extension();
+      analyzable the_analyzable = extension_analyzable;
+      while (the_analyzable instanceof grouping_analyzer) {
+        the_analyzable = ((grouping_analyzer) the_analyzable).expression;
+      }
+      if (the_analyzable != extension_analyzable) {
+        return transform_analyzable(the_analyzable);
+      }
+    }
+    return null;
+  }
+
   private void transform_and_append(action the_action, list<construct> result) {
     if (the_action instanceof list_action) {
       readonly_list<action> actions = ((list_action) the_action).elements();
       for (int i = 0; i < actions.size(); ++i) {
-        transform_and_append(actions.get(i), result);
+        action element_action = actions.get(i);
+        @Nullable construct stripped_grouping = strip_grouping(element_action);
+        if (stripped_grouping != null) {
+          result.append(stripped_grouping);
+        } else {
+          transform_and_append(element_action, result);
+        }
       }
     } else {
       result.append(transform_action(the_action));

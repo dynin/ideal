@@ -25,7 +25,6 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 import ideal.development.comments.*;
-import ideal.development.extensions.not_yet_implemented_extension;
 
 public class mapping_visitor extends debuggable {
 
@@ -49,6 +48,15 @@ public class mapping_visitor extends debuggable {
         visit(child);
       }
     }
+
+    if (the_analyzable instanceof declaration_extension) {
+      declaration_extension the_extension = (declaration_extension) the_analyzable;
+      declaration the_declaration = the_extension.get_declaration();
+      origin declaration_origin = the_declaration.deeper_origin();
+      if (declaration_origin instanceof construct) {
+        deep_map((construct) declaration_origin, the_declaration);
+      }
+    }
   }
 
   private void visit_annotations(analyzable the_analyzable, base_annotation_set annotations) {
@@ -65,7 +73,7 @@ public class mapping_visitor extends debuggable {
     return mapping.get(the_construct);
   }
 
-  public void put_analyzable(construct the_construct, analyzable the_analyzable) {
+  private void put_analyzable(construct the_construct, analyzable the_analyzable) {
     if (mapping.get(the_construct) != null) {
       if (the_construct instanceof supertype_construct) {
         // TODO: handle multiple supertypes
@@ -75,21 +83,16 @@ public class mapping_visitor extends debuggable {
       }
     }
 
-    // TODO: add a boolean flag to declaration_extension
-    if (the_analyzable instanceof not_yet_implemented_extension) {
-      declaration_extension the_extension = (declaration_extension) the_analyzable;
-      declaration the_declaration = the_extension.get_declaration();
-      origin the_origin = the_declaration.deeper_origin();
-      if (the_origin instanceof construct) {
-        deep_map((construct) the_origin, the_declaration);
-      }
-    }
-
     mapping.put(the_construct, the_analyzable);
   }
 
   private void deep_map(construct the_construct, analyzable the_analyzable) {
+    if (mapping.get(the_construct) != null) {
+      return;
+    }
+
     put_analyzable(the_construct, the_analyzable);
+
     readonly_list<construct> children = the_construct.children();
     for (int i = 0; i < children.size(); ++i) {
       deep_map(children.get(i), the_analyzable);

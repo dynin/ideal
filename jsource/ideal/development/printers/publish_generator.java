@@ -50,11 +50,8 @@ public class publish_generator {
     this.processor = processor;
   }
 
-  public analysis_context the_analysis_context() {
-    return the_xref_context.the_analysis_context;
-  }
-
   public void add_type(principal_type the_type) {
+    the_xref_context.process_type(the_type);
     type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
     type_declaration_construct the_declaration_construct = (type_declaration_construct)
@@ -83,7 +80,7 @@ public class publish_generator {
 
           type_announcement_construct the_announcement = to_announcement(the_type_declaration);
           namespace_body.append(the_announcement);
-          the_analysis_context().put_analyzable(the_announcement,
+          the_xref_context.put_analyzable(the_announcement,
               new simple_type_announcement(the_type_declaration, the_announcement));
         }
       }
@@ -91,7 +88,7 @@ public class publish_generator {
           new type_declaration_construct(the_declaration_construct.annotations,
               the_declaration_construct.kind, the_declaration_construct.name,
               the_declaration_construct.parameters, namespace_body, the_declaration_construct);
-      the_analysis_context().put_analyzable(namespace_declaration, (analyzable) the_declaration);
+      the_xref_context.put_analyzable(namespace_declaration, (analyzable) the_declaration);
       the_xref_context.add_output_declaration(the_type, namespace_declaration);
     } else {
       the_xref_context.add_output_declaration(the_type, the_declaration_construct);
@@ -155,7 +152,7 @@ public class publish_generator {
 
   private void populate_declaration(type_declaration_construct the_declaration_construct) {
     type_declaration the_type_declaration = declaration_util.to_type_declaration(
-        the_analysis_context().get_analyzable(the_declaration_construct));
+        the_xref_context.get_analyzable(the_declaration_construct));
     new populate_xref(the_xref_context, the_type_declaration.get_declared_type()).
         process(the_declaration_construct);
   }
@@ -171,7 +168,7 @@ public class publish_generator {
     for (int i = 0; i < constructs.size(); ++i) {
       type_declaration_construct the_declaration_construct = constructs.get(i);
       type_declaration the_declaration = declaration_util.to_type_declaration(
-          the_analysis_context().get_analyzable(the_declaration_construct));
+          the_xref_context.get_analyzable(the_declaration_construct));
       generate_markup(new base_list<construct>(the_declaration_construct),
           the_xref_context.get_naming_strategy(the_declaration.get_declared_type()));
     }

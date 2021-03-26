@@ -33,18 +33,39 @@ public class xref_context extends debuggable {
   private final static int num_modes = xref_mode.values().length;
 
   public final analysis_context the_analysis_context;
+  private final mapping_visitor the_mapping_visitor;
   private final list<type_declaration_construct> the_output_declarations;
   private final dictionary<master_type, naming_strategy> output_types;
   private final dictionary<origin, list<origin>>[] mapping;
 
   public xref_context(analysis_context the_analysis_context) {
     this.the_analysis_context = the_analysis_context;
+    this.the_mapping_visitor = new mapping_visitor();
     this.the_output_declarations = new base_list<type_declaration_construct>();
     this.output_types = new hash_dictionary<master_type, naming_strategy>();
     mapping = new dictionary[num_modes * 2];
     for (int i = 0; i < mapping.length; ++i) {
       mapping[i] = new list_dictionary<origin, list<origin>>();
     }
+  }
+
+  public void process_type(principal_type the_type) {
+    the_mapping_visitor.visit(the_type.get_declaration());
+  }
+
+  public @Nullable analyzable get_analyzable(construct the_construct) {
+    @Nullable analyzable ac = the_analysis_context.get_analyzable(the_construct);
+    @Nullable analyzable mc = the_mapping_visitor.get_analyzable(the_construct);
+    if (false && mc != ac) {
+      System.out.println("C " + the_construct + " A " + ac + " M " + mc);
+    }
+    return ac;
+  }
+
+  public void put_analyzable(construct the_construct, analyzable the_analyzable) {
+    //System.out.println("ADD " + the_construct + " A " + the_analyzable);
+    the_mapping_visitor.put_analyzable(the_construct, the_analyzable);
+    the_analysis_context.put_analyzable(the_construct, the_analyzable);
   }
 
   private master_type normalize(principal_type the_principal_type) {
@@ -63,7 +84,7 @@ public class xref_context extends debuggable {
     output_types.put(normalize(the_type), new naming_strategy(the_type, this));
 
     type_declaration the_type_declaration = declaration_util.to_type_declaration(
-        the_analysis_context.get_analyzable(the_declaration_construct));
+        get_analyzable(the_declaration_construct));
     assert the_type_declaration != null;
     assert the_type_declaration.get_declared_type() == the_type;
     the_output_declarations.append(the_declaration_construct);
@@ -88,7 +109,7 @@ public class xref_context extends debuggable {
     for (int i = 0; i < the_output_declarations.size(); ++i) {
       type_declaration_construct the_declaration_construct = the_output_declarations.get(i);
       type_declaration the_type_declaration = declaration_util.to_type_declaration(
-          the_analysis_context.get_analyzable(the_declaration_construct));
+          get_analyzable(the_declaration_construct));
       assert the_type_declaration != null;
       declarations.append(the_type_declaration);
     }
@@ -134,8 +155,7 @@ public class xref_context extends debuggable {
     if (the_origin instanceof declaration) {
       return (declaration) the_origin;
     } else if (the_origin instanceof construct) {
-      @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(
-          (construct) the_origin);
+      @Nullable analyzable the_analyzable = get_analyzable((construct) the_origin);
 
       if (the_analyzable == null) {
         return null;
@@ -207,7 +227,7 @@ public class xref_context extends debuggable {
 
   public @Nullable principal_type get_enclosing_type(construct the_construct) {
     assert the_construct != null;
-    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
+    @Nullable analyzable the_analyzable = get_analyzable(the_construct);
     if (the_analyzable == null) {
       return null;
     }

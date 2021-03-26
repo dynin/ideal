@@ -50,13 +50,9 @@ public class xref_printer extends base_printer {
     return the_naming_strategy().the_xref_context();
   }
 
-  private analysis_context the_analysis_context() {
-    return the_naming_strategy().the_analysis_context();
-  }
-
   @Override
   protected text_fragment print_type_body(type_declaration_construct the_construct) {
-    analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
+    analyzable the_analyzable = the_xref_context().get_analyzable(the_construct);
 
     type_declaration the_declaration = (type_declaration) the_analyzable;
     if (the_declaration.has_errors()) {
@@ -90,7 +86,7 @@ public class xref_printer extends base_printer {
       return variable_text;
     }
 
-    analyzable the_analyzable = the_analysis_context().get_analyzable(c);
+    analyzable the_analyzable = the_xref_context().get_analyzable(c);
 
     declaration the_declaration = (declaration) the_analyzable;
     if (the_declaration == null) {
@@ -124,7 +120,7 @@ public class xref_printer extends base_printer {
       return procedure_text;
     }
 
-    analyzable the_analyzable = the_analysis_context().get_analyzable(c);
+    analyzable the_analyzable = the_xref_context().get_analyzable(c);
 
     declaration the_declaration = (declaration) the_analyzable;
     if (the_declaration.has_errors()) {

@@ -73,8 +73,11 @@ public class mapping_visitor extends debuggable {
     return mapping.get(the_construct);
   }
 
-  private void put_analyzable(construct the_construct, analyzable the_analyzable) {
+  public void put_analyzable(construct the_construct, analyzable the_analyzable) {
     if (mapping.get(the_construct) != null) {
+      if (mapping.get(the_construct) == the_analyzable) {
+        return;
+      }
       if (the_construct instanceof supertype_construct) {
         // TODO: handle multiple supertypes
       } else {

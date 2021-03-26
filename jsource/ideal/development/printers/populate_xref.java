@@ -32,13 +32,11 @@ import javax.annotation.Nullable;
 
 public class populate_xref extends construct_visitor<Void> implements value {
 
-  private final analysis_context the_analysis_context;
   private final xref_context the_xref_context;
   private final principal_type current_type;
   private @Nullable construct skip_construct;
 
   public populate_xref(xref_context the_xref_context, principal_type current_type) {
-    this.the_analysis_context = the_xref_context.the_analysis_context;
     this.the_xref_context = the_xref_context;
     this.current_type = current_type;
   }
@@ -97,7 +95,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
-    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
     if (!(the_analyzable instanceof declaration)) {
       utilities.panic("Declaration expected, got " +  the_analyzable);
     }
@@ -163,7 +161,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
   }
 
   public void populate_name(construct c) {
-    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
     if (the_analyzable == null || the_analyzable.has_errors()) {
       add_fragment(c);
       return;
@@ -234,7 +232,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
   @Override
   public Void process_supertype(supertype_construct c) {
     @Nullable type_declaration the_super_declaration =
-        ((type_declaration) the_analysis_context.get_analyzable(c)).master_declaration();
+        ((type_declaration) the_xref_context.get_analyzable(c)).master_declaration();
     principal_type the_super_type = the_super_declaration.get_declared_type();
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
@@ -246,7 +244,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       skip_construct = the_construct;
       process_default(type_construct);
       skip_construct = null;
-      @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(the_construct);
+      @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(the_construct);
       if (the_analyzable != null) {
         analysis_result result = the_analyzable.analyze();
         if (result instanceof type_action) {
@@ -264,7 +262,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
-    @Nullable analyzable the_declaration = the_analysis_context.get_analyzable(c);
+    @Nullable analyzable the_declaration = the_xref_context.get_analyzable(c);
     if (!(the_declaration instanceof type_declaration)) {
       utilities.panic("Type declaration expected, got " +  the_declaration);
     }
@@ -346,7 +344,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
   @Override
   public Void process_type_announcement(type_announcement_construct c) {
     type_declaration the_type_declaration =
-        declaration_util.to_type_declaration(the_analysis_context.get_analyzable(c));
+        declaration_util.to_type_declaration(the_xref_context.get_analyzable(c));
     assert the_type_declaration != null;
     add_xref(the_type_declaration, xref_mode.ANNOUNCEMENT, c);
 
@@ -364,7 +362,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
-    @Nullable analyzable the_analyzable = the_analysis_context.get_analyzable(c);
+    @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
     if (!(the_analyzable instanceof declaration)) {
       utilities.panic("Declaration expected, got " +  the_analyzable);
     }

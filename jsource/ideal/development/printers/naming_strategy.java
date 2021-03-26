@@ -99,10 +99,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return the_xref_context;
   }
 
-  public analysis_context the_analysis_context() {
-    return the_xref_context.the_analysis_context;
-  }
-
   private readonly_list<simple_name> make_xref_target(readonly_list<simple_name> target) {
     assert target.is_not_empty();
     list<simple_name> xref_names = new base_list<simple_name>();
@@ -268,7 +264,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
     @Nullable string fragment = fragments.get(the_construct);
     if (fragment == null) {
-      @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
+      @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(the_construct);
       if (the_analyzable == null || the_analyzable.has_errors()) {
         // Most likely, this is not_yet_implemented
         return null;
@@ -352,7 +348,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   @Override
   public @Nullable documentation get_documentation(construct the_construct) {
-    @Nullable analyzable the_analyzable = the_analysis_context().get_analyzable(the_construct);
+    @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(the_construct);
     if (the_analyzable == null) {
       return null;
     }

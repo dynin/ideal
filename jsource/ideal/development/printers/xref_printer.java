@@ -82,10 +82,6 @@ public class xref_printer extends base_printer {
   public text_fragment process_variable(variable_construct c) {
     text_fragment variable_text = super.process_variable(c);
 
-    if (printer_util.has_not_yet_implemented(c.annotations)) {
-      return variable_text;
-    }
-
     if (the_xref_context().is_ignorable(c)) {
       return variable_text;
     }
@@ -119,10 +115,6 @@ public class xref_printer extends base_printer {
   @Override
   public text_fragment process_procedure(procedure_construct c) {
     text_fragment procedure_text = super.process_procedure(c);
-
-    if (printer_util.has_not_yet_implemented(c.annotations)) {
-      return procedure_text;
-    }
 
     analyzable the_analyzable = the_xref_context().get_analyzable(c);
 

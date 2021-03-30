@@ -91,10 +91,6 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_procedure(procedure_construct c) {
-    if (printer_util.has_not_yet_implemented(c.annotations)) {
-      return null;
-    }
-
     if (the_xref_context.is_ignorable(c)) {
       return process_default(c);
     }
@@ -275,10 +271,6 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_type_declaration(type_declaration_construct c) {
-    if (printer_util.has_not_yet_implemented(c.annotations)) {
-      return null;
-    }
-
     @Nullable analyzable the_declaration = the_xref_context.get_analyzable(c);
     if (!(the_declaration instanceof type_declaration)) {
       utilities.panic("Type declaration expected, got " +  the_declaration);
@@ -375,10 +367,6 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_variable(variable_construct c) {
-    if (printer_util.has_not_yet_implemented(c.annotations)) {
-      return null;
-    }
-
     @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
     if (the_analyzable == null) {
       return null;

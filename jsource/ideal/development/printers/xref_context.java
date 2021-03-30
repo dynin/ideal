@@ -56,14 +56,10 @@ public class xref_context extends debuggable {
   public @Nullable analyzable get_analyzable(construct the_construct) {
     @Nullable analyzable ac = the_analysis_context.get_analyzable(the_construct);
     @Nullable analyzable mc = the_mapping_visitor.get_analyzable(the_construct);
-    if (mc != ac && ac != null) {
-      //System.out.println("C " + the_construct + " A " + ac + " M " + mc);
-    }
     return mc;
   }
 
   public void put_analyzable(construct the_construct, analyzable the_analyzable) {
-    //System.out.println("ADD " + the_construct + " A " + the_analyzable);
     the_mapping_visitor.put_analyzable(the_construct, the_analyzable);
     the_analysis_context.put_analyzable(the_construct, the_analyzable);
   }

@@ -91,7 +91,12 @@ public class procedure_analyzer extends declaration_analyzer
 
   @Override
   public action_name short_name() {
-    assert name != null;
+    if (name == null) {
+      // We get here when this object is not analyzed,
+      // such as when its tagged not_yet_implemented.
+      // Fallback to the orginal_name.
+      return original_name;
+    }
     return name;
   }
 

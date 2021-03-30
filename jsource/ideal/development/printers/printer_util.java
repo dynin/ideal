@@ -32,20 +32,6 @@ public class printer_util {
 
   private printer_util() { }
 
-  // TODO: move to extensions?
-  public static boolean has_not_yet_implemented(readonly_list<annotation_construct> annotations) {
-    // TODO: use list.has()
-    for (int i = 0; i < annotations.size(); ++i) {
-      annotation_construct a = annotations.get(i);
-      if (a instanceof modifier_construct &&
-          ((modifier_construct) a).the_kind ==
-              not_yet_implemented_extension.instance.the_extension_kind) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   public static base_string print_simple_name(simple_name name, boolean is_stylish) {
     readonly_list<string> segments = name.segments;
     StringBuilder s = new StringBuilder();

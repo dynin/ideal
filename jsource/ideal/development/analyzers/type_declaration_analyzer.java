@@ -50,11 +50,6 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     assert source.body != null;
     assert source.annotations != null;
     annotations_list = source.annotations;
-
-    // TODO: this should be moved out of constructor.
-    @Nullable analyzable before = context.get_analyzable(source);
-    assert before == null;
-    context.put_analyzable(source, this);
   }
 
   public readonly_list<annotation_construct> annotations_list() {
@@ -172,7 +167,6 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         // TODO: clean up.
         body_list.append_all(new dispatcher().make_supertype_list(
             (supertype_construct) the_construct, the_construct));
-        associate_with_this(the_construct);
       } else {
         body_list.append(make(the_construct));
       }

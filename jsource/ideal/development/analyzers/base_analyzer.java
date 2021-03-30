@@ -145,26 +145,6 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
       base_analyzer the_base_analyzer = (base_analyzer) the_analyzable;
       the_base_analyzer.set_context(inner_type(), context);
     }
-    update_map_in_context(the_analyzable);
-  }
-
-  private void update_map_in_context(analyzable the_analyzable) {
-    if (the_analyzable.deeper_origin() instanceof construct) {
-      construct source = (construct) the_analyzable.deeper_origin();
-      @Nullable analyzable before = context.get_analyzable(source);
-      if (before == null) {
-        context.put_analyzable(source, the_analyzable);
-      } else if (before != the_analyzable) {
-        if (the_analyzable instanceof declaration_extension ||
-            source instanceof supertype_construct ||
-            before instanceof enum_value_analyzer) {
-          //log.debug("Override for " + source + ": " + before + " & " + the_analyzable);
-          //context.put_analyzable(source, the_analyzable);
-        } else {
-          utilities.panic("Dup for " + source + ": " + before + " & " + the_analyzable);
-        }
-      }
-    }
   }
 
   protected void special_init_context(analyzable the_analyzable, analysis_context new_context) {
@@ -173,16 +153,6 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
       assert the_base_analyzer.context == null && the_base_analyzer.parent == null;
       the_base_analyzer.parent = inner_type();
       the_base_analyzer.context = new_context;
-    }
-    update_map_in_context(the_analyzable);
-  }
-
-  protected void associate_with_this(construct source) {
-    @Nullable analyzable before = context.get_analyzable(source);
-    if (before == null) {
-      context.put_analyzable(source, this);
-    } else if (before != this && !(before instanceof declaration_extension)) {
-      utilities.panic("Dup in associate_with_this: for " + source + ": " + before + " & " + this);
     }
   }
 

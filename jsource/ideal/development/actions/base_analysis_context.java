@@ -30,12 +30,10 @@ public abstract class base_analysis_context extends debuggable implements analys
       new list_dictionary<declaration, abstract_value>().frozen_copy();
 
   private final base_semantics language;
-  private final dictionary<construct, analyzable> eval_bindings;
   private graph<principal_type, origin> the_type_graph;
 
   protected base_analysis_context(base_semantics language) {
     this.language = language;
-    this.eval_bindings = new hash_dictionary<construct, analyzable>();
     this.the_type_graph = new base_graph<principal_type, origin>();
     if (!common_library.is_initialized()) {
       new common_library(this);
@@ -132,19 +130,6 @@ public abstract class base_analysis_context extends debuggable implements analys
   @Override
   public void declare_type(principal_type new_type, declaration_pass pass) {
     language.declare_type(new_type, pass, this);
-  }
-
-  @Override
-  public @Nullable analyzable get_analyzable(construct c) {
-    return eval_bindings.get(c);
-  }
-
-  @Override
-  public void put_analyzable(construct c, analyzable a) {
-    // TODO: overwriting an existing construct shouldn't happen,
-    // but maybe fail gracefully here?
-    assert eval_bindings.get(c) == null;
-    eval_bindings.put(c, a);
   }
 
   @Override

@@ -32,14 +32,12 @@ import javax.annotation.Nullable;
 public class xref_context extends debuggable {
   private final static int num_modes = xref_mode.values().length;
 
-  public final analysis_context the_analysis_context;
   public final mapping_visitor the_mapping_visitor;
   private final list<type_declaration_construct> the_output_declarations;
   private final dictionary<master_type, naming_strategy> output_types;
   private final dictionary<origin, list<origin>>[] mapping;
 
-  public xref_context(analysis_context the_analysis_context) {
-    this.the_analysis_context = the_analysis_context;
+  public xref_context() {
     this.the_mapping_visitor = new mapping_visitor();
     this.the_output_declarations = new base_list<type_declaration_construct>();
     this.output_types = new hash_dictionary<master_type, naming_strategy>();
@@ -54,14 +52,11 @@ public class xref_context extends debuggable {
   }
 
   public @Nullable analyzable get_analyzable(construct the_construct) {
-    @Nullable analyzable ac = the_analysis_context.get_analyzable(the_construct);
-    @Nullable analyzable mc = the_mapping_visitor.get_analyzable(the_construct);
-    return mc;
+    return the_mapping_visitor.get_analyzable(the_construct);
   }
 
   public void put_analyzable(construct the_construct, analyzable the_analyzable) {
     the_mapping_visitor.put_analyzable(the_construct, the_analyzable);
-    the_analysis_context.put_analyzable(the_construct, the_analyzable);
   }
 
   public boolean is_ignorable(construct the_construct) {

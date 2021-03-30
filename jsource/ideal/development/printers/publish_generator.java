@@ -46,8 +46,8 @@ public class publish_generator {
   private final content_writer processor;
   private boolean initialized;
 
-  public publish_generator(analysis_context the_context, content_writer processor) {
-    this.the_xref_context = new xref_context(the_context);
+  public publish_generator(content_writer processor) {
+    this.the_xref_context = new xref_context();
     this.processor = processor;
   }
 

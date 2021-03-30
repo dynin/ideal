@@ -140,16 +140,6 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public @Nullable analyzable get_analyzable(construct c) {
-    return parent.get_analyzable(c);
-  }
-
-  @Override
-  public void put_analyzable(construct c, analyzable a) {
-    parent.put_analyzable(c, a);
-  }
-
-  @Override
   public @Nullable readonly_list<construct> load_type_body(
       type_announcement_construct the_announcement) {
     return parent.load_type_body(the_announcement);

@@ -40,10 +40,6 @@ public interface analysis_context extends type_declaration_context, value_printe
 
   graph<principal_type, origin> type_graph();
 
-  @Nullable analyzable get_analyzable(construct c);
-
-  void put_analyzable(construct c, analyzable a);
-
   immutable_dictionary<declaration, abstract_value> constraints();
 
   @Nullable readonly_list<construct> load_type_body(type_announcement_construct the_announcement);

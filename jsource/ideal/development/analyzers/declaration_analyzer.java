@@ -87,10 +87,6 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
 
     assert the_annotation_set == null;
 
-    for (int i = 0; i < annotations.size(); ++i) {
-      associate_with_this(annotations.get(i));
-    }
-
     list<origin> origins = new base_list<origin>();
     @Nullable access_modifier access_level = null;
     set<modifier_kind> modifiers = new hash_set<modifier_kind>();

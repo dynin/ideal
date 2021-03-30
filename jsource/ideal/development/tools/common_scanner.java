@@ -119,7 +119,7 @@ public class common_scanner extends base_scanner_config {
     add_kind(type_kinds.singleton_kind);
     add_kind(type_kinds.package_kind);
     add_kind(type_kinds.module_kind);
-    add_kind(type_kinds.concept_kind); // TODO: factor out boostrap_scanner
+    add_kind(type_kinds.concept_kind); // TODO: factor out bootstrap_scanner
     add_kind(type_kinds.enum_kind);
     add_kind(type_kinds.project_kind);
     add_kind(type_kinds.service_kind);
@@ -127,6 +127,7 @@ public class common_scanner extends base_scanner_config {
     add_kind(type_kinds.namespace_kind);
     add_kind(type_kinds.reference_kind); // TODO: this should be a special keyword
     add_kind(type_kinds.procedure_kind); // TODO: this should be a special keyword
+    add_kind(type_kinds.html_content_kind);
 
     add_subtype_tag(subtype_tags.subtypes_tag);
     add_subtype_tag(subtype_tags.extends_tag);

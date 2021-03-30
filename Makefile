@@ -298,6 +298,10 @@ document_all: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_all \
             -output=$(PRETTY_DIR)
 
+document_site: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_site \
+            -output=$(PRETTY_DIR)
+
 ### Other targets
 
 import: $(IDEAL_TARGET)

@@ -11,6 +11,7 @@ namespace ideal {
   namespace runtime;
   namespace machine;
   namespace development;
+  namespace site;
 }
 
 target analyze_library: analyze(ideal.library);
@@ -55,3 +56,5 @@ target document_librun: print_documentation(ideal.library, ideal.runtime);
 target document_development: print_documentation(ideal.development);
 
 target document_all: print_documentation(ideal.library, ideal.runtime, ideal.development);
+
+target document_site: print_documentation(ideal.site);

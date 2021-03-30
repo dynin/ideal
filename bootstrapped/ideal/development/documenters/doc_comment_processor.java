@@ -9,7 +9,6 @@ import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.library.channels.output;
 import ideal.machine.characters.normal_handler;
-import ideal.machine.channels.string_writer;
 
 import javax.annotation.Nullable;
 
@@ -27,7 +26,7 @@ public class doc_comment_processor {
     return result;
   }
   private static @Nullable doc_grammar generated_get_grammar_cache;
-  private static doc_grammar get_grammar() {
+  public static doc_grammar get_grammar() {
     @Nullable doc_grammar result = doc_comment_processor.generated_get_grammar_cache;
     if (result == null) {
       result = doc_comment_processor.generated_get_grammar_compute();

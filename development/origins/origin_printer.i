@@ -28,6 +28,10 @@ namespace origin_printer {
         if (fragment_end is null) {
           fragment_end = find_text_origin(the_origin.end, false);
         }
+      } else if (the_origin is source_content) {
+        -- TODO: is there a better way to handle this?
+        -- TODO: redundant cast.
+        return "" !> base_string;
       } else if (the_origin is null) {
         utilities.panic("Can't display origin");
       }

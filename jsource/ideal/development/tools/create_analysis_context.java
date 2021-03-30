@@ -26,8 +26,8 @@ public class create_analysis_context extends base_analysis_context {
   }
 
   @Override
-  public @Nullable readonly_list<construct> load_type_body(
+  public @Nullable readonly_list<construct> load_resource(
       type_announcement_construct the_declaration) {
-    return manager.load_type_body(the_declaration);
+    return manager.load_resource(the_declaration);
   }
 }

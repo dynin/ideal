@@ -38,6 +38,7 @@ import ideal.development.declarations.*;
 import ideal.development.functions.*;
 import ideal.development.transformers.*;
 import ideal.development.origins.*;
+import ideal.development.comments.*;
 import ideal.development.targets.*;
 
 public class create_manager implements target_manager, type_bootstrapper {
@@ -265,7 +266,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     bootstrap_context.add(root, the_target.name(), the_target.to_action(root_origin));
   }
 
-  public @Nullable readonly_list<construct> load_type_body(
+  public @Nullable readonly_list<construct> load_resource(
       type_announcement_construct the_declaration) {
 
     @Nullable source_content declaration_sourcee = origin_utilities.get_source(the_declaration);
@@ -283,7 +284,10 @@ public class create_manager implements target_manager, type_bootstrapper {
       declaration_catalog = catalog_id.access_catalog();
     }
 
-    resource_identifier source_id = declaration_catalog.resolve(name, base_extension.IDEAL_SOURCE);
+    boolean is_html = the_declaration.kind == type_kinds.html_content_kind;
+    extension the_extension = is_html ? base_extension.HTML : base_extension.IDEAL_SOURCE;
+
+    resource_identifier source_id = declaration_catalog.resolve(name, the_extension);
     if (!source_id.exists()) {
       new base_notification(
           new base_string("Can't locate resource for type declaration"), the_declaration).report();
@@ -294,10 +298,15 @@ public class create_manager implements target_manager, type_bootstrapper {
     source_content source = new source_content(source_id);
     create_util.progress_loading(source_id);
 
-    list<construct> constructs = parse(source);
-    // TODO: signal non-fatal error
-    assert constructs.is_not_empty();
-    return constructs;
+    if (is_html) {
+      comment_construct the_comment_construct = parse_html_content(source);
+      return new base_list<construct>(the_comment_construct);
+    } else {
+      list<construct> constructs = parse(source);
+      // TODO: signal non-fatal error
+      assert constructs.is_not_empty();
+      return constructs;
+    }
   }
 
   private void add_operator(procedure_value pv) {
@@ -332,5 +341,19 @@ public class create_manager implements target_manager, type_bootstrapper {
     }
 
     bootstrap_context.add(parent, the_operator, operator_procedure.to_action(the_action));
+  }
+
+  public static comment_construct parse_html_content(source_content source) {
+    final doc_parser parser = new doc_parser(doc_comment_processor.get_grammar(),
+        new procedure1<Void, string>() {
+          @Override public Void call(string message) {
+            new base_notification(message, source).report();
+            return null;
+          }
+        });
+    string content = source.content;
+    text_fragment the_text = parser.parse_content(content);
+    comment the_comment = new comment(comment_type.BLOCK_DOC_COMMENT, content, content);
+    return new comment_construct(the_comment, the_text, source);
   }
 }

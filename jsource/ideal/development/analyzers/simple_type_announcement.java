@@ -63,7 +63,7 @@ public class simple_type_announcement extends debuggable implements type_announc
   }
 
   @Override
-  public void load_type() {
+  public void load_resource() {
   }
 
   @Override

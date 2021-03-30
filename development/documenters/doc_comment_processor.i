@@ -6,7 +6,6 @@
 
 class doc_comment_processor {
   import ideal.machine.characters.normal_handler;
-  import ideal.machine.channels.string_writer;
 
   static var string or null saved_error;
 
@@ -17,7 +16,7 @@ class doc_comment_processor {
     return result;
   }
 
-  private static cache doc_grammar get_grammar() {
+  public static cache doc_grammar get_grammar() {
     return doc_grammar.new(normal_handler.instance);
   }
 

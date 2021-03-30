@@ -1678,12 +1678,13 @@ public class to_java_transformer extends base_transformer {
     }
 
     return new comment_construct(new comment(comment_type.LINE_COMMENT, comment,
-        new base_string("// ", comment)), the_origin);
+        new base_string("// ", comment)), null, the_origin);
   }
 
   private static comment_construct make_newline(origin the_origin) {
     string newline = new base_string("\n");
-    return new comment_construct(new comment(comment_type.NEWLINE, newline, newline), the_origin);
+    return new comment_construct(new comment(comment_type.NEWLINE, newline, newline), null,
+        the_origin);
   }
 
   public final static base_flavor_profile class_profile =

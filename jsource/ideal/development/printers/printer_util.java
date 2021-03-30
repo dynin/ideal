@@ -91,6 +91,7 @@ public class printer_util {
     // TODO: handle text_fragment here.
     string summary = (base_string) summary_text;
     comment the_comment = new comment(comment_type.BLOCK_DOC_COMMENT, summary, summary);
-    return new comment_construct(the_comment, the_origin);
+    // TODO: use summary_text for the_text argument.
+    return new comment_construct(the_comment, null, the_origin);
   }
 }

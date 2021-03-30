@@ -260,7 +260,7 @@ annotation ::=  MODIFIER_KIND:mk
                     new fragment_origin(mk, mk, p)); :}
                 */
         |       COMMENT:c
-                {: RESULT = new comment_construct(c.payload(), c); :}
+                {: RESULT = new comment_construct(c.payload(), null, c); :}
         ;
 
 annotations_opt ::=

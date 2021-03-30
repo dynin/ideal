@@ -33,6 +33,8 @@ public class origin_printer {
         if (fragment_end == null) {
           fragment_end = origin_printer.find_text_origin(((fragment_origin) the_origin).end, false);
         }
+      } else if (the_origin instanceof source_content) {
+        return (base_string) new base_string("");
       } else if (the_origin == null) {
         {
           utilities.panic(new base_string("Can\'t display origin"));

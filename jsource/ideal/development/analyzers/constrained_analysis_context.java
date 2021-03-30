@@ -140,9 +140,9 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public @Nullable readonly_list<construct> load_type_body(
+  public @Nullable readonly_list<construct> load_resource(
       type_announcement_construct the_announcement) {
-    return parent.load_type_body(the_announcement);
+    return parent.load_resource(the_announcement);
   }
 
   @Override

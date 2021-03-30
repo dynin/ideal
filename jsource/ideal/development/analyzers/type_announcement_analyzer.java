@@ -37,6 +37,10 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     super(source);
   }
 
+  public kind the_kind() {
+    return source.kind;
+  }
+
   @Override
   public action_name short_name() {
     return source.name;
@@ -75,7 +79,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
       readonly_list<action> already_declared = get_context().lookup(declared_in_type(),
           short_name());
       if (already_declared.size() == 0) {
-        action_utilities.make_type(get_context(), source.kind, null,
+        action_utilities.make_type(get_context(), the_kind(), null,
             short_name(), declared_in_type(), this, this);
       } else if (already_declared.size() == 1) {
         action the_action = already_declared.first();
@@ -97,11 +101,11 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         external_declaration = the_type_declaration;
         declarations = new base_list<declaration>(the_type_declaration);
       } else {
-        readonly_list<construct> external_body = get_context().load_type_body(source);
+        readonly_list<construct> external_body = get_context().load_resource(source);
 
         if (external_body == null) {
           // Assume the error has been reported.
-          // TODO: load_type_body() should return error_signal.
+          // TODO: load_resource() should return error_signal.
           return ok_signal.instance;
         }
 
@@ -109,10 +113,16 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
           return new error_signal(new base_string("External declaration expected"), this);
         }
 
+        if (external_body.size() == 1 && external_body.first() instanceof comment_construct) {
+          external_body = new base_list<construct>(
+              make_comment_type((comment_construct) external_body.first()));
+        }
+
         list<declaration> subdeclarations = new base_list<declaration>();
 
         for (int i = 0; i < external_body.size(); ++i) {
           construct the_construct = external_body.get(i);
+          // TODO: handle comments?
           if (the_construct instanceof import_construct) {
             subdeclarations.append(new import_analyzer((import_construct) the_construct));
           } else if (the_construct instanceof type_declaration_construct) {
@@ -123,8 +133,8 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
                   declaration);
             }
 
-            if (declaration.kind != source.kind) {
-              return new error_signal(new base_string("Kind mismatch: expected " + source.kind),
+            if (declaration.kind != the_kind()) {
+              return new error_signal(new base_string("Kind mismatch: expected " + the_kind()),
                   declaration);
             }
 
@@ -156,8 +166,18 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
     return ok_signal.instance;
   }
 
+  private type_declaration_construct make_comment_type(comment_construct the_comment_construct) {
+    return new type_declaration_construct(
+        new base_list<annotation_construct>(the_comment_construct),
+        the_kind(),
+        short_name(),
+        null,
+        new empty<construct>(),
+        this);
+  }
+
   @Override
-  public void load_type() {
+  public void load_resource() {
     if (!announcement_analysis_in_progress) {
       multi_pass_analysis(analysis_pass.METHOD_AND_VARIABLE_DECL);
     }

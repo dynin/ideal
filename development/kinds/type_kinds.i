@@ -27,6 +27,8 @@ namespace type_kinds {
 
   package_kind : base_kind.new("package", nameonly_profile);
 
+  html_content_kind : base_kind.new("html_content", nameonly_profile);
+
   singleton_kind : base_kind.new("singleton", deeply_immutable_profile);
 
   -- TODO: where should we put this?

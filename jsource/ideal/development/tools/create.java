@@ -156,6 +156,7 @@ class create {
       immutable_list<simple_name> test_name =
           new base_list<simple_name>(simple_name.make("test")).frozen_copy();
       the_xref_context.add_named_output(cm.root, test_name);
+      the_xref_context.the_mapping_visitor.visit(body);
       new populate_xref(the_xref_context, cm.root).process_construct_list(constructs);
       the_generator.generate_markup(constructs, the_xref_context.get_naming_strategy(cm.root));
     }

@@ -74,7 +74,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     }
   }
 
-  declaration_analyzer get_declaration() {
+  public declaration_analyzer get_declaration() {
     assert the_declaration != null;
     return the_declaration;
   }

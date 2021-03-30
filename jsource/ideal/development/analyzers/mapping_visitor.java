@@ -30,6 +30,7 @@ public class mapping_visitor extends debuggable {
 
   private final dictionary<construct, analyzable> mapping =
       new hash_dictionary<construct, analyzable>();
+  private final set<construct> ignorable = new hash_set<construct>();
 
   public void visit(analyzable the_analyzable) {
     origin the_origin = the_analyzable.deeper_origin();
@@ -73,6 +74,10 @@ public class mapping_visitor extends debuggable {
     return mapping.get(the_construct);
   }
 
+  public boolean is_ignorable(construct the_construct) {
+    return ignorable.contains(the_construct);
+  }
+
   public void put_analyzable(construct the_construct, analyzable the_analyzable) {
     if (mapping.get(the_construct) != null) {
       if (mapping.get(the_construct) == the_analyzable) {
@@ -95,6 +100,7 @@ public class mapping_visitor extends debuggable {
     }
 
     put_analyzable(the_construct, the_analyzable);
+    ignorable.add(the_construct);
 
     readonly_list<construct> children = the_construct.children();
     for (int i = 0; i < children.size(); ++i) {

@@ -86,6 +86,10 @@ public class xref_printer extends base_printer {
       return variable_text;
     }
 
+    if (the_xref_context().is_ignorable(c)) {
+      return variable_text;
+    }
+
     analyzable the_analyzable = the_xref_context().get_analyzable(c);
 
     declaration the_declaration = (declaration) the_analyzable;

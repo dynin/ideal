@@ -127,7 +127,6 @@ public class variable_analyzer extends declaration_analyzer
 
   @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
-
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       // TODO: signal error
       assert short_name() instanceof simple_name;

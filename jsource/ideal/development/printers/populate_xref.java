@@ -95,6 +95,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
+    if (the_xref_context.is_ignorable(c)) {
+      return process_default(c);
+    }
+
     @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
     if (!(the_analyzable instanceof declaration)) {
       utilities.panic("Declaration expected, got " +  the_analyzable);
@@ -162,7 +166,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   public void populate_name(construct c) {
     @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
-    if (the_analyzable == null || the_analyzable.has_errors()) {
+    if (the_analyzable == null || the_analyzable.has_errors() || the_xref_context.is_ignorable(c)) {
       add_fragment(c);
       return;
     }
@@ -231,9 +235,22 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
   @Override
   public Void process_supertype(supertype_construct c) {
-    @Nullable type_declaration the_super_declaration =
-        ((type_declaration) the_xref_context.get_analyzable(c)).master_declaration();
-    principal_type the_super_type = the_super_declaration.get_declared_type();
+    @Nullable type_declaration the_super_declaration;
+    principal_type the_super_type;
+    analyzable type_analyzable = the_xref_context.get_analyzable(c);
+    if (type_analyzable instanceof type_declaration) {
+      // TODO: retire this.
+      the_super_declaration = ((type_declaration) type_analyzable).master_declaration();
+      the_super_type = the_super_declaration.get_declared_type();
+    } else if (type_analyzable instanceof supertype_declaration) {
+      the_super_type = ((supertype_declaration) type_analyzable).declared_in_type();
+      the_super_declaration = declaration_util.to_type_declaration(
+          the_super_type.get_declaration()).master_declaration();
+    } else {
+      utilities.panic("Unrecognzied supertype_construct " + c);
+      return null;
+    }
+
     readonly_list<construct> types = c.types;
     for (int i = 0; i < types.size(); ++i) {
       construct type_construct = types.get(i);
@@ -363,6 +380,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
     }
 
     @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
+    if (the_analyzable == null) {
+      return null;
+    }
+
     if (!(the_analyzable instanceof declaration)) {
       utilities.panic("Declaration expected, got " +  the_analyzable);
     }

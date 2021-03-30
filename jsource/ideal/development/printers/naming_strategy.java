@@ -166,6 +166,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   @Override
   public @Nullable string link_to_construct(construct the_construct, printer_mode mode) {
     assert the_construct != null;
+    if (the_xref_context.is_ignorable(the_construct)) {
+      return null;
+    }
+
     @Nullable principal_type output_type = the_xref_context.get_enclosing_type(the_construct);
     if (output_type == null) {
       // Most likely, this is not_yet_implemented
@@ -225,6 +229,16 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       return null;
     }
 
+    construct declaration_construct = printer_util.find_construct(the_declaration);
+    if (the_xref_context.is_ignorable(declaration_construct)) {
+      return null;
+    }
+
+    // TODO: cleaner way to handle excpetions
+    if (declaration_construct instanceof modifier_construct) {
+      return null;
+    }
+
     if (the_declaration instanceof type_declaration) {
       type_declaration the_type_declaration = (type_declaration) the_declaration;
       if (the_xref_context.has_output_type(the_type_declaration.get_declared_type())) {
@@ -249,7 +263,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       // generate procedure link
     }
 
-    construct declaration_construct = printer_util.find_construct(the_declaration);
     if (declaration_construct instanceof parameter_construct) {
       declaration_construct = ((parameter_construct) declaration_construct).main;
     }
@@ -259,6 +272,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   @Override
   public @Nullable string fragment_of_construct(construct the_construct, printer_mode mode) {
     if (!publish_generator.GENERATE_XREF) {
+      return null;
+    }
+
+    if (the_xref_context.is_ignorable(the_construct)) {
       return null;
     }
 
@@ -349,7 +366,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   @Override
   public @Nullable documentation get_documentation(construct the_construct) {
     @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(the_construct);
-    if (the_analyzable == null) {
+    if (the_analyzable == null || the_xref_context.is_ignorable(the_construct)) {
       return null;
     }
 

@@ -44,6 +44,7 @@ public class publish_generator {
 
   public final xref_context the_xref_context;
   private final content_writer processor;
+  private boolean initialized;
 
   public publish_generator(analysis_context the_context, content_writer processor) {
     this.the_xref_context = new xref_context(the_context);
@@ -51,7 +52,12 @@ public class publish_generator {
   }
 
   public void add_type(principal_type the_type) {
-    the_xref_context.process_type(the_type);
+    if (!initialized) {
+      the_xref_context.process_type(common_library.get_instance().ideal_namespace());
+      // TODO: handle types that are not subtypes of ideal.
+      initialized = true;
+    }
+
     type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 
     type_declaration_construct the_declaration_construct = (type_declaration_construct)

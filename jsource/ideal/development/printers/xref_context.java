@@ -33,7 +33,7 @@ public class xref_context extends debuggable {
   private final static int num_modes = xref_mode.values().length;
 
   public final analysis_context the_analysis_context;
-  private final mapping_visitor the_mapping_visitor;
+  public final mapping_visitor the_mapping_visitor;
   private final list<type_declaration_construct> the_output_declarations;
   private final dictionary<master_type, naming_strategy> output_types;
   private final dictionary<origin, list<origin>>[] mapping;
@@ -56,16 +56,20 @@ public class xref_context extends debuggable {
   public @Nullable analyzable get_analyzable(construct the_construct) {
     @Nullable analyzable ac = the_analysis_context.get_analyzable(the_construct);
     @Nullable analyzable mc = the_mapping_visitor.get_analyzable(the_construct);
-    if (false && mc != ac) {
-      System.out.println("C " + the_construct + " A " + ac + " M " + mc);
+    if (mc != ac && ac != null) {
+      //System.out.println("C " + the_construct + " A " + ac + " M " + mc);
     }
-    return ac;
+    return mc;
   }
 
   public void put_analyzable(construct the_construct, analyzable the_analyzable) {
     //System.out.println("ADD " + the_construct + " A " + the_analyzable);
     the_mapping_visitor.put_analyzable(the_construct, the_analyzable);
     the_analysis_context.put_analyzable(the_construct, the_analyzable);
+  }
+
+  public boolean is_ignorable(construct the_construct) {
+    return the_mapping_visitor.is_ignorable(the_construct);
   }
 
   private master_type normalize(principal_type the_principal_type) {
@@ -163,6 +167,8 @@ public class xref_context extends debuggable {
 
       if (the_analyzable instanceof declaration) {
         return (declaration) the_analyzable;
+      } else if (the_analyzable instanceof declaration_extension) {
+        return ((declaration_extension) the_analyzable).get_declaration();
       } else {
         return declaration_util.get_declaration(the_analyzable.analyze());
       }

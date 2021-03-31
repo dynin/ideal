@@ -100,7 +100,6 @@ PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
 
 BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/elements/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/development/texts/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/names/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/components/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/comments/*.java \

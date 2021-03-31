@@ -13,8 +13,8 @@ import javax.annotation.Nullable;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
-import ideal.development.texts.*;
 import ideal.development.documenters.*;
+
 public class html_rewriter extends text_rewriter {
 
   private static boolean is_div(text_fragment fragment) {

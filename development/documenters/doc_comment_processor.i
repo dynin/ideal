@@ -16,7 +16,7 @@ class doc_comment_processor {
     return result;
   }
 
-  public static cache doc_grammar get_grammar() {
+  public static cache_result doc_grammar get_grammar() {
     return doc_grammar.new(normal_handler.instance);
   }
 

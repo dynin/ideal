@@ -26,7 +26,7 @@ class base_flavor_profile {
     return map(flavor) == flavor;
   }
 
-  override cache immutable list[type_flavor] supported_flavors() {
+  override cache_result immutable list[type_flavor] supported_flavors() {
     filtered_flavors : base_list[type_flavor].new();
     for (the_flavor : flavor.PRIMARY_FLAVORS) {
       if (this.supports(the_flavor)) {

@@ -26,7 +26,7 @@ import ideal.development.analyzers.*;
 /**
  * Implement procedure result caching (memoization.)  For example, given the declaration
  * <code>
- * cache string foo() {
+ * cache_result string foo() {
  *   return perform_expensive_operation();
  * }
  * </code>
@@ -50,7 +50,7 @@ import ideal.development.analyzers.*;
  * and the Java code it generates in
  * https://github.com/dynin/ideal/blob/master/bootstrapped/ideal/development/flavors/base_flavor_profile.java
  */
-public class cache_extension extends declaration_extension {
+public class cache_result_extension extends declaration_extension {
 
   private static final simple_name cache_name = simple_name.make("cache");
   private static final simple_name compute_name = simple_name.make("compute");
@@ -59,8 +59,8 @@ public class cache_extension extends declaration_extension {
   /**
    * The name of the extension, which is used as the modifier in the ideal source code.
    */
-  public cache_extension() {
-    super("cache");
+  public cache_result_extension() {
+    super("cache_result");
   }
 
   @Override

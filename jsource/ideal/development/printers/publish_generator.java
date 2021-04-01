@@ -175,9 +175,30 @@ public class publish_generator {
       type_declaration_construct the_declaration_construct = constructs.get(i);
       type_declaration the_declaration = declaration_util.to_type_declaration(
           the_xref_context.get_analyzable(the_declaration_construct));
-      generate_markup(new base_list<construct>(the_declaration_construct),
-          the_xref_context.get_naming_strategy(the_declaration.get_declared_type()));
+      naming_strategy the_naming_strategy =
+          the_xref_context.get_naming_strategy(the_declaration.get_declared_type());
+
+      if (is_html_content(the_declaration_construct)) {
+        generate_html_content(the_declaration, the_naming_strategy);
+      } else {
+        generate_markup(new base_list<construct>(the_declaration_construct), the_naming_strategy);
+      }
     }
+  }
+
+  private boolean is_html_content(type_declaration_construct the_declaration_construct) {
+    return the_declaration_construct.kind == type_kinds.html_content_kind;
+  }
+
+  private void generate_html_content(type_declaration the_declaration,
+      naming_strategy the_naming_strategy) {
+    text_fragment the_text = the_declaration.annotations().the_documentation().section(
+        documentation_section.ALL);
+
+    text_fragment result = render_page(the_text, the_naming_strategy, printer_mode.STYLISH);
+
+    string result_string = text_util.to_markup_string(result);
+    processor.write(result_string, the_naming_strategy.get_full_names(), base_extension.HTML);
   }
 
   public void generate_markup(readonly_list<construct> constructs,

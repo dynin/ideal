@@ -15,6 +15,7 @@ package declarations {
   implicit import ideal.development.names;
   implicit import ideal.development.comments;
   implicit import ideal.development.modifiers;
+  import ideal.development.comments.documentation;
 
   enum declaration_pass;
   interface annotation_set;

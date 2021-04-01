@@ -4,6 +4,7 @@ body {
   /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
   font-family: 'Roboto', sans-serif;
   font-size: 16;
+  line-height: 130%;
   height: 100vh;
   margin-left: 1em;
   margin-right: 1em;
@@ -14,22 +15,22 @@ body {
 }
 
 
-a:link {
+.main-code a:link {
   text-decoration: none;
   color: black;
 }
 
-a:visited {
+.main-code a:visited {
   text-decoration: none;
   color: black;
 }
 
-a:hover {
+.main-code a:hover {
   text-decoration: underline;
   color: blue;
 }
 
-a:active {
+.main-code a:active {
   text-decoration: underline;
   color: blue;
 }
@@ -109,8 +110,20 @@ span:target {
   font-style: italic;
 }
 
-.main {
+.main-code {
   flex-grow: 1;
+}
+
+.main-doc {
+  flex-grow: 1;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: justify;
+}
+
+.right {
+  text-align: right;
 }
 
 .nav-table {

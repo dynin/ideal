@@ -195,7 +195,7 @@ public class publish_generator {
     text_fragment the_text = the_declaration.annotations().the_documentation().section(
         documentation_section.ALL);
 
-    text_fragment result = render_page(the_text, the_naming_strategy, printer_mode.STYLISH);
+    text_fragment result = render_page(the_text, the_naming_strategy, printer_mode.DOC);
 
     string result_string = text_util.to_markup_string(result);
     processor.write(result_string, the_naming_strategy.get_full_names(), base_extension.HTML);
@@ -226,7 +226,9 @@ public class publish_generator {
 
   text_fragment render_page(text_fragment body, naming_strategy the_naming_strategy,
       printer_mode mode) {
-    body = styles.wrap(styles.main_style, new html_rewriter().rewrite(body));
+    text_element main_style = mode == printer_mode.DOC ? styles.main_doc_style :
+        styles.main_code_style;
+    body = styles.wrap(main_style, new html_rewriter().rewrite(body));
 
     text_element navigation = make_navigation(the_naming_strategy, mode);
     body = text_util.join(navigation, body, navigation);
@@ -255,6 +257,9 @@ public class publish_generator {
   }
 
   private text_element make_navigation(naming_strategy the_naming_strategy, printer_mode mode) {
+    if (mode == printer_mode.DOC) {
+      mode = printer_mode.STYLISH;
+    }
     principal_type the_type = the_naming_strategy.get_current_type();
     @Nullable type_declaration the_declaration = declaration_util.get_type_declaration(the_type);
 

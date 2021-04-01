@@ -17,7 +17,9 @@ import ideal.runtime.texts.*;
 public class styles {
   public static final text_element indent_style = make_div(new base_string("indent"));
 
-  public static final text_element main_style = make_div(new base_string("main"));
+  public static final text_element main_code_style = make_div(new base_string("main-code"));
+
+  public static final text_element main_doc_style = make_div(new base_string("main-doc"));
 
   public static final text_element documentation_style =
       make_div(new base_string("documentation"));

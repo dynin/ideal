@@ -11,5 +11,6 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface any_variable_declaration extends any_declaration, any_variable_id { }

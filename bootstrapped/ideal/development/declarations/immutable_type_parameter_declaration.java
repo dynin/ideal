@@ -11,5 +11,6 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface immutable_type_parameter_declaration extends immutable_type_declaration, readonly_type_parameter_declaration { }

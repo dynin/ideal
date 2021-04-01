@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 import javax.annotation.Nullable;
 

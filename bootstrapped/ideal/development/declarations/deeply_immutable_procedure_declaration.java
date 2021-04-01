@@ -11,5 +11,6 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface deeply_immutable_procedure_declaration extends deeply_immutable_declaration, immutable_procedure_declaration { }

@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface readonly_block_declaration extends readonly_declaration, any_block_declaration {
   annotation_set annotations();

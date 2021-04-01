@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface annotation_set extends analyzable, analysis_result, data, readonly_annotation_set, writeonly_annotation_set {
   boolean has(modifier_kind the_kind);

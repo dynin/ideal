@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface readonly_type_announcement extends readonly_declaration, any_type_announcement {
   action_name short_name();

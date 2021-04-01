@@ -11,5 +11,6 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface immutable_variable_declaration extends immutable_declaration, immutable_variable_id, readonly_variable_declaration { }

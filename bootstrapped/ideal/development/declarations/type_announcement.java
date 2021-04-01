@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface type_announcement extends declaration, readonly_type_announcement, writeonly_type_announcement {
   void load_resource();

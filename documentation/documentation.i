@@ -6,4 +6,5 @@
 
 namespace documentation {
   html_content homepage;
+  html_content license;
 }

@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface type_declaration extends declaration, readonly_type_declaration, writeonly_type_declaration {
   void process_declaration(declaration_pass pass);

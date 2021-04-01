@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface supertype_declaration extends declaration, readonly_supertype_declaration, writeonly_supertype_declaration {
   supertype_declaration specialize(specialization_context context, principal_type new_parent);

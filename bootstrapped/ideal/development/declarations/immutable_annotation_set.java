@@ -11,5 +11,6 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface immutable_annotation_set extends immutable_analyzable, immutable_analysis_result, immutable_data, readonly_annotation_set { }

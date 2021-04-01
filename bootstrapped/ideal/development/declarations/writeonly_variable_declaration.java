@@ -11,5 +11,6 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface writeonly_variable_declaration extends writeonly_declaration, writeonly_variable_id, any_variable_declaration { }

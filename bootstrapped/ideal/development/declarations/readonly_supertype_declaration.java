@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface readonly_supertype_declaration extends readonly_declaration, any_supertype_declaration {
   annotation_set annotations();

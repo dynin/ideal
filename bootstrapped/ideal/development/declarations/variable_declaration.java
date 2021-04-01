@@ -11,6 +11,7 @@ import ideal.development.futures.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
+import ideal.development.comments.documentation;
 
 public interface variable_declaration extends declaration, variable_id, readonly_variable_declaration, writeonly_variable_declaration {
   variable_declaration specialize(specialization_context context, principal_type new_parent);

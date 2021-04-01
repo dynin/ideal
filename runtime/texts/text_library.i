@@ -20,6 +20,9 @@ public namespace text_library {
   H2 : base_element_id.new(HTML_NS, "h2");
   PRE : base_element_id.new(HTML_NS, "pre");
 
+  UL : base_element_id.new(HTML_NS, "ul");
+  LI : base_element_id.new(HTML_NS, "li");
+
   TABLE : base_element_id.new(HTML_NS, "table");
   TR : base_element_id.new(HTML_NS, "tr");
   TH : base_element_id.new(HTML_NS, "th");
@@ -63,6 +66,7 @@ public namespace text_library {
   immutable list[element_id] HTML_ELEMENTS : [
     HTML, HEAD, TITLE, LINK, BODY,
     P, DIV, H1, H2, PRE,
+    UL, LI,
     TABLE, TR, TH, TD,
     SPAN, BR, EM, A, B, U
     -- TODO: include U2?

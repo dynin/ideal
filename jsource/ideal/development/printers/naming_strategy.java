@@ -110,6 +110,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return xref_names;
   }
 
+  public extension default_extension() {
+    return base_extension.HTML;
+  }
+
   // TODO: test.
   public base_string link_to_resource(readonly_list<simple_name> target_name,
       extension target_extension) {
@@ -157,7 +161,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       if (mode == printer_mode.XREF) {
         target_name = make_xref_target(target_name);
       }
-      return link_to_resource(target_name, base_extension.HTML);
+      return link_to_resource(target_name, default_extension());
     } else {
       return null;
     }

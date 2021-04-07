@@ -23,8 +23,9 @@ public class html_rewriter extends text_rewriter {
   private naming_strategy the_naming_strategy;
   private @Nullable text_element title_element;
 
-  private final static pattern<Character> SCHEME_SEPARATOR = new singleton_pattern(':');
-  private final static string IDEAL_SCHEME = new base_string("ideal");
+  // TODO: make case-insensitive.
+  private final static pattern<Character> IDEAL_URI_PREFIX =
+      new list_pattern(new base_string("urn:ideal:"));
   private final static pattern<Character> DOT_PATTERN = new singleton_pattern('.');
 
   public html_rewriter(naming_strategy the_naming_strategy) {
@@ -87,21 +88,20 @@ public class html_rewriter extends text_rewriter {
   }
 
   private base_string rewrite_ideal_scheme(base_string href) {
-    @Nullable range separator = SCHEME_SEPARATOR.find_first(href, 0);
-    if (separator != null) {
-      // TODO: make case-insensitive.
-      if (utilities.eq(href.slice(0, separator.begin()), IDEAL_SCHEME)) {
-        string type_name = href.skip(separator.end());
-        immutable_list<immutable_list<Character>> names = DOT_PATTERN.split(type_name);
-        list<simple_name> target_name = new base_list<simple_name>();
-        for (int i = 0; i < names.size(); ++i) {
-          // TODO: introduce a sanity check.
-          target_name.append(simple_name.make((base_string) names.get(i)));
-        }
-        return the_naming_strategy.link_to_resource(target_name,
-            the_naming_strategy.default_extension());
-      }
+    @Nullable Integer match = IDEAL_URI_PREFIX.match_prefix(href);
+    if (match == null) {
+      return href;
     }
-    return href;
+
+    string type_name = href.skip(match);
+    immutable_list<immutable_list<Character>> names = DOT_PATTERN.split(type_name);
+    list<simple_name> target_name = new base_list<simple_name>();
+    for (int i = 0; i < names.size(); ++i) {
+      // TODO: introduce a sanity check.
+      target_name.append(simple_name.make((base_string) names.get(i)));
+    }
+
+    return the_naming_strategy.link_to_resource(target_name,
+        the_naming_strategy.default_extension());
   }
 }

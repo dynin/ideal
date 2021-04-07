@@ -118,6 +118,7 @@ public class procedure_analyzer extends declaration_analyzer
   }
 
   public type get_procedure_type() {
+    assert proc_type != null;
     return proc_type;
   }
 

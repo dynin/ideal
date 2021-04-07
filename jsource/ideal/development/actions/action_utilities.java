@@ -87,7 +87,12 @@ public class action_utilities {
   }
 
   public static boolean is_procedure_type(type the_type) {
-    return the_type.principal().get_kind() == type_kinds.procedure_kind;
+    if (the_type.principal().get_kind() == type_kinds.procedure_kind) {
+      type_flavor the_flavor = the_type.get_flavor();
+      return the_flavor == flavor.immutable_flavor ||
+             the_flavor == flavor.deeply_immutable_flavor;
+    }
+    return false;
   }
 
   public static boolean is_valid_procedure_arity(type procedure_type, int arity) {

@@ -122,7 +122,7 @@ span:target {
   text-align: justify;
 }
 
-.right {
+.main-doc .indented {
   margin-left: 1.5em;
   font-style: italic;
 }

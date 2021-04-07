@@ -6,5 +6,7 @@
 
 namespace documentation {
   html_content homepage;
+  html_content quickstart;
+  html_content communication;
   html_content license;
 }

@@ -32,9 +32,6 @@ import javax.annotation.Nullable;
 
 public class naming_strategy extends debuggable implements printer_assistant, immutable_data {
 
-//  public static final string INDEX = new base_string("index");
-  public static final simple_name XREF_NAME = simple_name.make("xref");
-
   public static final boolean DEBUG_FRAGMENTS = false;
 
   private final immutable_list<simple_name> full_names;
@@ -73,23 +70,19 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return full_names;
   }
 
-  public immutable_list<simple_name> get_xref_names() {
-    return make_xref_target(full_names).frozen_copy();
+  public string get_resource_name() {
+    return the_xref_context.the_naming_rewriter.resource_path(null, full_names,
+        false, default_extension());
   }
+
+  public string get_xref_resource_name() {
+    return the_xref_context.the_naming_rewriter.resource_path(null, full_names,
+        true, default_extension());
+  }
+
 
   public xref_context the_xref_context() {
     return the_xref_context;
-  }
-
-  private readonly_list<simple_name> make_xref_target(readonly_list<simple_name> target) {
-    assert target.is_not_empty();
-    list<simple_name> xref_names = new base_list<simple_name>();
-    xref_names.append_all(target.slice(0, target.size() - 1));
-
-    simple_name last_name = target.last();
-    xref_names.append(name_utilities.join(last_name, XREF_NAME));
-
-    return xref_names;
   }
 
   public extension default_extension() {
@@ -99,7 +92,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   public base_string link_to_resource(readonly_list<simple_name> target_name,
       extension target_extension) {
     return the_xref_context.the_naming_rewriter.resource_path(current_catalog, target_name,
-      target_extension);
+        false, target_extension);
   }
 
   public @Nullable string link_to_type(@Nullable principal_type the_type, printer_mode mode) {
@@ -115,10 +108,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
     readonly_list<simple_name> target_name = type_utilities.get_full_names(the_type);
     if (target_name.is_not_empty()) {
-      if (mode == printer_mode.XREF) {
-        target_name = make_xref_target(target_name);
-      }
-      return link_to_resource(target_name, default_extension());
+      return the_xref_context.the_naming_rewriter.resource_path(current_catalog, target_name,
+          mode == printer_mode.XREF, default_extension());
     } else {
       return null;
     }

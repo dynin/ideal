@@ -21,6 +21,7 @@ import ideal.development.scanners.*;
 
 import javax.annotation.Nullable;
 
+// TODO: refactor into two implementations: output_catalog and stdout
 public class content_writer implements value {
 
   private final @Nullable resource_catalog output_catalog;
@@ -53,16 +54,30 @@ public class content_writer implements value {
     }
   }
 
-  public void write(string content, readonly_list<simple_name> full_name,
-      extension the_extension) {
-
-    if (output_catalog != null) {
-      resource_identifier output = make_output(full_name, the_extension);
+  private void do_write(string content, @Nullable resource_identifier output) {
+    if (output != null) {
       log.info(new base_string("Writing to ", output.to_string()));
       output.access_string(make_catalog_option.instance).content().set(content);
     } else {
       standard_channels.stdout.write_all(content);
       standard_channels.stdout.sync();
+    }
+  }
+
+  public void write(string content, string resource_name) {
+    if (output_catalog != null) {
+      do_write(content, output_catalog.resolve(resource_name));
+    } else {
+      do_write(content, null);
+    }
+  }
+
+  public void write(string content, readonly_list<simple_name> full_name,
+      extension the_extension) {
+    if (output_catalog != null) {
+      do_write(content, make_output(full_name, the_extension));
+    } else {
+      do_write(content, null);
     }
   }
 }

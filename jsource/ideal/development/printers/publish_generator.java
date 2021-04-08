@@ -47,7 +47,7 @@ public class publish_generator {
   private boolean initialized;
 
   public publish_generator(content_writer processor) {
-    this.the_xref_context = new xref_context(new ideal_rewriter());
+    this.the_xref_context = new xref_context(new ideal_rewriter(new file_rewriter()));
     this.processor = processor;
   }
 
@@ -198,8 +198,7 @@ public class publish_generator {
     text_fragment result = render_page(the_text, the_naming_strategy, printer_mode.DOC);
 
     string result_string = text_util.to_markup_string(result);
-    processor.write(result_string, the_naming_strategy.get_full_names(),
-        the_naming_strategy.default_extension());
+    processor.write(result_string, the_naming_strategy.get_resource_name());
   }
 
   public void generate_markup(readonly_list<construct> constructs,
@@ -210,8 +209,7 @@ public class publish_generator {
     text_fragment result = render_page(body, the_naming_strategy, printer_mode.STYLISH);
 
     string result_string = text_util.to_markup_string(result);
-    processor.write(result_string, the_naming_strategy.get_full_names(),
-        the_naming_strategy.default_extension());
+    processor.write(result_string, the_naming_strategy.get_resource_name());
 
     if (!GENERATE_XREF) {
       return;
@@ -222,8 +220,7 @@ public class publish_generator {
     text_fragment xref_result = render_page(xref_body, the_naming_strategy, printer_mode.XREF);
 
     string xref_string = text_util.to_markup_string(xref_result);
-    processor.write((base_string) xref_string, the_naming_strategy.get_xref_names(),
-        the_naming_strategy.default_extension());
+    processor.write((base_string) xref_string, the_naming_strategy.get_xref_resource_name());
   }
 
   text_fragment render_page(text_fragment body, naming_strategy the_naming_strategy,
@@ -235,8 +232,7 @@ public class publish_generator {
 
     text_element navigation = make_navigation(the_naming_strategy, mode);
     body = text_util.join(navigation, body, navigation);
-    return wrap_body(body, the_html_rewriter.get_title(), the_naming_strategy.get_full_names(),
-        the_naming_strategy);
+    return wrap_body(body, the_html_rewriter.get_title(), the_naming_strategy);
   }
 
   private static text_fragment make_title(readonly_list<simple_name> full_name) {
@@ -249,12 +245,6 @@ public class publish_generator {
       }
       // TODO: use code from the base_printer that generates spaces.
       result.append((base_string) full_name.get(i).to_string());
-    }
-
-    if (false) {
-      result.append(new base_string(" "));
-      result.append(MDASH);
-      result.append(new base_string(" testing HTML output"));
     }
 
     return text_util.join(result);
@@ -334,9 +324,10 @@ public class publish_generator {
   }
 
   private static text_fragment wrap_body(text_fragment body_text, @Nullable text_element title,
-      readonly_list<simple_name> full_name, naming_strategy the_naming_strategy) {
+      naming_strategy the_naming_strategy) {
     if (title == null) {
-      title = text_util.make_element(TITLE, text_util.to_list(make_title(full_name)));
+      title = text_util.make_element(TITLE, text_util.to_list(make_title(
+          the_naming_strategy.get_full_names())));
     }
     // TODO: introduce constants.
     base_string css_href = the_naming_strategy.link_to_resource(

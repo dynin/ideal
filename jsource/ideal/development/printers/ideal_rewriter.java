@@ -32,35 +32,31 @@ import javax.annotation.Nullable;
 
 public class ideal_rewriter extends debuggable implements naming_rewriter {
 
-  // TODO: test.
+  public static final simple_name IDEAL_NAME = simple_name.make("ideal");
+
+  private final naming_rewriter downstream_rewriter;
+
+  public ideal_rewriter(naming_rewriter downstream_rewriter) {
+    this.downstream_rewriter = downstream_rewriter;
+  }
+
+  private @Nullable readonly_list<simple_name> rewrite_name(
+      @Nullable readonly_list<simple_name> the_name) {
+    if (the_name == null) {
+      return null;
+    }
+
+    if (the_name.is_not_empty() && the_name.first() == common_library.ideal_name) {
+      return the_name.skip(1);
+    }
+
+    return the_name;
+  }
+
   @Override
-  public base_string resource_path(immutable_list<simple_name> current_catalog,
-      readonly_list<simple_name> target_name, extension target_extension) {
-    int shared_prefix = 0;
-
-    while (shared_prefix < (current_catalog.size() - 1) &&
-           shared_prefix < (target_name.size() - 2) &&
-           current_catalog.get(shared_prefix + 1) == target_name.get(shared_prefix + 1)) {
-      ++shared_prefix;
-    }
-
-    StringBuilder result = new StringBuilder();
-    int parent_count = current_catalog.size() - shared_prefix;
-
-    for (int i = 0; i < parent_count; ++i) {
-      result.append(utilities.s(resource_util.PARENT_CATALOG));
-      result.append(utilities.s(resource_util.PATH_SEPARATOR));
-    }
-
-    for (int i = shared_prefix; i < target_name.size(); ++i) {
-      result.append(utilities.s(printer_util.dash_renderer.call(target_name.get(i))));
-      if (i == target_name.size() - 1) {
-        result.append(utilities.s(target_extension.dot_name()));
-      } else {
-        result.append(utilities.s(resource_util.PATH_SEPARATOR));
-      }
-    }
-
-    return new base_string(result.toString());
+  public base_string resource_path(@Nullable readonly_list<simple_name> current_catalog,
+      readonly_list<simple_name> target_name, boolean is_xref, extension target_extension) {
+    return downstream_rewriter.resource_path(rewrite_name(current_catalog),
+        rewrite_name(target_name), is_xref, target_extension);
   }
 }

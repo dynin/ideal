@@ -150,7 +150,7 @@ class create {
 
     if (options.PRETTY_PRINT) {
       content_writer the_writer = new content_writer(cm.output_catalog(),
-          naming_strategy.dash_renderer);
+          printer_util.dash_renderer);
       publish_generator the_generator = new publish_generator(the_writer);
       xref_context the_xref_context = the_generator.the_xref_context;
       immutable_list<simple_name> test_name =
@@ -167,7 +167,7 @@ class create {
 
     if (options.GENERATE) {
       content_writer the_writer = new content_writer(cm.output_catalog(),
-          naming_strategy.dash_renderer);
+          printer_util.dash_renderer);
       java_generator generator = new java_generator(java_library.get_instance(), the_writer);
       generator.generate_top_level(cm.root, body.declarations(), new empty<import_declaration>());
     }

@@ -32,12 +32,14 @@ import javax.annotation.Nullable;
 public class xref_context extends debuggable {
   private final static int num_modes = xref_mode.values().length;
 
+  public final naming_rewriter the_naming_rewriter;
   public final mapping_visitor the_mapping_visitor;
   private final list<type_declaration_construct> the_output_declarations;
   private final dictionary<master_type, naming_strategy> output_types;
   private final dictionary<origin, list<origin>>[] mapping;
 
-  public xref_context() {
+  public xref_context(naming_rewriter the_naming_rewriter) {
+    this.the_naming_rewriter = the_naming_rewriter;
     this.the_mapping_visitor = new mapping_visitor();
     this.the_output_declarations = new base_list<type_declaration_construct>();
     this.output_types = new hash_dictionary<master_type, naming_strategy>();

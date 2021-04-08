@@ -10,36 +10,34 @@
   features:
 </p>
 
-<ul>
-    <li>
-      Comments can be prefixed with "--"
-    </li>
-    <li>
-      Type declarations are introduced with a "kind".  In addition to "class",
-      "interface" and "enum", there are "concepts", "datatypes" and other kinds.
-      They are similar to "interfaces".
-    </li>
-    <li>
-      Supertypes are part of type body declaration and can be prefixed with
-      "extends", "implements" and "refines".
-    </li>
-    <li>
-      For declaring parametrized types, square brackets are used instead of
-      angle brackets.
-    </li>
-    <li>
-      For declaring variables, a colon is used to distinguish declaration from
-      assignment. Type can be inferred, and by default the variable is
-      immutable (final).  "foo : 68" is equivalent to "final int foo = 68";
-      an error is reported if "foo" is already defined in scope. To declare
-      a mutable variable, prefix with "var"; assignment is done with "=".
-    </li>
-    <li>
-      For an overview of type flavors (introduced with keywords "readonly",
-      "writeonly", "mutable", "immutable", "deeply_immutable", "any", "pure")
-      see documentation/type-flavors.txt
-    </li>
-</ul>
+<p>
+  Comments can be prefixed with "--"
+</p>
+<p>
+  Type declarations are introduced with a "kind".  In addition to "class",
+  "interface" and "enum", there are "concepts", "datatypes" and other kinds.
+  They are similar to "interfaces".
+</p>
+<p>
+  Supertypes are part of type body declaration and can be prefixed with
+  "extends", "implements" and "refines".
+</p>
+<p>
+  For declaring parametrized types, square brackets are used instead of
+  angle brackets.
+</p>
+<p>
+  For declaring variables, a colon is used to distinguish declaration from
+  assignment. Type can be inferred, and by default the variable is
+  immutable (final).  "foo : 68" is equivalent to "final int foo = 68";
+  an error is reported if "foo" is already defined in scope. To declare
+  a mutable variable, prefix with "var"; assignment is done with "=".
+</p>
+<p>
+  For an overview of type flavors (introduced with keywords "readonly",
+  "writeonly", "mutable", "immutable", "deeply_immutable", "any", "pure")
+  see documentation/type-flavors.txt
+</p>
 
 <p>
   The LALR(1) grammar for the ideal notation can be found in

@@ -47,7 +47,7 @@ public class publish_generator {
   private boolean initialized;
 
   public publish_generator(content_writer processor) {
-    this.the_xref_context = new xref_context();
+    this.the_xref_context = new xref_context(new ideal_rewriter());
     this.processor = processor;
   }
 

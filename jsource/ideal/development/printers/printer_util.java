@@ -32,6 +32,24 @@ public class printer_util {
 
   private printer_util() { }
 
+  public static function1<string, simple_name> dash_renderer =
+      new function1<string, simple_name>() {
+        @Override
+        public string call(simple_name name) {
+          readonly_list<string> segments = name.segments;
+          StringBuilder s = new StringBuilder();
+
+          for (int i = 0; i < segments.size(); ++i) {
+            s.append(utilities.s(segments.get(i)));
+            if (i < segments.size() - 1) {
+              s.append('-');
+            }
+          }
+
+          return new base_string(s.toString());
+        }
+      };
+
   public static base_string print_simple_name(simple_name name, boolean is_stylish) {
     readonly_list<string> segments = name.segments;
     StringBuilder s = new StringBuilder();

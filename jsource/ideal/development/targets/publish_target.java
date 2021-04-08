@@ -39,13 +39,13 @@ public class publish_target extends type_processor_target {
   public void setup(analysis_context the_context) {
 
     content_writer the_writer = new content_writer(the_manager.output_catalog(),
-        naming_strategy.dash_renderer);
+        printer_util.dash_renderer);
     the_generator = new publish_generator(the_writer);
 
     if (the_manager.output_catalog() != null) {
       resource_catalog output_catalog = the_manager.output_catalog();
-      string assets = naming_strategy.dash_renderer.call(publish_generator.ASSETS_NAME);
-      string ideal_style = naming_strategy.dash_renderer.call(publish_generator.IDEAL_STYLE_NAME);
+      string assets = printer_util.dash_renderer.call(publish_generator.ASSETS_NAME);
+      string ideal_style = printer_util.dash_renderer.call(publish_generator.IDEAL_STYLE_NAME);
       resource_catalog assets_catalog = the_manager.top_catalog().resolve(assets).access_catalog();
       resource_identifier css_source = assets_catalog.resolve(ideal_style, base_extension.CSS);
       string stylesheet_content = css_source.access_string(null).content().get();

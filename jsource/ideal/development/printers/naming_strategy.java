@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 public class naming_strategy extends debuggable implements printer_assistant, immutable_data {
 
-  public static final string INDEX = new base_string("index");
+//  public static final string INDEX = new base_string("index");
   public static final simple_name XREF_NAME = simple_name.make("xref");
 
   public static final boolean DEBUG_FRAGMENTS = false;
@@ -44,24 +44,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   private final immutable_list<simple_name> current_catalog;
   private final dictionary<construct, string> fragments;
   private final set<string> fragment_ids;
-
-  public static function1<string, simple_name> dash_renderer =
-      new function1<string, simple_name>() {
-        @Override
-        public string call(simple_name name) {
-          readonly_list<string> segments = name.segments;
-          StringBuilder s = new StringBuilder();
-
-          for (int i = 0; i < segments.size(); ++i) {
-            s.append(utilities.s(segments.get(i)));
-            if (i < segments.size() - 1) {
-              s.append('-');
-            }
-          }
-
-          return new base_string(s.toString());
-        }
-      };
 
   public naming_strategy(principal_type current_type, xref_context the_xref_context) {
     this(type_utilities.get_full_names(current_type), current_type, the_xref_context);
@@ -114,35 +96,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return base_extension.HTML;
   }
 
-  // TODO: test.
   public base_string link_to_resource(readonly_list<simple_name> target_name,
       extension target_extension) {
-    int shared_prefix = 0;
-
-    while (shared_prefix < (current_catalog.size() - 1) &&
-           shared_prefix < (target_name.size() - 2) &&
-           current_catalog.get(shared_prefix + 1) == target_name.get(shared_prefix + 1)) {
-      ++shared_prefix;
-    }
-
-    StringBuilder result = new StringBuilder();
-    int parent_count = current_catalog.size() - shared_prefix;
-
-    for (int i = 0; i < parent_count; ++i) {
-      result.append(utilities.s(resource_util.PARENT_CATALOG));
-      result.append(utilities.s(resource_util.PATH_SEPARATOR));
-    }
-
-    for (int i = shared_prefix; i < target_name.size(); ++i) {
-      result.append(utilities.s(dash_renderer.call(target_name.get(i))));
-      if (i == target_name.size() - 1) {
-        result.append(utilities.s(target_extension.dot_name()));
-      } else {
-        result.append(utilities.s(resource_util.PATH_SEPARATOR));
-      }
-    }
-
-    return new base_string(result.toString());
+    return the_xref_context.the_naming_rewriter.resource_path(current_catalog, target_name,
+      target_extension);
   }
 
   public @Nullable string link_to_type(@Nullable principal_type the_type, printer_mode mode) {
@@ -364,7 +321,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   private string name_to_id(action_name the_action_name) {
-    return dash_renderer.call((simple_name) the_action_name);
+    return printer_util.dash_renderer.call((simple_name) the_action_name);
   }
 
   @Override

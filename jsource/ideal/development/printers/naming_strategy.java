@@ -38,7 +38,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   private final principal_type current_type;
   private final xref_context the_xref_context;
 
-  private final immutable_list<simple_name> current_catalog;
   private final dictionary<construct, string> fragments;
   private final set<string> fragment_ids;
 
@@ -55,9 +54,6 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     this.current_type = current_type;
     this.the_xref_context = the_xref_context;
 
-    assert full_names.is_not_empty();
-    this.current_catalog = full_names.slice(0, full_names.size() - 1);
-
     fragments = new hash_dictionary<construct, string>();
     fragment_ids = new hash_set<string>();
   }
@@ -70,14 +66,18 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return full_names;
   }
 
+  private base_string resource_path(@Nullable readonly_list<simple_name> current_name,
+      readonly_list<simple_name> target_name, boolean is_xref, extension target_extension) {
+    return the_xref_context.the_naming_rewriter.resource_path(current_name, target_name,
+        is_xref, target_extension);
+  }
+
   public string get_resource_name() {
-    return the_xref_context.the_naming_rewriter.resource_path(null, full_names,
-        false, default_extension());
+    return resource_path(null, full_names, false, default_extension());
   }
 
   public string get_xref_resource_name() {
-    return the_xref_context.the_naming_rewriter.resource_path(null, full_names,
-        true, default_extension());
+    return resource_path(null, full_names, true, default_extension());
   }
 
 
@@ -91,8 +91,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
 
   public base_string link_to_resource(readonly_list<simple_name> target_name,
       extension target_extension) {
-    return the_xref_context.the_naming_rewriter.resource_path(current_catalog, target_name,
-        false, target_extension);
+    return resource_path(full_names, target_name, false, target_extension);
   }
 
   public @Nullable string link_to_type(@Nullable principal_type the_type, printer_mode mode) {
@@ -107,12 +106,12 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     }
 
     readonly_list<simple_name> target_name = type_utilities.get_full_names(the_type);
-    if (target_name.is_not_empty()) {
-      return the_xref_context.the_naming_rewriter.resource_path(current_catalog, target_name,
-          mode == printer_mode.XREF, default_extension());
-    } else {
+    if (target_name.is_empty()) {
       return null;
     }
+
+    return resource_path(full_names, target_name, mode == printer_mode.XREF,
+        default_extension());
   }
 
   @Override

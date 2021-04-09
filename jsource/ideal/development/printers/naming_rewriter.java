@@ -31,6 +31,6 @@ import ideal.development.values.*;
 import javax.annotation.Nullable;
 
 public interface naming_rewriter {
-  base_string resource_path(@Nullable readonly_list<simple_name> current_catalog,
+  base_string resource_path(@Nullable readonly_list<simple_name> current_name,
       readonly_list<simple_name> target_name, boolean is_xref, extension target_extension);
 }

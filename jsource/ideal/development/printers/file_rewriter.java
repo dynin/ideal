@@ -47,8 +47,11 @@ public class file_rewriter extends debuggable implements naming_rewriter {
 
   // TODO: test.
   @Override
-  public base_string resource_path(@Nullable readonly_list<simple_name> current_catalog,
+  public base_string resource_path(@Nullable readonly_list<simple_name> current_name,
       readonly_list<simple_name> target_name, boolean is_xref, extension target_extension) {
+
+    assert target_name.is_not_empty();
+
     if (is_xref) {
       target_name = make_xref_target(target_name);
     }
@@ -56,14 +59,14 @@ public class file_rewriter extends debuggable implements naming_rewriter {
     int shared_prefix = 0;
     StringBuilder result = new StringBuilder();
 
-    if (current_catalog != null) {
-      while (shared_prefix < (current_catalog.size() - 1) &&
-             shared_prefix < (target_name.size() - 2) &&
-             current_catalog.get(shared_prefix + 1) == target_name.get(shared_prefix + 1)) {
+    if (current_name != null && current_name.size() > 1) {
+      while (shared_prefix < (current_name.size() - 1) &&
+             shared_prefix < (target_name.size() - 1) &&
+             current_name.get(shared_prefix) == target_name.get(shared_prefix)) {
         ++shared_prefix;
       }
 
-      int parent_count = current_catalog.size() - shared_prefix;
+      int parent_count = current_name.size() - shared_prefix - 1;
 
       for (int i = 0; i < parent_count; ++i) {
         result.append(utilities.s(resource_util.PARENT_CATALOG));

@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 public class ideal_rewriter extends debuggable implements naming_rewriter {
 
-  public static final simple_name IDEAL_NAME = simple_name.make("ideal");
+  public static final simple_name DOCUMENTATION_NAME = simple_name.make("documentation");
 
   private final naming_rewriter downstream_rewriter;
 
@@ -40,23 +40,29 @@ public class ideal_rewriter extends debuggable implements naming_rewriter {
     this.downstream_rewriter = downstream_rewriter;
   }
 
-  private @Nullable readonly_list<simple_name> rewrite_name(
+  private @Nullable readonly_list<simple_name> rewrite_current_name(
       @Nullable readonly_list<simple_name> the_name) {
     if (the_name == null) {
       return null;
     }
+    return rewrite_name(the_name);
+  }
 
+  private readonly_list<simple_name> rewrite_name(readonly_list<simple_name> the_name) {
+    readonly_list<simple_name> old_name = the_name;
     if (the_name.is_not_empty() && the_name.first() == common_library.ideal_name) {
-      return the_name.skip(1);
+      the_name = the_name.skip(1);
+      if (the_name.size() > 1 && the_name.first() == DOCUMENTATION_NAME) {
+        the_name = the_name.skip(1);
+      }
     }
 
     return the_name;
   }
 
   @Override
-  public base_string resource_path(@Nullable readonly_list<simple_name> current_catalog,
-      readonly_list<simple_name> target_name, boolean is_xref, extension target_extension) {
-    return downstream_rewriter.resource_path(rewrite_name(current_catalog),
+  public base_string resource_path(@Nullable readonly_list<simple_name> current_name,
+    return downstream_rewriter.resource_path(rewrite_current_name(current_name),
         rewrite_name(target_name), is_xref, target_extension);
   }
 }

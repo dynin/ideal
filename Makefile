@@ -297,7 +297,7 @@ document_all: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_all \
             -output=$(PRETTY_DIR)
 
-document_site: $(IDEAL_TARGET)
+document_site: $(IDEAL_TARGET) rm-pretty
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_site \
             -output=$(PRETTY_DIR)
 
@@ -384,6 +384,9 @@ clean:
 
 rm-scratch:
 	rm -rf $(SCRATCH_DIR)
+
+rm-pretty:
+	rm -rf $(PRETTY_DIR)
 
 wipeout:
 	rm -rf $(BUILD_DIR)

@@ -260,7 +260,7 @@ public class publish_generator {
     text_element left = make_nav_cell(
         the_xref_context.get_predecessor(the_declaration), true,
         the_naming_strategy, mode);
-    text_element center = make_center_cell(the_type.get_parent(), the_naming_strategy, mode);
+    text_element center = make_center_cell(the_type, the_naming_strategy, mode);
     text_element right = make_nav_cell(
         the_xref_context.get_successor(the_declaration), false,
         the_naming_strategy, mode);
@@ -307,7 +307,8 @@ public class publish_generator {
       action_name current_name = current_type.short_name();
       if (current_name instanceof simple_name) {
         text_fragment name_text = print_name(current_name);
-        @Nullable string link = the_naming_strategy.link_to_type(current_type, mode);
+        @Nullable string link = current_type == the_type ? null :
+            the_naming_strategy.link_to_type(current_type, mode);
         if (link != null) {
           name_text = text_util.make_html_link(name_text, link);
         }

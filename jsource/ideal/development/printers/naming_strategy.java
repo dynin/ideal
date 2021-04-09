@@ -46,11 +46,11 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   // TODO: this is only exposed so it can be used by create -pretty-print
-  public naming_strategy(immutable_list<simple_name> full_names, principal_type current_type,
+  public naming_strategy(readonly_list<simple_name> full_names, principal_type current_type,
       xref_context the_xref_context) {
     assert full_names.is_not_empty();
 
-    this.full_names = full_names;
+    this.full_names = full_names.frozen_copy();
     this.current_type = current_type;
     this.the_xref_context = the_xref_context;
 

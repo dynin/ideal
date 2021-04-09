@@ -36,6 +36,7 @@ public class xref_context extends debuggable {
   public final mapping_visitor the_mapping_visitor;
   private final list<type_declaration_construct> the_output_declarations;
   private final dictionary<master_type, naming_strategy> output_types;
+  private final set<master_type> skip_types;
   private final dictionary<origin, list<origin>>[] mapping;
 
   public xref_context(naming_rewriter the_naming_rewriter) {
@@ -43,6 +44,7 @@ public class xref_context extends debuggable {
     this.the_mapping_visitor = new mapping_visitor();
     this.the_output_declarations = new base_list<type_declaration_construct>();
     this.output_types = new hash_dictionary<master_type, naming_strategy>();
+    this.skip_types = new hash_set<master_type>();
     mapping = new dictionary[num_modes * 2];
     for (int i = 0; i < mapping.length; ++i) {
       mapping[i] = new list_dictionary<origin, list<origin>>();
@@ -88,11 +90,19 @@ public class xref_context extends debuggable {
   }
 
   // This is used in -pretty-print.
-  public void add_named_output(principal_type the_type, immutable_list<simple_name> full_names) {
+  public void add_named_output(principal_type the_type, readonly_list<simple_name> full_names) {
     if (has_output_type(the_type)) {
       return;
     }
     output_types.put(normalize(the_type), new naming_strategy(full_names, the_type, this));
+  }
+
+  public void add_skip_type(principal_type the_type) {
+    skip_types.add(normalize(the_type));
+  }
+
+  public boolean is_skip_type(principal_type the_type) {
+    return skip_types.contains(normalize(the_type));
   }
 
   public immutable_list<type_declaration_construct> output_constructs() {

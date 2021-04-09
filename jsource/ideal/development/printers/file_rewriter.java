@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 public class file_rewriter extends debuggable implements naming_rewriter {
 
   public static final simple_name XREF_NAME = simple_name.make("xref");
+  public static final simple_name INDEX_NAME = simple_name.make("index");
 
   private readonly_list<simple_name> make_xref_target(readonly_list<simple_name> target) {
     assert target.is_not_empty();
@@ -50,7 +51,9 @@ public class file_rewriter extends debuggable implements naming_rewriter {
   public base_string resource_path(@Nullable readonly_list<simple_name> current_name,
       readonly_list<simple_name> target_name, boolean is_xref, extension target_extension) {
 
-    assert target_name.is_not_empty();
+    if (target_name.is_empty()) {
+      target_name = new base_list<simple_name>(INDEX_NAME);
+    }
 
     if (is_xref) {
       target_name = make_xref_target(target_name);

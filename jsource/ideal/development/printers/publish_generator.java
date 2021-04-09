@@ -46,14 +46,24 @@ public class publish_generator {
   private final content_writer processor;
   private boolean initialized;
 
-  public publish_generator(content_writer processor) {
-    this.the_xref_context = new xref_context(new ideal_rewriter(new file_rewriter()));
+  public publish_generator(analysis_context context, content_writer processor) {
+    the_xref_context = new xref_context(new ideal_rewriter(new file_rewriter()));
     this.processor = processor;
+
+    readonly_list<type> types = action_utilities.lookup_types(context, ideal_namespace(),
+        ideal_rewriter.DOCUMENTATION_NAME);
+    if (types.size() == 1) {
+      the_xref_context.add_skip_type((principal_type) types.first());
+    }
+  }
+
+  private principal_type ideal_namespace() {
+    return common_library.get_instance().ideal_namespace();
   }
 
   public void add_type(principal_type the_type) {
     if (!initialized) {
-      the_xref_context.process_type(common_library.get_instance().ideal_namespace());
+      the_xref_context.process_type(ideal_namespace());
       // TODO: handle types that are not subtypes of ideal.
       initialized = true;
     }
@@ -175,6 +185,9 @@ public class publish_generator {
       type_declaration_construct the_declaration_construct = constructs.get(i);
       type_declaration the_declaration = declaration_util.to_type_declaration(
           the_xref_context.get_analyzable(the_declaration_construct));
+      if (the_xref_context.is_skip_type(the_declaration.get_declared_type())) {
+        continue;
+      }
       naming_strategy the_naming_strategy =
           the_xref_context.get_naming_strategy(the_declaration.get_declared_type());
 

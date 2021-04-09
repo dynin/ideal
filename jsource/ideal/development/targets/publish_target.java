@@ -40,7 +40,7 @@ public class publish_target extends type_processor_target {
 
     content_writer the_writer = new content_writer(the_manager.output_catalog(),
         printer_util.dash_renderer);
-    the_generator = new publish_generator(the_writer);
+    the_generator = new publish_generator(the_context, the_writer);
 
     if (the_manager.output_catalog() != null) {
       resource_catalog output_catalog = the_manager.output_catalog();

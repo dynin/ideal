@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 public class ideal_rewriter extends debuggable implements naming_rewriter {
 
   public static final simple_name DOCUMENTATION_NAME = simple_name.make("documentation");
+  public static final simple_name INDEX_NAME = simple_name.make("index");
 
   private final naming_rewriter downstream_rewriter;
 
@@ -49,11 +50,15 @@ public class ideal_rewriter extends debuggable implements naming_rewriter {
   }
 
   private readonly_list<simple_name> rewrite_name(readonly_list<simple_name> the_name) {
+    assert the_name.is_not_empty();
     readonly_list<simple_name> old_name = the_name;
     if (the_name.is_not_empty() && the_name.first() == common_library.ideal_name) {
       the_name = the_name.skip(1);
       if (the_name.size() > 1 && the_name.first() == DOCUMENTATION_NAME) {
         the_name = the_name.skip(1);
+        if (the_name.size() == 1 && the_name.first() == INDEX_NAME) {
+          the_name = new base_list<simple_name>(DOCUMENTATION_NAME);
+        }
       }
     }
 
@@ -62,6 +67,7 @@ public class ideal_rewriter extends debuggable implements naming_rewriter {
 
   @Override
   public base_string resource_path(@Nullable readonly_list<simple_name> current_name,
+      readonly_list<simple_name> target_name, boolean is_xref, extension target_extension) {
     return downstream_rewriter.resource_path(rewrite_current_name(current_name),
         rewrite_name(target_name), is_xref, target_extension);
   }

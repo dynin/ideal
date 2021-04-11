@@ -258,7 +258,7 @@ public class xref_context extends debuggable {
 
   public @Nullable principal_type get_output_type(@Nullable principal_type the_type) {
     while (the_type != null) {
-      if (has_output_type(the_type)) {
+      if (has_output_type(the_type) || is_skip_type(the_type)) {
         return the_type;
       }
       the_type = the_type.get_parent();

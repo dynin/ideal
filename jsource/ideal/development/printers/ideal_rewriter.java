@@ -33,7 +33,9 @@ import javax.annotation.Nullable;
 public class ideal_rewriter extends debuggable implements naming_rewriter {
 
   public static final simple_name DOCUMENTATION_NAME = simple_name.make("documentation");
+  public static final simple_name HOMEPAGE_NAME = simple_name.make("homepage");
   public static final simple_name INDEX_NAME = simple_name.make("index");
+  public static final simple_name SOURCE_NAME = simple_name.make("source");
 
   private final naming_rewriter downstream_rewriter;
 
@@ -54,10 +56,17 @@ public class ideal_rewriter extends debuggable implements naming_rewriter {
     readonly_list<simple_name> old_name = the_name;
     if (the_name.is_not_empty() && the_name.first() == common_library.ideal_name) {
       the_name = the_name.skip(1);
-      if (the_name.size() > 1 && the_name.first() == DOCUMENTATION_NAME) {
+      if (the_name.is_empty()) {
+        the_name = new base_list<simple_name>(SOURCE_NAME);
+      } if (the_name.size() > 1 && the_name.first() == DOCUMENTATION_NAME) {
         the_name = the_name.skip(1);
-        if (the_name.size() == 1 && the_name.first() == INDEX_NAME) {
-          the_name = new base_list<simple_name>(DOCUMENTATION_NAME);
+        if (the_name.size() == 1) {
+          simple_name documentation_name = the_name.first();
+          if (documentation_name == HOMEPAGE_NAME) {
+            the_name = new empty<simple_name>();
+          } else if (documentation_name == INDEX_NAME) {
+            the_name = new base_list<simple_name>(DOCUMENTATION_NAME);
+          }
         }
       }
     }

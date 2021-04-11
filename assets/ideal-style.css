@@ -127,6 +127,10 @@ span:target {
   font-style: italic;
 }
 
+.main-doc .bold-link {
+  font-weight: bolder;
+}
+
 .nav-table {
   flex-grow: 0;
   width: 100%;

@@ -50,6 +50,7 @@ public class publish_generator {
     the_xref_context = new xref_context(new ideal_rewriter(new file_rewriter()));
     this.processor = processor;
 
+    the_xref_context.add_skip_type(ideal_namespace());
     readonly_list<type> types = action_utilities.lookup_types(context, ideal_namespace(),
         ideal_rewriter.DOCUMENTATION_NAME);
     if (types.size() == 1) {

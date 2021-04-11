@@ -131,6 +131,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       return null;
     }
 
+    if (the_xref_context.is_skip_type(output_type)) {
+      return null;
+    }
+
     naming_strategy target_naming = the_xref_context.get_naming_strategy(output_type);
     assert target_naming != null;
     @Nullable string fragment_id = target_naming.fragment_of_construct(the_construct, mode);

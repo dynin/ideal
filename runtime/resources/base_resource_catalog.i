@@ -66,7 +66,7 @@ class base_resource_catalog {
 
     while (index < components.size) {
       -- TODO: cast should be redundant.
-      component : components[index] as string;
+      component : components[index] !> string;
       index += 1;
       if (component.is_empty || component == resource_util.CURRENT_CATALOG) {
         -- skip dots.

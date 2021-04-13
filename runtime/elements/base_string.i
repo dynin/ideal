@@ -104,23 +104,23 @@ class base_string {
   }
 
   static String unbox(string the_string) {
-    return (the_string as base_string).s();
+    return (the_string !> base_string).s();
   }
 
   static overload String c(String s1, String s2) {
-    return (s1 ++ s2) as String;
+    return (s1 ++ s2) !> String;
   }
 
   static overload String c(String s1, string s2) {
-    return (s1 ++ unbox(s2)) as String;
+    return (s1 ++ unbox(s2)) !> String;
   }
 
   static overload String c(string s1, string s2) {
-    return (unbox(s1) ++ unbox(s2)) as String;
+    return (unbox(s1) ++ unbox(s2)) !> String;
   }
 
   static overload String c(string s1, String s2) {
-    return (unbox(s1) ++ s2) as String;
+    return (unbox(s1) ++ s2) !> String;
   }
 
   static string from_list(readonly list[character] chars) {
@@ -172,7 +172,7 @@ class base_string {
 
   -- TODO: remove this once tests are rewritten.
   override boolean equals(Object other) {
-    return other is base_string && this.state.equals((other as base_string).state);
+    return other is base_string && this.state.equals((other !> base_string).state);
   }
 
   implement string to_string() {

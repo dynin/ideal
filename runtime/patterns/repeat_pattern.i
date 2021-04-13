@@ -19,7 +19,7 @@ class repeat_pattern[readonly value element_type] {
   }
 
   implement void validate() {
-    (the_pattern as validatable).validate();
+    (the_pattern !> validatable).validate();
   }
 
   implement implicit boolean call(readonly list[element_type] the_list) {

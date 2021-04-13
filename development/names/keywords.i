@@ -6,13 +6,14 @@
 
 --- Keywords used in the ideal system.
 namespace keywords {
+  RESERVED : keyword.new("reserved");
+
   THIS : keyword.new("this");
   SUPER : keyword.new("super");
   NEW : keyword.new("new");
 
   OR : keyword.new("or", base_symbols.OR);
 
-  AS : keyword.new("as", base_symbols.AS);
   IS : keyword.new("is", base_symbols.IS);
   IS_NOT : keyword.new("is_not", base_symbols.IS_NOT);
 

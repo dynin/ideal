@@ -27,7 +27,7 @@ class option_pattern[readonly value element_type] {
     validated = true;
     assert options.size > 1;
     for (option : options) {
-      (option as validatable).validate();
+      (option !> validatable).validate();
       -- Empty pattern cannot match one of the options.
       assert !option(empty[element_type].new());
     }

@@ -35,7 +35,7 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
 
   overload base_graph() {
     -- TODO: cast is redundant.
-    this(runtime_util.default_equivalence as readonly value as equivalence_relation[vertice_type]);
+    this(runtime_util.default_equivalence !> readonly value !> equivalence_relation[vertice_type]);
   }
 
   override readonly set[vertice_type] vertices() {

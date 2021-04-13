@@ -125,7 +125,7 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
 
   implement immutable set[key_type] keys() {
     set[key_type] result :
-        hash_set[key_type].new(equivalence as equivalence_with_hash[key_type]);
+        hash_set[key_type].new(equivalence !> equivalence_with_hash[key_type]);
     for (var entry : entries; entry is_not null; entry = entry.next) {
       result.add(entry.key);
     }

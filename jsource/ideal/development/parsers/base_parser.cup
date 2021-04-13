@@ -111,7 +111,7 @@ precedence left VERTICAL_BAR;
 precedence left CARET;
 precedence left AMPERSAND;
 precedence left EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS;
-precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AS, IS, IS_NOT,
+precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, IS, IS_NOT,
     DOT_GREATER_THAN, EXCLAMATION_GREATER_THAN, QUESTION_MARK_GREATER_THAN;
 precedence left PLUS, MINUS, PLUS_PLUS;
 precedence left ASTERISK, SLASH, PERCENT;
@@ -395,8 +395,6 @@ expression ::=  name:n
         |       expression:e DOT_GREATER_THAN:op expression:t
                 {: RESULT = parser_util.make_op(e, op, t, operator.SOFT_CAST); :}
         |       expression:e EXCLAMATION_GREATER_THAN:op expression:t
-                {: RESULT = parser_util.make_op(e, op, t, operator.HARD_CAST); :}
-        |       expression:e AS:op expression:t
                 {: RESULT = parser_util.make_op(e, op, t, operator.HARD_CAST); :}
         |       expression:e1 IS:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.IS_OPERATOR); :}

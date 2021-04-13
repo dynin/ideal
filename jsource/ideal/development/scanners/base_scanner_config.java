@@ -14,9 +14,10 @@ import ideal.development.elements.*;
 import ideal.development.constructs.jump_type;
 import ideal.development.names.*;
 import ideal.development.origins.*;
+import javax.annotation.Nullable;
 
 public class base_scanner_config implements scanner_config {
-  private dictionary<simple_name, token_matcher> keywords =
+  private dictionary<simple_name, token_matcher> keyword_dictionary =
       new hash_dictionary<simple_name, token_matcher>();
 
   private list<scanner_element> elements = new base_list<scanner_element>();
@@ -49,7 +50,7 @@ public class base_scanner_config implements scanner_config {
   public token process_token(token the_token) {
     if (the_token.type() == special_token_type.SIMPLE_NAME) {
       simple_name the_name = ((token<simple_name>) the_token).payload();
-      token_matcher matcher = keywords.get(the_name);
+      token_matcher matcher = keyword_dictionary.get(the_name);
       if (matcher != null) {
         return matcher.process(the_token.deeper_origin());
       }
@@ -62,7 +63,7 @@ public class base_scanner_config implements scanner_config {
   }
 
   private void add_keyword(simple_name name, token_matcher matcher) {
-    token_matcher old = keywords.put(name, matcher);
+    token_matcher old = keyword_dictionary.put(name, matcher);
     assert old == null;
   }
 
@@ -100,6 +101,15 @@ public class base_scanner_config implements scanner_config {
 
   public void add_jump(jump_type jump) {
     add_keyword(jump.jump_name(), new token_matcher<jump_type>(special_token_type.JUMP, jump));
+  }
+
+  @Override
+  public void add_reserved(string reserved_word, @Nullable keyword the_keyword) {
+    simple_name name = simple_name.make(reserved_word);
+    if (the_keyword == null) {
+      the_keyword = keywords.RESERVED;
+    }
+    add_keyword(name, new token_matcher<keyword>(keywords.RESERVED, the_keyword));
   }
 
   private static class token_matcher<P extends deeply_immutable_data> {

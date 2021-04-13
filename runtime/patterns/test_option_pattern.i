@@ -133,6 +133,6 @@ class test_option_pattern {
   -- TODO: This hack shouldn't be needed.
   boolean equals(immutable list[character] s0, string s1) {
     -- deeply_immutable list[character] dil : s0;
-    return (s0 as string) == s1;
+    return (s0 !> string) == s1;
   }
 }

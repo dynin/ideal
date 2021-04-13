@@ -17,7 +17,7 @@ public class hash_set[readonly value element_type] {
 
   public overload hash_set() {
     -- TODO: cast is redundant.  Double cast is used to please Java compiler.
-    super(runtime_util.default_equivalence as any value as equivalence_with_hash[element_type]);
+    super(runtime_util.default_equivalence !> any value !> equivalence_with_hash[element_type]);
   }
 
   private void copy_on_write() {

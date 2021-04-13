@@ -107,4 +107,6 @@ public interface messages {
   string jump_outside_loop = new base_string("Jump outside of a loop");
 
   string type_cycle = new base_string("There is a cycle in type dependencies");
+
+  string reserved_word = new base_string("Reserved word");
 }

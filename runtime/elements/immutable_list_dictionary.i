@@ -18,12 +18,12 @@ public class immutable_list_dictionary[readonly value key_type, value value_type
 
   public overload immutable_list_dictionary() {
     -- TODO: cast is redundant.
-    super(runtime_util.default_equivalence as equivalence_relation[key_type]);
+    super(runtime_util.default_equivalence !> equivalence_relation[key_type]);
   }
 
   public overload immutable_list_dictionary(key_type the_key, value_type the_value) {
     -- TODO: cast is redundant.
-    super(the_key, the_value, runtime_util.default_equivalence as equivalence_relation[key_type]);
+    super(the_key, the_value, runtime_util.default_equivalence !> equivalence_relation[key_type]);
   }
 
   public overload immutable_list_dictionary(base_list_dictionary[key_type, value_type] original) {

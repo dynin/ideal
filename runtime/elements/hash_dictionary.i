@@ -17,7 +17,7 @@ public class hash_dictionary[readonly value key_type, value value_type] {
 
   public overload hash_dictionary() {
     -- TODO: cast is redundant.
-    super(runtime_util.default_equivalence as equivalence_with_hash[key_type]);
+    super(runtime_util.default_equivalence !> equivalence_with_hash[key_type]);
   }
 
   private void copy_on_write() {

@@ -10,7 +10,7 @@ class test_origin_printer {
 
   void show_origin_helper(string input, nonnegative begin, nonnegative end, string output) {
     source : source_content.new(simple_name.make("foo"), input);
-    the_origin : source.make_origin(begin, end) as text_origin;
+    the_origin : source.make_origin(begin, end) !> text_origin;
     the_writer : string_writer.new();
     out : plain_formatter.new(the_writer);
 

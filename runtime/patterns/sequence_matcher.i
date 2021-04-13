@@ -27,7 +27,7 @@ class sequence_matcher[readonly value element_type, covariant any value result_t
       match : pattern_element.match_prefix(the_list.skip(prefix));
       assert match is_not null;
       if (pattern_element is matcher) {
-        matcher_element : pattern_element as matcher[element_type, any value];
+        matcher_element : pattern_element !> matcher[element_type, any value];
         matches.append(matcher_element.parse(the_list.slice(prefix, prefix + match)));
       } else {
         matches.append(missing.instance);

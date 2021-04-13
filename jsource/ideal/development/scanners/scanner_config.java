@@ -14,6 +14,7 @@ import ideal.development.elements.*;
 import ideal.development.modifiers.*;
 import ideal.development.names.*;
 import ideal.development.origins.*;
+import javax.annotation.Nullable;
 
 public interface scanner_config {
   boolean is_whitespace(char c);
@@ -29,6 +30,7 @@ public interface scanner_config {
   void add_subtype_tag(subtype_tag tag);
   void add_modifier(modifier_kind modifier);
   void add_flavor(type_flavor flavor);
+  void add_reserved(string reserved_word, @Nullable keyword the_keyword);
 
   readonly_list<token> scan(source_content source);
 }

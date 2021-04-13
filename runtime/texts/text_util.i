@@ -130,7 +130,7 @@ namespace text_util {
     if (fragment is text_node) {
       nodes.append(fragment);
     } else {
-      nodes.append_all((fragment as list_text_node).nodes);
+      nodes.append_all((fragment !> list_text_node).nodes);
     }
   }
 
@@ -173,6 +173,6 @@ namespace text_util {
 
   text_element make_html_link(text_fragment text, string link_target) {
     -- TODO: cast is redundant.
-    return base_element.make(text_library.A, text_library.HREF, link_target as base_string, text);
+    return base_element.make(text_library.A, text_library.HREF, link_target !> base_string, text);
   }
 }

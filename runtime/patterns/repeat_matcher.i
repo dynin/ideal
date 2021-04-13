@@ -28,7 +28,7 @@ class repeat_matcher[readonly value element_type, covariant any value result_typ
         utilities.panic("Can't parse list in repeat_matcher");
       }
       assert match > 0;
-      matched : (the_pattern as matcher[element_type, intermediate_type]).parse(
+      matched : (the_pattern !> matcher[element_type, intermediate_type]).parse(
           the_list.slice(index, index + match));
       intermediate_list.append(matched);
       index += match;

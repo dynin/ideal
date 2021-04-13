@@ -78,7 +78,7 @@ class base_readonly_list[value element_type] {
       assert writable;
       extra_size : new_elements.size;
       reserve_and_move(index, extra_size);
-      new_elements_array : (new_elements as base_readonly_list[element_type]).state.the_elements;
+      new_elements_array : (new_elements !> base_readonly_list[element_type]).state.the_elements;
       new_elements_array.copy(0, the_elements, index, extra_size);
     }
 

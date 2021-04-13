@@ -8,10 +8,10 @@ class test_plain_text {
 
   import ideal.machine.channels.string_writer;
 
-  static FOO : "foo" as base_string;
-  static BAR : "bar" as base_string;
-  static BAZ : "baz" as base_string;
-  static WYZZY : "wyzzy" as base_string;
+  static FOO : "foo" !> base_string;
+  static BAR : "bar" !> base_string;
+  static BAZ : "baz" !> base_string;
+  static WYZZY : "wyzzy" !> base_string;
 
   testcase test_writer_trivial() {
     the_writer : string_writer.new();
@@ -51,7 +51,7 @@ class test_plain_text {
     the_formatter : plain_formatter.new(the_writer);
 
     the_formatter.write(base_element.make(text_library.P, FOO));
-    the_formatter.write(base_element.make(text_library.INDENT, "bar\nbaz" as base_string));
+    the_formatter.write(base_element.make(text_library.INDENT, "bar\nbaz" !> base_string));
     the_formatter.write(base_element.make(text_library.P, WYZZY));
 
     assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements();
@@ -63,8 +63,8 @@ class test_plain_text {
 
     the_formatter.write(FOO);
     the_formatter.write(base_element.make(text_library.BR,
-        text_library.CLEAR, "all" as base_string, missing.instance));
-    the_formatter.write("bar\n" as base_string);
+        text_library.CLEAR, "all" !> base_string, missing.instance));
+    the_formatter.write("bar\n" !> base_string);
 
     assert "foo\nbar\n" == the_writer.elements();
   }
@@ -75,9 +75,9 @@ class test_plain_text {
 
     fragment : text_entity.new(text_library.IDEAL_TEXT, "*", "middot");
 
-    the_formatter.write("one" as base_string);
+    the_formatter.write("one" !> base_string);
     the_formatter.write(fragment);
-    the_formatter.write("two" as base_string);
+    the_formatter.write("two" !> base_string);
 
     assert "one*two" == the_writer.elements();
   }
@@ -86,13 +86,13 @@ class test_plain_text {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
-    the_formatter.write("hello " as base_string);
+    the_formatter.write("hello " !> base_string);
 
-    world_string : "world" as base_string;
+    world_string : "world" !> base_string;
     br : base_element.make(text_library.BR, missing.instance);
     the_formatter.write(base_element.make(text_library.U,
         base_list_text_node.make(world_string, br, FOO)));
-    the_formatter.write(" bar" as base_string);
+    the_formatter.write(" bar" !> base_string);
     the_formatter.write(base_element.make(text_library.BR, missing.instance));
 
     assert "hello world\n      ^^^^^\nfoo bar\n^^^\n" == the_writer.elements();
@@ -102,13 +102,13 @@ class test_plain_text {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
-    the_formatter.write("hello " as base_string);
+    the_formatter.write("hello " !> base_string);
 
-    world_string : "world" as base_string;
+    world_string : "world" !> base_string;
     br : base_element.make(text_library.BR, missing.instance);
     the_formatter.write(base_element.make(text_library.U2,
         base_list_text_node.make(world_string, br, FOO)));
-    the_formatter.write(" bar" as base_string);
+    the_formatter.write(" bar" !> base_string);
     the_formatter.write(base_element.make(text_library.BR, missing.instance));
 
     assert "hello world\n      -----\nfoo bar\n---\n" == the_writer.elements();
@@ -118,12 +118,12 @@ class test_plain_text {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
-    text_element hi : base_element.make(text_library.U, "hi" as base_string);
+    text_element hi : base_element.make(text_library.U, "hi" !> base_string);
     -- TODO: Implement empty dictionary
     text_element mid : base_element.new(text_library.U2,
         list_dictionary[attribute_id, attribute_fragment].new(),
-        base_list_text_node.make("start " as base_string, hi, " end" as base_string));
-    the_formatter.write(text_util.join("foo " as base_string, mid, " bar" as base_string));
+        base_list_text_node.make("start " !> base_string, hi, " end" !> base_string));
+    the_formatter.write(text_util.join("foo " !> base_string, mid, " bar" !> base_string));
     the_formatter.write(base_element.make(text_library.BR, missing.instance));
 
     assert "foo start hi end bar\n    ------^^----\n" == the_writer.elements();
@@ -135,7 +135,7 @@ class test_plain_text {
 
     the_formatter.write(base_element.make(text_library.DIV, FOO));
     the_formatter.write(base_element.new(text_library.BR));
-    the_formatter.write(base_element.make(text_library.DIV, "bar" as base_string));
+    the_formatter.write(base_element.make(text_library.DIV, "bar" !> base_string));
 
     assert "foo\n\nbar\n" == the_writer.elements();
   }

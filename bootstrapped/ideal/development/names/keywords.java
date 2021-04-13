@@ -9,11 +9,11 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class keywords {
+  public static final keyword RESERVED = new keyword(new base_string("reserved"));
   public static final keyword THIS = new keyword(new base_string("this"));
   public static final keyword SUPER = new keyword(new base_string("super"));
   public static final keyword NEW = new keyword(new base_string("new"));
   public static final keyword OR = new keyword(new base_string("or"), base_symbols.OR);
-  public static final keyword AS = new keyword(new base_string("as"), base_symbols.AS);
   public static final keyword IS = new keyword(new base_string("is"), base_symbols.IS);
   public static final keyword IS_NOT = new keyword(new base_string("is_not"), base_symbols.IS_NOT);
   public static final keyword ASSERT = new keyword(new base_string("assert"), base_symbols.ASSERT);

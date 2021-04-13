@@ -90,11 +90,11 @@ class test_markup_grammar {
 
     attribute0 : attribute.parse("id = '68'");
     assert attribute0.id == text_library.ID;
-    assert (attribute0.value as string) == "68";
+    assert (attribute0.value !> string) == "68";
 
     attribute1 : attribute.parse("href = \"https://theideal.org/\"");
     assert attribute1.id == text_library.HREF;
-    assert (attribute1.value as string) == "https://theideal.org/";
+    assert (attribute1.value !> string) == "https://theideal.org/";
   }
 
   testcase test_empty_element() {
@@ -116,7 +116,7 @@ class test_markup_grammar {
     assert element1.children is null;
     assert element1.attributes.size == 1;
     assert element1.attributes.elements[0].key == text_library.CLASS;
-    assert element1.attributes.elements[0].value as base_string == "foo";
+    assert element1.attributes.elements[0].value !> base_string == "foo";
 
     element2 : empty_element.parse("<a class='foo' href='https://theideal.org/'/>");
     assert element2.get_id == text_library.A;
@@ -124,9 +124,9 @@ class test_markup_grammar {
     assert element2.attributes.size == 2;
     attributes : element2.attributes.elements;
     assert attributes[0].key == text_library.CLASS;
-    assert attributes[0].value as base_string == "foo";
+    assert attributes[0].value !> base_string == "foo";
     assert attributes[1].key == text_library.HREF;
-    assert attributes[1].value as base_string == "https://theideal.org/";
+    assert attributes[1].value !> base_string == "https://theideal.org/";
   }
 
   testcase test_content() {

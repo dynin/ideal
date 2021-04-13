@@ -18,5 +18,5 @@ public namespace doc_elements {
   immutable list[element_id] HTML_ELEMENTS : [
     CODE, C, J, CPP
     -- TODO: the cast should be redundant; use deeply_immutable
-  ] as immutable list[element_id];
+  ] !> immutable list[element_id];
 }

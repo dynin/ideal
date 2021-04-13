@@ -14,6 +14,7 @@ import ideal.machine.channels.string_writer;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.comments.*;
+import ideal.development.notifications.*;
 
 public class documenter_filter {
 
@@ -32,7 +33,15 @@ public class documenter_filter {
           ++index;
         }
       } else {
-        result.append(next_token);
+        if (next_token.type() == keywords.RESERVED) {
+          new base_notification(messages.reserved_word, next_token).report();
+          keyword the_keyword = ((token<keyword>) next_token).payload();
+          if (the_keyword != keywords.RESERVED) {
+            result.append(new base_token<keyword>(the_keyword, the_keyword, next_token));
+          }
+        } else {
+          result.append(next_token);
+        }
         ++index;
       }
     }

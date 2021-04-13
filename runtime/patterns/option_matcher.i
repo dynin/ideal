@@ -11,7 +11,7 @@ class option_matcher[readonly value element_type, covariant any value result_typ
 
   option_matcher(readonly collection[matcher[element_type, result_type]] matchers) {
     -- TODO: the cast should be redundant
-    super(matchers as readonly collection[pattern[element_type]]);
+    super(matchers !> readonly collection[pattern[element_type]]);
   }
 
   void add_matcher(matcher[element_type, result_type] the_matcher) {
@@ -22,8 +22,8 @@ class option_matcher[readonly value element_type, covariant any value result_typ
     for (option : options) {
       if (option(the_list)) {
         if (option is matcher) {
-          the_matcher : option as matcher[element_type, any value];
-          return the_matcher.parse(the_list) as result_type;
+          the_matcher : option !> matcher[element_type, any value];
+          return the_matcher.parse(the_list) !> result_type;
         } else {
           return missing.instance;
         }

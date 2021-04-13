@@ -231,7 +231,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
     for (var nonnegative i : 0; i < state.the_buckets.size; i += 1) {
       s = s ++ "b" ++ i ++ ": ";
       for (var entry : state.the_buckets[i]; entry is_not null; entry = entry.next) {
-        s = s ++ "<" ++ (entry.key as string) ++ ":" ++ (entry.value as string) ++ ">";
+        s = s ++ "<" ++ (entry.key !> string) ++ ":" ++ (entry.value !> string) ++ ">";
       }
       s = s ++ "\n";
     }

@@ -86,7 +86,8 @@ public class common_scanner extends base_scanner_config {
 
     add_keyword(keywords.IS);
     add_keyword(keywords.IS_NOT);
-    add_keyword(keywords.AS);
+
+    add_reserved(new base_string("as"), null);
 
     add_special(special_name.THIS, keywords.THIS);
     add_special(special_name.SUPER, keywords.SUPER);

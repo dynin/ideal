@@ -22,7 +22,7 @@ class sequence_pattern[readonly value element_type] {
     validated = true;
     assert patterns_list.is_not_empty;
     for (the_pattern : patterns_list) {
-      (the_pattern as validatable).validate();
+      (the_pattern !> validatable).validate();
     }
   }
 

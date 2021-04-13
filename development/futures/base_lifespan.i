@@ -12,7 +12,7 @@ class base_lifespan {
   base_lifespan(lifespan or null parent) {
     if (parent is_not null) {
       -- TODO: cast is redundant
-      parent.add_resource(this as disposable);
+      parent.add_resource(this !> disposable);
     }
   }
 

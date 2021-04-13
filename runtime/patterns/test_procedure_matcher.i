@@ -11,7 +11,7 @@ class test_procedure_matcher {
   }
 
   private string as_string(readonly list[character] char_list) {
-    return char_list.frozen_copy() as base_string;
+    return char_list.frozen_copy() !> base_string;
   }
 
   matcher[character, string] make_matcher() {
@@ -104,6 +104,6 @@ class test_procedure_matcher {
   -- TODO: This hack shouldn't be needed.
   boolean equals(immutable list[character] s0, string s1) {
     -- deeply_immutable list[character] dil : s0;
-    return (s0 as string) == s1;
+    return (s0 !> string) == s1;
   }
 }

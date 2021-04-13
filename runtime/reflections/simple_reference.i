@@ -36,7 +36,7 @@ class simple_reference[any value value_type] {
 
   override value_wrapper[value_type] get() {
     -- TODO: update null handling here; the_value should never be null.
-    return the_value as value_wrapper[value_type];
+    return the_value !> value_wrapper[value_type];
   }
 
   override void set(value_wrapper[value_type] new_value) {

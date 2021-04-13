@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:n,i,b,bi);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Mono:n,i,b,bi);
 
 body {
   /* font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; */
@@ -129,6 +130,11 @@ span:target {
 
 .main-doc .bold-link {
   font-weight: bolder;
+}
+
+.main-doc .q {
+  font-family: 'Roboto Mono', monospace;
+  background-color: #eee;
 }
 
 .nav-table {

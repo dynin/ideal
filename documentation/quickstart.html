@@ -1,46 +1,93 @@
 <p>
-  To read the ideal source code: browse library and runtime directories.
-  The best place to start is library/elements.i; the "library" describes
-  the core interfaces, the "runtime" includes implementations.
-</p>
-
-<p>
   The ideal notation was designed to be easily readable by a programmer who
   is familiar with Java or C#.  Here's quick overview of the ideal-specific
   features:
 </p>
 
 <p>
-  Comments can be prefixed with "--"
+  Type declarations are introduced with a <em>kind</em>.
+  In addition to <span class='q'>class</span>, <span class='q'>interface</span>
+  and <span class='q'>enum</span>, there are
+  <span class='q'>concept</span>s, <span class='q'>datatype</span>s
+  and other kinds, which can be read as interfaces.
+  <span class='q'>namespace</span>, <span class='q'>package</span>,
+  <span class='q'>project</span> any <span class='q'>module</span> declare
+  types with no instance members.
+  <span class='q'>singleton</span> declares a type with exactly one instance.
 </p>
-<p>
-  Type declarations are introduced with a "kind".  In addition to "class",
-  "interface" and "enum", there are "concepts", "datatypes" and other kinds.
-  They are similar to "interfaces".
-</p>
+
 <p>
   Supertypes are part of type body declaration and can be prefixed with
-  "extends", "implements" and "refines".
+  <span class='q'>extends</span>, <span class='q'>implements</span> and
+  <span class='q'>refines</span>.  By convention, the first constructs
+  in type declarations should be supertypes.
 </p>
+
 <p>
   For declaring parametrized types, square brackets are used instead of
-  angle brackets.
+  angle brackets.  You can use <span class='q'>()</span> and
+  <span class='q'>[]</span> interchangeably for procedure calls,
+  groupings, and parametrized type declarations; although they must be matched.
+  By convention, <span class='q'>[]</span> are used for paramterized types and
+  collection access/initializer.
 </p>
+
 <p>
   For declaring variables, a colon is used to distinguish declaration from
-  assignment. Type can be inferred, and by default the variable is
-  immutable (final).  "foo : 68" is equivalent to "final int foo = 68";
-  an error is reported if "foo" is already defined in scope. To declare
-  a mutable variable, prefix with "var"; assignment is done with "=".
-</p>
-<p>
-  For an overview of type flavors (introduced with keywords "readonly",
-  "writeonly", "mutable", "immutable", "deeply_immutable", "any", "pure")
-  see documentation/type-flavors.txt
+  assignment. Type can usually be inferred, and by default the variable is
+  immutable (final).  <span class='q'>foo&nbsp;:&nbsp;68</span> is equivalent to
+  <span class='q'>final int foo = 68</span> in Java; an error is reported if
+  <span class='q'>foo</span> is already defined in scope. To declare
+  a mutable variable, prefix with <span class='q'>var</span>,
+  such as <span class='q'>var string name : "foo"</span>.
+  Assignment is done with <span class='q'>=</span>.
 </p>
 
 <p>
-  The LALR(1) grammar for the ideal notation can be found in
-  jsource/ideal/development/parsers/base_parser.cup
+  For an overview of type flavors that are introduced with keywords
+  <span class='q'>readonly</span>, <span class='q'>writeonly</span>,
+  <span class='q'>mutable</span>, <span class='q'>immutable</span>,
+  <span class='q'>deeply_immutable</span>, <span class='q'>any</span>,
+  <span class='q'>pure</span>
+  see <a href='urn:ideal:ideal.documentation.type_flavors'>the document on
+  the topic</a>.
 </p>
 
+<p>
+  In constructor invokation, <span class='q'>new</span> follows the type
+  declaration, as in <span class='q'>hash_set[string].new()</span>
+  List initializers are expressed as <span class='q'>[ foo, bar, baz ]</span>.
+  To create a one-element list, use a trailing comma as in
+  <span class='q'>[ foo, ]</span>.
+  (Just <span class='q'>[ foo ]</span> is equivalent to
+  <span class='q'>( foo )</span> and is a grouping construct. )
+</p>
+
+<p>
+  To check whether a value is an instance of a type, use the
+  <span class='q'>is</span> operator, such as
+  <span class='q'>if (foo is string) {...</span>
+  The <span class='q'>is_not</span> operator
+  performs the check and returns the opposite result.
+  There are two cast operators: <span class='q'>.&gt;</span> is a "soft" cast that
+  can never fail (such as converting a type to a supertype),
+  while <span class='q'>!&gt;</span> or <span class='q'>as</span>
+  is a "hard" cast that can fail (such as when converting a supertype to subtype.)
+  Casts can be omitted for local variables where they are provably redundant.
+</p>
+
+<ul>
+  <li>Comment lines are prefixed with <span class='q'>--</span></li>
+  <li>Documentation comments are prefixed with <span class='q'>---</span></li>
+  <li>String concatenation operator is <span class='q'>++</span></li>
+</ul>
+
+<p>
+  That's enough background to start reading <a href='urn:ideal:ideal'>ideal code</a>.
+  Good starting points are <a href='urn:ideal:ideal.library.elements'>core library interfaces</a>
+  and <a href='urn:ideal:ideal.runtime.elements.base_readonly_list'>base readonly list
+  implementation</a>.  The published source is cross-linked, so click on the declarations
+  and identifiers.
+  For more details, checkout <a href='urn:ideal:ideal.documentation.here_be_dragons'>this
+  document</a>.
+</p>

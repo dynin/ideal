@@ -70,7 +70,7 @@
   The <span class='q'>is_not</span> operator
   performs the check and returns the opposite result.
   There are two cast operators: <span class='q'>.&gt;</span> is a "soft" cast that
-  can never fail (such as converting a type to a supertype), while <span class='q'>!&gt;</span> 
+  can never fail (such as converting a type to a supertype), while <span class='q'>!&gt;</span>
   is a "hard" cast that can fail (such as when converting a supertype to subtype.)
   Casts can be omitted for local variables where they are provably redundant.
 </p>
@@ -82,11 +82,20 @@
 </ul>
 
 <p>
+  In the publication mode, curly braces are omitted in favor of consistent indentation.&nbsp;
+  Underscores in indentifiers are replaced with spaces,
+  and the dot is replaced with a bullet symbol, so
+  <span class='q'>the_list_value.size</span> becomes
+  <span class='qb'>the list value &bull; size</span>&nbsp;
+</p>
+
+<p>
   That's enough background to start reading <a href='urn:ideal:ideal'>ideal code</a>.
   Good starting points are <a href='urn:ideal:ideal.library.elements'>core library interfaces</a>
   and <a href='urn:ideal:ideal.runtime.elements.base_readonly_list'>base readonly list
-  implementation</a>.  The published source is cross-linked, so click on the declarations
-  and identifiers.
+  implementation</a>.
+  The published source is cross-linked, so click on the declarations and identifiers
+  to navigate.
   For more details, checkout <a href='urn:ideal:ideal.documentation.here_be_dragons'>this
   document</a>.
 </p>

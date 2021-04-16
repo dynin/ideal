@@ -44,3 +44,8 @@ Type modifier:
     non_empty
 
 theideal.org-ideal-RELEASE-1.0.iar
+
+From type flavors:
+  TODO: motivation for "any" flavor; "raw" flavor;
+        equivalence relations and mutability.
+

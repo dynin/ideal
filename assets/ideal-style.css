@@ -141,6 +141,10 @@ span:target {
   background-color: #eee;
 }
 
+.main-doc pre {
+  font-family: 'Roboto Mono', monospace;
+}
+
 .nav-table {
   flex-grow: 0;
   width: 100%;

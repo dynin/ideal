@@ -1,0 +1,118 @@
+<p>
+  This document offers more detailed description of the ideal metaprogramming
+  framework.  For an introduction, please read
+  <a class='bold-link' href='urn:ideal:ideal.documentation.quickstart'>quickstart</a>.
+</p>
+<hr/>
+<p>
+  The directory structure of the codebase is as follows:
+  <ul>
+    <li><a class='bold-link' href='https://github.com/dynin/ideal/blob/master/ideal.i'>ideal.i</a>
+      &mdash; root source file in the ideal notation</li>
+    <li><a class='bold-link' href='https://github.com/dynin/ideal/blob/master/library/'>library</a>
+      &mdash; core library interfaces</li>
+    <li><a class='bold-link' href='https://github.com/dynin/ideal/blob/master/runtime/'>runtime</a>
+      &mdash; implementation of the library</li>
+    <li><a
+      class='bold-link' href='https://github.com/dynin/ideal/blob/master/showcase/'>showcase</a>
+      &mdash; simple ideal programs</li>
+    <li><a class='bold-link'
+    href='https://github.com/dynin/ideal/blob/master/development'>development</a>
+        &mdash; partially bootstrapped metaprogramming framework code</li>
+    <li><a class='bold-link' href='https://github.com/dynin/ideal/blob/master/machine/'>machine</a>
+      &mdash; code that is handled by the target machine</li>
+    <li><span class='bold-link'>jsource/<a
+        href='https://github.com/dynin/ideal/blob/master/jsource/ideal/'>ideal</a></span>
+        &mdash; source code in Java
+      <ul>
+        <li><a class='bold-link'
+            href='https://github.com/dynin/ideal/blob/master/jsource/ideal/machine/'>machine</a>
+            &mdash; JVM-specific runtime code</li>
+        <li><a class='bold-link'
+        href='https://github.com/dynin/ideal/blob/master/jsource/ideal/development/'>development</a>
+            &mdash; main metaprogramming framework code</li>
+      </ul>
+    </li>
+    <li><a class='bold-link'
+        href='https://github.com/dynin/ideal/blob/master/experimental/'>experimental</a>
+      &mdash; experiments that are not essential part of the codebase
+      <ul>
+        <li><a class='bold-link'
+            href='https://github.com/dynin/ideal/blob/master/experimental/coach/'>coach</a>
+            &mdash; AppEngine-hosted demo app</li>
+        <li><a class='bold-link'
+            href='https://github.com/dynin/ideal/blob/master/experimental/mini/'>mini</a>
+            &mdash; lightweight implementation of ideal concepts, incomplete</li>
+      </ul>
+    </li>
+    <li><a class='bold-link'
+        href='https://github.com/dynin/ideal/blob/master/documentation/'>documentation</a>
+        &mdash; documents from which the theideal.org site is generated</li>
+    <li><a class='bold-link'
+        href='https://github.com/dynin/ideal/blob/master/bootstrapped/'>bootstrapped</a>
+        &mdash; library, runtime, translated into Java</li>
+    <li><a class='bold-link'
+        href='https://github.com/dynin/ideal/blob/master/testdata/'>testdata</a>
+        &mdash; input and ouput for regression tests</li>
+    <li><a class='bold-link' href='https://github.com/dynin/ideal/blob/master/bin/'>bin</a>
+        &mdash; helper scripts</li>
+    <li><span class='bold-link'>thirdparty</span>
+        &mdash; software needed to build and run ideal</li>
+    <li><span class='bold-link'>build</span>
+        &mdash; directory for files created during the build process</li>
+    <li><a class='bold-link'
+        href='https://github.com/dynin/ideal/blob/master/Makefile'>Makefile</a>
+        &mdash; targets to translate and run ideal using make</li>
+    <li><a class='bold-link' href='https://github.com/dynin/ideal/blob/master/LICENSE'>LICENSE</a>
+        &mdash; new BSD license</li>
+    <li><a class='bold-link' href='https://github.com/dynin/ideal/blob/master/AUTHORS'>AUTHORS</a>
+        &mdash; list of authors for copyright purposes</li>
+    <li><a class='bold-link'
+        href='https://github.com/dynin/ideal/blob/master/CONTRIBUTORS'>CONTRIBUTORS</a>
+        &mdash; list of developers</li>
+  </ul>
+</p>
+
+<hr/>
+
+<p>
+The grammar for the ideal notation can be found
+in <a class='bold-link'
+href='https://github.com/dynin/ideal/blob/master/jsource/ideal/development/parsers/base_parser.cup'>this file</a>
+(using <a href='http://www2.cs.tum.edu/projects/cup/'>Java CUP</a> format.)
+</p>
+
+<hr/>
+
+<p>
+Building and running ideal is easy on a Unix-like system (tested on Linux
+and Mac OS X.)  The dependencies are: JDK, JSR 305 annotations, JUnit4,
+Google Gson, JavaCUP.  AppEngine SDK is needed if you want to build and run
+the Coach app.
+
+To create the thirdparty directory and fetch all the dependencies, run
+bin/fetch-thirdparty.sh from the top-level directory.  In addition, you'll
+need to create a symlink from thirdparty/jdk to the JDK home directory (such as
+/Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home on Mac OS X.)
+It should be possible to invoke the Java compiler via thirdparty/jdk/bin/javac.
+
+Make is currently used to build and run ideal.  Default target builds
+the "create" tool, bootstraps library.elements, analyzes it and prints it out.
+Targets "hello" and "circle" execute respective code from showcase directive.
+"12" executes tests/12.i. The targets "generate_library" and "generate_runtime"
+generate Java source code from library and runtime, respectively.
+The targets "test_library" and "test_runtime" test that the code
+compiles.  The targets "bootstrap_library" and "bootstrap_runtime" bootstrap
+the code by overwriting the files in bootstrapped directory.
+
+</p>
+
+<hr/>
+
+<p>
+The announcements mailing list (very low-volume, moderated announcements only):
+  https://groups.google.com/group/ideal-announce
+
+The developers forum:
+  https://groups.google.com/group/ideal-developers
+</p>

@@ -10,6 +10,7 @@ namespace documentation {
   html_content communication;
   html_content index;
   html_content type_flavors;
+  html_content here_be_dragons;
   html_content source;
   html_content license;
 }

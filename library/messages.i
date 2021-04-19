@@ -4,6 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
+--- Declarations for logging and log messages.
 package messages {
   implicit import ideal.library.elements;
   implicit import ideal.library.texts;

@@ -4,6 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
+--- Implementations of the core types of the library.
 namespace elements {
   implicit import ideal.library.elements;
 

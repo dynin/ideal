@@ -4,6 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
+--- Implementation of patterns and matchers.
 namespace patterns {
   implicit import ideal.library.elements;
   implicit import ideal.library.patterns;

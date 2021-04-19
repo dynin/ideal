@@ -85,34 +85,47 @@ href='https://github.com/dynin/ideal/blob/master/jsource/ideal/development/parse
 <hr/>
 
 <p>
-Building and running ideal is easy on a Unix-like system (tested on Linux
-and Mac OS X.)  The dependencies are: JDK, JSR 305 annotations, JUnit4,
-Google Gson, JavaCUP.  AppEngine SDK is needed if you want to build and run
-the Coach app.
+  Building and running ideal is easy on a Unix-like system (tested on Mac OS X
+  and Linux.)  The dependencies are: JDK,
+  <a href='https://jcp.org/en/jsr/detail?id=305'>JSR 305</a> annotations,
+  <a href='https://junit.org/junit4/'>JUnit4</a>,
+  <a href='https://github.com/google/gson'>Google Gson</a>,
+  <a href='http://www2.cs.tum.edu/projects/cup/'>JavaCUP</a>.
+  <a href='https://cloud.google.com/appengine/downloads'>AppEngine SDK</a>
+  is needed if you want to build and run the Coach app.
+</p>
 
-To create the thirdparty directory and fetch all the dependencies, run
-bin/fetch-thirdparty.sh from the top-level directory.  In addition, you'll
-need to create a symlink from thirdparty/jdk to the JDK home directory (such as
-/Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home on Mac OS X.)
-It should be possible to invoke the Java compiler via thirdparty/jdk/bin/javac.
+<p>
+  Before running ideal, you need tp create and populate the
+  <a class='q'>thirdparty</a> directory.
+  To do that and fetch all the dependencies, run
+  <a class='q'>bin/fetch-thirdparty.sh</a> from the top-level directory.
+  In addition, you'll need to create a symlink from
+  <a class='q'>thirdparty/jdk</a> to the JDK home directory (such as
+  <a class='q'>/Library/Java/JavaVirtualMachines/jdk1.7.0_60.jdk/Contents/Home</a>
+  on Mac OS X.)  It should be possible to invoke the Java compiler via
+  <a class='q'>thirdparty/jdk/bin/javac</a>.
+</p>
 
-Make is currently used to build and run ideal.  Default target builds
-the "create" tool, bootstraps library.elements, analyzes it and prints it out.
-Targets "hello" and "circle" execute respective code from showcase directive.
-"12" executes tests/12.i. The targets "generate_library" and "generate_runtime"
-generate Java source code from library and runtime, respectively.
-The targets "test_library" and "test_runtime" test that the code
-compiles.  The targets "bootstrap_library" and "bootstrap_runtime" bootstrap
-the code by overwriting the files in bootstrapped directory.
-
+<p>
+  Make is currently used to build and run ideal.  Default target builds
+  the <a class='q'>create</a> tool, bootstraps
+  <a class='q'>ideal.library.elements</a>, analyzes it and prints it out.
+  Targets <a class='q'>hello</a> and
+  <a class='q'>circle</a> execute respective code from showcase directive.
+  <a class='q'>12</a> executes <a class='q'>tests/12.i</a>.
+  The targets <a class='q'>generate_library</a> and <a class='q'>generate_runtime</a>
+  generate Java source code from library and runtime, respectively.
+  The targets <a class='q'>test_library</a> and
+  <a class='q'>test_runtime</a> test that the code
+  compiles.  The targets <a class='q'>bootstrap_library</a>
+  and <a class='q'>bootstrap_runtime</a> bootstrap
+  the code by overwriting the files in bootstrapped directory.
 </p>
 
 <hr/>
 
 <p>
-The announcements mailing list (very low-volume, moderated announcements only):
-  https://groups.google.com/group/ideal-announce
-
-The developers forum:
-  https://groups.google.com/group/ideal-developers
+  For questions and feedback,  
+  <a href='urn:ideal:ideal.documentation.communication'>here's how to communicate</a>.
 </p>

@@ -151,7 +151,8 @@ class create {
     if (options.PRETTY_PRINT) {
       content_writer the_writer = new content_writer(cm.output_catalog(),
           printer_util.dash_renderer);
-      publish_generator the_generator = new publish_generator(the_context, the_writer);
+      publish_generator the_generator =
+          new publish_generator(publish_mode.FILE_MODE, the_context, the_writer);
       xref_context the_xref_context = the_generator.the_xref_context;
       immutable_list<simple_name> test_name =
           new base_list<simple_name>(simple_name.make("test")).frozen_copy();

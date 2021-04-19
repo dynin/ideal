@@ -95,8 +95,15 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   public @Nullable string link_to_type(@Nullable principal_type the_type, printer_mode mode) {
-    if (!publish_generator.GENERATE_XREF && mode == printer_mode.XREF) {
-      return null;
+    if (mode == printer_mode.XREF) {
+      if (!publish_generator.GENERATE_XREF) {
+        return null;
+      }
+
+      // TODO: switch mode for ideal.documentation and subnames too
+      if (the_type == common_library.get_instance().ideal_namespace()) {
+        mode = printer_mode.DOC;
+      }
     }
 
     the_type = the_xref_context.get_output_type(the_type);

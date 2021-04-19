@@ -259,7 +259,10 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_target(new java_generator_target(
         simple_name.make(new base_string("generate_java")), this));
     add_target(new printer_target(simple_name.make(new base_string("print_source")), this));
-    add_target(new publish_target(simple_name.make(new base_string("print_documentation")), this));
+    add_target(new publish_target(simple_name.make(new base_string("print_documentation")),
+        this, publish_mode.FILE_MODE));
+    add_target(new publish_target(simple_name.make(new base_string("print_site")),
+        this, publish_mode.WEBSITE_MODE));
   }
 
   private void add_target(target_value the_target) {

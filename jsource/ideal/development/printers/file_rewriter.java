@@ -32,16 +32,13 @@ import javax.annotation.Nullable;
 
 public class file_rewriter extends debuggable implements naming_rewriter {
 
-  public static final simple_name XREF_NAME = simple_name.make("xref");
-  public static final simple_name INDEX_NAME = simple_name.make("index");
-
   private readonly_list<simple_name> make_xref_target(readonly_list<simple_name> target) {
     assert target.is_not_empty();
     list<simple_name> xref_names = new base_list<simple_name>();
     xref_names.append_all(target.slice(0, target.size() - 1));
 
     simple_name last_name = target.last();
-    xref_names.append(name_utilities.join(last_name, XREF_NAME));
+    xref_names.append(name_utilities.join(last_name, printer_util.XREF_NAME));
 
     return xref_names;
   }
@@ -52,7 +49,7 @@ public class file_rewriter extends debuggable implements naming_rewriter {
       readonly_list<simple_name> target_name, boolean is_xref, extension target_extension) {
 
     if (target_name.is_empty()) {
-      target_name = new base_list<simple_name>(INDEX_NAME);
+      target_name = new base_list<simple_name>(printer_util.INDEX_NAME);
     }
 
     if (is_xref) {

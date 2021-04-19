@@ -34,7 +34,6 @@ public class ideal_rewriter extends debuggable implements naming_rewriter {
 
   public static final simple_name DOCUMENTATION_NAME = simple_name.make("documentation");
   public static final simple_name HOMEPAGE_NAME = simple_name.make("homepage");
-  public static final simple_name INDEX_NAME = simple_name.make("index");
   public static final simple_name SOURCE_NAME = simple_name.make("source");
 
   private final naming_rewriter downstream_rewriter;
@@ -64,7 +63,7 @@ public class ideal_rewriter extends debuggable implements naming_rewriter {
           simple_name documentation_name = the_name.first();
           if (documentation_name == HOMEPAGE_NAME) {
             the_name = new empty<simple_name>();
-          } else if (documentation_name == INDEX_NAME) {
+          } else if (documentation_name == printer_util.INDEX_NAME) {
             the_name = new base_list<simple_name>(DOCUMENTATION_NAME);
           }
         }

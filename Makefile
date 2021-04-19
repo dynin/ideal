@@ -15,6 +15,7 @@ TARGETS_DIR = $(BUILD_DIR)/targets
 GENERATED_DIR = $(BUILD_DIR)/generated
 JAVADOC_DIR = $(BUILD_DIR)/javadoc
 PRETTY_DIR = $(BUILD_DIR)/pretty
+SITE_DIR = $(BUILD_DIR)/site
 SCRATCH_DIR = $(BUILD_DIR)/scratch
 
 MKDIR = mkdir -p
@@ -300,6 +301,12 @@ document_all: $(IDEAL_TARGET)
 document_site: $(IDEAL_TARGET) rm-pretty
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=document_site \
             -output=$(PRETTY_DIR)
+
+deploy_site: $(IDEAL_TARGET)
+	rm -rf $(SITE_DIR)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=deploy_site \
+            -output=$(SITE_DIR)
+	cd $(BUILD_DIR) ; tar cvfz ../tmp/site.tgz site/
 
 ### Other targets
 

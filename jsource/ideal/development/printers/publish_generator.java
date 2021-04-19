@@ -46,8 +46,23 @@ public class publish_generator {
   private final content_writer processor;
   private boolean initialized;
 
-  public publish_generator(analysis_context context, content_writer processor) {
-    the_xref_context = new xref_context(new ideal_rewriter(new file_rewriter()));
+  public publish_generator(publish_mode mode, analysis_context context, content_writer processor) {
+    naming_rewriter backend;
+
+    switch (mode) {
+      case FILE_MODE:
+        backend = new file_rewriter();
+        break;
+      case WEBSITE_MODE:
+        backend = new website_rewriter();
+        break;
+      default:
+        utilities.panic("Unknown publish_mode");
+        // TODO: this is redundant.
+        backend = new file_rewriter();
+    }
+
+    the_xref_context = new xref_context(new ideal_rewriter(backend));
     this.processor = processor;
 
     the_xref_context.add_skip_type(ideal_namespace());

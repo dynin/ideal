@@ -30,6 +30,9 @@ import ideal.development.documenters.*;
 
 public class printer_util {
 
+  public static final simple_name XREF_NAME = simple_name.make("xref");
+  public static final simple_name INDEX_NAME = simple_name.make("index");
+
   private printer_util() { }
 
   public static function1<string, simple_name> dash_renderer =

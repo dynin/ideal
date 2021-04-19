@@ -60,3 +60,5 @@ target document_all: print_documentation(ideal.library, ideal.runtime, ideal.dev
 
 target document_site: print_documentation(ideal.documentation, ideal.library,
     ideal.runtime);
+
+target deploy_site: print_site(ideal.documentation, ideal.library, ideal.runtime);

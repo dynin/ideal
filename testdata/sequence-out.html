@@ -25,30 +25,24 @@ testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
   implements readonly_data;
              ^^^^^^^^^^^^^
 testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
-  public int size() {
-         ^^^
-testdata/sequence.i:79: Lookup failed: no int in sequence.size
-  public element get(int index) {
-                     ^^^
-testdata/sequence.i:87: Lookup failed: no int in sequence.get
-  public sequence subsequence(int begin, int end) {
-                              ^^^
-testdata/sequence.i:96: Lookup failed: no int in sequence.subsequence
-  public sequence subsequence(int begin, int end) {
-                                         ^^^
-testdata/sequence.i:96: Lookup failed: no int in sequence.subsequence
-  public sequence subsequence(int begin) {
-                              ^^^
-testdata/sequence.i:105: Lookup failed: no int in sequence.subsequence
-  public void _display(display_writer writer, display_context options) {
-                       ^^^^^^^^^^^^^^
-testdata/sequence.i:117: Lookup failed: no display_writer in sequence._display
-  public void _display(display_writer writer, display_context options) {
-                                              ^^^^^^^^^^^^^^^
-testdata/sequence.i:117: Lookup failed: no display_context in sequence._display
-    list.addAll(s.list);
-                -^----
-testdata/sequence.i:94: Lookup failed: no list in mutable sequence
+  public sequence subsequence(integer begin) {
+                  ^^^^^^^^^^^
+testdata/sequence.i:105: Overloaded procedure declaration
+    public sequence subsequence(integer begin, integer end) {
+                    ^^^^^^^^^^^
+  testdata/sequence.i:96: Original declaration
+    append_all(ns1);
+               ^^^
+testdata/sequence.i:36: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
+    append_all(ns2);
+               ^^^
+testdata/sequence.i:42: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
+    return result;
+    ^^^^^^--------
+testdata/sequence.i:103: Can't promote immutable reference[mutable sequence[sequence.element]] to mutable sequence
+    return subsequence(begin, size());
+           ^^^^^^^^^^^
+testdata/sequence.i:106: Ambiguous access
 <html>
   <head>
     <title>
@@ -64,7 +58,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
        <td class='nav-right' />
       </tr>
     </table>
-    <div class='main'>
+    <div class='main-code'>
       <div>
        import <span id='java'>java</span> &bull; <span id='util'>util</span> &bull; <span id='List'>List</span>
       </div>
@@ -243,68 +237,66 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
             </div>
           </div>
           <div class='procedure-declaration'>
-           public int <span class='procedure-declaration-name'>size</span>()
+           public <span id='integer'>integer</span> <span class='procedure-declaration-name'><span id='size'>size</span></span>()
             <div class='indent'>
               <div>
-               return list &bull; size()
+               return <span id='list'>list</span> &bull; <span id='size2'>size</span>()
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='boolean'>boolean</span> <span class='procedure-declaration-name'><span id='empty'>empty</span></span> =&gt; <span id='list'>list</span> &bull; <span id='isEmpty'>isEmpty</span>()
+           public <span id='boolean'>boolean</span> <span class='procedure-declaration-name'><span id='empty'>empty</span></span> =&gt; <span id='list2'>list</span> &bull; <span id='isEmpty'>isEmpty</span>()
           </div>
           <div class='procedure-declaration'>
            public <span id='boolean2'>boolean</span> <span class='procedure-declaration-name'><span id='is-not-empty'>is not empty</span></span> =&gt; !<span id='empty2'>empty</span>()
           </div>
           <div class='procedure-declaration'>
-           public element <span class='procedure-declaration-name'>get</span>(int <span class='var-declaration-name'>index</span>)
+           public <span id='element25'>element</span> <span class='procedure-declaration-name'><span id='get'>get</span></span>(<span id='integer2'>integer</span> <span class='var-declaration-name'><span id='index'>index</span></span>)
             <div class='indent'>
               <div>
-               return list &bull; get(index) !&gt; element
+               return <span id='list3'>list</span> &bull; <span id='get2'>get</span>(<span id='index2'>index</span>) !&gt; <span id='element26'>element</span>
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='void'>void</span> <span class='procedure-declaration-name'><span id='append24'>append</span></span>(<span id='element25'>element</span> <span class='var-declaration-name'><span id='t'>t</span></span>)
+           public <span id='void'>void</span> <span class='procedure-declaration-name'><span id='append24'>append</span></span>(<span id='element27'>element</span> <span class='var-declaration-name'><span id='t'>t</span></span>)
             <div class='indent'>
               <div>
-               <span id='list2'>list</span> &bull; <span id='add'>add</span>(<span id='t2'>t</span>)
+               <span id='list4'>list</span> &bull; <span id='add'>add</span>(<span id='t2'>t</span>)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='append-all3'>append all</span></span>(<span id='sequence13'>sequence</span> <span class='var-declaration-name'><span id='s'>s</span></span>)
+           public <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='append-all3'>append all</span></span>(<span id='sequence13'>sequence</span>[<span id='element28'>element</span>] <span class='var-declaration-name'><span id='s'>s</span></span>)
             <div class='indent'>
-              <div>
-               <span id='list3'>list</span> &bull; <span id='addAll'>addAll</span>(<span id='s2'>s</span> &bull; <span id='list4'>list</span>)
-              </div>
+             pass
             </div>
           </div>
           <div class='procedure-declaration'>
-           public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>, int <span class='var-declaration-name'>end</span>)
+           public <span id='sequence14'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence'>subsequence</span></span>(<span id='integer3'>integer</span> <span class='var-declaration-name'><span id='begin'>begin</span></span>, <span id='integer4'>integer</span> <span class='var-declaration-name'><span id='end'>end</span></span>)
             <div class='indent'>
               <div>
-               assert begin &gt;= 0 &amp;&amp; end &lt;= size()
+               assert <span id='begin2'>begin</span> &gt;= 0 &amp;&amp; <span id='end2'>end</span> &lt;= <span id='size3'>size</span>()
               </div>
               <div>
-               sequence <span class='var-declaration-name'>result</span> : sequence &bull; new()
+               <span class='var-declaration-name'><span id='result'>result</span></span> : <span id='sequence15'>sequence</span>[<span id='element29'>element</span>] &bull; new()
               </div>
-             for int <span class='var-declaration-name'>i</span> : begin; i &lt; end; i += 1
+             for var <span id='integer5'>integer</span> <span class='var-declaration-name'><span id='i'>i</span></span> : <span id='begin3'>begin</span>; <span id='i2'>i</span> &lt; <span id='end3'>end</span>; <span id='i3'>i</span> += 1
               <div class='indent'>
                 <div>
-                 result &bull; append(get(i))
+                 <span id='result2'>result</span> &bull; <span id='append25'>append</span>(<span id='get3'>get</span>(<span id='i4'>i</span>))
                 </div>
               </div>
               <div>
-               return result
+               return <span id='result3'>result</span>
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>)
+           public <span id='sequence16'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence2'>subsequence</span></span>(<span id='integer6'>integer</span> <span class='var-declaration-name'><span id='begin4'>begin</span></span>)
             <div class='indent'>
               <div>
-               return subsequence(begin, size())
+               return <span id='subsequence3'>subsequence</span>(<span id='begin5'>begin</span>, <span id='size4'>size</span>())
               </div>
             </div>
           </div>
@@ -322,26 +314,6 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
                 <div>
                  <span id='test3'>test</span>()
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class='procedure-declaration'>
-           public void <span class='procedure-declaration-name'> display</span>(display writer <span class='var-declaration-name'>writer</span>, display context <span class='var-declaration-name'>options</span>)
-            <div class='indent'>
-              <div>
-               identifier <span class='var-declaration-name'>id</span> : display function &bull; name(getClass())
-              </div>
-              <div>
-               writer &bull; start list(id)
-              </div>
-             for int <span class='var-declaration-name'>i</span> : 0; i &lt; list &bull; size(); i += 1
-              <div class='indent'>
-                <div>
-                 function &bull; display(writer, list &bull; get(i) !&gt; element, options)
-                </div>
-              </div>
-              <div>
-               writer &bull; end list(id)
               </div>
             </div>
           </div>
@@ -372,7 +344,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
        <td class='nav-right' />
       </tr>
     </table>
-    <div class='main'>
+    <div class='main-code'>
       <div>
        import <span id='java'>java</span> &bull; <span id='util'>util</span> &bull; <span id='List'>List</span>
       </div>
@@ -400,7 +372,7 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
          <span class='xref-name'>Declaration:</span> sequence
         </div>
         <div class='xref-links'>
-         <span class='xref-name'>Use:</span> sequence / sequence / sequence
+         <span class='xref-name'>Use:</span> sequence / sequence / sequence / sequence / sequence / sequence
         </div>
         <div class='indent'>
           <div>
@@ -463,7 +435,13 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
            <span class='xref-name'>Declaration:</span> constructor
           </div>
           <div class='procedure-declaration'>
-           public int <span class='procedure-declaration-name'>size</span>()
+           public <span id='integer'>integer</span> <span class='procedure-declaration-name'><span id='size'>size</span></span>()
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> size
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Use:</span> size / size
           </div>
           <div class='procedure-declaration'>
            public <span id='boolean'>boolean</span> <span class='procedure-declaration-name'><span id='empty'>empty</span></span>
@@ -481,19 +459,25 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
            <span class='xref-name'>Declaration:</span> is not empty
           </div>
           <div class='procedure-declaration'>
-           public element <span class='procedure-declaration-name'>get</span>(int <span class='var-declaration-name'>index</span>)
+           public <span id='element25'>element</span> <span class='procedure-declaration-name'><span id='get'>get</span></span>(<span id='integer2'>integer</span> <span class='var-declaration-name'><span id='index'>index</span></span>)
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> get
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Use:</span> get
           </div>
           <div class='procedure-declaration'>
-           public <span id='void'>void</span> <span class='procedure-declaration-name'><span id='append24'>append</span></span>(<span id='element25'>element</span> <span class='var-declaration-name'><span id='t'>t</span></span>)
+           public <span id='void'>void</span> <span class='procedure-declaration-name'><span id='append24'>append</span></span>(<span id='element27'>element</span> <span class='var-declaration-name'><span id='t'>t</span></span>)
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Declaration:</span> append
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Use:</span> append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append
+           <span class='xref-name'>Use:</span> append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append
           </div>
           <div class='procedure-declaration'>
-           public <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='append-all3'>append all</span></span>(<span id='sequence13'>sequence</span> <span class='var-declaration-name'><span id='s'>s</span></span>)
+           public <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='append-all3'>append all</span></span>(<span id='sequence13'>sequence</span>[<span id='element28'>element</span>] <span class='var-declaration-name'><span id='s'>s</span></span>)
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Declaration:</span> append all
@@ -502,10 +486,16 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
            <span class='xref-name'>Use:</span> append all / append all
           </div>
           <div class='procedure-declaration'>
-           public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>, int <span class='var-declaration-name'>end</span>)
+           public <span id='sequence14'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence'>subsequence</span></span>(<span id='integer3'>integer</span> <span class='var-declaration-name'><span id='begin'>begin</span></span>, <span id='integer4'>integer</span> <span class='var-declaration-name'><span id='end'>end</span></span>)
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> subsequence
           </div>
           <div class='procedure-declaration'>
-           public sequence <span class='procedure-declaration-name'>subsequence</span>(int <span class='var-declaration-name'>begin</span>)
+           public <span id='sequence16'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence2'>subsequence</span></span>(<span id='integer6'>integer</span> <span class='var-declaration-name'><span id='begin4'>begin</span></span>)
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> subsequence
           </div>
           <div class='procedure-declaration'>
            public <span id='void3'>void</span> <span class='procedure-declaration-name'><span id='test'>test</span></span>()
@@ -515,9 +505,6 @@ testdata/sequence.i:94: Lookup failed: no list in mutable sequence
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Use:</span> test / test
-          </div>
-          <div class='procedure-declaration'>
-           public void <span class='procedure-declaration-name'> display</span>(display writer <span class='var-declaration-name'>writer</span>, display context <span class='var-declaration-name'>options</span>)
           </div>
         </div>
       </div>

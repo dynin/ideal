@@ -25,30 +25,24 @@ testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
   implements readonly_data;
              ^^^^^^^^^^^^^
 testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
-  public int size() {
-         ^^^
-testdata/sequence.i:79: Lookup failed: no int in sequence.size
-  public element get(int index) {
-                     ^^^
-testdata/sequence.i:87: Lookup failed: no int in sequence.get
-  public sequence subsequence(int begin, int end) {
-                              ^^^
-testdata/sequence.i:96: Lookup failed: no int in sequence.subsequence
-  public sequence subsequence(int begin, int end) {
-                                         ^^^
-testdata/sequence.i:96: Lookup failed: no int in sequence.subsequence
-  public sequence subsequence(int begin) {
-                              ^^^
-testdata/sequence.i:105: Lookup failed: no int in sequence.subsequence
-  public void _display(display_writer writer, display_context options) {
-                       ^^^^^^^^^^^^^^
-testdata/sequence.i:117: Lookup failed: no display_writer in sequence._display
-  public void _display(display_writer writer, display_context options) {
-                                              ^^^^^^^^^^^^^^^
-testdata/sequence.i:117: Lookup failed: no display_context in sequence._display
-    list.addAll(s.list);
-                -^----
-testdata/sequence.i:94: Lookup failed: no list in mutable sequence
+  public sequence subsequence(integer begin) {
+                  ^^^^^^^^^^^
+testdata/sequence.i:105: Overloaded procedure declaration
+    public sequence subsequence(integer begin, integer end) {
+                    ^^^^^^^^^^^
+  testdata/sequence.i:96: Original declaration
+    append_all(ns1);
+               ^^^
+testdata/sequence.i:36: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
+    append_all(ns2);
+               ^^^
+testdata/sequence.i:42: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
+    return result;
+    ^^^^^^--------
+testdata/sequence.i:103: Can't promote immutable reference[mutable sequence[sequence.element]] to mutable sequence
+    return subsequence(begin, size());
+           ^^^^^^^^^^^
+testdata/sequence.i:106: Ambiguous access
 import java.util.List;
 import java.util.ArrayList;
 implicit import ideal.concepts;
@@ -111,29 +105,27 @@ public class sequence[readonly_data element] {
     append(n5);
     append(n6);
   }
-  public int size() {
+  public integer size() {
     return list.size();
   }
   public boolean empty => list.isEmpty();
   public boolean is_not_empty => !empty();
-  public element get(int index) {
+  public element get(integer index) {
     return list.get(index) !> element;
   }
   public void append(element t) {
     list.add(t);
   }
-  public void append_all(sequence s) {
-    list.addAll(s.list);
-  }
-  public sequence subsequence(int begin, int end) {
+  public void append_all(sequence[element] s) { }
+  public sequence subsequence(integer begin, integer end) {
     assert begin >= 0 && end <= size();
-    sequence result : sequence.new();
-    for (int i : begin; i < end; i += 1) {
+    result : sequence[element].new();
+    for (var integer i : begin; i < end; i += 1) {
       result.append(get(i));
     }
     return result;
   }
-  public sequence subsequence(int begin) {
+  public sequence subsequence(integer begin) {
     return subsequence(begin, size());
   }
   public void test() {
@@ -142,13 +134,5 @@ public class sequence[readonly_data element] {
     } else {
       test();
     }
-  }
-  public void _display(display_writer writer, display_context options) {
-    identifier id : display_function.name(getClass());
-    writer.start_list(id);
-    for (int i : 0; i < list.size(); i += 1) {
-      function.display(writer, list.get(i) !> element, options);
-    }
-    writer.end_list(id);
   }
 }

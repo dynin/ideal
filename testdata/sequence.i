@@ -76,7 +76,7 @@ public class sequence[readonly_data element] {
     append(n5);
     append(n6);
   }
-  public int size() {
+  public integer size() {
     return list.size();
   }
 
@@ -84,25 +84,25 @@ public class sequence[readonly_data element] {
 
   public boolean is_not_empty => !empty();
 
-  public element get(int index) {
+  public element get(integer index) {
     return list.get(index) !> element;
   }
   public void append(element t) {
     list.add(t);
   }
-  public void append_all(sequence s) {
-    list.addAll(s.list);
+  public void append_all(sequence[element] s) {
+    --list.addAll(s.list);
   }
-  public sequence subsequence(int begin, int end) {
+  public sequence subsequence(integer begin, integer end) {
     assert begin >= 0 && end <= size();
-    sequence result : sequence.new();
+    result : sequence[element].new();
     -- fix: inc(i)
-    for (int i : begin; i < end; i += 1) {
+    for (var integer i : begin; i < end; i += 1) {
       result.append(get(i));
     }
     return result;
   }
-  public sequence subsequence(int begin) {
+  public sequence subsequence(integer begin) {
     return subsequence(begin, size());
   }
 
@@ -112,14 +112,5 @@ public class sequence[readonly_data element] {
     } else {
       test();
     }
-  }
-
-  public void _display(display_writer writer, display_context options) {
-    identifier id : display_function.name(getClass());
-    writer.start_list(id);
-    for (int i : 0; i < list.size(); i += 1) {
-      function.display(writer, list.get(i) !> element, options);
-    }
-    writer.end_list(id);
   }
 }

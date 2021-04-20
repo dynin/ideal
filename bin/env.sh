@@ -17,7 +17,7 @@ IDOC="${JAVA} ${MAINCLASS} ${DOCARGS}"
 ITEXTDOC="${JAVA} ${MAINCLASS} ${TEXTDOCARGS}"
 
 TESTDIR="testdata"
-FILES=`cd ${TESTDIR}; echo *.i | sed s/\.i//g`
+FILES=`cd ${TESTDIR}; echo *.i | sed s/\\\.i//g`
 
 BUILDI="make build/targets/ideal"
 DIFF="diff -c"

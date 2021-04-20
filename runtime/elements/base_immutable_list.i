@@ -4,12 +4,11 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.machine.elements.runtime_util;
-import ideal.machine.elements.array;
-
 class base_immutable_list[value element_type] {
   extends base_readonly_list[element_type];
   implements immutable list[element_type];
+
+  import ideal.machine.elements.array;
 
   protected overload base_immutable_list(list_state[element_type] state) {
     super(state);

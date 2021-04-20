@@ -158,6 +158,10 @@ class create {
           new base_list<simple_name>(simple_name.make("test")).frozen_copy();
       the_xref_context.add_named_output(cm.root, test_name);
       the_xref_context.the_mapping_visitor.visit(body);
+      declaration library_declaration =
+          common_library.get_instance().library_namespace().get_declaration();
+      assert library_declaration != null;
+      the_xref_context.the_mapping_visitor.visit(library_declaration);
       new populate_xref(the_xref_context, cm.root).process_construct_list(constructs);
       the_generator.generate_markup(constructs, the_xref_context.get_naming_strategy(cm.root));
     }

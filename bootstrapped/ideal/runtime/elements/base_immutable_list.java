@@ -3,7 +3,6 @@
 package ideal.runtime.elements;
 
 import ideal.library.elements.*;
-import ideal.machine.elements.runtime_util;
 import ideal.machine.elements.array;
 
 public class base_immutable_list<element_type> extends base_readonly_list<element_type> implements immutable_list<element_type> {

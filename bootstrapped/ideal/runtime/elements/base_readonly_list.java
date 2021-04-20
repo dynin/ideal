@@ -3,7 +3,6 @@
 package ideal.runtime.elements;
 
 import ideal.library.elements.*;
-import java.lang.Object;
 import ideal.machine.elements.array;
 
 public class base_readonly_list<element_type> implements readonly_list<element_type> {

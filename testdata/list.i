@@ -5,21 +5,19 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 --- A list is an ordered sequence of values.
-class base_readonly_list[value element_type] {
-  implements readonly list[element_type];
+class base_readonly_list1[value element_type] {
+  import ideal.machine.elements.array;
 
   namespace parameters {
     default_size : 16;
   }
 
   --- Wrapper of an |array| that implements on-demand resizing and copy-on-write semantics.
-  --- The same |list_state| can be shared by multiple instances of |base_readonly_list|s.
+  --- The same |list_state| can be shared by multiple instances of |base_readonly_list1|s.
   protected class list_state[value element_type] {
 
-    import ideal.machine.elements.array;
-
     --- Specifies whether this instance of |list_state| is writable.
-    --- A single non-writable copy can be shared among multiple instances of |base_readonly_list|.
+    --- A single non-writable copy can be shared among multiple instances of |base_readonly_list1|.
     var boolean writable;
 
     --- An array used to store the elements.
@@ -76,7 +74,7 @@ class base_readonly_list[value element_type] {
       assert writable;
       extra_size : new_elements.size;
       reserve_and_move(index, extra_size);
-      new_elements_array : (new_elements !> base_readonly_list[element_type]).state.the_elements;
+      new_elements_array : (new_elements !> base_readonly_list1[element_type]).state.the_elements;
       new_elements_array.copy(0, the_elements, index, extra_size);
     }
 
@@ -118,54 +116,89 @@ class base_readonly_list[value element_type] {
 
   protected var list_state[element_type] state;
 
-  protected overload base_readonly_list() {
+  protected overload base_readonly_list1() {
     state = list_state[element_type].new();
   }
 
-  protected overload base_readonly_list(list_state[element_type] state) {
+  protected overload base_readonly_list1(list_state[element_type] state) {
     this.state = state;
   }
 
-  implement nonnegative size => state.size;
+  nonnegative size => state.size;
 
-  implement boolean is_empty => state.size == 0;
+  boolean is_empty => state.size == 0;
 
-  implement boolean is_not_empty => state.size != 0;
+  boolean is_not_empty => state.size != 0;
 
-  implement element_type first() {
+  element_type first() {
     assert is_not_empty;
     return state.the_elements[0];
   }
 
-  implement element_type last() {
+  element_type last() {
     assert is_not_empty;
     last_index : state.size - 1;
     assert last_index is nonnegative;
     return state.the_elements[last_index];
   }
 
-  implement implicit readonly reference[element_type] get(nonnegative index) pure {
+  implicit readonly reference[element_type] get(nonnegative index) pure {
     assert index < state.size;
     return state.the_elements[index];
   }
 
-  implement immutable list[element_type] elements() => frozen_copy();
+  base_immutable_list1[element_type] elements() => frozen_copy();
 
-  implement immutable list[element_type] frozen_copy() {
-    return base_immutable_list[element_type].new(state);
+  base_immutable_list1[element_type] frozen_copy() {
+    return base_immutable_list1[element_type].new(state);
   }
 
-  implement immutable list[element_type] slice(nonnegative begin, nonnegative end) {
-    assert begin >= 0 && end <= size;
+  base_immutable_list1[element_type] slice(nonnegative begin, nonnegative end) {
+    assert begin >= 0 && end <= size();
     length : end - begin;
     assert length is nonnegative;
     slice_state : list_state[element_type].new(length);
     slice_state.size = length;
     state.the_elements.copy(begin, slice_state.the_elements, 0, length);
-    return base_immutable_list[element_type].new(slice_state);
+    return base_immutable_list1[element_type].new(slice_state);
   }
 
-  implement immutable list[element_type] skip(nonnegative count) {
-    return slice(count, size);
+  base_immutable_list1[element_type] skip(nonnegative count) {
+    return slice(count, size());
+  }
+}
+
+class base_immutable_list1[value element_type] {
+  extends base_readonly_list1[element_type];
+
+  import ideal.machine.elements.array;
+
+  protected overload base_immutable_list1(list_state[element_type] state) {
+    super(state);
+    state.writable = false;
+  }
+
+  public overload base_immutable_list1(array[element_type] state) {
+    super(list_state[element_type].new(state));
+  }
+
+  base_immutable_list1[element_type] frozen_copy() {
+    return this;
+  }
+
+  base_immutable_list1[element_type] reverse() {
+    if (size() <= 1) {
+      return this;
+    }
+
+    reversed : list_state[element_type].new(size());
+    for (var nonnegative i : 0; i < size(); i += 1) {
+      new_index : size() - 1 - i;
+      assert new_index is nonnegative;
+      reversed.the_elements[new_index] = state.the_elements[i];
+    }
+    reversed.size = size();
+
+    return base_immutable_list1[element_type].new(reversed);
   }
 }

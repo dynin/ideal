@@ -1,0 +1,812 @@
+<html>
+  <head>
+    <title>
+     test
+    </title>
+   <link href='assets/ideal-style.css' rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+    <div class='main-code'>
+      <div>
+        <div class='documentation'>
+          A list is an ordered sequence of values.
+        </div>
+        <div class='type-declaration'>
+         class <span class='type-declaration-name'><span id='base-readonly-list1'>base readonly list1</span></span>[<span id='value'>value</span> <span class='var-declaration-name'><span id='element-type'>element type</span></span>]
+          <div class='indent'>
+            <div>
+             import <span id='ideal'>ideal</span> &bull; <span id='machine'>machine</span> &bull; <span id='elements'>elements</span> &bull; <span id='array'>array</span>
+            </div>
+            <div class='type-declaration'>
+             namespace <span class='type-declaration-name'><span id='parameters'>parameters</span></span>
+              <div class='indent'>
+                <div>
+                 <span class='var-declaration-name'><span id='default-size'>default size</span></span> : 16
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class='documentation'>
+                Wrapper of an <span class='code'>array</span> that implements on-demand resizing and copy-on-write semantics.
+                The same <span class='code'>list_state</span> can be shared by multiple instances of <span class='code'>base_readonly_list1</span>s.
+              </div>
+              <div class='type-declaration'>
+               protected class <span class='type-declaration-name'><span id='list-state'>list state</span></span>[<span id='value2'>value</span> <span class='var-declaration-name'><span id='element-type2'>element type</span></span>]
+                <div class='indent'>
+                  <div>
+                    <div class='documentation'>
+                      Specifies whether this instance of <span class='code'>list_state</span> is writable.
+                      A single non-writable copy can be shared among multiple instances of <span class='code'>base_readonly_list1</span>.
+                    </div>
+                   var <span id='boolean'>boolean</span> <span class='var-declaration-name'><span id='writable'>writable</span></span>
+                  </div>
+                  <div>
+                    <div class='documentation'>
+                      An array used to store the elements.
+                    </div>
+                   var <span id='array2'>array</span>[<span id='element-type3'>element type</span>] <span class='var-declaration-name'><span id='the-elements'>the elements</span></span>
+                  </div>
+                  <div>
+                    <div class='documentation'>
+                      Specifies how many elements are stored in this <span class='code'>list_state</span>.
+                      The <span class='code'>size</span> is less or equal to <span class='code'>the_elements.size</span>.
+                    </div>
+                   var <span id='nonnegative'>nonnegative</span> <span class='var-declaration-name'><span id='size'>size</span></span>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Construct a list state with an array of specified size.
+                    </div>
+                   overload <span class='procedure-declaration-name'><span id='list-state2'>list state</span></span>(<span id='nonnegative2'>nonnegative</span> <span class='var-declaration-name'><span id='initial-size'>initial size</span></span>)
+                    <div class='indent'>
+                      <div>
+                       <span id='writable2'>writable</span> = <span id='true'>true</span>
+                      </div>
+                      <div>
+                       <span id='the-elements2'>the elements</span> = <span id='array3'>array</span>[<span id='element-type4'>element type</span>] &bull; new(<span id='initial-size2'>initial size</span>)
+                      </div>
+                      <div>
+                       <span id='size2'>size</span> = 0
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Construct a list state with an array of default size.
+                    </div>
+                   overload <span class='procedure-declaration-name'><span id='list-state3'>list state</span></span>()
+                    <div class='indent'>
+                      <div>
+                       this(<span id='parameters2'>parameters</span> &bull; <span id='default-size2'>default size</span>)
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Construct a list state from a given array of elements.
+                      Assumes noone mutates the elements.
+                    </div>
+                   overload <span class='procedure-declaration-name'><span id='list-state4'>list state</span></span>(<span id='array4'>array</span>[<span id='element-type5'>element type</span>] <span class='var-declaration-name'><span id='immutable-elements'>immutable elements</span></span>)
+                    <div class='indent'>
+                      <div>
+                       <span id='writable3'>writable</span> = <span id='false'>false</span>
+                      </div>
+                      <div>
+                       <span id='the-elements3'>the elements</span> = <span id='immutable-elements2'>immutable elements</span>
+                      </div>
+                      <div>
+                       <span id='size3'>size</span> = <span id='immutable-elements3'>immutable elements</span> &bull; <span id='size4'>size</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Make sure the array is of at least the specified size.
+                    </div>
+                   <span id='void'>void</span> <span class='procedure-declaration-name'><span id='reserve'>reserve</span></span>(<span id='nonnegative3'>nonnegative</span> <span class='var-declaration-name'><span id='reserve-size'>reserve size</span></span>)
+                    <div class='indent'>
+                     if <span id='the-elements4'>the elements</span> &bull; <span id='size5'>size</span> &gt;= <span id='reserve-size2'>reserve size</span>
+                      <div class='indent'>
+                        <div>
+                         return
+                        </div>
+                      </div>
+                      <div>
+                       var <span class='var-declaration-name'><span id='new-size'>new size</span></span> : <span id='the-elements5'>the elements</span> &bull; <span id='size6'>size</span> * 2
+                      </div>
+                     if <span id='new-size2'>new size</span> &lt; <span id='reserve-size3'>reserve size</span>
+                      <div class='indent'>
+                        <div>
+                         <span id='new-size3'>new size</span> = <span id='reserve-size4'>reserve size</span>
+                        </div>
+                      </div>
+                      <div>
+                       <span class='var-declaration-name'><span id='new-elements'>new elements</span></span> : <span id='array5'>array</span>[<span id='element-type6'>element type</span>] &bull; new(<span id='new-size4'>new size</span>)
+                      </div>
+                      <div>
+                       <span id='the-elements6'>the elements</span> &bull; <span id='copy'>copy</span>(0, <span id='new-elements2'>new elements</span>, 0, <span id='size7'>size</span>)
+                      </div>
+                      <div>
+                       <span id='the-elements7'>the elements</span> = <span id='new-elements3'>new elements</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Insert elements at the specified index.
+                    </div>
+                   <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='insert-all'>insert all</span></span>(<span id='nonnegative4'>nonnegative</span> <span class='var-declaration-name'><span id='index'>index</span></span>, readonly <span id='list'>list</span>[<span id='element-type7'>element type</span>] <span class='var-declaration-name'><span id='new-elements4'>new elements</span></span>)
+                    <div class='indent'>
+                     if <span id='new-elements5'>new elements</span> &bull; <span id='is-empty'>is empty</span>
+                      <div class='indent'>
+                        <div>
+                         return
+                        </div>
+                      </div>
+                      else if <span id='new-elements6'>new elements</span> &bull; <span id='size8'>size</span> == 1
+                      <div class='indent'>
+                        <div>
+                         <span id='insert'>insert</span>(<span id='index2'>index</span>, <span id='new-elements7'>new elements</span> &bull; <span id='first'>first</span>)
+                        </div>
+                        <div>
+                         return
+                        </div>
+                      </div>
+                      <div>
+                       assert <span id='writable4'>writable</span>
+                      </div>
+                      <div>
+                       <span class='var-declaration-name'><span id='extra-size'>extra size</span></span> : <span id='new-elements8'>new elements</span> &bull; <span id='size9'>size</span>
+                      </div>
+                      <div>
+                       <span id='reserve-and-move'>reserve and move</span>(<span id='index3'>index</span>, <span id='extra-size2'>extra size</span>)
+                      </div>
+                      <div>
+                       <span class='var-declaration-name'><span id='new-elements-array'>new elements array</span></span> : (<span id='new-elements9'>new elements</span> !&gt; <span id='base-readonly-list12'>base readonly list1</span>[<span id='element-type8'>element type</span>]) &bull; <span id='state'>state</span> &bull; <span id='the-elements8'>the elements</span>
+                      </div>
+                      <div>
+                       <span id='new-elements-array2'>new elements array</span> &bull; <span id='copy2'>copy</span>(0, <span id='the-elements9'>the elements</span>, <span id='index4'>index</span>, <span id='extra-size3'>extra size</span>)
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Insert an element at the specified index.
+                    </div>
+                   <span id='void3'>void</span> <span class='procedure-declaration-name'><span id='insert2'>insert</span></span>(<span id='nonnegative5'>nonnegative</span> <span class='var-declaration-name'><span id='index5'>index</span></span>, <span id='element-type9'>element type</span> <span class='var-declaration-name'><span id='element'>element</span></span>)
+                    <div class='indent'>
+                      <div>
+                       assert <span id='writable5'>writable</span>
+                      </div>
+                      <div>
+                       <span id='reserve-and-move2'>reserve and move</span>(<span id='index6'>index</span>, 1)
+                      </div>
+                      <div>
+                       <span id='the-elements10'>the elements</span>[<span id='index7'>index</span>] = <span id='element2'>element</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Helper method used to create space in the middle of an array.
+                    </div>
+                   private <span id='void4'>void</span> <span class='procedure-declaration-name'><span id='reserve-and-move3'>reserve and move</span></span>(<span id='nonnegative6'>nonnegative</span> <span class='var-declaration-name'><span id='index8'>index</span></span>, <span id='nonnegative7'>nonnegative</span> <span class='var-declaration-name'><span id='extra-size4'>extra size</span></span>)
+                    <div class='indent'>
+                      <div>
+                       <span id='reserve2'>reserve</span>(<span id='size10'>size</span> + <span id='extra-size5'>extra size</span>)
+                      </div>
+                     if <span id='index9'>index</span> &lt; <span id='size11'>size</span>
+                      <div class='indent'>
+                        <div>
+                         <span class='var-declaration-name'><span id='tail-size'>tail size</span></span> : <span id='size12'>size</span> - <span id='index10'>index</span>
+                        </div>
+                        <div>
+                         assert <span id='tail-size2'>tail size</span> is <span id='nonnegative8'>nonnegative</span>
+                        </div>
+                        <div>
+                         <span id='the-elements11'>the elements</span> &bull; <span id='move'>move</span>(<span id='index11'>index</span>, <span id='index12'>index</span> + <span id='extra-size6'>extra size</span>, <span id='tail-size3'>tail size</span>)
+                        </div>
+                      </div>
+                      <div>
+                       <span id='size13'>size</span> += <span id='extra-size7'>extra size</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                   <span id='void5'>void</span> <span class='procedure-declaration-name'><span id='clear'>clear</span></span>(<span id='nonnegative9'>nonnegative</span> <span class='var-declaration-name'><span id='begin'>begin</span></span>, <span id='nonnegative10'>nonnegative</span> <span class='var-declaration-name'><span id='length'>length</span></span>)
+                    <div class='indent'>
+                     if <span id='begin2'>begin</span> + <span id='length2'>length</span> &lt; <span id='size14'>size</span>
+                      <div class='indent'>
+                        <div>
+                         <span id='the-elements12'>the elements</span> &bull; <span id='move2'>move</span>(<span id='begin3'>begin</span> + <span id='length3'>length</span>, <span id='begin4'>begin</span>, <span id='length4'>length</span>)
+                        </div>
+                      </div>
+                      <div>
+                       <span class='var-declaration-name'><span id='new-size5'>new size</span></span> : <span id='size15'>size</span> - <span id='length5'>length</span>
+                      </div>
+                      <div>
+                       assert <span id='new-size6'>new size</span> is <span id='nonnegative11'>nonnegative</span>
+                      </div>
+                      <div>
+                       <span id='size16'>size</span> = <span id='new-size7'>new size</span>
+                      </div>
+                      <div>
+                       <span id='the-elements13'>the elements</span> &bull; <span id='scrub'>scrub</span>(<span id='size17'>size</span>, <span id='length6'>length</span>)
+                      </div>
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                   <span id='list-state5'>list state</span>[<span id='element-type10'>element type</span>] <span class='procedure-declaration-name'><span id='copy3'>copy</span></span>()
+                    <div class='indent'>
+                      <div>
+                       <span class='var-declaration-name'><span id='new-state'>new state</span></span> : <span id='list-state6'>list state</span>[<span id='element-type11'>element type</span>] &bull; new(<span id='size18'>size</span>)
+                      </div>
+                      <div>
+                       <span id='the-elements14'>the elements</span> &bull; <span id='copy4'>copy</span>(0, <span id='new-state2'>new state</span> &bull; <span id='the-elements15'>the elements</span>, 0, <span id='size19'>size</span>)
+                      </div>
+                      <div>
+                       <span id='new-state3'>new state</span> &bull; <span id='size20'>size</span> = <span id='size21'>size</span>
+                      </div>
+                      <div>
+                       return <span id='new-state4'>new state</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+             protected var <span id='list-state7'>list state</span>[<span id='element-type12'>element type</span>] <span class='var-declaration-name'><span id='state2'>state</span></span>
+            </div>
+            <div class='procedure-declaration'>
+             protected overload <span class='procedure-declaration-name'><span id='base-readonly-list13'>base readonly list1</span></span>()
+              <div class='indent'>
+                <div>
+                 <span id='state3'>state</span> = <span id='list-state8'>list state</span>[<span id='element-type13'>element type</span>] &bull; new()
+                </div>
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             protected overload <span class='procedure-declaration-name'><span id='base-readonly-list14'>base readonly list1</span></span>(<span id='list-state9'>list state</span>[<span id='element-type14'>element type</span>] <span class='var-declaration-name'><span id='state4'>state</span></span>)
+              <div class='indent'>
+                <div>
+                 this &bull; <span id='state5'>state</span> = <span id='state6'>state</span>
+                </div>
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             <span id='nonnegative12'>nonnegative</span> <span class='procedure-declaration-name'><span id='size22'>size</span></span> =&gt; <span id='state7'>state</span> &bull; <span id='size23'>size</span>
+            </div>
+            <div class='procedure-declaration'>
+             <span id='boolean2'>boolean</span> <span class='procedure-declaration-name'><span id='is-empty2'>is empty</span></span> =&gt; <span id='state8'>state</span> &bull; <span id='size24'>size</span> == 0
+            </div>
+            <div class='procedure-declaration'>
+             <span id='boolean3'>boolean</span> <span class='procedure-declaration-name'><span id='is-not-empty'>is not empty</span></span> =&gt; <span id='state9'>state</span> &bull; <span id='size25'>size</span> != 0
+            </div>
+            <div class='procedure-declaration'>
+             <span id='element-type15'>element type</span> <span class='procedure-declaration-name'><span id='first2'>first</span></span>()
+              <div class='indent'>
+                <div>
+                 assert <span id='is-not-empty2'>is not empty</span>
+                </div>
+                <div>
+                 return <span id='state10'>state</span> &bull; <span id='the-elements16'>the elements</span>[0]
+                </div>
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             <span id='element-type16'>element type</span> <span class='procedure-declaration-name'><span id='last'>last</span></span>()
+              <div class='indent'>
+                <div>
+                 assert <span id='is-not-empty3'>is not empty</span>
+                </div>
+                <div>
+                 <span class='var-declaration-name'><span id='last-index'>last index</span></span> : <span id='state11'>state</span> &bull; <span id='size26'>size</span> - 1
+                </div>
+                <div>
+                 assert <span id='last-index2'>last index</span> is <span id='nonnegative13'>nonnegative</span>
+                </div>
+                <div>
+                 return <span id='state12'>state</span> &bull; <span id='the-elements17'>the elements</span>[<span id='last-index3'>last index</span>]
+                </div>
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             implicit readonly <span id='reference'>reference</span>[<span id='element-type17'>element type</span>] <span class='procedure-declaration-name'><span id='get'>get</span></span>(<span id='nonnegative14'>nonnegative</span> <span class='var-declaration-name'><span id='index13'>index</span></span>) pure
+              <div class='indent'>
+                <div>
+                 assert <span id='index14'>index</span> &lt; <span id='state13'>state</span> &bull; <span id='size27'>size</span>
+                </div>
+                <div>
+                 return <span id='state14'>state</span> &bull; <span id='the-elements18'>the elements</span>[<span id='index15'>index</span>]
+                </div>
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list1'>base immutable list1</span>[<span id='element-type18'>element type</span>] <span class='procedure-declaration-name'><span id='elements2'>elements</span></span>() =&gt; <span id='frozen-copy'>frozen copy</span>()
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list12'>base immutable list1</span>[<span id='element-type19'>element type</span>] <span class='procedure-declaration-name'><span id='frozen-copy2'>frozen copy</span></span>()
+              <div class='indent'>
+                <div>
+                 return <span id='base-immutable-list13'>base immutable list1</span>[<span id='element-type20'>element type</span>] &bull; new(<span id='state15'>state</span>)
+                </div>
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list14'>base immutable list1</span>[<span id='element-type21'>element type</span>] <span class='procedure-declaration-name'><span id='slice'>slice</span></span>(<span id='nonnegative15'>nonnegative</span> <span class='var-declaration-name'><span id='begin5'>begin</span></span>, <span id='nonnegative16'>nonnegative</span> <span class='var-declaration-name'><span id='end'>end</span></span>)
+              <div class='indent'>
+                <div>
+                 assert <span id='begin6'>begin</span> &gt;= 0 &amp;&amp; <span id='end2'>end</span> &lt;= <span id='size28'>size</span>()
+                </div>
+                <div>
+                 <span class='var-declaration-name'><span id='length7'>length</span></span> : <span id='end3'>end</span> - <span id='begin7'>begin</span>
+                </div>
+                <div>
+                 assert <span id='length8'>length</span> is <span id='nonnegative17'>nonnegative</span>
+                </div>
+                <div>
+                 <span class='var-declaration-name'><span id='slice-state'>slice state</span></span> : <span id='list-state10'>list state</span>[<span id='element-type22'>element type</span>] &bull; new(<span id='length9'>length</span>)
+                </div>
+                <div>
+                 <span id='slice-state2'>slice state</span> &bull; <span id='size29'>size</span> = <span id='length10'>length</span>
+                </div>
+                <div>
+                 <span id='state16'>state</span> &bull; <span id='the-elements19'>the elements</span> &bull; <span id='copy5'>copy</span>(<span id='begin8'>begin</span>, <span id='slice-state3'>slice state</span> &bull; <span id='the-elements20'>the elements</span>, 0, <span id='length11'>length</span>)
+                </div>
+                <div>
+                 return <span id='base-immutable-list15'>base immutable list1</span>[<span id='element-type23'>element type</span>] &bull; new(<span id='slice-state4'>slice state</span>)
+                </div>
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list16'>base immutable list1</span>[<span id='element-type24'>element type</span>] <span class='procedure-declaration-name'><span id='skip'>skip</span></span>(<span id='nonnegative18'>nonnegative</span> <span class='var-declaration-name'><span id='count'>count</span></span>)
+              <div class='indent'>
+                <div>
+                 return <span id='slice2'>slice</span>(<span id='count2'>count</span>, <span id='size30'>size</span>())
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='type-declaration'>
+       class <span class='type-declaration-name'><span id='base-immutable-list17'>base immutable list1</span></span>[<span id='value3'>value</span> <span class='var-declaration-name'><span id='element-type25'>element type</span></span>]
+        <div class='indent'>
+          <div>
+           extends <span class='supertype-declaration-name'><span id='base-readonly-list15'>base readonly list1</span>[<span id='element-type26'>element type</span>]</span>
+          </div>
+          <div>
+           import <span id='ideal2'>ideal</span> &bull; <span id='machine2'>machine</span> &bull; <span id='elements3'>elements</span> &bull; <span id='array6'>array</span>
+          </div>
+          <div class='procedure-declaration'>
+           protected overload <span class='procedure-declaration-name'><span id='base-immutable-list18'>base immutable list1</span></span>(<span id='list-state11'>list state</span>[<span id='element-type27'>element type</span>] <span class='var-declaration-name'><span id='state17'>state</span></span>)
+            <div class='indent'>
+              <div>
+               super(<span id='state18'>state</span>)
+              </div>
+              <div>
+               <span id='state19'>state</span> &bull; <span id='writable6'>writable</span> = <span id='false2'>false</span>
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'><span id='base-immutable-list19'>base immutable list1</span></span>(<span id='array7'>array</span>[<span id='element-type28'>element type</span>] <span class='var-declaration-name'><span id='state20'>state</span></span>)
+            <div class='indent'>
+              <div>
+               super(<span id='list-state12'>list state</span>[<span id='element-type29'>element type</span>] &bull; new(<span id='state21'>state</span>))
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           <span id='base-immutable-list110'>base immutable list1</span>[<span id='element-type30'>element type</span>] <span class='procedure-declaration-name'><span id='frozen-copy3'>frozen copy</span></span>()
+            <div class='indent'>
+              <div>
+               return this
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           <span id='base-immutable-list111'>base immutable list1</span>[<span id='element-type31'>element type</span>] <span class='procedure-declaration-name'><span id='reverse'>reverse</span></span>()
+            <div class='indent'>
+             if <span id='size31'>size</span>() &lt;= 1
+              <div class='indent'>
+                <div>
+                 return this
+                </div>
+              </div>
+              <div>
+               <span class='var-declaration-name'><span id='reversed'>reversed</span></span> : <span id='list-state13'>list state</span>[<span id='element-type32'>element type</span>] &bull; new(<span id='size32'>size</span>())
+              </div>
+             for var <span id='nonnegative19'>nonnegative</span> <span class='var-declaration-name'><span id='i'>i</span></span> : 0; <span id='i2'>i</span> &lt; <span id='size33'>size</span>(); <span id='i3'>i</span> += 1
+              <div class='indent'>
+                <div>
+                 <span class='var-declaration-name'><span id='new-index'>new index</span></span> : <span id='size34'>size</span>() - 1 - <span id='i4'>i</span>
+                </div>
+                <div>
+                 assert <span id='new-index2'>new index</span> is <span id='nonnegative20'>nonnegative</span>
+                </div>
+                <div>
+                 <span id='reversed2'>reversed</span> &bull; <span id='the-elements21'>the elements</span>[<span id='new-index3'>new index</span>] = <span id='state22'>state</span> &bull; <span id='the-elements22'>the elements</span>[<span id='i5'>i</span>]
+                </div>
+              </div>
+              <div>
+               <span id='reversed3'>reversed</span> &bull; <span id='size35'>size</span> = <span id='size36'>size</span>()
+              </div>
+              <div>
+               return <span id='base-immutable-list112'>base immutable list1</span>[<span id='element-type33'>element type</span>] &bull; new(<span id='reversed4'>reversed</span>)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+  </body>
+</html>
+<html>
+  <head>
+    <title>
+     test
+    </title>
+   <link href='assets/ideal-style.css' rel='stylesheet' type='text/css' />
+  </head>
+  <body>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+    <div class='main-code'>
+      <div>
+        <div class='documentation'>
+          A list is an ordered sequence of values.
+        </div>
+        <div class='type-declaration'>
+         class <span class='type-declaration-name'><span id='base-readonly-list1'>base readonly list1</span></span>[<span id='value'>value</span> <span class='var-declaration-name'><span id='element-type'>element type</span></span>]
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> base readonly list1
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>All supertypes:</span> value / entity
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Direct subtypes:</span> base immutable list1
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Use:</span> base readonly list1
+          </div>
+          <div class='indent'>
+            <div>
+             import <span id='ideal'>ideal</span> &bull; <span id='machine'>machine</span> &bull; <span id='elements'>elements</span> &bull; <span id='array'>array</span>
+            </div>
+            <div class='type-declaration'>
+             namespace <span class='type-declaration-name'><span id='parameters'>parameters</span></span>
+              <div class='xref-links'>
+               <span class='xref-name'>Declaration:</span> parameters
+              </div>
+              <div class='xref-links'>
+               <span class='xref-name'>Use:</span> parameters
+              </div>
+              <div class='indent'>
+                <div>
+                 <span class='var-declaration-name'><span id='default-size'>default size</span></span> : 16
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> default size
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Use:</span> default size
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class='documentation'>
+                Wrapper of an <span class='code'>array</span> that implements on-demand resizing and copy-on-write semantics.
+                The same <span class='code'>list_state</span> can be shared by multiple instances of <span class='code'>base_readonly_list1</span>s.
+              </div>
+              <div class='type-declaration'>
+               protected class <span class='type-declaration-name'><span id='list-state'>list state</span></span>[<span id='value2'>value</span> <span class='var-declaration-name'><span id='element-type2'>element type</span></span>]
+                <div class='xref-links'>
+                 <span class='xref-name'>Declaration:</span> list state
+                </div>
+                <div class='xref-links'>
+                 <span class='xref-name'>All supertypes:</span> value / entity
+                </div>
+                <div class='xref-links'>
+                 <span class='xref-name'>Use:</span> list state / list state / list state / list state / list state / list state / list state / list state / list state
+                </div>
+                <div class='indent'>
+                  <div>
+                    <div class='documentation'>
+                      Specifies whether this instance of <span class='code'>list_state</span> is writable.
+                      A single non-writable copy can be shared among multiple instances of <span class='code'>base_readonly_list1</span>.
+                    </div>
+                   var <span id='boolean'>boolean</span> <span class='var-declaration-name'><span id='writable'>writable</span></span>
+                    <div class='xref-links'>
+                     <span class='xref-name'>Declaration:</span> writable
+                    </div>
+                    <div class='xref-links'>
+                     <span class='xref-name'>Use:</span> writable / writable / writable / writable
+                    </div>
+                  </div>
+                  <div>
+                    <div class='documentation'>
+                      An array used to store the elements.
+                    </div>
+                   var <span id='array2'>array</span>[<span id='element-type3'>element type</span>] <span class='var-declaration-name'><span id='the-elements'>the elements</span></span>
+                    <div class='xref-links'>
+                     <span class='xref-name'>Declaration:</span> the elements
+                    </div>
+                    <div class='xref-links'>
+                     <span class='xref-name'>Use:</span> the elements / the elements / the elements / the elements / the elements / the elements / the elements / the elements / the elements / the elements / the elements / the elements / the elements / the elements
+                    </div>
+                  </div>
+                  <div>
+                    <div class='documentation'>
+                      Specifies how many elements are stored in this <span class='code'>list_state</span>.
+                      The <span class='code'>size</span> is less or equal to <span class='code'>the_elements.size</span>.
+                    </div>
+                   var <span id='nonnegative'>nonnegative</span> <span class='var-declaration-name'><span id='size'>size</span></span>
+                    <div class='xref-links'>
+                     <span class='xref-name'>Declaration:</span> size
+                    </div>
+                    <div class='xref-links'>
+                     <span class='xref-name'>Use:</span> size / size / size / size / size / size / size / size / size / size / size / size / size / size / size
+                    </div>
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Construct a list state with an array of specified size.
+                    </div>
+                   overload <span class='procedure-declaration-name'><span id='list-state2'>list state</span></span>(<span id='nonnegative2'>nonnegative</span> <span class='var-declaration-name'><span id='initial-size'>initial size</span></span>)
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> constructor
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Construct a list state with an array of default size.
+                    </div>
+                   overload <span class='procedure-declaration-name'><span id='list-state3'>list state</span></span>()
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> constructor
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Construct a list state from a given array of elements.
+                      Assumes noone mutates the elements.
+                    </div>
+                   overload <span class='procedure-declaration-name'><span id='list-state4'>list state</span></span>(<span id='array4'>array</span>[<span id='element-type5'>element type</span>] <span class='var-declaration-name'><span id='immutable-elements'>immutable elements</span></span>)
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> constructor
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Make sure the array is of at least the specified size.
+                    </div>
+                   <span id='void'>void</span> <span class='procedure-declaration-name'><span id='reserve'>reserve</span></span>(<span id='nonnegative3'>nonnegative</span> <span class='var-declaration-name'><span id='reserve-size'>reserve size</span></span>)
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> reserve
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Use:</span> reserve
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Insert elements at the specified index.
+                    </div>
+                   <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='insert-all'>insert all</span></span>(<span id='nonnegative4'>nonnegative</span> <span class='var-declaration-name'><span id='index'>index</span></span>, readonly <span id='list'>list</span>[<span id='element-type7'>element type</span>] <span class='var-declaration-name'><span id='new-elements4'>new elements</span></span>)
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> insert all
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Insert an element at the specified index.
+                    </div>
+                   <span id='void3'>void</span> <span class='procedure-declaration-name'><span id='insert2'>insert</span></span>(<span id='nonnegative5'>nonnegative</span> <span class='var-declaration-name'><span id='index5'>index</span></span>, <span id='element-type9'>element type</span> <span class='var-declaration-name'><span id='element'>element</span></span>)
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> insert
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Use:</span> insert
+                  </div>
+                  <div class='procedure-declaration'>
+                    <div class='documentation'>
+                      Helper method used to create space in the middle of an array.
+                    </div>
+                   private <span id='void4'>void</span> <span class='procedure-declaration-name'><span id='reserve-and-move3'>reserve and move</span></span>(<span id='nonnegative6'>nonnegative</span> <span class='var-declaration-name'><span id='index8'>index</span></span>, <span id='nonnegative7'>nonnegative</span> <span class='var-declaration-name'><span id='extra-size4'>extra size</span></span>)
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> reserve and move
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Use:</span> reserve and move / reserve and move
+                  </div>
+                  <div class='procedure-declaration'>
+                   <span id='void5'>void</span> <span class='procedure-declaration-name'><span id='clear'>clear</span></span>(<span id='nonnegative9'>nonnegative</span> <span class='var-declaration-name'><span id='begin'>begin</span></span>, <span id='nonnegative10'>nonnegative</span> <span class='var-declaration-name'><span id='length'>length</span></span>)
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> clear
+                  </div>
+                  <div class='procedure-declaration'>
+                   <span id='list-state5'>list state</span>[<span id='element-type10'>element type</span>] <span class='procedure-declaration-name'><span id='copy3'>copy</span></span>()
+                  </div>
+                  <div class='xref-links'>
+                   <span class='xref-name'>Declaration:</span> copy
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+             protected var <span id='list-state7'>list state</span>[<span id='element-type12'>element type</span>] <span class='var-declaration-name'><span id='state2'>state</span></span>
+              <div class='xref-links'>
+               <span class='xref-name'>Declaration:</span> state
+              </div>
+              <div class='xref-links'>
+               <span class='xref-name'>Use:</span> state / state / state / state / state / state / state / state / state / state / state / state
+              </div>
+            </div>
+            <div class='procedure-declaration'>
+             protected overload <span class='procedure-declaration-name'><span id='base-readonly-list13'>base readonly list1</span></span>()
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> constructor
+            </div>
+            <div class='procedure-declaration'>
+             protected overload <span class='procedure-declaration-name'><span id='base-readonly-list14'>base readonly list1</span></span>(<span id='list-state9'>list state</span>[<span id='element-type14'>element type</span>] <span class='var-declaration-name'><span id='state4'>state</span></span>)
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> constructor
+            </div>
+            <div class='procedure-declaration'>
+             <span id='nonnegative12'>nonnegative</span> <span class='procedure-declaration-name'><span id='size22'>size</span></span>
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> size
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Use:</span> size / size
+            </div>
+            <div class='procedure-declaration'>
+             <span id='boolean2'>boolean</span> <span class='procedure-declaration-name'><span id='is-empty2'>is empty</span></span>
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> is empty
+            </div>
+            <div class='procedure-declaration'>
+             <span id='boolean3'>boolean</span> <span class='procedure-declaration-name'><span id='is-not-empty'>is not empty</span></span>
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> is not empty
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Use:</span> is not empty / is not empty
+            </div>
+            <div class='procedure-declaration'>
+             <span id='element-type15'>element type</span> <span class='procedure-declaration-name'><span id='first2'>first</span></span>()
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> first
+            </div>
+            <div class='procedure-declaration'>
+             <span id='element-type16'>element type</span> <span class='procedure-declaration-name'><span id='last'>last</span></span>()
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> last
+            </div>
+            <div class='procedure-declaration'>
+             implicit readonly <span id='reference'>reference</span>[<span id='element-type17'>element type</span>] <span class='procedure-declaration-name'><span id='get'>get</span></span>(<span id='nonnegative14'>nonnegative</span> <span class='var-declaration-name'><span id='index13'>index</span></span>) pure
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> constructor
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list1'>base immutable list1</span>[<span id='element-type18'>element type</span>] <span class='procedure-declaration-name'><span id='elements2'>elements</span></span>()
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> elements
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list12'>base immutable list1</span>[<span id='element-type19'>element type</span>] <span class='procedure-declaration-name'><span id='frozen-copy2'>frozen copy</span></span>()
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> frozen copy
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Use:</span> frozen copy
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list14'>base immutable list1</span>[<span id='element-type21'>element type</span>] <span class='procedure-declaration-name'><span id='slice'>slice</span></span>(<span id='nonnegative15'>nonnegative</span> <span class='var-declaration-name'><span id='begin5'>begin</span></span>, <span id='nonnegative16'>nonnegative</span> <span class='var-declaration-name'><span id='end'>end</span></span>)
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> slice
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Use:</span> slice
+            </div>
+            <div class='procedure-declaration'>
+             <span id='base-immutable-list16'>base immutable list1</span>[<span id='element-type24'>element type</span>] <span class='procedure-declaration-name'><span id='skip'>skip</span></span>(<span id='nonnegative18'>nonnegative</span> <span class='var-declaration-name'><span id='count'>count</span></span>)
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Declaration:</span> skip
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='type-declaration'>
+       class <span class='type-declaration-name'><span id='base-immutable-list17'>base immutable list1</span></span>[<span id='value3'>value</span> <span class='var-declaration-name'><span id='element-type25'>element type</span></span>]
+        <div class='xref-links'>
+         <span class='xref-name'>Declaration:</span> base immutable list1
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>Direct supertypes:</span> base readonly list1
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>All supertypes:</span> value / entity
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>Use:</span> base immutable list1 / base immutable list1 / base immutable list1 / base immutable list1 / base immutable list1 / base immutable list1 / base immutable list1 / base immutable list1 / base immutable list1
+        </div>
+        <div class='indent'>
+          <div>
+          </div>
+          <div>
+           import <span id='ideal2'>ideal</span> &bull; <span id='machine2'>machine</span> &bull; <span id='elements3'>elements</span> &bull; <span id='array6'>array</span>
+          </div>
+          <div class='procedure-declaration'>
+           protected overload <span class='procedure-declaration-name'><span id='base-immutable-list18'>base immutable list1</span></span>(<span id='list-state11'>list state</span>[<span id='element-type27'>element type</span>] <span class='var-declaration-name'><span id='state17'>state</span></span>)
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> constructor
+          </div>
+          <div class='procedure-declaration'>
+           public overload <span class='procedure-declaration-name'><span id='base-immutable-list19'>base immutable list1</span></span>(<span id='array7'>array</span>[<span id='element-type28'>element type</span>] <span class='var-declaration-name'><span id='state20'>state</span></span>)
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> constructor
+          </div>
+          <div class='procedure-declaration'>
+           <span id='base-immutable-list110'>base immutable list1</span>[<span id='element-type30'>element type</span>] <span class='procedure-declaration-name'><span id='frozen-copy3'>frozen copy</span></span>()
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> frozen copy
+          </div>
+          <div class='procedure-declaration'>
+           <span id='base-immutable-list111'>base immutable list1</span>[<span id='element-type31'>element type</span>] <span class='procedure-declaration-name'><span id='reverse'>reverse</span></span>()
+          </div>
+          <div class='xref-links'>
+           <span class='xref-name'>Declaration:</span> reverse
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class='nav-table'>
+      <tr>
+       <td class='nav-left' />
+       <td class='nav-center' />
+       <td class='nav-right' />
+      </tr>
+    </table>
+  </body>
+</html>

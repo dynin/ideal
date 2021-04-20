@@ -1,0 +1,2898 @@
+============ INIT
+==== Loading testdata/list.i
+============ PARSE
+============ BOOTSTRAP
+==== Loading library/elements.i
+==== Loading library/operators.i
+==== Loading ideal.i
+============ DISPLAY
+[
+  type_declaration_construct {
+    annotations: [
+      comment_construct {
+        the_comment: comment {
+          type: comment_type {
+            is_doc: true
+            name: "BLOCK_DOC_COMMENT"
+            ordinal: 5
+          }
+          content: " A list is an ordered sequence of values.
+          "
+          image: " A list is an ordered sequence of values.
+          "
+        }
+        the_text: <null>
+      }
+    ]
+    kind: class
+    name: base_readonly_list1
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
+        }
+        name: element_type
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+    body: [
+      import_construct {
+        annotations: [ ]
+        type: resolve_construct {
+          qualifier: resolve_construct {
+            qualifier: resolve_construct {
+              qualifier: name_construct {
+                the_name: ideal
+              }
+              the_name: machine
+            }
+            the_name: elements
+          }
+          the_name: array
+        }
+      }
+      type_declaration_construct {
+        annotations: [ ]
+        kind: namespace
+        name: parameters
+        parameters: <null>
+        body: [
+          variable_construct {
+            annotations: [ ]
+            type: <null>
+            name: default_size
+            post_annotations: [ ]
+            init: literal_construct {
+              the_literal: integer_literal {
+                the_value: 16
+                image: "16"
+              }
+            }
+          }
+        ]
+      }
+      type_declaration_construct {
+        annotations: [
+          comment_construct {
+            the_comment: comment {
+              type: comment_type {
+                is_doc: true
+                name: "BLOCK_DOC_COMMENT"
+                ordinal: 5
+              }
+              content: " Wrapper of an |array| that implements on-demand resizing and copy-on-write semantics.
+               The same |list_state| can be shared by multiple instances of |base_readonly_list1|s.
+              "
+              image: " Wrapper of an |array| that implements on-demand resizing and copy-on-write semantics.
+               The same |list_state| can be shared by multiple instances of |base_readonly_list1|s.
+              "
+            }
+            the_text: <null>
+          }
+          modifier_construct {
+            the_kind: <protected>
+          }
+        ]
+        kind: class
+        name: list_state
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: value
+            }
+            name: element_type
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
+        body: [
+          variable_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Specifies whether this instance of |list_state| is writable.
+                   A single non-writable copy can be shared among multiple instances of |base_readonly_list1|.
+                  "
+                  image: " Specifies whether this instance of |list_state| is writable.
+                   A single non-writable copy can be shared among multiple instances of |base_readonly_list1|.
+                  "
+                }
+                the_text: <null>
+              }
+              modifier_construct {
+                the_kind: <var>
+              }
+            ]
+            type: name_construct {
+              the_name: boolean
+            }
+            name: writable
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " An array used to store the elements.
+                  "
+                  image: " An array used to store the elements.
+                  "
+                }
+                the_text: <null>
+              }
+              modifier_construct {
+                the_kind: <var>
+              }
+            ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: array
+              }
+              parameters: [
+                name_construct {
+                  the_name: element_type
+                }
+              ]
+              grouping: brackets
+            }
+            name: the_elements
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Specifies how many elements are stored in this |list_state|.
+                   The |size| is less or equal to |the_elements.size|.
+                  "
+                  image: " Specifies how many elements are stored in this |list_state|.
+                   The |size| is less or equal to |the_elements.size|.
+                  "
+                }
+                the_text: <null>
+              }
+              modifier_construct {
+                the_kind: <var>
+              }
+            ]
+            type: name_construct {
+              the_name: nonnegative
+            }
+            name: size
+            post_annotations: [ ]
+            init: <null>
+          }
+          procedure_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Construct a list state with an array of specified size.
+                  "
+                  image: " Construct a list state with an array of specified size.
+                  "
+                }
+                the_text: <null>
+              }
+              modifier_construct {
+                the_kind: <overload>
+              }
+            ]
+            ret: <null>
+            name: list_state
+            parameters: [
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: initial_size
+                post_annotations: [ ]
+                init: <null>
+              }
+            ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: writable
+                    }
+                    name_construct {
+                      the_name: true
+                    }
+                  ]
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: the_elements
+                    }
+                    parameter_construct {
+                      main: resolve_construct {
+                        qualifier: parameter_construct {
+                          main: name_construct {
+                            the_name: array
+                          }
+                          parameters: [
+                            name_construct {
+                              the_name: element_type
+                            }
+                          ]
+                          grouping: brackets
+                        }
+                        the_name: special_name {
+                          name: "new"
+                        }
+                      }
+                      parameters: [
+                        name_construct {
+                          the_name: initial_size
+                        }
+                      ]
+                      grouping: parens
+                    }
+                  ]
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: size
+                    }
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 0
+                        image: "0"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Construct a list state with an array of default size.
+                  "
+                  image: " Construct a list state with an array of default size.
+                  "
+                }
+                the_text: <null>
+              }
+              modifier_construct {
+                the_kind: <overload>
+              }
+            ]
+            ret: <null>
+            name: list_state
+            parameters: [ ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                parameter_construct {
+                  main: name_construct {
+                    the_name: special_name {
+                      name: "this"
+                    }
+                  }
+                  parameters: [
+                    resolve_construct {
+                      qualifier: name_construct {
+                        the_name: parameters
+                      }
+                      the_name: default_size
+                    }
+                  ]
+                  grouping: parens
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Construct a list state from a given array of elements.
+                   Assumes noone mutates the elements.
+                  "
+                  image: " Construct a list state from a given array of elements.
+                   Assumes noone mutates the elements.
+                  "
+                }
+                the_text: <null>
+              }
+              modifier_construct {
+                the_kind: <overload>
+              }
+            ]
+            ret: <null>
+            name: list_state
+            parameters: [
+              variable_construct {
+                annotations: [ ]
+                type: parameter_construct {
+                  main: name_construct {
+                    the_name: array
+                  }
+                  parameters: [
+                    name_construct {
+                      the_name: element_type
+                    }
+                  ]
+                  grouping: brackets
+                }
+                name: immutable_elements
+                post_annotations: [ ]
+                init: <null>
+              }
+            ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: writable
+                    }
+                    name_construct {
+                      the_name: false
+                    }
+                  ]
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: the_elements
+                    }
+                    name_construct {
+                      the_name: immutable_elements
+                    }
+                  ]
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: size
+                    }
+                    resolve_construct {
+                      qualifier: name_construct {
+                        the_name: immutable_elements
+                      }
+                      the_name: size
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Make sure the array is of at least the specified size.
+                  "
+                  image: " Make sure the array is of at least the specified size.
+                  "
+                }
+                the_text: <null>
+              }
+            ]
+            ret: name_construct {
+              the_name: void
+            }
+            name: reserve
+            parameters: [
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: reserve_size
+                post_annotations: [ ]
+                init: <null>
+              }
+            ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                conditional_construct {
+                  cond_expr: operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: >=
+                      alpha_name: greater_equal
+                    }
+                    arguments: [
+                      resolve_construct {
+                        qualifier: name_construct {
+                          the_name: the_elements
+                        }
+                        the_name: size
+                      }
+                      name_construct {
+                        the_name: reserve_size
+                      }
+                    ]
+                  }
+                  then_expr: block_construct {
+                    annotations: [ ]
+                    body: [
+                      return_construct {
+                        the_expression: empty_construct { }
+                      }
+                    ]
+                  }
+                  else_expr: <null>
+                  is_statement: true
+                }
+                variable_construct {
+                  annotations: [
+                    modifier_construct {
+                      the_kind: <var>
+                    }
+                  ]
+                  type: <null>
+                  name: new_size
+                  post_annotations: [ ]
+                  init: operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: *
+                      alpha_name: multiply
+                    }
+                    arguments: [
+                      resolve_construct {
+                        qualifier: name_construct {
+                          the_name: the_elements
+                        }
+                        the_name: size
+                      }
+                      literal_construct {
+                        the_literal: integer_literal {
+                          the_value: 2
+                          image: "2"
+                        }
+                      }
+                    ]
+                  }
+                }
+                conditional_construct {
+                  cond_expr: operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: <
+                      alpha_name: less
+                    }
+                    arguments: [
+                      name_construct {
+                        the_name: new_size
+                      }
+                      name_construct {
+                        the_name: reserve_size
+                      }
+                    ]
+                  }
+                  then_expr: block_construct {
+                    annotations: [ ]
+                    body: [
+                      operator_construct {
+                        the_operator: operator {
+                          the_operator_type: infix
+                          name: =
+                          alpha_name: assign
+                        }
+                        arguments: [
+                          name_construct {
+                            the_name: new_size
+                          }
+                          name_construct {
+                            the_name: reserve_size
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                  else_expr: <null>
+                  is_statement: true
+                }
+                variable_construct {
+                  annotations: [ ]
+                  type: <null>
+                  name: new_elements
+                  post_annotations: [ ]
+                  init: parameter_construct {
+                    main: resolve_construct {
+                      qualifier: parameter_construct {
+                        main: name_construct {
+                          the_name: array
+                        }
+                        parameters: [
+                          name_construct {
+                            the_name: element_type
+                          }
+                        ]
+                        grouping: brackets
+                      }
+                      the_name: special_name {
+                        name: "new"
+                      }
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: new_size
+                      }
+                    ]
+                    grouping: parens
+                  }
+                }
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: the_elements
+                    }
+                    the_name: copy
+                  }
+                  parameters: [
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 0
+                        image: "0"
+                      }
+                    }
+                    name_construct {
+                      the_name: new_elements
+                    }
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 0
+                        image: "0"
+                      }
+                    }
+                    name_construct {
+                      the_name: size
+                    }
+                  ]
+                  grouping: parens
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: the_elements
+                    }
+                    name_construct {
+                      the_name: new_elements
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Insert elements at the specified index.
+                  "
+                  image: " Insert elements at the specified index.
+                  "
+                }
+                the_text: <null>
+              }
+            ]
+            ret: name_construct {
+              the_name: void
+            }
+            name: insert_all
+            parameters: [
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: index
+                post_annotations: [ ]
+                init: <null>
+              }
+              variable_construct {
+                annotations: [ ]
+                type: flavor_construct {
+                  flavor: readonly
+                  expr: parameter_construct {
+                    main: name_construct {
+                      the_name: list
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: element_type
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                }
+                name: new_elements
+                post_annotations: [ ]
+                init: <null>
+              }
+            ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                conditional_construct {
+                  cond_expr: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: new_elements
+                    }
+                    the_name: is_empty
+                  }
+                  then_expr: block_construct {
+                    annotations: [ ]
+                    body: [
+                      return_construct {
+                        the_expression: empty_construct { }
+                      }
+                    ]
+                  }
+                  else_expr: conditional_construct {
+                    cond_expr: operator_construct {
+                      the_operator: operator {
+                        the_operator_type: infix
+                        name: ==
+                        alpha_name: equal_to
+                      }
+                      arguments: [
+                        resolve_construct {
+                          qualifier: name_construct {
+                            the_name: new_elements
+                          }
+                          the_name: size
+                        }
+                        literal_construct {
+                          the_literal: integer_literal {
+                            the_value: 1
+                            image: "1"
+                          }
+                        }
+                      ]
+                    }
+                    then_expr: block_construct {
+                      annotations: [ ]
+                      body: [
+                        parameter_construct {
+                          main: name_construct {
+                            the_name: insert
+                          }
+                          parameters: [
+                            name_construct {
+                              the_name: index
+                            }
+                            resolve_construct {
+                              qualifier: name_construct {
+                                the_name: new_elements
+                              }
+                              the_name: first
+                            }
+                          ]
+                          grouping: parens
+                        }
+                        return_construct {
+                          the_expression: empty_construct { }
+                        }
+                      ]
+                    }
+                    else_expr: <null>
+                    is_statement: true
+                  }
+                  is_statement: true
+                }
+                constraint_construct {
+                  expr: name_construct {
+                    the_name: writable
+                  }
+                }
+                variable_construct {
+                  annotations: [ ]
+                  type: <null>
+                  name: extra_size
+                  post_annotations: [ ]
+                  init: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: new_elements
+                    }
+                    the_name: size
+                  }
+                }
+                parameter_construct {
+                  main: name_construct {
+                    the_name: reserve_and_move
+                  }
+                  parameters: [
+                    name_construct {
+                      the_name: index
+                    }
+                    name_construct {
+                      the_name: extra_size
+                    }
+                  ]
+                  grouping: parens
+                }
+                variable_construct {
+                  annotations: [ ]
+                  type: <null>
+                  name: new_elements_array
+                  post_annotations: [ ]
+                  init: resolve_construct {
+                    qualifier: resolve_construct {
+                      qualifier: list_construct {
+                        elements: [
+                          operator_construct {
+                            the_operator: cast_type {
+                              the_operator_type: infix
+                              name: !>
+                              alpha_name: hard_cast
+                            }
+                            arguments: [
+                              name_construct {
+                                the_name: new_elements
+                              }
+                              parameter_construct {
+                                main: name_construct {
+                                  the_name: base_readonly_list1
+                                }
+                                parameters: [
+                                  name_construct {
+                                    the_name: element_type
+                                  }
+                                ]
+                                grouping: brackets
+                              }
+                            ]
+                          }
+                        ]
+                        grouping: parens
+                        has_trailing_comma: false
+                      }
+                      the_name: state
+                    }
+                    the_name: the_elements
+                  }
+                }
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: new_elements_array
+                    }
+                    the_name: copy
+                  }
+                  parameters: [
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 0
+                        image: "0"
+                      }
+                    }
+                    name_construct {
+                      the_name: the_elements
+                    }
+                    name_construct {
+                      the_name: index
+                    }
+                    name_construct {
+                      the_name: extra_size
+                    }
+                  ]
+                  grouping: parens
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Insert an element at the specified index.
+                  "
+                  image: " Insert an element at the specified index.
+                  "
+                }
+                the_text: <null>
+              }
+            ]
+            ret: name_construct {
+              the_name: void
+            }
+            name: insert
+            parameters: [
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: index
+                post_annotations: [ ]
+                init: <null>
+              }
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: element_type
+                }
+                name: element
+                post_annotations: [ ]
+                init: <null>
+              }
+            ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                constraint_construct {
+                  expr: name_construct {
+                    the_name: writable
+                  }
+                }
+                parameter_construct {
+                  main: name_construct {
+                    the_name: reserve_and_move
+                  }
+                  parameters: [
+                    name_construct {
+                      the_name: index
+                    }
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 1
+                        image: "1"
+                      }
+                    }
+                  ]
+                  grouping: parens
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    parameter_construct {
+                      main: name_construct {
+                        the_name: the_elements
+                      }
+                      parameters: [
+                        name_construct {
+                          the_name: index
+                        }
+                      ]
+                      grouping: brackets
+                    }
+                    name_construct {
+                      the_name: element
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [
+              comment_construct {
+                the_comment: comment {
+                  type: comment_type {
+                    is_doc: true
+                    name: "BLOCK_DOC_COMMENT"
+                    ordinal: 5
+                  }
+                  content: " Helper method used to create space in the middle of an array.
+                  "
+                  image: " Helper method used to create space in the middle of an array.
+                  "
+                }
+                the_text: <null>
+              }
+              modifier_construct {
+                the_kind: <private>
+              }
+            ]
+            ret: name_construct {
+              the_name: void
+            }
+            name: reserve_and_move
+            parameters: [
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: index
+                post_annotations: [ ]
+                init: <null>
+              }
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: extra_size
+                post_annotations: [ ]
+                init: <null>
+              }
+            ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                parameter_construct {
+                  main: name_construct {
+                    the_name: reserve
+                  }
+                  parameters: [
+                    operator_construct {
+                      the_operator: operator {
+                        the_operator_type: infix
+                        name: +
+                        alpha_name: add
+                      }
+                      arguments: [
+                        name_construct {
+                          the_name: size
+                        }
+                        name_construct {
+                          the_name: extra_size
+                        }
+                      ]
+                    }
+                  ]
+                  grouping: parens
+                }
+                conditional_construct {
+                  cond_expr: operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: <
+                      alpha_name: less
+                    }
+                    arguments: [
+                      name_construct {
+                        the_name: index
+                      }
+                      name_construct {
+                        the_name: size
+                      }
+                    ]
+                  }
+                  then_expr: block_construct {
+                    annotations: [ ]
+                    body: [
+                      variable_construct {
+                        annotations: [ ]
+                        type: <null>
+                        name: tail_size
+                        post_annotations: [ ]
+                        init: operator_construct {
+                          the_operator: operator {
+                            the_operator_type: infix
+                            name: -
+                            alpha_name: subtract
+                          }
+                          arguments: [
+                            name_construct {
+                              the_name: size
+                            }
+                            name_construct {
+                              the_name: index
+                            }
+                          ]
+                        }
+                      }
+                      constraint_construct {
+                        expr: operator_construct {
+                          the_operator: operator {
+                            the_operator_type: infix
+                            name: is
+                            alpha_name: is_operator
+                          }
+                          arguments: [
+                            name_construct {
+                              the_name: tail_size
+                            }
+                            name_construct {
+                              the_name: nonnegative
+                            }
+                          ]
+                        }
+                      }
+                      parameter_construct {
+                        main: resolve_construct {
+                          qualifier: name_construct {
+                            the_name: the_elements
+                          }
+                          the_name: move
+                        }
+                        parameters: [
+                          name_construct {
+                            the_name: index
+                          }
+                          operator_construct {
+                            the_operator: operator {
+                              the_operator_type: infix
+                              name: +
+                              alpha_name: add
+                            }
+                            arguments: [
+                              name_construct {
+                                the_name: index
+                              }
+                              name_construct {
+                                the_name: extra_size
+                              }
+                            ]
+                          }
+                          name_construct {
+                            the_name: tail_size
+                          }
+                        ]
+                        grouping: parens
+                      }
+                    ]
+                  }
+                  else_expr: <null>
+                  is_statement: true
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: +=
+                    alpha_name: add_assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: size
+                    }
+                    name_construct {
+                      the_name: extra_size
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [ ]
+            ret: name_construct {
+              the_name: void
+            }
+            name: clear
+            parameters: [
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: begin
+                post_annotations: [ ]
+                init: <null>
+              }
+              variable_construct {
+                annotations: [ ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: length
+                post_annotations: [ ]
+                init: <null>
+              }
+            ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                conditional_construct {
+                  cond_expr: operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: <
+                      alpha_name: less
+                    }
+                    arguments: [
+                      operator_construct {
+                        the_operator: operator {
+                          the_operator_type: infix
+                          name: +
+                          alpha_name: add
+                        }
+                        arguments: [
+                          name_construct {
+                            the_name: begin
+                          }
+                          name_construct {
+                            the_name: length
+                          }
+                        ]
+                      }
+                      name_construct {
+                        the_name: size
+                      }
+                    ]
+                  }
+                  then_expr: block_construct {
+                    annotations: [ ]
+                    body: [
+                      parameter_construct {
+                        main: resolve_construct {
+                          qualifier: name_construct {
+                            the_name: the_elements
+                          }
+                          the_name: move
+                        }
+                        parameters: [
+                          operator_construct {
+                            the_operator: operator {
+                              the_operator_type: infix
+                              name: +
+                              alpha_name: add
+                            }
+                            arguments: [
+                              name_construct {
+                                the_name: begin
+                              }
+                              name_construct {
+                                the_name: length
+                              }
+                            ]
+                          }
+                          name_construct {
+                            the_name: begin
+                          }
+                          name_construct {
+                            the_name: length
+                          }
+                        ]
+                        grouping: parens
+                      }
+                    ]
+                  }
+                  else_expr: <null>
+                  is_statement: true
+                }
+                variable_construct {
+                  annotations: [ ]
+                  type: <null>
+                  name: new_size
+                  post_annotations: [ ]
+                  init: operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: -
+                      alpha_name: subtract
+                    }
+                    arguments: [
+                      name_construct {
+                        the_name: size
+                      }
+                      name_construct {
+                        the_name: length
+                      }
+                    ]
+                  }
+                }
+                constraint_construct {
+                  expr: operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: is
+                      alpha_name: is_operator
+                    }
+                    arguments: [
+                      name_construct {
+                        the_name: new_size
+                      }
+                      name_construct {
+                        the_name: nonnegative
+                      }
+                    ]
+                  }
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    name_construct {
+                      the_name: size
+                    }
+                    name_construct {
+                      the_name: new_size
+                    }
+                  ]
+                }
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: the_elements
+                    }
+                    the_name: scrub
+                  }
+                  parameters: [
+                    name_construct {
+                      the_name: size
+                    }
+                    name_construct {
+                      the_name: length
+                    }
+                  ]
+                  grouping: parens
+                }
+              ]
+            }
+          }
+          procedure_construct {
+            annotations: [ ]
+            ret: parameter_construct {
+              main: name_construct {
+                the_name: list_state
+              }
+              parameters: [
+                name_construct {
+                  the_name: element_type
+                }
+              ]
+              grouping: brackets
+            }
+            name: copy
+            parameters: [ ]
+            post_annotations: [ ]
+            body: block_construct {
+              annotations: [ ]
+              body: [
+                variable_construct {
+                  annotations: [ ]
+                  type: <null>
+                  name: new_state
+                  post_annotations: [ ]
+                  init: parameter_construct {
+                    main: resolve_construct {
+                      qualifier: parameter_construct {
+                        main: name_construct {
+                          the_name: list_state
+                        }
+                        parameters: [
+                          name_construct {
+                            the_name: element_type
+                          }
+                        ]
+                        grouping: brackets
+                      }
+                      the_name: special_name {
+                        name: "new"
+                      }
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: size
+                      }
+                    ]
+                    grouping: parens
+                  }
+                }
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: name_construct {
+                      the_name: the_elements
+                    }
+                    the_name: copy
+                  }
+                  parameters: [
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 0
+                        image: "0"
+                      }
+                    }
+                    resolve_construct {
+                      qualifier: name_construct {
+                        the_name: new_state
+                      }
+                      the_name: the_elements
+                    }
+                    literal_construct {
+                      the_literal: integer_literal {
+                        the_value: 0
+                        image: "0"
+                      }
+                    }
+                    name_construct {
+                      the_name: size
+                    }
+                  ]
+                  grouping: parens
+                }
+                operator_construct {
+                  the_operator: operator {
+                    the_operator_type: infix
+                    name: =
+                    alpha_name: assign
+                  }
+                  arguments: [
+                    resolve_construct {
+                      qualifier: name_construct {
+                        the_name: new_state
+                      }
+                      the_name: size
+                    }
+                    name_construct {
+                      the_name: size
+                    }
+                  ]
+                }
+                return_construct {
+                  the_expression: name_construct {
+                    the_name: new_state
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+      variable_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <protected>
+          }
+          modifier_construct {
+            the_kind: <var>
+          }
+        ]
+        type: parameter_construct {
+          main: name_construct {
+            the_name: list_state
+          }
+          parameters: [
+            name_construct {
+              the_name: element_type
+            }
+          ]
+          grouping: brackets
+        }
+        name: state
+        post_annotations: [ ]
+        init: <null>
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <protected>
+          }
+          modifier_construct {
+            the_kind: <overload>
+          }
+        ]
+        ret: <null>
+        name: base_readonly_list1
+        parameters: [ ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            operator_construct {
+              the_operator: operator {
+                the_operator_type: infix
+                name: =
+                alpha_name: assign
+              }
+              arguments: [
+                name_construct {
+                  the_name: state
+                }
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: parameter_construct {
+                      main: name_construct {
+                        the_name: list_state
+                      }
+                      parameters: [
+                        name_construct {
+                          the_name: element_type
+                        }
+                      ]
+                      grouping: brackets
+                    }
+                    the_name: special_name {
+                      name: "new"
+                    }
+                  }
+                  parameters: [ ]
+                  grouping: parens
+                }
+              ]
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <protected>
+          }
+          modifier_construct {
+            the_kind: <overload>
+          }
+        ]
+        ret: <null>
+        name: base_readonly_list1
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: list_state
+              }
+              parameters: [
+                name_construct {
+                  the_name: element_type
+                }
+              ]
+              grouping: brackets
+            }
+            name: state
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            operator_construct {
+              the_operator: operator {
+                the_operator_type: infix
+                name: =
+                alpha_name: assign
+              }
+              arguments: [
+                resolve_construct {
+                  qualifier: name_construct {
+                    the_name: special_name {
+                      name: "this"
+                    }
+                  }
+                  the_name: state
+                }
+                name_construct {
+                  the_name: state
+                }
+              ]
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: nonnegative
+        }
+        name: size
+        parameters: <null>
+        post_annotations: [ ]
+        body: resolve_construct {
+          qualifier: name_construct {
+            the_name: state
+          }
+          the_name: size
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: is_empty
+        parameters: <null>
+        post_annotations: [ ]
+        body: operator_construct {
+          the_operator: operator {
+            the_operator_type: infix
+            name: ==
+            alpha_name: equal_to
+          }
+          arguments: [
+            resolve_construct {
+              qualifier: name_construct {
+                the_name: state
+              }
+              the_name: size
+            }
+            literal_construct {
+              the_literal: integer_literal {
+                the_value: 0
+                image: "0"
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: boolean
+        }
+        name: is_not_empty
+        parameters: <null>
+        post_annotations: [ ]
+        body: operator_construct {
+          the_operator: operator {
+            the_operator_type: infix
+            name: !=
+            alpha_name: not_equal_to
+          }
+          arguments: [
+            resolve_construct {
+              qualifier: name_construct {
+                the_name: state
+              }
+              the_name: size
+            }
+            literal_construct {
+              the_literal: integer_literal {
+                the_value: 0
+                image: "0"
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: element_type
+        }
+        name: first
+        parameters: [ ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            constraint_construct {
+              expr: name_construct {
+                the_name: is_not_empty
+              }
+            }
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: state
+                  }
+                  the_name: the_elements
+                }
+                parameters: [
+                  literal_construct {
+                    the_literal: integer_literal {
+                      the_value: 0
+                      image: "0"
+                    }
+                  }
+                ]
+                grouping: brackets
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: name_construct {
+          the_name: element_type
+        }
+        name: last
+        parameters: [ ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            constraint_construct {
+              expr: name_construct {
+                the_name: is_not_empty
+              }
+            }
+            variable_construct {
+              annotations: [ ]
+              type: <null>
+              name: last_index
+              post_annotations: [ ]
+              init: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: -
+                  alpha_name: subtract
+                }
+                arguments: [
+                  resolve_construct {
+                    qualifier: name_construct {
+                      the_name: state
+                    }
+                    the_name: size
+                  }
+                  literal_construct {
+                    the_literal: integer_literal {
+                      the_value: 1
+                      image: "1"
+                    }
+                  }
+                ]
+              }
+            }
+            constraint_construct {
+              expr: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: is
+                  alpha_name: is_operator
+                }
+                arguments: [
+                  name_construct {
+                    the_name: last_index
+                  }
+                  name_construct {
+                    the_name: nonnegative
+                  }
+                ]
+              }
+            }
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: state
+                  }
+                  the_name: the_elements
+                }
+                parameters: [
+                  name_construct {
+                    the_name: last_index
+                  }
+                ]
+                grouping: brackets
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <implicit>
+          }
+        ]
+        ret: flavor_construct {
+          flavor: readonly
+          expr: parameter_construct {
+            main: name_construct {
+              the_name: reference
+            }
+            parameters: [
+              name_construct {
+                the_name: element_type
+              }
+            ]
+            grouping: brackets
+          }
+        }
+        name: get
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
+            }
+            name: index
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
+        post_annotations: [
+          modifier_construct {
+            the_kind: <pure>
+          }
+        ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            constraint_construct {
+              expr: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: <
+                  alpha_name: less
+                }
+                arguments: [
+                  name_construct {
+                    the_name: index
+                  }
+                  resolve_construct {
+                    qualifier: name_construct {
+                      the_name: state
+                    }
+                    the_name: size
+                  }
+                ]
+              }
+            }
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: state
+                  }
+                  the_name: the_elements
+                }
+                parameters: [
+                  name_construct {
+                    the_name: index
+                  }
+                ]
+                grouping: brackets
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: parameter_construct {
+          main: name_construct {
+            the_name: base_immutable_list1
+          }
+          parameters: [
+            name_construct {
+              the_name: element_type
+            }
+          ]
+          grouping: brackets
+        }
+        name: elements
+        parameters: [ ]
+        post_annotations: [ ]
+        body: parameter_construct {
+          main: name_construct {
+            the_name: frozen_copy
+          }
+          parameters: [ ]
+          grouping: parens
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: parameter_construct {
+          main: name_construct {
+            the_name: base_immutable_list1
+          }
+          parameters: [
+            name_construct {
+              the_name: element_type
+            }
+          ]
+          grouping: brackets
+        }
+        name: frozen_copy
+        parameters: [ ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: parameter_construct {
+                    main: name_construct {
+                      the_name: base_immutable_list1
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: element_type
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                  the_name: special_name {
+                    name: "new"
+                  }
+                }
+                parameters: [
+                  name_construct {
+                    the_name: state
+                  }
+                ]
+                grouping: parens
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: parameter_construct {
+          main: name_construct {
+            the_name: base_immutable_list1
+          }
+          parameters: [
+            name_construct {
+              the_name: element_type
+            }
+          ]
+          grouping: brackets
+        }
+        name: slice
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
+            }
+            name: begin
+            post_annotations: [ ]
+            init: <null>
+          }
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
+            }
+            name: end
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            constraint_construct {
+              expr: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: &&
+                  alpha_name: logical_and
+                }
+                arguments: [
+                  operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: >=
+                      alpha_name: greater_equal
+                    }
+                    arguments: [
+                      name_construct {
+                        the_name: begin
+                      }
+                      literal_construct {
+                        the_literal: integer_literal {
+                          the_value: 0
+                          image: "0"
+                        }
+                      }
+                    ]
+                  }
+                  operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: <=
+                      alpha_name: less_equal
+                    }
+                    arguments: [
+                      name_construct {
+                        the_name: end
+                      }
+                      parameter_construct {
+                        main: name_construct {
+                          the_name: size
+                        }
+                        parameters: [ ]
+                        grouping: parens
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+            variable_construct {
+              annotations: [ ]
+              type: <null>
+              name: length
+              post_annotations: [ ]
+              init: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: -
+                  alpha_name: subtract
+                }
+                arguments: [
+                  name_construct {
+                    the_name: end
+                  }
+                  name_construct {
+                    the_name: begin
+                  }
+                ]
+              }
+            }
+            constraint_construct {
+              expr: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: is
+                  alpha_name: is_operator
+                }
+                arguments: [
+                  name_construct {
+                    the_name: length
+                  }
+                  name_construct {
+                    the_name: nonnegative
+                  }
+                ]
+              }
+            }
+            variable_construct {
+              annotations: [ ]
+              type: <null>
+              name: slice_state
+              post_annotations: [ ]
+              init: parameter_construct {
+                main: resolve_construct {
+                  qualifier: parameter_construct {
+                    main: name_construct {
+                      the_name: list_state
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: element_type
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                  the_name: special_name {
+                    name: "new"
+                  }
+                }
+                parameters: [
+                  name_construct {
+                    the_name: length
+                  }
+                ]
+                grouping: parens
+              }
+            }
+            operator_construct {
+              the_operator: operator {
+                the_operator_type: infix
+                name: =
+                alpha_name: assign
+              }
+              arguments: [
+                resolve_construct {
+                  qualifier: name_construct {
+                    the_name: slice_state
+                  }
+                  the_name: size
+                }
+                name_construct {
+                  the_name: length
+                }
+              ]
+            }
+            parameter_construct {
+              main: resolve_construct {
+                qualifier: resolve_construct {
+                  qualifier: name_construct {
+                    the_name: state
+                  }
+                  the_name: the_elements
+                }
+                the_name: copy
+              }
+              parameters: [
+                name_construct {
+                  the_name: begin
+                }
+                resolve_construct {
+                  qualifier: name_construct {
+                    the_name: slice_state
+                  }
+                  the_name: the_elements
+                }
+                literal_construct {
+                  the_literal: integer_literal {
+                    the_value: 0
+                    image: "0"
+                  }
+                }
+                name_construct {
+                  the_name: length
+                }
+              ]
+              grouping: parens
+            }
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: parameter_construct {
+                    main: name_construct {
+                      the_name: base_immutable_list1
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: element_type
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                  the_name: special_name {
+                    name: "new"
+                  }
+                }
+                parameters: [
+                  name_construct {
+                    the_name: slice_state
+                  }
+                ]
+                grouping: parens
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: parameter_construct {
+          main: name_construct {
+            the_name: base_immutable_list1
+          }
+          parameters: [
+            name_construct {
+              the_name: element_type
+            }
+          ]
+          grouping: brackets
+        }
+        name: skip
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: name_construct {
+              the_name: nonnegative
+            }
+            name: count
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            return_construct {
+              the_expression: parameter_construct {
+                main: name_construct {
+                  the_name: slice
+                }
+                parameters: [
+                  name_construct {
+                    the_name: count
+                  }
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: size
+                    }
+                    parameters: [ ]
+                    grouping: parens
+                  }
+                ]
+                grouping: parens
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+  type_declaration_construct {
+    annotations: [ ]
+    kind: class
+    name: base_immutable_list1
+    parameters: [
+      variable_construct {
+        annotations: [ ]
+        type: name_construct {
+          the_name: value
+        }
+        name: element_type
+        post_annotations: [ ]
+        init: <null>
+      }
+    ]
+    body: [
+      supertype_construct {
+        annotations: [ ]
+        subtype_flavor: <null>
+        tag: <extends>
+        types: [
+          parameter_construct {
+            main: name_construct {
+              the_name: base_readonly_list1
+            }
+            parameters: [
+              name_construct {
+                the_name: element_type
+              }
+            ]
+            grouping: brackets
+          }
+        ]
+      }
+      import_construct {
+        annotations: [ ]
+        type: resolve_construct {
+          qualifier: resolve_construct {
+            qualifier: resolve_construct {
+              qualifier: name_construct {
+                the_name: ideal
+              }
+              the_name: machine
+            }
+            the_name: elements
+          }
+          the_name: array
+        }
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <protected>
+          }
+          modifier_construct {
+            the_kind: <overload>
+          }
+        ]
+        ret: <null>
+        name: base_immutable_list1
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: list_state
+              }
+              parameters: [
+                name_construct {
+                  the_name: element_type
+                }
+              ]
+              grouping: brackets
+            }
+            name: state
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "super"
+                }
+              }
+              parameters: [
+                name_construct {
+                  the_name: state
+                }
+              ]
+              grouping: parens
+            }
+            operator_construct {
+              the_operator: operator {
+                the_operator_type: infix
+                name: =
+                alpha_name: assign
+              }
+              arguments: [
+                resolve_construct {
+                  qualifier: name_construct {
+                    the_name: state
+                  }
+                  the_name: writable
+                }
+                name_construct {
+                  the_name: false
+                }
+              ]
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [
+          modifier_construct {
+            the_kind: <public>
+          }
+          modifier_construct {
+            the_kind: <overload>
+          }
+        ]
+        ret: <null>
+        name: base_immutable_list1
+        parameters: [
+          variable_construct {
+            annotations: [ ]
+            type: parameter_construct {
+              main: name_construct {
+                the_name: array
+              }
+              parameters: [
+                name_construct {
+                  the_name: element_type
+                }
+              ]
+              grouping: brackets
+            }
+            name: state
+            post_annotations: [ ]
+            init: <null>
+          }
+        ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            parameter_construct {
+              main: name_construct {
+                the_name: special_name {
+                  name: "super"
+                }
+              }
+              parameters: [
+                parameter_construct {
+                  main: resolve_construct {
+                    qualifier: parameter_construct {
+                      main: name_construct {
+                        the_name: list_state
+                      }
+                      parameters: [
+                        name_construct {
+                          the_name: element_type
+                        }
+                      ]
+                      grouping: brackets
+                    }
+                    the_name: special_name {
+                      name: "new"
+                    }
+                  }
+                  parameters: [
+                    name_construct {
+                      the_name: state
+                    }
+                  ]
+                  grouping: parens
+                }
+              ]
+              grouping: parens
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: parameter_construct {
+          main: name_construct {
+            the_name: base_immutable_list1
+          }
+          parameters: [
+            name_construct {
+              the_name: element_type
+            }
+          ]
+          grouping: brackets
+        }
+        name: frozen_copy
+        parameters: [ ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            return_construct {
+              the_expression: name_construct {
+                the_name: special_name {
+                  name: "this"
+                }
+              }
+            }
+          ]
+        }
+      }
+      procedure_construct {
+        annotations: [ ]
+        ret: parameter_construct {
+          main: name_construct {
+            the_name: base_immutable_list1
+          }
+          parameters: [
+            name_construct {
+              the_name: element_type
+            }
+          ]
+          grouping: brackets
+        }
+        name: reverse
+        parameters: [ ]
+        post_annotations: [ ]
+        body: block_construct {
+          annotations: [ ]
+          body: [
+            conditional_construct {
+              cond_expr: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: <=
+                  alpha_name: less_equal
+                }
+                arguments: [
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: size
+                    }
+                    parameters: [ ]
+                    grouping: parens
+                  }
+                  literal_construct {
+                    the_literal: integer_literal {
+                      the_value: 1
+                      image: "1"
+                    }
+                  }
+                ]
+              }
+              then_expr: block_construct {
+                annotations: [ ]
+                body: [
+                  return_construct {
+                    the_expression: name_construct {
+                      the_name: special_name {
+                        name: "this"
+                      }
+                    }
+                  }
+                ]
+              }
+              else_expr: <null>
+              is_statement: true
+            }
+            variable_construct {
+              annotations: [ ]
+              type: <null>
+              name: reversed
+              post_annotations: [ ]
+              init: parameter_construct {
+                main: resolve_construct {
+                  qualifier: parameter_construct {
+                    main: name_construct {
+                      the_name: list_state
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: element_type
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                  the_name: special_name {
+                    name: "new"
+                  }
+                }
+                parameters: [
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: size
+                    }
+                    parameters: [ ]
+                    grouping: parens
+                  }
+                ]
+                grouping: parens
+              }
+            }
+            for_construct {
+              init: variable_construct {
+                annotations: [
+                  modifier_construct {
+                    the_kind: <var>
+                  }
+                ]
+                type: name_construct {
+                  the_name: nonnegative
+                }
+                name: i
+                post_annotations: [ ]
+                init: literal_construct {
+                  the_literal: integer_literal {
+                    the_value: 0
+                    image: "0"
+                  }
+                }
+              }
+              condition: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: <
+                  alpha_name: less
+                }
+                arguments: [
+                  name_construct {
+                    the_name: i
+                  }
+                  parameter_construct {
+                    main: name_construct {
+                      the_name: size
+                    }
+                    parameters: [ ]
+                    grouping: parens
+                  }
+                ]
+              }
+              update: operator_construct {
+                the_operator: operator {
+                  the_operator_type: infix
+                  name: +=
+                  alpha_name: add_assign
+                }
+                arguments: [
+                  name_construct {
+                    the_name: i
+                  }
+                  literal_construct {
+                    the_literal: integer_literal {
+                      the_value: 1
+                      image: "1"
+                    }
+                  }
+                ]
+              }
+              body: block_construct {
+                annotations: [ ]
+                body: [
+                  variable_construct {
+                    annotations: [ ]
+                    type: <null>
+                    name: new_index
+                    post_annotations: [ ]
+                    init: operator_construct {
+                      the_operator: operator {
+                        the_operator_type: infix
+                        name: -
+                        alpha_name: subtract
+                      }
+                      arguments: [
+                        operator_construct {
+                          the_operator: operator {
+                            the_operator_type: infix
+                            name: -
+                            alpha_name: subtract
+                          }
+                          arguments: [
+                            parameter_construct {
+                              main: name_construct {
+                                the_name: size
+                              }
+                              parameters: [ ]
+                              grouping: parens
+                            }
+                            literal_construct {
+                              the_literal: integer_literal {
+                                the_value: 1
+                                image: "1"
+                              }
+                            }
+                          ]
+                        }
+                        name_construct {
+                          the_name: i
+                        }
+                      ]
+                    }
+                  }
+                  constraint_construct {
+                    expr: operator_construct {
+                      the_operator: operator {
+                        the_operator_type: infix
+                        name: is
+                        alpha_name: is_operator
+                      }
+                      arguments: [
+                        name_construct {
+                          the_name: new_index
+                        }
+                        name_construct {
+                          the_name: nonnegative
+                        }
+                      ]
+                    }
+                  }
+                  operator_construct {
+                    the_operator: operator {
+                      the_operator_type: infix
+                      name: =
+                      alpha_name: assign
+                    }
+                    arguments: [
+                      parameter_construct {
+                        main: resolve_construct {
+                          qualifier: name_construct {
+                            the_name: reversed
+                          }
+                          the_name: the_elements
+                        }
+                        parameters: [
+                          name_construct {
+                            the_name: new_index
+                          }
+                        ]
+                        grouping: brackets
+                      }
+                      parameter_construct {
+                        main: resolve_construct {
+                          qualifier: name_construct {
+                            the_name: state
+                          }
+                          the_name: the_elements
+                        }
+                        parameters: [
+                          name_construct {
+                            the_name: i
+                          }
+                        ]
+                        grouping: brackets
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+            operator_construct {
+              the_operator: operator {
+                the_operator_type: infix
+                name: =
+                alpha_name: assign
+              }
+              arguments: [
+                resolve_construct {
+                  qualifier: name_construct {
+                    the_name: reversed
+                  }
+                  the_name: size
+                }
+                parameter_construct {
+                  main: name_construct {
+                    the_name: size
+                  }
+                  parameters: [ ]
+                  grouping: parens
+                }
+              ]
+            }
+            return_construct {
+              the_expression: parameter_construct {
+                main: resolve_construct {
+                  qualifier: parameter_construct {
+                    main: name_construct {
+                      the_name: base_immutable_list1
+                    }
+                    parameters: [
+                      name_construct {
+                        the_name: element_type
+                      }
+                    ]
+                    grouping: brackets
+                  }
+                  the_name: special_name {
+                    name: "new"
+                  }
+                }
+                parameters: [
+                  name_construct {
+                    the_name: reversed
+                  }
+                ]
+                grouping: parens
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
+============ TARGET_DECL
+============ TYPE_DECL
+============ IMPORT_AND_TYPE_VAR_DECL
+==== Loading machine/machine.i
+==== Loading machine/elements.i
+==== Loading machine/characters.i
+==== Loading machine/channels.i
+==== Loading machine/adapters.i
+==== Loading machine/annotations.i
+==== Loading library/library.i
+==== Loading library/channels.i
+==== Loading library/patterns.i
+==== Loading library/characters.i
+==== Loading library/texts.i
+==== Loading library/resources.i
+==== Loading library/messages.i
+==== Loading library/reflections.i
+==== Loading library/graphs.i
+============ SUPERTYPE_DECL
+============ PREPARE_METHOD_AND_VARIABLE
+============ METHOD_AND_VARIABLE_DECL
+============ BODY_CHECK
+============ EXECUTE
+class base_readonly_list1[value element_type] {
+  import ideal.machine.elements.array;
+  namespace parameters {
+    default_size : 16;
+  }
+  protected class list_state[value element_type] {
+    var boolean writable;
+    var array[element_type] the_elements;
+    var nonnegative size;
+    overload list_state(nonnegative initial_size) {
+      writable = true;
+      the_elements = array[element_type].new(initial_size);
+      size = 0;
+    }
+    overload list_state() {
+      this(parameters.default_size);
+    }
+    overload list_state(array[element_type] immutable_elements) {
+      writable = false;
+      the_elements = immutable_elements;
+      size = immutable_elements.size;
+    }
+    void reserve(nonnegative reserve_size) {
+      if (the_elements.size >= reserve_size) {
+        return;
+      }
+      var new_size : the_elements.size * 2;
+      if (new_size < reserve_size) {
+        new_size = reserve_size;
+      }
+      new_elements : array[element_type].new(new_size);
+      the_elements.copy(0, new_elements, 0, size);
+      the_elements = new_elements;
+    }
+    void insert_all(nonnegative index, readonly list[element_type] new_elements) {
+      if (new_elements.is_empty) {
+        return;
+      } else if (new_elements.size == 1) {
+        insert(index, new_elements.first);
+        return;
+      }
+      assert writable;
+      extra_size : new_elements.size;
+      reserve_and_move(index, extra_size);
+      new_elements_array : (new_elements !> base_readonly_list1[element_type]).state.the_elements;
+      new_elements_array.copy(0, the_elements, index, extra_size);
+    }
+    void insert(nonnegative index, element_type element) {
+      assert writable;
+      reserve_and_move(index, 1);
+      the_elements[index] = element;
+    }
+    private void reserve_and_move(nonnegative index, nonnegative extra_size) {
+      reserve(size + extra_size);
+      if (index < size) {
+        tail_size : size - index;
+        assert tail_size is nonnegative;
+        the_elements.move(index, index + extra_size, tail_size);
+      }
+      size += extra_size;
+    }
+    void clear(nonnegative begin, nonnegative length) {
+      if (begin + length < size) {
+        the_elements.move(begin + length, begin, length);
+      }
+      new_size : size - length;
+      assert new_size is nonnegative;
+      size = new_size;
+      the_elements.scrub(size, length);
+    }
+    list_state[element_type] copy() {
+      new_state : list_state[element_type].new(size);
+      the_elements.copy(0, new_state.the_elements, 0, size);
+      new_state.size = size;
+      return new_state;
+    }
+  }
+  protected var list_state[element_type] state;
+  protected overload base_readonly_list1() {
+    state = list_state[element_type].new();
+  }
+  protected overload base_readonly_list1(list_state[element_type] state) {
+    this.state = state;
+  }
+  nonnegative size => state.size;
+  boolean is_empty => state.size == 0;
+  boolean is_not_empty => state.size != 0;
+  element_type first() {
+    assert is_not_empty;
+    return state.the_elements[0];
+  }
+  element_type last() {
+    assert is_not_empty;
+    last_index : state.size - 1;
+    assert last_index is nonnegative;
+    return state.the_elements[last_index];
+  }
+  implicit readonly reference[element_type] get(nonnegative index) pure {
+    assert index < state.size;
+    return state.the_elements[index];
+  }
+  base_immutable_list1[element_type] elements() => frozen_copy();
+  base_immutable_list1[element_type] frozen_copy() {
+    return base_immutable_list1[element_type].new(state);
+  }
+  base_immutable_list1[element_type] slice(nonnegative begin, nonnegative end) {
+    assert begin >= 0 && end <= size();
+    length : end - begin;
+    assert length is nonnegative;
+    slice_state : list_state[element_type].new(length);
+    slice_state.size = length;
+    state.the_elements.copy(begin, slice_state.the_elements, 0, length);
+    return base_immutable_list1[element_type].new(slice_state);
+  }
+  base_immutable_list1[element_type] skip(nonnegative count) {
+    return slice(count, size());
+  }
+}
+class base_immutable_list1[value element_type] {
+  extends base_readonly_list1[element_type];
+  import ideal.machine.elements.array;
+  protected overload base_immutable_list1(list_state[element_type] state) {
+    super(state);
+    state.writable = false;
+  }
+  public overload base_immutable_list1(array[element_type] state) {
+    super(list_state[element_type].new(state));
+  }
+  base_immutable_list1[element_type] frozen_copy() {
+    return this;
+  }
+  base_immutable_list1[element_type] reverse() {
+    if (size() <= 1) {
+      return this;
+    }
+    reversed : list_state[element_type].new(size());
+    for (var nonnegative i : 0; i < size(); i += 1) {
+      new_index : size() - 1 - i;
+      assert new_index is nonnegative;
+      reversed.the_elements[new_index] = state.the_elements[i];
+    }
+    reversed.size = size();
+    return base_immutable_list1[element_type].new(reversed);
+  }
+}

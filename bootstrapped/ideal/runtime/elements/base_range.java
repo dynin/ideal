@@ -70,4 +70,12 @@ public class base_range implements range {
     }
     return result.frozen_copy();
   }
+  public @Override boolean has(final predicate<Integer> the_predicate) {
+    for (int value = this.the_begin; value < this.the_end; value += 1) {
+      if (the_predicate.call(value)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

@@ -53,4 +53,7 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
   public @Override immutable_list<element_type> reverse() {
     return this;
   }
+  public @Override boolean has(final predicate<element_type> the_predicate) {
+    return false;
+  }
 }

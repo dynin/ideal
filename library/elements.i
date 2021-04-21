@@ -264,6 +264,7 @@ package elements {
     --- of the collection do not cause changes in the returned list.
     immutable list[element] elements readonly;
 
+    --- Check whether the collection has at least one element that satisfies the predicate.
     not_yet_implemented boolean has(predicate[element] the_predicate) pure;
     not_yet_implemented nonnegative count(predicate[element] the_predicate) pure;
     not_yet_implemented readonly collection[element] filter(predicate[element] the_predicate) pure;
@@ -321,6 +322,10 @@ package elements {
     --- Returns an immutable copy of this list.
     -- TODO: this should be in composite_value
     immutable list[element] frozen_copy() pure;
+
+    --- Check whether the list has at least one element that satisfies the predicate.
+    -- TODO: implement this for all collections.
+    boolean has(predicate[element] the_predicate) pure;
   }
 
   --- A half-open range of nonnegative integers.

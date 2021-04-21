@@ -1622,13 +1622,13 @@ public class to_java_transformer extends base_transformer {
     headers.append_all(common_headers);
     boolean add_newline = false;
 
-    if (the_declaration.has(modifier_of_type(nullable_modifier))) {
+    if (deep_has(the_declaration, modifier_of_type(nullable_modifier))) {
       // TODO: kill empty line after common imports but before nullable import?
       headers.append(make_import(java_library.nullable_type(), the_origin));
       add_newline = true;
     }
 
-    if (the_declaration.has(modifier_of_type(dont_display_modifier))) {
+    if (deep_has(the_declaration, modifier_of_type(dont_display_modifier))) {
       headers.append(make_import(java_library.dont_display_type(), the_origin));
       add_newline = true;
     }
@@ -1638,6 +1638,21 @@ public class to_java_transformer extends base_transformer {
     }
 
     return headers;
+  }
+
+  private boolean deep_has(type_declaration_construct the_declaration,
+      predicate<construct> the_predicate) {
+    predicate<construct> deep_traverse = new predicate<construct>() {
+      public @Override Boolean call(construct the_construct) {
+        if (the_predicate.call(the_construct)) {
+          return true;
+        }
+
+        return the_construct.children().has(this);
+      }
+    };
+
+    return deep_traverse.call(the_declaration);
   }
 
   private predicate<construct> modifier_of_type(modifier_kind the_modifier_kind) {

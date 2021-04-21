@@ -54,4 +54,8 @@ class empty[value element_type] {
   implement immutable list[element_type] reverse() {
     return this;
   }
+
+  implement boolean has(predicate[element_type] the_predicate) pure {
+    return false;
+  }
 }

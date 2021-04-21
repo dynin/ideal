@@ -86,4 +86,14 @@ class base_range {
     }
     return result.frozen_copy();
   }
+
+  implement boolean has(predicate[nonnegative] the_predicate) pure {
+    for (var nonnegative value : the_begin; value < the_end; value += 1) {
+      if (the_predicate(value)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

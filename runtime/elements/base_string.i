@@ -170,6 +170,16 @@ class base_string {
     return base_string.new(StringBuilder.new(state).reverse().toString());
   }
 
+  implement boolean has(predicate[character] the_predicate) pure {
+    for (var nonnegative index : 0; index < state.length(); index += 1) {
+      if (the_predicate(state.charAt(index))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   -- TODO: remove this once tests are rewritten.
   override boolean equals(Object other) {
     return other is base_string && this.state.equals((other !> base_string).state);

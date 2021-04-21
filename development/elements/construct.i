@@ -9,7 +9,4 @@ interface construct {
   extends data, origin;
 
   readonly list[construct] children();
-  boolean has(predicate[construct] the_predicate);
-
-  origin deeper_origin();
 }

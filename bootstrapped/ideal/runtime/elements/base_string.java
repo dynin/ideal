@@ -129,6 +129,14 @@ public class base_string extends debuggable implements string, string_text_node 
   public @Override string reverse() {
     return new base_string(new StringBuilder(this.state).reverse().toString());
   }
+  public @Override boolean has(final predicate<Character> the_predicate) {
+    for (int index = 0; index < this.state.length(); index += 1) {
+      if (the_predicate.call(this.state.charAt(index))) {
+        return true;
+      }
+    }
+    return false;
+  }
   public @Override boolean equals(final Object other) {
     return other instanceof base_string && this.state.equals(((base_string) other).state);
   }

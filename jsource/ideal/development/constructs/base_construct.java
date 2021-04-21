@@ -17,32 +17,17 @@ import ideal.development.elements.*;
 public abstract class base_construct extends debuggable implements construct {
 
   @dont_display
-  private final origin pos;
+  private final origin the_origin;
 
   public abstract readonly_list<construct> children();
 
-  public base_construct(origin pos) {
-    assert pos != null;
-    this.pos = pos;
+  public base_construct(origin the_origin) {
+    assert the_origin != null;
+    this.the_origin = the_origin;
   }
 
   public origin deeper_origin() {
-    return pos;
-  }
-
-  public boolean has(predicate<construct> the_predicate) {
-    if (the_predicate.call(this)) {
-      return true;
-    }
-
-    readonly_list<construct> the_children = children();
-    for (int i = 0; i < the_children.size(); ++i) {
-      if (the_children.get(i).has(the_predicate)) {
-        return true;
-      }
-    }
-
-    return false;
+    return the_origin;
   }
 
   // TODO: this is a hack to work around Java's type system...

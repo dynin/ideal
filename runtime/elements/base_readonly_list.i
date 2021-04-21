@@ -168,4 +168,14 @@ class base_readonly_list[value element_type] {
   implement immutable list[element_type] skip(nonnegative count) {
     return slice(count, size);
   }
+
+  implement boolean has(predicate[element_type] the_predicate) pure {
+    for (var nonnegative index : 0; index < state.size; index += 1) {
+      if (the_predicate(state.the_elements[index])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

@@ -129,4 +129,12 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
   public @Override immutable_list<element_type> skip(final int count) {
     return this.slice(count, this.size());
   }
+  public @Override boolean has(final predicate<element_type> the_predicate) {
+    for (int index = 0; index < this.state.size; index += 1) {
+      if (the_predicate.call(this.state.the_elements.at(index).get())) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

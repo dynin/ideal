@@ -21,34 +21,26 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
+import ideal.development.kinds.*;
 import ideal.development.analyzers.*;
 
 /**
- * Automatically generate a constructor that initializes all fields of a data type.
- * For a declaration
- * <code>
- * datatype ellipse {
- *   integer width;
- *   integer height;
- * }
- * </code>
- * this extension adds a constructor to the type
- * <code>
- * public ellipse(integer width, integer height) {
- *   this.width = width;
- *   this.height = height;
- * }
- * </code>
+ * Automatically generate boilerplate code for constructor data declaration.
+ * <ul>
+ * <li>Generate constructor.</li>
+ * </ul>
  */
-public class auto_constructor_extension extends declaration_extension {
+public class construct_data_extension extends declaration_extension {
 
-  public static final auto_constructor_extension instance = new auto_constructor_extension();
+  public static final construct_data_extension instance = new construct_data_extension();
+
+  private static simple_name BASE_CONSTRUCT_NAME = simple_name.make("base_construct");
 
   /**
    * The name of the extension, which is used as the modifier in the ideal source code.
    */
-  public auto_constructor_extension() {
-    super("auto_constructor");
+  public construct_data_extension() {
+    super("construct_data");
   }
 
   @Override
@@ -56,14 +48,26 @@ public class auto_constructor_extension extends declaration_extension {
       analysis_pass pass) {
     signal result = analyze(the_type_declaration, pass);
 
-    if (result instanceof ok_signal && pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
-      the_type_declaration.append_to_body(generate_constructor(the_type_declaration));
+    if (result instanceof ok_signal) {
+      if (pass == analysis_pass.SUPERTYPE_DECL) {
+        append_supertype(the_type_declaration);
+      } else if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
+        // append_constructor(the_type_declaration);
+      }
     }
 
     return result;
   }
 
-  public procedure_analyzer generate_constructor(type_declaration the_type_declaration) {
+  public void append_supertype(type_declaration_analyzer the_type_declaration) {
+    origin the_origin = this;
+    resolve_analyzer base_construct_name = new resolve_analyzer(BASE_CONSTRUCT_NAME, the_origin);
+    supertype_analyzer supertype = new supertype_analyzer(null, subtype_tags.extends_tag,
+        base_construct_name, the_origin);
+    the_type_declaration.append_to_body(supertype);
+  }
+
+  public void append_constructor(type_declaration_analyzer the_type_declaration) {
     origin the_origin = this;
     readonly_list<variable_declaration> variables =
         declaration_util.get_declared_variables(the_type_declaration);
@@ -94,6 +98,7 @@ public class auto_constructor_extension extends declaration_extension {
     procedure_analyzer constructor_procedure = new procedure_analyzer(
         analyzer_utilities.PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
         parameters, body, the_origin);
-    return constructor_procedure;
+
+    the_type_declaration.append_to_body(constructor_procedure);
   }
 }

@@ -57,7 +57,7 @@ public class supertype_of_string_extension extends declaration_extension {
               new modifier_construct(access_modifier.public_modifier, the_origin)), null,
           subtype_tags.subtypes_tag, the_type_declaration.get_declared_type(), the_origin);
 
-      string_declaration.add_to_body(the_supertype);
+      string_declaration.append_to_body(the_supertype);
     }
 
     return ok_signal.instance;

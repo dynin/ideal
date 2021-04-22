@@ -118,13 +118,18 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
               make_comment_type((comment_construct) external_body.first()));
         }
 
+        // TODO: there should be a cleaner way to handle subanalyzable/subdeclarations
+        list<analyzable> subanalyzable = new base_list<analyzable>();
         list<declaration> subdeclarations = new base_list<declaration>();
 
         for (int i = 0; i < external_body.size(); ++i) {
           construct the_construct = external_body.get(i);
           // TODO: handle comments?
           if (the_construct instanceof import_construct) {
-            subdeclarations.append(new import_analyzer((import_construct) the_construct));
+            import_analyzer the_import_analayzer =
+                new import_analyzer((import_construct) the_construct);
+            subanalyzable.append(the_import_analayzer);
+            subdeclarations.append(the_import_analayzer);
           } else if (the_construct instanceof type_declaration_construct) {
             type_declaration_construct declaration = (type_declaration_construct) the_construct;
 
@@ -140,12 +145,20 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
 
             assert declaration.body != null;
 
-            type_declaration_analyzer the_type_declaration_analyzer =
-                new type_declaration_analyzer(declaration);
-            subdeclarations.append(the_type_declaration_analyzer);
-            // TODO: signal error
-            assert the_type_declaration_analyzer != null;
-            the_type_declaration = the_type_declaration_analyzer;
+            analyzable converted_declaration = make(declaration);
+            subanalyzable.append(converted_declaration);
+            if (converted_declaration instanceof type_declaration) {
+              the_type_declaration = (type_declaration) converted_declaration;
+              subdeclarations.append(the_type_declaration);
+            } else if (converted_declaration instanceof declaration_extension) {
+              // TODO: report error if cast fails
+              the_type_declaration = (type_declaration)
+                  ((declaration_extension) converted_declaration).get_declaration();
+              subdeclarations.append(the_type_declaration);
+            } else {
+              // TODO: report error.
+              utilities.panic("Unrecognized declaration: " + converted_declaration);
+            }
           } else {
             return new error_signal(
                 new base_string("Type declaration or import expected"), the_construct);
@@ -153,8 +166,8 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         }
 
         inside_type = make_inside_type(parent(), this);
+        external_declaration = new declaration_list(subanalyzable, this);
         declarations = subdeclarations;
-        external_declaration = new declaration_list((list<analyzable>)(list)subdeclarations, this);
         init_context(external_declaration);
       }
     }

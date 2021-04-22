@@ -175,5 +175,6 @@ public class common_scanner extends base_scanner_config {
     auto_constructor_extension.instance.register_syntax_extension(this);
     new cache_result_extension().register_syntax_extension(this);
     new supertype_of_string_extension().register_syntax_extension(this);
+    construct_data_extension.instance.register_syntax_extension(this);
   }
 }

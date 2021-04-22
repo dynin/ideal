@@ -30,7 +30,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   private final analyzable the_analyzable;
   private @Nullable type the_supertype;
 
-  public supertype_analyzer(type_flavor subtype_flavor, subtype_tag tag,
+  public supertype_analyzer(@Nullable type_flavor subtype_flavor, subtype_tag tag,
       analyzable the_analyzable, origin the_origin) {
     super(the_origin);
     this.annotations = new empty<annotation_construct>();

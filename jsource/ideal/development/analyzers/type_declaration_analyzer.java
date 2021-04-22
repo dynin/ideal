@@ -402,7 +402,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       principal_type default_supertype = library().value_type();
 
       assert body != null;
-      add_to_body(new supertype_analyzer(super_annotations, null, subtype_tags.subtypes_tag,
+      append_to_body(new supertype_analyzer(super_annotations, null, subtype_tags.subtypes_tag,
           default_supertype, the_origin));
     }
 
@@ -415,12 +415,12 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
           get_flavored(flavor.immutable_flavor);
       assert body != null;
       origin pos = this;
-      add_to_body(new supertype_analyzer(procedure_supertype, pos));
+      append_to_body(new supertype_analyzer(procedure_supertype, pos));
     }
     */
   }
 
-  public void add_to_body(analyzable the_analyzable) {
+  public void append_to_body(analyzable the_analyzable) {
     assert body != null;
     body.append(the_analyzable);
     analyze_and_ignore_errors(the_analyzable, last_pass);

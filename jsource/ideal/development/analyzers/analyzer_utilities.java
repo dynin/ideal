@@ -39,6 +39,10 @@ public class analyzer_utilities {
       new base_annotation_set(access_modifier.public_modifier,
           new hash_set<modifier_kind>(), null, new empty<origin>());
 
+  public static final annotation_set PUBLIC_OVERLOAD_MODIFIERS =
+      new base_annotation_set(access_modifier.public_modifier,
+          make_singleton(general_modifier.overload_modifier), null, new empty<origin>());
+
   public static final annotation_set PRIVATE_MODIFIERS =
       new base_annotation_set(access_modifier.private_modifier,
           new hash_set<modifier_kind>(), null, new empty<origin>());

@@ -8,14 +8,6 @@ construct_data class block_construct {
   readonly list[annotation_construct] annotations;
   readonly list[construct] body;
 
-  overload block_construct(readonly list[annotation_construct] annotations,
-      readonly list[construct] body, origin the_origin) {
-    super(the_origin);
-    this.annotations = annotations;
-    assert body is_not null;
-    this.body = body;
-  }
-
   overload block_construct(readonly list[construct] body, origin the_origin) {
     this(empty[annotation_construct].new(), body, the_origin);
   }

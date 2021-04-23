@@ -73,7 +73,7 @@ public class auto_constructor_extension extends declaration_extension {
     for (int i = 0; i < variables.size(); ++i) {
       variable_declaration variable = variables.get(i);
       action_name name = variable.short_name();
-      variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_VAR_MODIFIERS,
+      variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
           to_analyzable(variable.value_type()), name, null, the_origin);
       parameters.append(parameter);
 

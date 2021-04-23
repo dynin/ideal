@@ -35,6 +35,7 @@ public class construct_data_extension extends declaration_extension {
   public static final construct_data_extension instance = new construct_data_extension();
 
   private static simple_name BASE_CONSTRUCT_NAME = simple_name.make("base_construct");
+  private static simple_name ORIGIN_NAME = simple_name.make("origin");
 
   /**
    * The name of the extension, which is used as the modifier in the ideal source code.
@@ -52,7 +53,7 @@ public class construct_data_extension extends declaration_extension {
       if (pass == analysis_pass.SUPERTYPE_DECL) {
         append_supertype(the_type_declaration);
       } else if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
-        // append_constructor(the_type_declaration);
+        append_constructor(the_type_declaration);
       }
     }
 
@@ -77,7 +78,7 @@ public class construct_data_extension extends declaration_extension {
     for (int i = 0; i < variables.size(); ++i) {
       variable_declaration variable = variables.get(i);
       action_name name = variable.short_name();
-      variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_VAR_MODIFIERS,
+      variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
           to_analyzable(variable.value_type()), name, null, the_origin);
       parameters.append(parameter);
 
@@ -93,12 +94,34 @@ public class construct_data_extension extends declaration_extension {
       statements.append(assign_field);
     }
 
+    simple_name generated_origin_name = generated_name(ORIGIN_NAME);
+    resolve_analyzer origin_type = new resolve_analyzer(ORIGIN_NAME, the_origin);
+    variable_analyzer origin_parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
+        origin_type, generated_origin_name, null, the_origin);
+    parameters.append(origin_parameter);
+
+    resolve_analyzer super_name = new resolve_analyzer(special_name.SUPER, the_origin);
+    readonly_list<analyzable> super_arguments =
+        new base_list<analyzable>(new resolve_analyzer(generated_origin_name, the_origin));
+    statements.prepend(new parameter_analyzer(super_name, super_arguments, the_origin));
+
     block_analyzer body = new block_analyzer(new statement_list_analyzer(statements, the_origin),
         the_origin);
-    procedure_analyzer constructor_procedure = new procedure_analyzer(
-        analyzer_utilities.PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
-        parameters, body, the_origin);
+    annotation_set ctor_annotations = has_constructors(the_type_declaration) ?
+        analyzer_utilities.PUBLIC_OVERLOAD_MODIFIERS : analyzer_utilities.PUBLIC_MODIFIERS;
+    procedure_analyzer constructor_procedure = new procedure_analyzer(ctor_annotations,
+        null, (simple_name) the_type_declaration.short_name(), parameters, body, the_origin);
 
     the_type_declaration.append_to_body(constructor_procedure);
+  }
+
+  private boolean has_constructors(type_declaration the_type_declaration) {
+    readonly_list<procedure_declaration> procedures =
+        declaration_util.get_declared_procedures(the_type_declaration);
+    return procedures.has(new predicate<procedure_declaration>() {
+      public @Override Boolean call(procedure_declaration the_procedure_declaration) {
+        return the_procedure_declaration.annotations().has(general_modifier.overload_modifier);
+      }
+    });
   }
 }

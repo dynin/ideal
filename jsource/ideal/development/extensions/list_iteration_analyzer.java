@@ -115,9 +115,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     simple_name list_name = name_utilities.join(element_name, LIST_NAME);
     simple_name index_name = name_utilities.join(element_name, INDEX_NAME);
 
-    type list_type = library().list_type().bind_parameters(
-        new type_parameters(new base_list<abstract_value>(element_type))).get_flavored(
-        flavor.readonly_flavor);
+    type list_type = library().list_type_of(element_type).get_flavored(flavor.readonly_flavor);
 
     origin list_origin;
     if (source instanceof list_iteration_construct) {

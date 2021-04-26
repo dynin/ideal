@@ -210,6 +210,11 @@ public class common_library implements value {
     return LIST_TYPE;
   }
 
+  public type list_type_of(type element_type) {
+    return LIST_TYPE.bind_parameters(
+        new type_parameters(new base_list<abstract_value>(element_type)));
+  }
+
   public principal_type null_type() {
     return NULL_TYPE;
   }

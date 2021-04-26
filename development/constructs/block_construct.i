@@ -12,10 +12,10 @@ construct_data class block_construct {
     this(empty[annotation_construct].new(), body, the_origin);
   }
 
-  readonly list[construct] children() {
-    result : base_list[construct].new();
-    result.append_all(annotations !> readonly list[construct]);
-    result.append_all(body);
-    return result;
-  }
+--  readonly list[construct] children() {
+--    result : base_list[construct].new();
+--    result.append_all(annotations !> readonly list[construct]);
+--    result.append_all(body);
+--    return result;
+--  }
 }

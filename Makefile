@@ -258,6 +258,8 @@ bootstrap_reflections: $(IDEAL_TARGET)
 generate_development gd: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development
 
+.PHONY: rm-scratch
+
 test_development td: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
@@ -328,7 +330,7 @@ diff: $(IDEAL_TARGET)
 test: build $(IDEAL_TARGET)
 	$(JAVA) ideal.development.tests.main
 
-$(BOOTSTRAPPED_TARGET): $(BOOTSTRAPPED_JAVA) build
+$(BOOTSTRAPPED_TARGET): $(BOOTSTRAPPED_JAVA)
 	$(JAVAC) $(BOOTSTRAPPED_JAVA)
 	@touch $@
 	@echo === Bootstrapped done.

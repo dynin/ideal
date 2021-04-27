@@ -619,7 +619,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_modifiers(c.annotations, true));
     fragments.append(print_word(keywords.IMPORT));
     fragments.append(print_space());
-    fragments.append(print(c.type));
+    fragments.append(print(c.type_construct));
 
     return text_util.join(fragments);
   }

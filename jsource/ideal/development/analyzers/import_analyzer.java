@@ -28,7 +28,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
 
   public import_analyzer(import_construct source) {
     super(source);
-    type_analyzable = make(source.type);
+    type_analyzable = make(source.type_construct);
   }
 
   @Override
@@ -82,7 +82,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
   }
 
   private @Nullable action_name short_name() {
-    return get_action_name(source.type);
+    return get_action_name(source.type_construct);
   }
 
   @Override

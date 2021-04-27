@@ -20,12 +20,12 @@ package constructs {
 --  class construct_visitor;
   class empty_construct;
 --  namespace enum_util;
---  class extension_construct;
---  class flavor_construct;
---  class grouping_type;
---  class import_construct;
+  class extension_construct;
+  class flavor_construct;
+  class grouping_type;
+  class import_construct;
 --  class jump_construct;
---  class jump_type;
+  enum jump_type;
 --  class list_construct;
 --  class literal_construct;
 --  class loop_construct;

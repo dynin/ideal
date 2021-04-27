@@ -4,24 +4,13 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.texts.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.components.*;
+implicit import ideal.library.texts;
+implicit import ideal.development.components;
 
-public abstract class extension_construct extends base_construct {
-  public extension_construct(origin source) {
-    super(source);
-  }
-
-  public abstract readonly_list<construct> children();
-
-  public abstract analyzable to_analyzable();
-
-  public abstract text_fragment print(printer p);
-
-  public abstract boolean is_terminated();
-
-  public abstract construct transform(transformer t);
+abstract class extension_construct {
+  abstract readonly list[construct] children();
+  abstract analyzable to_analyzable();
+  abstract text_fragment print(printer p);
+  abstract boolean is_terminated();
+  abstract construct transform(transformer t);
 }

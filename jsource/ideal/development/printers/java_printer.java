@@ -58,14 +58,14 @@ public class java_printer extends base_printer {
     fragments.append(print_word(keywords.IMPORT));
     fragments.append(print_space());
 
-    if (c.has_modifier(general_modifier.static_modifier)) {
+    if (has_modifier(c, general_modifier.static_modifier)) {
       fragments.append(print_modifier_kind(general_modifier.static_modifier));
       fragments.append(print_space());
     }
 
-    fragments.append(print(c.type));
+    fragments.append(print(c.type_construct));
 
-    if (c.has_modifier(general_modifier.implicit_modifier)) {
+    if (has_modifier(c, general_modifier.implicit_modifier)) {
       fragments.append(print_punctuation(punctuation.DOT));
       fragments.append(print_punctuation(punctuation.ASTERISK));
     }

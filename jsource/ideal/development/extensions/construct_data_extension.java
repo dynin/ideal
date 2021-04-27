@@ -214,6 +214,10 @@ public class construct_data_extension extends declaration_extension {
 
     the_type_declaration.append_to_body(constructor_procedure);
 
+    if (has_children_procedure(the_type_declaration)) {
+      return;
+    }
+
     return_analyzer children_return = new return_analyzer(result_analyzer, the_origin);
     children_statements.append(children_return);
     block_analyzer children_body = new block_analyzer(new statement_list_analyzer(
@@ -237,6 +241,16 @@ public class construct_data_extension extends declaration_extension {
     return procedures.has(new predicate<procedure_declaration>() {
       public @Override Boolean call(procedure_declaration the_procedure_declaration) {
         return the_procedure_declaration.annotations().has(general_modifier.overload_modifier);
+      }
+    });
+  }
+
+  private boolean has_children_procedure(type_declaration the_type_declaration) {
+    readonly_list<procedure_declaration> procedures =
+        declaration_util.get_declared_procedures(the_type_declaration);
+    return procedures.has(new predicate<procedure_declaration>() {
+      public @Override Boolean call(procedure_declaration the_procedure_declaration) {
+        return the_procedure_declaration.short_name() == CHILDREN_NAME;
       }
     });
   }

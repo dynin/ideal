@@ -62,6 +62,9 @@ public class to_java_transformer extends base_transformer {
 
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
   private static simple_name LIST_NAME = simple_name.make("list");
+  private static simple_name STRING_NAME = simple_name.make("string");
+  private static simple_name TO_STRING_NAME = simple_name.make("to_string");
+  private static simple_name TO_STRING_JAVA = simple_name.make("toString");
 
   public to_java_transformer(java_library java_library) {
     this.java_library = java_library;
@@ -800,6 +803,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     readonly_list<declaration> body = the_type_declaration.get_signature();
+    boolean has_to_string = false;
 
     for (int i = 0; i < body.size(); ++i) {
       declaration decl = body.get(i);
@@ -866,6 +870,9 @@ public class to_java_transformer extends base_transformer {
         }
       } else if (decl instanceof procedure_declaration) {
         procedure_declaration proc_decl = (procedure_declaration) decl;
+        if (proc_decl.short_name() == TO_STRING_NAME) {
+          has_to_string = true;
+        }
         @Nullable procedure_construct proc_construct = (procedure_construct) transform(proc_decl);
         if (proc_construct == null) {
           continue;
@@ -907,6 +914,39 @@ public class to_java_transformer extends base_transformer {
       } else {
         utilities.panic("Unknown declaration: " + decl);
       }
+    }
+
+    // TODO: move this into type_declaration_analyzer or enum_kind.
+    if (the_kind == enum_kind && !has_to_string) {
+      list<annotation_construct> modifier_list = new base_list<annotation_construct>(
+          new modifier_construct(public_modifier, the_origin));
+      block_construct to_string_body = new block_construct(
+          new base_list<construct>(
+              new return_construct(
+                  base_string_wrap(
+                    new parameter_construct(
+                        new name_construct(TO_STRING_JAVA, the_origin),
+                        new empty<construct>(),
+                        grouping_type.PARENS,
+                        the_origin
+                    ),
+                    the_origin
+                  ),
+                  the_origin
+              )
+          ),
+          the_origin
+      );
+
+      procedure_construct to_string_procedure = new procedure_construct(
+          modifier_list,
+          new name_construct(STRING_NAME, the_origin),
+          TO_STRING_NAME,
+          new empty<construct>(),
+          new empty<annotation_construct>(),
+          to_string_body,
+          the_origin);
+      flavored_bodies.get(profile.default_flavor()).append(to_string_procedure);
     }
 
     list<construct> type_decls = new base_list<construct>();
@@ -1718,6 +1758,15 @@ public class to_java_transformer extends base_transformer {
     return transform_action(the_analyzable_action.get_action());
   }
 
+  public construct base_string_wrap(construct the_construct, origin the_origin) {
+    // TODO: handle both string and character literals correctly.
+    // TODO: also, convert inline literals into constants.
+    // TODO: use fully qualified type name?
+    construct type_name = new name_construct(BASE_STRING_NAME, the_origin);
+    construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
+    return make_call(alloc, new base_list<construct>(the_construct), the_origin);
+  }
+
   public construct process_value_action(base_value_action the_value_action) {
     //System.out.println("PV: " + the_value);
     origin the_origin = the_value_action;
@@ -1749,12 +1798,7 @@ public class to_java_transformer extends base_transformer {
       construct result = new literal_construct(new quoted_literal(the_string_value.unwrap(),
           literal_type), the_origin);
       if (the_type == library().immutable_string_type()) {
-        // TODO: handle both string and character literals correctly.
-        // TODO: also, convert inline literals into constants.
-        // TODO: use fully qualified type name?
-        construct type_name = new name_construct(BASE_STRING_NAME, the_origin);
-        construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
-        result = make_call(alloc, new base_list<construct>(result), the_origin);
+        result = base_string_wrap(result, the_origin);
       }
       return result;
     } else if (the_value instanceof base_procedure) {

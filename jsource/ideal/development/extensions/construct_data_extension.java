@@ -43,6 +43,7 @@ public class construct_data_extension extends declaration_extension {
   private static simple_name RESULT_NAME = simple_name.make("result");
   private static simple_name BASE_CONSTRUCT_NAME = simple_name.make("base_construct");
   private static simple_name BASE_LIST_NAME = simple_name.make("base_list");
+  private static simple_name APPEND_NAME = simple_name.make("append");
   private static simple_name APPEND_ALL_NAME = simple_name.make("append_all");
 
   /**
@@ -127,30 +128,34 @@ public class construct_data_extension extends declaration_extension {
 
       ctor_statements.append(assign_field);
 
-      if (to_master(value_type) == library.list_type()) {
-        type_parameters list_parameters =
-            ((parametrized_type) value_type.principal()).get_parameters();
-        if (!list_parameters.is_valid_arity(1)) {
+      analyzable field_access = new resolve_analyzer(name, the_origin);
+      simple_name procedure_name;
+
+      if (value_type.principal() == construct_type) {
+        procedure_name = APPEND_NAME;
+      } else {
+        principal_type list_element_type = element_type(value_type);
+        if (list_element_type == null) {
           continue;
         }
 
-        principal_type element_type = list_parameters.first().type_bound().principal();
-        analyzable list_parameter = new resolve_analyzer(name, the_origin);
-        if (element_type != construct_type) {
+        procedure_name = APPEND_ALL_NAME;
+        if (list_element_type != construct_type) {
+          // TODO: the cast should be redundant.
           type construct_list = library.list_type_of(
               construct_type.get_flavored(flavor.mutable_flavor)).get_flavored(
               flavor.readonly_flavor);
-          list_parameter = new parameter_analyzer(
+          field_access = new parameter_analyzer(
               new resolve_analyzer(operator.HARD_CAST, the_origin),
-              new base_list<analyzable>(list_parameter, to_analyzable(construct_list)),
+              new base_list<analyzable>(field_access, to_analyzable(construct_list)),
               the_origin);
         }
-
-        analyzable append_analyzable = new parameter_analyzer(
-            new resolve_analyzer(result_analyzer, APPEND_ALL_NAME, the_origin),
-            new base_list<analyzable>(list_parameter), the_origin);
-        children_statements.append(append_analyzable);
       }
+
+      analyzable append_analyzable = new parameter_analyzer(
+          new resolve_analyzer(result_analyzer, procedure_name, the_origin),
+          new base_list<analyzable>(field_access), the_origin);
+      children_statements.append(append_analyzable);
     }
 
     simple_name generated_origin_name = generated_name(ORIGIN_NAME);
@@ -200,13 +205,16 @@ public class construct_data_extension extends declaration_extension {
     });
   }
 
-  // TODO: merge with populate_xref
-  private master_type to_master(type the_type) {
+  private @Nullable principal_type element_type(type the_type) {
     the_type = the_type.principal();
-    if (the_type instanceof master_type) {
-      return (master_type) the_type;
-    } else {
-      return ((parametrized_type) the_type).get_master();
+    if (the_type instanceof parametrized_type &&
+        ((parametrized_type) the_type).get_master() == common_library.get_instance().list_type()) {
+      type_parameters list_parameters =
+          ((parametrized_type) the_type).get_parameters();
+      // List types have exactly one parameter
+      assert list_parameters.is_valid_arity(1);
+      return list_parameters.first().type_bound().principal();
     }
+    return null;
   }
 }

@@ -17,4 +17,7 @@ public enum comment_type implements deeply_immutable_data {
   private comment_type(final boolean is_doc) {
     this.is_doc = is_doc;
   }
+  public string to_string() {
+    return new base_string(toString());
+  }
 }

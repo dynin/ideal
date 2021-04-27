@@ -4,47 +4,32 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.texts.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.comments.*;
-import ideal.development.documenters.*;
+implicit import ideal.library.texts;
+implicit import ideal.development.comments;
+implicit import ideal.development.documenters;
+import ideal.development.comments.documentation;
 
-import javax.annotation.Nullable;
+construct_data class comment_construct {
+  implements annotation_construct, documentation;
 
-public class comment_construct extends base_construct
-    implements annotation_construct, documentation {
+  comment the_comment;
+  private var text_fragment or null the_text_fragment;
 
-  public final comment the_comment;
-  private @Nullable text_fragment the_text;
-
-  public comment_construct(comment the_comment, @Nullable text_fragment the_text, origin source) {
-    super(source);
-    assert the_comment != null;
-    this.the_comment = the_comment;
-    this.the_text = the_text;
-  }
-
-  @Override
-  public @Nullable text_fragment section(documentation_section the_section) {
-    if (the_text == null) {
-      the_text = doc_comment_processor.parse(the_comment.content);
+  override text_fragment or null section(documentation_section the_section) {
+    if (the_text_fragment is null) {
+      the_text_fragment = doc_comment_processor.parse(the_comment.content);
     }
 
-    switch (the_section) {
-      case ALL:
-        return the_text;
-      case SUMMARY:
-        return (base_string) summary_extractor.get_summary(the_text);
-      default:
-        utilities.panic("Unknown section: " + the_section);
-        return null;
+    -- TODO: revert to switch
+    if (the_section == documentation_section.ALL) {
+      return the_text_fragment;
+    } else if (the_section == documentation_section.SUMMARY) {
+      text : the_text_fragment;
+      assert text is_not null;
+      -- TODO: cast should be redundant.
+      return summary_extractor.get_summary(text) !> base_string;
+    } else {
+      utilities.panic("Unknown section: " ++ the_section);
     }
-  }
-
-  @Override
-  public readonly_list<construct> children() {
-    return new empty<construct>();
   }
 }

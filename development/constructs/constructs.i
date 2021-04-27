@@ -14,7 +14,7 @@ package constructs {
   interface annotation_construct;
   class base_construct;
   class block_construct;
---  class comment_construct;
+  class comment_construct;
 --  class conditional_construct;
 --  class constraint_construct;
 --  class construct_visitor;

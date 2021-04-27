@@ -6,6 +6,8 @@
 
 enum documentation_section {
   implements deeply_immutable data;
+  -- TODO: all enums should be equality_comparable and stringable.
+  subtypes reference_equality, stringable;
 
   ALL;
   SUMMARY;

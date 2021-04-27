@@ -17,4 +17,7 @@ public enum procedure_category implements deeply_immutable_data {
   CONSTRUCTOR,
   METHOD,
   STATIC;
+  public string to_string() {
+    return new base_string(toString());
+  }
 }

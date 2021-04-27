@@ -18,4 +18,7 @@ public enum variable_category implements deeply_immutable_data {
   INSTANCE,
   STATIC,
   ENUM_VALUE;
+  public string to_string() {
+    return new base_string(toString());
+  }
 }

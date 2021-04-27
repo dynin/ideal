@@ -4,28 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import javax.annotation.Nullable;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
+construct_data class modifier_construct {
+  implements annotation_construct;
 
-public class modifier_construct extends base_construct
-    implements annotation_construct {
+  modifier_kind the_kind;
 
-  public final modifier_kind the_kind;
-
-  public modifier_construct(modifier_kind the_kind, origin pos) {
-    super(pos);
-    assert the_kind != null;
-    this.the_kind = the_kind;
-  }
-
-  public readonly_list<construct> children() {
-    return new empty<construct>();
-  }
-
-  @Override
-  public string to_string() {
-    return utilities.describe(this, the_kind);
-  }
+  override string to_string => utilities.describe(this, the_kind);
 }

@@ -24,12 +24,12 @@ package constructs {
   class flavor_construct;
   class grouping_type;
   class import_construct;
---  class jump_construct;
+  class jump_construct;
   enum jump_type;
---  class list_construct;
---  class literal_construct;
---  class loop_construct;
---  class modifier_construct;
+  class list_construct;
+  class literal_construct;
+  class loop_construct;
+  class modifier_construct;
 --  class name_construct;
 --  class operator_construct;
 --  class parameter_construct;

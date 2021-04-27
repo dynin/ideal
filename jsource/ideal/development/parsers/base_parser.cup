@@ -303,10 +303,10 @@ types ::=       expression:t
 
 parameters ::=
                 OPEN_PARENTHESIS:o parameter_list_opt:pl CLOSE_PARENTHESIS:c
-                {: RESULT = new list_construct(pl.elements, grouping_type.PARENS,
+                {: RESULT = new list_construct(pl.the_elements, grouping_type.PARENS,
                     pl.has_trailing_comma, new fragment_origin(o, o, c)); :}
         |       OPEN_BRACKET:o parameter_list_opt:pl CLOSE_BRACKET:c
-                {: RESULT = new list_construct(pl.elements, grouping_type.BRACKETS,
+                {: RESULT = new list_construct(pl.the_elements, grouping_type.BRACKETS,
                     pl.has_trailing_comma, new fragment_origin(o, o, c)); :}
         ;
 
@@ -328,9 +328,9 @@ parameter_list_opt ::=
                     false, p); :}
         |       parameter:hd COMMA:cm parameter_list_opt:tl
                 {: list<construct> the_list = new base_list<construct>(hd);
-                   the_list.append_all(tl.elements);
+                   the_list.append_all(tl.the_elements);
                    RESULT = new list_construct(the_list, grouping_type.PARENS,
-                   tl.elements.is_empty(), new fragment_origin(hd, cm, tl)); :}
+                   tl.the_elements.is_empty(), new fragment_origin(hd, cm, tl)); :}
         ;
 
 parameter ::=

@@ -370,7 +370,7 @@ public class to_java_transformer extends base_transformer {
     if (the_list_construct == null) {
       the_list_construct = make_parens(the_origin);
     }
-    readonly_list<construct> parameters = the_list_construct.elements;
+    readonly_list<construct> parameters = the_list_construct.the_elements;
     @Nullable readonly_list<construct> body_statements = null;
 
     if (the_procedure.get_body_action() != null) {

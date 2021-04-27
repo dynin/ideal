@@ -31,7 +31,7 @@ public class list_initializer_analyzer extends single_pass_analyzer {
   public list_initializer_analyzer(list_construct source) {
     super(source);
     assert !source.is_simple_grouping();
-    analyzable_parameters = make_list(source.elements);
+    analyzable_parameters = make_list(source.the_elements);
   }
 
   public type element_type() {

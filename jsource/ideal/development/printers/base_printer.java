@@ -465,7 +465,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   @Override
   public text_fragment process_list(list_construct c) {
     // TODO: handle has_trailing_comma
-    return print_params(c.elements, c.grouping);
+    return print_params(c.the_elements, c.grouping);
   }
 
   @Override

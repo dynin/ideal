@@ -4,20 +4,6 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-
-public class loop_construct extends base_construct {
-  public final construct body;
-
-  public loop_construct(construct body, origin pos) {
-    super(pos);
-    this.body = body;
-  }
-
-  @Override
-  public readonly_list<construct> children() {
-    return new base_list<construct>(body);
-  }
+construct_data class loop_construct {
+  construct body;
 }

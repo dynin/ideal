@@ -66,7 +66,7 @@ public class dispatcher extends construct_visitor<analyzable> {
   @Override
   public analyzable process_list(list_construct source) {
     if (source.is_simple_grouping()) {
-      return new grouping_analyzer(process(source.elements.first()), source);
+      return new grouping_analyzer(process(source.the_elements.first()), source);
     } else {
       return new list_initializer_analyzer(source);
     }

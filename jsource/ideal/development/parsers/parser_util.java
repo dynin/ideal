@@ -74,11 +74,11 @@ public class parser_util {
     }
 
     // TODO: signal error instead of failing an assertion.
-    assert constructs.elements.is_not_empty();
+    assert constructs.the_elements.is_not_empty();
     assert constructs.grouping == grouping_type.BRACKETS;
     assert !constructs.has_trailing_comma;
 
-    return constructs.elements;
+    return constructs.the_elements;
   }
 
   public static @Nullable readonly_list<construct> procedure_parameters(
@@ -92,7 +92,7 @@ public class parser_util {
     assert constructs.grouping == grouping_type.PARENS;
     assert !constructs.has_trailing_comma;
 
-    return constructs.elements;
+    return constructs.the_elements;
   }
 
   public static parameter_construct make_parameter(construct main, list_construct constructs,
@@ -103,6 +103,6 @@ public class parser_util {
            constructs.grouping == grouping_type.BRACKETS;
     assert !constructs.has_trailing_comma;
 
-    return new parameter_construct(main, constructs.elements, constructs.grouping, the_origin);
+    return new parameter_construct(main, constructs.the_elements, constructs.grouping, the_origin);
   }
 }

@@ -19,7 +19,7 @@ package constructs {
   class constraint_construct;
 --  class construct_visitor;
   class empty_construct;
---  namespace enum_util;
+  namespace enum_util;
   class extension_construct;
   class flavor_construct;
   class grouping_type;
@@ -30,9 +30,9 @@ package constructs {
   class literal_construct;
   class loop_construct;
   class modifier_construct;
---  class name_construct;
---  class operator_construct;
---  class parameter_construct;
+  class name_construct;
+  class operator_construct;
+  class parameter_construct;
 --  class procedure_construct;
 --  class resolve_construct;
 --  class return_construct;

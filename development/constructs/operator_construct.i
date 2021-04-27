@@ -4,34 +4,26 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import javax.annotation.Nullable;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
+import ideal.development.names.operator;
 
-public class operator_construct extends base_construct {
-  public final operator the_operator;
-  public final readonly_list<construct> arguments;
+construct_data class operator_construct {
+  operator the_operator;
+  readonly list[construct] arguments;
 
-  public operator_construct(operator the_operator, readonly_list<construct> arguments,
-      origin source) {
-    super(source);
-    assert arguments.size() == the_operator.the_operator_type.arity;
+  overload operator_construct(operator the_operator, readonly list[construct] arguments,
+      origin the_origin) {
+    super(the_origin);
+    assert arguments.size == the_operator.the_operator_type.arity;
     this.the_operator = the_operator;
     this.arguments = arguments;
   }
 
-  public operator_construct(operator the_operator, construct argument, origin source) {
-    this(the_operator, new base_list<construct>(argument), source);
+  overload operator_construct(operator the_operator, construct argument, origin the_origin) {
+    this(the_operator, [argument, ], the_origin);
   }
 
-  public operator_construct(operator the_operator, construct left, construct right,
-      origin source) {
-    this(the_operator, new base_list<construct>(left, right), source);
-  }
-
-  public readonly_list<construct> children() {
-    return arguments;
+  overload operator_construct(operator the_operator, construct left, construct right,
+      origin the_origin) {
+    this(the_operator, [left, right], the_origin);
   }
 }

@@ -8,14 +8,14 @@ construct_data class block_construct {
   readonly list[annotation_construct] annotations;
   readonly list[construct] body;
 
+  overload block_construct(readonly list[annotation_construct] annotations,
+      readonly list[construct] body, origin the_origin) {
+    super(the_origin);
+    this.annotations = annotations;
+    this.body = body;
+  }
+
   overload block_construct(readonly list[construct] body, origin the_origin) {
     this(empty[annotation_construct].new(), body, the_origin);
   }
-
---  readonly list[construct] children() {
---    result : base_list[construct].new();
---    result.append_all(annotations !> readonly list[construct]);
---    result.append_all(body);
---    return result;
---  }
 }

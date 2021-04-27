@@ -194,45 +194,45 @@ public class construct_data_extension extends declaration_extension {
       }
     }
 
-    simple_name generated_origin_name = generated_name(ORIGIN_NAME);
-    resolve_analyzer origin_type = new resolve_analyzer(ORIGIN_NAME, the_origin);
-    variable_analyzer origin_parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
-        origin_type, generated_origin_name, null, the_origin);
-    parameters.append(origin_parameter);
+    if (!has_constructors(the_type_declaration)) {
+      simple_name generated_origin_name = generated_name(ORIGIN_NAME);
+      resolve_analyzer origin_type = new resolve_analyzer(ORIGIN_NAME, the_origin);
+      variable_analyzer origin_parameter = new variable_analyzer(
+          analyzer_utilities.PRIVATE_MODIFIERS, origin_type, generated_origin_name, null,
+          the_origin);
+      parameters.append(origin_parameter);
 
-    resolve_analyzer super_name = new resolve_analyzer(special_name.SUPER, the_origin);
-    readonly_list<analyzable> super_arguments =
-        new base_list<analyzable>(new resolve_analyzer(generated_origin_name, the_origin));
-    ctor_statements.prepend(new parameter_analyzer(super_name, super_arguments, the_origin));
+      resolve_analyzer super_name = new resolve_analyzer(special_name.SUPER, the_origin);
+      readonly_list<analyzable> super_arguments =
+          new base_list<analyzable>(new resolve_analyzer(generated_origin_name, the_origin));
+      ctor_statements.prepend(new parameter_analyzer(super_name, super_arguments, the_origin));
 
-    block_analyzer ctor_body = new block_analyzer(new statement_list_analyzer(ctor_statements,
-        the_origin), the_origin);
-    annotation_set ctor_annotations = has_constructors(the_type_declaration) ?
-        analyzer_utilities.PUBLIC_OVERLOAD_MODIFIERS : analyzer_utilities.PUBLIC_MODIFIERS;
-    procedure_analyzer constructor_procedure = new procedure_analyzer(ctor_annotations,
-        null, (simple_name) the_type_declaration.short_name(), parameters, ctor_body, the_origin);
+      block_analyzer ctor_body = new block_analyzer(new statement_list_analyzer(ctor_statements,
+          the_origin), the_origin);
+      procedure_analyzer constructor_procedure = new procedure_analyzer(
+          analyzer_utilities.PUBLIC_MODIFIERS, null,
+          (simple_name) the_type_declaration.short_name(), parameters, ctor_body, the_origin);
 
-    the_type_declaration.append_to_body(constructor_procedure);
-
-    if (has_children_procedure(the_type_declaration)) {
-      return;
+      the_type_declaration.append_to_body(constructor_procedure);
     }
 
-    return_analyzer children_return = new return_analyzer(result_analyzer, the_origin);
-    children_statements.append(children_return);
-    block_analyzer children_body = new block_analyzer(new statement_list_analyzer(
-        children_statements, the_origin), the_origin);
+    if (!has_children_procedure(the_type_declaration)) {
+      return_analyzer children_return = new return_analyzer(result_analyzer, the_origin);
+      children_statements.append(children_return);
+      block_analyzer children_body = new block_analyzer(new statement_list_analyzer(
+          children_statements, the_origin), the_origin);
 
-    analyzable children_return_type = new flavor_analyzer(flavor.readonly_flavor,
-        new parameter_analyzer(new resolve_analyzer(LIST_NAME, the_origin),
-            new base_list(new resolve_analyzer(CONSTRUCT_NAME, the_origin)), the_origin),
-        the_origin);
-    procedure_analyzer children_procedure = new procedure_analyzer(
-        analyzer_utilities.PUBLIC_OVERRIDE_MODIFIERS,
-        children_return_type, CHILDREN_NAME,
-        new empty<variable_declaration>(), children_body, the_origin);
+      analyzable children_return_type = new flavor_analyzer(flavor.readonly_flavor,
+          new parameter_analyzer(new resolve_analyzer(LIST_NAME, the_origin),
+              new base_list(new resolve_analyzer(CONSTRUCT_NAME, the_origin)), the_origin),
+          the_origin);
+      procedure_analyzer children_procedure = new procedure_analyzer(
+          analyzer_utilities.PUBLIC_OVERRIDE_MODIFIERS,
+          children_return_type, CHILDREN_NAME,
+          new empty<variable_declaration>(), children_body, the_origin);
 
-    the_type_declaration.append_to_body(children_procedure);
+      the_type_declaration.append_to_body(children_procedure);
+    }
   }
 
   private boolean has_constructors(type_declaration the_type_declaration) {
@@ -240,7 +240,7 @@ public class construct_data_extension extends declaration_extension {
         declaration_util.get_declared_procedures(the_type_declaration);
     return procedures.has(new predicate<procedure_declaration>() {
       public @Override Boolean call(procedure_declaration the_procedure_declaration) {
-        return the_procedure_declaration.annotations().has(general_modifier.overload_modifier);
+        return the_procedure_declaration.get_category() == procedure_category.CONSTRUCTOR;
       }
     });
   }

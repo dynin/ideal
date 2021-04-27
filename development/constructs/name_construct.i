@@ -4,23 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
+construct_data class name_construct {
+  implements stringable;
 
-public class name_construct extends base_construct implements stringable {
-  public action_name the_name;
-  public name_construct(action_name the_name, origin pos) {
-    super(pos);
-    this.the_name = the_name;
-  }
+  action_name the_name;
 
-  public readonly_list<construct> children() {
-    return new empty<construct>();
-  }
-
-  @Override
-  public string to_string() {
-    return utilities.describe(this, the_name);
-  }
+  override string to_string => utilities.describe(this, the_name);
 }

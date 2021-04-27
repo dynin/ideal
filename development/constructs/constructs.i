@@ -15,11 +15,11 @@ package constructs {
   class base_construct;
   class block_construct;
   class comment_construct;
---  class conditional_construct;
---  class constraint_construct;
+  class conditional_construct;
+  class constraint_construct;
 --  class construct_visitor;
---  class empty_construct;
---  class enum_util;
+  class empty_construct;
+--  namespace enum_util;
 --  class extension_construct;
 --  class flavor_construct;
 --  class grouping_type;

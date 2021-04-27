@@ -105,6 +105,7 @@ public class construct_data_extension extends declaration_extension {
 
     // TODO: factor this into cacheable methods.
     common_library library = common_library.get_instance();
+    principal_type null_type = library.null_type();
     principal_type development_type = lookup(library.ideal_namespace(), DEVELOPMENT_NAME);
     principal_type elements_type = lookup(development_type, ELEMENTS_NAME);
     principal_type construct_type = lookup(elements_type, CONSTRUCT_NAME);
@@ -130,9 +131,26 @@ public class construct_data_extension extends declaration_extension {
 
       analyzable field_access = new resolve_analyzer(name, the_origin);
       simple_name procedure_name;
+      boolean union_field = false;
 
       if (value_type.principal() == construct_type) {
         procedure_name = APPEND_NAME;
+      } else if (type_utilities.is_union(value_type)) {
+        immutable_list<abstract_value> union_parameters =
+            type_utilities.get_union_parameters(value_type);
+        principal_type p0 = union_parameters.get(0).type_bound().principal();
+        principal_type p1 = union_parameters.get(1).type_bound().principal();
+        if ((p0 == construct_type && p1 == null_type) ||
+            (p1 == construct_type && p0 == null_type)) {
+          procedure_name = APPEND_NAME;
+          union_field = true;
+          field_access = new parameter_analyzer(
+              new resolve_analyzer(operator.HARD_CAST, the_origin),
+              new base_list<analyzable>(field_access, to_analyzable(construct_type)),
+              the_origin);
+        } else {
+          continue;
+        }
       } else {
         principal_type list_element_type = element_type(value_type);
         if (list_element_type == null) {
@@ -153,9 +171,27 @@ public class construct_data_extension extends declaration_extension {
       }
 
       analyzable append_analyzable = new parameter_analyzer(
-          new resolve_analyzer(result_analyzer, procedure_name, the_origin),
-          new base_list<analyzable>(field_access), the_origin);
-      children_statements.append(append_analyzable);
+            new resolve_analyzer(result_analyzer, procedure_name, the_origin),
+            new base_list<analyzable>(field_access),
+          the_origin);
+
+      if (union_field) {
+        analyzable if_statement = new conditional_analyzer(
+            new parameter_analyzer(
+                new resolve_analyzer(operator.IS_NOT_OPERATOR, the_origin),
+                new base_list<analyzable>(
+                    new resolve_analyzer(name, the_origin),
+                    to_analyzable(null_type)
+                ),
+                the_origin
+            ),
+            append_analyzable,
+            null,
+            the_origin);
+        children_statements.append(if_statement);
+      } else {
+        children_statements.append(append_analyzable);
+      }
     }
 
     simple_name generated_origin_name = generated_name(ORIGIN_NAME);

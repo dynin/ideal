@@ -29,7 +29,7 @@
           
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: concept
@@ -67,7 +67,7 @@
            <j>Roughly corresponds to |Object| in Java.</j>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: concept
@@ -122,7 +122,7 @@
            operators such as assignment and getter/setter convention for fields.</j>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: reference_kind
@@ -130,7 +130,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: any
           expr: name_construct {
             the_name: value
@@ -175,7 +175,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: value_type
             }
             name: new_value
@@ -232,7 +232,7 @@
            <j>Related concepts in Java are |Serializable| and |Cloneable|.</j>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: concept
@@ -345,7 +345,7 @@
            string representation.</div>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: concept
@@ -399,7 +399,7 @@
            the unit type.</div>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: singleton
@@ -445,7 +445,7 @@
            procedures that don't return any value yet have side effects.</div>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: singleton
@@ -504,7 +504,7 @@
            must implement this interface.</div>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: concept
@@ -527,7 +527,7 @@
             the_kind: <static>
           }
         ]
-        type: parameter_construct {
+        variable_type: parameter_construct {
           main: name_construct {
             the_name: equivalence_relation
           }
@@ -570,7 +570,7 @@
            <j>Equivalent to `Java's boolean type.</j>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: enum
@@ -644,7 +644,7 @@
            types such |int32| from |ideal.library.interop| should be used.</div>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: class
@@ -702,7 +702,7 @@
            positive infinity (exclusive).
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: class
@@ -737,7 +737,7 @@
            positive infinity (exclusive).
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: class
@@ -790,7 +790,7 @@
            </div>
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: concept
@@ -848,7 +848,7 @@
            argument and returns boolean.
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: procedure_kind
@@ -856,7 +856,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: ret
@@ -865,7 +865,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: arg1
@@ -893,7 +893,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: ret
@@ -902,7 +902,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: arg1
@@ -911,7 +911,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: arg2
@@ -946,7 +946,7 @@
           image: " A procedure that has no visible side effects.
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: procedure_kind
@@ -954,7 +954,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: ret
@@ -963,7 +963,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: arg1
@@ -1015,7 +1015,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: ret
@@ -1024,7 +1024,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: arg1
@@ -1033,7 +1033,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: entity
         }
         name: arg2
@@ -1088,7 +1088,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -1127,7 +1127,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -1176,7 +1176,7 @@
           image: " Equivalence relation is reflexive, symmetric, and transitive.
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: concept
@@ -1184,7 +1184,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -1227,7 +1227,7 @@
           image: " A finite collection of element values, such as a sequence or a set.
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: interface
@@ -1235,7 +1235,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -1256,7 +1256,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: readonly
           expr: name_construct {
             the_name: nonnegative
@@ -1268,7 +1268,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: readonly
           expr: name_construct {
             the_name: boolean
@@ -1312,7 +1312,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: predicate
               }
@@ -1344,7 +1344,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: predicate
               }
@@ -1387,7 +1387,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: predicate
               }
@@ -1430,7 +1430,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: predicate
               }
@@ -1462,7 +1462,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: predicate
               }
@@ -1504,7 +1504,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -1533,7 +1533,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: parameter_construct {
+        variable_type: parameter_construct {
           main: name_construct {
             the_name: equivalence_relation
           }
@@ -1557,7 +1557,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: e
@@ -1581,7 +1581,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: collection
               }
@@ -1613,7 +1613,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: e
@@ -1633,7 +1633,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: collection
               }
@@ -1661,7 +1661,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: collection
               }
@@ -1689,7 +1689,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: data
         }
         name: element
@@ -1717,7 +1717,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -1765,7 +1765,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: index
@@ -1789,7 +1789,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: e
@@ -1809,7 +1809,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: e
@@ -1829,7 +1829,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: index
@@ -1838,7 +1838,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: e
@@ -1858,7 +1858,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: flavor_construct {
+            variable_type: flavor_construct {
               flavor: readonly
               expr: parameter_construct {
                 main: name_construct {
@@ -1889,7 +1889,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: flavor_construct {
+            variable_type: flavor_construct {
               flavor: readonly
               expr: parameter_construct {
                 main: name_construct {
@@ -1920,7 +1920,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: index
@@ -1929,7 +1929,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: flavor_construct {
+            variable_type: flavor_construct {
               flavor: readonly
               expr: parameter_construct {
                 main: name_construct {
@@ -1960,7 +1960,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: index
@@ -1980,7 +1980,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -2032,7 +2032,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: equivalence_relation
               }
@@ -2069,7 +2069,7 @@
            make up |string|s.
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: class
@@ -2148,7 +2148,7 @@
     body: [
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: readonly
           expr: name_construct {
             the_name: boolean
@@ -2195,7 +2195,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -2216,7 +2216,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: readonly
           expr: name_construct {
             the_name: boolean
@@ -2228,7 +2228,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: readonly
           expr: name_construct {
             the_name: nonnegative
@@ -2258,7 +2258,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: positive
             }
             name: max
@@ -2278,7 +2278,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element
@@ -2302,7 +2302,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: readonly
           expr: name_construct {
             the_name: boolean
@@ -2314,7 +2314,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: flavor_construct {
+        variable_type: flavor_construct {
           flavor: readonly
           expr: name_construct {
             the_name: nonnegative
@@ -2333,7 +2333,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: flavor_construct {
+            variable_type: flavor_construct {
               flavor: readonly
               expr: parameter_construct {
                 main: name_construct {

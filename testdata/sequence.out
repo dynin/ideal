@@ -9,7 +9,7 @@
 [
   import_construct {
     annotations: [ ]
-    type: resolve_construct {
+    type_construct: resolve_construct {
       qualifier: resolve_construct {
         qualifier: name_construct {
           the_name: java
@@ -21,7 +21,7 @@
   }
   import_construct {
     annotations: [ ]
-    type: resolve_construct {
+    type_construct: resolve_construct {
       qualifier: resolve_construct {
         qualifier: name_construct {
           the_name: java
@@ -37,7 +37,7 @@
         the_kind: <implicit>
       }
     ]
-    type: resolve_construct {
+    type_construct: resolve_construct {
       qualifier: name_construct {
         the_name: ideal
       }
@@ -50,7 +50,7 @@
         the_kind: <implicit>
       }
     ]
-    type: resolve_construct {
+    type_construct: resolve_construct {
       qualifier: name_construct {
         the_name: ideal
       }
@@ -59,7 +59,7 @@
   }
   import_construct {
     annotations: [ ]
-    type: resolve_construct {
+    type_construct: resolve_construct {
       qualifier: resolve_construct {
         qualifier: name_construct {
           the_name: ideal
@@ -71,7 +71,7 @@
   }
   import_construct {
     annotations: [ ]
-    type: resolve_construct {
+    type_construct: resolve_construct {
       qualifier: resolve_construct {
         qualifier: name_construct {
           the_name: ideal
@@ -83,7 +83,7 @@
   }
   import_construct {
     annotations: [ ]
-    type: resolve_construct {
+    type_construct: resolve_construct {
       qualifier: resolve_construct {
         qualifier: name_construct {
           the_name: ideal
@@ -104,7 +104,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: readonly_data
         }
         name: element
@@ -129,7 +129,7 @@
             the_kind: <private>
           }
         ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: List
         }
         name: list
@@ -154,7 +154,7 @@
           body: [
             variable_construct {
               annotations: [ ]
-              type: <null>
+              variable_type: <null>
               name: list
               post_annotations: [ ]
               init: parameter_construct {
@@ -187,7 +187,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n1
@@ -236,7 +236,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n1
@@ -245,7 +245,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n2
@@ -305,7 +305,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: sequence
             }
             name: ns1
@@ -314,7 +314,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n2
@@ -374,7 +374,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n1
@@ -383,7 +383,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: sequence
             }
             name: ns2
@@ -443,7 +443,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n1
@@ -452,7 +452,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n2
@@ -461,7 +461,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n3
@@ -532,7 +532,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n1
@@ -541,7 +541,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n2
@@ -550,7 +550,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n3
@@ -559,7 +559,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n4
@@ -641,7 +641,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n1
@@ -650,7 +650,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n2
@@ -659,7 +659,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n3
@@ -668,7 +668,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n4
@@ -677,7 +677,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n5
@@ -770,7 +770,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n1
@@ -779,7 +779,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n2
@@ -788,7 +788,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n3
@@ -797,7 +797,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n4
@@ -806,7 +806,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n5
@@ -815,7 +815,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: n6
@@ -1000,7 +1000,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: integer
             }
             name: index
@@ -1056,7 +1056,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: element
             }
             name: t
@@ -1098,7 +1098,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: sequence
               }
@@ -1133,7 +1133,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: integer
             }
             name: begin
@@ -1142,7 +1142,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: integer
             }
             name: end
@@ -1204,7 +1204,7 @@
             }
             variable_construct {
               annotations: [ ]
-              type: <null>
+              variable_type: <null>
               name: result
               post_annotations: [ ]
               init: parameter_construct {
@@ -1235,7 +1235,7 @@
                     the_kind: <var>
                   }
                 ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: integer
                 }
                 name: i
@@ -1326,7 +1326,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: integer
             }
             name: begin

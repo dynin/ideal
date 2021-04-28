@@ -9,7 +9,7 @@
 [
   variable_construct {
     annotations: [ ]
-    type: <null>
+    variable_type: <null>
     name: one
     post_annotations: [ ]
     init: literal_construct {
@@ -21,7 +21,7 @@
   }
   variable_construct {
     annotations: [ ]
-    type: <null>
+    variable_type: <null>
     name: two
     post_annotations: [ ]
     init: literal_construct {
@@ -33,7 +33,7 @@
   }
   variable_construct {
     annotations: [ ]
-    type: name_construct {
+    variable_type: name_construct {
       the_name: integer
     }
     name: three
@@ -62,7 +62,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: integer
         }
         name: x
@@ -102,7 +102,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: integer
         }
         name: y

@@ -15,7 +15,7 @@
     body: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: string
         }
         name: name
@@ -24,7 +24,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: string
         }
         name: description_link
@@ -33,7 +33,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: exercise_category
         }
         name: category
@@ -42,7 +42,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: exercise_parameter
         }
         name: parameter
@@ -96,7 +96,7 @@
     body: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: exercise_type
         }
         name: type
@@ -105,7 +105,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: nonnegative
         }
         name: repetition_count
@@ -114,7 +114,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: string
         }
         name: distance
@@ -131,7 +131,7 @@
     body: [
       variable_construct {
         annotations: [ ]
-        type: parameter_construct {
+        variable_type: parameter_construct {
           main: name_construct {
             the_name: list
           }
@@ -156,7 +156,7 @@
     body: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: exercise_set
         }
         name: set
@@ -165,7 +165,7 @@
       }
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: nonnegative
         }
         name: repetition_count
@@ -182,7 +182,7 @@
     body: [
       variable_construct {
         annotations: [ ]
-        type: parameter_construct {
+        variable_type: parameter_construct {
           main: name_construct {
             the_name: list
           }

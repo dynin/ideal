@@ -21,7 +21,7 @@
           image: " A list is an ordered sequence of values.
           "
         }
-        the_text: <null>
+        the_text_fragment: <null>
       }
     ]
     kind: class
@@ -29,7 +29,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element_type
@@ -67,7 +67,7 @@
         body: [
           variable_construct {
             annotations: [ ]
-            type: <null>
+            variable_type: <null>
             name: default_size
             post_annotations: [ ]
             init: literal_construct {
@@ -95,7 +95,7 @@
                The same |list_state| can be shared by multiple instances of |base_readonly_list|s.
               "
             }
-            the_text: <null>
+            the_text_fragment: <null>
           }
           modifier_construct {
             the_kind: <protected>
@@ -106,7 +106,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: value
             }
             name: element_type
@@ -117,7 +117,7 @@
         body: [
           import_construct {
             annotations: [ ]
-            type: resolve_construct {
+            type_construct: resolve_construct {
               qualifier: resolve_construct {
                 qualifier: resolve_construct {
                   qualifier: name_construct {
@@ -146,13 +146,13 @@
                    A single non-writable copy can be shared among multiple instances of |base_readonly_list|.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
               modifier_construct {
                 the_kind: <var>
               }
             ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: boolean
             }
             name: writable
@@ -173,13 +173,13 @@
                   image: " An array used to store the elements.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
               modifier_construct {
                 the_kind: <var>
               }
             ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: array
               }
@@ -210,13 +210,13 @@
                    The |size| is less or equal to |the_elements.size|.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
               modifier_construct {
                 the_kind: <var>
               }
             ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: size
@@ -237,7 +237,7 @@
                   image: " Construct a list state with an array of specified size.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
               modifier_construct {
                 the_kind: <overload>
@@ -248,7 +248,7 @@
             parameters: [
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: initial_size
@@ -346,7 +346,7 @@
                   image: " Construct a list state with an array of default size.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
               modifier_construct {
                 the_kind: <overload>
@@ -394,7 +394,7 @@
                    Assumes noone mutates the elements.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
               modifier_construct {
                 the_kind: <overload>
@@ -405,7 +405,7 @@
             parameters: [
               variable_construct {
                 annotations: [ ]
-                type: parameter_construct {
+                variable_type: parameter_construct {
                   main: name_construct {
                     the_name: array
                   }
@@ -490,7 +490,7 @@
                   image: " Make sure the array is of at least the specified size.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
             ]
             ret: name_construct {
@@ -500,7 +500,7 @@
             parameters: [
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: reserve_size
@@ -548,7 +548,7 @@
                       the_kind: <var>
                     }
                   ]
-                  type: <null>
+                  variable_type: <null>
                   name: new_size
                   post_annotations: [ ]
                   init: operator_construct {
@@ -614,7 +614,7 @@
                 }
                 variable_construct {
                   annotations: [ ]
-                  type: <null>
+                  variable_type: <null>
                   name: new_elements
                   post_annotations: [ ]
                   init: parameter_construct {
@@ -703,7 +703,7 @@
                   image: " Insert elements at the specified index.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
             ]
             ret: name_construct {
@@ -713,7 +713,7 @@
             parameters: [
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: index
@@ -722,7 +722,7 @@
               }
               variable_construct {
                 annotations: [ ]
-                type: flavor_construct {
+                variable_type: flavor_construct {
                   flavor: readonly
                   expr: parameter_construct {
                     main: name_construct {
@@ -819,7 +819,7 @@
                 }
                 variable_construct {
                   annotations: [ ]
-                  type: <null>
+                  variable_type: <null>
                   name: extra_size
                   post_annotations: [ ]
                   init: resolve_construct {
@@ -845,13 +845,13 @@
                 }
                 variable_construct {
                   annotations: [ ]
-                  type: <null>
+                  variable_type: <null>
                   name: new_elements_array
                   post_annotations: [ ]
                   init: resolve_construct {
                     qualifier: resolve_construct {
                       qualifier: list_construct {
-                        elements: [
+                        the_elements: [
                           operator_construct {
                             the_operator: cast_type {
                               the_operator_type: infix
@@ -927,7 +927,7 @@
                   image: " Insert an element at the specified index.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
             ]
             ret: name_construct {
@@ -937,7 +937,7 @@
             parameters: [
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: index
@@ -946,7 +946,7 @@
               }
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: element_type
                 }
                 name: element
@@ -1020,7 +1020,7 @@
                   image: " Helper method used to create space in the middle of an array.
                   "
                 }
-                the_text: <null>
+                the_text_fragment: <null>
               }
               modifier_construct {
                 the_kind: <private>
@@ -1033,7 +1033,7 @@
             parameters: [
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: index
@@ -1042,7 +1042,7 @@
               }
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: extra_size
@@ -1098,7 +1098,7 @@
                     body: [
                       variable_construct {
                         annotations: [ ]
-                        type: <null>
+                        variable_type: <null>
                         name: tail_size
                         post_annotations: [ ]
                         init: operator_construct {
@@ -1198,7 +1198,7 @@
             parameters: [
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: begin
@@ -1207,7 +1207,7 @@
               }
               variable_construct {
                 annotations: [ ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: length
@@ -1289,7 +1289,7 @@
                 }
                 variable_construct {
                   annotations: [ ]
-                  type: <null>
+                  variable_type: <null>
                   name: new_size
                   post_annotations: [ ]
                   init: operator_construct {
@@ -1381,7 +1381,7 @@
               body: [
                 variable_construct {
                   annotations: [ ]
-                  type: <null>
+                  variable_type: <null>
                   name: new_state
                   post_annotations: [ ]
                   init: parameter_construct {
@@ -1478,7 +1478,7 @@
             the_kind: <var>
           }
         ]
-        type: parameter_construct {
+        variable_type: parameter_construct {
           main: name_construct {
             the_name: list_state
           }
@@ -1558,7 +1558,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: list_state
               }
@@ -1752,7 +1752,7 @@
             }
             variable_construct {
               annotations: [ ]
-              type: <null>
+              variable_type: <null>
               name: last_index
               post_annotations: [ ]
               init: operator_construct {
@@ -1840,7 +1840,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: index
@@ -2005,7 +2005,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: begin
@@ -2014,7 +2014,7 @@
           }
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: end
@@ -2072,7 +2072,7 @@
             }
             variable_construct {
               annotations: [ ]
-              type: <null>
+              variable_type: <null>
               name: length
               post_annotations: [ ]
               init: operator_construct {
@@ -2110,7 +2110,7 @@
             }
             variable_construct {
               annotations: [ ]
-              type: <null>
+              variable_type: <null>
               name: slice_state
               post_annotations: [ ]
               init: parameter_construct {
@@ -2241,7 +2241,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: name_construct {
+            variable_type: name_construct {
               the_name: nonnegative
             }
             name: count
@@ -2281,7 +2281,7 @@
     parameters: [
       variable_construct {
         annotations: [ ]
-        type: name_construct {
+        variable_type: name_construct {
           the_name: value
         }
         name: element_type
@@ -2331,7 +2331,7 @@
       }
       import_construct {
         annotations: [ ]
-        type: resolve_construct {
+        type_construct: resolve_construct {
           qualifier: resolve_construct {
             qualifier: resolve_construct {
               qualifier: name_construct {
@@ -2358,7 +2358,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: list_state
               }
@@ -2426,7 +2426,7 @@
         parameters: [
           variable_construct {
             annotations: [ ]
-            type: parameter_construct {
+            variable_type: parameter_construct {
               main: name_construct {
                 the_name: array
               }
@@ -2581,7 +2581,7 @@
             }
             variable_construct {
               annotations: [ ]
-              type: <null>
+              variable_type: <null>
               name: reversed
               post_annotations: [ ]
               init: parameter_construct {
@@ -2616,7 +2616,7 @@
                     the_kind: <var>
                   }
                 ]
-                type: name_construct {
+                variable_type: name_construct {
                   the_name: nonnegative
                 }
                 name: i
@@ -2666,7 +2666,7 @@
                 body: [
                   variable_construct {
                     annotations: [ ]
-                    type: <null>
+                    variable_type: <null>
                     name: new_index
                     post_annotations: [ ]
                     init: operator_construct {

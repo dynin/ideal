@@ -15,20 +15,20 @@ import ideal.development.elements.*;
 
 public class variable_construct extends base_construct {
   public final readonly_list<annotation_construct> annotations;
-  public final @Nullable construct type;
+  public final @Nullable construct variable_type;
   public final action_name name;
   public final readonly_list<annotation_construct> post_annotations;
   public final @Nullable construct init;
 
   public variable_construct(readonly_list<annotation_construct> annotations,
-                       @Nullable construct type,
+                       @Nullable construct variable_type,
                        action_name name,
                        readonly_list<annotation_construct> post_annotations,
                        @Nullable construct init,
                        origin pos) {
     super(pos);
     this.annotations = annotations;
-    this.type = type;
+    this.variable_type = variable_type;
     assert name != null;
     this.name = name;
     this.post_annotations = post_annotations;
@@ -39,8 +39,8 @@ public class variable_construct extends base_construct {
     list<construct> result = new base_list<construct>();
 
     do_append_all(result, annotations);
-    if (type != null) {
-      result.append(type);
+    if (variable_type != null) {
+      result.append(variable_type);
     }
     if (init != null) {
       result.append(init);

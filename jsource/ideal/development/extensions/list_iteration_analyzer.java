@@ -52,7 +52,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     assert source.var_decl.annotations.is_empty();
 
     annotations = analyzer_utilities.PRIVATE_MODIFIERS;
-    var_type = (source.var_decl.type != null) ? make(source.var_decl.type) : null;
+    var_type = (source.var_decl.variable_type != null) ? make(source.var_decl.variable_type) : null;
     var_name = source.var_decl.name;
     init = make(source.var_decl.init);
     body = make(source.body);

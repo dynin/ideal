@@ -122,10 +122,6 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
-  protected common_library library() {
-    return common_library.get_instance();
-  }
-
   @Override
   protected modifier_kind process_modifier(modifier_kind the_modifier_kind) {
     if (the_modifier_kind == implement_modifier) {
@@ -403,7 +399,7 @@ public class to_java_transformer extends base_transformer {
       type return_type = the_procedure.get_return_type();
       if (type_utilities.is_union(return_type)) {
         annotations.append(make_nullable(the_origin));
-        ret = make_type_with_mapping(remove_null_type(return_type), the_origin,
+        ret = make_type_with_mapping(library().remove_null_type(return_type), the_origin,
             mapping.MAP_TO_WRAPPER_TYPE);
       } else if (library().is_reference_type(return_type)) {
         type_flavor ref_flavor = return_type.get_flavor();
@@ -456,20 +452,6 @@ public class to_java_transformer extends base_transformer {
     return new modifier_construct(nullable_modifier, the_origin);
   }
 
-  protected type remove_null_type(type the_type) {
-    assert type_utilities.is_union(the_type);
-    type_flavor union_flavor = the_type.get_flavor();
-    immutable_list<abstract_value> the_values = type_utilities.get_union_parameters(the_type);
-    assert the_values.size() == 2;
-    type null_type = (type) the_values.get(1);
-    assert null_type.principal() == library().null_type();
-    type result = (type) the_values.first();
-    if (union_flavor != flavor.nameonly_flavor) {
-      result = result.get_flavored(union_flavor);
-    }
-    return result;
-  }
-
   protected construct make_type_with_mapping(type the_type, origin the_origin,
       mapping new_mapping) {
     mapping old_mapping_strategy = mapping_strategy;
@@ -514,7 +496,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (type_utilities.is_union(principal)) {
-      type removed_null = remove_null_type(principal);
+      type removed_null = library().remove_null_type(principal);
       principal = removed_null.principal();
       the_flavor = removed_null.get_flavor();
     }
@@ -564,7 +546,7 @@ public class to_java_transformer extends base_transformer {
   @Override
   protected simple_name get_simple_name(principal_type the_type) {
     if (type_utilities.is_union(the_type)) {
-      the_type = remove_null_type(the_type).principal();
+      the_type = library().remove_null_type(the_type).principal();
     }
 
     if (the_type.short_name() instanceof simple_name) {
@@ -1170,7 +1152,7 @@ public class to_java_transformer extends base_transformer {
     construct type;
     if (type_utilities.is_union(var_type)) {
       annotations.append(make_nullable(the_origin));
-      type not_null_type = remove_null_type(var_type);
+      type not_null_type = library().remove_null_type(var_type);
       type = make_type_with_mapping(not_null_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
     } else {
       type = make_type(var_type, the_origin);

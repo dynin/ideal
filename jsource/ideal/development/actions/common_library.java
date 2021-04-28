@@ -323,6 +323,21 @@ public class common_library implements value {
     return result;
   }
 
+  public type remove_null_type(type the_type) {
+    assert type_utilities.is_union(the_type);
+    type_flavor union_flavor = the_type.get_flavor();
+    immutable_list<abstract_value> the_values = type_utilities.get_union_parameters(the_type);
+    assert the_values.size() == 2;
+    // TODO: handle when null is the first in union, as in "null or foo_type"
+    type null_type = (type) the_values.get(1);
+    assert null_type.principal() == null_type();
+    type result = (type) the_values.first();
+    if (union_flavor != flavor.nameonly_flavor) {
+      result = result.get_flavored(union_flavor);
+    }
+    return result;
+  }
+
   public boolean is_bootstrapped() {
     return VOID_TYPE.get_declaration() != null;
   }

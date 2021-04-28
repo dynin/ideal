@@ -17,7 +17,7 @@ package constructs {
   class comment_construct;
   class conditional_construct;
   class constraint_construct;
---  class construct_visitor;
+  class construct_visitor;
   class empty_construct;
   namespace enum_util;
   class extension_construct;
@@ -33,11 +33,11 @@ package constructs {
   class name_construct;
   class operator_construct;
   class parameter_construct;
---  class procedure_construct;
---  class resolve_construct;
---  class return_construct;
---  class supertype_construct;
---  class type_announcement_construct;
---  class type_declaration_construct;
---  class variable_construct;
+  class procedure_construct;
+  class resolve_construct;
+  class return_construct;
+  class supertype_construct;
+  class type_announcement_construct;
+  class type_declaration_construct;
+  class variable_construct;
 }

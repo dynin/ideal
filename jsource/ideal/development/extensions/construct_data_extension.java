@@ -114,9 +114,25 @@ public class construct_data_extension extends declaration_extension {
       variable_declaration variable = variables.get(i);
       action_name name = variable.short_name();
       type value_type = variable.value_type();
+      boolean union_field = type_utilities.is_union(value_type);
+
       variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
           to_analyzable(value_type), name, null, the_origin);
       parameters.append(parameter);
+
+      if (!union_field && introduce_assert(value_type)) {
+        analyzable assert_statement = new constraint_analyzer(
+            new parameter_analyzer(
+                new resolve_analyzer(operator.IS_NOT_OPERATOR, the_origin),
+                new base_list<analyzable>(
+                    new resolve_analyzer(name, the_origin),
+                    to_analyzable(null_type)
+                ),
+                the_origin
+            ),
+            the_origin);
+        ctor_statements.append(assert_statement);
+      }
 
       resolve_analyzer this_name = new resolve_analyzer(special_name.THIS, the_origin);
       resolve_analyzer lhs = new resolve_analyzer(this_name, name, the_origin);
@@ -130,35 +146,31 @@ public class construct_data_extension extends declaration_extension {
       ctor_statements.append(assign_field);
 
       analyzable field_access = new resolve_analyzer(name, the_origin);
+      type removed_null;
       simple_name procedure_name;
-      boolean union_field = false;
 
-      if (value_type.principal() == construct_type) {
+      if (union_field) {
+        removed_null = library.remove_null_type(value_type);
+      } else {
+        removed_null = value_type;
+      }
+
+      if (removed_null.principal() == construct_type) {
         procedure_name = APPEND_NAME;
-      } else if (type_utilities.is_union(value_type)) {
-        immutable_list<abstract_value> union_parameters =
-            type_utilities.get_union_parameters(value_type);
-        principal_type p0 = union_parameters.get(0).type_bound().principal();
-        principal_type p1 = union_parameters.get(1).type_bound().principal();
-        if ((p0 == construct_type && p1 == null_type) ||
-            (p1 == construct_type && p0 == null_type)) {
-          procedure_name = APPEND_NAME;
-          union_field = true;
+        if (union_field) {
           field_access = new parameter_analyzer(
               new resolve_analyzer(operator.HARD_CAST, the_origin),
-              new base_list<analyzable>(field_access, to_analyzable(construct_type)),
+              new base_list<analyzable>(field_access, to_analyzable(removed_null)),
               the_origin);
-        } else {
-          continue;
         }
       } else {
-        principal_type list_element_type = element_type(value_type);
+        principal_type list_element_type = element_type(removed_null);
         if (list_element_type == null) {
           continue;
         }
 
         procedure_name = APPEND_ALL_NAME;
-        if (list_element_type != construct_type) {
+        if (union_field || list_element_type != construct_type) {
           // TODO: the cast should be redundant.
           type construct_list = library.list_type_of(
               construct_type.get_flavored(flavor.mutable_flavor)).get_flavored(
@@ -253,6 +265,10 @@ public class construct_data_extension extends declaration_extension {
         return the_procedure_declaration.short_name() == CHILDREN_NAME;
       }
     });
+  }
+
+  private boolean introduce_assert(type the_type) {
+    return the_type.principal() != common_library.get_instance().boolean_type();
   }
 
   private @Nullable principal_type element_type(type the_type) {

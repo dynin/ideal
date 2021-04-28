@@ -111,11 +111,11 @@ public class java_printer extends base_printer {
 
     fragments.append(styles.wrap(styles.var_declaration_name_style, print_action_name(c.name)));
 
-    if (c.type != null) {
+    if (c.variable_type != null) {
       fragments.append(print_space());
       fragments.append(print_simple_name(subtype_tags.extends_tag.name()));
       fragments.append(print_space());
-      fragments.append(print(c.type));
+      fragments.append(print(c.variable_type));
     }
 
     return text_util.join(fragments);

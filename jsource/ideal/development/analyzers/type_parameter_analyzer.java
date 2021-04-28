@@ -40,7 +40,7 @@ public class type_parameter_analyzer extends declaration_analyzer
     super(source);
     annotations = source.annotations;
     assert source.post_annotations.is_empty();
-    parameter_analyzable = make(source.type);
+    parameter_analyzable = make(source.variable_type);
     the_name = source.name;
   }
 

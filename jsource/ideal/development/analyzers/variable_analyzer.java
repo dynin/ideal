@@ -44,8 +44,8 @@ public class variable_analyzer extends declaration_analyzer
   public variable_analyzer(variable_construct source) {
     super(source);
     variable_annotations = source.annotations;
-    if (source.type != null) {
-      variable_type = make(source.type);
+    if (source.variable_type != null) {
+      variable_type = make(source.variable_type);
     } else {
       variable_type = null;
     }

@@ -275,8 +275,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_documentation(c.annotations, c));
     fragments.append(print_modifiers(c.annotations, true));
 
-    if (c.type != null && print_variable_types()) {
-      fragments.append(print(c.type));
+    if (c.variable_type != null && print_variable_types()) {
+      fragments.append(print(c.variable_type));
       fragments.append(print_space());
     }
 

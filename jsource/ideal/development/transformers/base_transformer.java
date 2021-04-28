@@ -166,7 +166,7 @@ public class base_transformer extends declaration_visitor<Object> {
 
   protected simple_name get_simple_name(principal_type the_type) {
     if (type_utilities.is_union(the_type)) {
-      the_type = remove_null_type(the_type).principal();
+      the_type = library().remove_null_type(the_type).principal();
     }
 
     if (the_type.short_name() instanceof simple_name) {
@@ -175,21 +175,6 @@ public class base_transformer extends declaration_visitor<Object> {
 
     assert the_type.get_parent() != null;
     return get_simple_name(the_type.get_parent());
-  }
-
-
-  protected type remove_null_type(type the_type) {
-    assert type_utilities.is_union(the_type);
-    type_flavor union_flavor = the_type.get_flavor();
-    immutable_list<abstract_value> the_values = type_utilities.get_union_parameters(the_type);
-    assert the_values.size() == 2;
-    type null_type = (type) the_values.get(1);
-    assert null_type.principal() == library().null_type();
-    type result = (type) the_values.first();
-    if (union_flavor != flavor.nameonly_flavor) {
-      result = result.get_flavored(union_flavor);
-    }
-    return result;
   }
 
   protected simple_name make_name(simple_name type_name, principal_type the_type,
@@ -227,7 +212,7 @@ public class base_transformer extends declaration_visitor<Object> {
     principal_type principal = the_type.principal();
 
     if (type_utilities.is_union(principal)) {
-      principal = remove_null_type(principal).principal();
+      principal = library().remove_null_type(principal).principal();
     }
 
     action_name the_name = make_name(get_simple_name(principal), principal, the_type.get_flavor());

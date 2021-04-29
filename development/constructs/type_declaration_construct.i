@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-construct_data class type_declaration_construct {
+meta_construct class type_declaration_construct {
   readonly list[annotation_construct] annotations;
   kind kind;
   action_name name;

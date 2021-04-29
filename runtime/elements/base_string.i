@@ -126,7 +126,7 @@ class base_string {
   static string from_list(readonly list[character] chars) {
     the_writer : string_writer.new();
     the_writer.write_all(chars);
-    return the_writer.extract_elements();
+    return the_writer.elements();
   }
 
   implement integer size => state.length();

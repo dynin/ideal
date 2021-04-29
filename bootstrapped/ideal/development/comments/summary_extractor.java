@@ -36,7 +36,7 @@ public class summary_extractor extends text_visitor<string> {
         break;
       }
     }
-    return result.extract_elements();
+    return result.elements();
   }
   protected @Override string process_element(final text_element element) {
     final @Nullable text_fragment children = element.children();

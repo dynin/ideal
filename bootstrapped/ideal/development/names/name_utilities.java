@@ -52,7 +52,7 @@ public class name_utilities {
         the_writer.write(name.get(index));
         index += 1;
       }
-      segments.append(the_writer.extract_elements());
+      segments.append(the_writer.elements());
     }
     if (segments.is_not_empty()) {
       return simple_name.make_from_segments(segments.frozen_copy());

@@ -92,7 +92,7 @@ public class base_string extends debuggable implements string, string_text_node 
   public static string from_list(final readonly_list<Character> chars) {
     final string_writer the_writer = new string_writer();
     the_writer.write_all(chars);
-    return the_writer.extract_elements();
+    return the_writer.elements();
   }
   public @Override int size() {
     return this.state.length();

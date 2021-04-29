@@ -9,7 +9,7 @@ implicit import ideal.development.comments;
 implicit import ideal.development.documenters;
 import ideal.development.comments.documentation;
 
-construct_data class comment_construct {
+meta_construct class comment_construct {
   implements annotation_construct, documentation;
 
   comment the_comment;

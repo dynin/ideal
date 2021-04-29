@@ -78,7 +78,8 @@ class plain_formatter {
     super.do_write_newline();
     -- TODO: this should be a variable.
     if (carets.size() > 0) {
-      the_output.write_all(carets.extract_elements());
+      the_output.write_all(carets.elements());
+      carets.clear();
       the_output.write(NEWLINE);
     }
     chars_written = 0;

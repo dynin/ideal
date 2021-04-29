@@ -24,7 +24,8 @@ class test_string_writer {
     assert the_writer.size() == 6;
     assert the_writer.elements() == "foobar";
 
-    elements : the_writer.extract_elements();
+    elements : the_writer.elements();
+    the_writer.clear();
     please assert elements == "foobar";
     please assert the_writer.size() == 0;
     please assert the_writer.elements() == "";

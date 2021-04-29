@@ -20,7 +20,7 @@ namespace channels {
     -- TODO: this should be a variable.
     nonnegative size();
     string elements() pure;
-    string extract_elements();
+    void clear();
   }
 
   namespace standard_channels {

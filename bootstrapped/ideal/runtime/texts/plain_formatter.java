@@ -69,7 +69,8 @@ public class plain_formatter extends text_formatter {
   public @Override void do_write_newline() {
     super.do_write_newline();
     if (this.carets.size() > 0) {
-      this.the_output.write_all(this.carets.extract_elements());
+      this.the_output.write_all(this.carets.elements());
+      this.carets.clear();
       this.the_output.write(text_formatter.NEWLINE);
     }
     this.chars_written = 0;

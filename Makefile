@@ -328,7 +328,9 @@ hello: $(IDEAL_TARGET)
 diff: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - library/elements.i
 
-test: build $(IDEAL_TARGET)
+.PHONY: test
+
+test: $(IDEAL_TARGET)
 	$(JAVA) ideal.development.tests.main
 
 $(BOOTSTRAPPED_TARGET): $(BOOTSTRAPPED_JAVA)

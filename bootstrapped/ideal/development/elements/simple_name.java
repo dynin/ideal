@@ -30,7 +30,7 @@ public class simple_name extends debuggable implements action_name, displayable 
           the_writer.write(simple_name.the_underscore);
         }
       }
-      return the_writer.extract_elements();
+      return the_writer.elements();
     }
   }
   public @Override string display() {

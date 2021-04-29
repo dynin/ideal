@@ -23,7 +23,8 @@ public class test_string_writer {
     the_writer.write('r');
     assert the_writer.size() == 6;
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string("foobar"));
-    final string elements = the_writer.extract_elements();
+    final string elements = the_writer.elements();
+    the_writer.clear();
     assert ideal.machine.elements.runtime_util.values_equal(elements, new base_string("foobar"));
     assert the_writer.size() == 0;
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string(""));

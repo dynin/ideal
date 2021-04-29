@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-construct_data class modifier_construct {
+meta_construct class modifier_construct {
   implements annotation_construct;
 
   modifier_kind the_kind;

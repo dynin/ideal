@@ -341,7 +341,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
     }
   }
 
-  // TODO: merge with construct_data_extension
+  // TODO: merge with meta_construct_extension
   private master_type to_master(type the_type) {
     the_type = the_type.principal();
     if (the_type instanceof master_type) {

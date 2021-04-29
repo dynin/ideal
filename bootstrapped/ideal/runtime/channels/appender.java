@@ -31,9 +31,7 @@ public class appender<value_type> implements output<value_type> {
   public immutable_list<value_type> elements() {
     return this.the_list.elements();
   }
-  public immutable_list<value_type> extract_elements() {
-    final immutable_list<value_type> result = this.the_list.elements();
+  public void clear() {
     this.the_list.clear();
-    return result;
   }
 }

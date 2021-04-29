@@ -30,9 +30,9 @@ import ideal.development.analyzers.*;
  * <li>Generate constructor.</li>
  * </ul>
  */
-public class construct_data_extension extends declaration_extension {
+public class meta_construct_extension extends declaration_extension {
 
-  public static final construct_data_extension instance = new construct_data_extension();
+  public static final meta_construct_extension instance = new meta_construct_extension();
 
   private static simple_name LIST_NAME = simple_name.make("list");
   private static simple_name DEVELOPMENT_NAME = simple_name.make("development");
@@ -49,8 +49,8 @@ public class construct_data_extension extends declaration_extension {
   /**
    * The name of the extension, which is used as the modifier in the ideal source code.
    */
-  public construct_data_extension() {
-    super("construct_data");
+  public meta_construct_extension() {
+    super("meta_construct");
   }
 
   @Override

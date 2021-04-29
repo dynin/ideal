@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-construct_data class conditional_construct {
+meta_construct class conditional_construct {
   construct cond_expr;
   construct then_expr;
   construct or null else_expr;

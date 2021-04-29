@@ -7,7 +7,7 @@
 implicit import ideal.library.texts;
 implicit import ideal.development.components;
 
-construct_data abstract class extension_construct {
+meta_construct abstract class extension_construct {
   abstract readonly list[construct] children();
   abstract analyzable to_analyzable();
   abstract text_fragment print(printer p);

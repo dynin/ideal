@@ -41,10 +41,7 @@ class appender[any value value_type] {
     return the_list.elements;
   }
 
-  --- Get elements and clear the state.
-  immutable list[value_type] extract_elements() {
-    result : the_list.elements;
+  void clear() {
     the_list.clear();
-    return result;
   }
 }

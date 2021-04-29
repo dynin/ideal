@@ -6,7 +6,7 @@
 
 import ideal.development.names.operator;
 
-construct_data class operator_construct {
+meta_construct class operator_construct {
   operator the_operator;
   readonly list[construct] arguments;
 

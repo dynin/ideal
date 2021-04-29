@@ -47,9 +47,7 @@ public class string_writer implements output<Character> {
     return new base_string(builder.toString());
   }
 
-  public string extract_elements() {
-    string result = new base_string(builder.toString());
+  public void clear() {
     builder.setLength(0);
-    return result;
   }
 }

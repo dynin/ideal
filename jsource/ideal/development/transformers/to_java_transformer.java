@@ -785,7 +785,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     readonly_list<declaration> body = the_type_declaration.get_signature();
-    boolean has_to_string = false;
+    boolean generate_to_string = true;
 
     for (int i = 0; i < body.size(); ++i) {
       declaration decl = body.get(i);
@@ -853,7 +853,7 @@ public class to_java_transformer extends base_transformer {
       } else if (decl instanceof procedure_declaration) {
         procedure_declaration proc_decl = (procedure_declaration) decl;
         if (proc_decl.short_name() == TO_STRING_NAME) {
-          has_to_string = true;
+          generate_to_string = false;
         }
         @Nullable procedure_construct proc_construct = (procedure_construct) transform(proc_decl);
         if (proc_construct == null) {
@@ -899,7 +899,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     // TODO: move this into type_declaration_analyzer or enum_kind.
-    if (the_kind == enum_kind && !has_to_string) {
+    if (the_kind == enum_kind && generate_to_string) {
       list<annotation_construct> modifier_list = new base_list<annotation_construct>(
           new modifier_construct(public_modifier, the_origin));
       block_construct to_string_body = new block_construct(
@@ -1744,8 +1744,15 @@ public class to_java_transformer extends base_transformer {
     // TODO: handle both string and character literals correctly.
     // TODO: also, convert inline literals into constants.
     // TODO: use fully qualified type name?
-    construct type_name = new name_construct(BASE_STRING_NAME, the_origin);
-    construct alloc = new operator_construct(operator.ALLOCATE, type_name, the_origin);
+    principal_type runtime_elements = java_library.runtime_elements_namespace();
+    construct base_string_name;
+    if (implicit_names.contains(runtime_elements)) {
+      base_string_name = new name_construct(BASE_STRING_NAME, the_origin);
+    } else {
+      base_string_name = new resolve_construct(make_type(runtime_elements, the_origin),
+          BASE_STRING_NAME, the_origin);
+    }
+    construct alloc = new operator_construct(operator.ALLOCATE, base_string_name, the_origin);
     return make_call(alloc, new base_list<construct>(the_construct), the_origin);
   }
 

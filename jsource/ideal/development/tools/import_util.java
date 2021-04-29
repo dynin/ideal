@@ -65,8 +65,7 @@ public class import_util {
   public type_declaration_construct import_type(Class cl, origin pos) {
     list<annotation_construct> annotations = modifiers_as_list(cl.getModifiers(),
         pos);
-    kind kind = cl.isInterface() ? type_kinds.interface_kind:
-        type_kinds.class_kind;
+    kind kind = cl.isInterface() ? type_kinds.interface_kind : type_kinds.class_kind;
     simple_name name = name_utilities.parse_camel_case(new base_string(cl.getSimpleName()));
 
     list<construct> declarations = new base_list<construct>();

@@ -15,4 +15,5 @@ namespace runtime {
   namespace resources;
   namespace logs;
   namespace graphs;
+  namespace flags;
 }

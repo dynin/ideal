@@ -88,7 +88,8 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/channels/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/resources/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/graphs/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/flags/*.java
 
 MACHINE_JAVA = \
     $(JSOURCE_DIR)/ideal/machine/elements/*.java \
@@ -111,8 +112,6 @@ BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/origins/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/documenters/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/constructs/*.java
-
-#    $(JSOURCE_DIR)/ideal/development/constructs/*.java \
 
 DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/types/*.java \

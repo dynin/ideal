@@ -15,4 +15,7 @@ public enum log_level {
   INFORMATIONAL,
   DEBUG,
   TRACE;
+  public string to_string() {
+    return new ideal.runtime.elements.base_string(toString());
+  }
 }

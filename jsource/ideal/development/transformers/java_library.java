@@ -22,6 +22,8 @@ import ideal.development.modifiers.*;
 
 public class java_library implements value {
 
+  public static final simple_name runtime_name = simple_name.make(new base_string("runtime"));
+  public static final simple_name elements_name = simple_name.make(new base_string("elements"));
   public static final simple_name machine_name = simple_name.make(new base_string("machine"));
   public static final simple_name adapters_name = simple_name.make(new base_string("adapters"));
 
@@ -45,6 +47,9 @@ public class java_library implements value {
   private principal_type annotation_package;
   private principal_type nullable_type;
 
+  private principal_type runtime_namespace;
+  private principal_type runtime_elements_namespace;
+
   private principal_type machine_namespace;
   private principal_type machine_elements_namespace;
   private principal_type machine_adapters_namespace;
@@ -65,6 +70,9 @@ public class java_library implements value {
 
     common_library library = common_library.get_instance();
     context = library.get_context();
+
+    runtime_namespace = get_namespace(runtime_name, library.ideal_namespace());
+    runtime_elements_namespace = get_namespace(elements_name, runtime_namespace);
 
     machine_namespace = get_namespace(machine_name, library.ideal_namespace());
     machine_adapters_namespace = get_namespace(adapters_name, machine_namespace);
@@ -119,6 +127,10 @@ public class java_library implements value {
 
   public @Nullable simple_name map_to_wrapper(principal_type the_type) {
     return wrapper_mapping.get(the_type);
+  }
+
+  public principal_type runtime_elements_namespace() {
+    return runtime_elements_namespace;
   }
 
   public principal_type java_package() {

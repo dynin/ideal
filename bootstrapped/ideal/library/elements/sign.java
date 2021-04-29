@@ -6,4 +6,7 @@ public enum sign implements deeply_immutable_data, comparable {
   less,
   equal,
   greater;
+  public string to_string() {
+    return new ideal.runtime.elements.base_string(toString());
+  }
 }

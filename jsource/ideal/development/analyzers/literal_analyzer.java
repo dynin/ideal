@@ -30,6 +30,11 @@ public class literal_analyzer extends single_pass_analyzer {
     the_literal = source.the_literal;
   }
 
+  public literal_analyzer(literal the_literal, origin the_origin) {
+    super(the_origin);
+    this.the_literal = the_literal;
+  }
+
   @Override
   public readonly_list<analyzable> children() {
     return new empty<analyzable>();

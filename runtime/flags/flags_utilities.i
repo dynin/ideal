@@ -28,7 +28,7 @@ namespace flags_utilities {
 
     for (index = 0; index < arguments.size; index += 1) {
       argument : arguments[index];
-      if (dash_pattern.match_prefix(argument) == 1) {
+      if (dash_pattern.match_prefix(argument) is_not null) {
         separator : separator_pattern.find_first(argument, 1);
         if (separator is null) {
           arg_dictionary.put(normalize(argument.skip(1)), "");
@@ -42,42 +42,11 @@ namespace flags_utilities {
     }
 
     if (index < arguments.size) {
-      error_reporter("non-flag parameters found--don't know what to do!");
+      error_reporter("Non-flag parameters found--don't know what to do!");
     }
 
     return arg_dictionary;
   }
-
---    try {
---      Class cl = options.getClass();
---      boolean has_flag = false;
---      for (Field f : cl.getDeclaredFields()) {
---        assert (f.getModifiers() & Modifier.STATIC) == 0;
---        f.setAccessible(true);
---        has_flag = true;
---        if (f.getType() == Boolean.TYPE) {
---          f.setBoolean(options, boolean_flag(arg_dictionary, f.getName()));
---        } else if (f.getType() == string.class) {
---          f.set(options, string_flag(arg_dictionary, f.getName()));
---        } else {
---          throw new RuntimeException("Strange flag " + f.getName());
---        }
---      }
---      if (!has_flag) {
---        throw new RuntimeException(cl.getName() + " has no flags");
---      }
---    } catch (Exception e) {
---      if (e instanceof RuntimeException) {
---        throw (RuntimeException) e;
---      } else {
---        throw new RuntimeException(e);
---      }
---    }
---
---    if (arg_dictionary.is_not_empty()) {
---      throw new RuntimeException("Unknown flag: " + arg_dictionary.keys().elements().first());
---    }
---  }
 
   private string normalize(string the_string) {
     result : string_writer.new();
@@ -90,7 +59,7 @@ namespace flags_utilities {
     return result.elements();
   }
 
-  private boolean boolean_flag(dictionary[string, string] arg_dictionary, string name) {
+  boolean boolean_flag(dictionary[string, string] arg_dictionary, string name) {
     flag_name : normalize(name);
 
     not_flag : "not" ++ flag_name;
@@ -115,7 +84,7 @@ namespace flags_utilities {
     return flag_value != "false" && flag_value != "no";
   }
 
-  private string or null string_flag(dictionary[string, string] arg_dictionary, string name) {
+  string or null string_flag(dictionary[string, string] arg_dictionary, string name) {
     flag_name : normalize(name);
     has_flag : arg_dictionary.contains_key(flag_name);
 
@@ -123,6 +92,12 @@ namespace flags_utilities {
       return arg_dictionary.remove(flag_name);
     } else {
       return missing.instance;
+    }
+  }
+
+  void finish(dictionary[string, string] arg_dictionary, procedure[void, string] error_reporter) {
+    if (arg_dictionary.is_not_empty) {
+      error_reporter("Unknown flag: " ++ arg_dictionary.keys().elements.first);
     }
   }
 }

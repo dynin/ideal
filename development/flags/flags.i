@@ -4,12 +4,9 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
---- Implementation of flags parsing.
---- Works together with flags_data extension.
-namespace flags {
+--- Flags for the create applications.
+package flags {
   implicit import ideal.library.elements;
-  implicit import ideal.runtime.elements;
 
-  namespace flags_utilities;
-  class test_flags;
+  class create_flags;
 }

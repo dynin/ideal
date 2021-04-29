@@ -21,7 +21,7 @@ public class flags_utilities {
     int index;
     for (index = 0; index < arguments.size(); index += 1) {
       final string argument = arguments.get(index);
-      if (flags_utilities.dash_pattern.match_prefix(argument) == 1) {
+      if (flags_utilities.dash_pattern.match_prefix(argument) != null) {
         final @Nullable range separator = flags_utilities.separator_pattern.find_first(argument, 1);
         if (separator == null) {
           arg_dictionary.put(flags_utilities.normalize(argument.skip(1)), new base_string(""));
@@ -33,7 +33,7 @@ public class flags_utilities {
       }
     }
     if (index < arguments.size()) {
-      error_reporter.call(new base_string("non-flag parameters found--don\'t know what to do!"));
+      error_reporter.call(new base_string("Non-flag parameters found--don\'t know what to do!"));
     }
     return arg_dictionary;
   }
@@ -50,7 +50,7 @@ public class flags_utilities {
     }
     return result.elements();
   }
-  private static boolean boolean_flag(final dictionary<string, string> arg_dictionary, final string name) {
+  public static boolean boolean_flag(final dictionary<string, string> arg_dictionary, final string name) {
     final string flag_name = flags_utilities.normalize(name);
     final string not_flag = ideal.machine.elements.runtime_util.concatenate(new base_string("not"), flag_name);
     if (arg_dictionary.contains_key(not_flag)) {
@@ -70,13 +70,18 @@ public class flags_utilities {
     arg_dictionary.remove(flag_name);
     return !ideal.machine.elements.runtime_util.values_equal(flag_value, new base_string("false")) && !ideal.machine.elements.runtime_util.values_equal(flag_value, new base_string("no"));
   }
-  private static @Nullable string string_flag(final dictionary<string, string> arg_dictionary, final string name) {
+  public static @Nullable string string_flag(final dictionary<string, string> arg_dictionary, final string name) {
     final string flag_name = flags_utilities.normalize(name);
     final boolean has_flag = arg_dictionary.contains_key(flag_name);
     if (has_flag) {
       return arg_dictionary.remove(flag_name);
     } else {
       return null;
+    }
+  }
+  public static void finish(final dictionary<string, string> arg_dictionary, final procedure1<Void, string> error_reporter) {
+    if (arg_dictionary.is_not_empty()) {
+      error_reporter.call(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown flag: "), arg_dictionary.keys().elements().first()));
     }
   }
 }

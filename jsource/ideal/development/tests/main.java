@@ -16,24 +16,16 @@ import ideal.runtime.resources.*;
 import ideal.runtime.channels.*;
 import ideal.runtime.graphs.*;
 import ideal.runtime.logs.test_display;
+import ideal.runtime.flags.*;
 import ideal.development.names.*;
 import ideal.development.futures.*;
 import ideal.development.origins.*;
 import ideal.development.documenters.*;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
 public class main {
 
   public static void main(String[] args) {
     run_all_runtime_tests();
-
-    TestSuite suite = new TestSuite();
-
-    suite.addTestSuite(flag_util_t.class);
-
-    junit.textui.TestRunner.run(suite);
   }
 
   public static void run_all_runtime_tests() {
@@ -75,6 +67,8 @@ public class main {
     new test_output_transformer().run_all_tests();
 
     new test_graph().run_all_tests();
+
+    new test_flags().run_all_tests();
 
     new test_names().run_all_tests();
 

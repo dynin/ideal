@@ -18,4 +18,5 @@ namespace development {
   package origins;
   package documenters;
   package constructs;
+  package flags;
 }

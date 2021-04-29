@@ -78,7 +78,7 @@ public class cache_result_extension extends declaration_extension {
     origin the_origin = this;
 
     if (the_procedure.get_parameter_variables().is_not_empty()) {
-     return new error_signal(new base_string("Cached procedure can't have any parameters"),
+      return new error_signal(new base_string("Cached procedure can't have any parameters"),
         the_origin);
     }
 

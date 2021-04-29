@@ -38,6 +38,7 @@ import ideal.development.functions.*;
 import ideal.development.extensions.*;
 import ideal.development.origins.*;
 import ideal.development.printers.*;
+import ideal.development.flags.*;
 import ideal.development.targets.*;
 
 class create {
@@ -45,41 +46,52 @@ class create {
   private static final simple_name CLEAN_SLATE = simple_name.make("clean_slate");
 
   public static void main(String[] args) {
-    create_options options = new create_options();
-    flag_util.parse_flags(args, options);
-    status the_status = new create().start(options);
+    list<string> arguments = new base_list<string>();
+    for (int i = 0; i < args.length; ++i) {
+      arguments.append(new base_string(args[i]));
+    }
+    create_flags the_create_flags = new create_flags(arguments, panic_procedure);
+    status the_status = new create().start(the_create_flags);
     System.exit(the_status.is_ok ? 0 : 1);
   }
 
-  public status start(create_options options) {
-    create_util.DEBUG_PROGRESS = options.DEBUG_PROGRESS;
+  private static procedure1<Void, string> panic_procedure =
+    new procedure1<Void, string>() {
+      @Override public Void call(string message) {
+        utilities.panic(message);
+        return null;
+      }
+    };
 
-    resolve_analyzer.CURE_UNDECLARED = options.CURE_UNDECLARED;
-    resolve_analyzer.HIDE_DECLARATIONS = options.HIDE_DECLARATIONS;
+  public status start(create_flags the_create_flags) {
+    create_util.DEBUG_PROGRESS = the_create_flags.DEBUG_PROGRESS;
 
-    if (options.DEBUG_IMPORT) {
+    resolve_analyzer.CURE_UNDECLARED = the_create_flags.CURE_UNDECLARED;
+    resolve_analyzer.HIDE_DECLARATIONS = the_create_flags.HIDE_DECLARATIONS;
+
+    if (the_create_flags.DEBUG_IMPORT) {
       import_util.start_import();
       return status.ok;
     }
 
     create_util.progress("INIT");
 
-    assert options.input != null;
-    resource_identifier input_id = filesystem.CURRENT_CATALOG.resolve(options.input);
+    assert the_create_flags.input != null;
+    resource_identifier input_id = filesystem.CURRENT_CATALOG.resolve(the_create_flags.input);
     create_util.progress_loading(input_id);
 
     source_content input = new source_content(input_id);
 
-    @Nullable string output_name = options.output;
+    @Nullable string output_name = the_create_flags.output;
 
     resource_catalog top_catalog = filesystem.CURRENT_CATALOG;
-    if (options.top != null) {
-      top_catalog = top_catalog.resolve(options.top).access_catalog();
+    if (the_create_flags.top != null) {
+      top_catalog = top_catalog.resolve(the_create_flags.top).access_catalog();
     }
 
     create_manager cm = new create_manager(top_catalog);
 
-    if (options.DEBUG_REFLECT) {
+    if (the_create_flags.DEBUG_REFLECT) {
       reflect_util.start_reflect(cm, input);
       return status.ok;
     }
@@ -106,7 +118,7 @@ class create {
           filesystem.CURRENT_CATALOG.resolve(output_name).access_catalog());
     }
 
-    if (options.DEBUG_CONSTRUCTS) {
+    if (the_create_flags.DEBUG_CONSTRUCTS) {
       create_util.progress("DISPLAY");
       output<text_fragment> out = new plain_formatter(standard_channels.stdout);
       out.write(runtime_util.display(constructs));
@@ -123,7 +135,7 @@ class create {
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);
     assert passes.get(1) == analysis_pass.TARGET_DECL;
 
-    if (options.target == null) {
+    if (the_create_flags.target == null) {
       for (int i = 2; i < passes.size(); ++i) {
         analysis_pass pass = passes.get(i);
         create_util.progress(pass.toString());
@@ -135,12 +147,12 @@ class create {
       //cm.ensure_everything_is_analyzed(constructs, the_context);
     }
 
-    if (options.RUN && !cm.has_errors()) {
+    if (the_create_flags.RUN && !cm.has_errors()) {
       create_util.progress("EXECUTE");
       analyzer_utilities.to_action(body).execute(cm.new_execution_context());
     }
 
-    if (options.PRINT) {
+    if (the_create_flags.PRINT) {
       printer_target printer = new printer_target(simple_name.make("printer"), cm);
       printer.setup(the_context);
       readonly_list<simple_name> test_name =
@@ -148,7 +160,7 @@ class create {
       printer.print_constructs(constructs, test_name);
     }
 
-    if (options.PRETTY_PRINT) {
+    if (the_create_flags.PRETTY_PRINT) {
       content_writer the_writer = new content_writer(cm.output_catalog(),
           printer_util.dash_renderer);
       publish_generator the_generator =
@@ -170,26 +182,26 @@ class create {
       return status.error;
     }
 
-    if (options.GENERATE) {
+    if (the_create_flags.GENERATE) {
       content_writer the_writer = new content_writer(cm.output_catalog(),
           printer_util.dash_renderer);
       java_generator generator = new java_generator(java_library.get_instance(), the_writer);
       generator.generate_top_level(cm.root, body.declarations(), new empty<import_declaration>());
     }
 
-    if (options.target != null) {
+    if (the_create_flags.target != null) {
       create_util.progress("TARGETS");
       readonly_list<target_declaration> targets = find_targets(body);
 
       for (int i = 0; i < targets.size(); ++i) {
-        if (utilities.eq(targets.get(i).short_name().to_string(), options.target)) {
+        if (utilities.eq(targets.get(i).short_name().to_string(), the_create_flags.target)) {
           targets.get(i).process();
           // TODO: process more than one target.
           return cm.has_errors() ? status.error: status.ok;
         }
       }
 
-      log.error("Target '" + options.target + "' not found.");
+      log.error("Target '" + the_create_flags.target + "' not found.");
     }
 
     return cm.has_errors() ? status.error: status.ok;

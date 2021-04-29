@@ -9,9 +9,11 @@
 package ideal.development.actions;
 
 import ideal.library.elements.*;
+import ideal.library.patterns.*;
 import ideal.library.reflections.*;
 import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
+import ideal.runtime.patterns.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
@@ -48,6 +50,22 @@ public class action_utilities {
       }
     }
     return result;
+  }
+
+  private static pattern<Character> dot_pattern = new singleton_pattern<Character>('.');
+
+  public static principal_type lookup_type(analysis_context context, string full_name) {
+    immutable_list<immutable_list<Character>> type_names = dot_pattern.split(full_name);
+    principal_type the_type = core_types.root_type();
+
+    for (int i = 0; i < type_names.size(); ++i) {
+      simple_name name = simple_name.make((base_string) type_names.get(i));
+      readonly_list<action> types = context.lookup(the_type, name);
+      assert types.size() == 1;
+      the_type = (principal_type) ((type_action) types.first()).get_type();
+    }
+
+    return the_type;
   }
 
   // TODO: use declaration_utils.get_declared_supertypes()

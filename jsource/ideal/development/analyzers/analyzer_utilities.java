@@ -249,7 +249,7 @@ public class analyzer_utilities {
           new instance_variable(the_variable, mutable_flavor));
     }
 
-    if (action_utilities.supports_constructors(parent_type)) {
+    if (parent_type.get_kind().supports_constructors()) {
       the_context.add(parent_type.get_flavored(raw_flavor), the_name,
           new instance_variable(the_variable, mutable_flavor));
     }

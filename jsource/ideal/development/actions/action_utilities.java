@@ -245,11 +245,6 @@ public class action_utilities {
     return the_profile;
   }
 
-  public static boolean supports_constructors(principal_type the_type) {
-    kind the_kind = the_type.get_kind();
-    return the_kind == class_kind || the_kind == datatype_kind || the_kind == enum_kind;
-  }
-
   public static void process_super_flavors(principal_type the_subtype,
       @Nullable type_flavor subtype_flavor, type the_supertype, origin the_origin,
       analysis_context the_context) {

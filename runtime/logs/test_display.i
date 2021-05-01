@@ -25,7 +25,7 @@ class test_display {
     }
   }
 
-  testcase test_simple_display() {
+  test_case test_simple_display() {
     data_object : my_data.new("aaa", "bbb", 68);
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
@@ -51,7 +51,7 @@ class test_display {
     }
   }
 
-  testcase test_display_with_annotations() {
+  test_case test_display_with_annotations() {
     data_object : my_data2.new("aaa", missing.instance, 68);
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);

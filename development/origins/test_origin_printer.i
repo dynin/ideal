@@ -19,7 +19,7 @@ class test_origin_printer {
     assert the_writer.elements() == output;
   }
 
-  testcase test_show_origins() {
+  test_case test_show_origins() {
     input : "hello\nworld\n";
     show_origin_helper(input, 1, 2, "hello\n ^\n");
     show_origin_helper(input, 0, 5, "hello\n^^^^^\n");

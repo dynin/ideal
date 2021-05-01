@@ -33,7 +33,7 @@ class test_repeat_pattern {
         do_match_empty);
   }
 
-  testcase test_match() {
+  test_case test_match() {
     the_pattern : make_pattern(true);
 
     assert the_pattern("");
@@ -49,7 +49,7 @@ class test_repeat_pattern {
     assert !the_pattern("aacabbbca");
   }
 
-  testcase test_viable_prefix() {
+  test_case test_viable_prefix() {
     the_pattern : make_pattern(true);
 
     assert the_pattern.is_viable_prefix("");
@@ -69,7 +69,7 @@ class test_repeat_pattern {
     assert !the_pattern.is_viable_prefix("Abcabcb");
   }
 
-  testcase test_match_prefix() {
+  test_case test_match_prefix() {
     the_pattern : make_pattern(false);
 
     assert the_pattern.match_prefix("") is null;
@@ -103,7 +103,7 @@ class test_repeat_pattern {
     assert the_pattern2.match_prefix("ACfoo") == 2;
   }
 
-  testcase test_find_first() {
+  test_case test_find_first() {
     the_pattern : make_pattern(false);
 
     assert the_pattern.find_first("", 0) is null;
@@ -131,7 +131,7 @@ class test_repeat_pattern {
     assert match4.end == 15;
   }
 
-  testcase test_split() {
+  test_case test_split() {
     the_pattern : make_pattern(false);
 
     split0: the_pattern.split("foo");

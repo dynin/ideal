@@ -6,7 +6,7 @@
 
 class test_graph {
 
-  testcase basic_test() {
+  test_case basic_test() {
     the_graph : base_graph[string, string].new();
 
     assert the_graph.adjacent("foo").is_empty;
@@ -24,7 +24,7 @@ class test_graph {
     assert foo_elements.first == "bar";
   }
 
-  testcase cycle_test() {
+  test_case cycle_test() {
     the_graph : base_graph[string, string].new();
 
     the_graph.add_edge("A", "B", "A-B");

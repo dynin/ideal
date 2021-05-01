@@ -10,7 +10,7 @@ class test_output_transformer {
     return base_string.new("+", source, "!");
   }
 
-  testcase test_appender() {
+  test_case test_appender() {
     the_appender : appender[string].new();
 
     the_appender.write("foo");
@@ -34,7 +34,7 @@ class test_output_transformer {
     assert more_elements[5] == "baz";
   }
 
-  testcase test_transformer() {
+  test_case test_transformer() {
     the_appender : appender[string].new();
     the_transformer : output_transformer[string, string].new(test_transform, the_appender);
 

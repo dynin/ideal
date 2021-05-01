@@ -6,7 +6,7 @@
 
 class test_list {
 
-  testcase test_empty() {
+  test_case test_empty() {
     strings : empty[string].new();
 
     assert strings.is_empty;
@@ -21,7 +21,7 @@ class test_list {
     -- TODO: test exception throwing on out-of-bounds
   }
 
-  testcase test_simple_list() {
+  test_case test_simple_list() {
     strings : base_list[string].new();
 
     assert strings.is_empty;
@@ -59,7 +59,7 @@ class test_list {
     -- TODO: test exception throwing on out-of-bounds
   }
 
-  testcase test_list_elements() {
+  test_case test_list_elements() {
     strings : base_list[string].new();
 
     assert strings.is_empty;
@@ -95,7 +95,7 @@ class test_list {
     assert strings[1] == "bar";
   }
 
-  testcase test_list_remove() {
+  test_case test_list_remove() {
     strings : base_list[string].new();
 
     strings.append("foo");

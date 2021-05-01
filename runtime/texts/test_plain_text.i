@@ -13,7 +13,7 @@ class test_plain_text {
   static BAZ : "baz" !> base_string;
   static WYZZY : "wyzzy" !> base_string;
 
-  testcase test_writer_trivial() {
+  test_case test_writer_trivial() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -22,7 +22,7 @@ class test_plain_text {
     assert "foo\n" == the_writer.elements();
   }
 
-  testcase test_writer_indent0() {
+  test_case test_writer_indent0() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -32,7 +32,7 @@ class test_plain_text {
     assert "foo\n  bar\n" == the_writer.elements();
   }
 
-  testcase test_writer_indent1() {
+  test_case test_writer_indent1() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -46,7 +46,7 @@ class test_plain_text {
     assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements();
   }
 
-  testcase test_writer_indent2() {
+  test_case test_writer_indent2() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -57,7 +57,7 @@ class test_plain_text {
     assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements();
   }
 
-  testcase test_self_closing_tag() {
+  test_case test_self_closing_tag() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -69,7 +69,7 @@ class test_plain_text {
     assert "foo\nbar\n" == the_writer.elements();
   }
 
-  testcase test_writer_fragment() {
+  test_case test_writer_fragment() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -82,7 +82,7 @@ class test_plain_text {
     assert "one*two" == the_writer.elements();
   }
 
-  testcase test_underline_tag() {
+  test_case test_underline_tag() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -98,7 +98,7 @@ class test_plain_text {
     assert "hello world\n      ^^^^^\nfoo bar\n^^^\n" == the_writer.elements();
   }
 
-  testcase test_underline2_tag() {
+  test_case test_underline2_tag() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -114,7 +114,7 @@ class test_plain_text {
     assert "hello world\n      -----\nfoo bar\n---\n" == the_writer.elements();
   }
 
-  testcase test_two_underlines() {
+  test_case test_two_underlines() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 
@@ -129,7 +129,7 @@ class test_plain_text {
     assert "foo start hi end bar\n    ------^^----\n" == the_writer.elements();
   }
 
-  testcase test_blank_line() {
+  test_case test_blank_line() {
     the_writer : string_writer.new();
     the_formatter : plain_formatter.new(the_writer);
 

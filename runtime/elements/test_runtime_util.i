@@ -31,12 +31,12 @@ class test_runtime_util {
     v4 = test1.new(98, "asdfghj");
   }
 
-  testcase test_class_name() {
+  test_case test_class_name() {
     assert runtime_util.short_class_name(this) == "test_runtime_util";
     assert runtime_util.short_class_name("Hi") == "base_string";
   }
 
-  testcase test_hash_code() {
+  test_case test_hash_code() {
     hash1 : runtime_util.compute_hash_code(v1);
     hash2 : runtime_util.compute_hash_code(v2);
     hash3 : runtime_util.compute_hash_code(v3);
@@ -48,7 +48,7 @@ class test_runtime_util {
     assert hash3 != hash4;
   }
 
-  testcase test_simple_equals() {
+  test_case test_simple_equals() {
     assert runtime_util.values_equal(v1, v2);
     assert !runtime_util.values_equal(v1, v3);
     assert !runtime_util.values_equal(v1, v4);
@@ -65,7 +65,7 @@ class test_runtime_util {
     return the_list.frozen_copy();
   }
 
-  testcase test_list_equals() {
+  test_case test_list_equals() {
     s1 : make_list(v1, v3);
     s2 : make_list(v2, v3);
     s3 : make_list(v4, v3);
@@ -74,7 +74,7 @@ class test_runtime_util {
     assert !runtime_util.values_equal(s1, s3);
   }
 
-  testcase test_equals() {
+  test_case test_equals() {
     assert runtime_util.values_equal("Hi", "Hi");
     assert !runtime_util.values_equal("Hi", "Hello");
     assert runtime_util.values_equal(null, null);
@@ -82,7 +82,7 @@ class test_runtime_util {
     assert !runtime_util.values_equal("bar", null);
   }
 
-  testcase test_escape() {
+  test_case test_escape() {
     assert runtime_util.escape_markup("foo") == "foo";
     assert runtime_util.escape_markup("hello! <>&") == "hello! &lt;&gt;&amp;";
     assert runtime_util.escape_markup("1: ' 2: \"") == "1: &apos; 2: &quot;";

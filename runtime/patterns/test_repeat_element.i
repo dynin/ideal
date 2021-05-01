@@ -10,7 +10,7 @@ class test_repeat_element {
     return c == 'a' || c == 'b' || c == 'c';
   }
 
-  testcase test_match() {
+  test_case test_match() {
     zero_or_more : repeat_element[character].new(test_predicate, true);
     one_or_more : repeat_element[character].new(test_predicate, false);
 
@@ -29,7 +29,7 @@ class test_repeat_element {
     assert !one_or_more("xab");
   }
 
-  testcase test_viable_prefix() {
+  test_case test_viable_prefix() {
     zero_or_more : repeat_element[character].new(test_predicate, true);
     one_or_more : repeat_element[character].new(test_predicate, false);
 
@@ -46,7 +46,7 @@ class test_repeat_element {
     assert !one_or_more.is_viable_prefix("ay");
   }
 
-  testcase test_match_prefix() {
+  test_case test_match_prefix() {
     zero_or_more : repeat_element[character].new(test_predicate, true);
     one_or_more : repeat_element[character].new(test_predicate, false);
 
@@ -67,7 +67,7 @@ class test_repeat_element {
     assert one_or_more.match_prefix("abcabc") == 6;
   }
 
-  testcase test_find_first() {
+  test_case test_find_first() {
     the_pattern : repeat_element[character].new(test_predicate, false);
 
     assert the_pattern.find_first("", 0) is null;
@@ -112,7 +112,7 @@ class test_repeat_element {
     assert match7.end == 2;
   }
 
-  testcase test_find_last() {
+  test_case test_find_last() {
     the_pattern : repeat_element[character].new(test_predicate, false);
     -- TODO: test pattern with do_match_empty.
 
@@ -164,7 +164,7 @@ class test_repeat_element {
     assert match8.end == 9;
   }
 
-  testcase test_split() {
+  test_case test_split() {
     the_pattern : repeat_element[character].new(test_predicate, false);
 
     split0: the_pattern.split("foo");

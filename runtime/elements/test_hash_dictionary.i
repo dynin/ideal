@@ -8,7 +8,7 @@
 
 class test_hash_dictionary {
 
-  testcase test_mutable_dictionary() {
+  test_case test_mutable_dictionary() {
     dict : hash_dictionary[string, string].new();
 
     assert dict.is_empty;
@@ -56,7 +56,7 @@ class test_hash_dictionary {
     assert dict2.get("key2") is null;
   }
 
-  testcase test_immutable_dictionary() {
+  test_case test_immutable_dictionary() {
     dict2 : hash_dictionary[string, string].new();
     dict2.put("key", "value");
     dict2i : dict2.frozen_copy();
@@ -68,7 +68,7 @@ class test_hash_dictionary {
     assert dict2i.get("notfound") is null;
   }
 
-  testcase test_dictionary_updates() {
+  test_case test_dictionary_updates() {
     dict : hash_dictionary[string, string].new();
     for (var nonnegative max : 0; max < 68; max += 1) {
       dict.put("k" ++ max, "v" ++ max);

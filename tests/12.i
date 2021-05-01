@@ -71,7 +71,7 @@ class sub_type {
     --super();
   }
   void some_method(value arg) {
-    (arg as new_type).field;
+    (arg !> new_type).field;
   }
 }
 new_type val : sub_type.new("hahaha");

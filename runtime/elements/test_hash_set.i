@@ -8,7 +8,7 @@
 
 class test_hash_set {
 
-  testcase test_mutable_set() {
+  test_case test_mutable_set() {
     set : hash_set[string].new();
 
     assert set.is_empty;
@@ -81,7 +81,7 @@ class test_hash_set {
     assert !set2.contains("value3");
   }
 
-  testcase test_set_updates() {
+  test_case test_set_updates() {
     set : hash_set[string].new();
     for (var nonnegative max : 0; max < 68; max += 1) {
       set.add("v" ++ max);
@@ -98,7 +98,7 @@ class test_hash_set {
     }
   }
 
-  testcase test_set_add_all() {
+  test_case test_set_add_all() {
     set1 : hash_set[string].new();
     set1.add("a");
     set1.add("b");

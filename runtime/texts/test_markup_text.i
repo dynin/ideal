@@ -8,7 +8,7 @@ class test_markup_text {
 
   import ideal.machine.channels.string_writer;
 
-  testcase test_writer_trivial() {
+  test_case test_writer_trivial() {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
@@ -17,7 +17,7 @@ class test_markup_text {
     assert "<p>\n foo\n</p>\n" == the_writer.elements();
   }
 
-  testcase test_quoted() {
+  test_case test_quoted() {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
@@ -26,7 +26,7 @@ class test_markup_text {
     assert "AT&amp;T &lt;etc.&gt; q1:&apos; q2:&quot;" == the_writer.elements();
   }
 
-  testcase test_writer_indent() {
+  test_case test_writer_indent() {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
@@ -36,7 +36,7 @@ class test_markup_text {
     assert "<p>\n foo\n</p>\n<indent>\n bar\n</indent>\n" == the_writer.elements();
   }
 
-  testcase test_attribute() {
+  test_case test_attribute() {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
@@ -46,7 +46,7 @@ class test_markup_text {
     assert "<p name='foo'>\n bar\n</p>\n" == the_writer.elements();
   }
 
-  testcase test_self_closing_tag() {
+  test_case test_self_closing_tag() {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
@@ -58,7 +58,7 @@ class test_markup_text {
     assert "foo<br clear='all' />\nbar\n" == the_writer.elements();
   }
 
-  testcase test_writer_fragment() {
+  test_case test_writer_fragment() {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 

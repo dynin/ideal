@@ -192,7 +192,7 @@ public class procedure_analyzer extends declaration_analyzer
       the_flavor = process_flavor(post_annotations);
 
       assert category == null;
-      if (ret == null && !annotations().has(general_modifier.testcase_modifier)) {
+      if (ret == null && !annotations().has(general_modifier.test_case_modifier)) {
         category = procedure_category.CONSTRUCTOR;
       } else if (is_static_declaration()) {
         category = procedure_category.STATIC;

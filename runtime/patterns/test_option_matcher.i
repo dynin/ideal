@@ -27,7 +27,7 @@ class test_option_matcher {
         repeat_element[character].new(the_predicate, false), as_string);
   }
 
-  testcase test_match_parse() {
+  test_case test_match_parse() {
     matchers : [ make_matcher(match_a), make_matcher(match_b), make_matcher(match_c) ];
     the_matcher : option_matcher[character, string].new(matchers);
     the_matcher.validate();

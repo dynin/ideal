@@ -8,7 +8,7 @@
 
 class test_dictionary {
 
-  testcase test_mutable_dictionary() {
+  test_case test_mutable_dictionary() {
     dict : list_dictionary[string, string].new();
 
     assert dict.is_empty;
@@ -54,7 +54,7 @@ class test_dictionary {
     assert dict2.get("key2") is null;
   }
 
-  testcase test_immutable_dictionary() {
+  test_case test_immutable_dictionary() {
     dict : immutable_list_dictionary[string, string].new();
 
     assert dict.is_empty;

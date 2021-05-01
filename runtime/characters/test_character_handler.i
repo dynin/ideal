@@ -7,7 +7,7 @@
 class test_character_handler {
   import ideal.machine.characters.normal_handler;
 
-  testcase predicate_test() {
+  test_case predicate_test() {
     the_character_handler : normal_handler.instance;
 
     assert the_character_handler.is_letter('x');
@@ -26,7 +26,7 @@ class test_character_handler {
     assert !the_character_handler.is_upper_case('5');
   }
 
-  testcase conversion_test() {
+  test_case conversion_test() {
     the_character_handler : normal_handler.instance;
 
     assert the_character_handler.to_lower_case('X') == 'x';

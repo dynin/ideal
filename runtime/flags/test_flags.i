@@ -11,7 +11,7 @@ class test_flags {
     string or null ARG_STRING;
   }
 
-  testcase test_flag_parse() {
+  test_case test_flag_parse() {
     the_demo_flags : demo_flags.new([ "-arg-bool=true", "-arg-string=str" ], error_reporter);
     assert the_demo_flags.ARG_BOOL == true;
     assert the_demo_flags.ARG_STRING == "str";
@@ -27,7 +27,7 @@ class test_flags {
     reported_message = message;
   }
 
-  testcase test_failed_parse() {
+  test_case test_failed_parse() {
     the_demo_flags : demo_flags.new([ "-foo", ], error_reporter);
     assert reported_message == "Unknown flag: foo";
 

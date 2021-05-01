@@ -20,7 +20,7 @@ class test_markup_grammar {
     return grammar;
   }
 
-  testcase test_entity_ref() {
+  test_case test_entity_ref() {
     entity_ref : make_grammar().entity_ref;
 
     assert entity_ref("&lt;");
@@ -38,7 +38,7 @@ class test_markup_grammar {
     assert entity_ref.parse("&nbsp;") == NBSP;
   }
 
-  testcase test_attribute_value() {
+  test_case test_attribute_value() {
     grammar : make_grammar();
     quot_attr_value : grammar.quot_attr_value;
 
@@ -77,7 +77,7 @@ class test_markup_grammar {
         "&lt;foo&gt;bar\"baz";
   }
 
-  testcase test_attribute() {
+  test_case test_attribute() {
     attribute : make_grammar().attribute;
 
     assert attribute("id = '68'");
@@ -97,7 +97,7 @@ class test_markup_grammar {
     assert (attribute1.value !> string) == "https://theideal.org/";
   }
 
-  testcase test_empty_element() {
+  test_case test_empty_element() {
     empty_element : make_grammar().empty_element;
 
     assert empty_element("<html/>");
@@ -129,7 +129,7 @@ class test_markup_grammar {
     assert attributes[1].value !> base_string == "https://theideal.org/";
   }
 
-  testcase test_content() {
+  test_case test_content() {
     content : make_grammar().content;
 
     assert content("  hello, world!");
@@ -137,7 +137,7 @@ class test_markup_grammar {
     assert !content("<bar>");
   }
 
-  testcase test_simple_parse() {
+  test_case test_simple_parse() {
     grammar : make_grammar();
     document_matcher : grammar.document_matcher;
 
@@ -196,7 +196,7 @@ class test_markup_grammar {
         "<html><p class='***' id='baz'>foo</p></html>");
   }
 
-  testcase test_parse_errors() {
+  test_case test_parse_errors() {
     grammar : make_grammar();
     parser : markup_parser.new(grammar, report_error);
 

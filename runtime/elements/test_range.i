@@ -6,7 +6,7 @@
 
 class test_range {
 
-  testcase test_empty() {
+  test_case test_empty() {
     the_range : base_range.new(68, 68);
 
     assert the_range.is_empty;
@@ -25,7 +25,7 @@ class test_range {
     assert new_range.end == 68;
   }
 
-  testcase test_simple_range() {
+  test_case test_simple_range() {
     the_range : base_range.new(5, 8);
 
     assert the_range.begin == 5;

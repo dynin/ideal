@@ -8,4 +8,5 @@ public interface kind extends deeply_immutable_data, deeply_immutable_reference_
   simple_name name();
   flavor_profile default_profile();
   boolean is_namespace();
+  boolean supports_constructors();
 }

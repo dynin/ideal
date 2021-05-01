@@ -28,7 +28,7 @@ namespace general_modifier {
   modifier_kind overload_modifier : base_modifier_kind.new("overload");
   modifier_kind implement_modifier : base_modifier_kind.new("implement");
   modifier_kind noreturn_modifier : base_modifier_kind.new("noreturn");
-  modifier_kind testcase_modifier : base_modifier_kind.new("testcase");
+  modifier_kind test_case_modifier : base_modifier_kind.new("test_case");
   modifier_kind dont_display_modifier : base_modifier_kind.new("dont_display");
 
   -- For interop with Java.

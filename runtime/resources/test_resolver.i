@@ -31,19 +31,19 @@ class test_resolver {
   static CURRENT : test_store.new(resource_util.CURRENT_CATALOG, true).top();
   static ROOT : test_store.new(resource_util.ROOT_CATALOG, false).top();
 
-  testcase test_file_catalogs() {
+  test_case test_file_catalogs() {
     assert CURRENT.get_id().to_string == ".";
     assert ROOT.get_id().to_string == "/";
   }
 
-  testcase test_simple_resolve() {
+  test_case test_simple_resolve() {
     foo : "foo";
 
     assert CURRENT.resolve(foo).to_string == "foo";
     assert ROOT.resolve(foo).to_string == "/foo";
   }
 
-  testcase test_resolve_extension() {
+  test_case test_resolve_extension() {
     bar : "bar";
     html : base_extension.HTML;
 
@@ -51,7 +51,7 @@ class test_resolver {
     assert ROOT.resolve(bar, html).to_string == "/bar.html";
   }
 
-  testcase test_sub_catalogs() {
+  test_case test_sub_catalogs() {
     cat : CURRENT;
     dog : cat.resolve("dog");
 
@@ -64,7 +64,7 @@ class test_resolver {
     assert dog2.to_string == "dog/Yoshka";
   }
 
-  testcase test_root_subdirs() {
+  test_case test_root_subdirs() {
     cat : ROOT;
     dog : cat.resolve("dog");
 
@@ -77,7 +77,7 @@ class test_resolver {
     assert dog2.to_string == "/dog/Yoshka";
   }
 
-  testcase test_multiple_subdirs() {
+  test_case test_multiple_subdirs() {
     var foo : ROOT;
     var bar : foo.resolve("bar");
 
@@ -101,7 +101,7 @@ class test_resolver {
     assert bar.to_string == "/bar/baz/quux";
   }
 
-  testcase test_more_subdir_ops() {
+  test_case test_more_subdir_ops() {
     var foo : CURRENT;
     var bar : foo.resolve("foo/bar/././baz");
 
@@ -120,7 +120,7 @@ class test_resolver {
     assert "." == bar.to_string;
   }
 
-  testcase test_parent_catalog() {
+  test_case test_parent_catalog() {
     foo : CURRENT;
     var bar : foo.resolve("foo/bar/././baz");
 

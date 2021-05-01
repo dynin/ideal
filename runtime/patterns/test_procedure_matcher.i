@@ -19,7 +19,7 @@ class test_procedure_matcher {
         repeat_element[character].new(test_predicate, false), as_string);
   }
 
-  testcase test_match() {
+  test_case test_match() {
     the_matcher : make_matcher();
 
     assert the_matcher("a");
@@ -35,7 +35,7 @@ class test_procedure_matcher {
     assert the_matcher.parse("abca") == "abca";
   }
 
-  testcase test_viable_prefix() {
+  test_case test_viable_prefix() {
     the_pattern : make_matcher();
 
     assert the_pattern.is_viable_prefix("");
@@ -45,7 +45,7 @@ class test_procedure_matcher {
     assert !the_pattern.is_viable_prefix("ay");
   }
 
-  testcase test_match_prefix() {
+  test_case test_match_prefix() {
     the_pattern : make_matcher();
 
     assert the_pattern.match_prefix("") is null;
@@ -57,7 +57,7 @@ class test_procedure_matcher {
     assert the_pattern.match_prefix("abcabc") == 6;
   }
 
-  testcase test_find_first() {
+  test_case test_find_first() {
     the_pattern : make_matcher();
 
     assert the_pattern.find_first("", 0) is null;
@@ -80,7 +80,7 @@ class test_procedure_matcher {
     assert match3.end == 8;
   }
 
-  testcase test_split() {
+  test_case test_split() {
     the_pattern : make_matcher();
 
     split0: the_pattern.split("foo");

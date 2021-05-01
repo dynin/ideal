@@ -8,7 +8,7 @@ import ideal.machine.channels.string_writer;
 
 class test_string_writer {
 
-  testcase basic_test() {
+  test_case basic_test() {
     the_writer : string_writer.new();
 
     assert the_writer.size() == 0;

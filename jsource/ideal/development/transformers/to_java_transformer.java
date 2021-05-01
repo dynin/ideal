@@ -778,7 +778,7 @@ public class to_java_transformer extends base_transformer {
 
     if (concrete_mode) {
       @Nullable procedure_construct run_tests =
-          testcase_generator.process_testcases(the_type_declaration);
+          test_case_generator.process_test_cases(the_type_declaration);
       if (run_tests != null) {
         flavored_bodies.get(profile.default_flavor()).append(run_tests);
       }

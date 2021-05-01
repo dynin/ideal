@@ -11,4 +11,5 @@ interface kind {
   simple_name name;
   flavor_profile default_profile;
   boolean is_namespace;
+  boolean supports_constructors;
 }

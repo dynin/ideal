@@ -46,7 +46,7 @@ class test_sequence_pattern {
     return sequence_pattern[character].new(patterns_list);
   }
 
-  testcase test_match() {
+  test_case test_match() {
     the_pattern : make_pattern();
 
     assert the_pattern("abc");
@@ -58,7 +58,7 @@ class test_sequence_pattern {
     assert !the_pattern("aaca");
   }
 
-  testcase test_viable_prefix() {
+  test_case test_viable_prefix() {
     the_pattern : make_pattern();
 
     assert the_pattern.is_viable_prefix("");
@@ -87,7 +87,7 @@ class test_sequence_pattern {
     assert !the_pattern2.is_viable_prefix("Ccc");
   }
 
-  testcase test_match_prefix() {
+  test_case test_match_prefix() {
     the_pattern : make_pattern();
 
     assert the_pattern.match_prefix("") is null;
@@ -101,7 +101,7 @@ class test_sequence_pattern {
     assert the_pattern.match_prefix("aaabbbcccddd") == 9;
   }
 
-  testcase test_find_first() {
+  test_case test_find_first() {
     the_pattern : make_pattern();
 
     assert the_pattern.find_first("", 0) is null;
@@ -124,7 +124,7 @@ class test_sequence_pattern {
     assert match3.end == 5;
   }
 
-  testcase test_find_first_more() {
+  test_case test_find_first_more() {
     pattern[character] match_zero_or_more_b : repeat_element[character].new(match_b, true);
     pattern[character] match_one_or_more_c : repeat_element[character].new(match_c, false);
 
@@ -137,7 +137,7 @@ class test_sequence_pattern {
     assert match.end == 12;
   }
 
-  testcase test_split() {
+  test_case test_split() {
     the_pattern : make_pattern();
 
     split0: the_pattern.split("foo");

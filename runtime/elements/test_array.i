@@ -8,19 +8,19 @@ import ideal.machine.elements.array;
 
 class test_array {
 
-  testcase test_creation() {
+  test_case test_creation() {
     the_array : array[string].new(10);
     assert the_array.size == 10;
   }
 
-  testcase test_access() {
+  test_case test_access() {
     the_array : array[string].new(10);
 
     the_array[5] = "foo";
     assert "foo" == the_array[5];
   }
 
-  testcase test_move() {
+  test_case test_move() {
     the_array : array[string].new(3);
 
     the_array[0] = "foo";
@@ -38,7 +38,7 @@ class test_array {
     assert "bar" == the_array[2];
   }
 
-  testcase test_initializer() {
+  test_case test_initializer() {
     the_array : ["foo", "bar"];
 
     assert the_array.size == 2;

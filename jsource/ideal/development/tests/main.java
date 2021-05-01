@@ -15,7 +15,7 @@ import ideal.runtime.patterns.*;
 import ideal.runtime.resources.*;
 import ideal.runtime.channels.*;
 import ideal.runtime.graphs.*;
-import ideal.runtime.logs.test_display;
+import ideal.runtime.logs.*;
 import ideal.runtime.flags.*;
 import ideal.development.names.*;
 import ideal.development.futures.*;
@@ -60,7 +60,6 @@ public class main {
     new test_list_pattern().run_all_tests();
 
     new test_markup_grammar().run_all_tests();
-    new test_doc_grammar().run_all_tests();
 
     new test_resolver().run_all_tests();
 
@@ -75,5 +74,7 @@ public class main {
     new test_origin_printer().run_all_tests();
 
     new test_futures().run_all_tests();
+
+    new test_doc_grammar().run_all_tests();
   }
 }

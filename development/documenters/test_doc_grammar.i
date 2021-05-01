@@ -15,7 +15,7 @@ class test_doc_grammar {
     return doc_grammar.new(normal_handler.instance);
   }
 
-  testcase test_simple_parse() {
+  test_case test_simple_parse() {
     grammar : make_grammar();
     content_matcher : grammar.content;
 
@@ -86,7 +86,7 @@ class test_doc_grammar {
         "<c><p class='value&quot;&gt;==' id='foo&apos;'>foo</p></c> <code>bar</code> ");
   }
 
-  testcase test_parse_errors() {
+  test_case test_parse_errors() {
     grammar : make_grammar();
     parser : doc_parser.new(grammar, report_error);
 

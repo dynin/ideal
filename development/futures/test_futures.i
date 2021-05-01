@@ -7,7 +7,7 @@
 --- Tests associated with futures.
 class test_futures {
 
-  testcase test_simple_futures() {
+  test_case test_simple_futures() {
     future0 : base_future[string].new("foo");
     assert future0.value == "foo";
 
@@ -29,7 +29,7 @@ class test_futures {
     count1 += 1;
   }
 
-  testcase test_future_observers() {
+  test_case test_future_observers() {
     lifespan the_lifespan : base_lifespan.new(missing.instance);
 
     op0 : base_operation.new(observe0, "observe0");

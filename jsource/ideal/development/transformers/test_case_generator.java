@@ -25,16 +25,16 @@ import ideal.development.literals.*;
 
 import javax.annotation.Nullable;
 
-public class testcase_generator {
+public class test_case_generator {
 
   private static final simple_name RUN_ALL_TESTS = simple_name.make("run_all_tests");
   private static final simple_name START_TEST = simple_name.make("start_test");
   private static final simple_name END_TEST = simple_name.make("end_test");
 
-  public static @Nullable procedure_construct process_testcases(
+  public static @Nullable procedure_construct process_test_cases(
       type_declaration the_type_declaration) {
 
-    if (!has_testcases(the_type_declaration)) {
+    if (!has_test_cases(the_type_declaration)) {
       return null;
     }
 
@@ -51,7 +51,7 @@ public class testcase_generator {
     list<construct> test_calls = new base_list<construct>();
     for (int i = 0; i < procedures.size(); ++i) {
       procedure_declaration the_procedure = procedures.get(i);
-      if (the_procedure.annotations().has(general_modifier.testcase_modifier)) {
+      if (the_procedure.annotations().has(general_modifier.test_case_modifier)) {
         simple_name the_name = (simple_name) the_procedure.short_name();
 
         string name_string = new base_string(type_name, ".", the_name.to_string());
@@ -79,12 +79,12 @@ public class testcase_generator {
         new block_construct(test_calls, source), source);
   }
 
-  public static boolean has_testcases(type_declaration the_type_declaration) {
+  public static boolean has_test_cases(type_declaration the_type_declaration) {
     // TODO: rewrite using list.has()
     readonly_list<procedure_declaration> procedures =
         declaration_util.get_declared_procedures(the_type_declaration);
     for (int i = 0; i < procedures.size(); ++i) {
-      if (procedures.get(i).annotations().has(general_modifier.testcase_modifier)) {
+      if (procedures.get(i).annotations().has(general_modifier.test_case_modifier)) {
         return true;
       }
     }

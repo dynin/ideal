@@ -6,12 +6,12 @@
 
 class test_elements {
 
-  testcase test_namespace_id() {
+  test_case test_namespace_id() {
     assert text_library.HTML_NS.short_name == "html";
     assert text_library.HTML_NS.to_string() == "html";
   }
 
-  testcase test_element_id() {
+  test_case test_element_id() {
     assert text_library.P.short_name == "p";
     assert text_library.P.get_namespace == text_library.HTML_NS;
     assert text_library.P.to_string() == "html:p";
@@ -21,7 +21,7 @@ class test_elements {
     assert text_library.DIV.to_string() == "html:div";
   }
 
-  testcase test_base_element() {
+  test_case test_base_element() {
     text_element element : base_element.new(text_library.P);
 
     assert element.get_id == text_library.P;
@@ -29,7 +29,7 @@ class test_elements {
     assert element.children is null;
   }
 
-  testcase test_make_element() {
+  test_case test_make_element() {
     node0 : base_element.new(text_library.P);
     -- TODO: shouldn't need to specify type
     text_node node1 : "foo" !> base_string;

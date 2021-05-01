@@ -9,42 +9,44 @@ implicit import ideal.development.flavors.flavor_profiles;
 --- All type kinds used in the ideal system.
 namespace type_kinds {
 
-  block_kind : base_kind.new("block", nameonly_profile);
+  block_kind : base_kind.new("block", nameonly_profile, false);
 
-  class_kind : base_kind.new("class", mutable_profile);
+  class_kind : base_kind.new("class", mutable_profile, true);
 
-  concept_kind : base_kind.new("concept", mutable_profile);
+  concept_kind : base_kind.new("concept", mutable_profile, false);
 
-  datatype_kind : base_kind.new("datatype", mutable_profile);
+  datatype_kind : base_kind.new("datatype", mutable_profile, true);
 
-  enum_kind : base_kind.new("enum", deeply_immutable_profile);
+  enum_kind : base_kind.new("enum", deeply_immutable_profile, true);
 
-  interface_kind : base_kind.new("interface", mutable_profile);
+  interface_kind : base_kind.new("interface", mutable_profile, false);
 
-  module_kind : base_kind.new("module", nameonly_profile);
+  module_kind : base_kind.new("module", nameonly_profile, false);
 
-  namespace_kind : base_kind.new("namespace", nameonly_profile);
+  namespace_kind : base_kind.new("namespace", nameonly_profile, false);
 
-  package_kind : base_kind.new("package", nameonly_profile);
+  package_kind : base_kind.new("package", nameonly_profile, false);
 
-  html_content_kind : base_kind.new("html_content", nameonly_profile);
+  html_content_kind : base_kind.new("html_content", nameonly_profile, false);
 
-  singleton_kind : base_kind.new("singleton", deeply_immutable_profile);
+  singleton_kind : base_kind.new("singleton", deeply_immutable_profile, false);
 
   -- TODO: where should we put this?
   INSTANCE_NAME : simple_name.make("instance");
 
-  project_kind : base_kind.new("project", nameonly_profile);
+  project_kind : base_kind.new("project", nameonly_profile, false);
 
-  service_kind : base_kind.new("service", mutable_profile);
+  service_kind : base_kind.new("service", mutable_profile, false);
 
-  world_kind : base_kind.new("world", mutable_profile);
+  world_kind : base_kind.new("world", mutable_profile, false);
 
-  #id:reference_kind : base_kind.new("reference_kind", mutable_profile);
+  test_suite_kind : base_kind.new("test_suite", mutable_profile, true);
 
-  #id:procedure_kind : base_kind.new("procedure_kind", immutable_profile);
+  #id:reference_kind : base_kind.new("reference_kind", mutable_profile, false);
 
-  union_kind : base_kind.new("union_kind", mutable_profile);
+  #id:procedure_kind : base_kind.new("procedure_kind", immutable_profile, false);
 
-  type_alias_kind : base_kind.new("type_alias_kind", mutable_profile);
+  union_kind : base_kind.new("union_kind", mutable_profile, false);
+
+  type_alias_kind : base_kind.new("type_alias_kind", mutable_profile, false);
 }

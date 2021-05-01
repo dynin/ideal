@@ -59,7 +59,7 @@ class test_repeat_matcher {
         join_list);
   }
 
-  testcase test_match() {
+  test_case test_match() {
     the_matcher : make_pattern(true);
 
     assert the_matcher("abc");
@@ -72,7 +72,7 @@ class test_repeat_matcher {
     assert !the_matcher("aaca");
   }
 
-  testcase test_parse() {
+  test_case test_parse() {
     the_matcher : make_pattern(true);
 
     assert the_matcher.parse("abc") == "-a-b-c";

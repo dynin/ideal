@@ -10,7 +10,7 @@ class test_predicate_pattern {
     return c == 'a' || c == 'b' || c == 'c';
   }
 
-  testcase test_match() {
+  test_case test_match() {
     the_pattern : predicate_pattern[character].new(test_predicate);
 
     assert the_pattern("a");
@@ -18,7 +18,7 @@ class test_predicate_pattern {
     assert !the_pattern("xx");
   }
 
-  testcase test_viable_prefix() {
+  test_case test_viable_prefix() {
     the_pattern : predicate_pattern[character].new(test_predicate);
 
     assert the_pattern.is_viable_prefix("");
@@ -27,7 +27,7 @@ class test_predicate_pattern {
     assert !the_pattern.is_viable_prefix("aa");
   }
 
-  testcase test_match_prefix() {
+  test_case test_match_prefix() {
     the_pattern : predicate_pattern[character].new(test_predicate);
 
     assert the_pattern.match_prefix("") is null;
@@ -36,7 +36,7 @@ class test_predicate_pattern {
     assert the_pattern.match_prefix("abcdef") == 1;
   }
 
-  testcase test_find_first() {
+  test_case test_find_first() {
     the_pattern : predicate_pattern[character].new(test_predicate);
 
     assert the_pattern.find_first("", 0) is null;
@@ -54,7 +54,7 @@ class test_predicate_pattern {
     assert match2.end == 6;
   }
 
-  testcase test_find_last() {
+  test_case test_find_last() {
     the_pattern : predicate_pattern[character].new(test_predicate);
 
     assert the_pattern.find_last("", missing.instance) is null;
@@ -83,7 +83,7 @@ class test_predicate_pattern {
     assert match4.end == 6;
   }
 
-  testcase test_split() {
+  test_case test_split() {
     the_pattern : predicate_pattern[character].new(test_predicate);
 
     split0: the_pattern.split("foo");

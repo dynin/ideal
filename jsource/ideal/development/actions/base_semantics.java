@@ -445,7 +445,7 @@ public class base_semantics implements semantics {
         type_utilities.prepare(supertype, declaration_pass.METHODS_AND_VARIABLES);
       }
 
-      if (action_utilities.supports_constructors(new_type)) {
+      if (new_type.get_kind().supports_constructors()) {
         context.add(new_type, special_name.NEW, new allocate_action(new_type, pos));
       } else if (new_type.get_kind() == reference_kind &&
                  new_type instanceof parametrized_type) {

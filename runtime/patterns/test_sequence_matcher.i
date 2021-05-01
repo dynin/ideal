@@ -36,7 +36,7 @@ class test_sequence_matcher {
     return result;
   }
 
-  testcase test_match_parse() {
+  test_case test_match_parse() {
     -- TODO: use array creation expression.
     list[pattern[character]] patterns_list : base_list[pattern[character]].new(
         make_matcher(match_a),

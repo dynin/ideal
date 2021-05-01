@@ -31,7 +31,7 @@ class test_option_pattern {
     return option_pattern[character].new([alpha, beta]);
   }
 
-  testcase test_match() {
+  test_case test_match() {
     the_pattern : make_pattern();
 
     assert the_pattern("ab");
@@ -45,7 +45,7 @@ class test_option_pattern {
     assert !the_pattern("accc");
   }
 
-  testcase test_viable_prefix() {
+  test_case test_viable_prefix() {
     the_pattern : make_pattern();
 
     assert the_pattern.is_viable_prefix("");
@@ -62,7 +62,7 @@ class test_option_pattern {
     assert !the_pattern.is_viable_prefix("Cccb");
   }
 
-  testcase test_match_prefix() {
+  test_case test_match_prefix() {
     the_pattern : make_pattern();
 
     assert the_pattern.match_prefix("") is null;
@@ -76,7 +76,7 @@ class test_option_pattern {
     assert the_pattern.match_prefix("aaabbbcccddd") == 6;
   }
 
-  testcase test_find_first() {
+  test_case test_find_first() {
     the_pattern : make_pattern();
 
     assert the_pattern.find_first("", 0) is null;
@@ -109,7 +109,7 @@ class test_option_pattern {
     assert match5.end == 12;
   }
 
-  testcase test_split() {
+  test_case test_split() {
     the_pattern : make_pattern();
 
     split0: the_pattern.split("foo");

@@ -12,7 +12,7 @@ import ideal.machine.annotations.dont_display;
 
 public class base_token_type extends debuggable implements token_type, readonly_displayable {
   private final string the_name;
-  private final @dont_display int the_symbol;
+  private @dont_display final int the_symbol;
   public base_token_type(final string name, final int the_symbol) {
     assert name.is_not_empty();
     this.the_name = name;

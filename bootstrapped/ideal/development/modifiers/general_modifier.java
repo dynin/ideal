@@ -23,7 +23,7 @@ public class general_modifier {
   public static final modifier_kind overload_modifier = new base_modifier_kind(new base_string("overload"));
   public static final modifier_kind implement_modifier = new base_modifier_kind(new base_string("implement"));
   public static final modifier_kind noreturn_modifier = new base_modifier_kind(new base_string("noreturn"));
-  public static final modifier_kind testcase_modifier = new base_modifier_kind(new base_string("testcase"));
+  public static final modifier_kind test_case_modifier = new base_modifier_kind(new base_string("test_case"));
   public static final modifier_kind dont_display_modifier = new base_modifier_kind(new base_string("dont_display"));
   public static final modifier_kind synchronized_modifier = new base_modifier_kind(new base_string("synchronized"));
   public static final modifier_kind volatile_modifier = new base_modifier_kind(new base_string("volatile"));

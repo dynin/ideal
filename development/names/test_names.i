@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 class test_names {
-  testcase test_simple_names() {
+  test_case test_simple_names() {
     foo : simple_name.make("foo");
     bar : simple_name.make("bar");
     foo2 : simple_name.make("foo");
@@ -18,7 +18,7 @@ class test_names {
     assert foo == foo2;
   }
 
-  testcase test_special_names() {
+  test_case test_special_names() {
     foo : special_name.new("foo");
     bar : special_name.new("bar");
     foo2 : special_name.new("foo");
@@ -30,7 +30,7 @@ class test_names {
     assert foo != foo2;
   }
 
-  testcase test_segmented_names() {
+  test_case test_segmented_names() {
     foo : simple_name.make("foo");
     bar : simple_name.make("bar");
 
@@ -41,14 +41,14 @@ class test_names {
     assert name2.to_string() == "foo_bar_foo";
   }
 
-  testcase test_simple_names_equality() {
+  test_case test_simple_names_equality() {
     foo : simple_name.make("foo_bar");
     bar : simple_name.make("foo_bar");
 
     assert foo == bar;
   }
 
-  testcase test_camel_case() {
+  test_case test_camel_case() {
     the_name : name_utilities.parse_camel_case("thisIsCamelCase");
     assert the_name.to_string() == "this_is_camel_case";
 

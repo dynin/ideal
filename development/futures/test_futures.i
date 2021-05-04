@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 --- Tests associated with futures.
-class test_futures {
+test_suite test_futures {
 
   test_case test_simple_futures() {
     future0 : base_future[string].new("foo");

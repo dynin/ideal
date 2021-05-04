@@ -740,9 +740,13 @@ public class to_java_transformer extends base_transformer {
     @Nullable principal_type old_enclosing_type = enclosing_type;
     enclosing_type = declared_type;
 
-    if (declared_in_type.get_kind() == class_kind) {
+    if (is_concrete_kind(declared_in_type.get_kind())) {
       // Introduce inner type.
       append_static(annotations, the_origin);
+    }
+
+    if (the_kind == test_suite_kind) {
+      the_kind = class_kind;
     }
 
     boolean concrete_mode = is_concrete_kind(the_kind);

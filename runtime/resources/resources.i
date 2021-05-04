@@ -18,5 +18,5 @@ namespace resources {
   class make_catalog_option;
   namespace resource_util;
 
-  class test_resolver;
+  test_suite test_resolver;
 }

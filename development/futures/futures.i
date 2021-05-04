@@ -17,5 +17,6 @@ package futures {
   interface future;
   class base_future;
   namespace event_queue;
-  class test_futures;
+
+  test_suite test_futures;
 }

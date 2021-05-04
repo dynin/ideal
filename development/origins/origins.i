@@ -24,5 +24,6 @@ package origins {
   class fragment_origin;
   namespace origin_utilities;
   namespace origin_printer;
-  class test_origin_printer;
+
+  test_suite test_origin_printer;
 }

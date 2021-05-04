@@ -17,5 +17,5 @@ namespace logs {
 
   interface displayable;
 
-  class test_display;
+  test_suite test_display;
 }

@@ -6,7 +6,7 @@
 
 --- Unittests for implementations of dictionary.
 
-class test_dictionary {
+test_suite test_dictionary {
 
   test_case test_mutable_dictionary() {
     dict : list_dictionary[string, string].new();

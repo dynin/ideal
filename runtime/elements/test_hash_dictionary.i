@@ -6,7 +6,7 @@
 
 --- Unittests for hash implementations of dictionary.
 
-class test_hash_dictionary {
+test_suite test_hash_dictionary {
 
   test_case test_mutable_dictionary() {
     dict : hash_dictionary[string, string].new();

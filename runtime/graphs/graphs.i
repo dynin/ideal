@@ -12,5 +12,5 @@ namespace graphs {
 
   class base_graph;
 
-  class test_graph;
+  test_suite test_graph;
 }

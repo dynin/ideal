@@ -15,5 +15,5 @@ namespace channels {
   class output_transformer;
   class auto_sync_output;
 
-  class test_output_transformer;
+  test_suite test_output_transformer;
 }

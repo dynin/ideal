@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 --- Testcase for |origin_printer| implementaion.
-class test_origin_printer {
+test_suite test_origin_printer {
   import ideal.machine.channels.string_writer;
 
   void show_origin_helper(string input, nonnegative begin, nonnegative end, string output) {

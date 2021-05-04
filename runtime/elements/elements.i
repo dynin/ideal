@@ -37,13 +37,13 @@ namespace elements {
   class immutable_hash_set;
 
   -- These are tests of runtime, move them
-  class test_array;
-  class test_runtime_util;
-  class test_string_writer;
+  test_suite test_array;
+  test_suite test_runtime_util;
+  test_suite test_string_writer;
 
-  class test_list;
-  class test_range;
-  class test_dictionary;
-  class test_hash_dictionary;
-  class test_hash_set;
+  test_suite test_list;
+  test_suite test_range;
+  test_suite test_dictionary;
+  test_suite test_hash_dictionary;
+  test_suite test_hash_set;
 }

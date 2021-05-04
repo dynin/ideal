@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_output_transformer {
+test_suite test_output_transformer {
 
   static string test_transform(string source) pure {
     return base_string.new("+", source, "!");

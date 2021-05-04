@@ -35,8 +35,8 @@ namespace texts {
   namespace text_library;
   namespace text_util;
 
-  class test_elements;
-  class test_plain_text;
-  class test_markup_text;
-  class test_markup_grammar;
+  test_suite test_elements;
+  test_suite test_plain_text;
+  test_suite test_markup_text;
+  test_suite test_markup_grammar;
 }

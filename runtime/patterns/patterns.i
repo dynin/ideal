@@ -26,15 +26,15 @@ namespace patterns {
   class repeat_matcher;
   class list_pattern;
 
-  class test_singleton_pattern;
-  class test_predicate_pattern;
-  class test_repeat_element;
-  class test_sequence_pattern;
-  class test_procedure_matcher;
-  class test_sequence_matcher;
-  class test_option_pattern;
-  class test_repeat_pattern;
-  class test_option_matcher;
-  class test_repeat_matcher;
-  class test_list_pattern;
+  test_suite test_singleton_pattern;
+  test_suite test_predicate_pattern;
+  test_suite test_repeat_element;
+  test_suite test_sequence_pattern;
+  test_suite test_procedure_matcher;
+  test_suite test_sequence_matcher;
+  test_suite test_option_pattern;
+  test_suite test_repeat_pattern;
+  test_suite test_option_matcher;
+  test_suite test_repeat_matcher;
+  test_suite test_list_pattern;
 }

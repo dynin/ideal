@@ -17,5 +17,5 @@ package documenters {
   namespace doc_elements;
   class doc_comment_processor;
 
-  class test_doc_grammar;
+  test_suite test_doc_grammar;
 }

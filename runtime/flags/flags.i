@@ -11,5 +11,5 @@ namespace flags {
   implicit import ideal.runtime.elements;
 
   namespace flags_utilities;
-  class test_flags;
+  test_suite test_flags;
 }

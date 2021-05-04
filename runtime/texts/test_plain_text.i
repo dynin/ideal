@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_plain_text {
+test_suite test_plain_text {
 
   import ideal.machine.channels.string_writer;
 

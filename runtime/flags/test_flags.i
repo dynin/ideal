@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_flags {
+test_suite test_flags {
 
   meta_flags class demo_flags {
     boolean ARG_BOOL;

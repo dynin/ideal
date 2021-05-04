@@ -6,7 +6,7 @@
 
 import ideal.machine.channels.string_writer;
 
-class test_string_writer {
+test_suite test_string_writer {
 
   test_case basic_test() {
     the_writer : string_writer.new();

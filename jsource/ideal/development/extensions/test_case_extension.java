@@ -17,6 +17,7 @@ import ideal.development.actions.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.names.*;
+import ideal.development.kinds.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
@@ -56,6 +57,10 @@ public class test_case_extension extends declaration_extension {
     }
 
     set_expanded(the_procedure);
+
+    if (the_procedure.declared_in_type().get_kind() != type_kinds.test_suite_kind) {
+      return new error_signal(new base_string("Test case must be part of a test suite"), this);
+    }
 
     return ok_signal.instance;
   }

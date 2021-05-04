@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_repeat_element {
+test_suite test_repeat_element {
 
   private boolean test_predicate(character c) pure {
     return c == 'a' || c == 'b' || c == 'c';

@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_display {
+test_suite test_display {
 
   import ideal.machine.elements.runtime_util;
   import ideal.machine.channels.string_writer;

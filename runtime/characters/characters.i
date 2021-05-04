@@ -10,5 +10,5 @@ namespace characters {
   implicit import ideal.library.elements;
   implicit import ideal.library.characters;
 
-  class test_character_handler;
+  test_suite test_character_handler;
 }

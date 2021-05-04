@@ -6,7 +6,7 @@
 
 import ideal.machine.elements.array;
 
-class test_array {
+test_suite test_array {
 
   test_case test_creation() {
     the_array : array[string].new(10);

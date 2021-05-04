@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_graph {
+test_suite test_graph {
 
   test_case basic_test() {
     the_graph : base_graph[string, string].new();

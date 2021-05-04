@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_names {
+test_suite test_names {
   test_case test_simple_names() {
     foo : simple_name.make("foo");
     bar : simple_name.make("bar");

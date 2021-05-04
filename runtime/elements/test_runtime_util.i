@@ -6,7 +6,7 @@
 
 import ideal.machine.elements.runtime_util;
 
-class test_runtime_util {
+test_suite test_runtime_util {
 
   private class test1 {
     implements data, equality_comparable;

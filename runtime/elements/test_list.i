@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_list {
+test_suite test_list {
 
   test_case test_empty() {
     strings : empty[string].new();

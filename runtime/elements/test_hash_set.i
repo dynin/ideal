@@ -6,7 +6,7 @@
 
 --- Unittests for hash implementations of set.
 
-class test_hash_set {
+test_suite test_hash_set {
 
   test_case test_mutable_set() {
     set : hash_set[string].new();

@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class test_sequence_matcher {
+test_suite test_sequence_matcher {
 
   private boolean match_a(character c) pure {
     return c == 'a' || c == 'A';

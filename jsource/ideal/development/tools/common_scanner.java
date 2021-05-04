@@ -155,7 +155,6 @@ public class common_scanner extends base_scanner_config {
     add_modifier(general_modifier.override_modifier);
     add_modifier(general_modifier.overload_modifier);
     add_modifier(general_modifier.noreturn_modifier);
-    add_modifier(general_modifier.test_case_modifier);
     add_modifier(general_modifier.dont_display_modifier);
 
     add_modifier(variance_modifier.invariant_modifier);
@@ -177,6 +176,7 @@ public class common_scanner extends base_scanner_config {
     new cache_result_extension().register_syntax_extension(this);
     new supertype_of_string_extension().register_syntax_extension(this);
     meta_flags_extension.instance.register_syntax_extension(this);
+    test_case_extension.instance.register_syntax_extension(this);
     meta_construct_extension.instance.register_syntax_extension(this);
   }
 }

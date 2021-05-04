@@ -30,7 +30,6 @@ public class procedure_analyzer extends declaration_analyzer
     implements procedure_declaration {
 
   @dont_display private final @Nullable readonly_list<annotation_construct> annotations;
-  @dont_display private final @Nullable analyzable ret;
   private final simple_name original_name;
   @dont_display private final @Nullable readonly_list<construct> parameters;
   @dont_display private final @Nullable readonly_list<annotation_construct> post_annotations;
@@ -54,9 +53,9 @@ public class procedure_analyzer extends declaration_analyzer
     super(source);
     annotations = source.annotations;
     if (source.ret != null) {
-      ret = make(source.ret);
+      return_analyzable = make(source.ret);
     } else {
-      ret = null;
+      return_analyzable = null;
     }
 
     // TODO: handle namespace in the name...
@@ -70,13 +69,13 @@ public class procedure_analyzer extends declaration_analyzer
     }
   }
 
-  public procedure_analyzer(annotation_set annotations, @Nullable analyzable ret,
+  public procedure_analyzer(annotation_set annotations, @Nullable analyzable return_analyzable,
       simple_name original_name, readonly_list<variable_declaration> parameter_variables,
       @Nullable analyzable original_body, origin the_origin) {
     super(the_origin);
     set_annotations(annotations);
     this.annotations = null;
-    this.ret = ret;
+    this.return_analyzable = return_analyzable;
     this.original_name = original_name;
     this.parameters = null;
     this.parameter_variables = parameter_variables;
@@ -176,6 +175,15 @@ public class procedure_analyzer extends declaration_analyzer
     return result;
   }
 
+  public boolean has_return() {
+    return return_analyzable != null;
+  }
+
+  public void set_return(type the_type) {
+    assert return_analyzable == null;
+    return_analyzable = base_analyzable_action.from(the_type, this);
+  }
+
   @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
@@ -192,7 +200,7 @@ public class procedure_analyzer extends declaration_analyzer
       the_flavor = process_flavor(post_annotations);
 
       assert category == null;
-      if (ret == null && !annotations().has(general_modifier.test_case_modifier)) {
+      if (return_analyzable == null) {
         category = procedure_category.CONSTRUCTOR;
       } else if (is_static_declaration()) {
         category = procedure_category.STATIC;
@@ -355,8 +363,7 @@ public class procedure_analyzer extends declaration_analyzer
     } else {
       // what if return expression is not a type?
       // TODO: expect static types.
-      if (ret != null) {
-        return_analyzable = ret;
+      if (return_analyzable != null) {
         add_dependence(return_analyzable, null, declaration_pass.TYPES_AND_PROMOTIONS);
       } else {
         return_analyzable = base_analyzable_action.from(library().void_type(), this);
@@ -364,12 +371,12 @@ public class procedure_analyzer extends declaration_analyzer
       @Nullable error_signal return_error = find_error(return_analyzable);
       if (return_error != null) {
         return new error_signal(new base_string("Error in return declaration"),
-            return_error, ret);
+            return_error, return_analyzable);
       }
 
       action return_action = action_not_error(return_analyzable);
       if (! (return_action instanceof type_action)) {
-        return new error_signal(messages.type_expected, ret);
+        return new error_signal(messages.type_expected, return_analyzable);
       }
 
       if (annotations().has(general_modifier.noreturn_modifier)) {

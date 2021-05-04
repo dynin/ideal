@@ -193,6 +193,11 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     return result;
   }
 
+  public readonly_list<analyzable> get_body() {
+    assert body != null;
+    return body;
+  }
+
   @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 

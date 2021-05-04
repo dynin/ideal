@@ -22,6 +22,8 @@ import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.kinds.*;
 import ideal.development.literals.*;
+import ideal.development.analyzers.*;
+import ideal.development.extensions.*;
 
 import javax.annotation.Nullable;
 
@@ -33,8 +35,10 @@ public class test_case_generator {
 
   public static @Nullable procedure_construct process_test_cases(
       type_declaration the_type_declaration) {
+    type_declaration_analyzer the_type_declaration_analyzer =
+        (type_declaration_analyzer) the_type_declaration;
 
-    if (!has_test_cases(the_type_declaration)) {
+    if (!has_test_cases(the_type_declaration_analyzer)) {
       return null;
     }
 
@@ -45,29 +49,31 @@ public class test_case_generator {
     construct end_construct = new resolve_construct(runtime_util_name, END_TEST, source);
     string type_name = the_type_declaration.short_name().to_string();
 
-    readonly_list<procedure_declaration> procedures =
-        declaration_util.get_declared_procedures(the_type_declaration);
+    readonly_list<analyzable> body = the_type_declaration_analyzer.get_body();
 
     list<construct> test_calls = new base_list<construct>();
-    for (int i = 0; i < procedures.size(); ++i) {
-      procedure_declaration the_procedure = procedures.get(i);
-      if (the_procedure.annotations().has(general_modifier.test_case_modifier)) {
-        simple_name the_name = (simple_name) the_procedure.short_name();
-
-        string name_string = new base_string(type_name, ".", the_name.to_string());
-        literal name_literal = new quoted_literal(name_string, punctuation.DOUBLE_QUOTE);
-        construct method_name = new literal_construct(name_literal, source);
-        construct start_call = make_call(start_construct, new base_list<construct>(method_name),
-            source);
-        test_calls.append(start_call);
-
-        name_construct the_name_construct = new name_construct(the_name, source);
-        construct call = make_call(the_name_construct, new empty<construct>(), source);
-        test_calls.append(call);
-
-        construct end_call = make_call(end_construct, new empty<construct>(), source);
-        test_calls.append(end_call);
+    for (int i = 0; i < body.size(); ++i) {
+      if (!(body.get(i) instanceof test_case_extension)) {
+        continue;
       }
+
+      procedure_declaration the_procedure =
+          (procedure_declaration) ((test_case_extension) body.get(i)).expand();
+      simple_name the_name = (simple_name) the_procedure.short_name();
+
+      string name_string = new base_string(type_name, ".", the_name.to_string());
+      literal name_literal = new quoted_literal(name_string, punctuation.DOUBLE_QUOTE);
+      construct method_name = new literal_construct(name_literal, source);
+      construct start_call = make_call(start_construct, new base_list<construct>(method_name),
+          source);
+      test_calls.append(start_call);
+
+      name_construct the_name_construct = new name_construct(the_name, source);
+      construct call = make_call(the_name_construct, new empty<construct>(), source);
+      test_calls.append(call);
+
+      construct end_call = make_call(end_construct, new empty<construct>(), source);
+      test_calls.append(end_call);
     }
 
     assert test_calls.is_not_empty();
@@ -79,12 +85,11 @@ public class test_case_generator {
         new block_construct(test_calls, source), source);
   }
 
-  public static boolean has_test_cases(type_declaration the_type_declaration) {
+  public static boolean has_test_cases(type_declaration_analyzer the_type_declaration_analyzer) {
     // TODO: rewrite using list.has()
-    readonly_list<procedure_declaration> procedures =
-        declaration_util.get_declared_procedures(the_type_declaration);
-    for (int i = 0; i < procedures.size(); ++i) {
-      if (procedures.get(i).annotations().has(general_modifier.test_case_modifier)) {
+    readonly_list<analyzable> body = the_type_declaration_analyzer.get_body();
+    for (int i = 0; i < body.size(); ++i) {
+      if (body.get(i) instanceof test_case_extension) {
         return true;
       }
     }

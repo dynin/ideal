@@ -133,4 +133,5 @@ public class test_plain_text {
     the_formatter.write(base_element.make(text_library.DIV, (base_string) new base_string("bar")));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\n\nbar\n"), the_writer.elements());
   }
+  public test_plain_text() { }
 }

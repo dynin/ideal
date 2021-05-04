@@ -63,4 +63,5 @@ public class test_names {
     final simple_name the_name2 = name_utilities.parse_camel_case(new base_string("ThatIsCamelCase"));
     assert ideal.machine.elements.runtime_util.values_equal(the_name2.to_string(), new base_string("that_is_camel_case"));
   }
+  public test_names() { }
 }

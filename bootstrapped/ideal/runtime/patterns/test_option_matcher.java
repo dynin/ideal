@@ -57,4 +57,5 @@ public class test_option_matcher {
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("Bbb")), new base_string("*Bbb"));
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("CCCccc")), new base_string("*CCCccc"));
   }
+  public test_option_matcher() { }
 }

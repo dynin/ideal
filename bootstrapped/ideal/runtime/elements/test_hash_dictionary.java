@@ -81,4 +81,5 @@ public class test_hash_dictionary {
       }
     }
   }
+  public test_hash_dictionary() { }
 }

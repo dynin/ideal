@@ -50,4 +50,5 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
     }
     return new base_list_attribute_fragment(result);
   }
+  public text_rewriter() { }
 }

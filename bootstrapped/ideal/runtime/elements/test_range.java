@@ -61,4 +61,5 @@ public class test_range {
     assert reversed.get(1) == 6;
     assert reversed.get(2) == 5;
   }
+  public test_range() { }
 }

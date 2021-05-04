@@ -126,6 +126,7 @@ public class common_scanner extends base_scanner_config {
     add_kind(type_kinds.service_kind);
     add_kind(type_kinds.world_kind);
     add_kind(type_kinds.namespace_kind);
+    add_kind(type_kinds.test_suite_kind);
     add_kind(type_kinds.reference_kind); // TODO: this should be a special keyword
     add_kind(type_kinds.procedure_kind); // TODO: this should be a special keyword
     add_kind(type_kinds.html_content_kind);

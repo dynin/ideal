@@ -61,7 +61,7 @@ public class meta_construct_extension extends declaration_extension {
     if (result instanceof ok_signal) {
       if (pass == analysis_pass.SUPERTYPE_DECL) {
         append_supertype(the_type_declaration);
-      } else if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
+      } else if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
         append_conditions(the_type_declaration);
       }
     }
@@ -112,6 +112,7 @@ public class meta_construct_extension extends declaration_extension {
 
     for (int i = 0; i < variables.size(); ++i) {
       variable_declaration variable = variables.get(i);
+      the_type_declaration.analyze(variable, analysis_pass.METHOD_AND_VARIABLE_DECL);
       action_name name = variable.short_name();
       type value_type = variable.value_type();
       boolean union_field = type_utilities.is_union(value_type);
@@ -206,7 +207,7 @@ public class meta_construct_extension extends declaration_extension {
       }
     }
 
-    if (!has_constructors(the_type_declaration)) {
+    if (!has_constructor(the_type_declaration)) {
       simple_name generated_origin_name = generated_name(ORIGIN_NAME);
       resolve_analyzer origin_type = new resolve_analyzer(ORIGIN_NAME, the_origin);
       variable_analyzer origin_parameter = new variable_analyzer(
@@ -245,9 +246,11 @@ public class meta_construct_extension extends declaration_extension {
 
       the_type_declaration.append_to_body(children_procedure);
     }
+
+    set_expanded(null);
   }
 
-  private boolean has_constructors(type_declaration the_type_declaration) {
+  private boolean has_constructor(type_declaration the_type_declaration) {
     readonly_list<procedure_declaration> procedures =
         declaration_util.get_declared_procedures(the_type_declaration);
     return procedures.has(new predicate<procedure_declaration>() {

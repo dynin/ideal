@@ -54,4 +54,5 @@ public class test_output_transformer {
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(1), new base_string("+bar!"));
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(2), new base_string("+baz!"));
   }
+  public test_output_transformer() { }
 }

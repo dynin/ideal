@@ -25,4 +25,5 @@ public abstract class base_pattern<element_type> extends debuggable implements v
     }
     return result.frozen_copy();
   }
+  public base_pattern() { }
 }

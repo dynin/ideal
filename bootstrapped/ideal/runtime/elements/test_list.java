@@ -118,4 +118,5 @@ public class test_list {
     assert strings.is_empty();
     assert !strings.is_not_empty();
   }
+  public test_list() { }
 }

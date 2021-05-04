@@ -486,12 +486,20 @@ public class procedure_analyzer extends declaration_analyzer
 
   @Override
   public readonly_list<declaration> get_overriden() {
+    if (overriden == null) {
+      utilities.panic("Null overriden in " + this);
+    }
     assert overriden != null;
     return overriden;
   }
 
   @Override
   public boolean overrides_variable() {
+    // TODO: is this a potential error?
+    if (overriden == null) {
+      return false;
+    }
+
     readonly_list<declaration> overriden = get_overriden();
     for (int i = 0; i < overriden.size(); ++i) {
       if (overriden.get(i) instanceof variable_declaration) {
@@ -539,7 +547,8 @@ public class procedure_analyzer extends declaration_analyzer
     list<type> superclasses = new base_list<type>();
     for (int i = 0; i < supertypes.size(); ++i) {
       type supertype = supertypes.get(i);
-      if (supertype.principal().get_kind() == type_kinds.class_kind) {
+      kind the_kind = supertype.principal().get_kind();
+      if (the_kind == type_kinds.class_kind || the_kind == type_kinds.test_suite_kind) {
         superclasses.append(supertype);
       }
     }

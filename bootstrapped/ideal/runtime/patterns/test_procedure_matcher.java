@@ -112,4 +112,5 @@ public class test_procedure_matcher {
   public boolean equals(final immutable_list<Character> s0, final string s1) {
     return ideal.machine.elements.runtime_util.values_equal(((string) s0), s1);
   }
+  public test_procedure_matcher() { }
 }

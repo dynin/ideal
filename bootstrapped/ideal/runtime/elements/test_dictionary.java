@@ -63,4 +63,5 @@ public class test_dictionary {
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("value"));
     assert dict2.get(new base_string("notfound")) == null;
   }
+  public test_dictionary() { }
 }

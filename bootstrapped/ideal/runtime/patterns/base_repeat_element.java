@@ -99,4 +99,5 @@ public abstract class base_repeat_element<element_type> extends base_pattern<ele
     return null;
   }
   public @Override void validate() { }
+  public base_repeat_element() { }
 }

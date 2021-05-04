@@ -120,4 +120,5 @@ public class test_hash_set {
     assert set1.contains(new base_string("d"));
     assert !set1.contains(new base_string("e"));
   }
+  public test_hash_set() { }
 }

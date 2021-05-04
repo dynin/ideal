@@ -48,4 +48,5 @@ public class test_array {
     assert ideal.machine.elements.runtime_util.values_equal(the_array.get(0), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(the_array.get(1), new base_string("bar"));
   }
+  public test_array() { }
 }

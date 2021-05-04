@@ -40,4 +40,5 @@ public class test_origin_printer {
     this.show_origin_helper(input, 5, 5, new base_string("hello \n     ^\n"));
     this.show_origin_helper(input, 12, 12, new base_string("world \n     ^\n"));
   }
+  public test_origin_printer() { }
 }

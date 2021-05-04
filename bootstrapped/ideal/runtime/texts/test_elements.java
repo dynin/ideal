@@ -64,4 +64,5 @@ public class test_elements {
     assert child1 instanceof string;
     assert ideal.machine.elements.runtime_util.values_equal(((string) child1), new base_string("foo"));
   }
+  public test_elements() { }
 }

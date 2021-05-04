@@ -40,4 +40,5 @@ public class doc_comment_processor {
   private static void report_error(final string error_message) {
     doc_comment_processor.saved_error = error_message;
   }
+  public doc_comment_processor() { }
 }

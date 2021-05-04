@@ -93,4 +93,5 @@ public class test_doc_grammar {
     the_formatter.write(the_text_fragment);
     return ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), expected);
   }
+  public test_doc_grammar() { }
 }

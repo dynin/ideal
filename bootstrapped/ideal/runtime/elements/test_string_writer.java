@@ -29,4 +29,5 @@ public class test_string_writer {
     assert the_writer.size() == 0;
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string(""));
   }
+  public test_string_writer() { }
 }

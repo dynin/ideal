@@ -344,8 +344,11 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       if (result_type.get_pass().is_before(declaration_pass.METHODS_AND_VARIABLES)) {
         assert !declaration_analysis_in_progress;
-        if (get_kind() == type_kinds.enum_kind) {
+        kind the_kind = get_kind();
+        if (the_kind == type_kinds.enum_kind) {
           add_enum_members();
+        } if (the_kind == type_kinds.class_kind || the_kind == type_kinds.test_suite_kind) {
+          maybe_add_default_constructor();
         }
         declaration_analysis_in_progress = true;
         result_type.process_declaration(declaration_pass.METHODS_AND_VARIABLES);
@@ -450,6 +453,31 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     if (has_analysis_errors(name_declaration)) {
       utilities.panic("Error in name field declaration");
     }
+  }
+
+  private void maybe_add_default_constructor() {
+    if (has_constructor()) {
+      return;
+    }
+
+    origin the_origin = this;
+    analyzable body = new block_analyzer(
+        new statement_list_analyzer(new empty<analyzable>(), the_origin), the_origin);
+    procedure_analyzer constructor_procedure = new procedure_analyzer(
+        analyzer_utilities.PUBLIC_MODIFIERS, null,
+        (simple_name) short_name(), new empty<variable_declaration>(), body, the_origin);
+
+    append_to_body(constructor_procedure);
+  }
+
+  private boolean has_constructor() {
+    readonly_list<procedure_declaration> procedures =
+        declaration_util.get_declared_procedures(this);
+    return procedures.has(new predicate<procedure_declaration>() {
+      public @Override Boolean call(procedure_declaration the_declaration) {
+        return the_declaration.get_category() == procedure_category.CONSTRUCTOR;
+      }
+    });
   }
 
   // TODO: move this error-explaining component

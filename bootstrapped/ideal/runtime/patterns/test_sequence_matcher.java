@@ -74,4 +74,5 @@ public class test_sequence_matcher {
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("AaaBbCcc")), new base_string("-Aaa-Bb-Ccc"));
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("AaaBBBCcc")), new base_string("-Aaa-BBB-Ccc"));
   }
+  public test_sequence_matcher() { }
 }

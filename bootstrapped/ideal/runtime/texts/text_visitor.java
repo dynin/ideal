@@ -32,4 +32,5 @@ public abstract class text_visitor<result_type> {
   protected abstract result_type process_nodes(list_text_node nodes);
   protected abstract result_type process_special(special_text t);
   protected abstract result_type process_attributes(list_attribute_fragment fragments);
+  public text_visitor() { }
 }

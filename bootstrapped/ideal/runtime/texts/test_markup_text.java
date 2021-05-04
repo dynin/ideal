@@ -72,4 +72,5 @@ public class test_markup_text {
     the_formatter.write((base_string) new base_string("two"));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("one&middot;two"), the_writer.elements());
   }
+  public test_markup_text() { }
 }

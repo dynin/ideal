@@ -276,9 +276,8 @@ public class to_java_transformer extends base_transformer {
         return true;
       }
       kind parent_kind = the_variable.declared_in_type().get_kind();
-      if (parent_kind != class_kind &&
+      if (!is_concrete_kind(parent_kind) &&
           parent_kind != block_kind &&
-          parent_kind != enum_kind &&
           parent_kind != namespace_kind) {
         return true;
       }
@@ -338,8 +337,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean skip_access(principal_type declared_in_type) {
-    kind the_kind = declared_in_type.get_kind();
-    return the_kind != class_kind && the_kind != enum_kind;
+    return !is_concrete_kind(declared_in_type.get_kind());
   }
 
   @Override
@@ -999,7 +997,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private static boolean is_concrete_kind(kind the_kind) {
-    return the_kind == class_kind || the_kind == enum_kind;
+    return the_kind == class_kind || the_kind == enum_kind || the_kind == test_suite_kind;
   }
 
   private procedure_construct var_to_proc(variable_declaration the_variable) {

@@ -20,4 +20,5 @@ public abstract class resource_manager implements lifespan {
     }
     this.resources.clear();
   }
+  public resource_manager() { }
 }

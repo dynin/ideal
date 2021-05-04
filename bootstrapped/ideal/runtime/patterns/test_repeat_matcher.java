@@ -106,4 +106,5 @@ public class test_repeat_matcher {
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("AbCaBc")), new base_string("-A-b-C/-a-B-c"));
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("AABBCCabcABC")), new base_string("-AA-BB-CC/-a-b-c/-A-B-C"));
   }
+  public test_repeat_matcher() { }
 }

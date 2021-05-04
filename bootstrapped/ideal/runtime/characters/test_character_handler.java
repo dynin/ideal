@@ -35,4 +35,5 @@ public class test_character_handler {
     assert the_character_handler.to_lower_case('x') == 'x';
     assert the_character_handler.to_lower_case('5') == '5';
   }
+  public test_character_handler() { }
 }

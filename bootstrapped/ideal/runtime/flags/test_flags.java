@@ -64,4 +64,5 @@ public class test_flags {
     });
     assert ideal.machine.elements.runtime_util.values_equal(this.reported_message, new base_string("Non-flag parameters found--don\'t know what to do!"));
   }
+  public test_flags() { }
 }

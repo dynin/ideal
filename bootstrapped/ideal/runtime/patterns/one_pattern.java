@@ -48,4 +48,5 @@ public abstract class one_pattern<element_type> extends base_pattern<element_typ
     return null;
   }
   public @Override void validate() { }
+  public one_pattern() { }
 }

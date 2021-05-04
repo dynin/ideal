@@ -45,4 +45,5 @@ public class test_graph {
     assert the_graph.introduces_cycle(new base_string("D"), new base_string("C"));
     assert !the_graph.introduces_cycle(new base_string("D"), new base_string("B"));
   }
+  public test_graph() { }
 }

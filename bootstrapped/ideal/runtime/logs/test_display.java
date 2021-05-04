@@ -56,4 +56,5 @@ public class test_display {
     the_formatter.write(runtime_util.display(data_object));
     assert runtime_util.values_equal(new base_string("my_data2 {\n  foo: \"aaa\"\n}\n"), the_writer.elements());
   }
+  public test_display() { }
 }

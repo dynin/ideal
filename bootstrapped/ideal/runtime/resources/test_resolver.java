@@ -125,4 +125,5 @@ public class test_resolver {
     bar = bar.parent();
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("."), bar.to_string());
   }
+  public test_resolver() { }
 }

@@ -69,4 +69,5 @@ public class test_futures {
     assert test_futures.count1 == 1;
     assert ideal.machine.elements.runtime_util.values_equal(future2.value(), new base_string("baz"));
   }
+  public test_futures() { }
 }

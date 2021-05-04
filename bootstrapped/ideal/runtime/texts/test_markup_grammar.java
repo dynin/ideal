@@ -200,4 +200,5 @@ public class test_markup_grammar {
     the_formatter.write(the_text_element);
     return ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), expected);
   }
+  public test_markup_grammar() { }
 }

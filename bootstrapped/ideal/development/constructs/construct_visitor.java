@@ -157,4 +157,5 @@ public abstract class construct_visitor<return_value> implements value {
   public return_value process_jump(final jump_construct c) {
     return this.process_default(c);
   }
+  public construct_visitor() { }
 }

@@ -51,7 +51,7 @@ public class meta_flags_extension extends declaration_extension {
       analysis_pass pass) {
     signal result = analyze(the_type_declaration, pass);
 
-    if (result instanceof ok_signal && pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
+    if (result instanceof ok_signal && pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
       return generate_constructor(the_type_declaration);
     }
 
@@ -106,6 +106,7 @@ public class meta_flags_extension extends declaration_extension {
 
     for (int i = 0; i < variables.size(); ++i) {
       variable_declaration variable = variables.get(i);
+      the_type_declaration.analyze(variable, analysis_pass.METHOD_AND_VARIABLE_DECL);
       simple_name flag_procedure_name;
 
       if (variable.value_type() == library().immutable_boolean_type()) {
@@ -151,8 +152,10 @@ public class meta_flags_extension extends declaration_extension {
     procedure_analyzer constructor_procedure = new procedure_analyzer(
         analyzer_utilities.PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
         parameters, body, the_origin);
-
     the_type_declaration.append_to_body(constructor_procedure);
+
+    set_expanded(the_type_declaration);
+
     return ok_signal.instance;
   }
 }

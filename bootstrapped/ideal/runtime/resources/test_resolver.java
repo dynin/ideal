@@ -7,32 +7,6 @@ import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 
 public class test_resolver {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_file_catalogs");
-    test_file_catalogs();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_simple_resolve");
-    test_simple_resolve();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_resolve_extension");
-    test_resolve_extension();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_sub_catalogs");
-    test_sub_catalogs();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_root_subdirs");
-    test_root_subdirs();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_multiple_subdirs");
-    test_multiple_subdirs();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_more_subdir_ops");
-    test_more_subdir_ops();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_resolver.test_parent_catalog");
-    test_parent_catalog();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public static class test_store extends base_resource_store {
     public test_store(final string path_prefix, final boolean is_current) {
       super(path_prefix, is_current, is_current);
@@ -126,4 +100,30 @@ public class test_resolver {
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("."), bar.to_string());
   }
   public test_resolver() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_file_catalogs"));
+    this.test_file_catalogs();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_simple_resolve"));
+    this.test_simple_resolve();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_resolve_extension"));
+    this.test_resolve_extension();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_sub_catalogs"));
+    this.test_sub_catalogs();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_root_subdirs"));
+    this.test_root_subdirs();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_multiple_subdirs"));
+    this.test_multiple_subdirs();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_more_subdir_ops"));
+    this.test_more_subdir_ops();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_parent_catalog"));
+    this.test_parent_catalog();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

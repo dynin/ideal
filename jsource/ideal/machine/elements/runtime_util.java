@@ -280,7 +280,7 @@ public class runtime_util {
     return base_element.make(text_library.DIV, displayer.display_object(obj));
   }
 
-  public static void start_test(String name) {
+  public static void start_test(string name) {
     System.err.print(name + "... ");
     System.err.flush();
   }

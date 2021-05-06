@@ -12,29 +12,6 @@ import ideal.machine.characters.normal_handler;
 import ideal.machine.channels.string_writer;
 
 public class test_markup_grammar {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_entity_ref");
-    test_entity_ref();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_attribute_value");
-    test_attribute_value();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_attribute");
-    test_attribute();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_empty_element");
-    test_empty_element();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_content");
-    test_content();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_simple_parse");
-    test_simple_parse();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_grammar.test_parse_errors");
-    test_parse_errors();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public string error_message;
   public markup_grammar make_grammar() {
     final markup_grammar grammar = new markup_grammar(normal_handler.instance);
@@ -201,4 +178,27 @@ public class test_markup_grammar {
     return ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), expected);
   }
   public test_markup_grammar() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_grammar.test_entity_ref"));
+    this.test_entity_ref();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_grammar.test_attribute_value"));
+    this.test_attribute_value();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_grammar.test_attribute"));
+    this.test_attribute();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_grammar.test_empty_element"));
+    this.test_empty_element();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_grammar.test_content"));
+    this.test_content();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_grammar.test_simple_parse"));
+    this.test_simple_parse();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_grammar.test_parse_errors"));
+    this.test_parse_errors();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

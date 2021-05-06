@@ -6,14 +6,6 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
 public class test_futures {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_futures.test_simple_futures");
-    test_simple_futures();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_futures.test_future_observers");
-    test_future_observers();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_simple_futures() {
     final base_future<string> future0 = new base_future<string>(new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(future0.value(), new base_string("foo"));
@@ -70,4 +62,12 @@ public class test_futures {
     assert ideal.machine.elements.runtime_util.values_equal(future2.value(), new base_string("baz"));
   }
   public test_futures() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_futures.test_simple_futures"));
+    this.test_simple_futures();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_futures.test_future_observers"));
+    this.test_future_observers();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

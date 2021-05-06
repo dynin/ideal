@@ -13,14 +13,6 @@ import ideal.machine.characters.normal_handler;
 import ideal.machine.channels.string_writer;
 
 public class test_doc_grammar {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_doc_grammar.test_simple_parse");
-    test_simple_parse();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_doc_grammar.test_parse_errors");
-    test_parse_errors();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public string error_message;
   public doc_grammar make_grammar() {
     return new doc_grammar(normal_handler.instance);
@@ -94,4 +86,12 @@ public class test_doc_grammar {
     return ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), expected);
   }
   public test_doc_grammar() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_doc_grammar.test_simple_parse"));
+    this.test_simple_parse();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_doc_grammar.test_parse_errors"));
+    this.test_parse_errors();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

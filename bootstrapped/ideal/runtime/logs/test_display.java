@@ -14,14 +14,6 @@ import javax.annotation.Nullable;
 import ideal.machine.annotations.dont_display;
 
 public class test_display {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_display.test_simple_display");
-    test_simple_display();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_display.test_display_with_annotations");
-    test_display_with_annotations();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public static class my_data implements data {
     public final string foo;
     public final string bar;
@@ -57,4 +49,12 @@ public class test_display {
     assert runtime_util.values_equal(new base_string("my_data2 {\n  foo: \"aaa\"\n}\n"), the_writer.elements());
   }
   public test_display() { }
+  public void run_all_tests() {
+    runtime_util.start_test(new base_string("test_display.test_simple_display"));
+    this.test_simple_display();
+    runtime_util.end_test();
+    runtime_util.start_test(new base_string("test_display.test_display_with_annotations"));
+    this.test_display_with_annotations();
+    runtime_util.end_test();
+  }
 }

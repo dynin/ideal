@@ -6,26 +6,6 @@ import ideal.library.elements.*;
 import ideal.machine.elements.runtime_util;
 
 public class test_runtime_util {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_runtime_util.test_class_name");
-    test_class_name();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_runtime_util.test_hash_code");
-    test_hash_code();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_runtime_util.test_simple_equals");
-    test_simple_equals();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_runtime_util.test_list_equals");
-    test_list_equals();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_runtime_util.test_equals");
-    test_equals();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_runtime_util.test_escape");
-    test_escape();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   private static class test1 implements data, equality_comparable {
     public test1(final int i, final string s) {
       this.i = i;
@@ -91,5 +71,25 @@ public class test_runtime_util {
     assert runtime_util.values_equal(runtime_util.escape_markup(new base_string("foo")), new base_string("foo"));
     assert runtime_util.values_equal(runtime_util.escape_markup(new base_string("hello! <>&")), new base_string("hello! &lt;&gt;&amp;"));
     assert runtime_util.values_equal(runtime_util.escape_markup(new base_string("1: \' 2: \"")), new base_string("1: &apos; 2: &quot;"));
+  }
+  public void run_all_tests() {
+    runtime_util.start_test(new base_string("test_runtime_util.test_class_name"));
+    this.test_class_name();
+    runtime_util.end_test();
+    runtime_util.start_test(new base_string("test_runtime_util.test_hash_code"));
+    this.test_hash_code();
+    runtime_util.end_test();
+    runtime_util.start_test(new base_string("test_runtime_util.test_simple_equals"));
+    this.test_simple_equals();
+    runtime_util.end_test();
+    runtime_util.start_test(new base_string("test_runtime_util.test_list_equals"));
+    this.test_list_equals();
+    runtime_util.end_test();
+    runtime_util.start_test(new base_string("test_runtime_util.test_equals"));
+    this.test_equals();
+    runtime_util.end_test();
+    runtime_util.start_test(new base_string("test_runtime_util.test_escape"));
+    this.test_escape();
+    runtime_util.end_test();
   }
 }

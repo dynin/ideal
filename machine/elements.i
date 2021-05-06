@@ -43,6 +43,9 @@ namespace elements {
     static noreturn void do_panic(String message);
     static string escape_markup(string the_string);
 
+    static void start_test(string name);
+    static void end_test();
+
     static text_fragment display(readonly value obj);
 
     -- Included for testing.

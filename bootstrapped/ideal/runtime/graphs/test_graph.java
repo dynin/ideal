@@ -7,14 +7,6 @@ import ideal.library.graphs.*;
 import ideal.runtime.elements.*;
 
 public class test_graph {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_graph.basic_test");
-    basic_test();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_graph.cycle_test");
-    cycle_test();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void basic_test() {
     final base_graph<string, string> the_graph = new base_graph<string, string>();
     assert the_graph.adjacent(new base_string("foo")).is_empty();
@@ -46,4 +38,12 @@ public class test_graph {
     assert !the_graph.introduces_cycle(new base_string("D"), new base_string("B"));
   }
   public test_graph() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_graph.basic_test"));
+    this.basic_test();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_graph.cycle_test"));
+    this.cycle_test();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

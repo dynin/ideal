@@ -9,23 +9,6 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class test_names {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_names.test_simple_names");
-    test_simple_names();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_names.test_special_names");
-    test_special_names();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_names.test_segmented_names");
-    test_segmented_names();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_names.test_simple_names_equality");
-    test_simple_names_equality();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_names.test_camel_case");
-    test_camel_case();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_simple_names() {
     final simple_name foo = simple_name.make(new base_string("foo"));
     final simple_name bar = simple_name.make(new base_string("bar"));
@@ -64,4 +47,21 @@ public class test_names {
     assert ideal.machine.elements.runtime_util.values_equal(the_name2.to_string(), new base_string("that_is_camel_case"));
   }
   public test_names() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_names.test_simple_names"));
+    this.test_simple_names();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_names.test_special_names"));
+    this.test_special_names();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_names.test_segmented_names"));
+    this.test_segmented_names();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_names.test_simple_names_equality"));
+    this.test_simple_names_equality();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_names.test_camel_case"));
+    this.test_camel_case();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

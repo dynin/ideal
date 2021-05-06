@@ -10,38 +10,6 @@ import ideal.library.channels.output;
 import ideal.machine.channels.string_writer;
 
 public class test_plain_text {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_writer_trivial");
-    test_writer_trivial();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_writer_indent0");
-    test_writer_indent0();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_writer_indent1");
-    test_writer_indent1();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_writer_indent2");
-    test_writer_indent2();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_self_closing_tag");
-    test_self_closing_tag();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_writer_fragment");
-    test_writer_fragment();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_underline_tag");
-    test_underline_tag();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_underline2_tag");
-    test_underline2_tag();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_two_underlines");
-    test_two_underlines();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_plain_text.test_blank_line");
-    test_blank_line();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public static final base_string FOO = (base_string) new base_string("foo");
   public static final base_string BAR = (base_string) new base_string("bar");
   public static final base_string BAZ = (base_string) new base_string("baz");
@@ -134,4 +102,36 @@ public class test_plain_text {
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo\n\nbar\n"), the_writer.elements());
   }
   public test_plain_text() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_writer_trivial"));
+    this.test_writer_trivial();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_writer_indent0"));
+    this.test_writer_indent0();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_writer_indent1"));
+    this.test_writer_indent1();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_writer_indent2"));
+    this.test_writer_indent2();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_self_closing_tag"));
+    this.test_self_closing_tag();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_writer_fragment"));
+    this.test_writer_fragment();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_underline_tag"));
+    this.test_underline_tag();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_underline2_tag"));
+    this.test_underline2_tag();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_two_underlines"));
+    this.test_two_underlines();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_plain_text.test_blank_line"));
+    this.test_blank_line();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

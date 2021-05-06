@@ -5,17 +5,6 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 
 public class test_hash_dictionary {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_hash_dictionary.test_mutable_dictionary");
-    test_mutable_dictionary();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_hash_dictionary.test_immutable_dictionary");
-    test_immutable_dictionary();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_hash_dictionary.test_dictionary_updates");
-    test_dictionary_updates();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_mutable_dictionary() {
     final hash_dictionary<string, string> dict = new hash_dictionary<string, string>();
     assert dict.is_empty();
@@ -82,4 +71,15 @@ public class test_hash_dictionary {
     }
   }
   public test_hash_dictionary() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_hash_dictionary.test_mutable_dictionary"));
+    this.test_mutable_dictionary();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_hash_dictionary.test_immutable_dictionary"));
+    this.test_immutable_dictionary();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_hash_dictionary.test_dictionary_updates"));
+    this.test_dictionary_updates();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

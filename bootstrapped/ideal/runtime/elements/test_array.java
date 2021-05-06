@@ -6,20 +6,6 @@ import ideal.library.elements.*;
 import ideal.machine.elements.array;
 
 public class test_array {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_array.test_creation");
-    test_creation();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_array.test_access");
-    test_access();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_array.test_move");
-    test_move();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_array.test_initializer");
-    test_initializer();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_creation() {
     final array<string> the_array = new array<string>(10);
     assert the_array.size == 10;
@@ -49,4 +35,18 @@ public class test_array {
     assert ideal.machine.elements.runtime_util.values_equal(the_array.get(1), new base_string("bar"));
   }
   public test_array() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_array.test_creation"));
+    this.test_creation();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_array.test_access"));
+    this.test_access();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_array.test_move"));
+    this.test_move();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_array.test_initializer"));
+    this.test_initializer();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

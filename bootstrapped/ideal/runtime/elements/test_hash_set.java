@@ -5,17 +5,6 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 
 public class test_hash_set {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_hash_set.test_mutable_set");
-    test_mutable_set();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_hash_set.test_set_updates");
-    test_set_updates();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_hash_set.test_set_add_all");
-    test_set_add_all();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_mutable_set() {
     final hash_set<string> set = new hash_set<string>();
     assert set.is_empty();
@@ -121,4 +110,15 @@ public class test_hash_set {
     assert !set1.contains(new base_string("e"));
   }
   public test_hash_set() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_hash_set.test_mutable_set"));
+    this.test_mutable_set();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_hash_set.test_set_updates"));
+    this.test_set_updates();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_hash_set.test_set_add_all"));
+    this.test_set_add_all();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

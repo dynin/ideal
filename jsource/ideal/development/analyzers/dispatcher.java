@@ -12,10 +12,12 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.actions.*;
 import ideal.development.elements.*;
+import ideal.development.kinds.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.extensions.grouping_analyzer;
+import ideal.development.extensions.test_suite_extension;
 import javax.annotation.Nullable;
 
 
@@ -133,7 +135,14 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_type_declaration(type_declaration_construct source) {
-    return handle_extension(new type_declaration_analyzer(source), source.annotations);
+    type_declaration_analyzer the_type_declaration = new type_declaration_analyzer(source);
+    // TODO: this is not robust.  Must be fixed.
+    if (the_type_declaration.get_kind() == type_kinds.test_suite_kind) {
+      extension_kind the_extension_kind = test_suite_extension.instance.the_extension_kind;
+      return the_extension_kind.make_extension(the_type_declaration,
+          new modifier_construct(the_extension_kind, source));
+    }
+    return handle_extension(the_type_declaration, source.annotations);
   }
 
   @Override

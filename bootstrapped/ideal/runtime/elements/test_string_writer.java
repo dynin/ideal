@@ -6,11 +6,6 @@ import ideal.library.elements.*;
 import ideal.machine.channels.string_writer;
 
 public class test_string_writer {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_string_writer.basic_test");
-    basic_test();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void basic_test() {
     final string_writer the_writer = new string_writer();
     assert the_writer.size() == 0;
@@ -30,4 +25,9 @@ public class test_string_writer {
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string(""));
   }
   public test_string_writer() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_string_writer.basic_test"));
+    this.basic_test();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

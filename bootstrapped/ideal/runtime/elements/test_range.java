@@ -5,14 +5,6 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 
 public class test_range {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_range.test_empty");
-    test_empty();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_range.test_simple_range");
-    test_simple_range();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_empty() {
     final base_range the_range = new base_range(68, 68);
     assert the_range.is_empty();
@@ -62,4 +54,12 @@ public class test_range {
     assert reversed.get(2) == 5;
   }
   public test_range() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_range.test_empty"));
+    this.test_empty();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_range.test_simple_range"));
+    this.test_simple_range();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

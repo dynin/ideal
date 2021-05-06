@@ -5,14 +5,6 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 
 public class test_dictionary {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_dictionary.test_mutable_dictionary");
-    test_mutable_dictionary();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_dictionary.test_immutable_dictionary");
-    test_immutable_dictionary();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_mutable_dictionary() {
     final list_dictionary<string, string> dict = new list_dictionary<string, string>();
     assert dict.is_empty();
@@ -64,4 +56,12 @@ public class test_dictionary {
     assert dict2.get(new base_string("notfound")) == null;
   }
   public test_dictionary() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_dictionary.test_mutable_dictionary"));
+    this.test_mutable_dictionary();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_dictionary.test_immutable_dictionary"));
+    this.test_immutable_dictionary();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

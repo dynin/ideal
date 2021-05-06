@@ -5,20 +5,6 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 
 public class test_list {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_list.test_empty");
-    test_empty();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_list.test_simple_list");
-    test_simple_list();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_list.test_list_elements");
-    test_list_elements();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_list.test_list_remove");
-    test_list_remove();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_empty() {
     final empty<string> strings = new empty<string>();
     assert strings.is_empty();
@@ -119,4 +105,18 @@ public class test_list {
     assert !strings.is_not_empty();
   }
   public test_list() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_empty"));
+    this.test_empty();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_simple_list"));
+    this.test_simple_list();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_list_elements"));
+    this.test_list_elements();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_list_remove"));
+    this.test_list_remove();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

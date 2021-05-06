@@ -9,26 +9,6 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 
 public class test_singleton_pattern {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_match");
-    test_match();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_viable_prefix");
-    test_viable_prefix();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_match_prefix");
-    test_match_prefix();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_find_first");
-    test_find_first();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_find_last");
-    test_find_last();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_singleton_pattern.test_split");
-    test_split();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_match() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
     assert the_pattern.call(new base_string("x"));
@@ -107,4 +87,24 @@ public class test_singleton_pattern {
     return ideal.machine.elements.runtime_util.values_equal(((string) s0), s1);
   }
   public test_singleton_pattern() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_singleton_pattern.test_match"));
+    this.test_match();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_singleton_pattern.test_viable_prefix"));
+    this.test_viable_prefix();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_singleton_pattern.test_match_prefix"));
+    this.test_match_prefix();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_singleton_pattern.test_find_first"));
+    this.test_find_first();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_singleton_pattern.test_find_last"));
+    this.test_find_last();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_singleton_pattern.test_split"));
+    this.test_split();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

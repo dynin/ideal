@@ -10,26 +10,6 @@ import ideal.library.channels.output;
 import ideal.machine.channels.string_writer;
 
 public class test_markup_text {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_markup_text.test_writer_trivial");
-    test_writer_trivial();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_text.test_quoted");
-    test_quoted();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_text.test_writer_indent");
-    test_writer_indent();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_text.test_attribute");
-    test_attribute();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_text.test_self_closing_tag");
-    test_self_closing_tag();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_markup_text.test_writer_fragment");
-    test_writer_fragment();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_writer_trivial() {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
@@ -73,4 +53,24 @@ public class test_markup_text {
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("one&middot;two"), the_writer.elements());
   }
   public test_markup_text() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_text.test_writer_trivial"));
+    this.test_writer_trivial();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_text.test_quoted"));
+    this.test_quoted();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_text.test_writer_indent"));
+    this.test_writer_indent();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_text.test_attribute"));
+    this.test_attribute();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_text.test_self_closing_tag"));
+    this.test_self_closing_tag();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_markup_text.test_writer_fragment"));
+    this.test_writer_fragment();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

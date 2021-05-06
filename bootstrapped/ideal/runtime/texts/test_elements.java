@@ -11,20 +11,6 @@ import ideal.library.channels.output;
 import javax.annotation.Nullable;
 
 public class test_elements {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_elements.test_namespace_id");
-    test_namespace_id();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_elements.test_element_id");
-    test_element_id();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_elements.test_base_element");
-    test_base_element();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_elements.test_make_element");
-    test_make_element();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void test_namespace_id() {
     assert ideal.machine.elements.runtime_util.values_equal(text_library.HTML_NS.short_name(), new base_string("html"));
     assert ideal.machine.elements.runtime_util.values_equal(text_library.HTML_NS.to_string(), new base_string("html"));
@@ -65,4 +51,18 @@ public class test_elements {
     assert ideal.machine.elements.runtime_util.values_equal(((string) child1), new base_string("foo"));
   }
   public test_elements() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_elements.test_namespace_id"));
+    this.test_namespace_id();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_elements.test_element_id"));
+    this.test_element_id();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_elements.test_base_element"));
+    this.test_base_element();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_elements.test_make_element"));
+    this.test_make_element();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

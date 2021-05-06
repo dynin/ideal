@@ -8,14 +8,6 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 
 public class test_flags {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_flags.test_flag_parse");
-    test_flag_parse();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_flags.test_failed_parse");
-    test_failed_parse();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public static class demo_flags {
     public final boolean ARG_BOOL;
     public final @Nullable string ARG_STRING;
@@ -65,4 +57,12 @@ public class test_flags {
     assert ideal.machine.elements.runtime_util.values_equal(this.reported_message, new base_string("Non-flag parameters found--don\'t know what to do!"));
   }
   public test_flags() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_flags.test_flag_parse"));
+    this.test_flag_parse();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_flags.test_failed_parse"));
+    this.test_failed_parse();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

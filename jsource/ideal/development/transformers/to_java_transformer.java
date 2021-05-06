@@ -778,14 +778,6 @@ public class to_java_transformer extends base_transformer {
       supertype_lists.put(flavor, new base_list<construct>());
     }
 
-    if (concrete_mode) {
-      @Nullable procedure_construct run_tests =
-          test_case_generator.process_test_cases(the_type_declaration);
-      if (run_tests != null) {
-        flavored_bodies.get(profile.default_flavor()).append(run_tests);
-      }
-    }
-
     readonly_list<declaration> body = the_type_declaration.get_signature();
     boolean generate_to_string = true;
 

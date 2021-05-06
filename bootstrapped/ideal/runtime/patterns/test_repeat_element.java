@@ -9,26 +9,6 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 
 public class test_repeat_element {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_repeat_element.test_match");
-    test_match();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_repeat_element.test_viable_prefix");
-    test_viable_prefix();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_repeat_element.test_match_prefix");
-    test_match_prefix();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_repeat_element.test_find_first");
-    test_find_first();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_repeat_element.test_find_last");
-    test_find_last();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_repeat_element.test_split");
-    test_split();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   private boolean test_predicate(final char c) {
     return c == 'a' || c == 'b' || c == 'c';
   }
@@ -220,4 +200,24 @@ public class test_repeat_element {
     return ideal.machine.elements.runtime_util.values_equal(((string) s0), s1);
   }
   public test_repeat_element() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_element.test_match"));
+    this.test_match();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_element.test_viable_prefix"));
+    this.test_viable_prefix();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_element.test_match_prefix"));
+    this.test_match_prefix();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_element.test_find_first"));
+    this.test_find_first();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_element.test_find_last"));
+    this.test_find_last();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_element.test_split"));
+    this.test_split();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

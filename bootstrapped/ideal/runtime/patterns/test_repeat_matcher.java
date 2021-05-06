@@ -7,14 +7,6 @@ import ideal.library.patterns.*;
 import ideal.runtime.elements.*;
 
 public class test_repeat_matcher {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_repeat_matcher.test_match");
-    test_match();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_repeat_matcher.test_parse");
-    test_parse();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   private boolean match_a(final char c) {
     return c == 'a' || c == 'A';
   }
@@ -107,4 +99,12 @@ public class test_repeat_matcher {
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("AABBCCabcABC")), new base_string("-AA-BB-CC/-a-b-c/-A-B-C"));
   }
   public test_repeat_matcher() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_matcher.test_match"));
+    this.test_match();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_repeat_matcher.test_parse"));
+    this.test_parse();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

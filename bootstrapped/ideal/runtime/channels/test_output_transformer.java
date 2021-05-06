@@ -7,14 +7,6 @@ import ideal.library.channels.*;
 import ideal.runtime.elements.*;
 
 public class test_output_transformer {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_output_transformer.test_appender");
-    test_appender();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_output_transformer.test_transformer");
-    test_transformer();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public static string test_transform(final string source) {
     return new base_string(new base_string("+"), source, new base_string("!"));
   }
@@ -55,4 +47,12 @@ public class test_output_transformer {
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(2), new base_string("+baz!"));
   }
   public test_output_transformer() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_output_transformer.test_appender"));
+    this.test_appender();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_output_transformer.test_transformer"));
+    this.test_transformer();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

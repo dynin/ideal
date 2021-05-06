@@ -7,14 +7,6 @@ import ideal.library.characters.*;
 import ideal.machine.characters.normal_handler;
 
 public class test_character_handler {
-  public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test("test_character_handler.predicate_test");
-    predicate_test();
-    ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test("test_character_handler.conversion_test");
-    conversion_test();
-    ideal.machine.elements.runtime_util.end_test();
-  }
   public void predicate_test() {
     final normal_handler the_character_handler = normal_handler.instance;
     assert the_character_handler.is_letter('x');
@@ -36,4 +28,12 @@ public class test_character_handler {
     assert the_character_handler.to_lower_case('5') == '5';
   }
   public test_character_handler() { }
+  public void run_all_tests() {
+    ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.predicate_test"));
+    this.predicate_test();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.conversion_test"));
+    this.conversion_test();
+    ideal.machine.elements.runtime_util.end_test();
+  }
 }

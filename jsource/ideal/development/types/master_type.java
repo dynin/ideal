@@ -26,9 +26,7 @@ public class master_type extends base_principal_type {
   private final kind the_kind;
   @dont_display
   private type_declaration_context the_context;
-  @dont_display
-  private dictionary<type_parameters, parametrized_type> parametrized_types;
-  parametrized_type primary_type;
+  private @Nullable parametrizable_state the_parametrizable_state;
 
   public master_type(kind the_kind, @Nullable flavor_profile the_flavor_profile,
       action_name short_name, principal_type parent, type_declaration_context the_context,
@@ -80,71 +78,22 @@ public class master_type extends base_principal_type {
     this.the_context = the_context;
   }
 
-  private void init_parametrized_map() {
-    if (parametrized_types == null) {
-      parametrized_types = new hash_dictionary<type_parameters, parametrized_type>();
-    }
+  public boolean is_parametrizable() {
+    return the_parametrizable_state != null;
   }
 
-  public boolean is_parametrizable() {
-    return parametrized_types != null;
+  public void make_parametrizable() {
+    the_parametrizable_state = new parametrizable_state(this);
+  }
+
+  public parametrizable_state get_parametrizable() {
+    assert the_parametrizable_state != null;
+    return the_parametrizable_state;
   }
 
   public type bind_parameters(type_parameters parameters) {
-    init_parametrized_map();
-    // TODO: use origin.
-    parametrized_type result = parametrized_types.get(parameters);
-    if (result == null) {
-      result = make_parametrized();
-      parametrized_types.put(parameters, result);
-      result.set_parameters(parameters);
-      if (primary_type != null) {
-        assert the_context != null;
-        graph<principal_type, origin> the_type_graph = the_context.type_graph();
-        // TODO: do not panic but report a diagnostic
-        assert !the_type_graph.introduces_cycle(result, primary_type);
-        the_type_graph.add_edge(result, primary_type, type_utilities.PRIMARY_TYPE_ORIGIN);
-      } else {
-        assert is_special();
-      }
-    }
-    return result;
-  }
-
-  private boolean is_special() {
-    return the_kind == type_kinds.procedure_kind || the_kind == type_kinds.union_kind;
-  }
-
-  private parametrized_type make_parametrized() {
-    init_parametrized_map();
-    return new parametrized_type(this);
-  }
-
-  public @Nullable parametrized_type get_primary() {
-    return primary_type;
-  }
-
-  public parametrized_type make_primary() {
-    assert primary_type == null;
-    primary_type = make_parametrized();
-    return primary_type;
-  }
-
-  public @Nullable parametrized_type lookup_parametrized(type_parameters parameters) {
-    return parametrized_types.get(parameters);
-  }
-
-  public void bind_parametrized(parametrized_type parametrized, type_parameters parameters) {
-    assert parametrized.get_master() == this;
-    assert !parametrized.parameters_defined();
-    assert is_special() || primary_type == parametrized;
-    if (parametrized_types.contains_key(parameters)) {
-      utilities.panic("Already defined param type " + parametrized + " for " + parameters);
-    }
-    assert !parametrized_types.contains_key(parameters);
-
-    parametrized.set_parameters(parameters);
-    parametrized_types.put(parameters, parametrized);
+    assert the_parametrizable_state != null;
+    return the_parametrizable_state.bind_parameters(parameters);
   }
 
   @Override

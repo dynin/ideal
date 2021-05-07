@@ -253,11 +253,13 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     if (pass == analysis_pass.TYPE_DECL) {
       if (has_parameters()) {
-        if (master.get_primary() != null) {
+        master.make_parametrizable();
+        parametrizable_state the_parametrizable_state = master.get_parametrizable();
+        if (the_parametrizable_state.get_primary() != null) {
           // TODO: support multiple primary types.
           return primary_already_defined();
         }
-        parametrized_type with_params = master.make_primary();
+        parametrized_type with_params = the_parametrizable_state.make_primary();
         with_params.set_declaration(this);
         result_type = with_params;
         add_promotion(result_type, master);
@@ -304,7 +306,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         }
 
         parameter_values = new type_parameters(parameter_builder);
-        @Nullable parametrized_type already_defined = master.lookup_parametrized(parameter_values);
+        @Nullable parametrized_type already_defined =
+            master.get_parametrizable().lookup_parametrized(parameter_values);
         if (already_defined != null) {
           readonly_list<notification> secondary;
           if (already_defined.get_declaration() != null) {
@@ -317,7 +320,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
             new base_string("Parametrized type already defined"), this, secondary);
           return new error_signal(primary_notification, false);
         }
-        master.bind_parametrized((parametrized_type) result_type, parameter_values);
+        master.get_parametrizable().bind_parametrized((parametrized_type) result_type,
+            parameter_values);
       }
 
       maybe_add_default_supertype();
@@ -487,7 +491,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
   // TODO: move this error-explaining component
   private error_signal primary_already_defined() {
-    @Nullable declaration primary_declaration = master.get_primary().get_declaration();
+    @Nullable declaration primary_declaration = master.get_parametrizable().get_primary().
+        get_declaration();
     @Nullable notification primary_notification = primary_declaration != null ?
         new base_notification("This is the primary", primary_declaration) : null;
     notification already_notification = new base_notification(

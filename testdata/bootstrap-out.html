@@ -1,21 +1,3 @@
-procedure_kind procedure[entity ret, entity arg1, entity arg2] {
-               ^^^^^^^^^
-testdata/bootstrap.i:198: Primary type already defined
-  procedure_kind procedure[entity ret, entity arg1] {
-                 ^^^^^^^^^
-  testdata/bootstrap.i:194: This is the primary
-procedure_kind function[entity ret, entity arg1, entity arg2] {
-               ^^^^^^^^
-testdata/bootstrap.i:208: Primary type already defined
-  procedure_kind function[entity ret, entity arg1] {
-                 ^^^^^^^^
-  testdata/bootstrap.i:203: This is the primary
-interface collection[data element] {
-          ^^^^^^^^^^
-testdata/bootstrap.i:255: Primary type already defined
-  interface collection[value element] {
-            ^^^^^^^^^^
-  testdata/bootstrap.i:227: This is the primary
 <html>
   <head>
     <title>
@@ -449,10 +431,10 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'>procedure</span>[entity <span class='var-declaration-name'>ret</span>, entity <span class='var-declaration-name'>arg1</span>, entity <span class='var-declaration-name'>arg2</span>]
+       procedure kind <span class='type-declaration-name'><span id='procedure2'>procedure</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>, <span id='entity8'>entity</span> <span class='var-declaration-name'><span id='arg2'>arg2</span></span>]
         <div class='indent'>
           <div>
-           refines <span class='supertype-declaration-name'>value</span>
+           refines <span class='supertype-declaration-name'><span id='value7'>value</span></span>
           </div>
         </div>
       </div>
@@ -461,10 +443,10 @@ testdata/bootstrap.i:255: Primary type already defined
           A procedure that has no visible side effects.
         </div>
         <div class='type-declaration'>
-         procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>]
+         procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity9'>entity</span> <span class='var-declaration-name'><span id='ret3'>ret</span></span>, <span id='entity10'>entity</span> <span class='var-declaration-name'><span id='arg13'>arg1</span></span>]
           <div class='indent'>
             <div>
-             refines <span class='supertype-declaration-name'><span id='procedure2'>procedure</span>[<span id='ret3'>ret</span>, <span id='arg13'>arg1</span>]</span>
+             refines <span class='supertype-declaration-name'><span id='procedure3'>procedure</span>[<span id='ret4'>ret</span>, <span id='arg14'>arg1</span>]</span>
             </div>
             <div>
              implements <span class='supertype-declaration-name'>deeply immutable <span id='data10'>data</span></span>
@@ -473,29 +455,29 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'>function</span>[entity <span class='var-declaration-name'>ret</span>, entity <span class='var-declaration-name'>arg1</span>, entity <span class='var-declaration-name'>arg2</span>]
+       procedure kind <span class='type-declaration-name'><span id='function2'>function</span></span>[<span id='entity11'>entity</span> <span class='var-declaration-name'><span id='ret5'>ret</span></span>, <span id='entity12'>entity</span> <span class='var-declaration-name'><span id='arg15'>arg1</span></span>, <span id='entity13'>entity</span> <span class='var-declaration-name'><span id='arg22'>arg2</span></span>]
         <div class='indent'>
           <div>
-           refines <span class='supertype-declaration-name'>procedure[ret, arg1, arg2]</span>
+           refines <span class='supertype-declaration-name'><span id='procedure4'>procedure</span>[<span id='ret6'>ret</span>, <span id='arg16'>arg1</span>, <span id='arg23'>arg2</span>]</span>
           </div>
           <div>
-           implements <span class='supertype-declaration-name'>deeply immutable data</span>
-          </div>
-        </div>
-      </div>
-      <div class='type-declaration'>
-       concept <span class='type-declaration-name'><span id='predicate'>predicate</span></span>[<span id='value7'>value</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
-        <div class='indent'>
-          <div>
-           refines <span class='supertype-declaration-name'><span id='function2'>function</span>[<span id='boolean2'>boolean</span>, <span id='element2'>element</span>]</span>
+           implements <span class='supertype-declaration-name'>deeply immutable <span id='data11'>data</span></span>
           </div>
         </div>
       </div>
       <div class='type-declaration'>
-       concept <span class='type-declaration-name'><span id='relation'>relation</span></span>[<span id='value8'>value</span> <span class='var-declaration-name'><span id='element3'>element</span></span>]
+       concept <span class='type-declaration-name'><span id='predicate'>predicate</span></span>[<span id='value8'>value</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
         <div class='indent'>
           <div>
-           refines <span class='supertype-declaration-name'><span id='function3'>function</span>[<span id='boolean3'>boolean</span>, <span id='element4'>element</span>, <span id='element5'>element</span>]</span>
+           refines <span class='supertype-declaration-name'><span id='function3'>function</span>[<span id='boolean2'>boolean</span>, <span id='element2'>element</span>]</span>
+          </div>
+        </div>
+      </div>
+      <div class='type-declaration'>
+       concept <span class='type-declaration-name'><span id='relation'>relation</span></span>[<span id='value9'>value</span> <span class='var-declaration-name'><span id='element3'>element</span></span>]
+        <div class='indent'>
+          <div>
+           refines <span class='supertype-declaration-name'><span id='function4'>function</span>[<span id='boolean3'>boolean</span>, <span id='element4'>element</span>, <span id='element5'>element</span>]</span>
           </div>
         </div>
       </div>
@@ -504,7 +486,7 @@ testdata/bootstrap.i:255: Primary type already defined
           Equivalence relation is reflexive, symmetric, and transitive.
         </div>
         <div class='type-declaration'>
-         concept <span class='type-declaration-name'><span id='equivalence-relation2'>equivalence relation</span></span>[<span id='value9'>value</span> <span class='var-declaration-name'><span id='element6'>element</span></span>]
+         concept <span class='type-declaration-name'><span id='equivalence-relation2'>equivalence relation</span></span>[<span id='value10'>value</span> <span class='var-declaration-name'><span id='element6'>element</span></span>]
           <div class='indent'>
             <div>
              refines <span class='supertype-declaration-name'><span id='relation2'>relation</span>[<span id='element7'>element</span>]</span>
@@ -517,10 +499,10 @@ testdata/bootstrap.i:255: Primary type already defined
           A finite collection of element values, such as a sequence or a set.
         </div>
         <div class='type-declaration'>
-         interface <span class='type-declaration-name'><span id='collection'>collection</span></span>[<span id='value10'>value</span> <span class='var-declaration-name'><span id='element8'>element</span></span>]
+         interface <span class='type-declaration-name'><span id='collection'>collection</span></span>[<span id='value11'>value</span> <span class='var-declaration-name'><span id='element8'>element</span></span>]
           <div class='indent'>
             <div>
-             refines <span class='supertype-declaration-name'><span id='value11'>value</span></span>
+             refines <span class='supertype-declaration-name'><span id='value12'>value</span></span>
             </div>
             <div>
              readonly <span id='nonnegative3'>nonnegative</span> <span class='var-declaration-name'><span id='size'>size</span></span>
@@ -553,7 +535,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='collection-with-equivalence'>collection with equivalence</span></span>[<span id='value12'>value</span> <span class='var-declaration-name'><span id='element17'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='collection-with-equivalence'>collection with equivalence</span></span>[<span id='value13'>value</span> <span class='var-declaration-name'><span id='element17'>element</span></span>]
         <div class='indent'>
           <div>
            refines <span class='supertype-declaration-name'><span id='collection4'>collection</span>[<span id='element18'>element</span>]</span>
@@ -579,15 +561,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'>collection</span>[data <span class='var-declaration-name'>element</span>]
-        <div class='indent'>
-          <div>
-           implements <span class='supertype-declaration-name'>data</span>
-          </div>
-        </div>
-      </div>
-      <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='list2'>list</span></span>[<span id='value13'>value</span> <span class='var-declaration-name'><span id='element25'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='list2'>list</span></span>[<span id='value14'>value</span> <span class='var-declaration-name'><span id='element25'>element</span></span>]
         <div class='indent'>
           <div>
            implements <span class='supertype-declaration-name'><span id='collection8'>collection</span>[<span id='element26'>element</span>]</span>
@@ -619,7 +593,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='list-with-equivalence'>list with equivalence</span></span>[<span id='value14'>value</span> <span class='var-declaration-name'><span id='element35'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='list-with-equivalence'>list with equivalence</span></span>[<span id='value15'>value</span> <span class='var-declaration-name'><span id='element35'>element</span></span>]
         <div class='indent'>
           <div>
            implements <span class='supertype-declaration-name'><span id='collection-with-equivalence2'>collection with equivalence</span>[<span id='element36'>element</span>]</span>
@@ -641,7 +615,7 @@ testdata/bootstrap.i:255: Primary type already defined
          class <span class='type-declaration-name'><span id='character'>character</span></span>
           <div class='indent'>
             <div>
-             implements <span class='supertype-declaration-name'>deeply immutable <span id='data11'>data</span></span>
+             implements <span class='supertype-declaration-name'>deeply immutable <span id='data12'>data</span></span>
             </div>
             <div>
              implements <span class='supertype-declaration-name'><span id='equality-comparable5'>equality comparable</span></span>
@@ -680,7 +654,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='input'>input</span></span>[<span id='value15'>value</span> <span class='var-declaration-name'><span id='element39'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='input'>input</span></span>[<span id='value16'>value</span> <span class='var-declaration-name'><span id='element39'>element</span></span>]
         <div class='indent'>
           <div>
            extends <span class='supertype-declaration-name'><span id='closeable2'>closeable</span></span>
@@ -697,7 +671,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       concept <span class='type-declaration-name'><span id='output'>output</span></span>[<span id='value16'>value</span> <span class='var-declaration-name'><span id='element41'>element</span></span>]
+       concept <span class='type-declaration-name'><span id='output'>output</span></span>[<span id='value17'>value</span> <span class='var-declaration-name'><span id='element41'>element</span></span>]
         <div class='indent'>
           <div>
            extends <span class='supertype-declaration-name'><span id='closeable3'>closeable</span></span>, <span class='supertype-declaration-name'><span id='syncable2'>syncable</span></span>
@@ -759,10 +733,10 @@ testdata/bootstrap.i:255: Primary type already defined
            <span class='xref-name'>Direct subtypes:</span> value / reference
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>All subtypes:</span> data / stringable / void / nothing / equality comparable / boolean / integer / nonnegative / positive / null / procedure / function / predicate / relation / equivalence relation / collection / collection with equivalence / list / list with equivalence / character / string
+           <span class='xref-name'>All subtypes:</span> data / stringable / void / nothing / equality comparable / boolean / integer / nonnegative / positive / null / procedure / procedure / function / function / predicate / relation / equivalence relation / collection / collection with equivalence / list / list with equivalence / character / string
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Use:</span> entity / entity / entity / entity
+           <span class='xref-name'>Use:</span> entity / entity / entity / entity / entity / entity / entity / entity / entity / entity
           </div>
           <div class='indent'>
            pass
@@ -809,10 +783,10 @@ testdata/bootstrap.i:255: Primary type already defined
            <span class='xref-name'>All supertypes:</span> value / entity
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Direct subtypes:</span> data / stringable / equality comparable / procedure / collection
+           <span class='xref-name'>Direct subtypes:</span> data / stringable / equality comparable / procedure / procedure / collection
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>All subtypes:</span> void / nothing / boolean / integer / nonnegative / positive / null / function / predicate / relation / equivalence relation / collection with equivalence / list / list with equivalence / character / string
+           <span class='xref-name'>All subtypes:</span> void / nothing / boolean / integer / nonnegative / positive / null / function / function / predicate / relation / equivalence relation / collection with equivalence / list / list with equivalence / character / string
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Use:</span> value / value / value / value / value / value / value / value / value / value
@@ -935,7 +909,7 @@ testdata/bootstrap.i:255: Primary type already defined
            <span class='xref-name'>All supertypes:</span> entity / value / entity
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Direct subtypes:</span> void / boolean / integer / null / function / character
+           <span class='xref-name'>Direct subtypes:</span> void / boolean / integer / null / function / function / character
           </div>
           <div class='xref-links'>
            <span class='xref-name'>All subtypes:</span> nothing / nonnegative / positive / predicate / relation / equivalence relation
@@ -1333,7 +1307,7 @@ testdata/bootstrap.i:255: Primary type already defined
            <span class='xref-name'>All supertypes:</span> entity / value / entity
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Direct subtypes:</span> function
+           <span class='xref-name'>Direct subtypes:</span> function / function
           </div>
           <div class='indent'>
             <div>
@@ -1342,14 +1316,27 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'>procedure</span>[entity <span class='var-declaration-name'>ret</span>, entity <span class='var-declaration-name'>arg1</span>, entity <span class='var-declaration-name'>arg2</span>]
+       procedure kind <span class='type-declaration-name'><span id='procedure2'>procedure</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>, <span id='entity8'>entity</span> <span class='var-declaration-name'><span id='arg2'>arg2</span></span>]
+        <div class='xref-links'>
+         <span class='xref-name'>Declaration:</span> procedure
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>Direct supertypes:</span> value
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>All supertypes:</span> entity / value / entity
+        </div>
+        <div class='indent'>
+          <div>
+          </div>
+        </div>
       </div>
       <div>
         <div class='documentation'>
           A procedure that has no visible side effects.
         </div>
         <div class='type-declaration'>
-         procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>]
+         procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity9'>entity</span> <span class='var-declaration-name'><span id='ret3'>ret</span></span>, <span id='entity10'>entity</span> <span class='var-declaration-name'><span id='arg13'>arg1</span></span>]
           <div class='xref-links'>
            <span class='xref-name'>Declaration:</span> function
           </div>
@@ -1371,10 +1358,25 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'>function</span>[entity <span class='var-declaration-name'>ret</span>, entity <span class='var-declaration-name'>arg1</span>, entity <span class='var-declaration-name'>arg2</span>]
+       procedure kind <span class='type-declaration-name'><span id='function2'>function</span></span>[<span id='entity11'>entity</span> <span class='var-declaration-name'><span id='ret5'>ret</span></span>, <span id='entity12'>entity</span> <span class='var-declaration-name'><span id='arg15'>arg1</span></span>, <span id='entity13'>entity</span> <span class='var-declaration-name'><span id='arg22'>arg2</span></span>]
+        <div class='xref-links'>
+         <span class='xref-name'>Declaration:</span> function
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>Direct supertypes:</span> procedure / data
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>All supertypes:</span> value / entity / value / entity
+        </div>
+        <div class='indent'>
+          <div>
+          </div>
+          <div>
+          </div>
+        </div>
       </div>
       <div class='type-declaration'>
-       concept <span class='type-declaration-name'><span id='predicate'>predicate</span></span>[<span id='value7'>value</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
+       concept <span class='type-declaration-name'><span id='predicate'>predicate</span></span>[<span id='value8'>value</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> predicate
         </div>
@@ -1393,7 +1395,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       concept <span class='type-declaration-name'><span id='relation'>relation</span></span>[<span id='value8'>value</span> <span class='var-declaration-name'><span id='element3'>element</span></span>]
+       concept <span class='type-declaration-name'><span id='relation'>relation</span></span>[<span id='value9'>value</span> <span class='var-declaration-name'><span id='element3'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> relation
         </div>
@@ -1416,7 +1418,7 @@ testdata/bootstrap.i:255: Primary type already defined
           Equivalence relation is reflexive, symmetric, and transitive.
         </div>
         <div class='type-declaration'>
-         concept <span class='type-declaration-name'><span id='equivalence-relation2'>equivalence relation</span></span>[<span id='value9'>value</span> <span class='var-declaration-name'><span id='element6'>element</span></span>]
+         concept <span class='type-declaration-name'><span id='equivalence-relation2'>equivalence relation</span></span>[<span id='value10'>value</span> <span class='var-declaration-name'><span id='element6'>element</span></span>]
           <div class='xref-links'>
            <span class='xref-name'>Declaration:</span> equivalence relation
           </div>
@@ -1440,7 +1442,7 @@ testdata/bootstrap.i:255: Primary type already defined
           A finite collection of element values, such as a sequence or a set.
         </div>
         <div class='type-declaration'>
-         interface <span class='type-declaration-name'><span id='collection'>collection</span></span>[<span id='value10'>value</span> <span class='var-declaration-name'><span id='element8'>element</span></span>]
+         interface <span class='type-declaration-name'><span id='collection'>collection</span></span>[<span id='value11'>value</span> <span class='var-declaration-name'><span id='element8'>element</span></span>]
           <div class='xref-links'>
            <span class='xref-name'>Declaration:</span> collection
           </div>
@@ -1517,7 +1519,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='collection-with-equivalence'>collection with equivalence</span></span>[<span id='value12'>value</span> <span class='var-declaration-name'><span id='element17'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='collection-with-equivalence'>collection with equivalence</span></span>[<span id='value13'>value</span> <span class='var-declaration-name'><span id='element17'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> collection with equivalence
         </div>
@@ -1572,10 +1574,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'>collection</span>[data <span class='var-declaration-name'>element</span>]
-      </div>
-      <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='list2'>list</span></span>[<span id='value13'>value</span> <span class='var-declaration-name'><span id='element25'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='list2'>list</span></span>[<span id='value14'>value</span> <span class='var-declaration-name'><span id='element25'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> list
         </div>
@@ -1645,7 +1644,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='list-with-equivalence'>list with equivalence</span></span>[<span id='value14'>value</span> <span class='var-declaration-name'><span id='element35'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='list-with-equivalence'>list with equivalence</span></span>[<span id='value15'>value</span> <span class='var-declaration-name'><span id='element35'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> list with equivalence
         </div>
@@ -1763,7 +1762,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       interface <span class='type-declaration-name'><span id='input'>input</span></span>[<span id='value15'>value</span> <span class='var-declaration-name'><span id='element39'>element</span></span>]
+       interface <span class='type-declaration-name'><span id='input'>input</span></span>[<span id='value16'>value</span> <span class='var-declaration-name'><span id='element39'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> input
         </div>
@@ -1797,7 +1796,7 @@ testdata/bootstrap.i:255: Primary type already defined
         </div>
       </div>
       <div class='type-declaration'>
-       concept <span class='type-declaration-name'><span id='output'>output</span></span>[<span id='value16'>value</span> <span class='var-declaration-name'><span id='element41'>element</span></span>]
+       concept <span class='type-declaration-name'><span id='output'>output</span></span>[<span id='value17'>value</span> <span class='var-declaration-name'><span id='element41'>element</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> output
         </div>

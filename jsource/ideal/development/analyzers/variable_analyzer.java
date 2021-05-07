@@ -132,8 +132,16 @@ public class variable_analyzer extends declaration_analyzer
       assert short_name() instanceof simple_name;
 
       // TODO: select default access modifier based on the frame
-      if (variable_annotations != null) {
-        process_annotations(variable_annotations,
+      if (variable_annotations != null || post_annotations != null) {
+        list<annotation_construct> joined_annotations = new base_list<annotation_construct>();
+        if (variable_annotations != null) {
+          joined_annotations.append_all(variable_annotations);
+        }
+        if (post_annotations != null) {
+          joined_annotations.append_all(post_annotations);
+        }
+        // TODO: if not specified, inherit access modifier from the overriden method
+        process_annotations(joined_annotations,
             language().get_default_variable_access(outer_kind()));
       }
 

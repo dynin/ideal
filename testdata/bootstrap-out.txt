@@ -1,21 +1,3 @@
-procedure_kind procedure[entity ret, entity arg1, entity arg2] {
-               ^^^^^^^^^
-testdata/bootstrap.i:198: Primary type already defined
-  procedure_kind procedure[entity ret, entity arg1] {
-                 ^^^^^^^^^
-  testdata/bootstrap.i:194: This is the primary
-procedure_kind function[entity ret, entity arg1, entity arg2] {
-               ^^^^^^^^
-testdata/bootstrap.i:208: Primary type already defined
-  procedure_kind function[entity ret, entity arg1] {
-                 ^^^^^^^^
-  testdata/bootstrap.i:203: This is the primary
-interface collection[data element] {
-          ^^^^^^^^^^
-testdata/bootstrap.i:255: Primary type already defined
-  interface collection[value element] {
-            ^^^^^^^^^^
-  testdata/bootstrap.i:227: This is the primary
 concept entity { }
 concept value {
   refines entity;
@@ -111,9 +93,6 @@ interface collection_with_equivalence[value element] {
   void remove_one(element e);
   void remove_all(collection[element] c);
   void retain_all(collection[element] c);
-}
-interface collection[data element] {
-  implements data;
 }
 interface list[value element] {
   implements collection[element];

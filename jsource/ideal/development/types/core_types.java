@@ -37,8 +37,10 @@ public class core_types {
         type_kinds.block_kind);
     UNDEFINED = new master_type(new special_name(new base_string("undefined")),
         type_kinds.block_kind);
+
     UNION_MASTER = new master_union_type(new special_name(new base_string("union")),
         type_kinds.union_kind);
+    UNION_MASTER.make_parametrizable();
   }
 
   public static principal_type root_type() {
@@ -72,8 +74,10 @@ public class core_types {
   public static void set_context(type_declaration_context the_context) {
     ROOT.set_context(the_context);
     ERROR.set_context(the_context);
+    ANY_TYPE.set_context(the_context);
     UNREACHABLE.set_context(the_context);
     UNDEFINED.set_context(the_context);
+    TARGET.set_context(the_context);
     UNION_MASTER.set_context(the_context);
   }
 }

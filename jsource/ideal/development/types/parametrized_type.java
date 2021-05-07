@@ -42,31 +42,31 @@ public class parametrized_type extends base_principal_type {
 
   @Override
   public kind get_kind() {
-    return master.get_kind();
+    return get_master().get_kind();
   }
 
   @Override
   public flavor_profile default_flavor_profile() {
-    if (master.has_flavor_profile()) {
-      return master.get_flavor_profile();
+    if (get_master().has_flavor_profile()) {
+      return get_master().get_flavor_profile();
     } else {
-      return master.default_flavor_profile();
+      return get_master().default_flavor_profile();
     }
   }
 
   @Override
   public action_name short_name() {
-    return master.short_name();
+    return get_master().short_name();
   }
 
   @Override
   public @Nullable principal_type get_parent() {
-    return master.get_parent();
+    return get_master().get_parent();
   }
 
   @Override
   protected type_declaration_context get_context() {
-    return master.get_context();
+    return get_master().get_context();
   }
 
   void set_parameters(type_parameters parameters) {
@@ -89,9 +89,9 @@ public class parametrized_type extends base_principal_type {
   @Override
   public string describe(type_format format) {
     if (format == type_format.FULL) {
-      return new base_string(master.describe(format), parameter_names());
+      return new base_string(get_master().describe(format), parameter_names());
     } else {
-      return new base_string(master.describe(format), "[...]");
+      return new base_string(get_master().describe(format), "[...]");
     }
   }
 }

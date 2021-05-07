@@ -97,12 +97,16 @@ public class common_library implements value {
     MISSING_TYPE = get_type("missing", singleton_kind, deeply_immutable_profile);
 
     REFERENCE_TYPE = get_type("reference", reference_kind, mutable_profile);
+    REFERENCE_TYPE.make_parametrizable();
     PROCEDURE_TYPE = get_type(procedure_name, procedure_kind, immutable_profile);
+    PROCEDURE_TYPE.make_parametrizable();
     FUNCTION_TYPE = get_type(function_name, procedure_kind, deeply_immutable_profile);
+    FUNCTION_TYPE.make_parametrizable();
     STRINGABLE_TYPE = get_type("stringable", interface_kind, mutable_profile);
     EQUALITY_COMPARABLE_TYPE = get_type("equality_comparable", concept_kind, mutable_profile);
     REFERENCE_EQUALITY_TYPE = get_type("reference_equality", interface_kind, mutable_profile);
     LIST_TYPE = get_type("list", interface_kind, mutable_profile);
+    LIST_TYPE.make_parametrizable();
 
     VOID_INSTANCE = new singleton_value(VOID_TYPE);
     UNDEFINED_INSTANCE = new singleton_value(UNDEFINED_TYPE);

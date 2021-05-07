@@ -252,10 +252,6 @@ interface collection_with_equivalence[value element] {
   void retain_all(collection[element] c);
 }
 
-interface collection[data element] {
-  implements data;
-}
-
 --interface collection_with_equivalence[data element] {
 --  implements data;
 --}

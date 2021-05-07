@@ -37,7 +37,7 @@ public class procedure_construct extends base_construct {
     if (this.ret != null)
       generated_result.append((construct) this.ret);
     if (this.parameters != null)
-      generated_result.append_all((readonly_list<construct>) (readonly_list) this.parameters);
+      generated_result.append_all((readonly_list<construct>) this.parameters);
     generated_result.append_all((readonly_list<construct>) (readonly_list) this.post_annotations);
     if (this.body != null)
       generated_result.append((construct) this.body);

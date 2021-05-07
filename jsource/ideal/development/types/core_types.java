@@ -22,7 +22,6 @@ public class core_types {
   private final static master_type UNREACHABLE;
   private final static master_type TARGET;
   private final static master_type UNDEFINED;
-  private final static master_type UNION_MASTER;
 
   static {
     ROOT = new master_type(new special_name(new base_string("root")),
@@ -37,10 +36,6 @@ public class core_types {
         type_kinds.block_kind);
     UNDEFINED = new master_type(new special_name(new base_string("undefined")),
         type_kinds.block_kind);
-
-    UNION_MASTER = new master_union_type(new special_name(new base_string("union")),
-        type_kinds.union_kind);
-    UNION_MASTER.make_parametrizable();
   }
 
   public static principal_type root_type() {
@@ -67,10 +62,6 @@ public class core_types {
     return UNDEFINED;
   }
 
-  public static master_type union_master_type() {
-    return UNION_MASTER;
-  }
-
   public static void set_context(type_declaration_context the_context) {
     ROOT.set_context(the_context);
     ERROR.set_context(the_context);
@@ -78,6 +69,6 @@ public class core_types {
     UNREACHABLE.set_context(the_context);
     UNDEFINED.set_context(the_context);
     TARGET.set_context(the_context);
-    UNION_MASTER.set_context(the_context);
+    union_type.set_context(the_context);
   }
 }

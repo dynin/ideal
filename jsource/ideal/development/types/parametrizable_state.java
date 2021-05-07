@@ -23,24 +23,18 @@ import ideal.development.kinds.*;
 public class parametrizable_state extends debuggable {
   private final master_type master;
   @dont_display private dictionary<type_parameters, parametrized_type> parametrized_types;
-  parametrized_type primary_type;
+  private @Nullable parametrized_type primary_type;
 
   public parametrizable_state(master_type master) {
     this.master = master;
+    parametrized_types = new hash_dictionary<type_parameters, parametrized_type>();
   }
 
   public master_type get_master() {
     return master;
   }
 
-  private void init_parametrized_map() {
-    if (parametrized_types == null) {
-      parametrized_types = new hash_dictionary<type_parameters, parametrized_type>();
-    }
-  }
-
   public type bind_parameters(type_parameters parameters) {
-    init_parametrized_map();
     // TODO: use origin.
     parametrized_type result = parametrized_types.get(parameters);
     if (result == null) {
@@ -65,7 +59,6 @@ public class parametrizable_state extends debuggable {
   }
 
   private parametrized_type make_parametrized() {
-    init_parametrized_map();
     return new parametrized_type(master);
   }
 

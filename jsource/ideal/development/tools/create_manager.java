@@ -143,8 +143,6 @@ public class create_manager implements target_manager, type_bootstrapper {
   public void process_type_operators() {
     principal_type operators = library().operators_package();
     type_union_op the_op = new type_union_op();
-    // TODO: remove--this is now handled in common_library init.
-    // core_types.union_master_type().set_context(bootstrap_context);
     bootstrap_context.add(operators, the_op.name(), the_op.to_action(root_origin));
   }
 

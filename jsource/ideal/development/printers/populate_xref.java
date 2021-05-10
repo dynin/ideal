@@ -247,7 +247,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
       return null;
     }
 
-    readonly_list<construct> types = c.types;
+    readonly_list<construct> types = c.type_constructs;
     for (int i = 0; i < types.size(); ++i) {
       construct type_construct = types.get(i);
       @Nullable construct the_construct = printer_util.unwrap_name(type_construct);

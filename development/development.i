@@ -20,4 +20,5 @@ namespace development {
   package constructs;
   package flags;
   package tests;
+  package types;
 }

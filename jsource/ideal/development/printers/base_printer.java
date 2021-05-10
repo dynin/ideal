@@ -735,7 +735,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_simple_name(c.tag.name()));
     fragments.append(print_space());
 
-    readonly_list<construct> types = c.types;
+    readonly_list<construct> types = c.type_constructs;
     for (int i = 0; i < types.size(); ++i) {
       fragments.append(styles.wrap(styles.supertype_declaration_name_style, print(types.get(i))));
       if (i < types.size() - 1) {

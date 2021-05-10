@@ -80,6 +80,9 @@ public class variable_analyzer extends declaration_analyzer
 
   @Override
   public variable_category get_category() {
+    if (category == null) {
+      utilities.panic("Null category in " + this + ", pass " + last_pass);
+    }
     assert category != null;
     return category;
   }
@@ -127,7 +130,7 @@ public class variable_analyzer extends declaration_analyzer
 
   @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
-    if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
+    if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
       // TODO: signal error
       assert short_name() instanceof simple_name;
 
@@ -152,7 +155,9 @@ public class variable_analyzer extends declaration_analyzer
       } else {
         category = variable_category.INSTANCE;
       }
+    }
 
+    if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       return process_declaration();
     }
 
@@ -329,6 +334,7 @@ public class variable_analyzer extends declaration_analyzer
 
   @Override
   public string to_string() {
-    return utilities.describe(this, short_name());
+    return utilities.describe(this, new base_string(parent_name(), ".",
+        short_name().to_string()));
   }
 }

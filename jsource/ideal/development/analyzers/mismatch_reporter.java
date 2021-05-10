@@ -103,7 +103,7 @@ public class mismatch_reporter {
     }
 
     // This should never happen.
-    new base_notification(new base_string("Hmmm "), source).report();
+    new base_notification(new base_string("All arguments appear to match"), source).report();
     for (int i = 0; i < supplied_arguments.size(); ++i) {
       abstract_value supplied_value = supplied_arguments.get(i).result();
       type declared_type = action_utilities.get_procedure_argument(
@@ -111,7 +111,7 @@ public class mismatch_reporter {
       log.debug("MM #" + i + ": expected " +
             context.print_value(declared_type) + ", found " +
             context.print_value(supplied_value) +
-            " @ " + (((base_principal_type) supplied_value).get_pass()));
+            " @ " + (((base_principal_type) supplied_value.type_bound().principal()).get_pass()));
     }
 
     utilities.panic("Unexpected: all procedure arguments match...");

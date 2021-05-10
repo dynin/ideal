@@ -49,13 +49,15 @@ public class meta_flags_extension extends declaration_extension {
   @Override
   protected signal process_type_declaration(type_declaration_analyzer the_type_declaration,
       analysis_pass pass) {
-    signal result = analyze(the_type_declaration, pass);
 
-    if (result instanceof ok_signal && pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
-      return generate_constructor(the_type_declaration);
+    if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
+      signal result = generate_constructor(the_type_declaration);
+      if (result instanceof error_signal) {
+        return result;
+      }
     }
 
-    return result;
+    return analyze(the_type_declaration, pass);
   }
 
   private type string_list_type() {
@@ -153,8 +155,6 @@ public class meta_flags_extension extends declaration_extension {
         analyzer_utilities.PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
         parameters, body, the_origin);
     the_type_declaration.append_to_body(constructor_procedure);
-
-    set_expanded(the_type_declaration);
 
     return ok_signal.instance;
   }

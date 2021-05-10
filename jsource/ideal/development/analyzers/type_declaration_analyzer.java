@@ -200,7 +200,6 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
   @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
-
     /*
     if (short_name().toString().equals("string")) {
       if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
@@ -350,14 +349,20 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       }
     }
 
+    if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
+      if (result_type.get_pass().is_before(declaration_pass.METHODS_AND_VARIABLES)) {
+        kind the_kind = get_kind();
+        if (the_kind == type_kinds.class_kind || the_kind == type_kinds.test_suite_kind) {
+          maybe_add_default_constructor();
+        }
+      }
+    }
+
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
       if (result_type.get_pass().is_before(declaration_pass.METHODS_AND_VARIABLES)) {
         assert !declaration_analysis_in_progress;
-        kind the_kind = get_kind();
-        if (the_kind == type_kinds.enum_kind) {
+        if (get_kind() == type_kinds.enum_kind) {
           add_enum_members();
-        } if (the_kind == type_kinds.class_kind || the_kind == type_kinds.test_suite_kind) {
-          maybe_add_default_constructor();
         }
         declaration_analysis_in_progress = true;
         result_type.process_declaration(declaration_pass.METHODS_AND_VARIABLES);
@@ -435,7 +440,11 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   public void append_to_body(analyzable the_analyzable) {
     assert body != null;
     body.append(the_analyzable);
-    analyze_and_ignore_errors(the_analyzable, last_pass);
+    analysis_pass pass = last_pass;
+    if (pass.is_before(analysis_pass.last()) && in_progress) {
+      pass = analysis_pass.values()[pass.ordinal() + 1];
+    }
+    analyze_and_ignore_errors(the_analyzable, pass);
   }
 
   private void add_enum_members() {

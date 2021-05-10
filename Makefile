@@ -111,7 +111,8 @@ BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/origins/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/documenters/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/constructs/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/development/flags/*.java
+    $(BOOTSTRAPPED_DIR)/ideal/development/flags/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/development/tests/*.java
 
 DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/types/*.java \
@@ -129,8 +130,7 @@ DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/extensions/*.java \
     $(JSOURCE_DIR)/ideal/development/targets/*.java \
     $(JSOURCE_DIR)/ideal/development/parsers/*.java \
-    $(JSOURCE_DIR)/ideal/development/tools/*.java \
-    $(JSOURCE_DIR)/ideal/development/tests/*.java
+    $(JSOURCE_DIR)/ideal/development/tools/*.java
 
 default: print_elements
 
@@ -331,7 +331,7 @@ diff: $(IDEAL_TARGET)
 .PHONY: test
 
 test: $(IDEAL_TARGET)
-	$(JAVA) ideal.development.tests.main
+	$(JAVA) ideal.development.tools.create -unit-tests
 
 $(BOOTSTRAPPED_TARGET): $(BOOTSTRAPPED_JAVA)
 	$(JAVAC) $(BOOTSTRAPPED_JAVA)

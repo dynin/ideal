@@ -56,17 +56,14 @@ public class meta_construct_extension extends declaration_extension {
   @Override
   protected signal process_type_declaration(type_declaration_analyzer the_type_declaration,
       analysis_pass pass) {
-    signal result = analyze(the_type_declaration, pass);
 
-    if (result instanceof ok_signal) {
-      if (pass == analysis_pass.SUPERTYPE_DECL) {
-        append_supertype(the_type_declaration);
-      } else if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
-        append_conditions(the_type_declaration);
-      }
+    if (pass == analysis_pass.SUPERTYPE_DECL) {
+      append_supertype(the_type_declaration);
+    } else if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
+      append_conditions(the_type_declaration);
     }
 
-    return result;
+    return analyze(the_type_declaration, pass);
   }
 
   private principal_type lookup(principal_type the_type, simple_name the_name) {
@@ -246,8 +243,6 @@ public class meta_construct_extension extends declaration_extension {
 
       the_type_declaration.append_to_body(children_procedure);
     }
-
-    set_expanded(null);
   }
 
   private boolean has_constructor(type_declaration the_type_declaration) {
@@ -255,6 +250,8 @@ public class meta_construct_extension extends declaration_extension {
         declaration_util.get_declared_procedures(the_type_declaration);
     return procedures.has(new predicate<procedure_declaration>() {
       public @Override Boolean call(procedure_declaration the_procedure_declaration) {
+        ((procedure_analyzer) the_procedure_declaration).multi_pass_analysis(
+            analysis_pass.PREPARE_METHOD_AND_VARIABLE);
         return the_procedure_declaration.get_category() == procedure_category.CONSTRUCTOR;
       }
     });

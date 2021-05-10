@@ -162,7 +162,7 @@ public class analyzer_utilities {
           }
         }
       }
-    } else if (the_procedure.get_category() == procedure_category.METHOD) {
+    } else if (can_be_overriden(the_procedure)) {
       readonly_list<declaration> overriden_list = the_procedure.get_overriden();
       set<dispatch_action> dispatches = new hash_set<dispatch_action>();
       for (int i = 0; i < overriden_list.size(); ++i) {
@@ -209,6 +209,11 @@ public class analyzer_utilities {
     }
 
     return result_action;
+  }
+
+  private static boolean can_be_overriden(procedure_declaration the_procedure) {
+    return the_procedure.get_category() == procedure_category.METHOD &&
+           !common_library.get_instance().is_reference_type(the_procedure.declared_in_type());
   }
 
   public static boolean is_immutable(variable_declaration the_variable_declaration) {

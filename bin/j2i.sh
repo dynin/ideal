@@ -1,10 +1,12 @@
 #!/bin/sh
 
-PACKAGE=origins
-TMPDIR=tmp
+PACKAGE=types
+TMPDIR=tmp/i
 IDEAL=ideal.i
 ALLFILES="jsource/ideal/development/${PACKAGE}/*.java"
 PKGFILE=${TMPDIR}/${PACKAGE}.i
+
+mkdir -p $TMPDIR
 
 head -n 6 $IDEAL > $PKGFILE
 

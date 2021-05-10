@@ -21,5 +21,5 @@ package tests {
   implicit import ideal.development.origins;
   implicit import ideal.development.documenters;
 
-  namespace main;
+  namespace all_tests;
 }

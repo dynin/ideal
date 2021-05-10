@@ -15,6 +15,7 @@ public class create_flags {
   public final boolean PRINT;
   public final boolean PRETTY_PRINT;
   public final boolean GENERATE;
+  public final boolean UNIT_TESTS;
   public final boolean CURE_UNDECLARED;
   public final boolean HIDE_DECLARATIONS;
   public final boolean DEBUG_CONSTRUCTS;
@@ -31,6 +32,7 @@ public class create_flags {
     this.PRINT = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("PRINT"));
     this.PRETTY_PRINT = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("PRETTY_PRINT"));
     this.GENERATE = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("GENERATE"));
+    this.UNIT_TESTS = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("UNIT_TESTS"));
     this.CURE_UNDECLARED = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("CURE_UNDECLARED"));
     this.HIDE_DECLARATIONS = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("HIDE_DECLARATIONS"));
     this.DEBUG_CONSTRUCTS = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("DEBUG_CONSTRUCTS"));

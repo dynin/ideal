@@ -40,6 +40,7 @@ import ideal.development.origins.*;
 import ideal.development.printers.*;
 import ideal.development.flags.*;
 import ideal.development.targets.*;
+import ideal.development.tests.*;
 
 class create {
 
@@ -64,6 +65,11 @@ class create {
     };
 
   public status start(create_flags the_create_flags) {
+    if (the_create_flags.UNIT_TESTS) {
+      all_tests.run_all_runtime_tests();
+      return status.ok;
+    }
+
     create_util.DEBUG_PROGRESS = the_create_flags.DEBUG_PROGRESS;
 
     resolve_analyzer.CURE_UNDECLARED = the_create_flags.CURE_UNDECLARED;

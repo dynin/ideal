@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 --- Main entry point for running unittests.
-namespace main {
+namespace all_tests {
   void run_all_tests() {
     run_all_runtime_tests();
     run_all_development_tests();

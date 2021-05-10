@@ -19,5 +19,5 @@ namespace development {
   package documenters;
   package constructs;
   package flags;
---  package tests;
+  package tests;
 }

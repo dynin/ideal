@@ -16,6 +16,8 @@ meta_flags class create_flags {
   boolean PRETTY_PRINT;
   boolean GENERATE;
 
+  boolean UNIT_TESTS;
+
   boolean CURE_UNDECLARED;
   boolean HIDE_DECLARATIONS;
 

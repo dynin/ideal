@@ -14,6 +14,8 @@ namespace special_token_type {
   FLAVOR : base_token_type.new("<flavor>", base_symbols.FLAVOR);
   JUMP : base_token_type.new("<jump>", base_symbols.JUMP);
 
+  CONSTRAINT : base_token_type.new("<constraint>", base_symbols.CONSTRAINT);
+
   LITERAL : base_token_type.new("<literal>", base_symbols.LITERAL);
 
   COMMENT : base_token_type.new("<comment>", base_symbols.COMMENT);

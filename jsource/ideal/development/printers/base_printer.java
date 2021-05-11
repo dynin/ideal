@@ -37,7 +37,6 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   private static final string_text_node SPACE = new base_string(" ");
   // TODO: define token
   private static final string PASS = new base_string("pass");
-  private static final string ASSERT = new base_string("assert");
   private static final string RETURN = new base_string("return");
 
   public static final text_fragment bullet_fragment =
@@ -396,9 +395,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_constraint(constraint_construct c) {
-    // TODO: java printer?
-    // FIXME: use token...
-    return text_util.join(print_word(ASSERT), print_space(), print(c.expr));
+    return text_util.join(print_simple_name(c.the_constraint_pass.constraint_name()),
+        print_space(), print(c.expr));
   }
 
   public text_fragment print_empty() {

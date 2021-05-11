@@ -8,9 +8,12 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 
 public class constraint_construct extends base_construct {
+  public final constraint_pass the_constraint_pass;
   public final construct expr;
-  public constraint_construct(final construct expr, final origin generated_origin) {
+  public constraint_construct(final constraint_pass the_constraint_pass, final construct expr, final origin generated_origin) {
     super(generated_origin);
+    assert the_constraint_pass != null;
+    this.the_constraint_pass = the_constraint_pass;
     assert expr != null;
     this.expr = expr;
   }

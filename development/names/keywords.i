@@ -17,8 +17,6 @@ namespace keywords {
   IS : keyword.new("is", base_symbols.IS);
   IS_NOT : keyword.new("is_not", base_symbols.IS_NOT);
 
-  ASSERT : keyword.new("assert", base_symbols.ASSERT);
-
   RETURN : keyword.new("return", base_symbols.RETURN);
   IF : keyword.new("if", base_symbols.IF);
   ELSE : keyword.new("else", base_symbols.ELSE);

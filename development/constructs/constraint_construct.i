@@ -5,5 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 meta_construct class constraint_construct {
+  constraint_pass the_constraint_pass;
   construct expr;
 }

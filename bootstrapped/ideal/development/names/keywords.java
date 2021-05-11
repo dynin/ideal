@@ -16,7 +16,6 @@ public class keywords {
   public static final keyword OR = new keyword(new base_string("or"), base_symbols.OR);
   public static final keyword IS = new keyword(new base_string("is"), base_symbols.IS);
   public static final keyword IS_NOT = new keyword(new base_string("is_not"), base_symbols.IS_NOT);
-  public static final keyword ASSERT = new keyword(new base_string("assert"), base_symbols.ASSERT);
   public static final keyword RETURN = new keyword(new base_string("return"), base_symbols.RETURN);
   public static final keyword IF = new keyword(new base_string("if"), base_symbols.IF);
   public static final keyword ELSE = new keyword(new base_string("else"), base_symbols.ELSE);

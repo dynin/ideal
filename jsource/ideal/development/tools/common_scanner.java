@@ -14,6 +14,7 @@ import ideal.development.elements.*;
 import ideal.development.scanners.*;
 import ideal.development.comments.*;
 import ideal.development.constructs.jump_type;
+import ideal.development.constructs.constraint_pass;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
@@ -94,7 +95,6 @@ public class common_scanner extends base_scanner_config {
     add_special(special_name.NEW, keywords.NEW);
 
     add_keyword(keywords.RETURN);
-    add_keyword(keywords.ASSERT);
 
     add_keyword(keywords.IF);
     add_keyword(keywords.ELSE);
@@ -112,6 +112,9 @@ public class common_scanner extends base_scanner_config {
 
     add_jump(jump_type.BREAK_JUMP);
     add_jump(jump_type.CONTINUE_JUMP);
+
+    add_constraint(constraint_pass.ASSERT_CONSTRAINT);
+    add_constraint(constraint_pass.VERIFY_CONSTRAINT);
 
     add_kind(type_kinds.class_kind);
     add_kind(type_kinds.datatype_kind);

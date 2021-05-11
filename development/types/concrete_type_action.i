@@ -11,7 +11,7 @@ class concrete_type_action {
 
   concrete_type_action(type the_type, origin the_origin) {
     super(the_origin);
-    assert the_type is_not null;
+    verify the_type is_not null;
     this.the_type = the_type;
   }
 

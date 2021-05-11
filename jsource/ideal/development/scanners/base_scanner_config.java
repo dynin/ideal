@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.constructs.jump_type;
+import ideal.development.constructs.constraint_pass;
 import ideal.development.names.*;
 import ideal.development.origins.*;
 import javax.annotation.Nullable;
@@ -101,6 +102,11 @@ public class base_scanner_config implements scanner_config {
 
   public void add_jump(jump_type jump) {
     add_keyword(jump.jump_name(), new token_matcher<jump_type>(special_token_type.JUMP, jump));
+  }
+
+  public void add_constraint(constraint_pass constraint) {
+    add_keyword(constraint.constraint_name(),
+        new token_matcher<constraint_pass>(special_token_type.CONSTRAINT, constraint));
   }
 
   @Override

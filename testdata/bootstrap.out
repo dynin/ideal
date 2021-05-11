@@ -78,7 +78,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: entity
           }
@@ -146,7 +146,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: entity
           }
@@ -243,7 +243,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: value
           }
@@ -356,7 +356,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: readonly
             expr: name_construct {
@@ -410,7 +410,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <extends>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: name_construct {
@@ -456,7 +456,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <extends>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: void
           }
@@ -515,7 +515,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: value
           }
@@ -581,7 +581,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: name_construct {
@@ -594,7 +594,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: equality_comparable
           }
@@ -604,7 +604,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: stringable
           }
@@ -655,7 +655,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: name_construct {
@@ -668,7 +668,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: equality_comparable
           }
@@ -678,7 +678,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: stringable
           }
@@ -713,7 +713,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: integer
           }
@@ -748,7 +748,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: nonnegative
           }
@@ -801,7 +801,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: name_construct {
@@ -814,7 +814,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: stringable
           }
@@ -878,7 +878,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: value
           }
@@ -924,7 +924,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: value
           }
@@ -976,7 +976,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: procedure
@@ -997,7 +997,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: name_construct {
@@ -1046,7 +1046,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: procedure
@@ -1070,7 +1070,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: name_construct {
@@ -1101,7 +1101,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: function
@@ -1140,7 +1140,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: function
@@ -1197,7 +1197,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: relation
@@ -1248,7 +1248,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: value
           }
@@ -1517,7 +1517,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <refines>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: collection
@@ -1702,7 +1702,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: collection
@@ -1965,7 +1965,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: collection_with_equivalence
@@ -1983,7 +1983,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           parameter_construct {
             main: name_construct {
               the_name: list
@@ -2052,7 +2052,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: name_construct {
@@ -2065,7 +2065,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: equality_comparable
           }
@@ -2075,7 +2075,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: stringable
           }
@@ -2093,7 +2093,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           flavor_construct {
             flavor: deeply_immutable
             expr: parameter_construct {
@@ -2180,7 +2180,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <extends>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: closeable
           }
@@ -2263,7 +2263,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <extends>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: closeable
           }

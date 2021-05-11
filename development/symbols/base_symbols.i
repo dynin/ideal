@@ -8,7 +8,6 @@ namespace base_symbols {
   integer KIND : 55;
   integer HASH : 60;
   integer VERTICAL_BAR : 35;
-  integer ASSERT : 58;
   integer FOR : 49;
   integer MINUS : 18;
   integer SPECIAL_NAME : 51;
@@ -47,6 +46,7 @@ namespace base_symbols {
   integer MINUS_EQUALS : 41;
   integer OPEN_PARENTHESIS : 2;
   integer IMPORT : 59;
+  integer CONSTRAINT : 58;
   integer COLON : 11;
   integer LITERAL : 14;
   integer ELSE : 46;

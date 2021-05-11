@@ -215,6 +215,12 @@ public class java_printer extends base_printer {
   }
 
   @Override
+  public text_fragment process_constraint(constraint_construct c) {
+    return text_util.join(print_simple_name(constraint_pass.ASSERT_CONSTRAINT.constraint_name()),
+        print_space(), print(c.expr));
+  }
+
+  @Override
   public token_type init_token(variable_construct c) {
     return punctuation.EQUALS;
   }

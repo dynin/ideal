@@ -16,6 +16,7 @@ package constructs {
   class block_construct;
   class comment_construct;
   class conditional_construct;
+  enum constraint_pass;
   class constraint_construct;
   class construct_visitor;
   class empty_construct;

@@ -16,6 +16,7 @@ public class special_token_type {
   public static final base_token_type SUBTYPE_TAG = new base_token_type(new base_string("<subtype-tag>"), base_symbols.SUBTYPE_TAG);
   public static final base_token_type FLAVOR = new base_token_type(new base_string("<flavor>"), base_symbols.FLAVOR);
   public static final base_token_type JUMP = new base_token_type(new base_string("<jump>"), base_symbols.JUMP);
+  public static final base_token_type CONSTRAINT = new base_token_type(new base_string("<constraint>"), base_symbols.CONSTRAINT);
   public static final base_token_type LITERAL = new base_token_type(new base_string("<literal>"), base_symbols.LITERAL);
   public static final base_token_type COMMENT = new base_token_type(new base_string("<comment>"), base_symbols.COMMENT);
 }

@@ -11,8 +11,7 @@ abstract class type_action {
   private origin the_origin;
 
   protected type_action(origin the_origin) {
-    -- TODO: drop this when fully bootstrapped.
-    assert the_origin is_not null;
+    verify the_origin is_not null;
     this.the_origin = the_origin;
   }
 

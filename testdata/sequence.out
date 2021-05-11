@@ -117,7 +117,7 @@
         annotations: [ ]
         subtype_flavor: <null>
         tag: <implements>
-        types: [
+        type_constructs: [
           name_construct {
             the_name: readonly_data
           }
@@ -1155,6 +1155,11 @@
           annotations: [ ]
           body: [
             constraint_construct {
+              the_constraint_pass: constraint_pass {
+                name_string: "assert"
+                name: "ASSERT_CONSTRAINT"
+                ordinal: 0
+              }
               expr: operator_construct {
                 the_operator: operator {
                   the_operator_type: infix

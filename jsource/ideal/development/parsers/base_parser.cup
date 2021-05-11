@@ -59,7 +59,7 @@ terminal token<type_flavor>  FLAVOR;
 terminal token<kind>  KIND;
 terminal token<subtype_tag>  SUBTYPE_TAG;
 terminal token<jump_type>  JUMP;
-terminal token<keyword>  ASSERT;
+terminal token<constraint_pass>  CONSTRAINT;
 terminal token<keyword>  IMPORT;
 // Temporary.
 //terminal token<keyword>  TEMPLATE;
@@ -223,8 +223,9 @@ block_statement ::=
                 {: RESULT = new return_construct(e, new fragment_origin(r, r, s)); :}
         |       JUMP:j SEMICOLON:s
                 {: RESULT = new jump_construct(j.payload(), new fragment_origin(j, j, s)); :}
-        |       ASSERT:a expression:e SEMICOLON:s
-                {: RESULT = new constraint_construct(e, new fragment_origin(a, a, s)); :}
+        |       CONSTRAINT:c expression:e SEMICOLON:s
+                {: RESULT = new constraint_construct(
+                    c.payload(), e, new fragment_origin(c, c, s)); :}
         |       IF:i condition_in_parens:c statement:t
                 {: RESULT = new conditional_construct(c, t, null, true,
                                            new fragment_origin(i, i, t)); :}

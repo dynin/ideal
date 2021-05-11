@@ -12,7 +12,6 @@ public class base_symbols {
   public static final int KIND = 55;
   public static final int HASH = 60;
   public static final int VERTICAL_BAR = 35;
-  public static final int ASSERT = 58;
   public static final int FOR = 49;
   public static final int MINUS = 18;
   public static final int SPECIAL_NAME = 51;
@@ -51,6 +50,7 @@ public class base_symbols {
   public static final int MINUS_EQUALS = 41;
   public static final int OPEN_PARENTHESIS = 2;
   public static final int IMPORT = 59;
+  public static final int CONSTRAINT = 58;
   public static final int COLON = 11;
   public static final int LITERAL = 14;
   public static final int ELSE = 46;

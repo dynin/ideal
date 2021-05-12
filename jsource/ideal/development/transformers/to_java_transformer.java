@@ -1617,7 +1617,7 @@ public class to_java_transformer extends base_transformer {
 
   public construct process_constraint_action(constraint_action the_constraint_action) {
     origin the_origin = the_constraint_action;
-    return new constraint_construct(constraint_pass.ASSERT_CONSTRAINT,
+    return new constraint_construct(constraint_category.ASSERT_CONSTRAINT,
         transform_action(the_constraint_action.expression), the_origin);
   }
 
@@ -1810,7 +1810,7 @@ public class to_java_transformer extends base_transformer {
       }
     } else if (the_value instanceof loop_jump_wrapper) {
       loop_jump_wrapper the_loop_jump_wrapper = (loop_jump_wrapper) the_value;
-      return new jump_construct(the_loop_jump_wrapper.the_jump_type, the_origin);
+      return new jump_construct(the_loop_jump_wrapper.the_jump_category, the_origin);
     }
 
     utilities.panic("processing value " + the_value.getClass() + ": " + the_value);

@@ -68,7 +68,7 @@ public class loop_action extends base_action {
         if (result instanceof loop_jump_wrapper) {
           loop_jump_wrapper the_loop_jump = (loop_jump_wrapper) result;
           if (the_loop_jump.the_loop == this) {
-            switch (the_loop_jump.the_jump_type) {
+            switch (the_loop_jump.the_jump_category) {
               case BREAK_JUMP:
                 // Yay! I get a break!
                 return common_library.get_instance().void_instance();

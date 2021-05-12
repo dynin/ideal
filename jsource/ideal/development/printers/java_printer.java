@@ -216,7 +216,7 @@ public class java_printer extends base_printer {
 
   @Override
   public text_fragment process_constraint(constraint_construct c) {
-    return text_util.join(print_simple_name(constraint_pass.ASSERT_CONSTRAINT.constraint_name()),
+    return text_util.join(print_simple_name(constraint_category.ASSERT_CONSTRAINT.constraint_name()),
         print_space(), print(c.expr));
   }
 

@@ -22,16 +22,16 @@ import ideal.development.declarations.*;
 
 public class jump_analyzer extends single_pass_analyzer {
 
-  public final jump_type the_jump_type;
+  public final jump_category the_jump_category;
 
-  public jump_analyzer(jump_type the_jump_type, origin pos) {
+  public jump_analyzer(jump_category the_jump_category, origin pos) {
     super(pos);
-    this.the_jump_type = the_jump_type;
+    this.the_jump_category = the_jump_category;
   }
 
   public jump_analyzer(jump_construct the_jump) {
     super(the_jump);
-    the_jump_type = the_jump.the_jump_type;
+    the_jump_category = the_jump.the_jump_category;
   }
 
   @Override
@@ -48,12 +48,12 @@ public class jump_analyzer extends single_pass_analyzer {
       return new error_signal(messages.jump_outside_loop, this);
     }
 
-    if (the_jump_type == jump_type.BREAK_JUMP) {
+    if (the_jump_category == jump_category.BREAK_JUMP) {
       the_loop.use_break();
-    } else if (the_jump_type == jump_type.CONTINUE_JUMP) {
+    } else if (the_jump_category == jump_category.CONTINUE_JUMP) {
       // TODO: propagate constraints?
     }
 
-    return new base_value_action(new loop_jump_wrapper(the_jump_type, the_loop), this);
+    return new base_value_action(new loop_jump_wrapper(the_jump_category, the_loop), this);
   }
 }

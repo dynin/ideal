@@ -58,8 +58,8 @@ terminal token<comment>  COMMENT;
 terminal token<type_flavor>  FLAVOR;
 terminal token<kind>  KIND;
 terminal token<subtype_tag>  SUBTYPE_TAG;
-terminal token<jump_type>  JUMP;
-terminal token<constraint_pass>  CONSTRAINT;
+terminal token<jump_category>  JUMP;
+terminal token<constraint_category>  CONSTRAINT;
 terminal token<keyword>  IMPORT;
 // Temporary.
 //terminal token<keyword>  TEMPLATE;

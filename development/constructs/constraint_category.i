@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-enum constraint_pass {
+enum constraint_category {
   implements deeply_immutable data, stringable;
 
   ASSERT_CONSTRAINT("assert");
@@ -12,7 +12,7 @@ enum constraint_pass {
 
   private final string name_string;
 
-  private constraint_pass(string name_string) {
+  private constraint_category(string name_string) {
     this.name_string = name_string;
   }
 

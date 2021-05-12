@@ -395,7 +395,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_constraint(constraint_construct c) {
-    return text_util.join(print_simple_name(c.the_constraint_pass.constraint_name()),
+    return text_util.join(print_simple_name(c.the_constraint_category.constraint_name()),
         print_space(), print(c.expr));
   }
 
@@ -862,7 +862,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_jump(jump_construct the_construct) {
-    return print_simple_name(the_construct.the_jump_type.jump_name());
+    return print_simple_name(the_construct.the_jump_category.jump_name());
   }
 
   public token_type init_token(variable_construct c) {

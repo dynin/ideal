@@ -34,7 +34,7 @@ public class while_analyzer extends extension_analyzer {
   public analyzable do_expand() {
     origin the_origin = this;
 
-    analyzable break_statement = new jump_analyzer(jump_type.BREAK_JUMP, the_origin);
+    analyzable break_statement = new jump_analyzer(jump_category.BREAK_JUMP, the_origin);
     analyzable if_statement = new conditional_analyzer(condition,
         body, break_statement, the_origin);
     return new loop_analyzer(if_statement, the_origin);

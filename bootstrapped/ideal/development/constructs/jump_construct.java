@@ -8,11 +8,11 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 
 public class jump_construct extends base_construct {
-  public final jump_type the_jump_type;
-  public jump_construct(final jump_type the_jump_type, final origin generated_origin) {
+  public final jump_category the_jump_category;
+  public jump_construct(final jump_category the_jump_category, final origin generated_origin) {
     super(generated_origin);
-    assert the_jump_type != null;
-    this.the_jump_type = the_jump_type;
+    assert the_jump_category != null;
+    this.the_jump_category = the_jump_category;
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();

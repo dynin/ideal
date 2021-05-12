@@ -5,5 +5,5 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 meta_construct class jump_construct {
-  jump_type the_jump_type;
+  jump_category the_jump_category;
 }

@@ -41,7 +41,7 @@ public class for_analyzer extends extension_analyzer {
 
     analyzable body_and_update = new statement_list_analyzer(
         new base_list<analyzable>(body, update), the_origin);
-    analyzable break_statement = new jump_analyzer(jump_type.BREAK_JUMP, the_origin);
+    analyzable break_statement = new jump_analyzer(jump_category.BREAK_JUMP, the_origin);
     analyzable if_statement = new conditional_analyzer(condition,
         body_and_update, break_statement, the_origin);
     analyzable loop_statement = new loop_analyzer(if_statement, the_origin);

@@ -16,7 +16,7 @@ package constructs {
   class block_construct;
   class comment_construct;
   class conditional_construct;
-  enum constraint_pass;
+  enum constraint_category;
   class constraint_construct;
   class construct_visitor;
   class empty_construct;
@@ -26,7 +26,7 @@ package constructs {
   class grouping_type;
   class import_construct;
   class jump_construct;
-  enum jump_type;
+  enum jump_category;
   class list_construct;
   class literal_construct;
   class loop_construct;

@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-enum jump_type {
+enum jump_category {
   implements deeply_immutable data, stringable;
 
   BREAK_JUMP("break");
@@ -13,7 +13,7 @@ enum jump_type {
 
   private final string name_string;
 
-  private jump_type(string name_string) {
+  private jump_category(string name_string) {
     this.name_string = name_string;
   }
 

@@ -17,17 +17,17 @@ import ideal.development.values.*;
 
 public class loop_jump_wrapper extends jump_wrapper {
 
-  public final jump_type the_jump_type;
+  public final jump_category the_jump_category;
   public final loop_action the_loop;
 
-  public loop_jump_wrapper(jump_type the_jump_type, loop_action the_loop) {
-    this.the_jump_type = the_jump_type;
+  public loop_jump_wrapper(jump_category the_jump_category, loop_action the_loop) {
+    this.the_jump_category = the_jump_category;
     this.the_loop = the_loop;
   }
 
   @Override
   public string to_string() {
-    return new base_string(new base_string("jump: "), the_jump_type.to_string(),
+    return new base_string(new base_string("jump: "), the_jump_category.to_string(),
         the_loop.to_string());
   }
 }

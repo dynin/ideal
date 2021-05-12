@@ -13,8 +13,8 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.scanners.*;
 import ideal.development.comments.*;
-import ideal.development.constructs.jump_type;
-import ideal.development.constructs.constraint_pass;
+import ideal.development.constructs.jump_category;
+import ideal.development.constructs.constraint_category;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
@@ -110,11 +110,11 @@ public class common_scanner extends base_scanner_config {
 
     add_keyword(keywords.PLEASE);
 
-    add_jump(jump_type.BREAK_JUMP);
-    add_jump(jump_type.CONTINUE_JUMP);
+    add_jump(jump_category.BREAK_JUMP);
+    add_jump(jump_category.CONTINUE_JUMP);
 
-    add_constraint(constraint_pass.ASSERT_CONSTRAINT);
-    add_constraint(constraint_pass.VERIFY_CONSTRAINT);
+    add_constraint(constraint_category.ASSERT_CONSTRAINT);
+    add_constraint(constraint_category.VERIFY_CONSTRAINT);
 
     add_kind(type_kinds.class_kind);
     add_kind(type_kinds.datatype_kind);

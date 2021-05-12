@@ -21,7 +21,7 @@ import ideal.development.notifications.*;
 public class constraint_analyzer extends single_pass_analyzer {
 
   public final analyzable expression;
-  // TODO: handle constraint_pass
+  // TODO: handle constraint_category
 
   public constraint_analyzer(constraint_construct source) {
     super(source);

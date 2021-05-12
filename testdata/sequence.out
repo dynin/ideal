@@ -1155,7 +1155,7 @@
           annotations: [ ]
           body: [
             constraint_construct {
-              the_constraint_pass: constraint_pass {
+              the_constraint_category: constraint_category {
                 name_string: "assert"
                 name: "ASSERT_CONSTRAINT"
                 ordinal: 0

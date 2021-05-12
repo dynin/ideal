@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM='2020'
-TO='2021'
+FROM='jump_type'
+TO='jump_category'
 
 #cd $HOME/Projects/ideal
 

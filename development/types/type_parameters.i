@@ -4,109 +4,98 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.logs.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.declarations.*;
+import ideal.machine.channels.string_writer;
 
-import javax.annotation.Nullable;
+class type_parameters {
+  implements deeply_immutable data;
+  extends debuggable;
 
-public class type_parameters extends debuggable implements deeply_immutable_data {
+  private immutable list[abstract_value] parameters;
+  private abstract_value or null repeated_parameter;
 
-  private immutable_list<abstract_value> parameters;
-  private @Nullable abstract_value repeated_parameter;
-
-  public type_parameters(readonly_list<abstract_value> parameters) {
+  overload type_parameters(readonly list[abstract_value] parameters) {
     this.parameters = parameters.frozen_copy();
-    this.repeated_parameter = null;
+    this.repeated_parameter = missing.instance;
   }
 
-  public type_parameters(readonly_list<abstract_value> parameters,
+  overload type_parameters(readonly list[abstract_value] parameters,
       abstract_value repeated_parameter) {
     this.parameters = parameters.frozen_copy();
     this.repeated_parameter = repeated_parameter;
   }
 
-  public boolean is_fixed_size() {
-    return repeated_parameter == null;
-  }
+  boolean is_fixed_size => repeated_parameter is null;
 
-  public boolean is_empty() {
-    return parameters.is_empty() && is_fixed_size();
-  }
+  boolean is_empty => parameters.is_empty && is_fixed_size();
 
-  public boolean is_not_empty() {
-    return !is_empty();
-  }
+  boolean is_not_empty => !is_empty();
 
-  public boolean is_valid_arity(int arity) {
+  boolean is_valid_arity(nonnegative arity) {
     if (is_fixed_size()) {
-      return arity == parameters.size();
+      return arity == parameters.size;
     } else {
-      return arity >= parameters.size();
+      return arity >= parameters.size;
     }
   }
 
-  public abstract_value first() {
-    return get(0);
-  }
+  abstract_value first => this[0];
 
-  public abstract_value get(int index) {
-    if (index < parameters.size()) {
-      return parameters.get(index);
-    } else if (repeated_parameter != null) {
-      return repeated_parameter;
+  implicit abstract_value get(nonnegative index) {
+    if (index < parameters.size) {
+      return parameters[index];
+    } else if (repeated_parameter is_not null) {
+      -- TODO: retire cast.
+      return repeated_parameter !> abstract_value;
     } else {
       utilities.panic("Parameter index out of range");
-      return null;
     }
   }
 
-  public immutable_list<abstract_value> fixed_size_list() {
+  immutable list[abstract_value] fixed_size_list() {
     assert is_fixed_size();
     return parameters;
   }
 
-  // TODO: deprecate all uses of this.
-  public immutable_list<abstract_value> internal_access() {
+  -- TODO: deprecate all uses of this.
+  immutable list[abstract_value] internal_access() {
     assert is_fixed_size();
     return parameters;
   }
 
-  // TODO: we shouldn't need this.
-  public immutable_set<principal_type> principals_set() {
-    set<principal_type> result = new hash_set<principal_type>();
-    for (int i = 0; i < parameters.size(); ++i) {
-      result.add(parameters.get(i).type_bound().principal());
+  -- TODO: we shouldn't need this.
+  immutable set[principal_type] principals_set() {
+    result : hash_set[principal_type].new();
+    for (parameter : parameters) {
+      result.add(parameter.type_bound.principal);
     }
-    if (repeated_parameter != null) {
-      result.add(repeated_parameter.type_bound().principal());
+    if (repeated_parameter is_not null) {
+      -- TODO: retire cast.
+      result.add((repeated_parameter !> abstract_value).type_bound.principal);
     }
     return result.frozen_copy();
   }
 
-  @Override
-  public string to_string() {
-    StringBuilder sb = new StringBuilder("[");
+  override string to_string() {
+    the_writer : string_writer.new();
+    the_writer.write_all("[");
 
-    for (int i = 0; i < parameters.size(); ++i) {
+    -- TODO: use list.join()
+    for (var nonnegative i : 0; i < parameters.size; i += 1) {
       if (i > 0) {
-        sb.append(", ");
+        the_writer.write_all(", ");
       }
-      abstract_value parameter = parameters.get(i);
-      string name;
-      // TODO: this heuristic needs to be improved...
-      if (parameter instanceof base_type /*&& type_utilities.is_type_alias((type) parameter)*/) {
-        name = ((base_type) parameter).describe(type_format.TWO_PARENTS);
+      parameter : parameters[i];
+      var string name;
+      -- TODO: this heuristic needs to be improved...
+      if (parameter is base_type) { -- && type_utilities.is_type_alias((type) parameter)
+        name = parameter.describe(type_format.TWO_PARENTS);
       } else {
-        name = parameter.to_string();
+        name = parameter.to_string;
       }
-      sb.append(utilities.s(name));
+      the_writer.write_all(name);
     }
-    sb.append("]");
 
-    return new base_string(sb.toString());
+    the_writer.write_all("]");
+    return the_writer.elements();
   }
 }

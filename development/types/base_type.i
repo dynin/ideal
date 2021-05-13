@@ -27,8 +27,6 @@ abstract class base_type {
       the_flavor.types.put(the_type, flavored);
     }
 
-    -- TODO: this check is redundant.
-    verify flavored is type;
     return flavored;
   }
 

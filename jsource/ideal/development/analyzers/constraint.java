@@ -14,20 +14,24 @@ import ideal.development.elements.*;
 public class constraint extends debuggable implements readonly_data, stringable {
 
   public final declaration the_declaration;
-  public final abstract_value the_value;
+  public final action the_action;
   public final constraint_type the_constraint_type;
 
-  public constraint(declaration the_declaration, abstract_value the_value,
+  public constraint(declaration the_declaration, action the_action,
       constraint_type the_constraint_type) {
     this.the_declaration = the_declaration;
-    this.the_value = the_value;
+    this.the_action = the_action;
     this.the_constraint_type = the_constraint_type;
+  }
+
+  public final abstract_value the_value() {
+    return the_action.result();
   }
 
   @Override
   public string to_string() {
     //return utilities.describe(this, the_declaration);
     return new base_string(the_declaration.to_string(), new base_string(" => "),
-        the_value.to_string(), new base_string(" (" + the_constraint_type + ")"));
+        the_action.to_string(), new base_string(" (" + the_constraint_type + ")"));
   }
 }

@@ -63,12 +63,12 @@ public class is_op extends binary_procedure {
       variable_declaration the_declaration = (variable_declaration) first_declaration;
       if (the_declaration.get_category() == variable_category.LOCAL) {
         list<constraint> constraints = new base_list<constraint>();
-        constraints.append(new constraint(the_declaration, the_type,
+        constraints.append(new constraint(the_declaration, the_type.to_action(second),
             negated ? constraint_type.ON_FALSE : constraint_type.ON_TRUE));
         @Nullable abstract_value other =
             get_other_type(first_value.result().type_bound(), the_type);
         if (other != null) {
-          constraints.append(new constraint(the_declaration, other,
+          constraints.append(new constraint(the_declaration, other.to_action(first),
               negated ? constraint_type.ON_TRUE : constraint_type.ON_FALSE));
         }
         return action_plus_constraints.make_result(the_action, constraints);

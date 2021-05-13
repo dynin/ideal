@@ -390,7 +390,7 @@ public class analyzer_utilities {
         filtered_constraints.append(the_constraint);
       } else if (current_type == filter) {
         filtered_constraints.append(new constraint(the_constraint.the_declaration,
-            the_constraint.the_value, constraint_type.ALWAYS));
+            the_constraint.the_action, constraint_type.ALWAYS));
       }
     }
     return filtered_constraints;

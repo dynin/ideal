@@ -63,7 +63,7 @@ public class constrained_analysis_context extends debuggable implements analysis
       constraint the_constraint = the_constraints.get(i);
       // TODO: check that constraint isn't trivial
       //  and is either part of the declaration or part of the context.
-      constraint_dictionary.put(the_constraint.the_declaration, the_constraint.the_value);
+      constraint_dictionary.put(the_constraint.the_declaration, the_constraint.the_value());
     }
 
     assert constraint_dictionary.is_not_empty();

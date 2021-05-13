@@ -30,6 +30,7 @@ public interface readonly_procedure_declaration extends readonly_declaration, an
   boolean overrides_variable();
   readonly_list<declaration> get_overriden();
   @Nullable action procedure_action();
+  boolean has_body();
   @Nullable action get_body_action();
   @Nullable variable_declaration get_this_declaration();
 }

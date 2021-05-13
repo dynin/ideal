@@ -13,13 +13,14 @@ package types {
   implicit import ideal.development.elements;
   implicit import ideal.development.flavors;
   implicit import ideal.development.declarations;
+  implicit import ideal.development.kinds;
 
---  class base_principal_type;
+  class base_principal_type;
   class base_type;
 --  interface base_value_printer;
   class concrete_type_action;
 --  interface core_types;
---  interface flavored_type;
+  class flavored_type;
 --  interface master_type;
 --  interface parametrizable_state;
 --  interface parametrized_type;

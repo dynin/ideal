@@ -13,7 +13,7 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public enum declaration_pass implements deeply_immutable_data, stringable, readonly_displayable {
+public enum declaration_pass implements deeply_immutable_data, stringable, reference_equality, readonly_displayable {
   NONE,
   FLAVOR_PROFILE,
   TYPES_AND_PROMOTIONS,
@@ -24,13 +24,13 @@ public enum declaration_pass implements deeply_immutable_data, stringable, reado
   public boolean is_after(final declaration_pass other) {
     return this.ordinal() > other.ordinal();
   }
-  public @Override string to_string() {
-    return ideal.machine.elements.runtime_util.concatenate(new base_string(""), this.name());
-  }
   public @Override string display() {
     return this.to_string();
   }
   public static declaration_pass last() {
     return declaration_pass.METHODS_AND_VARIABLES;
+  }
+  public string to_string() {
+    return new base_string(toString());
   }
 }

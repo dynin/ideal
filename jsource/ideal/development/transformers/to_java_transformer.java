@@ -1308,8 +1308,10 @@ public class to_java_transformer extends base_transformer {
         library().is_reference_type(((type_declaration) the_declaration).get_declared_type());
   }
 
-  private construct make_default_return(type the_type, origin the_origin) {
-    return new return_construct(make_default_value(the_type, the_origin), the_origin);
+  private construct make_default_return(type the_type, boolean is_constructor, origin the_origin) {
+    @Nullable construct return_value = is_constructor ? null :
+        make_default_value(the_type, the_origin);
+    return new return_construct(return_value, the_origin);
   }
 
   private construct make_default_value(type the_type, origin the_origin) {
@@ -2101,7 +2103,8 @@ public class to_java_transformer extends base_transformer {
     if (the_declaration instanceof procedure_declaration) {
       procedure_declaration proc_decl = (procedure_declaration) the_declaration;
       if (proc_decl.get_category() != procedure_category.CONSTRUCTOR &&
-          proc_decl.annotations().has(implicit_modifier) && parameters.size() == 1) {
+          proc_decl.annotations().has(implicit_modifier) &&
+          parameters.size() == 1) {
         main = new resolve_construct(main, proc_decl.original_name(), the_origin);
       } else if (proc_decl.short_name() == special_name.IMPLICIT_CALL) {
         procedure_with_this the_procedure_with_this = (procedure_with_this) the_procedure;
@@ -2128,7 +2131,9 @@ public class to_java_transformer extends base_transformer {
           return_type != library().immutable_void_type()) {
         list<construct> statements = new base_list<construct>();
         statements.append(transformed);
-        statements.append(make_default_return(return_type, the_origin));
+        boolean is_constructor =
+            the_enclosing_procedure.get_category() == procedure_category.CONSTRUCTOR;
+        statements.append(make_default_return(return_type, is_constructor, the_origin));
         return new block_construct(statements, the_origin);
       }
     }

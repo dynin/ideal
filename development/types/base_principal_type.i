@@ -8,9 +8,9 @@ abstract class base_principal_type {
   extends base_type;
   implements principal_type;
 
-  protected flavor_profile or null the_flavor_profile;
-  protected declaration_pass last_pass;
-  dont_display private declaration or null the_declaration;
+  protected var flavor_profile or null the_flavor_profile;
+  protected var declaration_pass last_pass;
+  dont_display var private declaration or null the_declaration;
 
   protected base_principal_type(flavor_profile or null the_flavor_profile,
       declaration_pass last_pass, declaration or null the_declaration) {
@@ -19,13 +19,13 @@ abstract class base_principal_type {
     this.the_declaration = the_declaration;
   }
 
-  override principal_type principal => this;
+  implement principal_type principal => this;
 
-  override type_flavor get_flavor => flavor.nameonly_flavor;
+  implement type_flavor get_flavor => flavor.nameonly_flavor;
 
-  override boolean has_flavor_profile => the_flavor_profile is_not null;
+  implement boolean has_flavor_profile => the_flavor_profile is_not null;
 
-  override flavor_profile get_flavor_profile {
+  implement flavor_profile get_flavor_profile() {
     if (the_flavor_profile is null) {
       -- TODO: signal error instead of panicing.
       utilities.panic("Unset profile in " ++ this ++ " decl " ++ the_declaration);
@@ -35,46 +35,36 @@ abstract class base_principal_type {
     return result;
   }
 
-  override type get_flavored(type_flavor flavor) {
-    if (the_flavor_profile == null) {
-      if (get_kind() == type_kinds.procedure_kind || get_kind() == type_kinds.reference_kind) {
-        the_flavor_profile = default_flavor_profile();
-      } else {
-        // We used to panic here
-        // utilities.panic("No profile for " + this);
-        // TODO: does this ever create a problem?
-        the_flavor_profile = default_flavor_profile();
-      }
+  implement type get_flavored(type_flavor flavor) {
+    var profile : the_flavor_profile;
+    if (profile is null) {
+      profile = default_flavor_profile();
+      the_flavor_profile = profile;
     }
-    return do_get_flavored(this, the_flavor_profile.map(flavor));
+
+    return do_get_flavored(this, profile.map(flavor));
   }
 
   void set_flavor_profile(flavor_profile the_flavor_profile) {
-    assert this.the_flavor_profile == null;
-    readonly_list<type_flavor> all_flavors = flavor.all_flavors;
-    for (int i = 0; i < all_flavors.size(); ++i) {
-      type_flavor flavor = all_flavors.get(i);
+    assert this.the_flavor_profile is null;
+    for (flavor : flavor.all_flavors) {
       if (!the_flavor_profile.supports(flavor)) {
-        if (((type_flavor_impl) flavor).types.contains_key(this)) {
-          utilities.panic("Already used " + flavor + " of " + this);
+        if ((flavor !> type_flavor_impl).types.contains_key(this)) {
+          utilities.panic("Already used " ++ flavor ++ " of " ++ this);
         }
       }
     }
     this.the_flavor_profile = the_flavor_profile;
   }
 
-  declaration_pass get_pass() {
-    return last_pass;
-  }
+  declaration_pass get_pass => last_pass;
 
-  override
-  final @Nullable declaration get_declaration() {
-    return the_declaration;
-  }
+  implement final declaration or null get_declaration => the_declaration;
 
   void set_declaration(declaration the_declaration) {
-    assert this.the_declaration == null : "Already declared " + this;
-    assert the_declaration != null;
+    -- TODO: implement assert message
+    assert this.the_declaration is null; -- : "Already declared " + this;
+    verify the_declaration is_not null;
     this.the_declaration = the_declaration;
   }
 
@@ -99,23 +89,21 @@ abstract class base_principal_type {
   }
 
   protected final void do_declare(declaration_pass pass) {
-    assert pass.ordinal() == last_pass.ordinal() + 1;
+    assert pass.ordinal == last_pass.ordinal + 1;
     last_pass = pass;
     do_declare_actual(pass);
   }
 
   protected void do_declare_actual(declaration_pass pass) {
     assert pass != declaration_pass.NONE;
-    type_declaration_context the_context = get_context();
-    assert the_context != null;
+    the_context : get_context();
+    assert the_context is_not null;
     the_context.declare_type(this, pass);
   }
 
   abstract flavor_profile default_flavor_profile();
 
-  override
-  final string to_string() {
+  implement final string to_string() {
     return describe(type_format.FULL);
-    // return new base_string(describe(type_format.FULL) + "@" + System.identityHashCode(this));
   }
 }

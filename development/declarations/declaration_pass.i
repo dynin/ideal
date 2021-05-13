@@ -6,7 +6,7 @@
 
 --- Declaration pass for types.
 enum declaration_pass {
-  implements deeply_immutable data, stringable, readonly displayable;
+  implements deeply_immutable data, stringable, reference_equality, readonly displayable;
 
   NONE;
   FLAVOR_PROFILE;
@@ -20,9 +20,6 @@ enum declaration_pass {
   boolean is_after(declaration_pass other) {
     return this.ordinal > other.ordinal;
   }
-
-  -- TODO: fix hack to handle Java strings
-  override string to_string => "" ++ name;
 
   override string display() => to_string;
 

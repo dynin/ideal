@@ -141,6 +141,11 @@ public class procedure_analyzer extends declaration_analyzer
   }
 
   @Override
+  public boolean has_body() {
+    return body != null;
+  }
+
+  @Override
   public @Nullable action get_body_action() {
     if (has_errors() || body == null) {
       return null;
@@ -446,6 +451,16 @@ public class procedure_analyzer extends declaration_analyzer
       if (found_overriden.is_empty()) {
         return new error_signal(new base_string("Can't find overriden for '" +
             original_name() + "' in " + declared_in_type()), this);
+      }
+      if (annotations().has(general_modifier.implement_modifier)) {
+        for (int i = 0; i < found_overriden.size(); ++i) {
+          declaration overriden_declaration = found_overriden.get(0);
+          if (false && overriden_declaration instanceof procedure_declaration &&
+              ((procedure_declaration) overriden_declaration).has_body()) {
+            return new error_signal(
+              new base_string("Implement modifier for a overriden procedure with body"), this);
+          }
+        }
       }
       overriden = found_overriden;
       update_annotations();

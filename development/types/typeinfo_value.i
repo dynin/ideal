@@ -17,9 +17,9 @@ class typeinfo_value {
   type get_type() => the_type;
 
   -- TODO: shouldn't we return a metatype here?
-  override type type_bound => the_type;
+  implement type type_bound => the_type;
 
-  override value unwrap => the_type;
+  implement value unwrap => the_type;
 
-  override string to_string => "typeinfo-value: " ++ the_type;
+  implement string to_string => "typeinfo-value: " ++ the_type;
 }

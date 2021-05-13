@@ -14,8 +14,8 @@ package types {
   implicit import ideal.development.flavors;
   implicit import ideal.development.declarations;
 
---  interface base_principal_type;
---  interface base_type;
+--  class base_principal_type;
+  class base_type;
 --  interface base_value_printer;
   class concrete_type_action;
 --  interface core_types;
@@ -24,8 +24,8 @@ package types {
 --  interface parametrizable_state;
 --  interface parametrized_type;
   class type_action;
---  interface type_declaration_context;
---  interface type_format;
+  interface type_declaration_context;
+  enum type_format;
 --  interface type_parameters;
 --  interface type_utilities;
   class typeinfo_value;

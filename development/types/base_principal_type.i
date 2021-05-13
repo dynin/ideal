@@ -4,57 +4,38 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.logs.*;
-import ideal.development.elements.*;
-import ideal.development.flavors.*;
-import ideal.development.kinds.*;
-import ideal.development.declarations.*;
-import ideal.machine.annotations.dont_display;
+abstract class base_principal_type {
+  extends base_type;
+  implements principal_type;
 
-import javax.annotation.Nullable;
-
-public abstract class base_principal_type extends base_type implements principal_type {
-  protected @Nullable flavor_profile the_flavor_profile;
+  protected flavor_profile or null the_flavor_profile;
   protected declaration_pass last_pass;
-  @dont_display
-  private @Nullable declaration the_declaration;
+  dont_display private declaration or null the_declaration;
 
-  protected base_principal_type(@Nullable flavor_profile the_flavor_profile,
-      declaration_pass last_pass, @Nullable declaration the_declaration) {
+  protected base_principal_type(flavor_profile or null the_flavor_profile,
+      declaration_pass last_pass, declaration or null the_declaration) {
     this.the_flavor_profile = the_flavor_profile;
     this.last_pass = last_pass;
     this.the_declaration = the_declaration;
   }
 
-  @Override
-  public principal_type principal() {
-    return this;
-  }
+  override principal_type principal => this;
 
-  @Override
-  public type_flavor get_flavor() {
-    return flavor.nameonly_flavor;
-  }
+  override type_flavor get_flavor => flavor.nameonly_flavor;
 
-  @Override
-  public boolean has_flavor_profile() {
-    return the_flavor_profile != null;
-  }
+  override boolean has_flavor_profile => the_flavor_profile is_not null;
 
-  @Override
-  public flavor_profile get_flavor_profile() {
-    if (the_flavor_profile == null) {
-      // TODO: signal error instead of panicing.
-      utilities.panic("Unset profile in " + this + " decl " + the_declaration);
+  override flavor_profile get_flavor_profile {
+    if (the_flavor_profile is null) {
+      -- TODO: signal error instead of panicing.
+      utilities.panic("Unset profile in " ++ this ++ " decl " ++ the_declaration);
     }
-    assert the_flavor_profile != null;
-    return the_flavor_profile;
+    result : the_flavor_profile;
+    assert result is_not null;
+    return result;
   }
 
-  @Override
-  public type get_flavored(type_flavor flavor) {
+  override type get_flavored(type_flavor flavor) {
     if (the_flavor_profile == null) {
       if (get_kind() == type_kinds.procedure_kind || get_kind() == type_kinds.reference_kind) {
         the_flavor_profile = default_flavor_profile();
@@ -68,7 +49,7 @@ public abstract class base_principal_type extends base_type implements principal
     return do_get_flavored(this, the_flavor_profile.map(flavor));
   }
 
-  public void set_flavor_profile(flavor_profile the_flavor_profile) {
+  void set_flavor_profile(flavor_profile the_flavor_profile) {
     assert this.the_flavor_profile == null;
     readonly_list<type_flavor> all_flavors = flavor.all_flavors;
     for (int i = 0; i < all_flavors.size(); ++i) {
@@ -82,22 +63,22 @@ public abstract class base_principal_type extends base_type implements principal
     this.the_flavor_profile = the_flavor_profile;
   }
 
-  public declaration_pass get_pass() {
+  declaration_pass get_pass() {
     return last_pass;
   }
 
-  @Override
-  public final @Nullable declaration get_declaration() {
+  override
+  final @Nullable declaration get_declaration() {
     return the_declaration;
   }
 
-  public void set_declaration(declaration the_declaration) {
+  void set_declaration(declaration the_declaration) {
     assert this.the_declaration == null : "Already declared " + this;
     assert the_declaration != null;
     this.the_declaration = the_declaration;
   }
 
-  public void process_declaration(declaration_pass pass) {
+  void process_declaration(declaration_pass pass) {
     if (pass.is_before(last_pass) || pass == last_pass) {
       return;
     }
@@ -130,10 +111,10 @@ public abstract class base_principal_type extends base_type implements principal
     the_context.declare_type(this, pass);
   }
 
-  public abstract flavor_profile default_flavor_profile();
+  abstract flavor_profile default_flavor_profile();
 
-  @Override
-  public final string to_string() {
+  override
+  final string to_string() {
     return describe(type_format.FULL);
     // return new base_string(describe(type_format.FULL) + "@" + System.identityHashCode(this));
   }

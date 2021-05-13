@@ -15,5 +15,5 @@ class concrete_type_action {
     this.the_type = the_type;
   }
 
-  override type get_type() => the_type;
+  implement type get_type() => the_type;
 }

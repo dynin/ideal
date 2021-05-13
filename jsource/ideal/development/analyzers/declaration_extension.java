@@ -107,6 +107,9 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   @Override
   public readonly_list<analyzable> children() {
+    if (!is_expanded_set) {
+      System.out.println("children of " + this);
+    }
     assert is_expanded_set;
     if (expanded != null) {
       return new base_list<analyzable>(expanded);

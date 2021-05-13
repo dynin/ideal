@@ -4,14 +4,12 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.graphs.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.declarations.*;
+implicit import ideal.library.graphs;
 
-public interface type_declaration_context extends value {
-  graph<principal_type, origin> type_graph();
+interface type_declaration_context {
+  extends value;
+
+  graph[principal_type, origin] type_graph;
   void declare_type(principal_type the_type, declaration_pass pass);
   boolean is_subtype_of(abstract_value the_value, type the_type);
 }

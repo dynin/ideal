@@ -17,11 +17,11 @@ abstract class type_action {
 
   abstract type get_type();
 
-  override abstract_value result => get_type();
+  implement abstract_value result => get_type();
 
-  override final origin deeper_origin => the_origin;
+  implement final origin deeper_origin => the_origin;
 
-  override action bind_from(action from, origin new_origin) {
+  implement action bind_from(action from, origin new_origin) {
     if (new_origin == the_origin) {
       return this;
     } else {
@@ -29,9 +29,9 @@ abstract class type_action {
     }
   }
 
-  override declaration or null get_declaration => get_type().principal.get_declaration;
+  implement declaration or null get_declaration => get_type().principal.get_declaration;
 
-  override entity_wrapper execute(execution_context context) => typeinfo_value.new(get_type());
+  implement entity_wrapper execute(execution_context context) => typeinfo_value.new(get_type());
 
-  override string to_string => "type-action: " ++ get_type() ++ " @ " ++ the_origin;
+  implement string to_string => "type-action: " ++ get_type() ++ " @ " ++ the_origin;
 }

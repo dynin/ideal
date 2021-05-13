@@ -173,6 +173,11 @@ public class specialized_procedure extends debuggable implements procedure_decla
   }
 
   @Override
+  public boolean has_body() {
+    return body_action != null;
+  }
+
+  @Override
   public @Nullable action get_body_action() {
     return body_action;
   }

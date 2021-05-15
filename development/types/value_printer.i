@@ -4,13 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import javax.annotation.Nullable;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
+-- TODO: implement printer that outputs text.
+-- TODO: rename value_printer, use a function instead.
+interface value_printer {
+  extends data;
 
-// TODO: implement printer that outputs text.
-// TODO: rename value_printer, use a function instead.
-public interface value_printer extends data {
-  public string print_value(abstract_value the_value);
+  string print_value(abstract_value the_value);
 }

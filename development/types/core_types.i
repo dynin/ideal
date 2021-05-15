@@ -4,61 +4,33 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.kinds.*;
+namespace core_types {
 
-public class core_types {
-
-  private final static master_type ROOT;
-  private final static master_type ERROR;
-  private final static master_type ANY_TYPE;
-  private final static master_type UNREACHABLE;
-  private final static master_type TARGET;
-  private final static master_type UNDEFINED;
+  private var master_type ROOT;
+  private var master_type ERROR;
+  private var master_type ANY_TYPE;
+  private var master_type UNREACHABLE;
+  private var master_type TARGET;
+  private var master_type UNDEFINED;
 
   static {
-    ROOT = new master_type(new special_name(new base_string("root")),
-        type_kinds.block_kind);
-    ANY_TYPE = new master_type(new special_name(new base_string("any_type")),
-        type_kinds.block_kind);
-    ERROR = new master_type(new special_name(new base_string("error")),
-        type_kinds.block_kind);
-    UNREACHABLE = new master_type(new special_name(new base_string("unreachable")),
-        type_kinds.block_kind);
-    TARGET = new master_type(new special_name(new base_string("unreachable")),
-        type_kinds.block_kind);
-    UNDEFINED = new master_type(new special_name(new base_string("undefined")),
-        type_kinds.block_kind);
+    -- TODO: the above declarations shouldn't be var
+    ROOT = master_type.new(special_name.new("root"), type_kinds.block_kind);
+    ANY_TYPE = master_type.new(special_name.new("any_type"), type_kinds.block_kind);
+    ERROR = master_type.new(special_name.new("error"), type_kinds.block_kind);
+    UNREACHABLE = master_type.new(special_name.new("unreachable"), type_kinds.block_kind);
+    TARGET = master_type.new(special_name.new("unreachable"), type_kinds.block_kind);
+    UNDEFINED = master_type.new(special_name.new("undefined"), type_kinds.block_kind);
   }
 
-  public static principal_type root_type() {
-    return ROOT;
-  }
+  principal_type root_type => ROOT;
+  principal_type any_type => ANY_TYPE;
+  type error_type => ERROR;
+  type unreachable_type => UNREACHABLE;
+  type target_type => TARGET;
+  type undefined_type => UNDEFINED;
 
-  public static principal_type any_type() {
-    return ANY_TYPE;
-  }
-
-  public static type error_type() {
-    return ERROR;
-  }
-
-  public static type unreachable_type() {
-    return UNREACHABLE;
-  }
-
-  public static type target_type() {
-    return TARGET;
-  }
-
-  public static type undefined_type() {
-    return UNDEFINED;
-  }
-
-  public static void set_context(type_declaration_context the_context) {
+  void set_context(type_declaration_context the_context) {
     ROOT.set_context(the_context);
     ERROR.set_context(the_context);
     ANY_TYPE.set_context(the_context);

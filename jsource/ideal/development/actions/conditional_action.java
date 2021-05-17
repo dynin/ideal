@@ -44,6 +44,14 @@ public class conditional_action extends base_action {
     return result;
   }
 
+
+  @Override
+  public boolean has_side_effects() {
+    return condition.has_side_effects() ||
+           then_action.has_side_effects() ||
+           else_action.has_side_effects();
+  }
+
   @Override
   public entity_wrapper execute(execution_context the_context) {
     // TODO: handle jumps

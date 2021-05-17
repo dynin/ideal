@@ -163,6 +163,11 @@ public class specialized_procedure extends debuggable implements procedure_decla
   }
 
   @Override
+  public boolean is_pure() {
+    return main.is_pure();
+  }
+
+  @Override
   public boolean overrides_variable() {
     return main.overrides_variable();
   }

@@ -40,6 +40,11 @@ public class block_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return get_declaration().get_body_action().has_side_effects();
+  }
+
+  @Override
   public entity_wrapper execute(execution_context exec_context) {
     return get_declaration().get_body_action().execute(exec_context);
   }

@@ -47,6 +47,11 @@ public class error_action extends error_signal implements action, abstract_value
   }
 
   @Override
+  public boolean has_side_effects() {
+    return false;
+  }
+
+  @Override
   public entity_wrapper execute(execution_context context) {
     return new panic_value(new base_string("Attempting to execute error_signal"));
   }

@@ -54,6 +54,11 @@ public class proc_as_ref_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return (from != null && from.has_side_effects()) || !the_declaration.is_pure();
+  }
+
+  @Override
   public reference_wrapper execute(execution_context the_context) {
     if (from == null) {
       utilities.panic("Unbound proc_as_ref " + the_declaration.short_name());

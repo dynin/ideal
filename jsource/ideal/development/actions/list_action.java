@@ -52,6 +52,17 @@ public class list_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    for (int i = 0; i < subactions.size(); ++i) {
+      if (subactions.get(i).has_side_effects()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
   public entity_wrapper execute(execution_context exec_context) {
     entity_wrapper result = common_library.get_instance().void_instance();
 

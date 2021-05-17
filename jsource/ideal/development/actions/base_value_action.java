@@ -34,6 +34,11 @@ public class base_value_action<T extends value_wrapper> extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return false;
+  }
+
+  @Override
   public value_wrapper execute(execution_context context) {
     return the_value;
   }

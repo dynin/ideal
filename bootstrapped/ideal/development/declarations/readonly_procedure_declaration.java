@@ -29,6 +29,7 @@ public interface readonly_procedure_declaration extends readonly_declaration, an
   procedure_declaration master_declaration();
   boolean overrides_variable();
   readonly_list<declaration> get_overriden();
+  boolean is_pure();
   @Nullable action procedure_action();
   boolean has_body();
   @Nullable action get_body_action();

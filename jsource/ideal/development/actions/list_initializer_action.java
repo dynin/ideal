@@ -41,6 +41,17 @@ public class list_initializer_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    for (int i = 0; i < parameter_actions.size(); ++i) {
+      if (parameter_actions.get(i).has_side_effects()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
   public entity_wrapper execute(execution_context the_context) {
     // TODO: introduce list parameters
     list<value_wrapper> elements = new base_list<value_wrapper>();

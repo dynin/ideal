@@ -30,6 +30,12 @@ public class entity_action extends base_action implements entity_wrapper {
     return action_utilities.to_type(the_entity.type_bound());
   }
 
+
+  @Override
+  public boolean has_side_effects() {
+    return false;
+  }
+
   @Override
   public entity_wrapper execute(execution_context context) {
     return the_entity;

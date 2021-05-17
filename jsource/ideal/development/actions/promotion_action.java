@@ -46,6 +46,11 @@ public class promotion_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return the_action != null && the_action.has_side_effects();
+  }
+
+  @Override
   public entity_wrapper execute(execution_context context) {
     assert the_action != null;
     entity_wrapper result = the_action.execute(context);

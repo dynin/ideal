@@ -21,6 +21,7 @@ interface procedure_declaration {
   procedure_declaration master_declaration;
   boolean overrides_variable;
   readonly list[declaration] get_overriden;
+  boolean is_pure;
   action or null procedure_action;
   boolean has_body;
   action or null get_body_action;

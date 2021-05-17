@@ -156,6 +156,7 @@ public class procedure_analyzer extends declaration_analyzer
     return action_not_error(body);
   }
 
+  @Override
   public boolean is_pure() {
     return annotations().has(general_modifier.pure_modifier);
   }

@@ -55,6 +55,24 @@ public class bound_procedure extends base_action implements stringable {
   }
 
   @Override
+  public boolean has_side_effects() {
+    if (the_procedure_action.has_side_effects()) {
+      return true;
+    }
+
+    readonly_list<action> action_parameters = parameters.params();
+    // TODO: use list.has()
+    for (int i = 0; i < action_parameters.size(); ++i) {
+      action parameter = action_parameters.get(i);
+      if (parameter.has_side_effects()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  @Override
   public entity_wrapper execute(execution_context the_execution_context) {
     entity_wrapper the_entity = the_procedure_action.execute(the_execution_context);
     assert the_entity instanceof procedure_value;

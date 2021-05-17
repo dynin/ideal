@@ -55,6 +55,10 @@ public class dispatch_action extends base_action implements action {
       utilities.panic("Duplicate handler in " + this + " for " + the_type);
     }
     assert !vtable.contains_key(the_type);
+    // TODO: reactivate this.
+    if (false && !primary_action.has_side_effects() && new_action.has_side_effects()) {
+      utilities.panic("Overriding action introduces side effects: " + new_action);
+    }
     vtable.put(the_type, new_action);
   }
 
@@ -87,6 +91,11 @@ public class dispatch_action extends base_action implements action {
     }
 
     return new dispatch_action(this, new_from, the_origin);
+  }
+
+  @Override
+  public boolean has_side_effects() {
+    return primary_action.has_side_effects();
   }
 
   @Override

@@ -33,6 +33,12 @@ public class constraint_action extends base_action {
     return common_library.get_instance().immutable_void_type();
   }
 
+
+  @Override
+  public boolean has_side_effects() {
+    return expression.has_side_effects();
+  }
+
   @Override
   public entity_wrapper execute(execution_context exec_context) {
     entity_wrapper expression_value = expression.execute(exec_context);

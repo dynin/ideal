@@ -24,7 +24,7 @@ public abstract class type_action extends debuggable implements action {
   public @Override abstract_value result() {
     return this.get_type();
   }
-  public @Override final origin deeper_origin() {
+  public final @Override origin deeper_origin() {
     return this.the_origin;
   }
   public @Override action bind_from(final action from, final origin new_origin) {
@@ -36,6 +36,9 @@ public abstract class type_action extends debuggable implements action {
   }
   public @Override @Nullable declaration get_declaration() {
     return this.get_type().principal().get_declaration();
+  }
+  public @Override boolean has_side_effects() {
+    return false;
   }
   public @Override entity_wrapper execute(final execution_context context) {
     return new typeinfo_value(this.get_type());

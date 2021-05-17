@@ -70,7 +70,7 @@ public abstract class base_principal_type extends base_type implements principal
   public declaration_pass get_pass() {
     return this.last_pass;
   }
-  public @Override final @Nullable declaration get_declaration() {
+  public final @Override @Nullable declaration get_declaration() {
     return this.the_declaration;
   }
   public void set_declaration(final declaration the_declaration) {
@@ -104,7 +104,7 @@ public abstract class base_principal_type extends base_type implements principal
     the_context.declare_type(this, pass);
   }
   public abstract flavor_profile default_flavor_profile();
-  public @Override final string to_string() {
+  public final @Override string to_string() {
     return this.describe(type_format.FULL);
   }
 }

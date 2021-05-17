@@ -36,6 +36,11 @@ public class extension_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return extended_action.has_side_effects();
+  }
+
+  @Override
   public entity_wrapper execute(execution_context context) {
     return extended_action.execute(context);
   }

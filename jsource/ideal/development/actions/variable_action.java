@@ -54,6 +54,11 @@ public abstract class variable_action extends base_action implements abstract_va
   }
 
   @Override
+  public boolean has_side_effects() {
+    return from != null && from.has_side_effects();
+  }
+
+  @Override
   public variable_declaration get_declaration() {
     return the_declaration;
   }

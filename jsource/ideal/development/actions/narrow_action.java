@@ -48,6 +48,11 @@ public class narrow_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return expression.has_side_effects();
+  }
+
+  @Override
   public entity_wrapper execute(execution_context the_context) {
     entity_wrapper expression_result = expression.execute(the_context);
     value_wrapper value_result;

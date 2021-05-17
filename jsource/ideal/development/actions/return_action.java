@@ -24,7 +24,6 @@ public class return_action extends base_action {
   public procedure_declaration the_procedure;
   public type return_type;
 
-
   public return_action(action expression, procedure_declaration the_procedure,
       type return_type, origin source) {
     super(source);
@@ -39,6 +38,11 @@ public class return_action extends base_action {
   @Override
   public abstract_value result() {
     return core_types.unreachable_type();
+  }
+
+  @Override
+  public boolean has_side_effects() {
+    return expression.has_side_effects();
   }
 
   @Override

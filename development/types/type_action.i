@@ -31,6 +31,8 @@ abstract class type_action {
 
   implement declaration or null get_declaration => get_type().principal.get_declaration;
 
+  implement boolean has_side_effects => false;
+
   implement entity_wrapper execute(execution_context context) => typeinfo_value.new(get_type());
 
   implement string to_string => "type-action: " ++ get_type() ++ " @ " ++ the_origin;

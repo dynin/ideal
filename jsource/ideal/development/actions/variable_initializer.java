@@ -35,6 +35,11 @@ public class variable_initializer extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return init != null && init.has_side_effects();
+  }
+
+  @Override
   public entity_wrapper execute(execution_context exec_context) {
     if (init != null) {
       entity_wrapper init_value = init.execute(exec_context);

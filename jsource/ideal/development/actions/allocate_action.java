@@ -33,6 +33,11 @@ public class allocate_action extends base_action {
     return the_type.get_flavored(flavor.raw_flavor);
   }
 
+  @Override
+  public boolean has_side_effects() {
+    return false;
+  }
+
   // TODO: instead of dummy_zone, use a zone derived from the execution_context
   @Override
   public value_wrapper execute(execution_context context) {

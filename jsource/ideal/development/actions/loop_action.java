@@ -58,6 +58,11 @@ public class loop_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return body.has_side_effects();
+  }
+
+  @Override
   public entity_wrapper execute(execution_context exec_context) {
     assert body != null;
     while (true) {

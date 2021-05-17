@@ -48,6 +48,11 @@ public class dereference_action extends base_action {
   }
 
   @Override
+  public boolean has_side_effects() {
+    return from != null && from.has_side_effects();
+  }
+
+  @Override
   public entity_wrapper execute(execution_context context) {
     if (from == null) {
       utilities.panic("Unbound " + value_type);

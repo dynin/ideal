@@ -339,6 +339,9 @@ public class create_manager implements target_manager, type_bootstrapper {
           (procedure_executor) ((value_action) the_action).the_value;
       operator_procedure = new procedure_executor(the_procedure_executor.the_declaration,
           the_operator);
+    } else {
+      ((base_procedure) operator_procedure).set_declaration(
+          (procedure_declaration) the_action.get_declaration());
     }
 
     bootstrap_context.add(parent, the_operator, operator_procedure.to_action(the_action));

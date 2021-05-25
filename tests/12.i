@@ -133,8 +133,23 @@ void test_and() {
   string ocast : dcast !> string;
   println(ocast);
 }
+
 A.new().method(1);
 B.new().method(2);
 A foo : B.new();
 foo.method(3);
 test_and();
+
+class X {
+  var any value foo_value;
+
+  void changestate() {
+    foo_value = true;
+  }
+
+  void test_types() {
+    foo_value = "abc";
+    -- changestate();
+    string foo_string : foo_value;
+  }
+}

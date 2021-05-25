@@ -75,9 +75,9 @@ public class assign_op extends binary_procedure {
     constraint the_constraint = null;
     if (second.result() != value_type) {
       declaration left_declaration = declaration_util.get_declaration(first);
-      if (left_declaration instanceof variable_declaration &&
-          ((variable_declaration) left_declaration).get_category() == variable_category.LOCAL) {
-        the_constraint = new constraint(left_declaration, second, constraint_type.ALWAYS);
+      if (left_declaration instanceof variable_declaration) {
+        the_constraint = new constraint((variable_declaration) left_declaration, second,
+            constraint_type.ALWAYS);
       }
     }
 

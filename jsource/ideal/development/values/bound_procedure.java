@@ -60,6 +60,13 @@ public class bound_procedure extends base_action implements stringable {
       return true;
     }
 
+    declaration the_declaration = the_procedure_action.get_declaration();
+    if (the_declaration instanceof procedure_declaration) {
+      if (!((procedure_declaration) the_declaration).is_pure()) {
+        return true;
+      }
+    }
+
     readonly_list<action> action_parameters = parameters.params();
     // TODO: use list.has()
     for (int i = 0; i < action_parameters.size(); ++i) {

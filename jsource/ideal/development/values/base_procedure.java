@@ -19,11 +19,13 @@ import ideal.development.actions.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
+import ideal.development.declarations.*;
 
 public abstract class base_procedure extends base_data_value<procedure_value>
     implements procedure_value<procedure_value> {
 
   private final action_name name;
+  private @Nullable procedure_declaration the_declaration;
 
   public base_procedure(action_name name, type procedure_type) {
     super(procedure_type);
@@ -51,6 +53,16 @@ public abstract class base_procedure extends base_data_value<procedure_value>
     } else {
       return this;
     }
+  }
+
+  public void set_declaration(procedure_declaration the_declaration) {
+    assert this.the_declaration == null;
+    this.the_declaration = the_declaration;
+  }
+
+  @Override
+  public @Nullable declaration get_declaration() {
+    return the_declaration;
   }
 
   protected final abstract_value return_value() {

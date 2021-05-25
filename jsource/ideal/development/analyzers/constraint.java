@@ -11,13 +11,14 @@ package ideal.development.analyzers;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
+import ideal.development.declarations.*;
 public class constraint extends debuggable implements readonly_data, stringable {
 
-  public final declaration the_declaration;
+  public final variable_declaration the_declaration;
   public final action the_action;
   public final constraint_type the_constraint_type;
 
-  public constraint(declaration the_declaration, action the_action,
+  public constraint(variable_declaration the_declaration, action the_action,
       constraint_type the_constraint_type) {
     this.the_declaration = the_declaration;
     this.the_action = the_action;
@@ -26,6 +27,14 @@ public class constraint extends debuggable implements readonly_data, stringable 
 
   public final abstract_value the_value() {
     return the_action.result();
+  }
+
+  public variable_category get_category() {
+    return the_declaration.get_category();
+  }
+
+  public boolean is_local() {
+    return get_category() == variable_category.LOCAL;
   }
 
   @Override

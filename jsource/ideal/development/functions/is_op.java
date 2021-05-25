@@ -61,6 +61,7 @@ public class is_op extends binary_procedure {
 
     if (first_declaration instanceof variable_declaration) {
       variable_declaration the_declaration = (variable_declaration) first_declaration;
+      // TODO: handle non-local variables
       if (the_declaration.get_category() == variable_category.LOCAL) {
         list<constraint> constraints = new base_list<constraint>();
         constraints.append(new constraint(the_declaration, the_type.to_action(second),

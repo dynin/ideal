@@ -29,15 +29,16 @@ public class constrained_analysis_context extends debuggable implements analysis
   private final base_analysis_context parent;
   private final immutable_dictionary<declaration, abstract_value> constraint_bindings;
 
-  public constrained_analysis_context(base_analysis_context parent,
+  private constrained_analysis_context(base_analysis_context parent,
       immutable_dictionary<declaration, abstract_value> constraint_bindings) {
     this.parent = parent;
     this.constraint_bindings = constraint_bindings;
   }
 
   public static analysis_context combine(analysis_context parent,
-      readonly_list<constraint> the_constraints) {
-    if (the_constraints.is_empty()) {
+      readonly_list<constraint> the_constraints, boolean has_side_effects) {
+    // TODO: optimize the empty new constraint case
+    if (false && the_constraints.is_empty()) {
       return parent;
     }
 
@@ -56,7 +57,10 @@ public class constrained_analysis_context extends debuggable implements analysis
         parent.constraints().elements();
     for (int i = 0; i < parent_constraints.size(); ++i) {
       dictionary.entry<declaration, abstract_value> the_constraint = parent_constraints.get(i);
-      constraint_dictionary.put(the_constraint.key(), the_constraint.value());
+      variable_declaration the_declaration = (variable_declaration) the_constraint.key();
+      if (the_declaration.get_category() == variable_category.LOCAL || !has_side_effects) {
+        constraint_dictionary.put(the_constraint.key(), the_constraint.value());
+      }
     }
 
     for (int i = 0; i < the_constraints.size(); ++i) {
@@ -66,7 +70,10 @@ public class constrained_analysis_context extends debuggable implements analysis
       constraint_dictionary.put(the_constraint.the_declaration, the_constraint.the_value());
     }
 
-    assert constraint_dictionary.is_not_empty();
+    if (constraint_dictionary.is_empty()) {
+      return new_parent;
+    }
+
     return new constrained_analysis_context(new_parent, constraint_dictionary.frozen_copy());
   }
 

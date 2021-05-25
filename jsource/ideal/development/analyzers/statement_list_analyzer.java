@@ -17,6 +17,7 @@ import ideal.development.elements.*;
 import ideal.development.actions.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
+import ideal.development.declarations.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
 
@@ -74,6 +75,10 @@ public class statement_list_analyzer extends single_pass_analyzer {
 
       if (the_result instanceof action) {
         the_action = (action) the_result;
+        if (the_action.has_side_effects()) {
+          current_context = constrained_analysis_context.combine(current_context,
+              new empty<constraint>(), true);
+        }
       } else if (the_result instanceof error_signal) {
         if (error == null) {
           error = new error_signal(messages.error_in_list, the_element, this);
@@ -90,10 +95,14 @@ public class statement_list_analyzer extends single_pass_analyzer {
           constraint the_constraint = the_constraints.get(j);
           if (the_constraint.the_constraint_type == constraint_type.ALWAYS) {
             always_constraints.append(the_constraint);
-            constraint_collection.append(the_constraint);
+            if (the_constraint.is_local()) {
+              constraint_collection.append(the_constraint);
+            }
+            // TODO: handle non-local constraints in collection
           }
         }
-        current_context = constrained_analysis_context.combine(current_context, always_constraints);
+        current_context = constrained_analysis_context.combine(current_context, always_constraints,
+            the_action.has_side_effects());
       } else {
         utilities.panic("Unexpected result: " + the_result);
         return null;

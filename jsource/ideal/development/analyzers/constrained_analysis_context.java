@@ -46,10 +46,36 @@ public class constrained_analysis_context extends debuggable implements analysis
     this.constraint_bindings = constraint_bindings;
   }
 
+  public static analysis_context clear_non_local(analysis_context clear_parent) {
+    if (clear_parent instanceof base_analysis_context) {
+      return clear_parent;
+    }
+
+    base_analysis_context new_parent = ((constrained_analysis_context) clear_parent).parent;
+    readonly_list<dictionary.entry<variable_declaration, constraint>> parent_constraints =
+        ((constrained_analysis_context) clear_parent).constraints().elements();
+
+    dictionary<variable_declaration, constraint> constraint_dictionary =
+        new list_dictionary<variable_declaration, constraint>();
+
+    for (int i = 0; i < parent_constraints.size(); ++i) {
+      dictionary.entry<variable_declaration, constraint> the_constraint =
+          parent_constraints.get(i);
+      if (the_constraint.value().is_local()) {
+        constraint_dictionary.put(the_constraint.key(), the_constraint.value());
+      }
+    }
+
+    if (constraint_dictionary.is_empty()) {
+      return new_parent;
+    }
+
+    return new constrained_analysis_context(new_parent, constraint_dictionary.frozen_copy());
+  }
+
   public static analysis_context combine(analysis_context combine_parent,
-      readonly_list<constraint> the_constraints, boolean has_side_effects) {
-    // TODO: optimize the empty new constraint case
-    if (false && the_constraints.is_empty()) {
+      readonly_list<constraint> the_constraints) {
+    if (the_constraints.is_empty()) {
       return combine_parent;
     }
 
@@ -70,9 +96,7 @@ public class constrained_analysis_context extends debuggable implements analysis
       for (int i = 0; i < parent_constraints.size(); ++i) {
         dictionary.entry<variable_declaration, constraint> the_constraint =
             parent_constraints.get(i);
-        if (the_constraint.value().is_local() || !has_side_effects) {
-          constraint_dictionary.put(the_constraint.key(), the_constraint.value());
-        }
+        constraint_dictionary.put(the_constraint.key(), the_constraint.value());
       }
     }
 

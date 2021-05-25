@@ -62,7 +62,8 @@ public class statement_list_analyzer extends single_pass_analyzer {
   protected analysis_result do_single_pass_analysis() {
     list<action> actions = new base_list<action>();
     analysis_context current_context = get_context();
-    list<constraint> constraint_collection = new base_list<constraint>();
+    list<constraint> local_end_constraints = new base_list<constraint>();
+    list<constraint> end_constraints = new base_list<constraint>();
     error_signal error = null;
 
     // TODO: should we stop on first error here?
@@ -76,8 +77,8 @@ public class statement_list_analyzer extends single_pass_analyzer {
       if (the_result instanceof action) {
         the_action = (action) the_result;
         if (the_action.has_side_effects()) {
-          current_context = constrained_analysis_context.combine(current_context,
-              new empty<constraint>(), true);
+          current_context = constrained_analysis_context.clear_non_local(current_context);
+          end_constraints.clear();
         }
       } else if (the_result instanceof error_signal) {
         if (error == null) {
@@ -88,6 +89,10 @@ public class statement_list_analyzer extends single_pass_analyzer {
         the_action = ((action_plus_constraints) the_result).the_action;
         immutable_list<constraint> the_constraints =
             ((action_plus_constraints) the_result).the_constraints;
+        if (the_action.has_side_effects()) {
+          current_context = constrained_analysis_context.clear_non_local(current_context);
+          end_constraints.clear();
+        }
 
         // TODO: use list.filter()
         list<constraint> always_constraints = new base_list<constraint>();
@@ -96,13 +101,13 @@ public class statement_list_analyzer extends single_pass_analyzer {
           if (the_constraint.the_constraint_type == constraint_type.ALWAYS) {
             always_constraints.append(the_constraint);
             if (the_constraint.is_local()) {
-              constraint_collection.append(the_constraint);
+              local_end_constraints.append(the_constraint);
+            } else {
+              end_constraints.append(the_constraint);
             }
-            // TODO: handle non-local constraints in collection
           }
         }
-        current_context = constrained_analysis_context.combine(current_context, always_constraints,
-            the_action.has_side_effects());
+        current_context = constrained_analysis_context.combine(current_context, always_constraints);
       } else {
         utilities.panic("Unexpected result: " + the_result);
         return null;
@@ -121,10 +126,11 @@ public class statement_list_analyzer extends single_pass_analyzer {
     }
 
     action result = new list_action(actions, this);
-    if (constraint_collection.is_empty()) {
+    end_constraints.append_all(local_end_constraints);
+    if (end_constraints.is_empty()) {
       return result;
     } else {
-      return action_plus_constraints.make_result(result, constraint_collection);
+      return action_plus_constraints.make_result(result, end_constraints);
     }
   }
 

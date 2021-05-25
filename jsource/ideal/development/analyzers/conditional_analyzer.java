@@ -193,7 +193,7 @@ public class conditional_analyzer extends single_pass_analyzer {
   private analysis_result analyze_with_constraints(analyzable the_analyzable,
       immutable_list<constraint> the_constraints, constraint_type filter) {
     analysis_context new_context = constrained_analysis_context.combine(get_context(),
-        analyzer_utilities.always_by_type(the_constraints, filter), true);
+        analyzer_utilities.always_by_type(the_constraints, filter));
     special_init_context(the_analyzable, new_context);
     return the_analyzable.analyze();
   }

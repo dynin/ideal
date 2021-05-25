@@ -26,9 +26,6 @@ public abstract class base_analysis_context extends debuggable implements analys
 
   private static action_table actions = new action_table();
 
-  private immutable_dictionary<declaration, abstract_value> empty_constraints =
-      new list_dictionary<declaration, abstract_value>().frozen_copy();
-
   private final base_semantics language;
   private graph<principal_type, origin> the_type_graph;
 
@@ -76,15 +73,15 @@ public abstract class base_analysis_context extends debuggable implements analys
   }
 
   public @Nullable action find_promotion(action from, type target,
-      @Nullable immutable_dictionary<declaration, abstract_value> constraint_bindings) {
+      @Nullable function1<abstract_value, variable_declaration> constraint_mapper) {
 
-    if (constraint_bindings != null) {
+    if (constraint_mapper != null) {
       @Nullable declaration the_declaration = declaration_util.get_declaration(from);
-      if (the_declaration != null) {
-        @Nullable abstract_value narrowed = constraint_bindings.get(the_declaration);
+      if (the_declaration != null && the_declaration instanceof variable_declaration) {
+        variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
+        @Nullable abstract_value narrowed = constraint_mapper.call(the_variable_declaration);
         if (narrowed != null) {
           origin the_origin = from;
-          variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
           type narrowed_type = narrowed.type_bound();
           narrow_action the_action = new narrow_action(from, narrowed_type,
               the_variable_declaration, the_origin);
@@ -130,10 +127,5 @@ public abstract class base_analysis_context extends debuggable implements analys
   @Override
   public void declare_type(principal_type new_type, declaration_pass pass) {
     language.declare_type(new_type, pass, this);
-  }
-
-  @Override
-  public immutable_dictionary<declaration, abstract_value> constraints() {
-    return empty_constraints;
   }
 }

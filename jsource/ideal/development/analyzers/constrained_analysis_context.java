@@ -27,39 +27,52 @@ import ideal.development.notifications.*;
 public class constrained_analysis_context extends debuggable implements analysis_context {
 
   private final base_analysis_context parent;
-  private final immutable_dictionary<declaration, abstract_value> constraint_bindings;
+  private final immutable_dictionary<variable_declaration, constraint> constraint_bindings;
+  private function1<abstract_value, variable_declaration> constraint_mapper =
+      new function1<abstract_value, variable_declaration>() {
+          @Override public abstract_value call(variable_declaration the_declaration) {
+            constraint the_constraint = constraint_bindings.get(the_declaration);
+            if (the_constraint != null) {
+              return the_constraint.the_value();
+            } else {
+              return null;
+            }
+          }
+      };
 
   private constrained_analysis_context(base_analysis_context parent,
-      immutable_dictionary<declaration, abstract_value> constraint_bindings) {
+      immutable_dictionary<variable_declaration, constraint> constraint_bindings) {
     this.parent = parent;
     this.constraint_bindings = constraint_bindings;
   }
 
-  public static analysis_context combine(analysis_context parent,
+  public static analysis_context combine(analysis_context combine_parent,
       readonly_list<constraint> the_constraints, boolean has_side_effects) {
     // TODO: optimize the empty new constraint case
     if (false && the_constraints.is_empty()) {
-      return parent;
+      return combine_parent;
     }
 
     base_analysis_context new_parent;
-    if (parent instanceof base_analysis_context) {
-      new_parent = (base_analysis_context) parent;
+    if (combine_parent instanceof base_analysis_context) {
+      new_parent = (base_analysis_context) combine_parent;
     } else {
-      new_parent = ((constrained_analysis_context) parent).parent;
+      new_parent = ((constrained_analysis_context) combine_parent).parent;
     }
 
-    dictionary<declaration, abstract_value> constraint_dictionary =
-        new list_dictionary<declaration, abstract_value>();
+    dictionary<variable_declaration, constraint> constraint_dictionary =
+        new list_dictionary<variable_declaration, constraint>();
 
     // TODO: implement dictionary.copy() or dictionary.add_all()
-    readonly_list<dictionary.entry<declaration, abstract_value>> parent_constraints =
-        parent.constraints().elements();
-    for (int i = 0; i < parent_constraints.size(); ++i) {
-      dictionary.entry<declaration, abstract_value> the_constraint = parent_constraints.get(i);
-      variable_declaration the_declaration = (variable_declaration) the_constraint.key();
-      if (the_declaration.get_category() == variable_category.LOCAL || !has_side_effects) {
-        constraint_dictionary.put(the_constraint.key(), the_constraint.value());
+    if (combine_parent instanceof constrained_analysis_context) {
+      readonly_list<dictionary.entry<variable_declaration, constraint>> parent_constraints =
+          ((constrained_analysis_context) combine_parent).constraints().elements();
+      for (int i = 0; i < parent_constraints.size(); ++i) {
+        dictionary.entry<variable_declaration, constraint> the_constraint =
+            parent_constraints.get(i);
+        if (the_constraint.value().is_local() || !has_side_effects) {
+          constraint_dictionary.put(the_constraint.key(), the_constraint.value());
+        }
       }
     }
 
@@ -67,7 +80,7 @@ public class constrained_analysis_context extends debuggable implements analysis
       constraint the_constraint = the_constraints.get(i);
       // TODO: check that constraint isn't trivial
       //  and is either part of the declaration or part of the context.
-      constraint_dictionary.put(the_constraint.the_declaration, the_constraint.the_value());
+      constraint_dictionary.put(the_constraint.the_declaration, the_constraint);
     }
 
     if (constraint_dictionary.is_empty()) {
@@ -114,7 +127,7 @@ public class constrained_analysis_context extends debuggable implements analysis
 
   @Override
   public boolean can_promote(action from, type target) {
-    return parent.find_promotion(from, target, constraint_bindings) != null;
+    return parent.find_promotion(from, target, constraint_mapper) != null;
   }
 
   @Override
@@ -124,7 +137,7 @@ public class constrained_analysis_context extends debuggable implements analysis
       return from;
     }
 
-    @Nullable action result = parent.find_promotion(from, target, constraint_bindings);
+    @Nullable action result = parent.find_promotion(from, target, constraint_mapper);
 
     if (result != null) {
       return result.bind_from(from, pos);
@@ -152,8 +165,7 @@ public class constrained_analysis_context extends debuggable implements analysis
     return parent.load_resource(the_announcement);
   }
 
-  @Override
-  public immutable_dictionary<declaration, abstract_value> constraints() {
+  public immutable_dictionary<variable_declaration, constraint> constraints() {
     return constraint_bindings;
   }
 
@@ -161,10 +173,10 @@ public class constrained_analysis_context extends debuggable implements analysis
   public string to_string() {
     string_writer content = new string_writer();
     content.write_all(new base_string("context {"));
-    readonly_list<dictionary.entry<declaration, abstract_value>> constraints =
+    readonly_list<dictionary.entry<variable_declaration, constraint>> constraints =
         constraints().elements();
     for (int i = 0; i < constraints.size(); ++i) {
-      dictionary.entry<declaration, abstract_value> the_constraint = constraints.get(i);
+      dictionary.entry<variable_declaration, constraint> the_constraint = constraints.get(i);
       content.write_all(the_constraint.key().to_string());
       content.write_all(new base_string(": "));
       content.write_all(the_constraint.value().to_string());

@@ -23,7 +23,7 @@ public class comment_construct extends base_construct implements annotation_cons
     if (the_section == documentation_section.ALL) {
       return this.the_text_fragment;
     } else if (the_section == documentation_section.SUMMARY) {
-      final @Nullable text_fragment text = this.the_text_fragment;
+      final text_fragment text = this.the_text_fragment;
       assert text != null;
       return (base_string) summary_extractor.get_summary(text);
     } else {

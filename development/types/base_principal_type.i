@@ -30,9 +30,7 @@ abstract class base_principal_type {
       -- TODO: signal error instead of panicing.
       utilities.panic("Unset profile in " ++ this ++ " decl " ++ the_declaration);
     }
-    result : the_flavor_profile;
-    assert result is_not null;
-    return result;
+    return the_flavor_profile;
   }
 
   implement type get_flavored(type_flavor flavor) {

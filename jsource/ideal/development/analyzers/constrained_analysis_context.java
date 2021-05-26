@@ -196,14 +196,12 @@ public class constrained_analysis_context extends debuggable implements analysis
   @Override
   public string to_string() {
     string_writer content = new string_writer();
-    content.write_all(new base_string("context {"));
-    readonly_list<dictionary.entry<variable_declaration, constraint>> constraints =
-        constraints().elements();
+    content.write_all(new base_string("context "));
+    content.write_all(new base_string(parent.to_string(), " {"));
+    readonly_list<constraint> constraints = constraints().values().elements();
     for (int i = 0; i < constraints.size(); ++i) {
-      dictionary.entry<variable_declaration, constraint> the_constraint = constraints.get(i);
-      content.write_all(the_constraint.key().to_string());
-      content.write_all(new base_string(": "));
-      content.write_all(the_constraint.value().to_string());
+      constraint the_constraint = constraints.get(i);
+      content.write_all(the_constraint.to_string());
       content.write_all(new base_string(", "));
     }
     content.write_all(new base_string("}"));

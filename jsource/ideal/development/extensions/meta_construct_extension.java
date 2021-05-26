@@ -89,7 +89,6 @@ public class meta_construct_extension extends declaration_extension {
     list<analyzable> children_statements = new base_list<analyzable>();
 
     simple_name generated_result_name = generated_name(RESULT_NAME);
-    resolve_analyzer result_analyzer = new resolve_analyzer(generated_result_name, the_origin);
     parameter_analyzer base_list = new parameter_analyzer(
         new resolve_analyzer(BASE_LIST_NAME, the_origin),
         new base_list<analyzable>(new resolve_analyzer(CONSTRUCT_NAME, the_origin)), the_origin);
@@ -181,7 +180,8 @@ public class meta_construct_extension extends declaration_extension {
       }
 
       analyzable append_analyzable = new parameter_analyzer(
-            new resolve_analyzer(result_analyzer, procedure_name, the_origin),
+            new resolve_analyzer(new resolve_analyzer(generated_result_name, the_origin),
+                procedure_name, the_origin),
             new base_list<analyzable>(field_access),
           the_origin);
 
@@ -227,7 +227,8 @@ public class meta_construct_extension extends declaration_extension {
     }
 
     if (!has_children_procedure(the_type_declaration)) {
-      return_analyzer children_return = new return_analyzer(result_analyzer, the_origin);
+      return_analyzer children_return = new return_analyzer(
+          new resolve_analyzer(generated_result_name, the_origin), the_origin);
       children_statements.append(children_return);
       block_analyzer children_body = new block_analyzer(new statement_list_analyzer(
           children_statements, the_origin), the_origin);

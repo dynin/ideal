@@ -49,7 +49,7 @@ public class type_parameters extends debuggable implements deeply_immutable_data
     if (index < this.parameters.size()) {
       return this.parameters.get(index);
     } else if (this.repeated_parameter != null) {
-      return (abstract_value) this.repeated_parameter;
+      return this.repeated_parameter;
     } else {
       {
         utilities.panic(new base_string("Parameter index out of range"));
@@ -75,7 +75,7 @@ public class type_parameters extends debuggable implements deeply_immutable_data
       }
     }
     if (this.repeated_parameter != null) {
-      result.add(((abstract_value) this.repeated_parameter).type_bound().principal());
+      result.add(this.repeated_parameter.type_bound().principal());
     }
     return result.frozen_copy();
   }

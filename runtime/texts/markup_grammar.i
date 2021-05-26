@@ -289,7 +289,8 @@ class markup_grammar {
     empty_element = sequence_matcher[character, text_element].new(
         [ lt, name, attributes, space_opt, slash, gt ],
         match_start_element);
-    element = option_text_element([empty_element, ]);
+    -- TODO: the cast is redundant
+    element = option_text_element([empty_element .> matcher[character, text_element], ]);
     element_fragment : element !> matcher[character, text_fragment];
     content_element : option_text_fragment([element_fragment,
         entity_ref !> matcher[character, text_fragment]]);

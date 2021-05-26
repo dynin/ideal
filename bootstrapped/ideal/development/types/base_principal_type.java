@@ -40,9 +40,7 @@ public abstract class base_principal_type extends base_type implements principal
         return null;
       }
     }
-    final @Nullable flavor_profile result = this.the_flavor_profile;
-    assert result != null;
-    return result;
+    return this.the_flavor_profile;
   }
   public @Override type get_flavored(final type_flavor flavor) {
     @Nullable flavor_profile profile = this.the_flavor_profile;
@@ -70,7 +68,7 @@ public abstract class base_principal_type extends base_type implements principal
   public declaration_pass get_pass() {
     return this.last_pass;
   }
-  public final @Override @Nullable declaration get_declaration() {
+  public @Override final @Nullable declaration get_declaration() {
     return this.the_declaration;
   }
   public void set_declaration(final declaration the_declaration) {
@@ -104,7 +102,7 @@ public abstract class base_principal_type extends base_type implements principal
     the_context.declare_type(this, pass);
   }
   public abstract flavor_profile default_flavor_profile();
-  public final @Override string to_string() {
+  public @Override final string to_string() {
     return this.describe(type_format.FULL);
   }
 }

@@ -29,9 +29,8 @@ public class parametrized_type extends base_principal_type {
     return this.parameters != null;
   }
   public type_parameters get_parameters() {
-    final @Nullable type_parameters result = this.parameters;
-    assert result != null;
-    return result;
+    assert this.parameters != null;
+    return this.parameters;
   }
   public @Override kind get_kind() {
     return this.master.get_kind();
@@ -62,7 +61,7 @@ public class parametrized_type extends base_principal_type {
   }
   private string parameter_names() {
     if (this.parameters != null) {
-      return ((type_parameters) this.parameters).to_string();
+      return this.parameters.to_string();
     } else {
       return new base_string("[..unknown..]");
     }

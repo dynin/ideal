@@ -20,9 +20,8 @@ class parametrized_type {
   boolean parameters_defined => parameters is_not null;
 
   type_parameters get_parameters() {
-    result : parameters;
-    assert result is_not null;
-    return result;
+    assert parameters is_not null;
+    return parameters;
   }
 
   implement kind get_kind => master.get_kind;
@@ -52,8 +51,7 @@ class parametrized_type {
 
   private string parameter_names() {
     if (parameters is_not null) {
-      -- TODO: the cast is redundant
-      return (parameters !> type_parameters).to_string();
+      return parameters.to_string();
     } else {
       return "[..unknown..]";
     }

@@ -41,9 +41,8 @@ class master_type {
   implement action_name short_name => the_name;
 
   implement protected type_declaration_context get_context() {
-    result : the_context;
-    assert result is_not null;
-    return result;
+    assert the_context is_not null;
+    return the_context;
   }
 
   protected void set_context(type_declaration_context the_context) {
@@ -58,9 +57,8 @@ class master_type {
   }
 
   parametrizable_state get_parametrizable() {
-    result : the_parametrizable_state;
-    assert result is_not null;
-    return result;
+    assert the_parametrizable_state is_not null;
+    return the_parametrizable_state;
   }
 
   type bind_parameters(type_parameters parameters) {

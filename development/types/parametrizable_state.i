@@ -27,12 +27,9 @@ class parametrizable_state {
       result.set_parameters(parameters);
       if (primary_type is_not null) {
         the_type_graph : master.get_context().type_graph;
-        -- TODO: the cast is redundant
-        ptype : primary_type;
-        assert ptype is_not null;
         -- TODO: do not panic but report a diagnostic
-        assert !the_type_graph.introduces_cycle(result, ptype);
-        the_type_graph.add_edge(result, ptype, type_utilities.PRIMARY_TYPE_ORIGIN);
+        assert !the_type_graph.introduces_cycle(result, primary_type);
+        the_type_graph.add_edge(result, primary_type, type_utilities.PRIMARY_TYPE_ORIGIN);
       } else {
         assert is_special();
       }

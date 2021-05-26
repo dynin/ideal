@@ -89,9 +89,8 @@ public class union_type extends base_principal_type {
     }
   }
   protected @Override type_declaration_context get_context() {
-    final @Nullable type_declaration_context result = union_type.the_context;
-    assert result instanceof type_declaration_context;
-    return result;
+    assert union_type.the_context instanceof type_declaration_context;
+    return union_type.the_context;
   }
   public static void set_context(final type_declaration_context the_context) {
     assert union_type.the_context == null;

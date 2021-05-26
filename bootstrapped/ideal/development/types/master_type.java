@@ -48,9 +48,8 @@ public class master_type extends base_principal_type {
     return this.the_name;
   }
   protected @Override type_declaration_context get_context() {
-    final @Nullable type_declaration_context result = this.the_context;
-    assert result != null;
-    return result;
+    assert this.the_context != null;
+    return this.the_context;
   }
   protected void set_context(final type_declaration_context the_context) {
     assert this.the_context == null;
@@ -63,9 +62,8 @@ public class master_type extends base_principal_type {
     this.the_parametrizable_state = new parametrizable_state(this);
   }
   public parametrizable_state get_parametrizable() {
-    final @Nullable parametrizable_state result = this.the_parametrizable_state;
-    assert result != null;
-    return result;
+    assert this.the_parametrizable_state != null;
+    return this.the_parametrizable_state;
   }
   public type bind_parameters(final type_parameters parameters) {
     final @Nullable parametrizable_state the_state = this.the_parametrizable_state;

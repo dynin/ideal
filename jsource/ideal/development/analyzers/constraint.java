@@ -12,6 +12,8 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.declarations.*;
+import ideal.development.types.*;
+
 public class constraint extends debuggable implements readonly_data, stringable {
 
   public final variable_declaration the_declaration;
@@ -40,7 +42,9 @@ public class constraint extends debuggable implements readonly_data, stringable 
   @Override
   public string to_string() {
     //return utilities.describe(this, the_declaration);
+    string result = (the_action instanceof type_action) ?
+        ((type_action) the_action).get_type().to_string() : the_action.to_string();
     return new base_string(the_declaration.to_string(), new base_string(" => "),
-        the_action.to_string(), new base_string(" (" + the_constraint_type + ")"));
+        result, new base_string(" (" + the_constraint_type + ")"));
   }
 }

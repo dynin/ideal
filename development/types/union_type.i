@@ -82,10 +82,8 @@ class union_type {
   }
 
   implement protected type_declaration_context get_context() {
-    result : the_context;
-    -- TODO: cast is redundant
-    assert result is type_declaration_context;
-    return result;
+    assert the_context is type_declaration_context;
+    return the_context;
   }
 
   static void set_context(type_declaration_context the_context) {

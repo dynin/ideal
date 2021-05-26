@@ -44,8 +44,7 @@ class type_parameters {
     if (index < parameters.size) {
       return parameters[index];
     } else if (repeated_parameter is_not null) {
-      -- TODO: retire cast.
-      return repeated_parameter !> abstract_value;
+      return repeated_parameter;
     } else {
       utilities.panic("Parameter index out of range");
     }
@@ -69,8 +68,7 @@ class type_parameters {
       result.add(parameter.type_bound.principal);
     }
     if (repeated_parameter is_not null) {
-      -- TODO: retire cast.
-      result.add((repeated_parameter !> abstract_value).type_bound.principal);
+      result.add(repeated_parameter.type_bound.principal);
     }
     return result.frozen_copy();
   }

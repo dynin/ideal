@@ -13,22 +13,23 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
+import ideal.development.actions.*;
 
 public class constraint extends debuggable implements readonly_data, stringable {
 
   public final variable_declaration the_declaration;
-  public final action the_action;
+  public final abstract_value the_value;
   public final constraint_type the_constraint_type;
 
-  public constraint(variable_declaration the_declaration, action the_action,
+  public constraint(variable_declaration the_declaration, abstract_value the_value,
       constraint_type the_constraint_type) {
     this.the_declaration = the_declaration;
-    this.the_action = the_action;
+    this.the_value = the_value;
     this.the_constraint_type = the_constraint_type;
   }
 
   public final abstract_value the_value() {
-    return the_action.result();
+    return the_value;
   }
 
   public variable_category get_category() {
@@ -42,9 +43,7 @@ public class constraint extends debuggable implements readonly_data, stringable 
   @Override
   public string to_string() {
     //return utilities.describe(this, the_declaration);
-    string result = (the_action instanceof type_action) ?
-        ((type_action) the_action).get_type().to_string() : the_action.to_string();
     return new base_string(the_declaration.to_string(), new base_string(" => "),
-        result, new base_string(" (" + the_constraint_type + ")"));
+        the_value.to_string(), new base_string(" (" + the_constraint_type + ")"));
   }
 }

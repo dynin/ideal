@@ -32,7 +32,7 @@ public class action_utilities {
 
   private action_utilities() { }
 
-  static final origin no_origin = new special_origin(new base_string("no-origin"));
+  public static final origin no_origin = new special_origin(new base_string("no-origin"));
 
   public static readonly_list<type> lookup_types(analysis_context context, type from,
       action_name name) {

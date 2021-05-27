@@ -148,8 +148,9 @@ class X {
   }
 
   void test_types() {
-    foo_value = "abc";
-    -- changestate();
+    b : X.new();
+    foo_value = true;
+    this.foo_value = "abc";
     string foo_string : foo_value;
   }
 }

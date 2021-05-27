@@ -367,6 +367,47 @@ public class analyzer_utilities {
     return null;
   }
 
+  public static @Nullable abstract_value unify_values(abstract_value first, abstract_value second,
+      analysis_context the_context) {
+    // TODO: rewrite unify_values() to avoid overhead.
+    return unify(first.to_action(action_utilities.no_origin),
+        second.to_action(action_utilities.no_origin), the_context);
+  }
+
+  public static boolean supports_constraint(action the_action) {
+    declaration the_declaration = declaration_util.get_declaration(the_action);
+    if (the_declaration instanceof variable_declaration) {
+      variable_category the_category = ((variable_declaration) the_declaration).get_category();
+      if (the_category != variable_category.INSTANCE) {
+        return true;
+      }
+
+      if (! (the_action instanceof instance_variable)) {
+        return false;
+      }
+      action from_action = ((instance_variable) the_action).from;
+
+      if (! (from_action instanceof dereference_action)) {
+        return false;
+      }
+      action from_derefence_action = ((dereference_action) from_action).from;
+
+      if (! (from_derefence_action instanceof promotion_action)) {
+        return false;
+      }
+      action promotion_subaction = ((promotion_action) from_derefence_action).get_action();
+
+      if (! (promotion_subaction instanceof local_variable)) {
+        return false;
+      }
+      local_variable the_local_variable = (local_variable) promotion_subaction;
+
+      return the_local_variable.short_name() == special_name.THIS;
+    }
+
+    return false;
+  }
+
   public static action to_value(action expression, analysis_context the_context,
       origin the_origin) {
     type the_type = expression.result().type_bound();
@@ -390,7 +431,7 @@ public class analyzer_utilities {
         filtered_constraints.append(the_constraint);
       } else if (current_type == filter) {
         filtered_constraints.append(new constraint(the_constraint.the_declaration,
-            the_constraint.the_action, constraint_type.ALWAYS));
+            the_constraint.the_value(), constraint_type.ALWAYS));
       }
     }
     return filtered_constraints;

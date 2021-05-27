@@ -73,12 +73,10 @@ public class assign_op extends binary_procedure {
       return action_utilities.cant_promote(second.result(), value_type, context, the_origin);
     }
     constraint the_constraint = null;
-    if (second.result() != value_type) {
-      declaration left_declaration = declaration_util.get_declaration(first);
-      if (left_declaration instanceof variable_declaration) {
-        the_constraint = new constraint((variable_declaration) left_declaration, second,
-            constraint_type.ALWAYS);
-      }
+    if (second.result() != value_type && analyzer_utilities.supports_constraint(first)) {
+      variable_declaration left_declaration =
+          (variable_declaration) declaration_util.get_declaration(first);
+      the_constraint = new constraint(left_declaration, second.result(), constraint_type.ALWAYS);
     }
 
     action right = context.promote(second, value_type, the_origin);

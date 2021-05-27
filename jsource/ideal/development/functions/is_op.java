@@ -57,17 +57,16 @@ public class is_op extends binary_procedure {
 
     action the_action = new is_action(first_value, the_type, negated, pos);
 
-    declaration first_declaration = first.get_declaration();
-
-    if (first_declaration instanceof variable_declaration) {
-      variable_declaration the_declaration = (variable_declaration) first_declaration;
+    if (analyzer_utilities.supports_constraint(first)) {
+      variable_declaration the_declaration =
+          (variable_declaration) declaration_util.get_declaration(first);
       list<constraint> constraints = new base_list<constraint>();
-      constraints.append(new constraint(the_declaration, the_type.to_action(second),
+      constraints.append(new constraint(the_declaration, the_type,
           negated ? constraint_type.ON_FALSE : constraint_type.ON_TRUE));
       @Nullable abstract_value other =
           get_other_type(first_value.result().type_bound(), the_type);
       if (other != null) {
-        constraints.append(new constraint(the_declaration, other.to_action(first),
+        constraints.append(new constraint(the_declaration, other,
             negated ? constraint_type.ON_TRUE : constraint_type.ON_FALSE));
       }
       return action_plus_constraints.make_result(the_action, constraints);

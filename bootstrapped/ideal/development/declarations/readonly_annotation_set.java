@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 
 public interface readonly_annotation_set extends readonly_analyzable, readonly_analysis_result, readonly_data, any_annotation_set {
   access_modifier access_level();
+  @Nullable variance_modifier variance();
   @Nullable documentation the_documentation();
   @Override analyzable specialize(specialization_context context, principal_type new_parent);
 }

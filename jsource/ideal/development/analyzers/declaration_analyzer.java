@@ -89,6 +89,7 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
 
     list<origin> origins = new base_list<origin>();
     @Nullable access_modifier access_level = null;
+    @Nullable variance_modifier variance = null;
     set<modifier_kind> modifiers = new hash_set<modifier_kind>();
     @Nullable documentation the_documentation = null;
 
@@ -103,6 +104,13 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
           } else {
             // duplicate modifier
             new base_notification(messages.duplicate_access, the_annotation).report();
+          }
+        } else if (the_modifier_kind instanceof variance_modifier) {
+          if (variance == null) {
+            variance = (variance_modifier) the_modifier_kind;
+          } else {
+            // duplicate modifier
+            new base_notification(messages.duplicate_variance, the_annotation).report();
           }
         } else if (the_modifier_kind instanceof extension_kind) {
           // Skip extensions, and skip them in origins
@@ -128,8 +136,8 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
       access_level = default_access;
     }
 
-    the_annotation_set = new base_annotation_set(access_level, modifiers, the_documentation,
-        origins.frozen_copy());
+    the_annotation_set = new base_annotation_set(access_level, variance, modifiers.frozen_copy(),
+        the_documentation, origins.frozen_copy());
   }
 
   protected @Nullable type_flavor process_flavor(

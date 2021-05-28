@@ -274,13 +274,13 @@ public class markup_grammar {
         return markup_grammar.this.select_2nd_attribute_fragment(first);
       }
     });
-    final option_matcher<Character, attribute_fragment> attribute_value = this.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ this.attribute_value_in_quot, this.attribute_value_in_apos })));
+    final option_matcher<Character, attribute_fragment> attribute_value = this.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ this.attribute_value_in_quot, ((sequence_matcher<Character, attribute_fragment>) this.attribute_value_in_apos) })));
     this.attribute = new sequence_matcher<Character, attribute_state>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ name, equals, attribute_value })), new function1<attribute_state, readonly_list<any_value>>() {
       @Override public attribute_state call(readonly_list<any_value> first) {
         return markup_grammar.this.make_attribute(first);
       }
     });
-    final matcher<Character, immutable_list<attribute_state>> attributes = this.repeat_or_none_attribute(new sequence_matcher<Character, attribute_state>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, this.attribute })), new function1<attribute_state, readonly_list<any_value>>() {
+    final matcher<Character, immutable_list<attribute_state>> attributes = this.repeat_or_none_attribute(new sequence_matcher<Character, attribute_state>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ space_opt, ((sequence_matcher<Character, attribute_state>) this.attribute) })), new function1<attribute_state, readonly_list<any_value>>() {
       @Override public attribute_state call(readonly_list<any_value> first) {
         return markup_grammar.this.select_2nd_attribute_state(first);
       }
@@ -290,7 +290,7 @@ public class markup_grammar {
         return markup_grammar.this.match_start_element(first);
       }
     });
-    this.element = this.option_text_element(new base_immutable_list<matcher<Character, text_element>>(new ideal.machine.elements.array<matcher<Character, text_element>>(new matcher[]{ this.empty_element })));
+    this.element = this.option_text_element(new base_immutable_list<matcher<Character, text_element>>(new ideal.machine.elements.array<matcher<Character, text_element>>(new matcher[]{ (matcher<Character, text_element>) (matcher) ((sequence_matcher<Character, text_element>) this.empty_element) })));
     final matcher<Character, text_fragment> element_fragment = (matcher<Character, text_fragment>) (matcher) this.element;
     final option_matcher<Character, text_fragment> content_element = this.option_text_fragment(new base_immutable_list<matcher<Character, text_fragment>>(new ideal.machine.elements.array<matcher<Character, text_fragment>>(new matcher[]{ element_fragment, (matcher<Character, text_fragment>) (matcher) this.entity_ref })));
     final matcher<Character, string> char_data_opt = this.as_string(this.zero_or_more(new function1<Boolean, Character>() {

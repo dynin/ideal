@@ -10,7 +10,7 @@ interface annotation_set {
   extends data;
 
   access_modifier access_level;
---  variance_modifier variance;
+  variance_modifier or null variance;
   boolean has(modifier_kind the_kind);
   documentation or null the_documentation;
 

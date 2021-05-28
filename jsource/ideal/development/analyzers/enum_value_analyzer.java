@@ -103,8 +103,8 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   protected signal do_multi_pass_analysis(analysis_pass pass) {
 
     if (pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
-      set_annotations(new base_annotation_set(access_modifier.public_modifier,
-          new hash_set<modifier_kind>(), null, new empty<origin>()));
+      set_annotations(new base_annotation_set(access_modifier.public_modifier, null,
+          new hash_set<modifier_kind>().frozen_copy(), null, new empty<origin>()));
       // TODO: ordinal should be correctly computed.
       enum_value the_value = new enum_value(this, ordinal, value_type());
       get_context().add(declared_in_type(), short_name(), the_value.to_action(this));

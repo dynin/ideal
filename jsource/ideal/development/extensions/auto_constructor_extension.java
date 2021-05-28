@@ -54,16 +54,15 @@ public class auto_constructor_extension extends declaration_extension {
   @Override
   protected signal process_type_declaration(type_declaration_analyzer the_type_declaration,
       analysis_pass pass) {
-    signal result = analyze(the_type_declaration, pass);
-
-    if (result instanceof ok_signal && pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
+    if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
       the_type_declaration.append_to_body(generate_constructor(the_type_declaration));
+      set_expanded(null);
     }
 
-    return result;
+    return analyze(the_type_declaration, pass);
   }
 
-  public procedure_analyzer generate_constructor(type_declaration the_type_declaration) {
+  public procedure_analyzer generate_constructor(type_declaration_analyzer the_type_declaration) {
     origin the_origin = this;
     readonly_list<variable_declaration> variables =
         declaration_util.get_declared_variables(the_type_declaration);
@@ -72,6 +71,7 @@ public class auto_constructor_extension extends declaration_extension {
 
     for (int i = 0; i < variables.size(); ++i) {
       variable_declaration variable = variables.get(i);
+      the_type_declaration.analyze(variable, analysis_pass.METHOD_AND_VARIABLE_DECL);
       action_name name = variable.short_name();
       variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
           to_analyzable(variable.value_type()), name, null, the_origin);

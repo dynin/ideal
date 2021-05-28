@@ -13,7 +13,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
   private boolean validated;
   public option_pattern(final readonly_collection<pattern<element_type>> options) {
     this.options = new base_list<pattern<element_type>>();
-    this.options.append_all(options.elements());
+    ((base_list<pattern<element_type>>) this.options).append_all(options.elements());
   }
   public void add_option(final pattern<element_type> option) {
     this.options.append(option);

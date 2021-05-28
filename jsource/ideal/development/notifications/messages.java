@@ -92,6 +92,8 @@ public interface messages {
 
   string duplicate_access = new base_string("Duplicate access modifier");
 
+  string duplicate_variance = new base_string("Duplicate variance modifier");
+
   string wrong_arity = new base_string("Wrong arity in a parametrizable expression");
 
   string return_outside_proc = new base_string("Return outside of a procedure");

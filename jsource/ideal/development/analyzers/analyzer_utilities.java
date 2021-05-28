@@ -382,10 +382,15 @@ public class analyzer_utilities {
         return true;
       }
 
-      if (! (the_action instanceof instance_variable)) {
+      action from_action;
+
+      if (the_action instanceof dispatch_action) {
+        from_action = ((dispatch_action) the_action).get_from();
+      } else if (the_action instanceof instance_variable) {
+        from_action = ((instance_variable) the_action).from;
+      } else {
         return false;
       }
-      action from_action = ((instance_variable) the_action).from;
 
       if (! (from_action instanceof dereference_action)) {
         return false;

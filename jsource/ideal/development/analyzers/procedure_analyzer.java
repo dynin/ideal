@@ -25,6 +25,7 @@ import ideal.development.values.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import static ideal.development.declarations.annotation_library.*;
 
 public class procedure_analyzer extends declaration_analyzer
     implements procedure_declaration {
@@ -269,8 +270,7 @@ public class procedure_analyzer extends declaration_analyzer
       } else if (the_parameter instanceof name_construct) {
         action_name the_name = ((name_construct) the_parameter).the_name;
         // TODO: 'this' should be immutable.
-        the_argument = new variable_analyzer(analyzer_utilities.PUBLIC_MODIFIERS,
-            null, the_name, null, the_parameter);
+        the_argument = new variable_analyzer(PUBLIC_MODIFIERS, null, the_name, null, the_parameter);
       } else {
         error_signal new_error = new error_signal(new base_string("Variable expected"),
             the_parameter);
@@ -644,7 +644,7 @@ public class procedure_analyzer extends declaration_analyzer
       type_flavor this_flavor) {
     origin the_origin = this;
     local_variable_declaration result = new local_variable_declaration(
-        analyzer_utilities.PRIVATE_FINAL_MODIFIERS, the_name, flavor.immutable_flavor,
+        PRIVATE_FINAL_MODIFIERS, the_name, flavor.immutable_flavor,
         declared_in_type().get_flavored(this_flavor), null,
         the_origin);
     analyze_and_ignore_errors(result, analysis_pass.BODY_CHECK);
@@ -655,7 +655,7 @@ public class procedure_analyzer extends declaration_analyzer
       type_flavor super_flavor) {
     origin the_origin = this;
     local_variable_declaration super_declaration = new local_variable_declaration(
-        analyzer_utilities.PRIVATE_FINAL_MODIFIERS, the_name,
+        PRIVATE_FINAL_MODIFIERS, the_name,
         flavor.immutable_flavor, superclass.get_flavored(super_flavor), null, the_origin);
     analyze_and_ignore_errors(super_declaration, analysis_pass.BODY_CHECK);
   }

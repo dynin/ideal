@@ -22,6 +22,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.analyzers.*;
+import static ideal.development.declarations.annotation_library.*;
 
 /**
  * Implement procedure result caching (memoization.)  For example, given the declaration
@@ -99,9 +100,9 @@ public class cache_result_extension extends declaration_extension {
     boolean is_static = the_procedure.annotations().has(general_modifier.static_modifier);
 
     annotation_set variable_annotations = is_static ?
-        analyzer_utilities.PRIVATE_STATIC_VAR_MODIFIERS : analyzer_utilities.PRIVATE_VAR_MODIFIERS;
+        PRIVATE_STATIC_VAR_MODIFIERS : PRIVATE_VAR_MODIFIERS;
     annotation_set procedure_annotations = is_static ?
-        analyzer_utilities.PRIVATE_STATIC_MODIFIERS : analyzer_utilities.PRIVATE_MODIFIERS;
+        PRIVATE_STATIC_MODIFIERS : PRIVATE_MODIFIERS;
 
     type variable_type = type_utilities.make_union(new base_list<abstract_value>(
         return_type, library().immutable_null_type()));
@@ -111,7 +112,7 @@ public class cache_result_extension extends declaration_extension {
         to_analyzable(variable_type), generated_field_name, null, the_origin);
 
     // Generate the procedure that encapsulates caching logic
-    variable_analyzer result = new variable_analyzer(analyzer_utilities.PRIVATE_VAR_MODIFIERS,
+    variable_analyzer result = new variable_analyzer(PRIVATE_VAR_MODIFIERS,
         null, result_name, new resolve_analyzer(generated_field_name, the_origin), the_origin);
     return_analyzer return_result = new return_analyzer(
         new resolve_analyzer(result_name, the_origin), the_origin);

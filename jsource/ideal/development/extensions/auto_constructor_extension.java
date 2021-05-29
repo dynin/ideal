@@ -22,6 +22,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.analyzers.*;
+import static ideal.development.declarations.annotation_library.*;
 
 /**
  * Automatically generate a constructor that initializes all fields of a data type.
@@ -73,7 +74,7 @@ public class auto_constructor_extension extends declaration_extension {
       variable_declaration variable = variables.get(i);
       the_type_declaration.analyze(variable, analysis_pass.METHOD_AND_VARIABLE_DECL);
       action_name name = variable.short_name();
-      variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
+      variable_analyzer parameter = new variable_analyzer(PRIVATE_MODIFIERS,
           to_analyzable(variable.value_type()), name, null, the_origin);
       parameters.append(parameter);
 
@@ -92,7 +93,7 @@ public class auto_constructor_extension extends declaration_extension {
     block_analyzer body = new block_analyzer(new statement_list_analyzer(statements, the_origin),
         the_origin);
     procedure_analyzer constructor_procedure = new procedure_analyzer(
-        analyzer_utilities.PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
+        PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
         parameters, body, the_origin);
     return constructor_procedure;
   }

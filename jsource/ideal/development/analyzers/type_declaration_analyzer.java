@@ -23,6 +23,7 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import static ideal.development.declarations.annotation_library.*;
 
 public class type_declaration_analyzer extends declaration_analyzer<type_declaration_construct>
     implements type_declaration {
@@ -327,8 +328,21 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     }
 
     if (body != null) {
+      // Process procedures first.
+      // This helps when variable initializer references a procedure declared after it.
       for (int i = 0; i < body.size(); ++i) {
-        analyze_and_ignore_errors(body.get(i), pass);
+        analyzable statement = body.get(i);
+        if (statement instanceof procedure_analyzer) {
+          analyze_and_ignore_errors(statement, pass);
+        }
+      }
+
+      // Process non-procedures second.
+      for (int i = 0; i < body.size(); ++i) {
+        analyzable statement = body.get(i);
+        if (!(statement instanceof procedure_analyzer)) {
+          analyze_and_ignore_errors(statement, pass);
+        }
       }
     }
 
@@ -453,8 +467,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     origin the_origin = this;
 
     field_declaration ordinal_declaration = new field_declaration(
-        analyzer_utilities.PUBLIC_MODIFIERS, ordinal_name,
-        variable_category.INSTANCE, flavor.readonly_flavor,
+        PUBLIC_MODIFIERS, ordinal_name, variable_category.INSTANCE, flavor.readonly_flavor,
         flavor.deeply_immutable_flavor, library().immutable_integer_type(),
         the_origin);
 
@@ -463,8 +476,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     }
 
     field_declaration name_declaration = new field_declaration(
-        analyzer_utilities.PUBLIC_MODIFIERS, name_name,
-        variable_category.INSTANCE, flavor.readonly_flavor,
+        PUBLIC_MODIFIERS, name_name, variable_category.INSTANCE, flavor.readonly_flavor,
         flavor.deeply_immutable_flavor, library().immutable_string_type(),
         the_origin);
 
@@ -482,8 +494,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     analyzable body = new block_analyzer(
         new statement_list_analyzer(new empty<analyzable>(), the_origin), the_origin);
     procedure_analyzer constructor_procedure = new procedure_analyzer(
-        analyzer_utilities.PUBLIC_MODIFIERS, null,
-        (simple_name) short_name(), new empty<variable_declaration>(), body, the_origin);
+        PUBLIC_MODIFIERS, null, (simple_name) short_name(), new empty<variable_declaration>(),
+        body, the_origin);
 
     append_to_body(constructor_procedure);
   }

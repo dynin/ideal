@@ -23,6 +23,7 @@ import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.kinds.*;
 import ideal.development.analyzers.*;
+import static ideal.development.declarations.annotation_library.*;
 
 /**
  * Automatically generate boilerplate code for constructor data declaration.
@@ -95,7 +96,7 @@ public class meta_construct_extension extends declaration_extension {
     parameter_analyzer result_init = new parameter_analyzer(
         new resolve_analyzer(base_list, special_name.NEW, the_origin),
         new empty(), the_origin);
-    variable_analyzer result_var = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
+    variable_analyzer result_var = new variable_analyzer(PRIVATE_MODIFIERS,
         null, generated_result_name, result_init, the_origin);
     children_statements.append(result_var);
 
@@ -113,7 +114,7 @@ public class meta_construct_extension extends declaration_extension {
       type value_type = variable.value_type();
       boolean union_field = type_utilities.is_union(value_type);
 
-      variable_analyzer parameter = new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
+      variable_analyzer parameter = new variable_analyzer(PRIVATE_MODIFIERS,
           to_analyzable(value_type), name, null, the_origin);
       parameters.append(parameter);
 
@@ -208,8 +209,7 @@ public class meta_construct_extension extends declaration_extension {
       simple_name generated_origin_name = generated_name(ORIGIN_NAME);
       resolve_analyzer origin_type = new resolve_analyzer(ORIGIN_NAME, the_origin);
       variable_analyzer origin_parameter = new variable_analyzer(
-          analyzer_utilities.PRIVATE_MODIFIERS, origin_type, generated_origin_name, null,
-          the_origin);
+          PRIVATE_MODIFIERS, origin_type, generated_origin_name, null, the_origin);
       parameters.append(origin_parameter);
 
       resolve_analyzer super_name = new resolve_analyzer(special_name.SUPER, the_origin);
@@ -220,8 +220,8 @@ public class meta_construct_extension extends declaration_extension {
       block_analyzer ctor_body = new block_analyzer(new statement_list_analyzer(ctor_statements,
           the_origin), the_origin);
       procedure_analyzer constructor_procedure = new procedure_analyzer(
-          analyzer_utilities.PUBLIC_MODIFIERS, null,
-          (simple_name) the_type_declaration.short_name(), parameters, ctor_body, the_origin);
+          PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
+          parameters, ctor_body, the_origin);
 
       the_type_declaration.append_to_body(constructor_procedure);
     }
@@ -238,8 +238,7 @@ public class meta_construct_extension extends declaration_extension {
               new base_list(new resolve_analyzer(CONSTRUCT_NAME, the_origin)), the_origin),
           the_origin);
       procedure_analyzer children_procedure = new procedure_analyzer(
-          analyzer_utilities.PUBLIC_OVERRIDE_MODIFIERS,
-          children_return_type, CHILDREN_NAME,
+          PUBLIC_OVERRIDE_MODIFIERS, children_return_type, CHILDREN_NAME,
           new empty<variable_declaration>(), children_body, the_origin);
 
       the_type_declaration.append_to_body(children_procedure);

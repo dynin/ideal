@@ -25,6 +25,7 @@ import ideal.development.names.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
 import ideal.development.analyzers.*;
+import static ideal.development.declarations.annotation_library.*;
 
 public class list_iteration_analyzer extends extension_analyzer implements declaration {
 
@@ -51,7 +52,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     // TODO: return error_signals if these fail
     assert source.var_decl.annotations.is_empty();
 
-    annotations = analyzer_utilities.PRIVATE_MODIFIERS;
+    annotations = PRIVATE_MODIFIERS;
     var_type = (source.var_decl.variable_type != null) ? make(source.var_decl.variable_type) : null;
     var_name = source.var_decl.name;
     init = make(source.var_decl.init);
@@ -124,12 +125,12 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
       list_origin = the_origin;
     }
     local_variable_declaration list_declaration =
-        new local_variable_declaration(analyzer_utilities.PRIVATE_FINAL_MODIFIERS, list_name,
+        new local_variable_declaration(PRIVATE_FINAL_MODIFIERS, list_name,
         flavor.immutable_flavor, list_type, new base_analyzable_action(init_action, init),
         list_origin);
 
     local_variable_declaration index_declaration = new local_variable_declaration(
-        analyzer_utilities.PRIVATE_MODIFIERS, index_name,
+        PRIVATE_MODIFIERS, index_name,
         flavor.mutable_flavor, library.immutable_nonnegative_type(), new base_analyzable_action(
         new integer_value(0, library.immutable_nonnegative_type()).to_action(the_origin)),
         the_origin);

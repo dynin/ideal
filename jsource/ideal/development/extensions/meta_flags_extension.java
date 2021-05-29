@@ -23,6 +23,7 @@ import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.literals.*;
 import ideal.development.analyzers.*;
+import static ideal.development.declarations.annotation_library.*;
 
 /**
  * Automatically generate a constructor for the flags datatype.
@@ -88,9 +89,9 @@ public class meta_flags_extension extends declaration_extension {
         declaration_util.get_declared_variables(the_type_declaration);
     list<variable_declaration> parameters = new base_list<variable_declaration>();
 
-    parameters.append(new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
+    parameters.append(new variable_analyzer(PRIVATE_MODIFIERS,
         to_analyzable(string_list_type()), ARGUMENTS_NAME, null, the_origin));
-    parameters.append(new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
+    parameters.append(new variable_analyzer(PRIVATE_MODIFIERS,
         to_analyzable(procedure_string_type()), ERROR_REPORTER_NAME, null, the_origin));
 
     list<analyzable> statements = new base_list<analyzable>();
@@ -103,7 +104,7 @@ public class meta_flags_extension extends declaration_extension {
             new resolve_analyzer(ERROR_REPORTER_NAME, the_origin)
         ),
         the_origin);
-    statements.append(new variable_analyzer(analyzer_utilities.PRIVATE_MODIFIERS,
+    statements.append(new variable_analyzer(PRIVATE_MODIFIERS,
         null, ARG_DICTIONARY_NAME, parse_flags, the_origin));
 
     for (int i = 0; i < variables.size(); ++i) {
@@ -152,7 +153,7 @@ public class meta_flags_extension extends declaration_extension {
     block_analyzer body = new block_analyzer(new statement_list_analyzer(statements, the_origin),
         the_origin);
     procedure_analyzer constructor_procedure = new procedure_analyzer(
-        analyzer_utilities.PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
+        PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
         parameters, body, the_origin);
     the_type_declaration.append_to_body(constructor_procedure);
 

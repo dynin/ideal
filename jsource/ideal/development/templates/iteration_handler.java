@@ -57,7 +57,7 @@ public class iteration_handler implements sexpression_handler {
         new statement_list_analyzer(template.process_constructs(arguments.skip(1)), source);
 
     list_iteration_analyzer iterator = new list_iteration_analyzer(
-        analyzer_utilities.PRIVATE_MODIFIERS, name.the_name, init_action, body_action, source);
+        annotation_library.PRIVATE_MODIFIERS, name.the_name, init_action, body_action, source);
 
     return iterator;
   }

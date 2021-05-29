@@ -19,6 +19,7 @@ package declarations {
 
   enum declaration_pass;
   interface annotation_set;
+  namespace annotation_library;
   class base_annotation_set;
   interface block_declaration;
   namespace declaration_util;

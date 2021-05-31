@@ -13,4 +13,4 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public interface writeonly_type_declaration extends writeonly_declaration, any_type_declaration { }
+public interface writeonly_type_declaration extends writeonly_named_declaration, any_type_declaration { }

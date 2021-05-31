@@ -23,6 +23,7 @@ package declarations {
   class base_annotation_set;
   interface block_declaration;
   namespace declaration_util;
+  interface named_declaration;
   enum procedure_category;
   interface procedure_declaration;
   interface supertype_declaration;

@@ -6,10 +6,10 @@
 
 --- A declaration of a type that includes all related declarations in a type signature.
 interface type_declaration {
-  extends declaration;
+  extends named_declaration;
 
   kind get_kind;
-  action_name short_name;
+  override action_name short_name;
   annotation_set annotations;
   principal_type get_declared_type;
   override principal_type declared_in_type;

@@ -13,4 +13,4 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public interface immutable_type_declaration extends immutable_declaration, readonly_type_declaration { }
+public interface immutable_type_declaration extends immutable_named_declaration, readonly_type_declaration { }

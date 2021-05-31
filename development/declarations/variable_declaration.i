@@ -6,7 +6,7 @@
 
 --- All information encapsulated in a variable declaration.
 interface variable_declaration {
-  extends declaration, variable_id;
+  extends named_declaration, variable_id;
 
   variable_category get_category;
   annotation_set annotations;

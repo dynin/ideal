@@ -15,7 +15,7 @@ import ideal.development.comments.documentation;
 
 import javax.annotation.Nullable;
 
-public interface readonly_variable_declaration extends readonly_declaration, readonly_variable_id, any_variable_declaration {
+public interface readonly_variable_declaration extends readonly_named_declaration, readonly_variable_id, any_variable_declaration {
   variable_category get_category();
   annotation_set annotations();
   action_name short_name();

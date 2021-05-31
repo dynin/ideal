@@ -6,10 +6,10 @@
 
 --- All information encapsulated in a procedure declaration.
 interface procedure_declaration {
-  extends declaration;
+  extends named_declaration;
 
   simple_name original_name;
-  action_name short_name;
+  override action_name short_name;
   annotation_set annotations;
   procedure_category get_category;
   type_flavor get_flavor;

@@ -213,22 +213,22 @@ public class analyzer_utilities {
     return primary_action;
   }
 
-  public static readonly_list<declaration> do_find_overriden(procedure_declaration the_procedure) {
+  public static readonly_list<declaration> do_find_overriden(procedure_declaration the_named_declaration) {
     type_declaration self_declaration = declaration_util.get_type_declaration(
-        the_procedure.declared_in_type());
+        the_named_declaration.declared_in_type());
     if (self_declaration == null) {
       return new empty<declaration>();
     }
 
     list<declaration> result = new base_list<declaration>();
     set<type_declaration> processed_declarations = new hash_set<type_declaration>();
-    append_overriden(the_procedure, self_declaration, result, processed_declarations);
+    append_overriden(the_named_declaration, self_declaration, result, processed_declarations);
     // TODO: there should not be a reason for having more than one overriden declarations,
     //       except for rare circumstances.
     return result;
   }
 
-  private static void append_overriden(procedure_declaration the_procedure,
+  private static void append_overriden(named_declaration the_named_declaration,
       type_declaration the_declaration, list<declaration> result,
       set<type_declaration> processed_declarations) {
     if (processed_declarations.contains(the_declaration)) {
@@ -237,7 +237,7 @@ public class analyzer_utilities {
     processed_declarations.add(the_declaration);
 
     if (the_declaration.get_kind() == type_kinds.procedure_kind &&
-        the_procedure.short_name() == special_name.IMPLICIT_CALL) {
+        the_named_declaration.short_name() == special_name.IMPLICIT_CALL) {
       result.append(the_declaration);
     }
 
@@ -254,11 +254,8 @@ public class analyzer_utilities {
       readonly_list<declaration> super_declarations = supertype_declaration.get_signature();
       for (int j = 0; j < super_declarations.size(); ++j) {
         declaration decl = super_declarations.get(j);
-        if (decl instanceof procedure_declaration &&
-            does_override(the_procedure, (procedure_declaration) decl)) {
-          result.append(decl);
-        } else if (decl instanceof variable_declaration &&
-            utilities.eq(((variable_declaration) decl).short_name(), the_procedure.short_name())) {
+        if (decl instanceof named_declaration &&
+            does_override(the_named_declaration, (named_declaration) decl)) {
           result.append(decl);
         }
       }
@@ -269,18 +266,48 @@ public class analyzer_utilities {
         type_declaration supertype_declaration =
             declaration_util.get_type_declaration(supertypes.get(i));
         if (supertype_declaration != null) {
-          append_overriden(the_procedure, supertype_declaration, result, processed_declarations);
+          append_overriden(the_named_declaration, supertype_declaration, result,
+              processed_declarations);
         }
       }
     }
   }
 
   // TODO: other checks here?...
-  private static boolean does_override(procedure_declaration the_procedure,
-      procedure_declaration candidate) {
-    return the_procedure.original_name() == candidate.original_name() &&
-           the_procedure.get_parameter_variables().size() ==
-              candidate.get_parameter_variables().size();
+  private static boolean does_override(named_declaration the_named_declaration,
+      named_declaration candidate) {
+    if (the_named_declaration instanceof procedure_declaration &&
+        candidate instanceof procedure_declaration) {
+      procedure_declaration the_named_procedure = (procedure_declaration) the_named_declaration;
+      procedure_declaration candidate_procedure = (procedure_declaration) candidate;
+
+      return the_named_procedure.original_name() == candidate_procedure.original_name() &&
+             the_named_procedure.get_parameter_variables().size() ==
+               candidate_procedure.get_parameter_variables().size();
+    }
+
+    if (the_named_declaration.short_name() != candidate.short_name()) {
+      return false;
+    }
+
+    if (the_named_declaration instanceof variable_declaration &&
+        candidate instanceof procedure_declaration) {
+      // Variables cannot override procedures
+      return false;
+    }
+
+    if (the_named_declaration instanceof procedure_declaration &&
+        candidate instanceof variable_declaration) {
+      // Procedures can override variables
+      return true;
+    }
+
+    if (the_named_declaration instanceof variable_declaration &&
+        candidate instanceof variable_declaration) {
+      return true;
+    }
+
+    return false;
   }
 
   public static action to_action(analyzable the_analyzable) {

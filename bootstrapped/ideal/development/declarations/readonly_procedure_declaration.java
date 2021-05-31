@@ -15,7 +15,7 @@ import ideal.development.comments.documentation;
 
 import javax.annotation.Nullable;
 
-public interface readonly_procedure_declaration extends readonly_declaration, any_procedure_declaration {
+public interface readonly_procedure_declaration extends readonly_named_declaration, any_procedure_declaration {
   simple_name original_name();
   action_name short_name();
   annotation_set annotations();

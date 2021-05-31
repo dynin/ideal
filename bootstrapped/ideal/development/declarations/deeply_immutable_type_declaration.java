@@ -13,4 +13,4 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public interface deeply_immutable_type_declaration extends deeply_immutable_declaration, immutable_type_declaration { }
+public interface deeply_immutable_type_declaration extends deeply_immutable_named_declaration, immutable_type_declaration { }

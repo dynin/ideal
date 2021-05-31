@@ -13,4 +13,4 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public interface any_procedure_declaration extends any_declaration { }
+public interface any_procedure_declaration extends any_named_declaration { }

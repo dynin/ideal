@@ -13,4 +13,4 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public interface any_variable_declaration extends any_declaration, any_variable_id { }
+public interface any_variable_declaration extends any_named_declaration, any_variable_id { }

@@ -13,4 +13,4 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public interface deeply_immutable_variable_declaration extends deeply_immutable_declaration, deeply_immutable_variable_id, immutable_variable_declaration { }
+public interface deeply_immutable_variable_declaration extends deeply_immutable_named_declaration, deeply_immutable_variable_id, immutable_variable_declaration { }

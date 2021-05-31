@@ -15,7 +15,7 @@ import ideal.development.comments.documentation;
 
 import javax.annotation.Nullable;
 
-public interface readonly_type_declaration extends readonly_declaration, any_type_declaration {
+public interface readonly_type_declaration extends readonly_named_declaration, any_type_declaration {
   kind get_kind();
   action_name short_name();
   annotation_set annotations();

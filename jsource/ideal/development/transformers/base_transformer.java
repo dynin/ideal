@@ -80,10 +80,10 @@ public class base_transformer extends declaration_visitor<Object> {
   }
 
   protected list<annotation_construct> to_annotations(annotation_set annotations,
-      boolean skip_access, origin the_origin) {
+      annotation_category category, boolean skip_access, origin the_origin) {
     list<annotation_construct> result = new base_list<annotation_construct>();
     if (!skip_access) {
-      @Nullable modifier_kind processed = process_modifier(annotations.access_level());
+      @Nullable modifier_kind processed = process_modifier(annotations.access_level(), category);
       if (processed != null) {
         result.append(new modifier_construct(processed, the_origin));
       }
@@ -93,7 +93,7 @@ public class base_transformer extends declaration_visitor<Object> {
     for (int i = 0; i < modifiers.size(); ++i) {
       // TODO: handle parametrized modifiers
       modifier_kind the_modifier_kind = modifiers.get(i);
-      @Nullable modifier_kind processed = process_modifier(the_modifier_kind);
+      @Nullable modifier_kind processed = process_modifier(the_modifier_kind, category);
       if (processed != null) {
         result.append(new modifier_construct(processed, the_origin));
       }
@@ -102,7 +102,8 @@ public class base_transformer extends declaration_visitor<Object> {
     return result;
   }
 
-  protected modifier_kind process_modifier(modifier_kind the_modifier_kind) {
+  protected modifier_kind process_modifier(modifier_kind the_modifier_kind,
+      annotation_category category) {
     return the_modifier_kind;
   }
 
@@ -160,7 +161,8 @@ public class base_transformer extends declaration_visitor<Object> {
 
   public import_construct process_import(import_declaration the_import) {
     origin the_origin = the_import;
-    return new import_construct(to_annotations(the_import.annotations(), true, the_origin),
+    return new import_construct(to_annotations(the_import.annotations(),
+        annotation_category.IMPORT, true, the_origin),
         make_type(the_import.get_type(), the_origin), the_origin);
   }
 
@@ -221,7 +223,8 @@ public class base_transformer extends declaration_visitor<Object> {
 
   public construct process_procedure(procedure_declaration the_procedure) {
     origin the_origin = the_procedure;
-    return new procedure_construct(to_annotations(the_procedure.annotations(), false, the_origin),
+    return new procedure_construct(to_annotations(the_procedure.annotations(),
+        annotation_category.PROCEDURE, false, the_origin),
         make_type(the_procedure.get_return_type(), the_origin), the_procedure.original_name(),
         transform_list(the_procedure.get_parameter_variables()), new empty<annotation_construct>(),
         transform_action(the_procedure.get_body_action()), the_origin);
@@ -245,13 +248,15 @@ public class base_transformer extends declaration_visitor<Object> {
     origin the_origin = the_type_announcement;
     // TODO: skip annotations?
     return new type_announcement_construct(
-        to_annotations(the_type_announcement.annotations(), true, the_origin),
+        to_annotations(the_type_announcement.annotations(), annotation_category.TYPE, true,
+            the_origin),
         the_type_announcement.get_kind(), the_type_announcement.short_name(), the_origin);
   }
 
   public Object process_type(type_declaration the_type) {
     origin the_origin = the_type;
-    return new type_declaration_construct(to_annotations(the_type.annotations(), false, the_origin),
+    return new type_declaration_construct(to_annotations(the_type.annotations(),
+        annotation_category.TYPE, false, the_origin),
         the_type.get_kind(), the_type.short_name(), transform_list(the_type.get_parameters()),
         transform_list(the_type.get_signature()), the_origin);
   }
@@ -265,7 +270,8 @@ public class base_transformer extends declaration_visitor<Object> {
       the_type = null;
     }
     return new variable_construct(
-        to_annotations(the_type_parameter.annotations(), true, the_origin),
+        to_annotations(the_type_parameter.annotations(), annotation_category.TYPE_PARAMETER, true,
+            the_origin),
         the_type, the_type_parameter.short_name(), new empty<annotation_construct>(), null,
         the_origin);
   }
@@ -284,7 +290,8 @@ public class base_transformer extends declaration_visitor<Object> {
         category == variable_category.ENUM_VALUE;
     */
     boolean skip_access = false;
-    return new variable_construct(to_annotations(the_variable.annotations(), skip_access,
+    return new variable_construct(to_annotations(the_variable.annotations(),
+        annotation_category.VARIABLE, skip_access,
         the_origin), the_type, the_variable.short_name(), new empty<annotation_construct>(),
         transform_action(the_variable.init_action()), the_origin);
   }

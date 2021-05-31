@@ -60,6 +60,7 @@ FLAGS_RUN = -debug-progress -run
 TEST_DIR = tests
 ONETWO = $(TEST_DIR)/12.i
 ONE = $(TEST_DIR)/1.i
+VAR = $(TEST_DIR)/var.i
 TESTCACHE = $(TEST_DIR)/cache.i
 DIRECTORY = $(TEST_DIR)/directory.i
 TEST_STRING = $(TEST_DIR)/string.i
@@ -176,6 +177,10 @@ generate_cache: $(IDEAL_TARGET)
 
 12: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN) -debug-constructs -input=$(ONETWO)
+
+generate_var: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(VAR) -target=generate_var -output=$(SCRATCH_DIR)
+	$(JAVAC) $(SCRATCH_DIR)/test/*java
 
 reflect: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -debug-progress -debug-reflect -input=showcase/reflect.i

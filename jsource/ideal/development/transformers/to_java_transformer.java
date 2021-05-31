@@ -123,7 +123,15 @@ public class to_java_transformer extends base_transformer {
   }
 
   @Override
-  protected modifier_kind process_modifier(modifier_kind the_modifier_kind) {
+  protected modifier_kind process_modifier(modifier_kind the_modifier_kind,
+      annotation_category category) {
+    if (category == annotation_category.VARIABLE) {
+      if (the_modifier_kind == implement_modifier || the_modifier_kind == override_modifier) {
+        // Drop override on variables
+        return null;
+      }
+    }
+
     if (the_modifier_kind == implement_modifier) {
       return override_modifier;
     } else if (general_modifier.supported_by_java.contains(the_modifier_kind)) {
@@ -345,7 +353,7 @@ public class to_java_transformer extends base_transformer {
     origin the_origin = the_procedure;
 
     list<annotation_construct> annotations = to_annotations(the_procedure.annotations(),
-        skip_access(the_procedure.declared_in_type()), the_origin);
+        annotation_category.PROCEDURE, skip_access(the_procedure.declared_in_type()), the_origin);
 
     return process_procedure(the_procedure, annotations);
   }
@@ -649,14 +657,14 @@ public class to_java_transformer extends base_transformer {
       if (decl instanceof variable_declaration) {
         variable_declaration the_variable = (variable_declaration) decl;
         list<annotation_construct> annotations = to_annotations(the_variable.annotations(),
-            false, the_origin);
+            annotation_category.VARIABLE, false, the_origin);
         append_static(annotations, the_origin);
         // TODO: do we need to handle null?
         result.append(process_variable(the_variable, annotations));
       } else if (decl instanceof procedure_declaration) {
         procedure_declaration the_procedure = (procedure_declaration) decl;
         list<annotation_construct> annotations = to_annotations(the_procedure.annotations(),
-            false, the_origin);
+            annotation_category.PROCEDURE, false, the_origin);
         if (the_procedure.get_category() != procedure_category.CONSTRUCTOR) {
           append_static(annotations, the_origin);
         }
@@ -700,7 +708,7 @@ public class to_java_transformer extends base_transformer {
   public Object process_type(type_declaration the_type_declaration) {
     origin the_origin = the_type_declaration;
     list<annotation_construct> annotations = to_annotations(
-        the_type_declaration.annotations(), false, the_origin);
+        the_type_declaration.annotations(), annotation_category.TYPE, false, the_origin);
 
     kind the_kind = the_type_declaration.get_kind();
     principal_type declared_in_type = the_type_declaration.declared_in_type();
@@ -1125,7 +1133,7 @@ public class to_java_transformer extends base_transformer {
 
     principal_type declared_in_type = the_variable.declared_in_type();
     list<annotation_construct> annotations = to_annotations(the_variable.annotations(),
-        skip_access(declared_in_type), the_origin);
+        annotation_category.VARIABLE, skip_access(declared_in_type), the_origin);
 
     return process_variable(the_variable, annotations);
   }
@@ -1239,7 +1247,8 @@ public class to_java_transformer extends base_transformer {
   @Override
   public construct process_block(block_declaration the_block) {
     origin the_origin = the_block;
-    return new block_construct(to_annotations(the_block.annotations(), true, the_origin),
+    return new block_construct(to_annotations(the_block.annotations(),
+        annotation_category.BLOCK, true, the_origin),
         transform_action_list(the_block.get_body_action()), the_origin);
   }
 

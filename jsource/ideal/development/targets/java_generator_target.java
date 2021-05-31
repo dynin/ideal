@@ -35,6 +35,8 @@ public class java_generator_target extends type_processor_target {
 
   @Override
   public void process_type(principal_type the_type) {
+    declaration the_declaration = the_type.get_declaration();
+    the_declaration.analyze();
     generator.generate_for_type(the_type);
   }
 

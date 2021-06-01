@@ -126,6 +126,11 @@ public class specialized_variable extends debuggable implements variable_declara
   }
 
   @Override
+  public readonly_list<declaration> get_overriden() {
+    return main.get_overriden();
+  }
+
+  @Override
   public @Nullable action init_action() {
     return init;
   }

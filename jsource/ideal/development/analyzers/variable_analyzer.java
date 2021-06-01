@@ -25,6 +25,7 @@ import ideal.development.flavors.*;
 import static ideal.development.flavors.flavor.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
+import ideal.machine.annotations.dont_display;
 
 public class variable_analyzer extends declaration_analyzer
     implements variable_declaration {
@@ -40,6 +41,7 @@ public class variable_analyzer extends declaration_analyzer
   private variable_action the_variable_action;
   private boolean declared_as_reference;
   private @Nullable action init_action;
+  @dont_display private @Nullable readonly_list<declaration> overriden;
 
   public variable_analyzer(variable_construct source) {
     super(source);
@@ -213,6 +215,18 @@ public class variable_analyzer extends declaration_analyzer
       }
     }
 
+    if (analyzer_utilities.has_overriden(this)) {
+      readonly_list<declaration> overriden = analyzer_utilities.do_find_overriden(this);
+      if (overriden.is_empty()) {
+        return new error_signal(new base_string("Can't find overriden for '" +
+            short_name() + "' in " + declared_in_type()), this);
+      }
+    } else {
+      // TODO: check that override/implement modifiers are not present on
+      // static methods/constructors...
+      overriden = new empty<declaration>();
+    }
+
     // Check for shadow variables
     // This check is dedicated to the memory of dictionary_state.reserve() bug on August 13, 2014.
     // TODO: add a feature/flag to toggle it.
@@ -285,6 +299,14 @@ public class variable_analyzer extends declaration_analyzer
     }
     assert !(init_action instanceof error_signal);
     return init_action;
+  }
+
+  public readonly_list<declaration> get_overriden() {
+    if (overriden == null) {
+      utilities.panic("Null overriden in " + this);
+    }
+    assert overriden != null;
+    return overriden;
   }
 
   @Override

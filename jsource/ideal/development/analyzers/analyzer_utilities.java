@@ -70,6 +70,12 @@ public class analyzer_utilities {
          the_procedure.annotations().has(general_modifier.implement_modifier));
   }
 
+  public static boolean has_overriden(variable_declaration the_variable) {
+    return the_variable.get_category() == variable_category.INSTANCE &&
+        (the_variable.annotations().has(general_modifier.override_modifier) ||
+         the_variable.annotations().has(general_modifier.implement_modifier));
+  }
+
   public static boolean is_overloaded(procedure_declaration the_procedure) {
     return the_procedure.annotations().has(general_modifier.overload_modifier);
   }
@@ -213,7 +219,8 @@ public class analyzer_utilities {
     return primary_action;
   }
 
-  public static readonly_list<declaration> do_find_overriden(procedure_declaration the_named_declaration) {
+  public static readonly_list<declaration> do_find_overriden(
+      named_declaration the_named_declaration) {
     type_declaration self_declaration = declaration_util.get_type_declaration(
         the_named_declaration.declared_in_type());
     if (self_declaration == null) {

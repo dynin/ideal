@@ -103,6 +103,12 @@ public class field_declaration extends single_pass_analyzer
     return false;
   }
 
+  // TODO: override enum fields
+  @Override
+  public readonly_list<declaration> get_overriden() {
+    return new empty<declaration>();
+  }
+
   @Override
   public @Nullable action init_action() {
     return null;

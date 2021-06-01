@@ -466,6 +466,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     simple_name name_name = simple_name.make("name");
     origin the_origin = this;
 
+    // TODO: add overriden
     field_declaration ordinal_declaration = new field_declaration(
         PUBLIC_MODIFIERS, ordinal_name, variable_category.INSTANCE, flavor.readonly_flavor,
         flavor.deeply_immutable_flavor, library().immutable_integer_type(),
@@ -475,6 +476,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       utilities.panic("Error in ordinal field declaration");
     }
 
+    // TODO: add overriden
     field_declaration name_declaration = new field_declaration(
         PUBLIC_MODIFIERS, name_name, variable_category.INSTANCE, flavor.readonly_flavor,
         flavor.deeply_immutable_flavor, library().immutable_string_type(),

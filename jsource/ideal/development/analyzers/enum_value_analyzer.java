@@ -55,6 +55,11 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   }
 
   @Override
+  public readonly_list<declaration> get_overriden() {
+    return new empty<declaration>();
+  }
+
+  @Override
   public variable_category get_category() {
     return variable_category.ENUM_VALUE;
   }

@@ -23,5 +23,6 @@ public interface readonly_variable_declaration extends readonly_named_declaratio
   type value_type();
   type reference_type();
   boolean declared_as_reference();
+  readonly_list<declaration> get_overriden();
   @Nullable action init_action();
 }

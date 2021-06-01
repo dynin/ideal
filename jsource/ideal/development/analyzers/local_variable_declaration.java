@@ -110,6 +110,11 @@ public class local_variable_declaration extends single_pass_analyzer
   }
 
   @Override
+  public readonly_list<declaration> get_overriden() {
+    return new empty<declaration>();
+  }
+
+  @Override
   public @Nullable action init_action() {
     if (init_analyzable != null) {
       assert init_action != null;

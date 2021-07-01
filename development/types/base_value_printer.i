@@ -78,8 +78,7 @@ class base_value_printer {
 
   private string print_parameters(parametrized_type the_type) {
     the_writer : string_writer.new();
-    -- TODO: retire internal_access
-    parameters : the_type.get_parameters().internal_access();
+    parameters : the_type.get_parameters().fixed_size_list();
 
     the_writer.write('[');
     var boolean first : true;

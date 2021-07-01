@@ -61,10 +61,6 @@ public class type_parameters extends debuggable implements deeply_immutable_data
     assert this.is_fixed_size();
     return this.parameters;
   }
-  public immutable_list<abstract_value> internal_access() {
-    assert this.is_fixed_size();
-    return this.parameters;
-  }
   public immutable_set<principal_type> principals_set() {
     final hash_set<principal_type> result = new hash_set<principal_type>();
     {

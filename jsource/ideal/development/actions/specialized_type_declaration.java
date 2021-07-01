@@ -130,7 +130,7 @@ public class specialized_type_declaration extends debuggable implements type_dec
     flavor_profile the_flavor_profile = get_master().get_flavor_profile();
 
     if (ENABLE_SHALLOW && is_collection_type(the_type)) {
-      immutable_list<abstract_value> new_parameters = the_type.get_parameters().internal_access();
+      immutable_list<abstract_value> new_parameters = the_type.get_parameters().fixed_size_list();
       assert new_parameters.size() == 1;
       if (new_parameters.first().type_bound().get_flavor() == flavor.deeply_immutable_flavor) {
         log.debug("*** " + the_type);

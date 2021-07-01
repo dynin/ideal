@@ -9,10 +9,10 @@
 class variance_modifier {
   extends base_modifier_kind;
 
-  static variance_modifier invariant_modifier : variance_modifier.new("invariant");
-  static variance_modifier covariant_modifier : variance_modifier.new("covariant");
-  static variance_modifier contravariant_modifier : variance_modifier.new("contravariant");
-  static variance_modifier combivariant_modifier : variance_modifier.new("combivariant");
+  static invariant_modifier : variance_modifier.new("invariant");
+  static covariant_modifier : variance_modifier.new("covariant");
+  static contravariant_modifier : variance_modifier.new("contravariant");
+  static combivariant_modifier : variance_modifier.new("combivariant");
 
   private variance_modifier(string name) {
     super(name);

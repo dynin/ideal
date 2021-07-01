@@ -55,12 +55,6 @@ class type_parameters {
     return parameters;
   }
 
-  -- TODO: deprecate all uses of this.
-  immutable list[abstract_value] internal_access() {
-    assert is_fixed_size();
-    return parameters;
-  }
-
   -- TODO: we shouldn't need this.
   immutable set[principal_type] principals_set() {
     result : hash_set[principal_type].new();

@@ -15,7 +15,6 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.origins.*;
 import ideal.development.types.*;
-import ideal.development.actions.*;
 import javax.annotation.Nullable;
 
 public class ok_signal extends debuggable implements signal {

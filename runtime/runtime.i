@@ -16,4 +16,5 @@ namespace runtime {
   namespace logs;
   namespace graphs;
   namespace flags;
+  namespace json;
 }

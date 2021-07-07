@@ -26,6 +26,14 @@ class json_parser {
     }
   }
 
+--  TODO: drop this.
+--  private boolean is_whitespace(character the_character) {
+--    return the_character == ' ' ||
+--           the_character == '\n' ||
+--           the_character == '\r' ||
+--           the_character == '\t';
+--  }
+
   private nonnegative scan(string input, var nonnegative start) {
     next : input[start];
 

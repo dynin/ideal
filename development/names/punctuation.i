@@ -8,8 +8,8 @@
 --- Naming convention from http://catb.org/jargon/html/A/ASCII.html
 namespace punctuation {
 
-  SINGLE_QUOTE : punctuation_type.new("'");
-  DOUBLE_QUOTE : punctuation_type.new("\"");
+  SINGLE_QUOTE : quote_type.new("'");
+  DOUBLE_QUOTE : quote_type.new("\"");
 
   HASH : punctuation_type.new("#", base_symbols.HASH);
 

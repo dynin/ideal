@@ -14,6 +14,7 @@ package names {
 
   class base_token_type;
   class punctuation_type;
+  class quote_type;
   namespace special_token_type;
   class operator_type;
   namespace punctuation;

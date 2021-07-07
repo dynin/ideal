@@ -18,14 +18,14 @@ import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 public class quoted_token_element implements scanner_element {
-  private final token_type the_token_type;
+  private final quote_type the_quote_type;
   private final char quote_character;
 
   private static final char ESCAPE = '\\';
 
-  public quoted_token_element(token_type the_token_type) {
-    this.the_token_type = the_token_type;
-    string name = this.the_token_type.name();
+  public quoted_token_element(quote_type the_quote_type) {
+    this.the_quote_type = the_quote_type;
+    string name = this.the_quote_type.name();
     assert name.size() == 1;
     quote_character = name.first();
   }
@@ -53,6 +53,18 @@ public class quoted_token_element implements scanner_element {
         switch (c) {
           case 'n':
             c = '\n';
+            break;
+          case 'b':
+            c = '\b';
+            break;
+          case 'f':
+            c = '\f';
+            break;
+          case 'r':
+            c = '\r';
+            break;
+          case 't':
+            c = '\t';
             break;
           case '\'':
           case '"':
@@ -83,7 +95,7 @@ public class quoted_token_element implements scanner_element {
     origin pos = source.make_origin(begin, image_end);
     string quoted = new base_string(input.substring(begin + 1, end));
     quoted_literal string_literal = new quoted_literal(new base_string(value.toString()),
-        quoted, the_token_type);
+        quoted, the_quote_type);
     return new scan_state(new base_token<literal>(special_token_type.LITERAL, string_literal, pos),
         begin + 1, image_end);
   }

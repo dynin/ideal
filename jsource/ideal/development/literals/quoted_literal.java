@@ -11,21 +11,22 @@ package ideal.development.literals;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
+import ideal.development.names.*;
 
 public class quoted_literal extends debuggable implements literal<string> {
 
   private final string value;
   public final string with_escapes;
-  public final token_type quote;
+  public final quote_type quote;
 
-  public quoted_literal(string value, string with_escapes, token_type quote) {
+  public quoted_literal(string value, string with_escapes, quote_type quote) {
     this.value = value;
     this.with_escapes = with_escapes;
     this.quote = quote;
   }
 
   // TODO: implement quoting framework.
-  public quoted_literal(string the_value, token_type quote) {
+  public quoted_literal(string the_value, quote_type quote) {
    this(the_value, escape_string_literal(the_value), quote);
   }
 

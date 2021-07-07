@@ -1788,7 +1788,7 @@ public class to_java_transformer extends base_transformer {
     } else if (the_value instanceof string_value) {
       string_value the_string_value = (string_value) the_value;
       type the_type = the_value_action.result().type_bound();
-      punctuation_type literal_type = (the_type == library().immutable_character_type()) ?
+      quote_type literal_type = (the_type == library().immutable_character_type()) ?
           punctuation.SINGLE_QUOTE : punctuation.DOUBLE_QUOTE;
       construct result = new literal_construct(new quoted_literal(the_string_value.unwrap(),
           literal_type), the_origin);

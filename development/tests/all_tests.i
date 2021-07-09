@@ -28,6 +28,8 @@ namespace all_tests {
     test_plain_text.new().run_all_tests();
     test_markup_text.new().run_all_tests();
 
+    test_json_parser.new().run_all_tests();
+
     test_display.new().run_all_tests();
 
     test_singleton_pattern.new().run_all_tests();

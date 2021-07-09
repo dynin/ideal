@@ -6,39 +6,39 @@
 
 --- JSON parser implementation.
 class json_parser {
---  implicit import ideal.library.patterns;
---  implicit import ideal.runtime.patterns;
+--  implicit import ideal.runtime.formats.json_token;
 
   character_handler the_character_handler;
-  -- TODO: use data instead of value
-  var list[immutable value] tokens;
+  -- TODO: use data instead of equality_comparable
+  var list[immutable equality_comparable] tokens;
   var string or null error;
 
   json_parser(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
-    tokens = base_list[immutable value].new();
+    tokens = base_list[immutable equality_comparable].new();
   }
 
-  void tokenize(string input) {
+  boolean has_error => error is_not null;
+
+  private void tokenize(string input) {
+    tokens.clear();
     var nonnegative start : 0;
     while (start < input.size && error is null) {
       start = scan(input, start);
     }
   }
 
---  TODO: drop this.
---  private boolean is_whitespace(character the_character) {
---    return the_character == ' ' ||
---           the_character == '\n' ||
---           the_character == '\r' ||
---           the_character == '\t';
---  }
+  list[immutable equality_comparable] test_tokenize(string input) {
+    tokenize(input);
+    assert !has_error();
+    return tokens;
+  }
 
   private nonnegative scan(string input, var nonnegative start) {
     next : input[start];
+    start += 1;
 
     if (the_character_handler.is_whitespace(next)) {
-      start += 1;
       while (start < input.size && the_character_handler.is_whitespace(input[start])) {
         start += 1;
       }
@@ -46,7 +46,6 @@ class json_parser {
     }
 
     if (next == '"') {
-      start += 1;
       string_start : start;
       while (start < input.size) {
         next_in_string : input[start];
@@ -60,8 +59,18 @@ class json_parser {
       return start;
     }
 
+    if (next == json_token.OPEN_BRACKET.token) {
+      tokens.append(json_token.OPEN_BRACKET);
+      return start;
+    }
+
+    if (next == json_token.CLOSE_BRACKET.token) {
+      tokens.append(json_token.CLOSE_BRACKET);
+      return start;
+    }
+
     report_error("Unrecognized character in a string: " ++ next);
-    return start + 1;
+    return start;
   }
 
   private void report_error(string message) {

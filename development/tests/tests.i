@@ -11,6 +11,7 @@ package tests {
   implicit import ideal.runtime.texts;
   implicit import ideal.runtime.characters;
   implicit import ideal.runtime.patterns;
+  implicit import ideal.runtime.formats;
   implicit import ideal.runtime.resources;
   implicit import ideal.runtime.channels;
   implicit import ideal.runtime.graphs;

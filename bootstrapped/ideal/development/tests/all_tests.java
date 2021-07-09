@@ -7,6 +7,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.characters.*;
 import ideal.runtime.patterns.*;
+import ideal.runtime.formats.*;
 import ideal.runtime.resources.*;
 import ideal.runtime.channels.*;
 import ideal.runtime.graphs.*;
@@ -35,6 +36,7 @@ public class all_tests {
     new test_elements().run_all_tests();
     new test_plain_text().run_all_tests();
     new test_markup_text().run_all_tests();
+    new test_json_parser().run_all_tests();
     new test_display().run_all_tests();
     new test_singleton_pattern().run_all_tests();
     new test_predicate_pattern().run_all_tests();

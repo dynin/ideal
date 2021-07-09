@@ -15,6 +15,9 @@ package characters {
     boolean is_letter_or_digit(character the_character) pure;
     boolean is_whitespace(character the_character) pure;
     boolean is_upper_case(character the_character) pure;
+    boolean is_digit(character the_character) pure;
+
+    nonnegative or null from_digit(character the_character, nonnegative radix) pure;
 
     character to_lower_case(character the_character);
   }

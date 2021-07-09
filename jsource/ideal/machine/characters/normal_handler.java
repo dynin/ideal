@@ -10,6 +10,8 @@ package ideal.machine.characters;
 
 import ideal.library.characters.*;
 
+import javax.annotation.Nullable;
+
 public class normal_handler implements character_handler {
   public static final normal_handler instance = new normal_handler();
 
@@ -29,8 +31,19 @@ public class normal_handler implements character_handler {
   }
 
   @Override
-  public boolean is_upper_case(char c) {
-    return Character.isUpperCase(c);
+  public boolean is_upper_case(char the_character) {
+    return Character.isUpperCase(the_character);
+  }
+
+  @Override
+  public boolean is_digit(char the_character) {
+    return Character.isDigit(the_character);
+  }
+
+  @Override
+  public @Nullable Integer from_digit(char the_character, int radix) {
+    int result = Character.digit(the_character, radix);
+    return result >= 0 ? result : null;
   }
 
   @Override

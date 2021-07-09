@@ -20,6 +20,17 @@ public class test_character_handler {
     assert the_character_handler.is_upper_case('X');
     assert !the_character_handler.is_upper_case('x');
     assert !the_character_handler.is_upper_case('5');
+    assert the_character_handler.is_digit('0');
+    assert the_character_handler.is_digit('5');
+    assert !the_character_handler.is_digit('x');
+    assert !the_character_handler.is_digit('?');
+  }
+  public void digit_test() {
+    final normal_handler the_character_handler = normal_handler.instance;
+    assert the_character_handler.from_digit('0', 10) == 0;
+    assert the_character_handler.from_digit('5', 10) == 5;
+    assert the_character_handler.from_digit('F', 16) == 15;
+    assert the_character_handler.from_digit('X', 16) == null;
   }
   public void conversion_test() {
     final normal_handler the_character_handler = normal_handler.instance;
@@ -31,6 +42,9 @@ public class test_character_handler {
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.predicate_test"));
     this.predicate_test();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.digit_test"));
+    this.digit_test();
     ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.conversion_test"));
     this.conversion_test();

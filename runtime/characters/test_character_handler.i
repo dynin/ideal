@@ -24,6 +24,20 @@ test_suite test_character_handler {
     assert the_character_handler.is_upper_case('X');
     assert !the_character_handler.is_upper_case('x');
     assert !the_character_handler.is_upper_case('5');
+
+    assert the_character_handler.is_digit('0');
+    assert the_character_handler.is_digit('5');
+    assert !the_character_handler.is_digit('x');
+    assert !the_character_handler.is_digit('?');
+  }
+
+  test_case digit_test() {
+    the_character_handler : normal_handler.instance;
+
+    assert the_character_handler.from_digit('0', 10) == 0;
+    assert the_character_handler.from_digit('5', 10) == 5;
+    assert the_character_handler.from_digit('F', 16) == 15;
+    assert the_character_handler.from_digit('X', 16) is null;
   }
 
   test_case conversion_test() {

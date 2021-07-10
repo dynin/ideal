@@ -13,16 +13,28 @@ public class test_json_parser {
   }
   public void test_tokenizer() {
     final json_parser parser = this.make_parser();
-    final list<immutable_equality_comparable> words = parser.test_tokenize(new base_string("  \"foo\"  \"bar\" "));
+    final list<Object> words = parser.test_tokenize(new base_string("  \"foo\"  \"bar\" "));
     assert words.size() == 2;
     assert ideal.machine.elements.runtime_util.values_equal(words.at(0).get(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(words.at(1).get(), new base_string("bar"));
-    final list<immutable_equality_comparable> words2 = parser.test_tokenize(new base_string("[ \"foo\"  \"bar\" ] "));
-    assert words2.size() == 4;
+    final list<Object> words2 = parser.test_tokenize(new base_string("[ \"foo\" , \"bar\" ] "));
+    assert words2.size() == 5;
     assert words2.at(0).get() == json_token.OPEN_BRACKET;
     assert ideal.machine.elements.runtime_util.values_equal(words2.at(1).get(), new base_string("foo"));
-    assert ideal.machine.elements.runtime_util.values_equal(words2.at(2).get(), new base_string("bar"));
-    assert words2.at(3).get() == json_token.CLOSE_BRACKET;
+    assert words2.at(2).get() == json_token.COMMA;
+    assert ideal.machine.elements.runtime_util.values_equal(words2.at(3).get(), new base_string("bar"));
+    assert words2.at(4).get() == json_token.CLOSE_BRACKET;
+    final list<Object> words3 = parser.test_tokenize(new base_string("{ \"foo\" : \"bar\", \"baz\":\"68\" } "));
+    assert words3.size() == 9;
+    assert words3.at(0).get() == json_token.OPEN_BRACE;
+    assert ideal.machine.elements.runtime_util.values_equal(words3.at(1).get(), new base_string("foo"));
+    assert words3.at(2).get() == json_token.COLON;
+    assert ideal.machine.elements.runtime_util.values_equal(words3.at(3).get(), new base_string("bar"));
+    assert words3.at(4).get() == json_token.COMMA;
+    assert ideal.machine.elements.runtime_util.values_equal(words3.at(5).get(), new base_string("baz"));
+    assert words3.at(6).get() == json_token.COLON;
+    assert ideal.machine.elements.runtime_util.values_equal(words3.at(7).get(), new base_string("68"));
+    assert words3.at(8).get() == json_token.CLOSE_BRACE;
   }
   public test_json_parser() { }
   public void run_all_tests() {

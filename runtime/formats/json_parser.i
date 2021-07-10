@@ -10,12 +10,12 @@ class json_parser {
 
   character_handler the_character_handler;
   -- TODO: use data instead of equality_comparable
-  var list[immutable equality_comparable] tokens;
+  var list[readonly value] tokens;
   var string or null error;
 
   json_parser(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
-    tokens = base_list[immutable equality_comparable].new();
+    tokens = base_list[readonly value].new();
   }
 
   boolean has_error => error is_not null;
@@ -28,7 +28,7 @@ class json_parser {
     }
   }
 
-  list[immutable equality_comparable] test_tokenize(string input) {
+  list[readonly value] test_tokenize(string input) {
     tokenize(input);
     assert !has_error();
     return tokens;
@@ -59,6 +59,31 @@ class json_parser {
       return start;
     }
 
+    if (the_character_handler.is_digit(next)) {
+      digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+      assert digit is nonnegative;
+      var nonnegative result : digit;
+      while (start < input.size && the_character_handler.is_digit(input[start])) {
+        next_digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+        assert next_digit is nonnegative;
+        result = result * radix.DEFAULT_RADIX + next_digit;
+      }
+      -- TODO: handle fraction and exponent
+      tokens.append(result);
+      return start;
+    }
+
+    -- TODO: iterate over json_tokens
+    if (next == json_token.OPEN_BRACE.token) {
+      tokens.append(json_token.OPEN_BRACE);
+      return start;
+    }
+
+    if (next == json_token.CLOSE_BRACE.token) {
+      tokens.append(json_token.CLOSE_BRACE);
+      return start;
+    }
+
     if (next == json_token.OPEN_BRACKET.token) {
       tokens.append(json_token.OPEN_BRACKET);
       return start;
@@ -66,6 +91,16 @@ class json_parser {
 
     if (next == json_token.CLOSE_BRACKET.token) {
       tokens.append(json_token.CLOSE_BRACKET);
+      return start;
+    }
+
+    if (next == json_token.COMMA.token) {
+      tokens.append(json_token.COMMA);
+      return start;
+    }
+
+    if (next == json_token.COLON.token) {
+      tokens.append(json_token.COLON);
       return start;
     }
 

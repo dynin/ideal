@@ -32,10 +32,14 @@ test_suite test_character_handler {
   }
 
   test_case digit_test() {
+    assert radix.MINIMUM_RADIX == 2;
+    assert radix.DEFAULT_RADIX == 10;
+    assert radix.MAXIMUM_RADIX == 36;
+
     the_character_handler : normal_handler.instance;
 
-    assert the_character_handler.from_digit('0', 10) == 0;
-    assert the_character_handler.from_digit('5', 10) == 5;
+    assert the_character_handler.from_digit('0', radix.DEFAULT_RADIX) == 0;
+    assert the_character_handler.from_digit('5', radix.DEFAULT_RADIX) == 5;
     assert the_character_handler.from_digit('F', 16) == 15;
     assert the_character_handler.from_digit('X', 16) is null;
   }

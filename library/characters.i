@@ -21,4 +21,11 @@ package characters {
 
     character to_lower_case(character the_character);
   }
+
+  namespace radix {
+    MINIMUM_RADIX : 2;
+    --- Most humans have ten fingers.
+    DEFAULT_RADIX : 10;
+    MAXIMUM_RADIX : 36;
+  }
 }

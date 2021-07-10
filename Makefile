@@ -160,8 +160,8 @@ test_library: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_library -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java
 
-test_runtime: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(SCRATCH_DIR)
+test_librun: $(IDEAL_TARGET) rm-scratch
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_librun -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
 
 compile_runtime:

@@ -23,7 +23,8 @@ package operators {
   integer modulo(integer first, integer second) pure;
   integer negate(integer argument) pure;
 
-  boolean equal_to(readonly equality_comparable first, readonly equality_comparable second) pure;
+  -- TODO: handle equality_comparable as a first and both arguments.
+  boolean equal_to(readonly value first, readonly equality_comparable second) pure;
   boolean not_equal_to(readonly equality_comparable first,
       readonly equality_comparable second) pure;
 

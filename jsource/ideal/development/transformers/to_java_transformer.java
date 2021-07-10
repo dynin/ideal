@@ -519,13 +519,22 @@ public class to_java_transformer extends base_transformer {
         abstract_value av = type_params.get(i);
         assert av instanceof type;
         type the_param_type = (type) av;
-        params.append(make_type_with_mapping(the_param_type, the_origin,
-            mapping.MAP_TO_WRAPPER_TYPE));
+        boolean object_parameter = is_object_type(the_param_type.principal());
+        if (object_parameter) {
+          params.append(make_object_type(the_origin));
+        } else {
+          params.append(make_type_with_mapping(the_param_type, the_origin,
+              mapping.MAP_TO_WRAPPER_TYPE));
+        }
       }
       return make_parametrized_type(name, params, the_origin);
     } else {
       return name;
     }
+  }
+
+  protected construct make_object_type(origin the_origin) {
+    return make_type(java_library.object_type(), the_origin);
   }
 
   protected construct make_flavored_and_parametrized_type(principal_type principal,
@@ -1155,9 +1164,17 @@ public class to_java_transformer extends base_transformer {
     if (type_utilities.is_union(var_type)) {
       annotations.append(make_nullable(the_origin));
       type not_null_type = library().remove_null_type(var_type);
-      type = make_type_with_mapping(not_null_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
+      if (is_object_type(not_null_type.principal())) {
+        type = make_object_type(the_origin);
+      } else {
+        type = make_type_with_mapping(not_null_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE);
+      }
     } else {
-      type = make_type(var_type, the_origin);
+      if (is_object_type(var_type.principal())) {
+        type = make_object_type(the_origin);
+      } else {
+        type = make_type(var_type, the_origin);
+      }
     }
 
     @Nullable construct init = the_variable.init_action() != null ?
@@ -1282,7 +1299,7 @@ public class to_java_transformer extends base_transformer {
            ((procedure_declaration) the_declaration).get_body_action() == null;
   }
 
-  private boolean should_omit_type_bound(principal_type the_type) {
+  private boolean is_object_type(principal_type the_type) {
     return the_type == library().value_type() || the_type == library().equality_comparable_type();
   }
 
@@ -1294,7 +1311,7 @@ public class to_java_transformer extends base_transformer {
       utilities.panic("Type bound is not a value but " + type_bound);
     }
     @Nullable construct type_construct;
-    if (should_omit_type_bound(type_bound.principal())) {
+    if (is_object_type(type_bound.principal())) {
       type_construct = null;
     } else {
       type_construct = make_type_with_mapping(type_bound, the_origin, mapping.MAP_TO_WRAPPER_TYPE);

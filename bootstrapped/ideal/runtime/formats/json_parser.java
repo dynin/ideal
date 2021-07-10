@@ -10,11 +10,11 @@ import javax.annotation.Nullable;
 
 public class json_parser {
   public final character_handler the_character_handler;
-  public list<immutable_equality_comparable> tokens;
+  public list<Object> tokens;
   public @Nullable string error;
   public json_parser(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
-    this.tokens = new base_list<immutable_equality_comparable>();
+    this.tokens = new base_list<Object>();
   }
   public boolean has_error() {
     return this.error != null;
@@ -26,7 +26,7 @@ public class json_parser {
       start = this.scan(input, start);
     }
   }
-  public list<immutable_equality_comparable> test_tokenize(final string input) {
+  public list<Object> test_tokenize(final string input) {
     this.tokenize(input);
     assert !this.has_error();
     return this.tokens;
@@ -53,12 +53,40 @@ public class json_parser {
       this.report_error(new base_string("No closing quote in a string"));
       return start;
     }
+    if (this.the_character_handler.is_digit(next)) {
+      final @Nullable Integer digit = this.the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+      assert digit >= 0;
+      int result = digit;
+      while (start < input.size() && this.the_character_handler.is_digit(input.get(start))) {
+        final @Nullable Integer next_digit = this.the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+        assert next_digit >= 0;
+        result = result * radix.DEFAULT_RADIX + next_digit;
+      }
+      this.tokens.append(result);
+      return start;
+    }
+    if (next == json_token.OPEN_BRACE.token) {
+      this.tokens.append(json_token.OPEN_BRACE);
+      return start;
+    }
+    if (next == json_token.CLOSE_BRACE.token) {
+      this.tokens.append(json_token.CLOSE_BRACE);
+      return start;
+    }
     if (next == json_token.OPEN_BRACKET.token) {
       this.tokens.append(json_token.OPEN_BRACKET);
       return start;
     }
     if (next == json_token.CLOSE_BRACKET.token) {
       this.tokens.append(json_token.CLOSE_BRACKET);
+      return start;
+    }
+    if (next == json_token.COMMA.token) {
+      this.tokens.append(json_token.COMMA);
+      return start;
+    }
+    if (next == json_token.COLON.token) {
+      this.tokens.append(json_token.COLON);
       return start;
     }
     this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in a string: "), next));

@@ -28,6 +28,8 @@ target generate_library: generate_java(ideal.library);
 
 target generate_runtime: generate_java(ideal.runtime);
 
+target generate_librun: generate_java(ideal.library, ideal.runtime);
+
 target generate_test: generate_java(ideal.development.futures.test_futures);
 --target generate_test: generate_java(ideal.runtime.elements.test_list);
 

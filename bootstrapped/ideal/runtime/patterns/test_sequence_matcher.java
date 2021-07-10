@@ -26,12 +26,12 @@ public class test_sequence_matcher {
       }
     });
   }
-  public string match_procedure(final readonly_list<any_value> the_list) {
+  public string match_procedure(final readonly_list<Object> the_list) {
     string result = new base_string("");
     {
-      final readonly_list<any_value> element_list = the_list;
+      final readonly_list<Object> element_list = the_list;
       for (int element_index = 0; element_index < element_list.size(); element_index += 1) {
-        final any_value element = element_list.get(element_index);
+        final Object element = element_list.get(element_index);
         assert element instanceof string;
         result = ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(result, new base_string("-")), ((string) element));
       }
@@ -52,8 +52,8 @@ public class test_sequence_matcher {
         return test_sequence_matcher.this.match_c(first);
       }
     }));
-    final sequence_matcher<Character, string> the_matcher = new sequence_matcher<Character, string>(patterns_list, new procedure1<string, readonly_list<any_value>>() {
-      @Override public string call(readonly_list<any_value> first) {
+    final sequence_matcher<Character, string> the_matcher = new sequence_matcher<Character, string>(patterns_list, new procedure1<string, readonly_list<Object>>() {
+      @Override public string call(readonly_list<Object> first) {
         return test_sequence_matcher.this.match_procedure(first);
       }
     });

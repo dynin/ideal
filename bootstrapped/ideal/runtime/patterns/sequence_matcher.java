@@ -9,13 +9,13 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 
 public class sequence_matcher<element_type, result_type> extends sequence_pattern<element_type> implements matcher<element_type, result_type> {
-  public final procedure1<result_type, readonly_list<any_value>> matcher_procedure;
-  public sequence_matcher(final readonly_list<pattern<element_type>> patterns_list, final procedure1<result_type, readonly_list<any_value>> matcher_procedure) {
+  public final procedure1<result_type, readonly_list<Object>> matcher_procedure;
+  public sequence_matcher(final readonly_list<pattern<element_type>> patterns_list, final procedure1<result_type, readonly_list<Object>> matcher_procedure) {
     super(patterns_list);
     this.matcher_procedure = matcher_procedure;
   }
   public @Override result_type parse(final readonly_list<element_type> the_list) {
-    final base_list<any_value> matches = new base_list<any_value>();
+    final base_list<Object> matches = new base_list<Object>();
     int index = 0;
     int prefix = 0;
     while (index < this.patterns_list.size()) {
@@ -23,7 +23,7 @@ public class sequence_matcher<element_type, result_type> extends sequence_patter
       final @Nullable Integer match = pattern_element.match_prefix(the_list.skip(prefix));
       assert match != null;
       if (pattern_element instanceof matcher) {
-        final matcher<element_type, any_value> matcher_element = (matcher<element_type, any_value>) (matcher) pattern_element;
+        final matcher<element_type, Object> matcher_element = (matcher<element_type, Object>) (matcher) pattern_element;
         matches.append(matcher_element.parse(the_list.slice(prefix, prefix + match)));
       } else {
         matches.append(null);

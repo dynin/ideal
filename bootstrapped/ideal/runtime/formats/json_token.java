@@ -7,8 +7,12 @@ import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 
 public enum json_token implements deeply_immutable_data, deeply_immutable_reference_equality, stringable {
+  OPEN_BRACE('{'),
+  CLOSE_BRACE('}'),
   OPEN_BRACKET('['),
-  CLOSE_BRACKET(']');
+  CLOSE_BRACKET(']'),
+  COMMA(','),
+  COLON(':');
   public final char token;
   private json_token(final char token) {
     this.token = token;

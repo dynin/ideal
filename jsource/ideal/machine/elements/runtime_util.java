@@ -43,7 +43,7 @@ public class runtime_util {
     return new base_string(name);
   }
 
-  public static string value_identifier(readonly_value the_value) {
+  public static string value_identifier(Object the_value) {
     return new base_string(short_class_name(the_value), "@",
         Integer.toHexString(System.identityHashCode(the_value)));
   }
@@ -76,7 +76,7 @@ public class runtime_util {
     return result;
   }
 
-  public static int compute_hash_code(readonly_value d) {
+  public static int compute_hash_code(Object d) {
     if (d instanceof readonly_reference_equality) {
       return System.identityHashCode(d);
     }
@@ -88,7 +88,7 @@ public class runtime_util {
     if (d instanceof immutable_list) {
       return compute_hash_code_list((immutable_list<readonly_data>) d);
     } else {
-      return compute_hash_code_composite(d);
+      return compute_hash_code_composite((readonly_value) d);
     }
   }
 
@@ -183,16 +183,15 @@ public class runtime_util {
     return true;
   }
 
-  public static equivalence_with_hash<readonly_value> default_equivalence =
-    new default_equivalence_impl();
+  public static equivalence_with_hash<Object> default_equivalence = new default_equivalence_impl();
 
-  private static class default_equivalence_impl implements equivalence_with_hash<readonly_value> {
+  private static class default_equivalence_impl implements equivalence_with_hash<Object> {
     @Override
-    public Boolean call(readonly_value first, readonly_value second) {
+    public Boolean call(Object first, Object second) {
       return runtime_util.values_equal(first, second);
     }
 
-    public int hash(readonly_value the_value) {
+    public int hash(Object the_value) {
       return runtime_util.compute_hash_code(the_value);
     }
   };

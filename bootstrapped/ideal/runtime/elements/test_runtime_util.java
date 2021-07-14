@@ -47,16 +47,16 @@ public class test_runtime_util {
     assert !runtime_util.values_equal(this.v1, this.v4);
     assert !runtime_util.values_equal(this.v4, this.v3);
   }
-  private immutable_list<readonly_data> make_list(final readonly_data first, final readonly_data second) {
-    final base_list<readonly_data> the_list = new base_list<readonly_data>();
+  private immutable_list<Object> make_list(final Object first, final Object second) {
+    final base_list<Object> the_list = new base_list<Object>();
     the_list.append(first);
     the_list.append(second);
     return the_list.frozen_copy();
   }
   public void test_list_equals() {
-    final immutable_list<readonly_data> s1 = this.make_list(this.v1, this.v3);
-    final immutable_list<readonly_data> s2 = this.make_list(this.v2, this.v3);
-    final immutable_list<readonly_data> s3 = this.make_list(this.v4, this.v3);
+    final immutable_list<Object> s1 = this.make_list(this.v1, this.v3);
+    final immutable_list<Object> s2 = this.make_list(this.v2, this.v3);
+    final immutable_list<Object> s3 = this.make_list(this.v4, this.v3);
     assert runtime_util.values_equal(s1, s2);
     assert !runtime_util.values_equal(s1, s3);
   }

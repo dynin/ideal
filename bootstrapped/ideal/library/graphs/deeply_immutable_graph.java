@@ -4,4 +4,4 @@ package ideal.library.graphs;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_graph<vertice_type extends readonly_data, edge_type extends readonly_data> extends deeply_immutable_data, immutable_graph<vertice_type, edge_type> { }
+public interface deeply_immutable_graph<vertice_type, edge_type> extends deeply_immutable_data, immutable_graph<vertice_type, edge_type> { }

@@ -10,12 +10,12 @@ class json_parser {
 
   character_handler the_character_handler;
   -- TODO: use data instead of equality_comparable
-  var list[readonly value] tokens;
+  var list[readonly data] tokens;
   var string or null error;
 
   json_parser(character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
-    tokens = base_list[readonly value].new();
+    tokens = base_list[readonly data].new();
   }
 
   boolean has_error => error is_not null;
@@ -28,7 +28,7 @@ class json_parser {
     }
   }
 
-  list[readonly value] test_tokenize(string input) {
+  list[readonly data] test_tokenize(string input) {
     tokenize(input);
     assert !has_error();
     return tokens;

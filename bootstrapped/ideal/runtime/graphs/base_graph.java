@@ -9,8 +9,8 @@ import ideal.machine.elements.runtime_util;
 
 import javax.annotation.Nullable;
 
-public class base_graph<vertice_type extends readonly_data, edge_type extends readonly_data> extends debuggable implements graph<vertice_type, edge_type> {
-  private static class edge<vertice_type extends readonly_data, edge_type extends readonly_data> implements immutable_data {
+public class base_graph<vertice_type, edge_type> extends debuggable implements graph<vertice_type, edge_type> {
+  private static class edge<vertice_type, edge_type> implements immutable_data {
     public final vertice_type from;
     public final vertice_type to;
     public final edge_type the_source;

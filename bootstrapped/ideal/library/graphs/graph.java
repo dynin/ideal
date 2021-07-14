@@ -4,6 +4,6 @@ package ideal.library.graphs;
 
 import ideal.library.elements.*;
 
-public interface graph<vertice_type extends readonly_data, edge_type extends readonly_data> extends data, readonly_graph<vertice_type, edge_type>, writeonly_graph<vertice_type, edge_type> {
+public interface graph<vertice_type, edge_type> extends data, readonly_graph<vertice_type, edge_type>, writeonly_graph<vertice_type, edge_type> {
   void add_edge(vertice_type from, vertice_type to, edge_type the_source);
 }

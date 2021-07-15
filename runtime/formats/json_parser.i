@@ -64,9 +64,10 @@ class json_parser {
       assert digit is nonnegative;
       var nonnegative result : digit;
       while (start < input.size && the_character_handler.is_digit(input[start])) {
-        next_digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+        next_digit : the_character_handler.from_digit(input[start], radix.DEFAULT_RADIX);
         assert next_digit is nonnegative;
         result = result * radix.DEFAULT_RADIX + next_digit;
+        start += 1;
       }
       -- TODO: handle fraction and exponent
       tokens.append(result);

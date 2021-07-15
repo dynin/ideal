@@ -66,7 +66,7 @@ class create {
 
   public status start(create_flags the_create_flags) {
     if (the_create_flags.UNIT_TESTS) {
-      all_tests.run_all_runtime_tests();
+      all_tests.run_all_tests();
       return status.ok;
     }
 

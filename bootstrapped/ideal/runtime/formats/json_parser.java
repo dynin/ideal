@@ -58,9 +58,10 @@ public class json_parser {
       assert digit >= 0;
       int result = digit;
       while (start < input.size() && this.the_character_handler.is_digit(input.get(start))) {
-        final @Nullable Integer next_digit = this.the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+        final @Nullable Integer next_digit = this.the_character_handler.from_digit(input.get(start), radix.DEFAULT_RADIX);
         assert next_digit >= 0;
         result = result * radix.DEFAULT_RADIX + next_digit;
+        start += 1;
       }
       this.tokens.append(result);
       return start;

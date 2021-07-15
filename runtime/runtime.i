@@ -17,4 +17,5 @@ namespace runtime {
   namespace graphs;
   namespace flags;
   namespace formats;
+  namespace tests;
 }

@@ -27,7 +27,7 @@ test_suite test_json_parser {
     assert words2[3] == "bar";
     assert words2[4] == json_token.CLOSE_BRACKET;
 
-    words3 : parser.test_tokenize("{ \"foo\" : \"bar\", \"baz\":68, \"x\":\"y\" } ");
+    words3 : parser.test_tokenize("{ \"foo\" : \"bar\", \"baz\":68, \"x\":\"\\\"y\\\"\" } ");
     assert words3.size == 13;
     assert words3[0] == json_token.OPEN_BRACE;
     assert words3[1] == "foo";
@@ -42,7 +42,7 @@ test_suite test_json_parser {
     assert words3[8] == json_token.COMMA;
     assert words3[9] == "x";
     assert words3[10] == json_token.COLON;
-    assert words3[11] == "y";
+    assert words3[11] == "\"y\"";
     assert words3[12] == json_token.CLOSE_BRACE;
   }
 }

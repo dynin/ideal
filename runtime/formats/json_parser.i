@@ -7,6 +7,7 @@
 --- JSON parser implementation.
 class json_parser {
 --  implicit import ideal.runtime.formats.json_token;
+  import ideal.machine.channels.string_writer;
 
   character_handler the_character_handler;
   -- TODO: use data instead of equality_comparable
@@ -22,9 +23,9 @@ class json_parser {
 
   private void tokenize(string input) {
     tokens.clear();
-    var nonnegative start : 0;
-    while (start < input.size && error is null) {
-      start = scan(input, start);
+    var nonnegative index : 0;
+    while (index < input.size && error is null) {
+      index = scan(input, index);
     }
   }
 
@@ -34,79 +35,91 @@ class json_parser {
     return tokens;
   }
 
-  private nonnegative scan(string input, var nonnegative start) {
-    next : input[start];
-    start += 1;
+  private nonnegative scan(string input, var nonnegative index) {
+    next : input[index];
+    index += 1;
 
     if (the_character_handler.is_whitespace(next)) {
-      while (start < input.size && the_character_handler.is_whitespace(input[start])) {
-        start += 1;
+      while (index < input.size && the_character_handler.is_whitespace(input[index])) {
+        index += 1;
       }
-      return start;
+      return index;
     }
 
     if (next == '"') {
-      string_start : start;
-      while (start < input.size) {
-        next_in_string : input[start];
-        if (next_in_string == '"') {
-          tokens.append(input.slice(string_start, start));
-          return start + 1;
+      result : string_writer.new();
+      while (index < input.size) {
+        next_in_input : input[index];
+        if (next_in_input == '"') {
+          tokens.append(result.elements());
+          return index + 1;
+        } else if (next_in_input == '\\') {
+          if (index >= input.size) {
+            report_error("Escape at the end of input");
+            return index;
+          }
+          index += 1;
+          escaped_character : input[index];
+          if (escaped_character == '"') {
+            result.write(escaped_character);
+          }
+        } else {
+          result.write(next_in_input);
         }
-        start += 1;
+        index += 1;
       }
       report_error("No closing quote in a string");
-      return start;
+      return index;
     }
 
     if (the_character_handler.is_digit(next)) {
       digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
       assert digit is nonnegative;
       var nonnegative result : digit;
-      while (start < input.size && the_character_handler.is_digit(input[start])) {
-        next_digit : the_character_handler.from_digit(input[start], radix.DEFAULT_RADIX);
+      while (index < input.size && the_character_handler.is_digit(input[index])) {
+        next_digit : the_character_handler.from_digit(input[index], radix.DEFAULT_RADIX);
         assert next_digit is nonnegative;
         result = result * radix.DEFAULT_RADIX + next_digit;
-        start += 1;
+        index += 1;
       }
       -- TODO: handle fraction and exponent
       tokens.append(result);
-      return start;
+      return index;
     }
 
     -- TODO: iterate over json_tokens
     if (next == json_token.OPEN_BRACE.token) {
       tokens.append(json_token.OPEN_BRACE);
-      return start;
+      return index;
     }
 
     if (next == json_token.CLOSE_BRACE.token) {
       tokens.append(json_token.CLOSE_BRACE);
-      return start;
+      return index;
     }
 
     if (next == json_token.OPEN_BRACKET.token) {
       tokens.append(json_token.OPEN_BRACKET);
-      return start;
+      return index;
     }
 
     if (next == json_token.CLOSE_BRACKET.token) {
       tokens.append(json_token.CLOSE_BRACKET);
-      return start;
+      return index;
     }
 
     if (next == json_token.COMMA.token) {
       tokens.append(json_token.COMMA);
-      return start;
+      return index;
     }
 
     if (next == json_token.COLON.token) {
       tokens.append(json_token.COLON);
-      return start;
+      return index;
     }
 
     report_error("Unrecognized character in a string: " ++ next);
-    return start;
+    return index;
   }
 
   private void report_error(string message) {

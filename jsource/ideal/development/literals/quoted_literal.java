@@ -27,7 +27,9 @@ public class quoted_literal extends debuggable implements literal<string> {
 
   // TODO: implement quoting framework.
   public quoted_literal(string the_value, quote_type quote) {
-   this(the_value, escape_string_literal(the_value), quote);
+    this.value = the_value;
+    this.with_escapes = escape_string_literal(the_value);
+    this.quote = quote;
   }
 
   @Override
@@ -42,10 +44,28 @@ public class quoted_literal extends debuggable implements literal<string> {
 
   // TODO: this is a temporary workaround until a quoting framework is developed
   private static string escape_string_literal(string s) {
-    return new base_string(utilities.s(s).
-      replaceAll("\\\\", "\\\\").
-      replaceAll("'", "\\\\'").
-      replaceAll("\"", "\\\\\"").
-      replaceAll("\n", "\\\\n"));
+    StringBuilder result = new StringBuilder();
+    String input = utilities.s(s);
+    for (int i = 0; i < input.length(); ++i) {
+      char c = input.charAt(i);
+      switch (c) {
+        case '\\' :
+          result.append("\\\\");
+          break;
+        case '\'' :
+          result.append("\\'");
+          break;
+        case '\"' :
+          result.append("\\\"");
+          break;
+        case '\n' :
+          result.append("\\n");
+          break;
+        default:
+          result.append(c);
+          break;
+      }
+    }
+    return new base_string(result.toString());
   }
 }

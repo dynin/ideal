@@ -5,6 +5,7 @@ package ideal.runtime.formats;
 import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.runtime.elements.*;
+import ideal.machine.channels.string_writer;
 
 import javax.annotation.Nullable;
 
@@ -21,9 +22,9 @@ public class json_parser {
   }
   private void tokenize(final string input) {
     this.tokens.clear();
-    int start = 0;
-    while (start < input.size() && this.error == null) {
-      start = this.scan(input, start);
+    int index = 0;
+    while (index < input.size() && this.error == null) {
+      index = this.scan(input, index);
     }
   }
   public list<Object> test_tokenize(final string input) {
@@ -31,67 +32,79 @@ public class json_parser {
     assert !this.has_error();
     return this.tokens;
   }
-  private int scan(final string input, int start) {
-    final char next = input.get(start);
-    start += 1;
+  private int scan(final string input, int index) {
+    final char next = input.get(index);
+    index += 1;
     if (this.the_character_handler.is_whitespace(next)) {
-      while (start < input.size() && this.the_character_handler.is_whitespace(input.get(start))) {
-        start += 1;
+      while (index < input.size() && this.the_character_handler.is_whitespace(input.get(index))) {
+        index += 1;
       }
-      return start;
+      return index;
     }
     if (next == '\"') {
-      final int string_start = start;
-      while (start < input.size()) {
-        final char next_in_string = input.get(start);
-        if (next_in_string == '\"') {
-          this.tokens.append(input.slice(string_start, start));
-          return start + 1;
+      final string_writer result = new string_writer();
+      while (index < input.size()) {
+        final char next_in_input = input.get(index);
+        if (next_in_input == '\"') {
+          this.tokens.append(result.elements());
+          return index + 1;
+        } else if (next_in_input == '\\') {
+          if (index >= input.size()) {
+            this.report_error(new base_string("Escape at the end of input"));
+            return index;
+          }
+          index += 1;
+          final char escaped_character = input.get(index);
+          if (escaped_character == '\"') {
+            result.write(escaped_character);
+          }
+        } else {
+          result.write(next_in_input);
         }
-        start += 1;
+        index += 1;
       }
       this.report_error(new base_string("No closing quote in a string"));
-      return start;
+      return index;
     }
     if (this.the_character_handler.is_digit(next)) {
       final @Nullable Integer digit = this.the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
       assert digit >= 0;
       int result = digit;
-      while (start < input.size() && this.the_character_handler.is_digit(input.get(start))) {
-        final @Nullable Integer next_digit = this.the_character_handler.from_digit(input.get(start), radix.DEFAULT_RADIX);
+      while (index < input.size() && this.the_character_handler.is_digit(input.get(index))) {
+        final @Nullable Integer next_digit = this.the_character_handler.from_digit(input.get(index), radix.DEFAULT_RADIX);
         assert next_digit >= 0;
         result = result * radix.DEFAULT_RADIX + next_digit;
-        start += 1;
+        index += 1;
       }
       this.tokens.append(result);
-      return start;
+      return index;
     }
     if (next == json_token.OPEN_BRACE.token) {
       this.tokens.append(json_token.OPEN_BRACE);
-      return start;
+      return index;
     }
     if (next == json_token.CLOSE_BRACE.token) {
       this.tokens.append(json_token.CLOSE_BRACE);
-      return start;
+      return index;
     }
     if (next == json_token.OPEN_BRACKET.token) {
       this.tokens.append(json_token.OPEN_BRACKET);
-      return start;
+      return index;
     }
     if (next == json_token.CLOSE_BRACKET.token) {
       this.tokens.append(json_token.CLOSE_BRACKET);
-      return start;
+      return index;
     }
     if (next == json_token.COMMA.token) {
       this.tokens.append(json_token.COMMA);
-      return start;
+      return index;
     }
     if (next == json_token.COLON.token) {
       this.tokens.append(json_token.COLON);
-      return start;
+      return index;
     }
     this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in a string: "), next));
-    return start;
+    return index;
   }
   private void report_error(final string message) {
     this.error = message;

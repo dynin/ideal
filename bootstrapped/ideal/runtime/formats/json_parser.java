@@ -55,8 +55,21 @@ public class json_parser {
           }
           index += 1;
           final char escaped_character = input.get(index);
-          if (escaped_character == '\"') {
+          if (escaped_character == '\"' || escaped_character == '\\' || escaped_character == '/') {
             result.write(escaped_character);
+          } else if (escaped_character == 'b') {
+            result.write('\b');
+          } else if (escaped_character == 'f') {
+            result.write('\f');
+          } else if (escaped_character == 'n') {
+            result.write('\n');
+          } else if (escaped_character == 'r') {
+            result.write('\r');
+          } else if (escaped_character == 't') {
+            result.write('\t');
+          } else {
+            this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized escape character: "), escaped_character));
+            return index;
           }
         } else {
           result.write(next_in_input);

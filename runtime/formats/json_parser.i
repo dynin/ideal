@@ -60,8 +60,23 @@ class json_parser {
           }
           index += 1;
           escaped_character : input[index];
-          if (escaped_character == '"') {
+          if (escaped_character == '"' ||
+              escaped_character == '\\' ||
+              escaped_character == '/') {
             result.write(escaped_character);
+          } else if (escaped_character == 'b') {
+            result.write('\b');
+          } else if (escaped_character == 'f') {
+            result.write('\f');
+          } else if (escaped_character == 'n') {
+            result.write('\n');
+          } else if (escaped_character == 'r') {
+            result.write('\r');
+          } else if (escaped_character == 't') {
+            result.write('\t');
+          } else {
+            report_error("Unrecognized escape character: " ++ escaped_character);
+            return index;
           }
         } else {
           result.write(next_in_input);

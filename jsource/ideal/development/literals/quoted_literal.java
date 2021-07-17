@@ -58,8 +58,20 @@ public class quoted_literal extends debuggable implements literal<string> {
         case '\"' :
           result.append("\\\"");
           break;
+        case '\b' :
+          result.append("\\b");
+          break;
+        case '\f' :
+          result.append("\\f");
+          break;
         case '\n' :
           result.append("\\n");
+          break;
+        case '\r' :
+          result.append("\\r");
+          break;
+        case '\t' :
+          result.append("\\t");
           break;
         default:
           result.append(c);

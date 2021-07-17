@@ -44,5 +44,9 @@ test_suite test_json_parser {
     assert words3[10] == json_token.COLON;
     assert words3[11] == "\"y\"";
     assert words3[12] == json_token.CLOSE_BRACE;
+
+    words4 : parser.test_tokenize(" \"special: \\\\ \" ");
+    assert words4.size == 1;
+    assert words4[0] == "special: \\ ";
   }
 }

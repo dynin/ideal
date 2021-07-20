@@ -55,7 +55,8 @@ CREATE_MAIN = ideal.development.tools.create
 CREATE = $(JAVA) $(CREATE_MAIN)
 IDEAL_SOURCE = ideal.i
 
-FLAGS_RUN = -debug-progress -run
+FLAGS_RUN = -run
+FLAGS_RUN_PROGRESS = -run -debug-progress
 
 TEST_DIR = tests
 ONETWO = $(TEST_DIR)/12.i
@@ -173,17 +174,17 @@ generate_cache: $(IDEAL_TARGET)
 ### Running sample code
 
 1: $(IDEAL_TARGET) $(ONE)
-	$(CREATE) $(FLAGS_RUN) -input=$(ONE)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(ONE)
 
 12: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE) $(FLAGS_RUN) -debug-constructs -input=$(ONETWO)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(ONETWO)
 
 generate_var: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(VAR) -target=generate_var -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/test/*java
 
 reflect: $(IDEAL_TARGET)
-	$(CREATE) $(FLAGS_RUN) -debug-progress -debug-reflect -input=showcase/reflect.i
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-progress -debug-reflect -input=showcase/reflect.i
 
 s: $(IDEAL_TARGET) $(TEST_STRING)
 	$(CREATE) -debug-progress -input=$(TEST_STRING)
@@ -192,10 +193,10 @@ gt: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_test
 
 dir: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE) $(FLAGS_RUN) -input=$(DIRECTORY)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(DIRECTORY)
 
 circle: $(IDEAL_TARGET) $(CIRCLE)
-	$(CREATE) $(FLAGS_RUN) -input=$(CIRCLE)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(CIRCLE)
 
 xreftest: $(IDEAL_TARGET) $(XREFTEST)
 	$(CREATE) -pretty-print -input=$(XREFTEST)
@@ -205,7 +206,7 @@ testparser: $(IDEAL_TARGET) $(TESPARSER)
 	$(JAVAC) $(GENERATED_DIR)/testparser.java
 
 tc: $(IDEAL_TARGET) $(TESTCACHE)
-	$(CREATE) $(FLAGS_RUN) -input=$(TESTCACHE)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(TESTCACHE)
 
 ### Generating runtime
 
@@ -422,7 +423,7 @@ JAVA_PROFILING_OPT2 = -agentlib:hprof=cpu=times
 CREATE_PROF = $(JAVA) $(JAVA_PROFILING_OPT) $(CREATE_MAIN)
 
 12p: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE_PROF) $(FLAGS_RUN) -input=$(ONETWO)
+	$(CREATE_PROF) $(FLAGS_RUN_PROGRESS) -input=$(ONETWO)
 
 runtimep: $(IDEAL_TARGET)
 	$(CREATE_PROF) -input=$(IDEAL_SOURCE) -target=generate_runtime > /dev/null

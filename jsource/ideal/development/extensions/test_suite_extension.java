@@ -53,7 +53,7 @@ public class test_suite_extension extends declaration_extension {
       }
 
       the_type_declaration.append_to_body(generate_run_all_tests(the_type_declaration));
-      set_expanded(null);
+      set_expanded(the_type_declaration);
     }
 
     return result;

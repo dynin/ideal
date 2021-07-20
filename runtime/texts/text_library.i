@@ -36,6 +36,10 @@ public namespace text_library {
   U : base_element_id.new(HTML_NS, "u");
   HR : base_element_id.new(HTML_NS, "hr");
 
+  DL : base_element_id.new(HTML_NS, "dl");
+  DT : base_element_id.new(HTML_NS, "dt");
+  DD : base_element_id.new(HTML_NS, "dd");
+
   -- TODO: use some other type of emphasis...
   U2 : base_element_id.new(HTML_NS, "u2");
 
@@ -71,7 +75,7 @@ public namespace text_library {
     UL, LI,
     TABLE, TR, TH, TD,
     SPAN, BR, EM, A, B, U,
-    HR
+    HR, DL, DT, DD,
     -- TODO: include U2?
     -- TODO: the cast should be redundant; use deeply_immutable
   ] !> immutable list[element_id];

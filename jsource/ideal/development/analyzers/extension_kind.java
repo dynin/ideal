@@ -34,10 +34,8 @@ public class extension_kind extends base_modifier_kind {
       modifier_construct the_modifier) {
     declaration_extension instance = null;
     try {
-      instance = (declaration_extension) extension_class.newInstance();
-    } catch (InstantiationException e) {
-      utilities.panic(e.toString());
-    } catch (IllegalAccessException e) {
+      instance = (declaration_extension) extension_class.getDeclaredConstructor().newInstance();
+    } catch (Exception e) {
       utilities.panic(e.toString());
     }
     // TODO: drop extension modifier from modifiers

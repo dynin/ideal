@@ -1,0 +1,66 @@
+<p>
+  This document provides instructions for installing and running
+  the ideal metaprogramming framework.
+  For an introduction to the ideal source notation, please read
+  <a href='urn:ideal:ideal.documentation.quickstart'>quickstart</a>.
+  For description of the directory layout, read
+  <a href='urn:ideal:ideal.documentation.here_be_dragons'>overview
+  of the ideal codebase</a>.
+</p>
+<dl>
+  <dt>Step 1: Clone GitHub Repository.</dt>
+  <dd>Go to the <a href='https://github.com/dynin/ideal'>GitHub project page</a>,
+      and <a href='https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository'>follow
+      the instructions</a> to create a local copy of the repo.
+  </dd>
+
+  <dt>Step 2: Install JDK.</dt>
+  <dd>
+    TODO
+  </dd>
+
+  <dt>Step 3: Download Dependencies.</dt>
+  <dd>
+  Building and running ideal is easy on a Unix-like system (tested on Mac OS X
+  and Linux.)  The dependencies, besides the JDK, are
+  <a href='https://jcp.org/en/jsr/detail?id=305'>JSR 305</a> annotations and
+  <a href='http://www2.cs.tum.edu/projects/cup/'>JavaCUP</a>.
+  <a href='https://cloud.google.com/appengine/downloads'>AppEngine SDK</a>
+  and <a href='https://github.com/google/gson'>Google Gson</a>
+  are needed if you want to build and run the Coach app.
+
+  <br/>
+  Before running ideal, you need to create and populate the
+  <span class='q'>thirdparty</span> directory.
+  To do that and fetch all the dependencies, run
+  <span class='q'>bin/fetch-thirdparty.sh</span> from the top-level directory.
+  In addition, you'll need to create a symlink from
+  <span class='q'>thirdparty/jdk</span> to the JDK home directory (such as
+  <span class='q'>/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home</span>
+  on Mac OS X.)  It should be possible to invoke the Java compiler via
+  <span class='q'>thirdparty/jdk/bin/javac</span>.
+
+  </dd>
+
+  <dt>Step 4: Watch It Run!</dt>
+  <dd>
+  Make is currently used to build and run ideal.  Default target builds
+  the <span class='q'>create</span> tool, bootstraps
+  <span class='q'>ideal.library.elements</span>, analyzes it and prints it out.
+  Targets <span class='q'>hello</span> and
+  <span class='q'>circle</span> execute respective code from showcase directory.
+  <span class='q'>12</span> executes <span class='q'>tests/12.i</span>.
+  The targets <span class='q'>generate_library</span> and <span class='q'>generate_runtime</span>
+  generate Java source code from library and runtime, respectively.
+  The targets <span class='q'>test_library</span> and
+  <span class='q'>test_runtime</span> test that the code
+  compiles.  The targets <span class='q'>bootstrap_library</span>
+  and <span class='q'>bootstrap_runtime</span> bootstrap
+  the code by overwriting the files in bootstrapped directory.
+  </dd>
+</dl>
+
+<p>
+  For questions and feedback,
+  <a href='urn:ideal:ideal.documentation.communication'>here's how to communicate</a>.
+</p>

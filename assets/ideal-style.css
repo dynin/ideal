@@ -47,6 +47,12 @@ span:target {
   margin-bottom: 0.1em;
 }
 
+dt {
+  font-weight: bolder;
+  margin-top: 0.7em;
+  margin-bottom: 0.5em;
+}
+
 .documentation {
   /* font-family: 'Minion Pro', serif; */
   /* font-size: 15; */

@@ -30,6 +30,7 @@ BOOTSTRAPPED_DIR = bootstrapped
 
 JAVA = $(JDK_DIR)/bin/java -ea -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS)
 JAVAC_SOURCE_OPTS = -source $(JDK_VERSION) -target $(JDK_VERSION) -Xlint:deprecation
+#JAVAC_SOURCE_OPTS = -Xlint:deprecation
 JAVAC_OPTS = $(JAVAC_SOURCE_OPTS) \
         -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS) -d $(CLASSES_DIR) \
 	-sourcepath $(JSOURCE_DIR):$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
@@ -375,7 +376,7 @@ $(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(DEVELOPMENT_TARGE
 	@echo === ideal done.
 
 buildall: $(IDEAL_TARGET)
-	cd experimental/coach ; make
+#	cd experimental/coach ; make
 
 jdoc: $(IDEAL_TARGET)
 	$(MKDIR) $(JAVADOC_DIR)

@@ -244,7 +244,7 @@ public class meta_construct_extension extends declaration_extension {
       the_type_declaration.append_to_body(children_procedure);
     }
 
-    set_expanded(null);
+    set_expanded(the_type_declaration);
   }
 
   private boolean has_constructor(type_declaration the_type_declaration) {

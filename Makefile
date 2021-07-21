@@ -7,7 +7,6 @@
 THIRD_PARTY_DIR = thirdparty
 
 JDK_DIR = $(THIRD_PARTY_DIR)/jdk
-JDK_VERSION = 1.8
 
 BUILD_DIR = build
 CLASSES_DIR = $(BUILD_DIR)/classes
@@ -29,8 +28,7 @@ JSOURCE_DIR = jsource
 BOOTSTRAPPED_DIR = bootstrapped
 
 JAVA = $(JDK_DIR)/bin/java -ea -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS)
-JAVAC_SOURCE_OPTS = -source $(JDK_VERSION) -target $(JDK_VERSION) -Xlint:deprecation
-#JAVAC_SOURCE_OPTS = -Xlint:deprecation
+JAVAC_SOURCE_OPTS = -Xlint:deprecation
 JAVAC_OPTS = $(JAVAC_SOURCE_OPTS) \
         -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS) -d $(CLASSES_DIR) \
 	-sourcepath $(JSOURCE_DIR):$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
@@ -316,7 +314,7 @@ deploy_site: $(IDEAL_TARGET)
 	rm -rf $(SITE_DIR)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=deploy_site \
             -output=$(SITE_DIR)
-	cd $(BUILD_DIR) ; tar cvfz ../tmp/site.tgz theideal.org/*
+#	cd $(BUILD_DIR) ; tar cvfz ../tmp/site.tgz theideal.org/*
 
 ### Other targets
 

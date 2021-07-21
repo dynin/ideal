@@ -52,24 +52,28 @@ public class runtime_util {
     Field[] result = cache.get(c);
 
     if (result == null) {
-      ArrayList<Field> fields = new ArrayList<Field>();
-      Class current = c;
+      if (!c.isEnum()) {
+        ArrayList<Field> fields = new ArrayList<Field>();
+        Class current = c;
 
-      do {
-        for (Field f : current.getDeclaredFields()) {
-          int modifiers = f.getModifiers();
+        do {
+          for (Field f : current.getDeclaredFields()) {
+            int modifiers = f.getModifiers();
 
-          if ((modifiers & Modifier.STATIC) == 0) {
-            f.setAccessible(true);
-            fields.add(f);
+            if ((modifiers & Modifier.STATIC) == 0) {
+              f.setAccessible(true);
+              fields.add(f);
+            }
           }
-        }
 
-        current = current.getSuperclass();
-      } while (current != null);
+          current = current.getSuperclass();
+        } while (current != null);
 
-      result = new Field[fields.size()];
-      fields.toArray(result);
+        result = new Field[fields.size()];
+        fields.toArray(result);
+      } else {
+        result = new Field[0];
+      }
       cache.put(c, result);
     }
 

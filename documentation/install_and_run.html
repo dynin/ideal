@@ -16,47 +16,89 @@
 
   <dt>Step 2: Install JDK.</dt>
   <dd>
-    TODO
+  <p>
+    Ideal works with JDK 8 or higher.
+    You can download the recent JDK
+    <a href='https://www.oracle.com/java/technologies/javase-jdk16-downloads.html'>from
+    the Java site</a>.
+  </p>
+  <p>
+    On macOS, after you installed JDK 16, running <span class='q'>/usr/libexec/java_home</span>
+    should output
+    <span class='q'>/Library/Java/JavaVirtualMachines/jdk-16.0.2.jdk/Contents/Home</span>
+  </p>
   </dd>
 
   <dt>Step 3: Download Dependencies.</dt>
   <dd>
-  Building and running ideal is easy on a Unix-like system (tested on Mac OS X
-  and Linux.)  The dependencies, besides the JDK, are
-  <a href='https://jcp.org/en/jsr/detail?id=305'>JSR 305</a> annotations and
-  <a href='http://www2.cs.tum.edu/projects/cup/'>JavaCUP</a>.
-  <a href='https://cloud.google.com/appengine/downloads'>AppEngine SDK</a>
-  and <a href='https://github.com/google/gson'>Google Gson</a>
-  are needed if you want to build and run the Coach app.
-
-  <br/>
-  Before running ideal, you need to create and populate the
-  <span class='q'>thirdparty</span> directory.
-  To do that and fetch all the dependencies, run
-  <span class='q'>bin/fetch-thirdparty.sh</span> from the top-level directory.
-  In addition, you'll need to create a symlink from
-  <span class='q'>thirdparty/jdk</span> to the JDK home directory (such as
-  <span class='q'>/Library/Java/JavaVirtualMachines/jdk1.8.0_171.jdk/Contents/Home</span>
-  on Mac OS X.)  It should be possible to invoke the Java compiler via
-  <span class='q'>thirdparty/jdk/bin/javac</span>.
-
+  <p>
+    Before running ideal, you need to create and populate the
+    <span class='q'>thirdparty</span> directory; you can do that by
+    running <span class='q'>bin/setup-thirdparty.sh</span> script from
+    the top-level directory.
+    The dependencies are <a href='https://jcp.org/en/jsr/detail?id=305'>JSR 305 annotations</a>
+    and <a href='http://www2.cs.tum.edu/projects/cup/'>JavaCUP</a>.
+  </p>
+  <p>
+    In addition, you'll need to create a symlink from
+    <span class='q'>thirdparty/jdk</span> to the JDK home directory.
+    On macOS, the setup-thirdparty script should do that for you.
+    It should be possible to invoke the Java compiler by running
+    <span class='q'>thirdparty/jdk/bin/javac</span>.
+  </p>
+  <p>
+    To run the experimental Coach app, you'll need
+    <a href='https://github.com/google/gson'>Google Gson</a> and
+    <a href='https://cloud.google.com/appengine/downloads'>AppEngine SDK</a>
+    (you can skip that if you are just trying ideal out).
+  </p>
   </dd>
 
-  <dt>Step 4: Watch It Run!</dt>
+  <dt>Step 4: Compile And Run!</dt>
   <dd>
-  Make is currently used to build and run ideal.  Default target builds
-  the <span class='q'>create</span> tool, bootstraps
-  <span class='q'>ideal.library.elements</span>, analyzes it and prints it out.
-  Targets <span class='q'>hello</span> and
-  <span class='q'>circle</span> execute respective code from showcase directory.
-  <span class='q'>12</span> executes <span class='q'>tests/12.i</span>.
-  The targets <span class='q'>generate_library</span> and <span class='q'>generate_runtime</span>
-  generate Java source code from library and runtime, respectively.
-  The targets <span class='q'>test_library</span> and
-  <span class='q'>test_runtime</span> test that the code
-  compiles.  The targets <span class='q'>bootstrap_library</span>
-  and <span class='q'>bootstrap_runtime</span> bootstrap
-  the code by overwriting the files in bootstrapped directory.
+    Make is currently used to build and run ideal.
+    <ul>
+      <li>
+        <span class='q'>make hello</span> &mdash; try this first!
+      </li>
+      <li>
+        <span class='q'>make circle</span> &mdash; run the
+        <a href='urn:ideal:ideal.documentation.type_flavors'>type flavors example</a> from
+        <a href='https://github.com/dynin/ideal/blob/master/showcase/circle.i'>this source</a>.
+      </li>
+      <li>
+        <span class='q'>make print_elements</span> &mdash;
+        bootstraps
+        <span class='q'>ideal.library.elements</span>, analyzes it and prints it out.
+        This is the default target.
+      </li>
+      <li>
+        <span class='q'>make generate_library</span> and
+        <span class='q'>make generate_runtime</span>
+        generate Java source code from library and runtime, respectively.
+      </li>
+      <li>
+        <span class='q'>make test_librun</span> tests that the library and runtime code
+        compiles.
+      </li>
+      <li>
+        <span class='q'>make bootstrap_library</span> and
+        <span class='q'>make bootstrap_runtime</span> bootstrap
+        the code by overwriting the files in bootstrapped directory.
+      </li>
+      <li>
+        <span class='q'>make document_site</span> &mdash;
+        generate the content of <span class='q'>theideal.org</span> site.
+        The files are written to <span class='q'>build/pretty/</span> and can
+        be viewed directly from the filesystem.
+      </li>
+      <li>
+        <span class='q'>make deploy_site</span> &mdash;
+        prepare the content of <span class='q'>theideal.org</span> for deployment.
+        The files are written to <span class='q'>build/theideal.org/</span>,
+        but the links do not work on the filesystem.
+      </li>
+    </ul>
   </dd>
 </dl>
 

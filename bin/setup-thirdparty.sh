@@ -50,6 +50,6 @@ fi
 JDK=jdk
 if [ ! -d ${JDK} ] ; then
   echo ${THIRDPARTY}/${JDK} must be symlinked to JDK home.
-  echo Trying to detect JDK home automatically--should work on OS X...
+  echo Trying to detect JDK home automatically--should work on macOS...
   ln -s "`/usr/libexec/java_home`" ${JDK}
 fi

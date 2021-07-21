@@ -52,28 +52,34 @@ public class runtime_util {
     Field[] result = cache.get(c);
 
     if (result == null) {
-      if (!c.isEnum()) {
-        ArrayList<Field> fields = new ArrayList<Field>();
-        Class current = c;
+      boolean is_enum = c.isEnum();
+      ArrayList<Field> fields = new ArrayList<Field>();
+      Class current = c;
 
-        do {
-          for (Field f : current.getDeclaredFields()) {
-            int modifiers = f.getModifiers();
+      do {
+        for (Field f : current.getDeclaredFields()) {
+          int modifiers = f.getModifiers();
 
-            if ((modifiers & Modifier.STATIC) == 0) {
-              f.setAccessible(true);
-              fields.add(f);
+          if ((modifiers & Modifier.STATIC) != 0) {
+            continue;
+          }
+
+          if (is_enum) {
+            String name = f.getName();
+            if (name.equals("name") || name.equals("ordinal")) {
+              continue;
             }
           }
 
-          current = current.getSuperclass();
-        } while (current != null);
+          f.setAccessible(true);
+          fields.add(f);
+        }
 
-        result = new Field[fields.size()];
-        fields.toArray(result);
-      } else {
-        result = new Field[0];
-      }
+        current = current.getSuperclass();
+      } while (current != null);
+
+      result = new Field[fields.size()];
+      fields.toArray(result);
       cache.put(c, result);
     }
 
@@ -142,7 +148,7 @@ public class runtime_util {
       return false;
     }
 
-    if (d1 instanceof readonly_reference_equality) {
+    if (d1 instanceof Enum || d1 instanceof readonly_reference_equality) {
       return d1 == d2;
     }
 

@@ -64,6 +64,18 @@ public class displayer {
     }
   }
 
+  private static text_node display_enum_field(String name, Object value) {
+    list<text_node> field = new base_list<text_node>();
+    field.append(new base_string(name));
+    field.append(FIELD_IS);
+    if (value instanceof String) {
+      field.append(make_literal((String) value, "\""));
+    } else {
+      field.append(new base_string(value.toString()));
+    }
+    return text_util.make_element(text_library.DIV, field);
+  }
+
   static text_fragment display_object(readonly_value obj) {
     if (obj instanceof string) {
       return make_literal(utilities.s((string) obj), "\"");
@@ -91,6 +103,10 @@ public class displayer {
           body.append(text_util.make_element(text_library.DIV, field));
         }
       }
+      if (obj instanceof Enum) {
+        body.append(display_enum_field("name", ((Enum) obj).name()));
+        body.append(display_enum_field("ordinal", ((Enum) obj).ordinal()));
+      }
     } catch (Exception e) {
       if (e instanceof RuntimeException) {
         throw (RuntimeException) e;
@@ -112,7 +128,7 @@ public class displayer {
     }
   }
 
-  private static text_fragment make_literal(String s, String quote) {
+  private static base_string make_literal(String s, String quote) {
     return new base_string(quote, s, quote);
   }
 

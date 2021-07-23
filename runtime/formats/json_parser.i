@@ -74,6 +74,17 @@ class json_parser {
             result.write('\r');
           } else if (escaped_character == 't') {
             result.write('\t');
+          } else if (escaped_character == 'u') {
+            if (index + 4 >= input.size) {
+              report_error("Unicode escape at the end of input");
+              return index;
+            }
+            var code : hex_digit(input[index + 1]);
+            code = code * 16 + hex_digit(input[index + 2]);
+            code = code * 16 + hex_digit(input[index + 3]);
+            code = code * 16 + hex_digit(input[index + 4]);
+            result.write(the_character_handler.from_code(code));
+            index += 4;
           } else {
             report_error("Unrecognized escape character: " ++ escaped_character);
             return index;
@@ -135,6 +146,16 @@ class json_parser {
 
     report_error("Unrecognized character in a string: " ++ next);
     return index;
+  }
+
+  private nonnegative hex_digit(character the_character) {
+    result : the_character_handler.from_digit(the_character, 16);
+    if (result is nonnegative) {
+      return result;
+    } else {
+      report_error("Unrecognized character in hex escape: " ++ the_character);
+      return 0;
+    }
   }
 
   private void report_error(string message) {

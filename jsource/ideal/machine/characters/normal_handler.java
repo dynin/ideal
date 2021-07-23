@@ -50,4 +50,10 @@ public class normal_handler implements character_handler {
   public char to_lower_case(char c) {
     return Character.toLowerCase(c);
   }
+
+  @Override
+  public char from_code(int code) {
+    assert code >= 0 && code <= 0xFFFF;
+    return (char) code;
+  }
 }

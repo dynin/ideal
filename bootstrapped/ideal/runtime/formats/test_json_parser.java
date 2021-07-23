@@ -40,9 +40,9 @@ public class test_json_parser {
     assert words3.at(10).get() == json_token.COLON;
     assert ideal.machine.elements.runtime_util.values_equal(words3.at(11).get(), new base_string("\"y\""));
     assert words3.at(12).get() == json_token.CLOSE_BRACE;
-    final list<Object> words4 = parser.test_tokenize(new base_string(" \"special: \\\\ \" "));
+    final list<Object> words4 = parser.test_tokenize(new base_string(" \"special: \\\\ \\u0066\\u006f\\u006f\" "));
     assert words4.size() == 1;
-    assert ideal.machine.elements.runtime_util.values_equal(words4.at(0).get(), new base_string("special: \\ "));
+    assert ideal.machine.elements.runtime_util.values_equal(words4.at(0).get(), new base_string("special: \\ foo"));
   }
   public test_json_parser() { }
   public void run_all_tests() {

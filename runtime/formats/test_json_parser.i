@@ -45,8 +45,8 @@ test_suite test_json_parser {
     assert words3[11] == "\"y\"";
     assert words3[12] == json_token.CLOSE_BRACE;
 
-    words4 : parser.test_tokenize(" \"special: \\\\ \" ");
+    words4 : parser.test_tokenize(" \"special: \\\\ \\u0066\\u006f\\u006f\" ");
     assert words4.size == 1;
-    assert words4[0] == "special: \\ ";
+    assert words4[0] == "special: \\ foo";
   }
 }

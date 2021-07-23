@@ -67,6 +67,17 @@ public class json_parser {
             result.write('\r');
           } else if (escaped_character == 't') {
             result.write('\t');
+          } else if (escaped_character == 'u') {
+            if (index + 4 >= input.size()) {
+              this.report_error(new base_string("Unicode escape at the end of input"));
+              return index;
+            }
+            int code = this.hex_digit(input.get(index + 1));
+            code = code * 16 + this.hex_digit(input.get(index + 2));
+            code = code * 16 + this.hex_digit(input.get(index + 3));
+            code = code * 16 + this.hex_digit(input.get(index + 4));
+            result.write(this.the_character_handler.from_code(code));
+            index += 4;
           } else {
             this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized escape character: "), escaped_character));
             return index;
@@ -118,6 +129,15 @@ public class json_parser {
     }
     this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in a string: "), next));
     return index;
+  }
+  private int hex_digit(final char the_character) {
+    final @Nullable Integer result = this.the_character_handler.from_digit(the_character, 16);
+    if (result >= 0) {
+      return result;
+    } else {
+      this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in hex escape: "), the_character));
+      return 0;
+    }
   }
   private void report_error(final string message) {
     this.error = message;

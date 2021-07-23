@@ -20,6 +20,8 @@ package characters {
     nonnegative or null from_digit(character the_character, nonnegative radix) pure;
 
     character to_lower_case(character the_character);
+
+    character from_code(nonnegative code);
   }
 
   namespace radix {

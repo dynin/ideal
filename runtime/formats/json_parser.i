@@ -99,18 +99,17 @@ class json_parser {
     }
 
     if (the_character_handler.is_digit(next)) {
-      digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
-      assert digit is nonnegative;
-      var nonnegative result : digit;
-      while (index < input.size && the_character_handler.is_digit(input[index])) {
-        next_digit : the_character_handler.from_digit(input[index], radix.DEFAULT_RADIX);
-        assert next_digit is nonnegative;
-        result = result * radix.DEFAULT_RADIX + next_digit;
-        index += 1;
+      return parse_number(input, index, false);
+    }
+
+    if (next == '-') {
+      index += 1;
+      if (index < input.size) {
+        return parse_number(input, index, true);
+      } else {
+        report_error("Minus at the end of input");
+        return index;
       }
-      -- TODO: handle fraction and exponent
-      tokens.append(result);
-      return index;
     }
 
     -- TODO: iterate over json_tokens
@@ -156,6 +155,28 @@ class json_parser {
       report_error("Unrecognized character in hex escape: " ++ the_character);
       return 0;
     }
+  }
+
+  private nonnegative parse_number(string input, var nonnegative index, boolean negate) {
+    next : input[index];
+    if (!the_character_handler.is_digit(next)) {
+      report_error("Unrecognized digit: " ++ next);
+      return index;
+    }
+
+    digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+    assert digit is nonnegative;
+    var nonnegative result : digit;
+    while (index < input.size && the_character_handler.is_digit(input[index])) {
+      next_digit : the_character_handler.from_digit(input[index], radix.DEFAULT_RADIX);
+      assert next_digit is nonnegative;
+      result = result * radix.DEFAULT_RADIX + next_digit;
+      index += 1;
+    }
+
+    -- TODO: handle fraction and exponent
+    tokens.append(negate ? -result : result);
+    return index;
   }
 
   private void report_error(string message) {

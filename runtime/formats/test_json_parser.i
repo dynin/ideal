@@ -19,13 +19,17 @@ test_suite test_json_parser {
     assert words[0] == "foo";
     assert words[1] == "bar";
 
-    words2 : parser.test_tokenize("[ \"foo\" , \"bar\" ] ");
+    words2 : parser.test_tokenize("[ \"foo\" , \"bar\", -68  ] ");
     assert words2.size == 5;
     assert words2[0] == json_token.OPEN_BRACKET;
     assert words2[1] == "foo";
     assert words2[2] == json_token.COMMA;
     assert words2[3] == "bar";
-    assert words2[4] == json_token.CLOSE_BRACKET;
+    assert words2[4] == json_token.COMMA;
+    -- TODO: we shouldn't need this (without this, generates invalid Java code.)
+    w5 : words2[5];
+    assert (w5 !> integer) == -68;
+    assert words2[6] == json_token.CLOSE_BRACKET;
 
     words3 : parser.test_tokenize("{ \"foo\" : \"bar\", \"baz\":68, \"x\":\"\\\"y\\\"\" } ");
     assert words3.size == 13;

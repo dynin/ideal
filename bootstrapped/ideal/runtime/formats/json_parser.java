@@ -5,6 +5,7 @@ package ideal.runtime.formats;
 import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.patterns.list_pattern;
 import ideal.machine.channels.string_writer;
 
 import javax.annotation.Nullable;
@@ -22,9 +23,9 @@ public class json_parser {
   }
   private void tokenize(final string input) {
     this.tokens.clear();
-    int index = 0;
-    while (index < input.size() && this.error == null) {
-      index = this.scan(input, index);
+    int start = 0;
+    while (start < input.size() && this.error == null) {
+      start = this.scan(input, start);
     }
   }
   public list<Object> test_tokenize(final string input) {
@@ -32,9 +33,9 @@ public class json_parser {
     assert !this.has_error();
     return this.tokens;
   }
-  private int scan(final string input, int index) {
-    final char next = input.get(index);
-    index += 1;
+  private int scan(final string input, final int start) {
+    final char next = input.get(start);
+    int index = start + 1;
     if (this.the_character_handler.is_whitespace(next)) {
       while (index < input.size() && this.the_character_handler.is_whitespace(input.get(index))) {
         index += 1;
@@ -91,17 +92,15 @@ public class json_parser {
       return index;
     }
     if (this.the_character_handler.is_digit(next)) {
-      final @Nullable Integer digit = this.the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
-      assert digit >= 0;
-      int result = digit;
-      while (index < input.size() && this.the_character_handler.is_digit(input.get(index))) {
-        final @Nullable Integer next_digit = this.the_character_handler.from_digit(input.get(index), radix.DEFAULT_RADIX);
-        assert next_digit >= 0;
-        result = result * radix.DEFAULT_RADIX + next_digit;
-        index += 1;
+      return this.parse_number(input, start, false);
+    }
+    if (next == '-') {
+      if (index < input.size()) {
+        return this.parse_number(input, index, true);
+      } else {
+        this.report_error(new base_string("Minus at the end of input"));
+        return index;
       }
-      this.tokens.append(result);
-      return index;
     }
     if (next == json_token.OPEN_BRACE.token) {
       this.tokens.append(json_token.OPEN_BRACE);
@@ -127,6 +126,15 @@ public class json_parser {
       this.tokens.append(json_token.COLON);
       return index;
     }
+    if (next == 't') {
+      return this.parse_symbol(input, start, new base_string("true"), true);
+    }
+    if (next == 'f') {
+      return this.parse_symbol(input, start, new base_string("false"), false);
+    }
+    if (next == 'n') {
+      return this.parse_symbol(input, start, new base_string("null"), null);
+    }
     this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in a string: "), next));
     return index;
   }
@@ -138,6 +146,36 @@ public class json_parser {
       this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in hex escape: "), the_character));
       return 0;
     }
+  }
+  private int parse_number(final string input, final int start, final boolean negate) {
+    final char next = input.get(start);
+    if (!this.the_character_handler.is_digit(next)) {
+      this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized digit: "), next));
+      return start;
+    }
+    final @Nullable Integer digit = this.the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+    assert digit >= 0;
+    int result = digit;
+    int index = start + 1;
+    while (index < input.size() && this.the_character_handler.is_digit(input.get(index))) {
+      final @Nullable Integer next_digit = this.the_character_handler.from_digit(input.get(index), radix.DEFAULT_RADIX);
+      assert next_digit >= 0;
+      result = result * radix.DEFAULT_RADIX + next_digit;
+      index += 1;
+    }
+    this.tokens.append(negate ? -result : result);
+    return index;
+  }
+  private int parse_symbol(final string input, final int start, final string symbol, final Object value) {
+    final @Nullable Integer prefix = new list_pattern<Character>(symbol).match_prefix(input.skip(start));
+    if (prefix != null) {
+      if (prefix == symbol.size()) {
+        this.tokens.append(value);
+        return start + prefix;
+      }
+    }
+    this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Can\'t parse symbol: "), symbol));
+    return start + 1;
   }
   private void report_error(final string message) {
     this.error = message;

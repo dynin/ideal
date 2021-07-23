@@ -17,13 +17,16 @@ public class test_json_parser {
     assert words.size() == 2;
     assert ideal.machine.elements.runtime_util.values_equal(words.at(0).get(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(words.at(1).get(), new base_string("bar"));
-    final list<Object> words2 = parser.test_tokenize(new base_string("[ \"foo\" , \"bar\" ] "));
-    assert words2.size() == 5;
+    final list<Object> words2 = parser.test_tokenize(new base_string("[ \"foo\" , \"bar\", -68  ] "));
+    assert words2.size() == 7;
     assert words2.at(0).get() == json_token.OPEN_BRACKET;
     assert ideal.machine.elements.runtime_util.values_equal(words2.at(1).get(), new base_string("foo"));
     assert words2.at(2).get() == json_token.COMMA;
     assert ideal.machine.elements.runtime_util.values_equal(words2.at(3).get(), new base_string("bar"));
-    assert words2.at(4).get() == json_token.CLOSE_BRACKET;
+    assert words2.at(4).get() == json_token.COMMA;
+    final Object w5 = words2.at(5).get();
+    assert ((int) w5) == -68;
+    assert words2.at(6).get() == json_token.CLOSE_BRACKET;
     final list<Object> words3 = parser.test_tokenize(new base_string("{ \"foo\" : \"bar\", \"baz\":68, \"x\":\"\\\"y\\\"\" } "));
     assert words3.size() == 13;
     assert words3.at(0).get() == json_token.OPEN_BRACE;
@@ -43,6 +46,18 @@ public class test_json_parser {
     final list<Object> words4 = parser.test_tokenize(new base_string(" \"special: \\\\ \\u0066\\u006f\\u006f\" "));
     assert words4.size() == 1;
     assert ideal.machine.elements.runtime_util.values_equal(words4.at(0).get(), new base_string("special: \\ foo"));
+    final list<Object> words5 = parser.test_tokenize(new base_string("[ true , false, null ] "));
+    assert words5.size() == 7;
+    assert words5.at(0).get() == json_token.OPEN_BRACKET;
+    final Object w51 = words5.at(1).get();
+    assert (boolean) w51;
+    assert words5.at(2).get() == json_token.COMMA;
+    final Object w53 = words5.at(3).get();
+    assert !((boolean) w53);
+    assert words5.at(4).get() == json_token.COMMA;
+    final Object w55 = words5.at(5).get();
+    assert ((value) w55) == null;
+    assert words5.at(6).get() == json_token.CLOSE_BRACKET;
   }
   public test_json_parser() { }
   public void run_all_tests() {

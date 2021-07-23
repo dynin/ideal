@@ -7,6 +7,7 @@
 --- JSON parser implementation.
 class json_parser {
 --  implicit import ideal.runtime.formats.json_token;
+  import ideal.runtime.patterns.list_pattern;
   import ideal.machine.channels.string_writer;
 
   character_handler the_character_handler;
@@ -23,9 +24,9 @@ class json_parser {
 
   private void tokenize(string input) {
     tokens.clear();
-    var nonnegative index : 0;
-    while (index < input.size && error is null) {
-      index = scan(input, index);
+    var nonnegative start : 0;
+    while (start < input.size && error is null) {
+      start = scan(input, start);
     }
   }
 
@@ -35,9 +36,9 @@ class json_parser {
     return tokens;
   }
 
-  private nonnegative scan(string input, var nonnegative index) {
-    next : input[index];
-    index += 1;
+  private nonnegative scan(string input, nonnegative start) {
+    next : input[start];
+    var nonnegative index : start + 1;
 
     if (the_character_handler.is_whitespace(next)) {
       while (index < input.size && the_character_handler.is_whitespace(input[index])) {
@@ -99,11 +100,10 @@ class json_parser {
     }
 
     if (the_character_handler.is_digit(next)) {
-      return parse_number(input, index, false);
+      return parse_number(input, start, false);
     }
 
     if (next == '-') {
-      index += 1;
       if (index < input.size) {
         return parse_number(input, index, true);
       } else {
@@ -143,6 +143,19 @@ class json_parser {
       return index;
     }
 
+    if (next == 't') {
+      return parse_symbol(input, start, "true", true);
+    }
+
+    if (next == 'f') {
+      return parse_symbol(input, start, "false", false);
+    }
+
+    if (next == 'n') {
+      -- TODO: use native_null or another flavor of null other than missing
+      return parse_symbol(input, start, "null", missing.instance);
+    }
+
     report_error("Unrecognized character in a string: " ++ next);
     return index;
   }
@@ -157,16 +170,17 @@ class json_parser {
     }
   }
 
-  private nonnegative parse_number(string input, var nonnegative index, boolean negate) {
-    next : input[index];
+  private nonnegative parse_number(string input, nonnegative start, boolean negate) {
+    next : input[start];
     if (!the_character_handler.is_digit(next)) {
       report_error("Unrecognized digit: " ++ next);
-      return index;
+      return start;
     }
 
     digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
     assert digit is nonnegative;
     var nonnegative result : digit;
+    var index : start + 1;
     while (index < input.size && the_character_handler.is_digit(input[index])) {
       next_digit : the_character_handler.from_digit(input[index], radix.DEFAULT_RADIX);
       assert next_digit is nonnegative;
@@ -177,6 +191,21 @@ class json_parser {
     -- TODO: handle fraction and exponent
     tokens.append(negate ? -result : result);
     return index;
+  }
+
+  private nonnegative parse_symbol(string input, nonnegative start, string symbol,
+      deeply_immutable data value) {
+    prefix : list_pattern[character].new(symbol).match_prefix(input.skip(start));
+    -- TODO: use && to join checks
+    if (prefix is_not null) {
+      if (prefix == symbol.size) {
+        tokens.append(value);
+        return start + prefix;
+      }
+    }
+
+    report_error("Can't parse symbol: " ++ symbol);
+    return start + 1;
   }
 
   private void report_error(string message) {

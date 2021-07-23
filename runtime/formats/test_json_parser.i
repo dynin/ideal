@@ -20,7 +20,7 @@ test_suite test_json_parser {
     assert words[1] == "bar";
 
     words2 : parser.test_tokenize("[ \"foo\" , \"bar\", -68  ] ");
-    assert words2.size == 5;
+    assert words2.size == 7;
     assert words2[0] == json_token.OPEN_BRACKET;
     assert words2[1] == "foo";
     assert words2[2] == json_token.COMMA;
@@ -52,5 +52,19 @@ test_suite test_json_parser {
     words4 : parser.test_tokenize(" \"special: \\\\ \\u0066\\u006f\\u006f\" ");
     assert words4.size == 1;
     assert words4[0] == "special: \\ foo";
+
+    words5 : parser.test_tokenize("[ true , false, null ] ");
+    assert words5.size == 7;
+    assert words5[0] == json_token.OPEN_BRACKET;
+    -- TODO: we shouldn't need this (without this, generates invalid Java code.)
+    w51 : words5[1];
+    assert w51 !> boolean;
+    assert words5[2] == json_token.COMMA;
+    w53 : words5[3];
+    assert !(w53 !> boolean);
+    assert words5[4] == json_token.COMMA;
+    w55 : words5[5];
+    assert (w55 !> value) is null;
+    assert words5[6] == json_token.CLOSE_BRACKET;
   }
 }

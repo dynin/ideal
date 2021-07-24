@@ -89,7 +89,10 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/resources/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/graphs/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/runtime/flags/*.java
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/flags/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/tests/*.java
+
+RUNTIME_TESTS_MAIN = runtime/tests/tests_main.java
 
 MACHINE_JAVA = \
     $(JSOURCE_DIR)/ideal/machine/elements/*.java \
@@ -162,7 +165,9 @@ test_library: $(IDEAL_TARGET) rm-scratch
 
 test_librun: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_librun -output=$(SCRATCH_DIR)
+	cp $(RUNTIME_TESTS_MAIN) $(SCRATCH_DIR)/ideal/$(RUNTIME_TESTS_MAIN)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
+	$(JAVA) ideal.runtime.tests.tests_main
 
 compile_runtime:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java

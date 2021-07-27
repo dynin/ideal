@@ -77,5 +77,30 @@ test_suite test_json_parser {
     parsed1 : parser.parse(" 68 ");
     -- TODO: cast is redundant
     assert (parsed1 !> integer) == 68;
+
+    parsed2 : parser.parse(" false ");
+    -- TODO: cast is redundant
+    assert (parsed2 !> boolean) == false;
+
+    parsed3 : parser.parse("{ \"foo\" : \"bar\", \"baz\":68 } ") !>
+        readonly dictionary[string, readonly value];
+    assert parsed3.size == 2;
+    assert parsed3.get("foo") == "bar";
+    assert (parsed3.get("baz") !> integer) == 68;
+
+    parsed4 : parser.parse("[ \"foo\" , \"bar\", -68  ] ") !> readonly list[readonly value];
+    assert parsed4.size == 3;
+    assert parsed4[0] == "foo";
+    assert parsed4[1] == "bar";
+    assert (parsed4[2] !> integer) == -68;
+
+    parsed5 : parser.parse("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } ") !>
+        readonly dictionary[string, readonly value];
+    assert parsed5.size == 2;
+    the_object : parsed5.get("foo") !> readonly list[readonly value];
+    assert the_object[0] == "bar";
+    -- TODO: cast is redundant
+    assert (the_object[1] !> boolean) == true;
+    assert (parsed5.get("baz") !> integer) == -68;
   }
 }

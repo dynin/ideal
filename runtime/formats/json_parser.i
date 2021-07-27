@@ -231,7 +231,7 @@ class json_parser {
     if (next == json_token.OPEN_BRACE) {
       return parse_object(start);
     } else if (next == json_token.OPEN_BRACKET) {
-      return parse_object(start);
+      return parse_array(start);
     }
 
     if (next is json_token) {
@@ -263,6 +263,9 @@ class json_parser {
       }
       index += 1;
       element : parse_value(index);
+      if (has_error()) {
+        return element;
+      }
       result.put(next, element.the_value);
       index = element.end_index;
       if (index >= tokens.size) {
@@ -278,6 +281,39 @@ class json_parser {
     }
 
     return parse_error("No closing brace in object");
+  }
+
+  private parse_result parse_array(nonnegative start) {
+    if (tokens[start] != json_token.OPEN_BRACKET) {
+      return parse_error("Open bracket expected");
+    }
+
+    result : base_list[readonly value].new();
+    var index : start + 1;
+
+    while (index < tokens.size) {
+      if (tokens[index] == json_token.CLOSE_BRACKET) {
+        return parse_result.new(result, index + 1);
+      }
+      element : parse_value(index);
+      if (has_error()) {
+        return element;
+      }
+      result.append(element.the_value);
+      index = element.end_index;
+      if (index >= tokens.size) {
+        return parse_error("No closing bracket in array");
+      }
+      if (tokens[index] == json_token.CLOSE_BRACKET) {
+        return parse_result.new(result, index + 1);
+      }
+      if (tokens[index] != json_token.COMMA) {
+        return parse_error("Expected comma in array");
+      }
+      index += 1;
+    }
+
+    return parse_error("No closing bracket in array");
   }
 
   private void report_error(string message) {

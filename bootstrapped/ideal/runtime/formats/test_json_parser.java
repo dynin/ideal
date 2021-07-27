@@ -59,10 +59,37 @@ public class test_json_parser {
     assert ((value) w55) == null;
     assert words5.at(6).get() == json_token.CLOSE_BRACKET;
   }
+  public void test_parser() {
+    final json_parser parser = this.make_parser();
+    final Object parsed0 = parser.parse(new base_string(" \"foo\" "));
+    assert ideal.machine.elements.runtime_util.values_equal(parsed0, new base_string("foo"));
+    final Object parsed1 = parser.parse(new base_string(" 68 "));
+    assert ((int) parsed1) == 68;
+    final Object parsed2 = parser.parse(new base_string(" false "));
+    assert ((boolean) parsed2) == false;
+    final readonly_dictionary<string, Object> parsed3 = (readonly_dictionary<string, Object>) parser.parse(new base_string("{ \"foo\" : \"bar\", \"baz\":68 } "));
+    assert parsed3.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(parsed3.get(new base_string("foo")), new base_string("bar"));
+    assert ((int) parsed3.get(new base_string("baz"))) == 68;
+    final readonly_list<Object> parsed4 = (readonly_list<Object>) parser.parse(new base_string("[ \"foo\" , \"bar\", -68  ] "));
+    assert parsed4.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(parsed4.get(0), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(parsed4.get(1), new base_string("bar"));
+    assert ((int) parsed4.get(2)) == -68;
+    final readonly_dictionary<string, Object> parsed5 = (readonly_dictionary<string, Object>) parser.parse(new base_string("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } "));
+    assert parsed5.size() == 2;
+    final readonly_list<Object> the_object = (readonly_list<Object>) parsed5.get(new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(the_object.get(0), new base_string("bar"));
+    assert ((boolean) the_object.get(1)) == true;
+    assert ((int) parsed5.get(new base_string("baz"))) == -68;
+  }
   public test_json_parser() { }
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test(new base_string("test_json_parser.test_tokenizer"));
     this.test_tokenizer();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_json_parser.test_parser"));
+    this.test_parser();
     ideal.machine.elements.runtime_util.end_test();
   }
 }

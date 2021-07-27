@@ -13,9 +13,9 @@ public enum json_token implements deeply_immutable_data, deeply_immutable_refere
   CLOSE_BRACKET(']'),
   COMMA(','),
   COLON(':');
-  public final char token;
-  private json_token(final char token) {
-    this.token = token;
+  public final char the_character;
+  private json_token(final char the_character) {
+    this.the_character = the_character;
   }
   public string to_string() {
     return new base_string(toString());

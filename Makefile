@@ -169,6 +169,10 @@ test_librun: $(IDEAL_TARGET) rm-scratch
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
 	$(JAVA) ideal.runtime.tests.tests_main
 
+test_librun_run:
+	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
+	$(JAVA) ideal.runtime.tests.tests_main
+
 compile_runtime:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
 

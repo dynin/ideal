@@ -11,6 +11,14 @@ import ideal.machine.channels.string_writer;
 import javax.annotation.Nullable;
 
 public class json_parser {
+  public static class parse_result {
+    public final Object the_value;
+    public final int end_index;
+    public parse_result(final Object the_value, final int end_index) {
+      this.the_value = the_value;
+      this.end_index = end_index;
+    }
+  }
   public final character_handler the_character_handler;
   public list<Object> tokens;
   public @Nullable string error;
@@ -32,6 +40,13 @@ public class json_parser {
     this.tokenize(input);
     assert !this.has_error();
     return this.tokens;
+  }
+  public Object parse(final string input) {
+    this.tokenize(input);
+    assert !this.has_error();
+    final json_parser.parse_result result = this.parse_value(0);
+    assert !this.has_error();
+    return result.the_value;
   }
   private int scan(final string input, final int start) {
     final char next = input.get(start);
@@ -92,48 +107,48 @@ public class json_parser {
       return index;
     }
     if (this.the_character_handler.is_digit(next)) {
-      return this.parse_number(input, start, false);
+      return this.scan_number(input, start, false);
     }
     if (next == '-') {
       if (index < input.size()) {
-        return this.parse_number(input, index, true);
+        return this.scan_number(input, index, true);
       } else {
         this.report_error(new base_string("Minus at the end of input"));
         return index;
       }
     }
-    if (next == json_token.OPEN_BRACE.token) {
+    if (next == json_token.OPEN_BRACE.the_character) {
       this.tokens.append(json_token.OPEN_BRACE);
       return index;
     }
-    if (next == json_token.CLOSE_BRACE.token) {
+    if (next == json_token.CLOSE_BRACE.the_character) {
       this.tokens.append(json_token.CLOSE_BRACE);
       return index;
     }
-    if (next == json_token.OPEN_BRACKET.token) {
+    if (next == json_token.OPEN_BRACKET.the_character) {
       this.tokens.append(json_token.OPEN_BRACKET);
       return index;
     }
-    if (next == json_token.CLOSE_BRACKET.token) {
+    if (next == json_token.CLOSE_BRACKET.the_character) {
       this.tokens.append(json_token.CLOSE_BRACKET);
       return index;
     }
-    if (next == json_token.COMMA.token) {
+    if (next == json_token.COMMA.the_character) {
       this.tokens.append(json_token.COMMA);
       return index;
     }
-    if (next == json_token.COLON.token) {
+    if (next == json_token.COLON.the_character) {
       this.tokens.append(json_token.COLON);
       return index;
     }
     if (next == 't') {
-      return this.parse_symbol(input, start, new base_string("true"), true);
+      return this.scan_symbol(input, start, new base_string("true"), true);
     }
     if (next == 'f') {
-      return this.parse_symbol(input, start, new base_string("false"), false);
+      return this.scan_symbol(input, start, new base_string("false"), false);
     }
     if (next == 'n') {
-      return this.parse_symbol(input, start, new base_string("null"), null);
+      return this.scan_symbol(input, start, new base_string("null"), null);
     }
     this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in a string: "), next));
     return index;
@@ -147,7 +162,7 @@ public class json_parser {
       return 0;
     }
   }
-  private int parse_number(final string input, final int start, final boolean negate) {
+  private int scan_number(final string input, final int start, final boolean negate) {
     final char next = input.get(start);
     if (!this.the_character_handler.is_digit(next)) {
       this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized digit: "), next));
@@ -166,7 +181,7 @@ public class json_parser {
     this.tokens.append(negate ? -result : result);
     return index;
   }
-  private int parse_symbol(final string input, final int start, final string symbol, final Object value) {
+  private int scan_symbol(final string input, final int start, final string symbol, final Object value) {
     final @Nullable Integer prefix = new list_pattern<Character>(symbol).match_prefix(input.skip(start));
     if (prefix != null) {
       if (prefix == symbol.size()) {
@@ -174,10 +189,96 @@ public class json_parser {
         return start + prefix;
       }
     }
-    this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Can\'t parse symbol: "), symbol));
+    this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Can\'t scan symbol: "), symbol));
     return start + 1;
+  }
+  private json_parser.parse_result parse_value(final int start) {
+    if (start >= this.tokens.size()) {
+      return this.parse_error(new base_string("End of tokens when parsing value"));
+    }
+    final Object next = this.tokens.at(start).get();
+    if (next == json_token.OPEN_BRACE) {
+      return this.parse_object(start);
+    } else if (next == json_token.OPEN_BRACKET) {
+      return this.parse_array(start);
+    }
+    if (next instanceof json_token) {
+      return this.parse_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unexpected token: "), ((json_token) next)));
+    }
+    return new json_parser.parse_result(next, start + 1);
+  }
+  private json_parser.parse_result parse_object(final int start) {
+    if (this.tokens.at(start).get() != json_token.OPEN_BRACE) {
+      return this.parse_error(new base_string("Open brace expected"));
+    }
+    final hash_dictionary<string, Object> result = new hash_dictionary<string, Object>();
+    int index = start + 1;
+    while (index < this.tokens.size()) {
+      final Object next = this.tokens.at(index).get();
+      if (next == json_token.CLOSE_BRACE) {
+        return new json_parser.parse_result(result, index + 1);
+      }
+      if (!(next instanceof string)) {
+        return this.parse_error(new base_string("Expected string identifier in object"));
+      }
+      index += 1;
+      while (index >= this.tokens.size() || this.tokens.at(index).get() != json_token.COLON) {
+        return this.parse_error(new base_string("Expected colon in object"));
+      }
+      index += 1;
+      final json_parser.parse_result element = this.parse_value(index);
+      if (this.has_error()) {
+        return element;
+      }
+      result.put(((string) next), element.the_value);
+      index = element.end_index;
+      if (index >= this.tokens.size()) {
+        return this.parse_error(new base_string("No closing brace in object"));
+      }
+      if (this.tokens.at(index).get() == json_token.CLOSE_BRACE) {
+        return new json_parser.parse_result(result, index + 1);
+      }
+      if (this.tokens.at(index).get() != json_token.COMMA) {
+        return this.parse_error(new base_string("Expected comma in object"));
+      }
+      index += 1;
+    }
+    return this.parse_error(new base_string("No closing brace in object"));
+  }
+  private json_parser.parse_result parse_array(final int start) {
+    if (this.tokens.at(start).get() != json_token.OPEN_BRACKET) {
+      return this.parse_error(new base_string("Open bracket expected"));
+    }
+    final base_list<Object> result = new base_list<Object>();
+    int index = start + 1;
+    while (index < this.tokens.size()) {
+      if (this.tokens.at(index).get() == json_token.CLOSE_BRACKET) {
+        return new json_parser.parse_result(result, index + 1);
+      }
+      final json_parser.parse_result element = this.parse_value(index);
+      if (this.has_error()) {
+        return element;
+      }
+      result.append(element.the_value);
+      index = element.end_index;
+      if (index >= this.tokens.size()) {
+        return this.parse_error(new base_string("No closing bracket in array"));
+      }
+      if (this.tokens.at(index).get() == json_token.CLOSE_BRACKET) {
+        return new json_parser.parse_result(result, index + 1);
+      }
+      if (this.tokens.at(index).get() != json_token.COMMA) {
+        return this.parse_error(new base_string("Expected comma in array"));
+      }
+      index += 1;
+    }
+    return this.parse_error(new base_string("No closing bracket in array"));
   }
   private void report_error(final string message) {
     this.error = message;
+  }
+  private json_parser.parse_result parse_error(final string message) {
+    this.report_error(message);
+    return new json_parser.parse_result(message, 0);
   }
 }

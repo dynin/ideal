@@ -25,8 +25,7 @@ package operators {
 
   -- TODO: handle equality_comparable as a first and both arguments.
   boolean equal_to(readonly value first, readonly equality_comparable second) pure;
-  boolean not_equal_to(readonly equality_comparable first,
-      readonly equality_comparable second) pure;
+  boolean not_equal_to(readonly value first, readonly equality_comparable second) pure;
 
   -- TODO: less operator should take arguments of type comparable,
   -- as defined below.

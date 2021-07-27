@@ -67,4 +67,15 @@ test_suite test_json_parser {
     assert (w55 !> value) is null;
     assert words5[6] == json_token.CLOSE_BRACKET;
   }
+
+  test_case test_parser() {
+    parser : make_parser();
+
+    parsed0 : parser.parse(" \"foo\" ");
+    assert parsed0 == "foo";
+
+    parsed1 : parser.parse(" 68 ");
+    -- TODO: cast is redundant
+    assert (parsed1 !> integer) == 68;
+  }
 }

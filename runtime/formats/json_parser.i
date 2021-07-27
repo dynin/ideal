@@ -10,6 +10,11 @@ class json_parser {
   import ideal.runtime.patterns.list_pattern;
   import ideal.machine.channels.string_writer;
 
+  auto_constructor class parse_result {
+    readonly value the_value;
+    nonnegative end_index;
+  }
+
   character_handler the_character_handler;
   -- TODO: use data instead of equality_comparable
   var list[readonly data] tokens;
@@ -34,6 +39,14 @@ class json_parser {
     tokenize(input);
     assert !has_error();
     return tokens;
+  }
+
+  readonly value parse(string input) {
+    tokenize(input);
+    assert !has_error();
+    result : parse_value(0);
+    assert !has_error();
+    return result.the_value;
   }
 
   private nonnegative scan(string input, nonnegative start) {
@@ -100,12 +113,12 @@ class json_parser {
     }
 
     if (the_character_handler.is_digit(next)) {
-      return parse_number(input, start, false);
+      return scan_number(input, start, false);
     }
 
     if (next == '-') {
       if (index < input.size) {
-        return parse_number(input, index, true);
+        return scan_number(input, index, true);
       } else {
         report_error("Minus at the end of input");
         return index;
@@ -113,47 +126,47 @@ class json_parser {
     }
 
     -- TODO: iterate over json_tokens
-    if (next == json_token.OPEN_BRACE.token) {
+    if (next == json_token.OPEN_BRACE.the_character) {
       tokens.append(json_token.OPEN_BRACE);
       return index;
     }
 
-    if (next == json_token.CLOSE_BRACE.token) {
+    if (next == json_token.CLOSE_BRACE.the_character) {
       tokens.append(json_token.CLOSE_BRACE);
       return index;
     }
 
-    if (next == json_token.OPEN_BRACKET.token) {
+    if (next == json_token.OPEN_BRACKET.the_character) {
       tokens.append(json_token.OPEN_BRACKET);
       return index;
     }
 
-    if (next == json_token.CLOSE_BRACKET.token) {
+    if (next == json_token.CLOSE_BRACKET.the_character) {
       tokens.append(json_token.CLOSE_BRACKET);
       return index;
     }
 
-    if (next == json_token.COMMA.token) {
+    if (next == json_token.COMMA.the_character) {
       tokens.append(json_token.COMMA);
       return index;
     }
 
-    if (next == json_token.COLON.token) {
+    if (next == json_token.COLON.the_character) {
       tokens.append(json_token.COLON);
       return index;
     }
 
     if (next == 't') {
-      return parse_symbol(input, start, "true", true);
+      return scan_symbol(input, start, "true", true);
     }
 
     if (next == 'f') {
-      return parse_symbol(input, start, "false", false);
+      return scan_symbol(input, start, "false", false);
     }
 
     if (next == 'n') {
       -- TODO: use native_null or another flavor of null other than missing
-      return parse_symbol(input, start, "null", missing.instance);
+      return scan_symbol(input, start, "null", missing.instance);
     }
 
     report_error("Unrecognized character in a string: " ++ next);
@@ -170,7 +183,7 @@ class json_parser {
     }
   }
 
-  private nonnegative parse_number(string input, nonnegative start, boolean negate) {
+  private nonnegative scan_number(string input, nonnegative start, boolean negate) {
     next : input[start];
     if (!the_character_handler.is_digit(next)) {
       report_error("Unrecognized digit: " ++ next);
@@ -193,7 +206,7 @@ class json_parser {
     return index;
   }
 
-  private nonnegative parse_symbol(string input, nonnegative start, string symbol,
+  private nonnegative scan_symbol(string input, nonnegative start, string symbol,
       deeply_immutable data value) {
     prefix : list_pattern[character].new(symbol).match_prefix(input.skip(start));
     -- TODO: use && to join checks
@@ -204,11 +217,75 @@ class json_parser {
       }
     }
 
-    report_error("Can't parse symbol: " ++ symbol);
+    report_error("Can't scan symbol: " ++ symbol);
     return start + 1;
+  }
+
+  private parse_result parse_value(nonnegative start) {
+    if (start >= tokens.size) {
+      return parse_error("End of tokens when parsing value");
+    }
+
+    next : tokens[start];
+
+    if (next == json_token.OPEN_BRACE) {
+      return parse_object(start);
+    } else if (next == json_token.OPEN_BRACKET) {
+      return parse_object(start);
+    }
+
+    if (next is json_token) {
+      return parse_error("Unexpected token: " ++ next);
+    }
+
+    return parse_result.new(next, start + 1);
+  }
+
+  private parse_result parse_object(nonnegative start) {
+    if (tokens[start] != json_token.OPEN_BRACE) {
+      return parse_error("Open brace expected");
+    }
+
+    result : hash_dictionary[string, readonly value].new();
+    var index : start + 1;
+
+    while (index < tokens.size) {
+      next : tokens[index];
+      if (next == json_token.CLOSE_BRACE) {
+        return parse_result.new(result, index + 1);
+      }
+      if (next is_not string) {
+        return parse_error("Expected string identifier in object");
+      }
+      index += 1;
+      while (index >= tokens.size || tokens[index] != json_token.COLON) {
+        return parse_error("Expected colon in object");
+      }
+      index += 1;
+      element : parse_value(index);
+      result.put(next, element.the_value);
+      index = element.end_index;
+      if (index >= tokens.size) {
+        return parse_error("No closing brace in object");
+      }
+      if (tokens[index] == json_token.CLOSE_BRACE) {
+        return parse_result.new(result, index + 1);
+      }
+      if (tokens[index] != json_token.COMMA) {
+        return parse_error("Expected comma in object");
+      }
+      index += 1;
+    }
+
+    return parse_error("No closing brace in object");
   }
 
   private void report_error(string message) {
     error = message;
+  }
+
+  private parse_result parse_error(string message) {
+    report_error(message);
+    return parse_result.new(message, 0);
   }
 }

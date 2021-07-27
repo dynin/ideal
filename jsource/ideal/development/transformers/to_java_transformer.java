@@ -438,7 +438,11 @@ public class to_java_transformer extends base_transformer {
           if (the_procedure.get_return_type() == core_types.unreachable_type()) {
             ret = make_type(library().void_type(), the_origin);
           } else {
-            ret = make_type(the_procedure.get_return_type(), the_origin);
+            if (is_object_type(the_procedure.get_return_type())) {
+              ret = make_object_type(the_origin);
+            } else {
+              ret = make_type(the_procedure.get_return_type(), the_origin);
+            }
           }
         }
       }
@@ -2074,7 +2078,10 @@ public class to_java_transformer extends base_transformer {
     construct result = new operator_construct(operator.IS_OPERATOR, expression,
         make_type(the_type, the_origin), the_origin);
     if (negated) {
-      return new operator_construct(operator.LOGICAL_NOT, result, the_origin);
+      return new operator_construct(operator.LOGICAL_NOT,
+          new list_construct(new base_list<construct>(result), grouping_type.PARENS, false,
+              the_origin),
+          the_origin);
     } else {
       return result;
     }

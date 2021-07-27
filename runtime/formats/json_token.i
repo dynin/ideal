@@ -16,9 +16,9 @@ enum json_token {
   COMMA(',');
   COLON(':');
 
-  character token;
+  character the_character;
 
-  private json_token(character token) {
-    this.token = token;
+  private json_token(character the_character) {
+    this.the_character = the_character;
   }
 }

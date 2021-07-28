@@ -11,14 +11,20 @@ public class test_resolver {
     public test_store(final string path_prefix, final boolean is_current) {
       super(path_prefix, is_current, is_current);
     }
-    public @Override boolean exists(final immutable_list<string> path) {
+    public @Override boolean allow_scheme(final string scheme) {
+      return true;
+    }
+    public @Override boolean exists(final string scheme, final immutable_list<string> path) {
       return false;
     }
-    public @Override string read_string(final immutable_list<string> path) {
+    public @Override string read_string(final string scheme, final immutable_list<string> path) {
       return new base_string("test");
     }
-    public @Override void write_string(final immutable_list<string> path, final string new_value) { }
-    public @Override void make_catalog(final immutable_list<string> path) { }
+    public @Override void write_string(final string scheme, final immutable_list<string> path, final string new_value) { }
+    public @Override void make_catalog(final string scheme, final immutable_list<string> path) { }
+    protected @Override string default_scheme() {
+      return resource_util.FILE_SCHEME;
+    }
   }
   public static final resource_catalog CURRENT = new test_resolver.test_store(resource_util.CURRENT_CATALOG, true).top();
   public static final resource_catalog ROOT = new test_resolver.test_store(resource_util.ROOT_CATALOG, false).top();

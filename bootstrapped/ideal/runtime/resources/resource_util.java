@@ -14,6 +14,8 @@ public class resource_util {
   public static final string UTF_8 = new base_string("UTF-8");
   public static final string TEXT_HTML = new base_string("text/html");
   public static final string TEXT_PLAIN = new base_string("text/plain");
+  public static final string FILE_SCHEME = new base_string("file");
+  public static final string HTTPS_SCHEME = new base_string("https");
   public static void copy(final resource_identifier source, final resource_identifier destination) {
     final string content = source.access_string(null).content().get();
     destination.access_string(null).content().set(content);

@@ -24,15 +24,21 @@ public class file_store extends base_resource_store {
   }
 
   @Override
-  public boolean exists(immutable_list<string> path) {
-    return new File(utilities.s(build_name(path))).exists();
+  public boolean allow_scheme(string scheme) {
+    String s = utilities.s(scheme);
+    return s.equals(utilities.s(resource_util.FILE_SCHEME));
   }
 
   @Override
-  public string read_string(immutable_list<string> path) {
+  public boolean exists(string scheme, immutable_list<string> path) {
+    return new File(utilities.s(build_name(scheme, path))).exists();
+  }
+
+  @Override
+  public string read_string(string scheme, immutable_list<string> path) {
     try {
       // TODO: cache content
-      Reader reader =  new FileReader(utilities.s(build_name(path)));
+      Reader reader =  new FileReader(utilities.s(build_name(scheme, path)));
       string result = io_util.read(reader);
       reader.close();
       return result;
@@ -44,9 +50,9 @@ public class file_store extends base_resource_store {
   }
 
   @Override
-  public void write_string(immutable_list<string> path, string new_value) {
+  public void write_string(string scheme, immutable_list<string> path, string new_value) {
     try {
-      Writer writer = new FileWriter(utilities.s(build_name(path)));
+      Writer writer = new FileWriter(utilities.s(build_name(scheme, path)));
       writer.write(utilities.s(new_value));
       writer.close();
     } catch (IOException e) {
@@ -55,13 +61,18 @@ public class file_store extends base_resource_store {
   }
 
   @Override
-  public void make_catalog(immutable_list<string> path) {
+  public void make_catalog(string scheme, immutable_list<string> path) {
     // TODO: return error?...
-    File directory = new File(utilities.s(build_name(path)));
+    File directory = new File(utilities.s(build_name(scheme, path)));
     // Potential race condition here (directory can be deleted).
     // But we don't care.
     if (!directory.exists()) {
       directory.mkdirs();
     }
+  }
+
+  @Override
+  protected string default_scheme() {
+    return resource_util.FILE_SCHEME;
   }
 }

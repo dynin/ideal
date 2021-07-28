@@ -19,7 +19,7 @@ import ideal.runtime.texts.*;
 import ideal.runtime.logs.*;
 import ideal.machine.elements.runtime_util;
 import ideal.machine.channels.standard_channels;
-import ideal.machine.resources.filesystem;
+import ideal.machine.resources.*;
 
 import ideal.development.elements.*;
 import ideal.development.actions.*;
@@ -66,6 +66,10 @@ class create {
 
   public status start(create_flags the_create_flags) {
     if (the_create_flags.UNIT_TESTS) {
+      if (false) {
+        System.out.println(network.NETWORK_CATALOG.resolve(
+            new base_string("https://dynin.com/")).access_string(null).content().get());
+      }
       all_tests.run_all_tests();
       return status.ok;
     }

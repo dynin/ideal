@@ -10,10 +10,13 @@ class base_resource_identifier {
   implements resource_identifier;
 
   private resource_store the_resource_store;
+  private string the_scheme;
   private immutable list[string] path;
 
-  base_resource_identifier(resource_store the_resource_store, immutable list[string] path) {
+  base_resource_identifier(resource_store the_resource_store, string the_scheme,
+      immutable list[string] path) {
     this.the_resource_store = the_resource_store;
+    this.the_scheme = the_scheme;
     this.path = path;
   }
 
@@ -21,14 +24,17 @@ class base_resource_identifier {
     parent_path_size : path.size - 1;
     if (parent_path_size is nonnegative) {
       parent_path : path.slice(0, parent_path_size);
-      return base_resource_identifier.new(the_resource_store, path.slice(0, parent_path_size));
+      return base_resource_identifier.new(the_resource_store, the_scheme,
+          path.slice(0, parent_path_size));
     } else {
       return this;
     }
   }
 
+  implement string scheme() => the_scheme;
+
   override boolean exists() {
-    return the_resource_store.exists(path);
+    return the_resource_store.exists(the_scheme, path);
   }
 
   override resource[string] access_string(access_option or null options) {
@@ -36,11 +42,11 @@ class base_resource_identifier {
   }
 
   override resource_catalog access_catalog() {
-    return base_resource_catalog.new(the_resource_store, path);
+    return base_resource_catalog.new(the_resource_store, the_scheme, path);
   }
 
   override string to_string() {
-    return the_resource_store.build_name(path);
+    return the_resource_store.build_name(the_scheme, path);
   }
 
   private class string_resource {
@@ -59,14 +65,17 @@ class base_resource_identifier {
     }
 
     override string get() {
-      return the_identifier.the_resource_store.read_string(the_identifier.path);
+      return the_identifier.the_resource_store.read_string(the_identifier.the_scheme,
+          the_identifier.path);
     }
 
     override void set(string new_value) {
       if (options is make_catalog_option && the_identifier.path.size > 1) {
-        the_identifier.the_resource_store.make_catalog(the_identifier.parent().path);
+        the_identifier.the_resource_store.make_catalog(the_identifier.the_scheme,
+            the_identifier.parent().path);
       }
-      the_identifier.the_resource_store.write_string(the_identifier.path, new_value);
+      the_identifier.the_resource_store.write_string(the_identifier.the_scheme,
+          the_identifier.path, new_value);
     }
   }
 }

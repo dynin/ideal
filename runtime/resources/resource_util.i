@@ -18,6 +18,9 @@ namespace resource_util {
   TEXT_HTML : "text/html";
   TEXT_PLAIN : "text/plain";
 
+  FILE_SCHEME : "file";
+  HTTPS_SCHEME : "https";
+
   -- TODO: return status.
   void copy(resource_identifier source, resource_identifier destination) {
     -- TODO: use bytes; fixed buffer size; handle errors.

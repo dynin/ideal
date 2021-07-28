@@ -10,31 +10,36 @@ import javax.annotation.Nullable;
 
 public class base_resource_identifier extends debuggable implements resource_identifier {
   private final resource_store the_resource_store;
+  private final string the_scheme;
   private final immutable_list<string> path;
-  public base_resource_identifier(final resource_store the_resource_store, final immutable_list<string> path) {
+  public base_resource_identifier(final resource_store the_resource_store, final string the_scheme, final immutable_list<string> path) {
     this.the_resource_store = the_resource_store;
+    this.the_scheme = the_scheme;
     this.path = path;
   }
   public @Override base_resource_identifier parent() {
     final int parent_path_size = this.path.size() - 1;
     if (parent_path_size >= 0) {
       final immutable_list<string> parent_path = this.path.slice(0, parent_path_size);
-      return new base_resource_identifier(this.the_resource_store, this.path.slice(0, parent_path_size));
+      return new base_resource_identifier(this.the_resource_store, this.the_scheme, this.path.slice(0, parent_path_size));
     } else {
       return this;
     }
   }
+  public @Override string scheme() {
+    return this.the_scheme;
+  }
   public @Override boolean exists() {
-    return this.the_resource_store.exists(this.path);
+    return this.the_resource_store.exists(this.the_scheme, this.path);
   }
   public @Override resource<string> access_string(final @Nullable access_option options) {
     return new base_resource_identifier.string_resource(this, options);
   }
   public @Override resource_catalog access_catalog() {
-    return new base_resource_catalog(this.the_resource_store, this.path);
+    return new base_resource_catalog(this.the_resource_store, this.the_scheme, this.path);
   }
   public @Override string to_string() {
-    return this.the_resource_store.build_name(this.path);
+    return this.the_resource_store.build_name(this.the_scheme, this.path);
   }
   private static class string_resource implements resource<string>, reference<string> {
     private final base_resource_identifier the_identifier;
@@ -47,13 +52,13 @@ public class base_resource_identifier extends debuggable implements resource_ide
       return this;
     }
     public @Override string get() {
-      return this.the_identifier.the_resource_store.read_string(this.the_identifier.path);
+      return this.the_identifier.the_resource_store.read_string(this.the_identifier.the_scheme, this.the_identifier.path);
     }
     public @Override void set(final string new_value) {
       if (this.options instanceof make_catalog_option && this.the_identifier.path.size() > 1) {
-        this.the_identifier.the_resource_store.make_catalog(this.the_identifier.parent().path);
+        this.the_identifier.the_resource_store.make_catalog(this.the_identifier.the_scheme, this.the_identifier.parent().path);
       }
-      this.the_identifier.the_resource_store.write_string(this.the_identifier.path, new_value);
+      this.the_identifier.the_resource_store.write_string(this.the_identifier.the_scheme, this.the_identifier.path, new_value);
     }
   }
 }

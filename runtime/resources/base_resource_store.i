@@ -22,11 +22,13 @@ abstract class base_resource_store {
     this.skip_prefix = skip_prefix;
   }
 
+  protected abstract string default_scheme();
+
   override boolean allow_up() {
     return do_allow_up;
   }
 
-  override string build_name(immutable list[string] path) {
+  override string build_name(string scheme, immutable list[string] path) {
     if (path.is_empty) {
       return path_prefix;
     }
@@ -48,6 +50,6 @@ abstract class base_resource_store {
   }
 
   public resource_catalog top() {
-    return base_resource_catalog.new(this, empty[string].new());
+    return base_resource_catalog.new(this, default_scheme(), empty[string].new());
   }
 }

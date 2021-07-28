@@ -16,10 +16,11 @@ public abstract class base_resource_store extends debuggable implements resource
     this.do_allow_up = do_allow_up;
     this.skip_prefix = skip_prefix;
   }
+  protected abstract string default_scheme();
   public @Override boolean allow_up() {
     return this.do_allow_up;
   }
-  public @Override string build_name(final immutable_list<string> path) {
+  public @Override string build_name(final string scheme, final immutable_list<string> path) {
     if (path.is_empty()) {
       return this.path_prefix;
     }
@@ -36,6 +37,6 @@ public abstract class base_resource_store extends debuggable implements resource
     return result.elements();
   }
   public resource_catalog top() {
-    return new base_resource_catalog(this, new empty<string>());
+    return new base_resource_catalog(this, this.default_scheme(), new empty<string>());
   }
 }

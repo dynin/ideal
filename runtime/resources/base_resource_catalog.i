@@ -11,13 +11,17 @@ class base_resource_catalog {
   implicit import ideal.library.patterns;
   implicit import ideal.runtime.patterns;
 
+  private static pattern[character] scheme_separator : singleton_pattern[character].new(':');
   private static pattern[character] path_separator : singleton_pattern[character].new('/');
 
   private resource_store the_resource_store;
+  private string the_scheme;
   private immutable list[string] path;
 
-  protected base_resource_catalog(resource_store the_resource_store, immutable list[string] path) {
+  protected base_resource_catalog(resource_store the_resource_store, string the_scheme,
+      immutable list[string] path) {
     this.the_resource_store = the_resource_store;
+    this.the_scheme = the_scheme;
     this.path = path;
   }
 
@@ -34,7 +38,7 @@ class base_resource_catalog {
   }
 
   override resource_identifier get_id() {
-    return base_resource_identifier.new(the_resource_store, path);
+    return base_resource_identifier.new(the_resource_store, the_scheme, path);
   }
 
   -- TODO: resource name parser should be separated from the catalog logic.
@@ -42,7 +46,21 @@ class base_resource_catalog {
   -- such as '/', '\', '::', '.', '..'.
   overload implement resource_identifier resolve(string name) {
     if (name.is_empty) {
-      return base_resource_identifier.new(the_resource_store, path);
+      return base_resource_identifier.new(the_resource_store, the_scheme, path);
+    }
+
+    scheme_range : scheme_separator.find_first(name, 0);
+
+    if (scheme_range is_not null) {
+      candidate_scheme : name.slice(0, scheme_range.begin);
+      if (!the_resource_store.allow_scheme(candidate_scheme)) {
+        utilities.panic("scheme " ++ candidate_scheme ++ " not allowed");
+      }
+      -- TODO: handle relative paths here
+      components : path_separator.split(name.skip(scheme_range.end));
+      -- TODO: cast is redundant
+      return base_resource_identifier.new(the_resource_store, candidate_scheme,
+          components.frozen_copy() !> immutable list[string]);
     }
 
     -- TODO: we need to support other path separators for other platforms, such as \ on Windows.
@@ -97,7 +115,7 @@ class base_resource_catalog {
       result.append(resource_util.CURRENT_CATALOG);
     }
 
-    return base_resource_identifier.new(the_resource_store, result.frozen_copy());
+    return base_resource_identifier.new(the_resource_store, the_scheme, result.frozen_copy());
   }
 
   overload implement resource_identifier resolve(string name, extension or null the_extension) {

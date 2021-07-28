@@ -7,6 +7,7 @@ import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 
 public interface resource_store extends readonly_resource_store, writeonly_resource_store {
-  void make_catalog(immutable_list<string> path);
-  void write_string(immutable_list<string> path, string new_value);
+  boolean allow_scheme(string scheme);
+  void make_catalog(string scheme, immutable_list<string> path);
+  void write_string(string scheme, immutable_list<string> path, string new_value);
 }

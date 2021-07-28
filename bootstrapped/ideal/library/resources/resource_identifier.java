@@ -7,6 +7,7 @@ import ideal.library.elements.*;
 import javax.annotation.Nullable;
 
 public interface resource_identifier extends identifier {
+  string scheme();
   resource_identifier parent();
   boolean exists();
   resource<string> access_string(@Nullable access_option options);

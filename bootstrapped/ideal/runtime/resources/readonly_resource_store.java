@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 public interface readonly_resource_store extends any_resource_store {
   boolean allow_up();
-  string build_name(immutable_list<string> path);
-  boolean exists(immutable_list<string> path);
-  string read_string(immutable_list<string> path);
+  string build_name(string scheme, immutable_list<string> path);
+  boolean exists(string scheme, immutable_list<string> path);
+  string read_string(string scheme, immutable_list<string> path);
 }

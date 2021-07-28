@@ -13,19 +13,23 @@ test_suite test_resolver {
       super(path_prefix, is_current, is_current);
     }
 
-    override boolean exists(immutable list[string] path) {
+    implement boolean allow_scheme(string scheme) => true;
+
+    override boolean exists(string scheme, immutable list[string] path) {
       return false;
     }
 
-    override string read_string(immutable list[string] path) {
+    override string read_string(string scheme, immutable list[string] path) {
       return "test";
     }
 
-    override void write_string(immutable list[string] path, string new_value) {
+    override void write_string(string scheme, immutable list[string] path, string new_value) {
     }
 
-    override void make_catalog(immutable list[string] path) {
+    override void make_catalog(string scheme, immutable list[string] path) {
     }
+
+    implement protected string default_scheme() => resource_util.FILE_SCHEME;
   }
 
   static CURRENT : test_store.new(resource_util.CURRENT_CATALOG, true).top();

@@ -19,15 +19,21 @@ import java.io.*;
 
 public abstract class base_readonly_store extends base_resource_store {
 
-  protected base_readonly_store(string path_prefix) {
-    super(path_prefix, false, false);
+  protected base_readonly_store(string path_prefix, boolean do_allow_up, boolean skip_prefix) {
+    super(path_prefix, do_allow_up, skip_prefix);
   }
 
-  protected abstract InputStream get_stream(String name);
+  protected abstract InputStream get_stream(String name) throws IOException;
 
   @Override
-  public boolean exists(immutable_list<string> path) {
-    InputStream input = get_stream(utilities.s(build_name(path)));
+  public boolean exists(string scheme, immutable_list<string> path) {
+    InputStream input;
+    try {
+      input = get_stream(utilities.s(build_name(scheme, path)));
+    } catch (IOException e) {
+      return false;
+    }
+
     if (input != null) {
       try {
         input.close();
@@ -41,9 +47,9 @@ public abstract class base_readonly_store extends base_resource_store {
   }
 
   @Override
-  public string read_string(immutable_list<string> path) {
+  public string read_string(string scheme, immutable_list<string> path) {
     try {
-      Reader reader = new InputStreamReader(get_stream(utilities.s(build_name(path))),
+      Reader reader = new InputStreamReader(get_stream(utilities.s(build_name(scheme, path))),
           utilities.s(resource_util.UTF_8));
       string result = io_util.read(reader);
       reader.close();
@@ -56,12 +62,12 @@ public abstract class base_readonly_store extends base_resource_store {
 
 
   @Override
-  public void write_string(immutable_list<string> path, string new_value) {
+  public void write_string(string scheme, immutable_list<string> path, string new_value) {
     utilities.panic("Attempted base_readonly_store.write_string()");
   }
 
   @Override
-  public void make_catalog(immutable_list<string> path) {
+  public void make_catalog(string scheme, immutable_list<string> path) {
     utilities.panic("Attempted base_readonly_store.make_catalog()");
   }
 }

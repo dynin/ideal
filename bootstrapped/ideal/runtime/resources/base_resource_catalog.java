@@ -11,11 +11,14 @@ import ideal.runtime.patterns.*;
 import javax.annotation.Nullable;
 
 public class base_resource_catalog implements resource_catalog, reference<dictionary<string, resource_identifier>> {
+  private static final pattern<Character> scheme_separator = new singleton_pattern<Character>(':');
   private static final pattern<Character> path_separator = new singleton_pattern<Character>('/');
   private final resource_store the_resource_store;
+  private final string the_scheme;
   private final immutable_list<string> path;
-  protected base_resource_catalog(final resource_store the_resource_store, final immutable_list<string> path) {
+  protected base_resource_catalog(final resource_store the_resource_store, final string the_scheme, final immutable_list<string> path) {
     this.the_resource_store = the_resource_store;
+    this.the_scheme = the_scheme;
     this.path = path;
   }
   public @Override reference<dictionary<string, resource_identifier>> content() {
@@ -28,11 +31,23 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     utilities.panic(new base_string("can\'t set a catalog"));
   }
   public @Override resource_identifier get_id() {
-    return new base_resource_identifier(this.the_resource_store, this.path);
+    return new base_resource_identifier(this.the_resource_store, this.the_scheme, this.path);
   }
   public @Override resource_identifier resolve(final string name) {
     if (name.is_empty()) {
-      return new base_resource_identifier(this.the_resource_store, this.path);
+      return new base_resource_identifier(this.the_resource_store, this.the_scheme, this.path);
+    }
+    final @Nullable range scheme_range = base_resource_catalog.scheme_separator.find_first(name, 0);
+    if (scheme_range != null) {
+      final string candidate_scheme = name.slice(0, scheme_range.begin());
+      if (!this.the_resource_store.allow_scheme(candidate_scheme)) {
+        {
+          utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("scheme "), candidate_scheme), new base_string(" not allowed")));
+          return null;
+        }
+      }
+      final immutable_list<immutable_list<Character>> components = base_resource_catalog.path_separator.split(name.skip(scheme_range.end()));
+      return new base_resource_identifier(this.the_resource_store, candidate_scheme, (immutable_list<string>) (immutable_list) components.frozen_copy());
     }
     final immutable_list<immutable_list<Character>> components = base_resource_catalog.path_separator.split(name);
     boolean absolute = false;
@@ -74,7 +89,7 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     } else if (result.is_empty()) {
       result.append(resource_util.CURRENT_CATALOG);
     }
-    return new base_resource_identifier(this.the_resource_store, result.frozen_copy());
+    return new base_resource_identifier(this.the_resource_store, this.the_scheme, result.frozen_copy());
   }
   public @Override resource_identifier resolve(final string name, final @Nullable extension the_extension) {
     if (the_extension != null) {

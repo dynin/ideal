@@ -30,7 +30,17 @@ class base_resource_catalog {
   }
 
   override dictionary[string, resource_identifier] or null get() {
-    return missing.instance;
+    catalog : the_resource_store.read_catalog(the_scheme, path);
+    if (catalog is null) {
+      return missing.instance;
+    }
+
+    result : hash_dictionary[string, resource_identifier].new();
+    for (resource_name : catalog.elements) {
+      result.put(resource_name, resolve(resource_name));
+    }
+
+    return result;
   }
 
   override void set(dictionary[string, resource_identifier] or null new_value) {

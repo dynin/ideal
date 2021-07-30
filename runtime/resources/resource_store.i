@@ -13,4 +13,5 @@ interface resource_store {
   string read_string(string scheme, immutable list[string] path) pure;
   void make_catalog(string scheme, immutable list[string] path);
   void write_string(string scheme, immutable list[string] path, string new_value);
+  readonly set[string] or null read_catalog(string scheme, immutable list[string] path) pure;
 }

@@ -5,6 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 test_suite test_resolver {
+  implicit import ideal.machine.resources;
 
   class test_store {
     extends base_resource_store;
@@ -27,6 +28,11 @@ test_suite test_resolver {
     }
 
     override void make_catalog(string scheme, immutable list[string] path) {
+    }
+
+    override readonly set[string] or null read_catalog(string scheme,
+        immutable list[string] path) pure {
+      return missing.instance;
     }
 
     implement protected string default_scheme() => resource_util.FILE_SCHEME;
@@ -141,5 +147,34 @@ test_suite test_resolver {
 
     bar = bar.parent();
     assert "." == bar.to_string;
+  }
+
+  test_case test_filesystem() {
+    -- This unittest uses the filesystem, making is strictly not a unittest.
+    directory_name : "runtime/resources";
+    file_set : hash_set[string].new();
+    file_set.add_all([
+      "base_extension.i",
+      "base_resource_catalog.i",
+      "base_resource_identifier.i",
+      "base_resource_store.i",
+      "make_catalog_option.i",
+      "resource_store.i",
+      "resource_util.i",
+      "resources.i",
+      "test_resolver.i"
+    ]);
+
+    directory : filesystem.CURRENT_CATALOG.resolve(directory_name).access_catalog();
+    content : directory.content;
+    files : (content !> readonly dictionary[string, resource_identifier]).elements;
+    for (file : files) {
+      name : file.key;
+      assert file.value.to_string == (directory_name ++ "/" ++ name);
+      assert file_set.contains(name);
+      file_set.remove(name);
+    }
+
+    return file_set.is_empty;
   }
 }

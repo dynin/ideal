@@ -20,7 +20,7 @@ package resources {
   interface resource_identifier {
     extends identifier;
 
-   string scheme;
+    string scheme;
 
     -- TODO: make into an immutable reference?
     resource_identifier parent() pure;

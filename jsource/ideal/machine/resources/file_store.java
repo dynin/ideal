@@ -17,6 +17,8 @@ import ideal.runtime.resources.*;
 
 import java.io.*;
 
+import javax.annotation.Nullable;
+
 public class file_store extends base_resource_store {
 
   protected file_store(string path_prefix, boolean is_current) {
@@ -69,6 +71,21 @@ public class file_store extends base_resource_store {
     if (!directory.exists()) {
       directory.mkdirs();
     }
+  }
+
+
+  @Override
+  public @Nullable readonly_set<string> read_catalog(string scheme, immutable_list<string> path) {
+    String name = utilities.s(build_name(scheme, path));
+
+    String[] filenames = new File(name).list();
+    hash_set<string> result = new hash_set<string>();
+
+    for (int i = 0; i < filenames.length; ++i) {
+      result.add(new base_string(filenames[i]));
+    }
+
+    return result;
   }
 
   @Override

@@ -5,6 +5,9 @@ package ideal.runtime.resources;
 import ideal.library.elements.*;
 import ideal.library.resources.*;
 import ideal.runtime.elements.*;
+import ideal.machine.resources.*;
+
+import javax.annotation.Nullable;
 
 public class test_resolver {
   public static class test_store extends base_resource_store {
@@ -22,6 +25,9 @@ public class test_resolver {
     }
     public @Override void write_string(final string scheme, final immutable_list<string> path, final string new_value) { }
     public @Override void make_catalog(final string scheme, final immutable_list<string> path) { }
+    public @Override @Nullable readonly_set<string> read_catalog(final string scheme, final immutable_list<string> path) {
+      return null;
+    }
     protected @Override string default_scheme() {
       return resource_util.FILE_SCHEME;
     }
@@ -105,6 +111,25 @@ public class test_resolver {
     bar = bar.parent();
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("."), bar.to_string());
   }
+  public void test_filesystem() {
+    final string directory_name = new base_string("runtime/resources");
+    final hash_set<string> file_set = new hash_set<string>();
+    file_set.add_all(new base_immutable_list<string>(new ideal.machine.elements.array<string>(new string[]{ new base_string("base_extension.i"), new base_string("base_resource_catalog.i"), new base_string("base_resource_identifier.i"), new base_string("base_resource_store.i"), new base_string("make_catalog_option.i"), new base_string("resource_store.i"), new base_string("resource_util.i"), new base_string("resources.i"), new base_string("test_resolver.i") })));
+    final resource_catalog directory = filesystem.CURRENT_CATALOG.resolve(directory_name).access_catalog();
+    final @Nullable dictionary<string, resource_identifier> content = directory.content().get();
+    final immutable_list<dictionary.entry<string, resource_identifier>> files = ((readonly_dictionary<string, resource_identifier>) content).elements();
+    {
+      final readonly_list<dictionary.entry<string, resource_identifier>> file_list = files;
+      for (int file_index = 0; file_index < file_list.size(); file_index += 1) {
+        final dictionary.entry<string, resource_identifier> file = file_list.get(file_index);
+        final string name = file.key();
+        assert ideal.machine.elements.runtime_util.values_equal(file.value().to_string(), (ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(directory_name, new base_string("/")), name)));
+        assert file_set.contains(name);
+        file_set.remove(name);
+      }
+    }
+    return;
+  }
   public test_resolver() { }
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_file_catalogs"));
@@ -130,6 +155,9 @@ public class test_resolver {
     ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_parent_catalog"));
     this.test_parent_catalog();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_resolver.test_filesystem"));
+    this.test_filesystem();
     ideal.machine.elements.runtime_util.end_test();
   }
 }

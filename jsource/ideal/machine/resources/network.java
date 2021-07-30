@@ -18,6 +18,8 @@ import ideal.runtime.resources.*;
 import java.io.*;
 import java.net.*;
 
+import javax.annotation.Nullable;
+
 public class network extends base_readonly_store {
 
   public static final resource_catalog NETWORK_CATALOG = new network().top();
@@ -28,6 +30,11 @@ public class network extends base_readonly_store {
 
   protected InputStream get_stream(String name) throws IOException {
     return new URL(name).openStream();
+  }
+
+  @Override
+  public @Nullable readonly_set<string> read_catalog(string scheme, immutable_list<string> path) {
+    return null;
   }
 
   @Override

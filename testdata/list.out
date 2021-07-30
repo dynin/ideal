@@ -2869,6 +2869,7 @@
 ==== Loading machine/elements.i
 ==== Loading machine/characters.i
 ==== Loading machine/channels.i
+==== Loading machine/resources.i
 ==== Loading machine/adapters.i
 ==== Loading machine/annotations.i
 ==== Loading library/library.i

@@ -25,7 +25,19 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     return this;
   }
   public @Override @Nullable dictionary<string, resource_identifier> get() {
-    return null;
+    final @Nullable readonly_set<string> catalog = this.the_resource_store.read_catalog(this.the_scheme, this.path);
+    if (catalog == null) {
+      return null;
+    }
+    final hash_dictionary<string, resource_identifier> result = new hash_dictionary<string, resource_identifier>();
+    {
+      final readonly_list<string> resource_name_list = catalog.elements();
+      for (int resource_name_index = 0; resource_name_index < resource_name_list.size(); resource_name_index += 1) {
+        final string resource_name = resource_name_list.get(resource_name_index);
+        result.put(resource_name, this.resolve(resource_name));
+      }
+    }
+    return result;
   }
   public @Override void set(final @Nullable dictionary<string, resource_identifier> new_value) {
     utilities.panic(new base_string("can\'t set a catalog"));

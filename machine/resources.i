@@ -4,11 +4,13 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace machine {
-  namespace elements;
-  namespace characters;
-  namespace channels;
-  namespace resources;
-  namespace adapters;
-  namespace annotations;
+-- Filesystem access endpoints.
+
+import ideal.library.resources.resource_catalog;
+
+namespace resources {
+  namespace filesystem {
+    resource_catalog CURRENT_CATALOG;
+    resource_catalog ROOT;
+  }
 }

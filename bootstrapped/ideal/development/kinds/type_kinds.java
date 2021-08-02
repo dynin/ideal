@@ -20,6 +20,7 @@ public class type_kinds {
   public static final base_kind module_kind = new base_kind(new base_string("module"), flavor_profiles.nameonly_profile, false);
   public static final base_kind namespace_kind = new base_kind(new base_string("namespace"), flavor_profiles.nameonly_profile, false);
   public static final base_kind package_kind = new base_kind(new base_string("package"), flavor_profiles.nameonly_profile, false);
+  public static final base_kind program_kind = new base_kind(new base_string("program"), flavor_profiles.mutable_profile, false);
   public static final base_kind html_content_kind = new base_kind(new base_string("html_content"), flavor_profiles.nameonly_profile, false);
   public static final base_kind singleton_kind = new base_kind(new base_string("singleton"), flavor_profiles.deeply_immutable_profile, false);
   public static final simple_name INSTANCE_NAME = simple_name.make(new base_string("instance"));

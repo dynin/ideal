@@ -167,8 +167,8 @@ test_suite test_resolver {
 
     directory : filesystem.CURRENT_CATALOG.resolve(directory_name).access_catalog();
     content : directory.content;
-    files : (content !> readonly dictionary[string, resource_identifier]).elements;
-    for (file : files) {
+    assert content is_not null;
+    for (file : content.elements) {
       name : file.key;
       assert file.value.to_string == (directory_name ++ "/" ++ name);
       assert file_set.contains(name);

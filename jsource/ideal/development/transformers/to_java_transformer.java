@@ -65,6 +65,9 @@ public class to_java_transformer extends base_transformer {
   private static simple_name STRING_NAME = simple_name.make("string");
   private static simple_name TO_STRING_NAME = simple_name.make("to_string");
   private static simple_name TO_STRING_JAVA = simple_name.make("toString");
+  private static simple_name START_NAME = simple_name.make("start");
+  private static simple_name MAIN_NAME = simple_name.make("main");
+  private static simple_name ARGS_NAME = simple_name.make("args");
 
   public to_java_transformer(java_library java_library) {
     this.java_library = java_library;
@@ -766,7 +769,7 @@ public class to_java_transformer extends base_transformer {
       append_static(annotations, the_origin);
     }
 
-    if (the_kind == test_suite_kind) {
+    if (the_kind == test_suite_kind || the_kind == program_kind) {
       the_kind = class_kind;
     }
 
@@ -946,6 +949,62 @@ public class to_java_transformer extends base_transformer {
       flavored_bodies.get(profile.default_flavor()).append(to_string_procedure);
     }
 
+    if (the_type_declaration.get_kind() == program_kind) {
+      list<annotation_construct> modifier_list = new base_list<annotation_construct>(
+          new modifier_construct(public_modifier, the_origin),
+          new modifier_construct(static_modifier, the_origin));
+      block_construct main_body = new block_construct(
+          new base_list<construct>(
+              new parameter_construct(
+                  new resolve_construct(
+                      new parameter_construct(
+                          new operator_construct(
+                              operator.ALLOCATE,
+                              new name_construct(
+                                  type_name,
+                                  the_origin
+                              ),
+                              the_origin
+                          ),
+                          new empty<construct>(),
+                          grouping_type.PARENS,
+                          the_origin
+                      ),
+                      START_NAME,
+                      the_origin
+                  ),
+                  new empty<construct>(),
+                  grouping_type.PARENS,
+                  the_origin
+              )
+          ),
+          the_origin
+      );
+      procedure_construct main_procedure = new procedure_construct(
+          modifier_list,
+          make_type(library().immutable_void_type(), the_origin),
+          MAIN_NAME,
+          new base_list<construct>(
+              new variable_construct(
+                  new empty<annotation_construct>(),
+                  new parameter_construct(
+                      make_type(java_library.string_type(), the_origin),
+                      new empty<construct>(),
+                      grouping_type.BRACKETS,
+                      the_origin
+                  ),
+                  ARGS_NAME,
+                  new empty<annotation_construct>(),
+                  null,
+                  the_origin
+              )
+          ),
+          new empty<annotation_construct>(),
+          main_body,
+          the_origin);
+      flavored_bodies.get(profile.default_flavor()).append(main_procedure);
+    }
+
     list<construct> type_decls = new base_list<construct>();
 
     immutable_list<type_flavor> type_flavors = supported_no_raw(profile);
@@ -1014,7 +1073,8 @@ public class to_java_transformer extends base_transformer {
   }
 
   private static boolean is_concrete_kind(kind the_kind) {
-    return the_kind == class_kind || the_kind == enum_kind || the_kind == test_suite_kind;
+    return the_kind == class_kind || the_kind == enum_kind || the_kind == test_suite_kind ||
+        the_kind == program_kind;
   }
 
   private procedure_construct var_to_proc(variable_declaration the_variable) {

@@ -117,9 +117,9 @@ public class test_resolver {
     file_set.add_all(new base_immutable_list<string>(new ideal.machine.elements.array<string>(new string[]{ new base_string("base_extension.i"), new base_string("base_resource_catalog.i"), new base_string("base_resource_identifier.i"), new base_string("base_resource_store.i"), new base_string("make_catalog_option.i"), new base_string("resource_store.i"), new base_string("resource_util.i"), new base_string("resources.i"), new base_string("test_resolver.i") })));
     final resource_catalog directory = filesystem.CURRENT_CATALOG.resolve(directory_name).access_catalog();
     final @Nullable dictionary<string, resource_identifier> content = directory.content().get();
-    final immutable_list<dictionary.entry<string, resource_identifier>> files = ((readonly_dictionary<string, resource_identifier>) content).elements();
+    assert content != null;
     {
-      final readonly_list<dictionary.entry<string, resource_identifier>> file_list = files;
+      final readonly_list<dictionary.entry<string, resource_identifier>> file_list = content.elements();
       for (int file_index = 0; file_index < file_list.size(); file_index += 1) {
         final dictionary.entry<string, resource_identifier> file = file_list.get(file_index);
         final string name = file.key();

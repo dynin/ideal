@@ -92,8 +92,6 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/flags/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/tests/*.java
 
-RUNTIME_TESTS_MAIN = runtime/tests/tests_main.java
-
 MACHINE_JAVA = \
     $(JSOURCE_DIR)/ideal/machine/elements/*.java \
     $(JSOURCE_DIR)/ideal/machine/annotations/*.java \
@@ -165,13 +163,12 @@ test_library: $(IDEAL_TARGET) rm-scratch
 
 test_librun: $(IDEAL_TARGET) rm-scratch
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_librun -output=$(SCRATCH_DIR)
-	cp $(RUNTIME_TESTS_MAIN) $(SCRATCH_DIR)/ideal/$(RUNTIME_TESTS_MAIN)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
-	$(JAVA) ideal.runtime.tests.tests_main
+	$(JAVA) ideal.runtime.tests.run_tests
 
 test_librun_run:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
-	$(JAVA) ideal.runtime.tests.tests_main
+	$(JAVA) ideal.runtime.tests.run_tests
 
 compile_runtime:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
@@ -205,6 +202,17 @@ dir: $(IDEAL_TARGET) $(ONETWO)
 
 circle: $(IDEAL_TARGET) $(CIRCLE)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(CIRCLE)
+
+generate_showcase: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_showcase
+
+run_briefing: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_showcase \
+            -output=$(SCRATCH_DIR)
+	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java \
+                 $(SCRATCH_DIR)/ideal/runtime/*/*java \
+                 $(SCRATCH_DIR)/ideal/showcase/*java
+	$(JAVA) ideal.showcase.briefing
 
 xreftest: $(IDEAL_TARGET) $(XREFTEST)
 	$(CREATE) -pretty-print -input=$(XREFTEST)

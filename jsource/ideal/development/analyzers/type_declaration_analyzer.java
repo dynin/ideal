@@ -366,7 +366,9 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
       if (result_type.get_pass().is_before(declaration_pass.METHODS_AND_VARIABLES)) {
         kind the_kind = get_kind();
-        if (the_kind == type_kinds.class_kind || the_kind == type_kinds.test_suite_kind) {
+        if (the_kind == type_kinds.class_kind ||
+            the_kind == type_kinds.test_suite_kind ||
+            the_kind == type_kinds.program_kind) {
           maybe_add_default_constructor();
         }
       }

@@ -573,7 +573,9 @@ public class procedure_analyzer extends declaration_analyzer
     for (int i = 0; i < supertypes.size(); ++i) {
       type supertype = supertypes.get(i);
       kind the_kind = supertype.principal().get_kind();
-      if (the_kind == type_kinds.class_kind || the_kind == type_kinds.test_suite_kind) {
+      if (the_kind == type_kinds.class_kind ||
+          the_kind == type_kinds.test_suite_kind ||
+          the_kind == type_kinds.program_kind) {
         superclasses.append(supertype);
       }
     }

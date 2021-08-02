@@ -19,4 +19,5 @@ namespace tests {
   implicit import ideal.runtime.flags;
 
   namespace all_tests;
+  program run_tests;
 }

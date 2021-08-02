@@ -27,6 +27,8 @@ namespace type_kinds {
 
   package_kind : base_kind.new("package", nameonly_profile, false);
 
+  program_kind : base_kind.new("program", mutable_profile, false);
+
   html_content_kind : base_kind.new("html_content", nameonly_profile, false);
 
   singleton_kind : base_kind.new("singleton", deeply_immutable_profile, false);

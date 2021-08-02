@@ -122,6 +122,7 @@ public class common_scanner extends base_scanner_config {
     // add_kind(type_kinds.typedecl_kind);
     add_kind(type_kinds.singleton_kind);
     add_kind(type_kinds.package_kind);
+    add_kind(type_kinds.program_kind);
     add_kind(type_kinds.module_kind);
     add_kind(type_kinds.concept_kind); // TODO: factor out bootstrap_scanner
     add_kind(type_kinds.enum_kind);

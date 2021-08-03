@@ -34,15 +34,15 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
     this.state.reserve(this.size() + the_collection.size());
     {
       final readonly_list<element_type> the_element_list = the_collection.elements();
-      for (int the_element_index = 0; the_element_index < the_element_list.size(); the_element_index += 1) {
+      for (Integer the_element_index = 0; the_element_index < the_element_list.size(); the_element_index += 1) {
         final element_type the_element = the_element_list.get(the_element_index);
         this.do_add(the_element);
       }
     }
   }
   private void do_add(final element_type the_value) {
-    final int hash = this.equivalence.hash(the_value);
-    final int index = this.state.bucket_index(hash);
+    final Integer hash = this.equivalence.hash(the_value);
+    final Integer index = this.state.bucket_index(hash);
     @Nullable base_hash_set.hash_cell<element_type> entry = this.state.the_buckets.at(index).get();
     if (entry == null) {
       this.state.the_buckets.set(index, new base_hash_set.hash_cell<element_type>(the_value, hash));
@@ -50,7 +50,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
       return;
     }
     while (true) {
-      if (hash == entry.the_hash && this.equivalence.call(the_value, entry.the_value)) {
+      if (runtime_util.values_equal(hash, entry.the_hash) && this.equivalence.call(the_value, entry.the_value)) {
         return;
       }
       final @Nullable base_hash_set.hash_cell<element_type> next = entry.next;
@@ -65,13 +65,13 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
   }
   public @Override boolean remove(final element_type the_element) {
     this.copy_on_write();
-    final int hash = this.equivalence.hash(the_element);
-    final int index = this.state.bucket_index(hash);
+    final Integer hash = this.equivalence.hash(the_element);
+    final Integer index = this.state.bucket_index(hash);
     @Nullable base_hash_set.hash_cell<element_type> entry = this.state.the_buckets.at(index).get();
     if (entry == null) {
       return false;
     }
-    if (hash == entry.the_hash && this.equivalence.call(the_element, entry.the_value)) {
+    if (runtime_util.values_equal(hash, entry.the_hash) && this.equivalence.call(the_element, entry.the_value)) {
       this.state.the_buckets.set(index, entry.next);
       this.decrement_size();
       return true;
@@ -81,7 +81,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
       if (next == null) {
         return false;
       }
-      if (hash == next.the_hash && this.equivalence.call(the_element, next.the_value)) {
+      if (runtime_util.values_equal(hash, next.the_hash) && this.equivalence.call(the_element, next.the_value)) {
         entry.next = next.next;
         this.decrement_size();
         return true;
@@ -90,7 +90,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
     }
   }
   private void decrement_size() {
-    final int new_size = this.state.size - 1;
+    final Integer new_size = this.state.size - 1;
     assert new_size >= 0;
     this.state.size = new_size;
   }

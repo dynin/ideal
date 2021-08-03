@@ -3,11 +3,11 @@
 package ideal.library.elements;
 
 public interface readonly_list<element> extends readonly_collection<element>, any_list<element> {
-  element get(int index);
+  element get(Integer index);
   element first();
   element last();
-  immutable_list<element> skip(int count);
-  immutable_list<element> slice(int begin, int end);
+  immutable_list<element> skip(Integer count);
+  immutable_list<element> slice(Integer begin, Integer end);
   immutable_list<element> frozen_copy();
   boolean has(predicate<element> the_predicate);
 }

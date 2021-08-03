@@ -16,13 +16,13 @@ public class test_output_transformer {
     the_appender.write(new base_string("bar"));
     the_appender.write(new base_string("baz"));
     final immutable_list<string> elements = the_appender.elements();
-    assert elements.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(elements.size(), 3);
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(0), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(1), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(2), new base_string("baz"));
     the_appender.write_all(elements);
     final immutable_list<string> more_elements = the_appender.elements();
-    assert more_elements.size() == 6;
+    assert ideal.machine.elements.runtime_util.values_equal(more_elements.size(), 6);
     assert ideal.machine.elements.runtime_util.values_equal(more_elements.get(0), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(more_elements.get(1), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(more_elements.get(2), new base_string("baz"));
@@ -41,7 +41,7 @@ public class test_output_transformer {
     the_transformer.write(new base_string("bar"));
     the_transformer.write(new base_string("baz"));
     final immutable_list<string> elements = the_appender.elements();
-    assert elements.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(elements.size(), 3);
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(0), new base_string("+foo!"));
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(1), new base_string("+bar!"));
     assert ideal.machine.elements.runtime_util.values_equal(elements.get(2), new base_string("+baz!"));

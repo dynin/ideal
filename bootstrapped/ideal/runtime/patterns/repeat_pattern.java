@@ -19,7 +19,7 @@ public class repeat_pattern<element_type> extends base_pattern<element_type> {
     ((validatable) this.the_pattern).validate();
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
-    int index = 0;
+    Integer index = 0;
     while (index < the_list.size()) {
       final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
       if (match == null) {
@@ -34,7 +34,7 @@ public class repeat_pattern<element_type> extends base_pattern<element_type> {
     if (the_list.is_empty()) {
       return true;
     }
-    int index = 0;
+    Integer index = 0;
     while (index < the_list.size()) {
       final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
       if (match == null) {
@@ -43,10 +43,10 @@ public class repeat_pattern<element_type> extends base_pattern<element_type> {
       assert match > 0;
       index += match;
     }
-    return index == the_list.size() || this.the_pattern.is_viable_prefix(the_list.skip(index));
+    return ideal.machine.elements.runtime_util.values_equal(index, the_list.size()) || this.the_pattern.is_viable_prefix(the_list.skip(index));
   }
   public @Override @Nullable Integer match_prefix(final readonly_list<element_type> the_list) {
-    int index = 0;
+    Integer index = 0;
     while (index < the_list.size()) {
       final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
       if (match == null) {
@@ -55,23 +55,23 @@ public class repeat_pattern<element_type> extends base_pattern<element_type> {
       assert match > 0;
       index += match;
     }
-    if (index == 0 && !this.do_match_empty) {
+    if (ideal.machine.elements.runtime_util.values_equal(index, 0) && !this.do_match_empty) {
       return null;
     } else {
       return index;
     }
   }
-  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final int start_index) {
+  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final Integer start_index) {
     assert start_index <= the_list.size();
     if (this.do_match_empty) {
-      if (start_index == the_list.size() || this.the_pattern.match_prefix(the_list.skip(start_index)) == null) {
+      if (ideal.machine.elements.runtime_util.values_equal(start_index, the_list.size()) || this.the_pattern.match_prefix(the_list.skip(start_index)) == null) {
         return new base_range(start_index, start_index);
       }
     }
-    for (int i = start_index; i < the_list.size(); i += 1) {
+    for (Integer i = start_index; i < the_list.size(); i += 1) {
       final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(i));
       if (match != null) {
-        final int start_range = i;
+        final Integer start_range = i;
         assert match > 0;
         i += match;
         while (i < the_list.size()) {

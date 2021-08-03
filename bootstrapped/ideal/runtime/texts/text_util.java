@@ -50,7 +50,7 @@ public class text_util {
     final base_list<text_node> nodes = new base_list<text_node>();
     {
       final readonly_list<text_fragment> fragment_list = fragments;
-      for (int fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
+      for (Integer fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
         final text_fragment fragment = fragment_list.get(fragment_index);
         text_util.append(nodes, fragment);
       }
@@ -79,13 +79,13 @@ public class text_util {
     return text_util.to_fragment(nodes);
   }
   public static attribute_fragment join_attributes(final readonly_list<attribute_fragment> fragments) {
-    if (fragments.size() == 1) {
+    if (ideal.machine.elements.runtime_util.values_equal(fragments.size(), 1)) {
       return fragments.first();
     }
     final base_list<attribute_fragment> result_fragments = new base_list<attribute_fragment>();
     {
       final readonly_list<attribute_fragment> fragment_list = fragments;
-      for (int fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
+      for (Integer fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
         final attribute_fragment fragment = fragment_list.get(fragment_index);
         result_fragments.append(fragment);
       }
@@ -107,7 +107,7 @@ public class text_util {
   private static text_fragment to_fragment(final readonly_list<text_node> nodes) {
     if (nodes.is_empty()) {
       return text_util.EMPTY_FRAGMENT;
-    } else if (nodes.size() == 1) {
+    } else if (ideal.machine.elements.runtime_util.values_equal(nodes.size(), 1)) {
       return nodes.first();
     } else {
       return new base_list_text_node(nodes);

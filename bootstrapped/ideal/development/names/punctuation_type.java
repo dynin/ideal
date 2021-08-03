@@ -9,7 +9,7 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class punctuation_type extends base_token_type {
-  public punctuation_type(final string name, final int base_symbol) {
+  public punctuation_type(final string name, final Integer base_symbol) {
     super(name, base_symbol);
   }
   public punctuation_type(final string name) {

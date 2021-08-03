@@ -15,7 +15,7 @@ public class repeat_matcher<element_type, result_type, intermediate_type> extend
     this.list_converter = list_converter;
   }
   public @Override result_type parse(final readonly_list<element_type> the_list) {
-    int index = 0;
+    Integer index = 0;
     final base_list<intermediate_type> intermediate_list = new base_list<intermediate_type>();
     while (index < the_list.size()) {
       final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));

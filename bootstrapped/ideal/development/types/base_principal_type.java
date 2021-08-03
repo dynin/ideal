@@ -54,7 +54,7 @@ public abstract class base_principal_type extends base_type implements principal
     assert this.the_flavor_profile == null;
     {
       final readonly_list<type_flavor> flavor_list = flavor.all_flavors;
-      for (int flavor_index = 0; flavor_index < flavor_list.size(); flavor_index += 1) {
+      for (Integer flavor_index = 0; flavor_index < flavor_list.size(); flavor_index += 1) {
         final type_flavor flavor = flavor_list.get(flavor_index);
         if (!the_flavor_profile.supports(flavor)) {
           if (((type_flavor_impl) flavor).types.contains_key(this)) {
@@ -68,7 +68,7 @@ public abstract class base_principal_type extends base_type implements principal
   public declaration_pass get_pass() {
     return this.last_pass;
   }
-  public @Override final @Nullable declaration get_declaration() {
+  public final @Override @Nullable declaration get_declaration() {
     return this.the_declaration;
   }
   public void set_declaration(final declaration the_declaration) {
@@ -91,7 +91,7 @@ public abstract class base_principal_type extends base_type implements principal
     }
   }
   protected final void do_declare(final declaration_pass pass) {
-    assert pass.ordinal() == this.last_pass.ordinal() + 1;
+    assert ideal.machine.elements.runtime_util.values_equal(pass.ordinal(), this.last_pass.ordinal() + 1);
     this.last_pass = pass;
     this.do_declare_actual(pass);
   }
@@ -102,7 +102,7 @@ public abstract class base_principal_type extends base_type implements principal
     the_context.declare_type(this, pass);
   }
   public abstract flavor_profile default_flavor_profile();
-  public @Override final string to_string() {
+  public final @Override string to_string() {
     return this.describe(type_format.FULL);
   }
 }

@@ -9,22 +9,22 @@ public class test_hash_set {
     final hash_set<string> set = new hash_set<string>();
     assert set.is_empty();
     assert !set.is_not_empty();
-    assert set.size() == 0;
+    assert ideal.machine.elements.runtime_util.values_equal(set.size(), 0);
     final hash_set<string> set2 = new hash_set<string>();
     set2.add(new base_string("value"));
-    assert set2.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 1);
     assert !set2.is_empty();
     assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
     assert !set2.contains(new base_string("notfound"));
     set2.add(new base_string("value"));
-    assert set2.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 1);
     assert !set2.is_empty();
     assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
     assert !set2.contains(new base_string("notfound"));
     set2.add(new base_string("value2"));
-    assert set2.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 2);
     assert !set2.is_empty();
     assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
@@ -32,8 +32,8 @@ public class test_hash_set {
     assert !set2.contains(new base_string("notfound"));
     final immutable_set<string> set3 = set2.frozen_copy();
     set2.add(new base_string("value3"));
-    assert set2.size() == 3;
-    assert set3.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 3);
+    assert ideal.machine.elements.runtime_util.values_equal(set3.size(), 2);
     assert !set3.is_empty();
     assert set3.is_not_empty();
     assert set3.contains(new base_string("value"));
@@ -42,42 +42,42 @@ public class test_hash_set {
     assert !set3.contains(new base_string("value3"));
     final boolean removed2 = set2.remove(new base_string("value2"));
     assert removed2;
-    assert set2.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 2);
     assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
     assert !set2.contains(new base_string("value2"));
     assert set2.contains(new base_string("value3"));
     final boolean removed3 = set2.remove(new base_string("value3"));
     assert removed3;
-    assert set2.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 1);
     assert set2.is_not_empty();
     assert set2.contains(new base_string("value"));
     assert !set2.contains(new base_string("value2"));
     assert !set2.contains(new base_string("value3"));
     final boolean not_removed = set2.remove(new base_string("foo"));
     assert !not_removed;
-    assert set2.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 1);
     assert set2.is_not_empty();
     final boolean removed = set2.remove(new base_string("value"));
     assert removed;
     assert set2.is_empty();
     assert !set2.is_not_empty();
-    assert set2.size() == 0;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 0);
     assert !set2.contains(new base_string("value"));
     assert !set2.contains(new base_string("value2"));
     assert !set2.contains(new base_string("value3"));
   }
   public void test_set_updates() {
     final hash_set<string> set = new hash_set<string>();
-    for (int max = 0; max < 68; max += 1) {
+    for (Integer max = 0; max < 68; max += 1) {
       set.add(ideal.machine.elements.runtime_util.concatenate(new base_string("v"), max));
-      assert set.size() == max + 1;
-      for (int i = 0; i <= max; i += 1) {
+      assert ideal.machine.elements.runtime_util.values_equal(set.size(), max + 1);
+      for (Integer i = 0; i <= max; i += 1) {
         assert set.contains(ideal.machine.elements.runtime_util.concatenate(new base_string("v"), i));
       }
       final immutable_set<string> set_copy = set.frozen_copy();
-      assert set_copy.size() == max + 1;
-      for (int i = 0; i <= max; i += 1) {
+      assert ideal.machine.elements.runtime_util.values_equal(set_copy.size(), max + 1);
+      for (Integer i = 0; i <= max; i += 1) {
         assert set_copy.contains(ideal.machine.elements.runtime_util.concatenate(new base_string("v"), i));
       }
     }
@@ -87,7 +87,7 @@ public class test_hash_set {
     set1.add(new base_string("a"));
     set1.add(new base_string("b"));
     set1.add(new base_string("c"));
-    assert set1.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(set1.size(), 3);
     assert set1.contains(new base_string("a"));
     assert set1.contains(new base_string("b"));
     assert set1.contains(new base_string("c"));
@@ -96,13 +96,13 @@ public class test_hash_set {
     set2.add(new base_string("b"));
     set2.add(new base_string("c"));
     set2.add(new base_string("d"));
-    assert set2.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(set2.size(), 3);
     assert !set2.contains(new base_string("a"));
     assert set2.contains(new base_string("b"));
     assert set2.contains(new base_string("c"));
     assert set2.contains(new base_string("d"));
     set1.add_all(set2);
-    assert set1.size() == 4;
+    assert ideal.machine.elements.runtime_util.values_equal(set1.size(), 4);
     assert set1.contains(new base_string("a"));
     assert set1.contains(new base_string("b"));
     assert set1.contains(new base_string("c"));

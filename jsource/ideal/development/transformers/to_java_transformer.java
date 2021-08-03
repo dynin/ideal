@@ -489,11 +489,22 @@ public class to_java_transformer extends base_transformer {
 
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
+        if (principal == library().void_type()) {
+          break;
+        } else if (principal == library().boolean_type()) {
+          principal = java_library.boolean_type();
+          break;
+        } else if (principal == library().character_type()) {
+          principal = java_library.char_type();
+          break;
+        }
+        /*
         @Nullable principal_type mapped = java_library.map_to_primitive(principal);
         if (mapped != null) {
           principal = mapped;
         }
         break;
+        */
       case MAP_TO_WRAPPER_TYPE:
       case MAP_PRESERVE_ALIAS:
         @Nullable simple_name mapped_name = java_library.map_to_wrapper(principal);
@@ -1576,15 +1587,21 @@ public class to_java_transformer extends base_transformer {
     return false;
   }
 
+  public boolean is_mapped(principal_type the_type) {
+    return the_type == library().boolean_type() ||
+           the_type == library().character_type() ||
+           the_type == library().void_type();
+  }
+
   private boolean is_java_primitive(action the_action) {
-    boolean result = java_library.is_mapped(result_type(the_action).principal());
+    boolean result = is_mapped(result_type(the_action).principal());
     if (result) {
       return true;
     }
 
     if (the_action instanceof promotion_action) {
       the_action = ((promotion_action) the_action).get_action();
-      return java_library.is_mapped(result_type(the_action).principal());
+      return is_mapped(result_type(the_action).principal());
     }
 
     return false;

@@ -9,7 +9,7 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class keyword extends base_token_type {
-  public keyword(final string name, final int the_symbol) {
+  public keyword(final string name, final Integer the_symbol) {
     super(name, the_symbol);
   }
   public keyword(final string name) {

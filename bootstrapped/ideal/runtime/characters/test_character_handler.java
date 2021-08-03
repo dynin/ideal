@@ -26,13 +26,13 @@ public class test_character_handler {
     assert !the_character_handler.is_digit('?');
   }
   public void digit_test() {
-    assert radix.MINIMUM_RADIX == 2;
-    assert radix.DEFAULT_RADIX == 10;
-    assert radix.MAXIMUM_RADIX == 36;
+    assert ideal.machine.elements.runtime_util.values_equal(radix.MINIMUM_RADIX, 2);
+    assert ideal.machine.elements.runtime_util.values_equal(radix.DEFAULT_RADIX, 10);
+    assert ideal.machine.elements.runtime_util.values_equal(radix.MAXIMUM_RADIX, 36);
     final normal_handler the_character_handler = normal_handler.instance;
-    assert the_character_handler.from_digit('0', radix.DEFAULT_RADIX) == 0;
-    assert the_character_handler.from_digit('5', radix.DEFAULT_RADIX) == 5;
-    assert the_character_handler.from_digit('F', 16) == 15;
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.from_digit('0', radix.DEFAULT_RADIX), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.from_digit('5', radix.DEFAULT_RADIX), 5);
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.from_digit('F', 16), 15);
     assert the_character_handler.from_digit('X', 16) == null;
   }
   public void conversion_test() {

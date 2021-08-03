@@ -18,7 +18,7 @@ public class flags_utilities {
   public static final option_pattern<Character> separator_pattern = new option_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) (pattern) new singleton_pattern<Character>('='), new singleton_pattern<Character>(':') })));
   public static dictionary<string, string> parse_flags(final readonly_list<string> arguments, final procedure1<Void, string> error_reporter) {
     final hash_dictionary<string, string> arg_dictionary = new hash_dictionary<string, string>();
-    int index;
+    Integer index;
     for (index = 0; index < arguments.size(); index += 1) {
       final string argument = arguments.get(index);
       if (flags_utilities.dash_pattern.match_prefix(argument) != null) {
@@ -41,7 +41,7 @@ public class flags_utilities {
     final string_writer result = new string_writer();
     {
       final readonly_list<Character> c_list = (readonly_list<Character>) the_string;
-      for (int c_index = 0; c_index < c_list.size(); c_index += 1) {
+      for (Integer c_index = 0; c_index < c_list.size(); c_index += 1) {
         final char c = c_list.get(c_index);
         if (c != '-' && c != '_') {
           result.write(normal_handler.instance.to_lower_case(c));

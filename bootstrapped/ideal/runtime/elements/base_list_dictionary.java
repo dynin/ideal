@@ -30,7 +30,7 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
     }
   }
   protected final equivalence_relation<key_type> equivalence;
-  protected int the_size;
+  protected Integer the_size;
   protected @Nullable base_list_dictionary.entry_cell<key_type, value_type> entries;
   protected base_list_dictionary(final equivalence_relation<key_type> equivalence) {
     this.equivalence = equivalence;
@@ -62,14 +62,14 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
     }
     return copy;
   }
-  public @Override int size() {
+  public @Override Integer size() {
     return this.the_size;
   }
   public @Override boolean is_empty() {
-    return this.the_size == 0;
+    return ideal.machine.elements.runtime_util.values_equal(this.the_size, 0);
   }
   public @Override boolean is_not_empty() {
-    return this.the_size != 0;
+    return !ideal.machine.elements.runtime_util.values_equal(this.the_size, 0);
   }
   public @Override immutable_list<dictionary.entry<key_type, value_type>> elements() {
     if (this.is_empty()) {

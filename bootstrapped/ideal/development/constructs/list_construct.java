@@ -12,7 +12,7 @@ public class list_construct extends base_construct {
   public final grouping_type grouping;
   public final boolean has_trailing_comma;
   public boolean is_simple_grouping() {
-    return this.the_elements.size() == 1 && !this.has_trailing_comma;
+    return ideal.machine.elements.runtime_util.values_equal(this.the_elements.size(), 1) && !this.has_trailing_comma;
   }
   public list_construct(final readonly_list<construct> the_elements, final grouping_type grouping, final boolean has_trailing_comma, final origin generated_origin) {
     super(generated_origin);

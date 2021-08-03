@@ -21,8 +21,8 @@ public class base_immutable_list<element_type> extends base_readonly_list<elemen
       return this;
     }
     final base_readonly_list.list_state<element_type> reversed = new base_readonly_list.list_state<element_type>(this.size());
-    for (int i = 0; i < this.size(); i += 1) {
-      final int new_index = this.size() - 1 - i;
+    for (Integer i = 0; i < this.size(); i += 1) {
+      final Integer new_index = this.size() - 1 - i;
       assert new_index >= 0;
       reversed.the_elements.set(new_index, this.state.the_elements.at(i).get());
     }

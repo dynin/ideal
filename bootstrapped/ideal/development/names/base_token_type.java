@@ -12,8 +12,8 @@ import ideal.machine.annotations.dont_display;
 
 public class base_token_type extends debuggable implements token_type, readonly_displayable {
   private final string the_name;
-  private final @dont_display int the_symbol;
-  public base_token_type(final string name, final int the_symbol) {
+  private final @dont_display Integer the_symbol;
+  public base_token_type(final string name, final Integer the_symbol) {
     assert name.is_not_empty();
     this.the_name = name;
     this.the_symbol = the_symbol;
@@ -24,7 +24,7 @@ public class base_token_type extends debuggable implements token_type, readonly_
   public @Override string name() {
     return this.the_name;
   }
-  public @Override int symbol() {
+  public @Override Integer symbol() {
     return this.the_symbol;
   }
   public @Override string to_string() {

@@ -8,20 +8,20 @@ import ideal.machine.channels.string_writer;
 public class test_string_writer {
   public void basic_test() {
     final string_writer the_writer = new string_writer();
-    assert the_writer.size() == 0;
+    assert ideal.machine.elements.runtime_util.values_equal(the_writer.size(), 0);
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string(""));
     the_writer.write_all(new base_string("foo"));
-    assert the_writer.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(the_writer.size(), 3);
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string("foo"));
     the_writer.write('b');
     the_writer.write('a');
     the_writer.write('r');
-    assert the_writer.size() == 6;
+    assert ideal.machine.elements.runtime_util.values_equal(the_writer.size(), 6);
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string("foobar"));
     final string elements = the_writer.elements();
     the_writer.clear();
     assert ideal.machine.elements.runtime_util.values_equal(elements, new base_string("foobar"));
-    assert the_writer.size() == 0;
+    assert ideal.machine.elements.runtime_util.values_equal(the_writer.size(), 0);
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.elements(), new base_string(""));
   }
   public test_string_writer() { }

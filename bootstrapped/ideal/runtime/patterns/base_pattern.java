@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 public abstract class base_pattern<element_type> extends debuggable implements validatable, pattern<element_type> {
   public @Override immutable_list<immutable_list<element_type>> split(final immutable_list<element_type> the_list) {
     final base_list<immutable_list<element_type>> result = new base_list<immutable_list<element_type>>();
-    int index = 0;
+    Integer index = 0;
     while (true) {
       final @Nullable range match = this.find_first(the_list, index);
       if (match != null) {

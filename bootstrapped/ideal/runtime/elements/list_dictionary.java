@@ -55,7 +55,7 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
     if (this.equivalence.call(key, entry.key())) {
       final value_type old_value = entry.value();
       this.entries = entry.next;
-      final int new_size = this.the_size - 1;
+      final Integer new_size = this.the_size - 1;
       assert new_size >= 0;
       this.the_size = new_size;
       return old_value;
@@ -68,7 +68,7 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
       if (this.equivalence.call(key, next_entry.key())) {
         final value_type old_value = next_entry.value();
         entry.next = next_entry.next;
-        final int new_size = this.the_size - 1;
+        final Integer new_size = this.the_size - 1;
         assert new_size >= 0;
         this.the_size = new_size;
         return old_value;

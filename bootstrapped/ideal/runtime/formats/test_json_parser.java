@@ -14,21 +14,21 @@ public class test_json_parser {
   public void test_tokenizer() {
     final json_parser parser = this.make_parser();
     final list<Object> words = parser.test_tokenize(new base_string("  \"foo\"  \"bar\" "));
-    assert words.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(words.size(), 2);
     assert ideal.machine.elements.runtime_util.values_equal(words.at(0).get(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(words.at(1).get(), new base_string("bar"));
     final list<Object> words2 = parser.test_tokenize(new base_string("[ \"foo\" , \"bar\", -68  ] "));
-    assert words2.size() == 7;
+    assert ideal.machine.elements.runtime_util.values_equal(words2.size(), 7);
     assert words2.at(0).get() == json_token.OPEN_BRACKET;
     assert ideal.machine.elements.runtime_util.values_equal(words2.at(1).get(), new base_string("foo"));
     assert words2.at(2).get() == json_token.COMMA;
     assert ideal.machine.elements.runtime_util.values_equal(words2.at(3).get(), new base_string("bar"));
     assert words2.at(4).get() == json_token.COMMA;
     final Object w5 = words2.at(5).get();
-    assert ((int) w5) == -68;
+    assert ideal.machine.elements.runtime_util.values_equal(((Integer) w5), -68);
     assert words2.at(6).get() == json_token.CLOSE_BRACKET;
     final list<Object> words3 = parser.test_tokenize(new base_string("{ \"foo\" : \"bar\", \"baz\":68, \"x\":\"\\\"y\\\"\" } "));
-    assert words3.size() == 13;
+    assert ideal.machine.elements.runtime_util.values_equal(words3.size(), 13);
     assert words3.at(0).get() == json_token.OPEN_BRACE;
     assert ideal.machine.elements.runtime_util.values_equal(words3.at(1).get(), new base_string("foo"));
     assert words3.at(2).get() == json_token.COLON;
@@ -37,17 +37,17 @@ public class test_json_parser {
     assert ideal.machine.elements.runtime_util.values_equal(words3.at(5).get(), new base_string("baz"));
     assert words3.at(6).get() == json_token.COLON;
     final Object w7 = words3.at(7).get();
-    assert ((int) w7) == 68;
+    assert ideal.machine.elements.runtime_util.values_equal(((Integer) w7), 68);
     assert words3.at(8).get() == json_token.COMMA;
     assert ideal.machine.elements.runtime_util.values_equal(words3.at(9).get(), new base_string("x"));
     assert words3.at(10).get() == json_token.COLON;
     assert ideal.machine.elements.runtime_util.values_equal(words3.at(11).get(), new base_string("\"y\""));
     assert words3.at(12).get() == json_token.CLOSE_BRACE;
     final list<Object> words4 = parser.test_tokenize(new base_string(" \"special: \\\\ \\u0066\\u006f\\u006f\" "));
-    assert words4.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(words4.size(), 1);
     assert ideal.machine.elements.runtime_util.values_equal(words4.at(0).get(), new base_string("special: \\ foo"));
     final list<Object> words5 = parser.test_tokenize(new base_string("[ true , false, null ] "));
-    assert words5.size() == 7;
+    assert ideal.machine.elements.runtime_util.values_equal(words5.size(), 7);
     assert words5.at(0).get() == json_token.OPEN_BRACKET;
     final Object w51 = words5.at(1).get();
     assert (boolean) w51;
@@ -64,24 +64,24 @@ public class test_json_parser {
     final Object parsed0 = parser.parse(new base_string(" \"foo\" "));
     assert ideal.machine.elements.runtime_util.values_equal(parsed0, new base_string("foo"));
     final Object parsed1 = parser.parse(new base_string(" 68 "));
-    assert ((int) parsed1) == 68;
+    assert ideal.machine.elements.runtime_util.values_equal(((Integer) parsed1), 68);
     final Object parsed2 = parser.parse(new base_string(" false "));
     assert ((boolean) parsed2) == false;
     final readonly_dictionary<string, Object> parsed3 = (readonly_dictionary<string, Object>) parser.parse(new base_string("{ \"foo\" : \"bar\", \"baz\":68 } "));
-    assert parsed3.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(parsed3.size(), 2);
     assert ideal.machine.elements.runtime_util.values_equal(parsed3.get(new base_string("foo")), new base_string("bar"));
-    assert ((int) parsed3.get(new base_string("baz"))) == 68;
+    assert ideal.machine.elements.runtime_util.values_equal(((Integer) parsed3.get(new base_string("baz"))), 68);
     final readonly_list<Object> parsed4 = (readonly_list<Object>) parser.parse(new base_string("[ \"foo\" , \"bar\", -68  ] "));
-    assert parsed4.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(parsed4.size(), 3);
     assert ideal.machine.elements.runtime_util.values_equal(parsed4.get(0), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(parsed4.get(1), new base_string("bar"));
-    assert ((int) parsed4.get(2)) == -68;
+    assert ideal.machine.elements.runtime_util.values_equal(((Integer) parsed4.get(2)), -68);
     final readonly_dictionary<string, Object> parsed5 = (readonly_dictionary<string, Object>) parser.parse(new base_string("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } "));
-    assert parsed5.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(parsed5.size(), 2);
     final readonly_list<Object> the_object = (readonly_list<Object>) parsed5.get(new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(the_object.get(0), new base_string("bar"));
     assert ((boolean) the_object.get(1)) == true;
-    assert ((int) parsed5.get(new base_string("baz"))) == -68;
+    assert ideal.machine.elements.runtime_util.values_equal(((Integer) parsed5.get(new base_string("baz"))), -68);
   }
   public test_json_parser() { }
   public void run_all_tests() {

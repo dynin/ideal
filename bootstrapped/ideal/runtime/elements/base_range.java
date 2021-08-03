@@ -5,29 +5,29 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 
 public class base_range implements range {
-  private final int the_begin;
-  private final int the_end;
-  public base_range(final int the_begin, final int the_end) {
+  private final Integer the_begin;
+  private final Integer the_end;
+  public base_range(final Integer the_begin, final Integer the_end) {
     assert the_begin <= the_end;
     this.the_begin = the_begin;
     this.the_end = the_end;
   }
-  public @Override int begin() {
+  public @Override Integer begin() {
     return this.the_begin;
   }
-  public @Override int end() {
+  public @Override Integer end() {
     return this.the_end;
   }
-  public @Override int size() {
-    final int the_size = this.the_end - this.the_begin;
+  public @Override Integer size() {
+    final Integer the_size = this.the_end - this.the_begin;
     assert the_size >= 0;
     return the_size;
   }
   public @Override boolean is_empty() {
-    return this.the_begin == this.the_end;
+    return ideal.machine.elements.runtime_util.values_equal(this.the_begin, this.the_end);
   }
   public @Override boolean is_not_empty() {
-    return this.the_begin != this.the_end;
+    return !ideal.machine.elements.runtime_util.values_equal(this.the_begin, this.the_end);
   }
   public @Override Integer first() {
     assert this.is_not_empty();
@@ -35,12 +35,12 @@ public class base_range implements range {
   }
   public @Override Integer last() {
     assert this.is_not_empty();
-    final int result = this.the_end - 1;
+    final Integer result = this.the_end - 1;
     assert result >= 0;
     return result;
   }
-  public @Override Integer get(final int index) {
-    final int result = this.the_begin + index;
+  public @Override Integer get(final Integer index) {
+    final Integer result = this.the_begin + index;
     assert result < this.the_end;
     return result;
   }
@@ -50,28 +50,28 @@ public class base_range implements range {
   public @Override range frozen_copy() {
     return this;
   }
-  public @Override range skip(final int count) {
-    final int new_begin = this.the_begin + count;
+  public @Override range skip(final Integer count) {
+    final Integer new_begin = this.the_begin + count;
     assert new_begin <= this.the_end;
     return new base_range(new_begin, this.the_end);
   }
-  public @Override range slice(final int slice_begin, final int slice_end) {
-    final int new_begin = this.the_begin + slice_begin;
-    final int new_end = this.the_begin + slice_end;
+  public @Override range slice(final Integer slice_begin, final Integer slice_end) {
+    final Integer new_begin = this.the_begin + slice_begin;
+    final Integer new_end = this.the_begin + slice_end;
     assert new_begin <= new_end;
     return new base_range(new_begin, new_end);
   }
   public @Override immutable_list<Integer> reverse() {
     final base_list<Integer> result = new base_list<Integer>();
-    for (int value = this.the_end - 1; value >= this.the_begin; value -= 1) {
-      final int nonnegative_value = value;
+    for (Integer value = this.the_end - 1; value >= this.the_begin; value -= 1) {
+      final Integer nonnegative_value = value;
       assert nonnegative_value >= 0;
       result.append(nonnegative_value);
     }
     return result.frozen_copy();
   }
   public @Override boolean has(final predicate<Integer> the_predicate) {
-    for (int value = this.the_begin; value < this.the_end; value += 1) {
+    for (Integer value = this.the_begin; value < this.the_end; value += 1) {
       if (the_predicate.call(value)) {
         return true;
       }

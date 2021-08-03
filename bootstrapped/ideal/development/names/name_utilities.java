@@ -19,12 +19,12 @@ public class name_utilities {
   public static string in_brackets(final readonly_stringable name) {
     return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("<"), name.to_string()), new base_string(">"));
   }
-  public static simple_name make_numbered_name(final int index) {
-    if (index == 0) {
+  public static simple_name make_numbered_name(final Integer index) {
+    if (ideal.machine.elements.runtime_util.values_equal(index, 0)) {
       return name_utilities.FIRST;
-    } else if (index == 1) {
+    } else if (ideal.machine.elements.runtime_util.values_equal(index, 1)) {
       return name_utilities.SECOND;
-    } else if (index == 2) {
+    } else if (ideal.machine.elements.runtime_util.values_equal(index, 2)) {
       return name_utilities.THIRD;
     } else {
       {
@@ -41,7 +41,7 @@ public class name_utilities {
   }
   public static simple_name parse_camel_case(final string name) {
     final base_list<string> segments = new base_list<string>();
-    int index = 0;
+    Integer index = 0;
     while (index < name.size()) {
       final string_writer the_writer = new string_writer();
       while (index < name.size() && name_utilities.the_character_handler.is_upper_case(name.get(index))) {

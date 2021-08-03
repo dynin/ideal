@@ -5,7 +5,7 @@ package ideal.library.characters;
 import ideal.library.elements.*;
 
 public class radix {
-  public static final int MINIMUM_RADIX = 2;
-  public static final int DEFAULT_RADIX = 10;
-  public static final int MAXIMUM_RADIX = 36;
+  public static final Integer MINIMUM_RADIX = 2;
+  public static final Integer DEFAULT_RADIX = 10;
+  public static final Integer MAXIMUM_RADIX = 36;
 }

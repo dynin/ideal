@@ -27,7 +27,7 @@ public class base_list_text_node extends debuggable implements list_text_node {
     final string_writer the_writer = new string_writer();
     {
       final readonly_list<text_node> node_list = this.the_nodes;
-      for (int node_index = 0; node_index < node_list.size(); node_index += 1) {
+      for (Integer node_index = 0; node_index < node_list.size(); node_index += 1) {
         final text_node node = node_list.get(node_index);
         the_writer.write_all(node.to_string());
       }

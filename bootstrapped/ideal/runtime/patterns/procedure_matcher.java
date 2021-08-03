@@ -27,7 +27,7 @@ public class procedure_matcher<element_type, result_type> implements validatable
   public @Override @Nullable Integer match_prefix(final readonly_list<element_type> the_list) {
     return this.the_pattern.match_prefix(the_list);
   }
-  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final int start_index) {
+  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final Integer start_index) {
     return this.the_pattern.find_first(the_list, start_index);
   }
   public immutable_list<immutable_list<element_type>> split(final immutable_list<element_type> the_list) {

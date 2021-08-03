@@ -14,13 +14,13 @@ public class list_pattern<element_type> extends base_pattern<element_type> {
     this.element_list = element_list.frozen_copy();
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
-    return the_list.size() == this.element_list.size() && this.is_viable_prefix(the_list);
+    return ideal.machine.elements.runtime_util.values_equal(the_list.size(), this.element_list.size()) && this.is_viable_prefix(the_list);
   }
   public @Override boolean is_viable_prefix(final readonly_list<element_type> the_list) {
     if (the_list.size() > this.element_list.size()) {
       return false;
     }
-    for (int index = 0; index < the_list.size(); index += 1) {
+    for (Integer index = 0; index < the_list.size(); index += 1) {
       if (!ideal.machine.elements.runtime_util.values_equal(the_list.get(index), this.element_list.get(index))) {
         return false;
       }
@@ -28,16 +28,16 @@ public class list_pattern<element_type> extends base_pattern<element_type> {
     return true;
   }
   public @Override @Nullable Integer match_prefix(final readonly_list<element_type> the_list) {
-    final int elements_size = this.element_list.size();
+    final Integer elements_size = this.element_list.size();
     if (the_list.size() >= elements_size && this.call(the_list.slice(0, elements_size))) {
       return elements_size;
     } else {
       return null;
     }
   }
-  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, int start_index) {
-    final int elements_size = this.element_list.size();
-    int index = start_index;
+  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, Integer start_index) {
+    final Integer elements_size = this.element_list.size();
+    Integer index = start_index;
     while (elements_size + index <= the_list.size()) {
       if (this.call(the_list.slice(index, index + elements_size))) {
         return new base_range(index, index + elements_size);

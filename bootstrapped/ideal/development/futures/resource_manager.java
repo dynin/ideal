@@ -13,7 +13,7 @@ public abstract class resource_manager implements lifespan {
   public @Override void dispose() {
     {
       final readonly_list<disposable> resource_list = this.resources.elements();
-      for (int resource_index = 0; resource_index < resource_list.size(); resource_index += 1) {
+      for (Integer resource_index = 0; resource_index < resource_list.size(); resource_index += 1) {
         final disposable resource = resource_list.get(resource_index);
         resource.dispose();
       }

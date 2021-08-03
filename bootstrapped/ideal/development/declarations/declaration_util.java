@@ -48,7 +48,7 @@ public class declaration_util {
     final base_list<type_declaration> result = new base_list<type_declaration>();
     {
       final readonly_list<declaration> the_declaration_list = the_type_declaration.get_signature();
-      for (int the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
+      for (Integer the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
         final declaration the_declaration = the_declaration_list.get(the_declaration_index);
         if (the_declaration instanceof type_declaration) {
           result.append(((type_declaration) the_declaration));
@@ -61,7 +61,7 @@ public class declaration_util {
     final base_list<supertype_declaration> result = new base_list<supertype_declaration>();
     {
       final readonly_list<declaration> the_declaration_list = the_type_declaration.get_signature();
-      for (int the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
+      for (Integer the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
         final declaration the_declaration = the_declaration_list.get(the_declaration_index);
         if (the_declaration instanceof supertype_declaration) {
           result.append(((supertype_declaration) the_declaration));
@@ -74,7 +74,7 @@ public class declaration_util {
     final base_list<variable_declaration> result = new base_list<variable_declaration>();
     {
       final readonly_list<declaration> the_declaration_list = the_type_declaration.get_signature();
-      for (int the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
+      for (Integer the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
         final declaration the_declaration = the_declaration_list.get(the_declaration_index);
         if (the_declaration instanceof variable_declaration) {
           result.append(((variable_declaration) the_declaration));
@@ -87,7 +87,7 @@ public class declaration_util {
     final base_list<procedure_declaration> result = new base_list<procedure_declaration>();
     {
       final readonly_list<declaration> the_declaration_list = the_type_declaration.get_signature();
-      for (int the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
+      for (Integer the_declaration_index = 0; the_declaration_index < the_declaration_list.size(); the_declaration_index += 1) {
         final declaration the_declaration = the_declaration_list.get(the_declaration_index);
         if (the_declaration instanceof procedure_declaration) {
           result.append(((procedure_declaration) the_declaration));

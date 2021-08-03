@@ -9,22 +9,22 @@ public class test_hash_dictionary {
     final hash_dictionary<string, string> dict = new hash_dictionary<string, string>();
     assert dict.is_empty();
     assert !dict.is_not_empty();
-    assert dict.size() == 0;
+    assert ideal.machine.elements.runtime_util.values_equal(dict.size(), 0);
     final hash_dictionary<string, string> dict2 = new hash_dictionary<string, string>();
     dict2.put(new base_string("key"), new base_string("value"));
-    assert dict2.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(dict2.size(), 1);
     assert !dict2.is_empty();
     assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("value"));
     assert dict2.get(new base_string("notfound")) == null;
     dict2.put(new base_string("key"), new base_string("new_value"));
-    assert dict2.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(dict2.size(), 1);
     assert !dict2.is_empty();
     assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("new_value"));
     assert dict2.get(new base_string("notfound")) == null;
     dict2.put(new base_string("key2"), new base_string("bar"));
-    assert dict2.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(dict2.size(), 2);
     assert !dict2.is_empty();
     assert dict2.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("new_value"));
@@ -32,15 +32,15 @@ public class test_hash_dictionary {
     assert dict2.get(new base_string("notfound")) == null;
     final immutable_dictionary<string, string> dict3 = dict2.frozen_copy();
     dict2.put(new base_string("key3"), new base_string("baz"));
-    assert dict2.size() == 3;
-    assert dict3.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(dict2.size(), 3);
+    assert ideal.machine.elements.runtime_util.values_equal(dict3.size(), 2);
     assert !dict3.is_empty();
     assert dict3.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key")), new base_string("new_value"));
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key2")), new base_string("bar"));
     assert dict3.get(new base_string("notfound")) == null;
     dict2.remove(new base_string("key2"));
-    assert dict2.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(dict2.size(), 2);
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key")), new base_string("new_value"));
     assert ideal.machine.elements.runtime_util.values_equal(dict2.get(new base_string("key3")), new base_string("baz"));
     assert dict2.get(new base_string("key2")) == null;
@@ -49,7 +49,7 @@ public class test_hash_dictionary {
     final hash_dictionary<string, string> dict2 = new hash_dictionary<string, string>();
     dict2.put(new base_string("key"), new base_string("value"));
     final immutable_dictionary<string, string> dict2i = dict2.frozen_copy();
-    assert dict2i.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(dict2i.size(), 1);
     assert !dict2i.is_empty();
     assert dict2i.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2i.get(new base_string("key")), new base_string("value"));
@@ -57,15 +57,15 @@ public class test_hash_dictionary {
   }
   public void test_dictionary_updates() {
     final hash_dictionary<string, string> dict = new hash_dictionary<string, string>();
-    for (int max = 0; max < 68; max += 1) {
+    for (Integer max = 0; max < 68; max += 1) {
       dict.put(ideal.machine.elements.runtime_util.concatenate(new base_string("k"), max), ideal.machine.elements.runtime_util.concatenate(new base_string("v"), max));
-      assert dict.size() == max + 1;
-      for (int i = 0; i <= max; i += 1) {
+      assert ideal.machine.elements.runtime_util.values_equal(dict.size(), max + 1);
+      for (Integer i = 0; i <= max; i += 1) {
         assert ideal.machine.elements.runtime_util.values_equal(dict.get(ideal.machine.elements.runtime_util.concatenate(new base_string("k"), i)), ideal.machine.elements.runtime_util.concatenate(new base_string("v"), i));
       }
       final immutable_dictionary<string, string> dict_copy = dict.frozen_copy();
-      assert dict_copy.size() == max + 1;
-      for (int i = 0; i <= max; i += 1) {
+      assert ideal.machine.elements.runtime_util.values_equal(dict_copy.size(), max + 1);
+      for (Integer i = 0; i <= max; i += 1) {
         assert ideal.machine.elements.runtime_util.values_equal(dict_copy.get(ideal.machine.elements.runtime_util.concatenate(new base_string("k"), i)), ideal.machine.elements.runtime_util.concatenate(new base_string("v"), i));
       }
     }

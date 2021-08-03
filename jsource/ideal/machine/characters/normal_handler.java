@@ -41,7 +41,7 @@ public class normal_handler implements character_handler {
   }
 
   @Override
-  public @Nullable Integer from_digit(char the_character, int radix) {
+  public @Nullable Integer from_digit(char the_character, Integer radix) {
     int result = Character.digit(the_character, radix);
     return result >= 0 ? result : null;
   }
@@ -52,8 +52,8 @@ public class normal_handler implements character_handler {
   }
 
   @Override
-  public char from_code(int code) {
+  public char from_code(Integer code) {
     assert code >= 0 && code <= 0xFFFF;
-    return (char) code;
+    return (char) (int) code;
   }
 }

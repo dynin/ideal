@@ -30,14 +30,14 @@ public class source_content extends debuggable implements deeply_immutable_data,
   public @Override @Nullable origin deeper_origin() {
     return null;
   }
-  public origin make_origin(final int begin, final int end) {
+  public origin make_origin(final Integer begin, final Integer end) {
     return new text_origin(this, begin, end);
   }
-  public int line_number(final text_origin the_text_origin) {
+  public Integer line_number(final text_origin the_text_origin) {
     assert the_text_origin.source == this;
     assert the_text_origin.begin <= this.content.size();
-    int count = 0;
-    for (int i = 0; i < the_text_origin.begin; i += 1) {
+    Integer count = 0;
+    for (Integer i = 0; i < the_text_origin.begin; i += 1) {
       if (this.content.get(i) == '\n') {
         count += 1;
       }

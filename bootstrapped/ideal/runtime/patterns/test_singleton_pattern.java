@@ -25,9 +25,9 @@ public class test_singleton_pattern {
   public void test_match_prefix() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
     assert the_pattern.match_prefix(new base_string("")) == null;
-    assert the_pattern.match_prefix(new base_string("x")) == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(the_pattern.match_prefix(new base_string("x")), 1);
     assert the_pattern.match_prefix(new base_string("y")) == null;
-    assert the_pattern.match_prefix(new base_string("xx")) == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(the_pattern.match_prefix(new base_string("xx")), 1);
   }
   public void test_find_first() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
@@ -36,12 +36,12 @@ public class test_singleton_pattern {
     assert the_pattern.find_first(new base_string("xfoo"), 1) == null;
     final @Nullable range match = the_pattern.find_first(new base_string("x"), 0);
     assert match != null;
-    assert match.begin() == 0;
-    assert match.end() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(match.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(match.end(), 1);
     final @Nullable range match2 = the_pattern.find_first(new base_string("xyzzyxy"), 2);
     assert match2 != null;
-    assert match2.begin() == 5;
-    assert match2.end() == 6;
+    assert ideal.machine.elements.runtime_util.values_equal(match2.begin(), 5);
+    assert ideal.machine.elements.runtime_util.values_equal(match2.end(), 6);
   }
   public void test_find_last() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
@@ -51,33 +51,33 @@ public class test_singleton_pattern {
     assert the_pattern.find_last(new base_string("foox"), 3) == null;
     final @Nullable range match = the_pattern.find_last(new base_string("x"), 1);
     assert match != null;
-    assert match.begin() == 0;
-    assert match.end() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(match.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(match.end(), 1);
     final @Nullable range match2 = the_pattern.find_last(new base_string("xyzzyxy"), 6);
     assert match2 != null;
-    assert match2.begin() == 5;
-    assert match2.end() == 6;
+    assert ideal.machine.elements.runtime_util.values_equal(match2.begin(), 5);
+    assert ideal.machine.elements.runtime_util.values_equal(match2.end(), 6);
     final @Nullable range match3 = the_pattern.find_last(new base_string("xyzzyxy"), 4);
     assert match3 != null;
-    assert match3.begin() == 0;
-    assert match3.end() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(match3.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(match3.end(), 1);
     final @Nullable range match4 = the_pattern.find_last(new base_string("xyzzyxy"), null);
     assert match4 != null;
-    assert match4.begin() == 5;
-    assert match4.end() == 6;
+    assert ideal.machine.elements.runtime_util.values_equal(match4.begin(), 5);
+    assert ideal.machine.elements.runtime_util.values_equal(match4.end(), 6);
   }
   public void test_split() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
     final immutable_list<immutable_list<Character>> split0 = the_pattern.split(new base_string("foo"));
-    assert split0.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(split0.size(), 1);
     assert this.equals(split0.get(0), new base_string("foo"));
     final immutable_list<immutable_list<Character>> split1 = the_pattern.split(new base_string("fooxbarx"));
-    assert split1.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(split1.size(), 3);
     assert this.equals(split1.get(0), new base_string("foo"));
     assert this.equals(split1.get(1), new base_string("bar"));
     assert this.equals(split1.get(2), new base_string(""));
     final immutable_list<immutable_list<Character>> split2 = the_pattern.split(new base_string("x1x2x3"));
-    assert split2.size() == 4;
+    assert ideal.machine.elements.runtime_util.values_equal(split2.size(), 4);
     assert this.equals(split2.get(0), new base_string(""));
     assert this.equals(split2.get(1), new base_string("1"));
     assert this.equals(split2.get(2), new base_string("2"));

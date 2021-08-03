@@ -3,7 +3,7 @@
 package ideal.library.elements;
 
 public interface readonly_collection<element> extends readonly_composite_value, any_collection<element> {
-  int size();
+  Integer size();
   boolean is_empty();
   boolean is_not_empty();
   immutable_list<element> elements();

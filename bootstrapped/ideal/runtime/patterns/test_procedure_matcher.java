@@ -50,12 +50,12 @@ public class test_procedure_matcher {
   public void test_match_prefix() {
     final matcher<Character, string> the_pattern = this.make_matcher();
     assert the_pattern.match_prefix(new base_string("")) == null;
-    assert the_pattern.match_prefix(new base_string("a")) == 1;
-    assert the_pattern.match_prefix(new base_string("abc")) == 3;
-    assert the_pattern.match_prefix(new base_string("abcdef")) == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(the_pattern.match_prefix(new base_string("a")), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(the_pattern.match_prefix(new base_string("abc")), 3);
+    assert ideal.machine.elements.runtime_util.values_equal(the_pattern.match_prefix(new base_string("abcdef")), 3);
     assert the_pattern.match_prefix(new base_string("x")) == null;
     assert the_pattern.match_prefix(new base_string("xabc")) == null;
-    assert the_pattern.match_prefix(new base_string("abcabc")) == 6;
+    assert ideal.machine.elements.runtime_util.values_equal(the_pattern.match_prefix(new base_string("abcabc")), 6);
   }
   public void test_find_first() {
     final matcher<Character, string> the_pattern = this.make_matcher();
@@ -64,29 +64,29 @@ public class test_procedure_matcher {
     assert the_pattern.find_first(new base_string("bfoo"), 1) == null;
     final @Nullable range match = the_pattern.find_first(new base_string("a"), 0);
     assert match != null;
-    assert match.begin() == 0;
-    assert match.end() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(match.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(match.end(), 1);
     final @Nullable range match2 = the_pattern.find_first(new base_string("-abc-"), 0);
     assert match2 != null;
-    assert match2.begin() == 1;
-    assert match2.end() == 4;
+    assert ideal.machine.elements.runtime_util.values_equal(match2.begin(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(match2.end(), 4);
     final @Nullable range match3 = the_pattern.find_first(new base_string("ayzzybacy"), 2);
     assert match3 != null;
-    assert match3.begin() == 5;
-    assert match3.end() == 8;
+    assert ideal.machine.elements.runtime_util.values_equal(match3.begin(), 5);
+    assert ideal.machine.elements.runtime_util.values_equal(match3.end(), 8);
   }
   public void test_split() {
     final matcher<Character, string> the_pattern = this.make_matcher();
     final immutable_list<immutable_list<Character>> split0 = the_pattern.split(new base_string("foo"));
-    assert split0.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(split0.size(), 1);
     assert this.equals(split0.get(0), new base_string("foo"));
     final immutable_list<immutable_list<Character>> split1 = the_pattern.split(new base_string("fooabcxyzc"));
-    assert split1.size() == 3;
+    assert ideal.machine.elements.runtime_util.values_equal(split1.size(), 3);
     assert this.equals(split1.get(0), new base_string("foo"));
     assert this.equals(split1.get(1), new base_string("xyz"));
     assert this.equals(split1.get(2), new base_string(""));
     final immutable_list<immutable_list<Character>> split2 = the_pattern.split(new base_string("ab1bc2ca3"));
-    assert split2.size() == 4;
+    assert ideal.machine.elements.runtime_util.values_equal(split2.size(), 4);
     assert this.equals(split2.get(0), new base_string(""));
     assert this.equals(split2.get(1), new base_string("1"));
     assert this.equals(split2.get(2), new base_string("2"));

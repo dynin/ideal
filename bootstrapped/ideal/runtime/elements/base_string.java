@@ -94,14 +94,14 @@ public class base_string extends debuggable implements string, string_text_node 
     the_writer.write_all(chars);
     return the_writer.elements();
   }
-  public @Override int size() {
+  public @Override Integer size() {
     return this.state.length();
   }
   public @Override boolean is_empty() {
-    return this.state.length() == 0;
+    return ideal.machine.elements.runtime_util.values_equal(this.state.length(), 0);
   }
   public @Override boolean is_not_empty() {
-    return this.state.length() != 0;
+    return !ideal.machine.elements.runtime_util.values_equal(this.state.length(), 0);
   }
   public @Override Character first() {
     assert this.is_not_empty();
@@ -111,7 +111,7 @@ public class base_string extends debuggable implements string, string_text_node 
     assert this.is_not_empty();
     return this.state.charAt(this.state.length() - 1);
   }
-  public @Override Character get(final int index) {
+  public @Override Character get(final Integer index) {
     return this.state.charAt(index);
   }
   public @Override immutable_list<Character> elements() {
@@ -120,17 +120,17 @@ public class base_string extends debuggable implements string, string_text_node 
   public @Override immutable_list<Character> frozen_copy() {
     return this;
   }
-  public @Override string skip(final int count) {
+  public @Override string skip(final Integer count) {
     return new base_string(this.state.substring(count));
   }
-  public @Override string slice(final int begin, final int end) {
+  public @Override string slice(final Integer begin, final Integer end) {
     return new base_string(this.state.substring(begin, end));
   }
   public @Override string reverse() {
     return new base_string(new StringBuilder(this.state).reverse().toString());
   }
   public @Override boolean has(final predicate<Character> the_predicate) {
-    for (int index = 0; index < this.state.length(); index += 1) {
+    for (Integer index = 0; index < this.state.length(); index += 1) {
       if (the_predicate.call(this.state.charAt(index))) {
         return true;
       }

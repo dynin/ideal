@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 
 public class empty<element_type> implements immutable_list<element_type>, immutable_set<element_type> {
   public empty() { }
-  public @Override int size() {
+  public @Override Integer size() {
     return 0;
   }
   public @Override boolean is_empty() {
@@ -30,7 +30,7 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
   public @Override boolean contains(final element_type key) {
     return false;
   }
-  public @Override element_type get(final int index) {
+  public @Override element_type get(final Integer index) {
     {
       utilities.panic(new base_string("Empty list"));
       return null;
@@ -42,12 +42,12 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
   public @Override empty<element_type> frozen_copy() {
     return this;
   }
-  public @Override immutable_list<element_type> skip(final int count) {
-    assert count == 0;
+  public @Override immutable_list<element_type> skip(final Integer count) {
+    assert ideal.machine.elements.runtime_util.values_equal(count, 0);
     return this;
   }
-  public @Override immutable_list<element_type> slice(final int begin, final int end) {
-    assert begin == 0 && end == 0;
+  public @Override immutable_list<element_type> slice(final Integer begin, final Integer end) {
+    assert ideal.machine.elements.runtime_util.values_equal(begin, 0) && ideal.machine.elements.runtime_util.values_equal(end, 0);
     return this;
   }
   public @Override immutable_list<element_type> reverse() {

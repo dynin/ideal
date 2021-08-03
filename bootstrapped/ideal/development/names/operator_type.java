@@ -10,8 +10,8 @@ import ideal.development.symbols.base_symbols;
 
 public class operator_type extends debuggable implements identifier, readonly_displayable {
   public final string name;
-  public final int arity;
-  private operator_type(final string name, final int arity) {
+  public final Integer arity;
+  private operator_type(final string name, final Integer arity) {
     this.name = name;
     this.arity = arity;
   }

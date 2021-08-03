@@ -8,7 +8,7 @@ import ideal.machine.elements.array;
 public class test_array {
   public void test_creation() {
     final array<string> the_array = new array<string>(10);
-    assert the_array.size == 10;
+    assert ideal.machine.elements.runtime_util.values_equal(the_array.size, 10);
   }
   public void test_access() {
     final array<string> the_array = new array<string>(10);
@@ -30,7 +30,7 @@ public class test_array {
   }
   public void test_initializer() {
     final immutable_list<string> the_array = new base_immutable_list<string>(new array<string>(new string[]{ new base_string("foo"), new base_string("bar") }));
-    assert the_array.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(the_array.size(), 2);
     assert ideal.machine.elements.runtime_util.values_equal(the_array.get(0), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(the_array.get(1), new base_string("bar"));
   }

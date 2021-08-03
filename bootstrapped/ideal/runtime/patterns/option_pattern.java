@@ -26,7 +26,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
     assert this.options.size() > 1;
     {
       final readonly_list<pattern<element_type>> option_list = this.options;
-      for (int option_index = 0; option_index < option_list.size(); option_index += 1) {
+      for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
         ((validatable) option).validate();
         assert !option.call(new empty<element_type>());
@@ -36,7 +36,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
   public @Override Boolean call(final readonly_list<element_type> the_list) {
     {
       final readonly_list<pattern<element_type>> option_list = this.options;
-      for (int option_index = 0; option_index < option_list.size(); option_index += 1) {
+      for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
         if (option.call(the_list)) {
           return true;
@@ -51,7 +51,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
     }
     {
       final readonly_list<pattern<element_type>> option_list = this.options;
-      for (int option_index = 0; option_index < option_list.size(); option_index += 1) {
+      for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
         if (option.is_viable_prefix(the_list)) {
           return true;
@@ -64,7 +64,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
     @Nullable Integer result = null;
     {
       final readonly_list<pattern<element_type>> option_list = this.options;
-      for (int option_index = 0; option_index < option_list.size(); option_index += 1) {
+      for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
         final @Nullable Integer match = option.match_prefix(the_list);
         if (match != null) {
@@ -76,11 +76,11 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
     }
     return result;
   }
-  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, int start_index) {
+  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, Integer start_index) {
     @Nullable range result = null;
     {
       final readonly_list<pattern<element_type>> option_list = this.options;
-      for (int option_index = 0; option_index < option_list.size(); option_index += 1) {
+      for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
         final @Nullable range match = option.find_first(the_list, start_index);
         if (match == null) {
@@ -88,7 +88,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
         }
         if (result == null) {
           result = match;
-        } else if (match.begin() < result.begin() || (match.begin() == result.begin() && match.end() > result.end())) {
+        } else if (match.begin() < result.begin() || (ideal.machine.elements.runtime_util.values_equal(match.begin(), result.begin()) && match.end() > result.end())) {
           result = match;
         }
       }

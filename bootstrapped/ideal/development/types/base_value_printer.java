@@ -53,7 +53,7 @@ public class base_value_printer extends debuggable implements value_printer {
       boolean first = true;
       {
         final readonly_list<simple_name> name_list = full_names;
-        for (int name_index = 0; name_index < name_list.size(); name_index += 1) {
+        for (Integer name_index = 0; name_index < name_list.size(); name_index += 1) {
           final simple_name name = name_list.get(name_index);
           if (first) {
             first = false;
@@ -68,7 +68,7 @@ public class base_value_printer extends debuggable implements value_printer {
   }
   private string print_union_type(final principal_type the_type) {
     final immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(the_type);
-    assert parameters.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(parameters.size(), 2);
     return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(this.print_value(parameters.get(0)), new base_string(" or ")), this.print_value(parameters.get(1)));
   }
   private string print_parameters(final parametrized_type the_type) {
@@ -78,7 +78,7 @@ public class base_value_printer extends debuggable implements value_printer {
     boolean first = true;
     {
       final readonly_list<abstract_value> parameter_list = parameters;
-      for (int parameter_index = 0; parameter_index < parameter_list.size(); parameter_index += 1) {
+      for (Integer parameter_index = 0; parameter_index < parameter_list.size(); parameter_index += 1) {
         final abstract_value parameter = parameter_list.get(parameter_index);
         if (first) {
           first = false;

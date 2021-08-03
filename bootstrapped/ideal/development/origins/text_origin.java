@@ -18,9 +18,9 @@ import ideal.machine.annotations.dont_display;
 
 public class text_origin extends debuggable implements deeply_immutable_data, origin, stringable {
   public @dont_display final source_content source;
-  public @dont_display final int begin;
-  public @dont_display final int end;
-  public text_origin(final source_content source, final int begin, final int end) {
+  public @dont_display final Integer begin;
+  public @dont_display final Integer end;
+  public text_origin(final source_content source, final Integer begin, final Integer end) {
     this.source = source;
     this.begin = begin;
     this.end = end;

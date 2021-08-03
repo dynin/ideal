@@ -16,8 +16,8 @@ public class sequence_matcher<element_type, result_type> extends sequence_patter
   }
   public @Override result_type parse(final readonly_list<element_type> the_list) {
     final base_list<Object> matches = new base_list<Object>();
-    int index = 0;
-    int prefix = 0;
+    Integer index = 0;
+    Integer prefix = 0;
     while (index < this.patterns_list.size()) {
       final pattern<element_type> pattern_element = this.patterns_list.get(index);
       final @Nullable Integer match = pattern_element.match_prefix(the_list.skip(prefix));
@@ -31,7 +31,7 @@ public class sequence_matcher<element_type, result_type> extends sequence_patter
       prefix += match;
       index += 1;
     }
-    assert prefix == the_list.size();
+    assert ideal.machine.elements.runtime_util.values_equal(prefix, the_list.size());
     return this.matcher_procedure.call(matches);
   }
 }

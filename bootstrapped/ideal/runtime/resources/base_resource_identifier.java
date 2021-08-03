@@ -18,7 +18,7 @@ public class base_resource_identifier extends debuggable implements resource_ide
     this.path = path;
   }
   public @Override base_resource_identifier parent() {
-    final int parent_path_size = this.path.size() - 1;
+    final Integer parent_path_size = this.path.size() - 1;
     if (parent_path_size >= 0) {
       final immutable_list<string> parent_path = this.path.slice(0, parent_path_size);
       return new base_resource_identifier(this.the_resource_store, this.the_scheme, this.path.slice(0, parent_path_size));

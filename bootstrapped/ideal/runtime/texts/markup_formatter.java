@@ -80,7 +80,7 @@ public class markup_formatter extends text_formatter {
     this.indent += 1;
   }
   private void do_unindent() {
-    final int new_indent = this.indent - 1;
+    final Integer new_indent = this.indent - 1;
     assert new_indent >= 0;
     this.indent = new_indent;
   }
@@ -108,7 +108,7 @@ public class markup_formatter extends text_formatter {
   private void write_tag_attributes(final readonly_dictionary<attribute_id, attribute_fragment> attributes) {
     {
       final readonly_list<dictionary.entry<attribute_id, attribute_fragment>> attribute_list = attributes.elements();
-      for (int attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
+      for (Integer attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
         final dictionary.entry<attribute_id, attribute_fragment> attribute = attribute_list.get(attribute_index);
         this.write_string(markup_formatter.ATTRIBUTE_SEPARATOR);
         this.write_escaped(attribute.key().short_name());

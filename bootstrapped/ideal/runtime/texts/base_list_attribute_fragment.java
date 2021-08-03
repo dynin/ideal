@@ -27,7 +27,7 @@ public class base_list_attribute_fragment extends debuggable implements list_att
     final string_writer the_writer = new string_writer();
     {
       final readonly_list<attribute_fragment> node_list = this.the_fragments;
-      for (int node_index = 0; node_index < node_list.size(); node_index += 1) {
+      for (Integer node_index = 0; node_index < node_list.size(); node_index += 1) {
         final attribute_fragment node = node_list.get(node_index);
         the_writer.write_all(node.to_string());
       }

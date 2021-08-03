@@ -12,7 +12,7 @@ import ideal.machine.channels.string_writer;
 import javax.annotation.Nullable;
 
 public class plain_formatter extends text_formatter {
-  private int chars_written;
+  private Integer chars_written;
   private final list<underline_style> underline_stack;
   private final string_writer carets;
   private static final char SPACE = ' ';
@@ -52,7 +52,7 @@ public class plain_formatter extends text_formatter {
         this.write_newline();
       }
       if (text_util.is_indent(element)) {
-        final int new_indent = this.indent - 1;
+        final Integer new_indent = this.indent - 1;
         assert new_indent >= 0;
         this.indent = new_indent;
       }
@@ -85,10 +85,10 @@ public class plain_formatter extends text_formatter {
       while (this.carets.size() < this.chars_written) {
         this.carets.write(plain_formatter.SPACE);
       }
-      final int last_underline_index = this.underline_stack.size() - 1;
+      final Integer last_underline_index = this.underline_stack.size() - 1;
       assert last_underline_index >= 0;
       final char underline_character = this.underline_stack.at(last_underline_index).get().display_character;
-      for (int i = 0; i < the_string.size(); i += 1) {
+      for (Integer i = 0; i < the_string.size(); i += 1) {
         this.carets.write(underline_character);
       }
     }

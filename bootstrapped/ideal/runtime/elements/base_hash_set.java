@@ -9,26 +9,26 @@ import javax.annotation.Nullable;
 
 public abstract class base_hash_set<element_type> implements readonly_set<element_type> {
   public static class parameters {
-    public static final int default_size = 16;
+    public static final Integer default_size = 16;
   }
   protected static class hash_cell<element_type> {
     protected final element_type the_value;
-    protected final int the_hash;
+    protected final Integer the_hash;
     protected @Nullable base_hash_set.hash_cell<element_type> next;
-    public hash_cell(final element_type the_value, final int the_hash, final @Nullable base_hash_set.hash_cell<element_type> next) {
+    public hash_cell(final element_type the_value, final Integer the_hash, final @Nullable base_hash_set.hash_cell<element_type> next) {
       this.the_value = the_value;
       this.the_hash = the_hash;
       this.next = next;
     }
-    public hash_cell(final element_type the_value, final int the_hash) {
+    public hash_cell(final element_type the_value, final Integer the_hash) {
       this(the_value, the_hash, null);
     }
   }
   protected static class set_state<element_type> {
     public boolean writable;
     public array<base_hash_set.hash_cell<element_type>> the_buckets;
-    public int size;
-    public set_state(final int initial_size) {
+    public Integer size;
+    public set_state(final Integer initial_size) {
       this.writable = true;
       this.the_buckets = new array<base_hash_set.hash_cell<element_type>>(initial_size);
       this.size = 0;
@@ -37,26 +37,26 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
       this(base_hash_set.parameters.default_size);
     }
     protected void clear() {
-      if (this.size != 0) {
+      if (!ideal.machine.elements.runtime_util.values_equal(this.size, 0)) {
         this.the_buckets = new array<base_hash_set.hash_cell<element_type>>(base_hash_set.parameters.default_size);
         this.size = 0;
       }
     }
-    public void reserve(final int reserve_size) {
+    public void reserve(final Integer reserve_size) {
       if (this.the_buckets.size >= reserve_size) {
         return;
       }
-      int new_size = this.the_buckets.size * 2;
+      Integer new_size = this.the_buckets.size * 2;
       if (new_size < reserve_size) {
         new_size = reserve_size;
       }
       final array<base_hash_set.hash_cell<element_type>> old_buckets = this.the_buckets;
       this.the_buckets = new array<base_hash_set.hash_cell<element_type>>(new_size);
-      for (int i = 0; i < old_buckets.size; i += 1) {
+      for (Integer i = 0; i < old_buckets.size; i += 1) {
         @Nullable base_hash_set.hash_cell<element_type> bucket = old_buckets.at(i).get();
         while (bucket != null) {
           final @Nullable base_hash_set.hash_cell<element_type> old_next = bucket.next;
-          final int new_index = this.bucket_index(bucket.the_hash);
+          final Integer new_index = this.bucket_index(bucket.the_hash);
           bucket.next = this.the_buckets.at(new_index).get();
           this.the_buckets.set(new_index, bucket);
           bucket = old_next;
@@ -64,15 +64,15 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
       }
       old_buckets.scrub(0, old_buckets.size);
     }
-    protected int bucket_index(final int hash) {
-      final int bucket_size = this.the_buckets.size;
-      final int index = ((hash % bucket_size) + bucket_size) % bucket_size;
+    protected Integer bucket_index(final Integer hash) {
+      final Integer bucket_size = this.the_buckets.size;
+      final Integer index = ((hash % bucket_size) + bucket_size) % bucket_size;
       assert index >= 0;
       return index;
     }
     protected base_hash_set.set_state<element_type> copy() {
       final base_hash_set.set_state<element_type> result = new base_hash_set.set_state<element_type>(this.the_buckets.size);
-      for (int i = 0; i < this.the_buckets.size; i += 1) {
+      for (Integer i = 0; i < this.the_buckets.size; i += 1) {
         @Nullable base_hash_set.hash_cell<element_type> bucket = this.the_buckets.at(i).get();
         while (bucket != null) {
           final base_hash_set.hash_cell<element_type> new_cell = new base_hash_set.hash_cell<element_type>(bucket.the_value, bucket.the_hash, result.the_buckets.at(i).get());
@@ -94,21 +94,21 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
     this.equivalence = equivalence;
     this.state = state;
   }
-  public @Override int size() {
+  public @Override Integer size() {
     return this.state.size;
   }
   public @Override boolean is_empty() {
-    return this.state.size == 0;
+    return ideal.machine.elements.runtime_util.values_equal(this.state.size, 0);
   }
   public @Override boolean is_not_empty() {
-    return this.state.size != 0;
+    return !ideal.machine.elements.runtime_util.values_equal(this.state.size, 0);
   }
   public @Override immutable_list<element_type> elements() {
     if (this.is_empty()) {
       return new empty<element_type>();
     }
     final base_list<element_type> result = new base_list<element_type>();
-    for (int i = 0; i < this.state.the_buckets.size; i += 1) {
+    for (Integer i = 0; i < this.state.the_buckets.size; i += 1) {
       for (@Nullable base_hash_set.hash_cell<element_type> entry = this.state.the_buckets.at(i).get(); entry != null; entry = entry.next) {
         result.append(entry.the_value);
       }
@@ -120,10 +120,10 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
   }
   public @Override boolean contains(final element_type key) {
     assert key != null;
-    final int hash = this.equivalence.hash(key);
+    final Integer hash = this.equivalence.hash(key);
     final @Nullable base_hash_set.hash_cell<element_type> bucket = this.state.the_buckets.at(this.state.bucket_index(hash)).get();
     for (@Nullable base_hash_set.hash_cell<element_type> entry = bucket; entry != null; entry = entry.next) {
-      if (hash == entry.the_hash && this.equivalence.call(key, entry.the_value)) {
+      if (ideal.machine.elements.runtime_util.values_equal(hash, entry.the_hash) && this.equivalence.call(key, entry.the_value)) {
         return true;
       }
     }

@@ -7,11 +7,11 @@ import ideal.machine.elements.runtime_util;
 
 public class test_runtime_util {
   private static class test1 implements data, equality_comparable {
-    public test1(final int i, final string s) {
+    public test1(final Integer i, final string s) {
       this.i = i;
       this.s = s;
     }
-    public final int i;
+    public final Integer i;
     public final string s;
   }
   private final test_runtime_util.test1 v1;
@@ -29,14 +29,14 @@ public class test_runtime_util {
     assert runtime_util.values_equal(runtime_util.short_class_name(new base_string("Hi")), new base_string("base_string"));
   }
   public void test_hash_code() {
-    final int hash1 = runtime_util.compute_hash_code(this.v1);
-    final int hash2 = runtime_util.compute_hash_code(this.v2);
-    final int hash3 = runtime_util.compute_hash_code(this.v3);
-    final int hash4 = runtime_util.compute_hash_code(this.v4);
-    assert hash1 == hash2;
-    assert hash1 != hash3;
-    assert hash1 != hash4;
-    assert hash3 != hash4;
+    final Integer hash1 = runtime_util.compute_hash_code(this.v1);
+    final Integer hash2 = runtime_util.compute_hash_code(this.v2);
+    final Integer hash3 = runtime_util.compute_hash_code(this.v3);
+    final Integer hash4 = runtime_util.compute_hash_code(this.v4);
+    assert runtime_util.values_equal(hash1, hash2);
+    assert !runtime_util.values_equal(hash1, hash3);
+    assert !runtime_util.values_equal(hash1, hash4);
+    assert !runtime_util.values_equal(hash3, hash4);
   }
   public void test_simple_equals() {
     assert runtime_util.values_equal(this.v1, this.v2);

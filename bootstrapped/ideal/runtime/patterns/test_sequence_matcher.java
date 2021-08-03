@@ -30,7 +30,7 @@ public class test_sequence_matcher {
     string result = new base_string("");
     {
       final readonly_list<Object> element_list = the_list;
-      for (int element_index = 0; element_index < element_list.size(); element_index += 1) {
+      for (Integer element_index = 0; element_index < element_list.size(); element_index += 1) {
         final Object element = element_list.get(element_index);
         assert element instanceof string;
         result = ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(result, new base_string("-")), ((string) element));

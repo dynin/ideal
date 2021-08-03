@@ -10,6 +10,7 @@ JDK_DIR = $(THIRD_PARTY_DIR)/jdk
 
 BUILD_DIR = build
 CLASSES_DIR = $(BUILD_DIR)/classes
+CLASSES_HERMETIC_DIR = $(BUILD_DIR)/hermetic
 TARGETS_DIR = $(BUILD_DIR)/targets
 GENERATED_DIR = $(BUILD_DIR)/generated
 JAVADOC_DIR = $(BUILD_DIR)/javadoc
@@ -33,9 +34,12 @@ JAVAC_OPTS = $(JAVAC_SOURCE_OPTS) \
         -classpath $(CLASSES_DIR):$(THIRD_PARTY_JARS) -d $(CLASSES_DIR) \
 	-sourcepath $(JSOURCE_DIR):$(GENERATED_DIR):$(BOOTSTRAPPED_DIR)
 JAVAC = $(JDK_DIR)/bin/javac $(JAVAC_OPTS)
-JAVAC_HERMETIC_OPTS = $(JAVAC_SOURCE_OPTS) -classpath $(THIRD_PARTY_JARS) -d $(CLASSES_DIR)
+
+JAVA_HERMETIC = $(JDK_DIR)/bin/java -ea -classpath $(CLASSES_HERMETIC_DIR):$(THIRD_PARTY_JARS)
+JAVAC_HERMETIC_OPTS = $(JAVAC_SOURCE_OPTS) -classpath $(THIRD_PARTY_JARS) -d $(CLASSES_HERMETIC_DIR)
 JAVAC_HERMETIC = $(JDK_DIR)/bin/javac $(JAVAC_HERMETIC_OPTS)
 JAVAC_LINT_OPT = -Xlint:unchecked
+
 JAVADOC = $(JDK_DIR)/bin/javadoc -classpath $(THIRD_PARTY_JARS) \
         -sourcepath $(GENERATED_DIR) -d $(JAVADOC_DIR)
 
@@ -162,9 +166,12 @@ test_library: $(IDEAL_TARGET) rm-scratch
 	$(JAVAC) $(SCRATCH_DIR)/ideal/library/*/*java
 
 test_librun: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_librun -output=$(SCRATCH_DIR)
-	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
-	$(JAVA) ideal.runtime.tests.run_tests
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_librun \
+            -output=$(SCRATCH_DIR)
+	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
+	cp -r $(JSOURCE_DIR)/ideal/machine/* $(SCRATCH_DIR)/ideal/machine
+	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
+	$(JAVA_HERMETIC) ideal.runtime.tests.run_tests
 
 test_librun_run:
 	$(JAVAC) $(SCRATCH_DIR)/ideal/*/*/*java
@@ -246,6 +253,7 @@ test_all: $(IDEAL_TARGET) rm-scratch
 	$(MKDIR) $(SCRATCH_DIR)/ideal/machine
 	cp -r $(JSOURCE_DIR)/ideal/machine/* $(SCRATCH_DIR)/ideal/machine
 	$(JAVAC_HERMETIC) $(SCRATCH_DIR)/ideal/*/*/*java
+#	$(JAVA_HERMETIC) ideal.development.tools.create -unit-tests
 
 bbackup:
 	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
@@ -413,7 +421,7 @@ build:
 	$(MKDIR) $(BUILD_DIR)/generated
 
 clean:
-	rm -f `find $(CLASSES_DIR) -name \*.class`
+	rm -f `find $(CLASSES_DIR) $(CLASSES_HERMETIC_DIR) -name \*.class`
 	rm -f $(TARGETS_DIR)/*
 
 rm-scratch:

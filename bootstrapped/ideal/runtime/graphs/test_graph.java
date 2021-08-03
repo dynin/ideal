@@ -15,7 +15,7 @@ public class test_graph {
     final immutable_set<string> foo = the_graph.adjacent(new base_string("foo"));
     assert !foo.is_empty();
     assert foo.is_not_empty();
-    assert foo.size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(foo.size(), 1);
     final immutable_list<string> foo_elements = foo.elements();
     assert ideal.machine.elements.runtime_util.values_equal(foo_elements.first(), new base_string("bar"));
   }
@@ -24,10 +24,10 @@ public class test_graph {
     the_graph.add_edge(new base_string("A"), new base_string("B"), new base_string("A-B"));
     the_graph.add_edge(new base_string("A"), new base_string("C"), new base_string("A-C"));
     the_graph.add_edge(new base_string("C"), new base_string("D"), new base_string("C-D"));
-    assert the_graph.adjacent(new base_string("A")).size() == 2;
-    assert the_graph.adjacent(new base_string("B")).size() == 0;
-    assert the_graph.adjacent(new base_string("C")).size() == 1;
-    assert the_graph.adjacent(new base_string("D")).size() == 0;
+    assert ideal.machine.elements.runtime_util.values_equal(the_graph.adjacent(new base_string("A")).size(), 2);
+    assert ideal.machine.elements.runtime_util.values_equal(the_graph.adjacent(new base_string("B")).size(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(the_graph.adjacent(new base_string("C")).size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(the_graph.adjacent(new base_string("D")).size(), 0);
     assert the_graph.introduces_cycle(new base_string("A"), new base_string("A"));
     assert !the_graph.introduces_cycle(new base_string("A"), new base_string("B"));
     assert the_graph.introduces_cycle(new base_string("B"), new base_string("A"));

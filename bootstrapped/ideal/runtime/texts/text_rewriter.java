@@ -32,7 +32,7 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
     final base_list<text_fragment> result = new base_list<text_fragment>();
     {
       final readonly_list<text_node> source_list = nodes.nodes();
-      for (int source_index = 0; source_index < source_list.size(); source_index += 1) {
+      for (Integer source_index = 0; source_index < source_list.size(); source_index += 1) {
         final text_node source = source_list.get(source_index);
         result.append(this.process(source));
       }
@@ -43,7 +43,7 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
     final base_list<attribute_fragment> result = new base_list<attribute_fragment>();
     {
       final readonly_list<attribute_fragment> source_list = fragments.fragments();
-      for (int source_index = 0; source_index < source_list.size(); source_index += 1) {
+      for (Integer source_index = 0; source_index < source_list.size(); source_index += 1) {
         final attribute_fragment source = source_list.get(source_index);
         result.append((attribute_fragment) this.process(source));
       }

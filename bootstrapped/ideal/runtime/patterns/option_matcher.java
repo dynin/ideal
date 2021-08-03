@@ -18,7 +18,7 @@ public class option_matcher<element_type, result_type> extends option_pattern<el
   public @Override @Nullable result_type parse(final readonly_list<element_type> the_list) {
     {
       final readonly_list<pattern<element_type>> option_list = this.options;
-      for (int option_index = 0; option_index < option_list.size(); option_index += 1) {
+      for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
         if (option.call(the_list)) {
           if (option instanceof matcher) {

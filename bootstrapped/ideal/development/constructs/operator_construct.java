@@ -13,7 +13,7 @@ public class operator_construct extends base_construct {
   public final readonly_list<construct> arguments;
   public operator_construct(final operator the_operator, final readonly_list<construct> arguments, final origin the_origin) {
     super(the_origin);
-    assert arguments.size() == the_operator.the_operator_type.arity;
+    assert ideal.machine.elements.runtime_util.values_equal(arguments.size(), the_operator.the_operator_type.arity);
     this.the_operator = the_operator;
     this.arguments = arguments;
   }

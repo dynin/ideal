@@ -27,8 +27,8 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
   public @Override @Nullable value_type put(final key_type key, final value_type value) {
     this.copy_on_write();
     this.state.reserve(this.size() + 1);
-    final int hash = this.equivalence.hash(key);
-    final int index = this.state.bucket_index(hash);
+    final Integer hash = this.equivalence.hash(key);
+    final Integer index = this.state.bucket_index(hash);
     @Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = this.state.the_buckets.at(index).get();
     if (entry == null) {
       this.state.the_buckets.set(index, new base_hash_dictionary.hash_cell<key_type, value_type>(key, hash, value));
@@ -36,7 +36,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
       return null;
     }
     while (true) {
-      if (hash == entry.the_key_hash && this.equivalence.call(key, entry.key())) {
+      if (runtime_util.values_equal(hash, entry.the_key_hash) && this.equivalence.call(key, entry.key())) {
         final value_type old_value = entry.value();
         entry.set_value(value);
         return old_value;
@@ -53,16 +53,16 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
   }
   public @Override @Nullable value_type remove(final key_type key) {
     this.copy_on_write();
-    final int hash = this.equivalence.hash(key);
-    final int index = this.state.bucket_index(hash);
+    final Integer hash = this.equivalence.hash(key);
+    final Integer index = this.state.bucket_index(hash);
     @Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = this.state.the_buckets.at(index).get();
     if (entry == null) {
       return null;
     }
-    if (hash == entry.the_key_hash && this.equivalence.call(key, entry.key())) {
+    if (runtime_util.values_equal(hash, entry.the_key_hash) && this.equivalence.call(key, entry.key())) {
       final value_type old_value = entry.value();
       this.state.the_buckets.set(index, entry.next);
-      final int new_size = this.state.size - 1;
+      final Integer new_size = this.state.size - 1;
       assert new_size >= 0;
       this.state.size = new_size;
       return old_value;
@@ -72,10 +72,10 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
       if (next_entry == null) {
         return null;
       }
-      if (hash == next_entry.the_key_hash && this.equivalence.call(key, next_entry.key())) {
+      if (runtime_util.values_equal(hash, next_entry.the_key_hash) && this.equivalence.call(key, next_entry.key())) {
         final value_type old_value = next_entry.value();
         entry.next = next_entry.next;
-        final int new_size = this.state.size - 1;
+        final Integer new_size = this.state.size - 1;
         assert new_size >= 0;
         this.state.size = new_size;
         return old_value;

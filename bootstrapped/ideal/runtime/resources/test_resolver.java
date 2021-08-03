@@ -120,7 +120,7 @@ public class test_resolver {
     assert content != null;
     {
       final readonly_list<dictionary.entry<string, resource_identifier>> file_list = content.elements();
-      for (int file_index = 0; file_index < file_list.size(); file_index += 1) {
+      for (Integer file_index = 0; file_index < file_list.size(); file_index += 1) {
         final dictionary.entry<string, resource_identifier> file = file_list.get(file_index);
         final string name = file.key();
         assert ideal.machine.elements.runtime_util.values_equal(file.value().to_string(), (ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(directory_name, new base_string("/")), name)));

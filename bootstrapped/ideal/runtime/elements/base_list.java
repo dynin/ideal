@@ -80,29 +80,29 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
   public @Override void prepend(final element_type element) {
     this.writable_state().insert(0, element);
   }
-  public @Override reference<element_type> at(final int index) {
+  public @Override reference<element_type> at(final Integer index) {
     assert index < this.state.size;
     return this.writable_state().the_elements.at(index);
   }
   public @Override element_type remove_last() {
     assert this.is_not_empty();
-    final int last_index = this.size() - 1;
+    final Integer last_index = this.size() - 1;
     assert last_index >= 0;
     final element_type result = this.state.the_elements.at(last_index).get();
     this.writable_state().clear(last_index, 1);
     return result;
   }
-  public @Override element_type remove_at(final int index) {
+  public @Override element_type remove_at(final Integer index) {
     assert this.is_not_empty();
     assert index < this.size();
     final ideal.machine.elements.array<element_type> the_elements = this.writable_state().the_elements;
     final element_type result = the_elements.at(index).get();
-    if (index != this.size() - 1) {
-      final int rest_length = this.size() - index - 1;
+    if (!ideal.machine.elements.runtime_util.values_equal(index, this.size() - 1)) {
+      final Integer rest_length = this.size() - index - 1;
       assert rest_length >= 0;
       the_elements.move(index + 1, index, rest_length);
     }
-    final int last_index = this.size() - 1;
+    final Integer last_index = this.size() - 1;
     assert last_index >= 0;
     this.state.clear(last_index, 1);
     return result;

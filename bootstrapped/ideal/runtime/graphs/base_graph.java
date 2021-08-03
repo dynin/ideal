@@ -51,7 +51,7 @@ public class base_graph<vertice_type, edge_type> extends debuggable implements g
     final hash_set<vertice_type> adjacent_vertices = new hash_set<vertice_type>();
     {
       final readonly_list<base_graph.edge<vertice_type, edge_type>> edge_list = edge_set.elements();
-      for (int edge_index = 0; edge_index < edge_list.size(); edge_index += 1) {
+      for (Integer edge_index = 0; edge_index < edge_list.size(); edge_index += 1) {
         final base_graph.edge<vertice_type, edge_type> edge = edge_list.get(edge_index);
         adjacent_vertices.add(edge.to);
       }
@@ -68,11 +68,11 @@ public class base_graph<vertice_type, edge_type> extends debuggable implements g
     visited.add(to);
     {
       final readonly_list<vertice_type> considered_vertice_list = considered;
-      for (int considered_vertice_index = 0; considered_vertice_index < considered_vertice_list.size(); considered_vertice_index += 1) {
+      for (Integer considered_vertice_index = 0; considered_vertice_index < considered_vertice_list.size(); considered_vertice_index += 1) {
         final vertice_type considered_vertice = considered_vertice_list.get(considered_vertice_index);
         {
           final readonly_list<vertice_type> target_vertice_list = this.adjacent(considered_vertice).elements();
-          for (int target_vertice_index = 0; target_vertice_index < target_vertice_list.size(); target_vertice_index += 1) {
+          for (Integer target_vertice_index = 0; target_vertice_index < target_vertice_list.size(); target_vertice_index += 1) {
             final vertice_type target_vertice = target_vertice_list.get(target_vertice_index);
             if (visited.contains(target_vertice)) {
               if (this.equivalence.call(target_vertice, from)) {

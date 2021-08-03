@@ -17,8 +17,8 @@ public class test_display {
   public static class my_data implements data {
     public final string foo;
     public final string bar;
-    public final int baz;
-    public my_data(final string foo, final string bar, final int baz) {
+    public final Integer baz;
+    public my_data(final string foo, final string bar, final Integer baz) {
       this.foo = foo;
       this.bar = bar;
       this.baz = baz;
@@ -34,8 +34,8 @@ public class test_display {
   public static class my_data2 implements data {
     public final string foo;
     public @dont_display final @Nullable string bar;
-    public @dont_display final int baz;
-    public my_data2(final string foo, final @Nullable string bar, final int baz) {
+    public @dont_display final Integer baz;
+    public my_data2(final string foo, final @Nullable string bar, final Integer baz) {
       this.foo = foo;
       this.bar = bar;
       this.baz = baz;

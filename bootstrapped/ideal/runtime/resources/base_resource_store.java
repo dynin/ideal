@@ -28,7 +28,7 @@ public abstract class base_resource_store extends debuggable implements resource
     if (!this.skip_prefix) {
       result.write_all(this.path_prefix);
     }
-    for (int i = 0; i < path.size(); i += 1) {
+    for (Integer i = 0; i < path.size(); i += 1) {
       if (i > 0) {
         result.write_all(resource_util.PATH_SEPARATOR);
       }

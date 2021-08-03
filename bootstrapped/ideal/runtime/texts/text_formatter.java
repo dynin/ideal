@@ -16,7 +16,7 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
   protected static final singleton_pattern<Character> NEWLINE_PATTERN = new singleton_pattern<Character>(text_formatter.NEWLINE);
   protected final output<Character> the_output;
   protected final string spaces;
-  protected int indent;
+  protected Integer indent;
   protected boolean first;
   protected text_formatter(final output<Character> the_output, final string spaces) {
     this.the_output = the_output;
@@ -30,7 +30,7 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
   public @Override void write_all(final readonly_list<text_fragment> fragments) {
     {
       final readonly_list<text_fragment> fragment_list = fragments;
-      for (int fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
+      for (Integer fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
         final text_fragment fragment = fragment_list.get(fragment_index);
         this.process(fragment);
       }
@@ -42,9 +42,9 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
   public @Override void close() {
     this.the_output.close();
   }
-  public @Override abstract Void process_string(string s);
-  public @Override abstract Void process_element(text_element element);
-  public @Override abstract Void process_special(special_text t);
+  public abstract @Override Void process_string(string s);
+  public abstract @Override Void process_element(text_element element);
+  public abstract @Override Void process_special(special_text t);
   public @Override Void process_nodes(final list_text_node nodes) {
     this.write_all((readonly_list<text_fragment>) (readonly_list) nodes.nodes());
     return null;
@@ -54,7 +54,7 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
     return null;
   }
   protected void write_string(final string the_string) {
-    int index = 0;
+    Integer index = 0;
     while (index < the_string.size()) {
       if (this.first) {
         this.do_write_indent();
@@ -64,7 +64,7 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
         this.do_write_string(the_string.skip(index));
         break;
       } else {
-        final int newline_index = newline_match.begin();
+        final Integer newline_index = newline_match.begin();
         this.do_write_string(the_string.slice(index, newline_index));
         this.do_write_newline();
         index = newline_match.end();
@@ -81,7 +81,7 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
     this.the_output.write(text_formatter.NEWLINE);
   }
   protected void do_write_indent() {
-    for (int i = 0; i < this.indent; i += 1) {
+    for (Integer i = 0; i < this.indent; i += 1) {
       this.the_output.write_all(this.spaces);
     }
     this.first = false;

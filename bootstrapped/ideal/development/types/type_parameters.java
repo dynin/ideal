@@ -35,9 +35,9 @@ public class type_parameters extends debuggable implements deeply_immutable_data
   public boolean is_not_empty() {
     return !this.is_empty();
   }
-  public boolean is_valid_arity(final int arity) {
+  public boolean is_valid_arity(final Integer arity) {
     if (this.is_fixed_size()) {
-      return arity == this.parameters.size();
+      return ideal.machine.elements.runtime_util.values_equal(arity, this.parameters.size());
     } else {
       return arity >= this.parameters.size();
     }
@@ -45,7 +45,7 @@ public class type_parameters extends debuggable implements deeply_immutable_data
   public abstract_value first() {
     return this.get(0);
   }
-  public abstract_value get(final int index) {
+  public abstract_value get(final Integer index) {
     if (index < this.parameters.size()) {
       return this.parameters.get(index);
     } else if (this.repeated_parameter != null) {
@@ -65,7 +65,7 @@ public class type_parameters extends debuggable implements deeply_immutable_data
     final hash_set<principal_type> result = new hash_set<principal_type>();
     {
       final readonly_list<abstract_value> parameter_list = this.parameters;
-      for (int parameter_index = 0; parameter_index < parameter_list.size(); parameter_index += 1) {
+      for (Integer parameter_index = 0; parameter_index < parameter_list.size(); parameter_index += 1) {
         final abstract_value parameter = parameter_list.get(parameter_index);
         result.add(parameter.type_bound().principal());
       }
@@ -78,7 +78,7 @@ public class type_parameters extends debuggable implements deeply_immutable_data
   public @Override string to_string() {
     final string_writer the_writer = new string_writer();
     the_writer.write_all(new base_string("["));
-    for (int i = 0; i < this.parameters.size(); i += 1) {
+    for (Integer i = 0; i < this.parameters.size(); i += 1) {
       if (i > 0) {
         the_writer.write_all(new base_string(", "));
       }

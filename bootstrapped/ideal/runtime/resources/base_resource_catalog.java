@@ -32,7 +32,7 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     final hash_dictionary<string, resource_identifier> result = new hash_dictionary<string, resource_identifier>();
     {
       final readonly_list<string> resource_name_list = catalog.elements();
-      for (int resource_name_index = 0; resource_name_index < resource_name_list.size(); resource_name_index += 1) {
+      for (Integer resource_name_index = 0; resource_name_index < resource_name_list.size(); resource_name_index += 1) {
         final string resource_name = resource_name_list.get(resource_name_index);
         result.put(resource_name, this.resolve(resource_name));
       }
@@ -63,7 +63,7 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     }
     final immutable_list<immutable_list<Character>> components = base_resource_catalog.path_separator.split(name);
     boolean absolute = false;
-    int index;
+    Integer index;
     final base_list<string> result = new base_list<string>();
     if (components.first().is_empty()) {
       if (this.the_resource_store.allow_up()) {

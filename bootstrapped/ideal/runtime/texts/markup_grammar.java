@@ -41,7 +41,7 @@ public class markup_grammar {
     assert !this.is_completed();
     {
       final readonly_list<element_id> the_element_id_list = new_element_ids.elements();
-      for (int the_element_id_index = 0; the_element_id_index < the_element_id_list.size(); the_element_id_index += 1) {
+      for (Integer the_element_id_index = 0; the_element_id_index < the_element_id_list.size(); the_element_id_index += 1) {
         final element_id the_element_id = the_element_id_list.get(the_element_id_index);
         assert !this.element_ids.contains_key(the_element_id.short_name());
         this.element_ids.put(the_element_id.short_name(), the_element_id);
@@ -52,7 +52,7 @@ public class markup_grammar {
     assert !this.is_completed();
     {
       final readonly_list<attribute_id> the_attribute_id_list = new_attribute_ids.elements();
-      for (int the_attribute_id_index = 0; the_attribute_id_index < the_attribute_id_list.size(); the_attribute_id_index += 1) {
+      for (Integer the_attribute_id_index = 0; the_attribute_id_index < the_attribute_id_list.size(); the_attribute_id_index += 1) {
         final attribute_id the_attribute_id = the_attribute_id_list.get(the_attribute_id_index);
         assert !this.attribute_ids.contains_key(the_attribute_id.short_name());
         this.attribute_ids.put(the_attribute_id.short_name(), the_attribute_id);
@@ -63,7 +63,7 @@ public class markup_grammar {
     assert !this.is_completed();
     {
       final readonly_list<special_text> the_entity_list = new_entities.elements();
-      for (int the_entity_index = 0; the_entity_index < the_entity_list.size(); the_entity_index += 1) {
+      for (Integer the_entity_index = 0; the_entity_index < the_entity_list.size(); the_entity_index += 1) {
         final special_text the_entity = the_entity_list.get(the_entity_index);
         assert !this.entities.contains_key(the_entity.name());
         this.entities.put(the_entity.name(), the_entity);
@@ -173,7 +173,7 @@ public class markup_grammar {
     final dictionary<attribute_id, attribute_fragment> attributes_dictionary = new list_dictionary<attribute_id, attribute_fragment>();
     {
       final readonly_list<attribute_state> attribute_list = attributes;
-      for (int attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
+      for (Integer attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
         final attribute_state attribute = attribute_list.get(attribute_index);
         attributes_dictionary.put(attribute.id, attribute.value);
       }
@@ -222,7 +222,7 @@ public class markup_grammar {
     return (text_element) the_list.get(1);
   }
   public text_fragment join2(final readonly_list<Object> the_list) {
-    assert the_list.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(the_list.size(), 2);
     return text_util.join((text_fragment) the_list.get(0), (text_fragment) the_list.get(1));
   }
   protected matcher<Character, text_element> document() {

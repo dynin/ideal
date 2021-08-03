@@ -41,7 +41,7 @@ public class action_table implements value {
       return first.from == second.from && first.name == second.name;
     }
 
-    public int hash(action_key the_key) {
+    public Integer hash(action_key the_key) {
       return System.identityHashCode(the_key.from) + 37 * System.identityHashCode(the_key.name);
     }
   };

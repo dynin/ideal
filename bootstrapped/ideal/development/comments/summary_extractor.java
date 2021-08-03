@@ -29,7 +29,7 @@ public class summary_extractor extends text_visitor<string> {
   }
   private string process_list(final immutable_list<text_node> nodes) {
     final string_writer result = new string_writer();
-    for (int i = 0; i < nodes.size(); i += 1) {
+    for (Integer i = 0; i < nodes.size(); i += 1) {
       final string s = this.process(nodes.get(i));
       result.write_all(s);
       if (s.is_not_empty() && s.last() == summary_extractor.dot) {

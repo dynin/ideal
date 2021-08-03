@@ -95,13 +95,13 @@ public class test_markup_grammar {
     final text_element element1 = empty_element.parse(new base_string("<body class=\"foo\" />"));
     assert element1.get_id() == text_library.BODY;
     assert element1.children() == null;
-    assert element1.attributes().size() == 1;
+    assert ideal.machine.elements.runtime_util.values_equal(element1.attributes().size(), 1);
     assert element1.attributes().elements().get(0).key() == text_library.CLASS;
     assert ideal.machine.elements.runtime_util.values_equal((base_string) element1.attributes().elements().get(0).value(), new base_string("foo"));
     final text_element element2 = empty_element.parse(new base_string("<a class=\'foo\' href=\'https://theideal.org/\'/>"));
     assert element2.get_id() == text_library.A;
     assert element2.children() == null;
-    assert element2.attributes().size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(element2.attributes().size(), 2);
     final immutable_list<dictionary.entry<attribute_id, attribute_fragment>> attributes = element2.attributes().elements();
     assert attributes.get(0).key() == text_library.CLASS;
     assert ideal.machine.elements.runtime_util.values_equal((base_string) attributes.get(0).value(), new base_string("foo"));

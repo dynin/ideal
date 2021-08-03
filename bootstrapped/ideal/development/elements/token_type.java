@@ -6,5 +6,5 @@ import ideal.library.elements.*;
 
 public interface token_type extends identifier, deeply_immutable_reference_equality {
   string name();
-  int symbol();
+  Integer symbol();
 }

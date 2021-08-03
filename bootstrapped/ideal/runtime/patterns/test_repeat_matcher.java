@@ -23,7 +23,7 @@ public class test_repeat_matcher {
     string result = new base_string("");
     {
       final readonly_list<string> the_string_list = strings;
-      for (int the_string_index = 0; the_string_index < the_string_list.size(); the_string_index += 1) {
+      for (Integer the_string_index = 0; the_string_index < the_string_list.size(); the_string_index += 1) {
         final string the_string = the_string_list.get(the_string_index);
         if (result.is_empty()) {
           result = the_string;
@@ -45,7 +45,7 @@ public class test_repeat_matcher {
     string result = new base_string("");
     {
       final readonly_list<Object> element_list = the_list;
-      for (int element_index = 0; element_index < element_list.size(); element_index += 1) {
+      for (Integer element_index = 0; element_index < element_list.size(); element_index += 1) {
         final Object element = element_list.get(element_index);
         assert element instanceof string;
         result = ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(result, new base_string("-")), ((string) element));

@@ -30,7 +30,7 @@ public class origin_utilities {
     while (the_origin != null) {
       if (the_origin instanceof text_origin) {
         final source_content source = ((text_origin) the_origin).source;
-        final int line_number = source.line_number(((text_origin) the_origin));
+        final Integer line_number = source.line_number(((text_origin) the_origin));
         return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(source.name, new base_string(":")), line_number), new base_string(": "));
       }
       if (the_origin instanceof source_content) {

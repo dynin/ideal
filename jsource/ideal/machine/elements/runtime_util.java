@@ -87,6 +87,10 @@ public class runtime_util {
   }
 
   public static int compute_hash_code(Object d) {
+    if (d instanceof Integer) {
+      return ((Integer) d).hashCode();
+    }
+
     if (d instanceof readonly_reference_equality) {
       return System.identityHashCode(d);
     }
@@ -201,7 +205,7 @@ public class runtime_util {
       return runtime_util.values_equal(first, second);
     }
 
-    public int hash(Object the_value) {
+    public Integer hash(Object the_value) {
       return runtime_util.compute_hash_code(the_value);
     }
   };

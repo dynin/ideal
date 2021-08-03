@@ -8,12 +8,12 @@ import ideal.runtime.elements.*;
 
 public class output_counter<value_type> implements output<value_type> {
   private final output<value_type> the_output;
-  private int count;
+  private Integer count;
   public output_counter(final output<value_type> the_output) {
     this.the_output = the_output;
     this.count = 0;
   }
-  public int get_count() {
+  public Integer get_count() {
     return this.count;
   }
   public @Override void write(final value_type value) {

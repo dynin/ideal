@@ -40,7 +40,7 @@ public class test_elements {
     final @Nullable text_fragment children = ((base_element) element).children();
     assert children instanceof list_text_node;
     final immutable_list<text_node> child_nodes = ((list_text_node) children).nodes();
-    assert child_nodes.size() == 2;
+    assert ideal.machine.elements.runtime_util.values_equal(child_nodes.size(), 2);
     final text_node child0 = child_nodes.first();
     assert child0 instanceof base_element;
     assert ((base_element) child0).get_id() == text_library.P;

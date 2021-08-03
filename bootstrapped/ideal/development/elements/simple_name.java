@@ -14,19 +14,19 @@ import javax.annotation.Nullable;
 public class simple_name extends debuggable implements action_name, displayable {
   public static final char the_underscore = '_';
   public static final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>(simple_name.the_underscore);
-  private static final dictionary<immutable_list<string>, simple_name> all_names = new hash_dictionary<immutable_list<string>, simple_name>();
+  private final static dictionary<immutable_list<string>, simple_name> all_names = new hash_dictionary<immutable_list<string>, simple_name>();
   public final immutable_list<string> segments;
   private simple_name(final immutable_list<string> segments) {
     this.segments = segments;
   }
   public @Override string to_string() {
-    if (this.segments.size() == 1) {
+    if (ideal.machine.elements.runtime_util.values_equal(this.segments.size(), 1)) {
       return this.segments.first();
     } else {
       final string_writer the_writer = new string_writer();
-      for (int i = 0; i < this.segments.size(); i += 1) {
+      for (Integer i = 0; i < this.segments.size(); i += 1) {
         the_writer.write_all(this.segments.get(i));
-        if (i != this.segments.size() - 1) {
+        if (!ideal.machine.elements.runtime_util.values_equal(i, this.segments.size() - 1)) {
           the_writer.write(simple_name.the_underscore);
         }
       }
@@ -52,7 +52,7 @@ public class simple_name extends debuggable implements action_name, displayable 
     final base_list<string> segments = new base_list<string>();
     {
       final readonly_list<immutable_list<Character>> segment_list = segments_list;
-      for (int segment_index = 0; segment_index < segment_list.size(); segment_index += 1) {
+      for (Integer segment_index = 0; segment_index < segment_list.size(); segment_index += 1) {
         final immutable_list<Character> segment = segment_list.get(segment_index);
         segments.append(base_string.from_list(segment));
       }

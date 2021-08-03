@@ -11,10 +11,10 @@ import javax.annotation.Nullable;
 public abstract class one_pattern<element_type> extends base_pattern<element_type> implements reversible_pattern<element_type> {
   public abstract boolean matches(element_type the_element);
   public @Override Boolean call(final readonly_list<element_type> the_list) {
-    return the_list.size() == 1 && this.matches(the_list.first());
+    return ideal.machine.elements.runtime_util.values_equal(the_list.size(), 1) && this.matches(the_list.first());
   }
   public @Override boolean is_viable_prefix(final readonly_list<element_type> the_list) {
-    return the_list.is_empty() || (the_list.size() == 1 && this.matches(the_list.first()));
+    return the_list.is_empty() || (ideal.machine.elements.runtime_util.values_equal(the_list.size(), 1) && this.matches(the_list.first()));
   }
   public @Override @Nullable Integer match_prefix(final readonly_list<element_type> the_list) {
     if (the_list.is_not_empty() && this.matches(the_list.first())) {
@@ -23,8 +23,8 @@ public abstract class one_pattern<element_type> extends base_pattern<element_typ
       return null;
     }
   }
-  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final int start_index) {
-    for (int i = start_index; i < the_list.size(); i += 1) {
+  public @Override @Nullable range find_first(final readonly_list<element_type> the_list, final Integer start_index) {
+    for (Integer i = start_index; i < the_list.size(); i += 1) {
       if (this.matches(the_list.get(i))) {
         return new base_range(i, i + 1);
       }
@@ -32,7 +32,7 @@ public abstract class one_pattern<element_type> extends base_pattern<element_typ
     return null;
   }
   public @Override @Nullable range find_last(final readonly_list<element_type> the_list, final @Nullable Integer end_index) {
-    int i;
+    Integer i;
     if (end_index == null) {
       i = the_list.size() - 1;
     } else {

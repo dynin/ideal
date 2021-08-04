@@ -48,7 +48,7 @@ PARSER2SRC_DIR = ../../../../..
 JAVACUP = $(PARSER2SRC_DIR)/$(JDK_DIR)/bin/java \
         -classpath $(PARSER2SRC_DIR)/$(JAVACUP_JAR) java_cup.Main
 
-BOOTSTRAPPED_TARGET = $(TARGETS_DIR)/boostrapped
+BOOTSTRAPPED_TARGET = $(TARGETS_DIR)/bootstrapped
 LIBRARY_TARGET = $(TARGETS_DIR)/library
 DEVELOPMENT_TARGET = $(TARGETS_DIR)/development
 BASEPARSER_TARGET = $(TARGETS_DIR)/baseparser
@@ -224,7 +224,7 @@ run_briefing: $(IDEAL_TARGET)
 xreftest: $(IDEAL_TARGET) $(XREFTEST)
 	$(CREATE) -pretty-print -input=$(XREFTEST)
 
-testparser: $(IDEAL_TARGET) $(TESPARSER)
+testparser: $(IDEAL_TARGET) $(TESTPARSER)
 	$(CREATE) -generate -input=$(TESTPARSER) | tee $(GENERATED_DIR)/testparser.java
 	$(JAVAC) $(GENERATED_DIR)/testparser.java
 
@@ -392,8 +392,8 @@ $(BASEPARSER_TARGET): $(PARSER_CUP)
 	@touch $@
 	@echo === Parser done.
 
-$(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(DEVELOPMENT_TARGET) \
-          $(BASEPARSER_TARGET) Makefile
+$(IDEAL_TARGET): build $(DEVELOPMENT_JAVA) $(LIBRARY_TARGET) $(BASEPARSER_TARGET) \
+          $(DEVELOPMENT_TARGET) Makefile
 	$(JAVAC) $(DEVELOPMENT_JAVA)
 	@touch $@
 	@echo === ideal done.

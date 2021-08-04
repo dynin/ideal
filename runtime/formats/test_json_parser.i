@@ -26,9 +26,7 @@ test_suite test_json_parser {
     assert words2[2] == json_token.COMMA;
     assert words2[3] == "bar";
     assert words2[4] == json_token.COMMA;
-    -- TODO: we shouldn't need this (without this, generates invalid Java code.)
-    w5 : words2[5];
-    assert (w5 !> integer) == -68;
+    assert words2[5] == -68;
     assert words2[6] == json_token.CLOSE_BRACKET;
 
     words3 : parser.test_tokenize("{ \"foo\" : \"bar\", \"baz\":68, \"x\":\"\\\"y\\\"\" } ");
@@ -40,9 +38,7 @@ test_suite test_json_parser {
     assert words3[4] == json_token.COMMA;
     assert words3[5] == "baz";
     assert words3[6] == json_token.COLON;
-    -- TODO: we shouldn't need this (without this, generates invalid Java code.)
-    w7 : words3[7];
-    assert (w7 !> integer) == 68;
+    assert words3[7] == 68;
     assert words3[8] == json_token.COMMA;
     assert words3[9] == "x";
     assert words3[10] == json_token.COLON;
@@ -75,8 +71,7 @@ test_suite test_json_parser {
     assert parsed0 == "foo";
 
     parsed1 : parser.parse(" 68 ");
-    -- TODO: cast is redundant
-    assert (parsed1 !> integer) == 68;
+    assert parsed1 == 68;
 
     parsed2 : parser.parse(" false ");
     -- TODO: cast is redundant
@@ -86,13 +81,13 @@ test_suite test_json_parser {
         readonly dictionary[string, readonly value];
     assert parsed3.size == 2;
     assert parsed3.get("foo") == "bar";
-    assert (parsed3.get("baz") !> integer) == 68;
+    assert parsed3.get("baz") == 68;
 
     parsed4 : parser.parse("[ \"foo\" , \"bar\", -68  ] ") !> readonly list[readonly value];
     assert parsed4.size == 3;
     assert parsed4[0] == "foo";
     assert parsed4[1] == "bar";
-    assert (parsed4[2] !> integer) == -68;
+    assert parsed4[2] == -68;
 
     parsed5 : parser.parse("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } ") !>
         readonly dictionary[string, readonly value];
@@ -101,6 +96,6 @@ test_suite test_json_parser {
     assert the_object[0] == "bar";
     -- TODO: cast is redundant
     assert (the_object[1] !> boolean) == true;
-    assert (parsed5.get("baz") !> integer) == -68;
+    assert parsed5.get("baz") == -68;
   }
 }

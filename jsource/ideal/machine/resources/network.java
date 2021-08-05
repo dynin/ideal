@@ -53,4 +53,8 @@ public class network extends base_readonly_store {
     string path_only = super.build_name(scheme, path);
     return new base_string(scheme, ":", path_only);
   }
+
+  public static resource_identifier url(string url_string) {
+    return NETWORK_CATALOG.resolve(url_string);
+  }
 }

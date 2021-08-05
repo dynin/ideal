@@ -14,6 +14,7 @@ enum base_extension {
   TEXT("txt");
   JAVA_SOURCE("java");
   JAVASCRIPT_SOURCE("js");
+  JSON("json");
 
   private string the_dot_name;
 

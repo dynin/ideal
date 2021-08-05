@@ -12,7 +12,8 @@ public enum base_extension implements extension {
   CSS(new base_string("css")),
   TEXT(new base_string("txt")),
   JAVA_SOURCE(new base_string("java")),
-  JAVASCRIPT_SOURCE(new base_string("js"));
+  JAVASCRIPT_SOURCE(new base_string("js")),
+  JSON(new base_string("json"));
   private final string the_dot_name;
   private base_extension(final string name) {
     this.the_dot_name = new base_string(new base_string("."), name);

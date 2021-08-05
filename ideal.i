@@ -42,7 +42,7 @@ target generate_reflections: generate_java(ideal.runtime.reflections);
 
 target generate_development: generate_java(ideal.development);
 
-target generate_showcase: generate_java(ideal.library, ideal.runtime, ideal.showcase);
+target generate_showcase: generate_java(ideal.showcase);
 
 target generate_cache: generate_java(ideal.development.flavors.base_flavor_profile);
 

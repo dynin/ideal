@@ -6,11 +6,17 @@
 
 -- Filesystem access endpoints.
 
+implicit import ideal.library.elements;
+implicit import ideal.library.resources;
 import ideal.library.resources.resource_catalog;
 
 namespace resources {
   namespace filesystem {
     resource_catalog CURRENT_CATALOG;
     resource_catalog ROOT;
+  }
+
+  namespace network {
+    resource_identifier url(string url_string);
   }
 }

@@ -18,11 +18,7 @@ program briefing {
 
     nonnegative id;
 
-    override string to_string() pure {
-      --readonly stringable value : id;
-      --return id.to_string;
-      return "foo";
-    }
+    override string to_string => id.to_string;
   }
 
   parser : json_parser.new(normal_handler.instance);
@@ -35,5 +31,7 @@ program briefing {
 
     top_list : parser.parse(top_content) !> readonly list[readonly value];
     log.info("Got count " ++ top_list.size);
+    first : item_id.new(top_list[0] !> nonnegative);
+    log.info("First value " ++ first);
   }
 }

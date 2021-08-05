@@ -23,6 +23,8 @@ import java.util.Map;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import javax.annotation.Nullable;
+
 public class runtime_util {
 
   private static final Map<Class, Field[]> cache = new HashMap<Class, Field[]>();
@@ -223,12 +225,20 @@ public class runtime_util {
     return o1.equals(o2);
   }
 
-  private static final String NULL_STRING = "null";
+  private static final string NULL_STRING = new base_string("null");
+
+  private static string to_string(@Nullable Object the_object) {
+    if (the_object == null) {
+      return NULL_STRING;
+    } else if (the_object instanceof readonly_stringable) {
+      return ((readonly_stringable) the_object).to_string();
+    } else {
+      return new base_string(the_object.toString());
+    }
+  }
 
   public static string concatenate(Object o1, Object o2) {
-    String s1 = (o1 != null) ? o1.toString() : NULL_STRING;
-    String s2 = (o2 != null) ? o2.toString() : NULL_STRING;
-    return new base_string(s1, s2);
+    return new base_string(to_string(o1), to_string(o2));
   }
 
   public static void do_panic(String message) {
@@ -301,5 +311,9 @@ public class runtime_util {
   public static void end_test() {
     System.err.println("ok");
     System.err.flush();
+  }
+
+  public static string int_to_string(int int_value) {
+    return new base_string(String.valueOf(int_value));
   }
 }

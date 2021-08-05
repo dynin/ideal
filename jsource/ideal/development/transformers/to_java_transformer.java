@@ -58,6 +58,7 @@ public class to_java_transformer extends base_transformer {
   private static simple_name CALL_NAME = simple_name.make("call");
 
   private static simple_name OBJECTS_EQUAL_NAME = simple_name.make("values_equal");
+  private static simple_name INT_TO_STRING_NAME = simple_name.make("int_to_string");
   private static simple_name CONCATENATE_NAME = simple_name.make("concatenate");
 
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
@@ -1512,6 +1513,12 @@ public class to_java_transformer extends base_transformer {
     return make_call(values_equal, transform_parameters(arguments), the_origin);
   }
 
+  private construct int_to_string(construct int_value, origin the_origin) {
+    construct to_string = new resolve_construct(make_type(java_library.runtime_util_class(),
+        the_origin), INT_TO_STRING_NAME, the_origin);
+    return make_call(to_string, new base_list<construct>(int_value), the_origin);
+  }
+
   public construct transform_cast(action expression, type the_type, cast_type the_cast_type,
       origin the_origin) {
     type expression_type = result_type(expression);
@@ -2019,6 +2026,14 @@ public class to_java_transformer extends base_transformer {
       if (primary instanceof variable_action) {
         variable_action the_variable_action = (variable_action) primary;
         action_name the_name = map_name(the_variable_action.short_name());
+        if (the_name == TO_STRING_NAME && from_action instanceof promotion_action) {
+          principal_type from_type = ((promotion_action) from_action).get_action().result()
+              .type_bound().principal();
+          // TODO: implement less hacky way to implement Integer.to_string
+          if (from_type == library().integer_type() || from_type == library().nonnegative_type()) {
+            return int_to_string(from_construct, the_origin);
+          }
+        }
         construct result;
         if (from_construct == null) {
           result = new name_construct(the_name, the_origin);

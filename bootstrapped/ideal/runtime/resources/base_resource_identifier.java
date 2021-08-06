@@ -29,6 +29,13 @@ public class base_resource_identifier extends debuggable implements resource_ide
   public @Override string scheme() {
     return this.the_scheme;
   }
+  public @Override @Nullable string host() {
+    if (this.path.size() > 2 && this.path.get(0).is_empty() && this.path.get(1).is_empty()) {
+      return this.path.get(2);
+    } else {
+      return null;
+    }
+  }
   public @Override boolean exists() {
     return this.the_resource_store.exists(this.the_scheme, this.path);
   }

@@ -24,6 +24,7 @@ import ideal.development.values.*;
 import ideal.development.analyzers.*;
 import ideal.development.flavors.*;
 import ideal.development.notifications.*;
+import ideal.development.extensions.*;
 
 public class cast_op extends binary_procedure {
 
@@ -49,6 +50,10 @@ public class cast_op extends binary_procedure {
     first = analyzer_utilities.to_value(first, context, pos);
     if (first instanceof error_signal) {
       return first;
+    }
+
+    while (second instanceof extension_action) {
+      second = ((extension_action) second).extended_action;
     }
 
     if (! (second instanceof type_action)) {

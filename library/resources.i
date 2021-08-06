@@ -21,6 +21,8 @@ package resources {
     extends identifier;
 
     string scheme;
+    -- TODO: should be a hierarchical name instead of string?
+    string or null host;
 
     -- TODO: make into an immutable reference?
     resource_identifier parent() pure;

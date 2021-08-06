@@ -31,7 +31,16 @@ class base_resource_identifier {
     }
   }
 
-  implement string scheme() => the_scheme;
+  implement string scheme => the_scheme;
+
+  implement string or null host() {
+    -- Path starts with // and is then followed by host
+    if (path.size > 2 && path[0].is_empty && path[1].is_empty) {
+      return path[2];
+    } else {
+      return missing.instance;
+    }
+  }
 
   override boolean exists() {
     return the_resource_store.exists(the_scheme, path);

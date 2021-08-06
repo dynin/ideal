@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 public interface resource_identifier extends identifier {
   string scheme();
+  @Nullable string host();
   resource_identifier parent();
   boolean exists();
   resource<string> access_string(@Nullable access_option options);

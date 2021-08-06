@@ -8,6 +8,7 @@ program briefing {
   implicit import ideal.library.resources;
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.resources;
+  implicit import ideal.runtime.patterns;
   implicit import ideal.runtime.logs;
   implicit import ideal.runtime.formats;
   implicit import ideal.machine.resources;
@@ -26,10 +27,11 @@ program briefing {
     implements immutable data, stringable;
 
     item_id id;
-    nonnegative score;
+    string by;
     nonnegative time;
+    resource_identifier url;
+    nonnegative score;
     string title;
-    string url;
 
     override string to_string => "item:" ++ id ++ "," ++ url;
   }
@@ -37,7 +39,11 @@ program briefing {
   -- Hacker News API : https://github.com/HackerNews/API
   class hacker_news_api {
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
+    item_url_prefix : "https://news.ycombinator.com/item?id=";
     parser : json_parser.new(normal_handler.instance);
+    -- Minimum host length for which the www stripping is performed.
+    www_stripping_threshold : 7;
+    www_prefix_pattern : list_pattern[character].new("www.");
 
     readonly list[item_id] id_list(resource_identifier list_resource) {
       content : list_resource.access_string(missing.instance).content;
@@ -64,12 +70,33 @@ program briefing {
     item parse_item(item_id id, string json) {
       item_dictionary : parser.parse(json) !> dictionary[string, readonly value];
 
-      score : item_dictionary.get("score") !> nonnegative;
+      by : item_dictionary.get("by") !> string;
       time : item_dictionary.get("time") !> nonnegative;
+      url_string : item_dictionary.get("url") !> (string or null);
+      var resource_identifier url;
+      if (url_string is_not null) {
+        url = network.url(url_string);
+      } else {
+        url = network.url(item_url_prefix ++ id);
+      }
+      score : item_dictionary.get("score") !> nonnegative;
       title : item_dictionary.get("title") !> string;
-      url : item_dictionary.get("url") !> string;
 
-      return item.new(id, score, time, title, url);
+      return item.new(id, by, time, url, score, title);
+    }
+
+    string short_origin(item the_item) {
+      host : the_item.url.host;
+      assert host is string;
+
+      if (host.size > www_stripping_threshold) {
+        www_prefix : www_prefix_pattern.match_prefix(host);
+        if (www_prefix is_not null) {
+          return host.skip(www_prefix);
+        }
+      }
+
+      return host;
     }
   }
 
@@ -79,20 +106,18 @@ program briefing {
     log.info("Starting...");
     hacker_news : hacker_news_api.new();
 
-    var readonly list[item_id] top_list;
+    var readonly list[item_id] id_list;
     if (true) {
-      top_list = hacker_news.topstories();
+      id_list = hacker_news.topstories();
     } else {
-      top_list = hacker_news.id_list(filesystem.CURRENT_CATALOG.resolve("../briefing/08-02/16-00"));
+      id_list = hacker_news.id_list(filesystem.CURRENT_CATALOG.resolve("../briefing/08-02/16-00"));
     }
-    log.info("Got count " ++ top_list.size);
-    first : top_list.first;
-    log.info("First value " ++ first);
-    log.info("First item: " ++ hacker_news.get_item(first));
-    for (item_id : top_list) {
+    log.info("Got count " ++ id_list.size);
+    for (item_id : id_list) {
       item : hacker_news.get_item(item_id);
       if (item.score >= MIN_SCORE_THRESHOLD) {
-        log.info(item.title ++ " " ++ item.url ++ " (" ++ item.score ++ ")");
+        log.info(item.title ++ " " ++ hacker_news.short_origin(item) ++
+            " (" ++ item.by ++ ", " ++ item.score ++ ")");
       }
     }
   }

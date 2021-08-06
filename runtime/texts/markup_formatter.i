@@ -42,7 +42,7 @@ class markup_formatter {
   }
 
   override void process_element(text_element element) {
-    is_block : write_newlines && text_util.is_block(element);
+    is_block : write_newlines && text_utilities.is_block(element);
 
     attributes : element.attributes;
     children : element.children;

@@ -87,16 +87,16 @@ public class base_notification implements notification {
       full_message = (base_string) message;
     }
     // TODO: do not hardcode style.
-    text_fragment primary = text_util.join(origin_printer.show_origin(the_origin),
-        base_element.make(text_library.DIV, text_library.CLASS, new base_string("message"),
+    text_fragment primary = text_utilities.join(origin_printer.show_origin(the_origin),
+        new base_element(text_library.DIV, text_library.CLASS, new base_string("message"),
             full_message));
 
     if (secondary != null) {
-      text_fragment secondaries = text_util.EMPTY_FRAGMENT;
+      text_fragment secondaries = text_utilities.EMPTY_FRAGMENT;
       for (int i = 0; i < secondary.size(); ++i) {
-        secondaries = text_util.join(secondaries, secondary.get(i).render_text(prefix_with_source));
+        secondaries = text_utilities.join(secondaries, secondary.get(i).render_text(prefix_with_source));
       }
-      return text_util.join(primary, base_element.make(text_library.INDENT, secondaries));
+      return text_utilities.join(primary, new base_element(text_library.INDENT, secondaries));
     } else {
       return primary;
     }

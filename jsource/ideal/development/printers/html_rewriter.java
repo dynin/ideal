@@ -45,7 +45,7 @@ public class html_rewriter extends text_rewriter {
       return styles.wrap(styles.indent_style, children);
     } else if (id == text_library.TITLE) {
       title_element = new base_element(id, attributes, children);
-      return text_util.EMPTY_FRAGMENT;
+      return text_utilities.EMPTY_FRAGMENT;
     } else if (id == text_library.A) {
       return new base_element(id, rewrite_ideal_href(attributes), children);
     } else if (id.get_namespace() == doc_elements.DOC_NS) {

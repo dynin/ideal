@@ -37,7 +37,7 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
         result.append(this.process(source));
       }
     }
-    return text_util.join(result);
+    return text_utilities.join(result);
   }
   protected @Override text_fragment process_attributes(final list_attribute_fragment fragments) {
     final base_list<attribute_fragment> result = new base_list<attribute_fragment>();

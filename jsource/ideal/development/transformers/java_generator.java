@@ -139,7 +139,7 @@ public class java_generator {
       full_name.append_all(type_utilities.get_full_names(main_type.get_parent()));
       full_name.append((simple_name) type_decl.name);
 
-      string content = text_util.to_plain_text(printer.print_statements(statements));
+      string content = text_utilities.to_plain_text(printer.print_statements(statements));
       processor.write(content, full_name, base_extension.JAVA_SOURCE);
     }
   }

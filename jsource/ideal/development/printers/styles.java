@@ -63,11 +63,11 @@ public class styles {
   public static final base_string nav_right_style = new base_string("nav-right");
 
   private static text_element make_div(base_string div_class) {
-    return base_element.make(text_library.DIV, text_library.CLASS, div_class, null);
+    return new base_element(text_library.DIV, text_library.CLASS, div_class, null);
   }
 
   private static text_element make_span(base_string span_class) {
-    return base_element.make(text_library.SPAN, text_library.CLASS, span_class, null);
+    return new base_element(text_library.SPAN, text_library.CLASS, span_class, null);
   }
 
   public static text_fragment wrap(text_element element, @Nullable text_fragment fragment) {

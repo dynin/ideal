@@ -56,7 +56,7 @@ public class list_iteration_construct extends extension_construct {
     fragments.append(p.print_punctuation(punctuation.CLOSE_PARENTHESIS));
     fragments.append(p.print_indented_statement(body));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override

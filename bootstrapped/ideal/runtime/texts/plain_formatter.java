@@ -31,11 +31,11 @@ public class plain_formatter extends text_formatter {
     return null;
   }
   public @Override Void process_element(final text_element element) {
-    if (text_util.is_block(element)) {
+    if (text_utilities.is_block(element)) {
       if (!this.first || element.get_id() == text_library.BR) {
         this.write_newline();
       }
-      if (text_util.is_indent(element)) {
+      if (text_utilities.is_indent(element)) {
         this.indent += 1;
       }
     }
@@ -47,11 +47,11 @@ public class plain_formatter extends text_formatter {
     if (children != null) {
       this.process(children);
     }
-    if (text_util.is_block(element)) {
+    if (text_utilities.is_block(element)) {
       if (!this.first) {
         this.write_newline();
       }
-      if (text_util.is_indent(element)) {
+      if (text_utilities.is_indent(element)) {
         final Integer new_indent = this.indent - 1;
         assert new_indent >= 0;
         this.indent = new_indent;

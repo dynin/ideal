@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 --- Utility functions for managing text fragments and friends.
-namespace text_util {
+namespace text_utilities {
 
   import ideal.machine.channels.string_writer;
 
@@ -173,6 +173,16 @@ namespace text_util {
 
   text_element make_html_link(text_fragment text, string link_target) {
     -- TODO: cast is redundant.
-    return base_element.make(text_library.A, text_library.HREF, link_target !> base_string, text);
+    return base_element.new(text_library.A, text_library.HREF, link_target !> base_string, text);
+  }
+
+  text_element make_css_link(string css_href) {
+    attributes : list_dictionary[attribute_id, attribute_fragment].new();
+    -- TODO: the casts are redundant.
+    attributes.put(text_library.HREF, css_href !> base_string);
+    -- TODO: introduce string constants
+    attributes.put(text_library.REL, "stylesheet" !> base_string);
+    attributes.put(text_library.TYPE, "text/css" !> base_string);
+    return base_element.new(text_library.LINK, attributes, missing.instance);
   }
 }

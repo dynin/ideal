@@ -141,7 +141,7 @@ class markup_grammar {
 
   -- TODO: wrapper function is redundant
   attribute_fragment join_fragments(readonly list[attribute_fragment] fragments) pure {
-    return text_util.join_attributes(fragments);
+    return text_utilities.join_attributes(fragments);
   }
 
   matcher[character, attribute_fragment] repeat_or_none_fragment(
@@ -152,7 +152,7 @@ class markup_grammar {
 
   -- TODO: wrapper function is redundant
   text_fragment join_fragments_text(readonly list[text_fragment] fragments) pure {
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   matcher[character, text_fragment] repeat_or_none_text(
@@ -248,7 +248,7 @@ class markup_grammar {
 
   text_fragment join2(readonly list[any value] the_list) pure {
     assert the_list.size == 2;
-    return text_util.join(the_list[0] !> text_fragment, the_list[1] !> text_fragment);
+    return text_utilities.join(the_list[0] !> text_fragment, the_list[1] !> text_fragment);
   }
 
   protected matcher[character, text_element] document() {

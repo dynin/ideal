@@ -6,8 +6,11 @@
 
 program briefing {
   implicit import ideal.library.resources;
+  implicit import ideal.library.texts;
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.resources;
+  implicit import ideal.runtime.texts;
+  implicit import ideal.runtime.texts.text_library;
   implicit import ideal.runtime.patterns;
   implicit import ideal.runtime.logs;
   implicit import ideal.runtime.formats;
@@ -113,12 +116,24 @@ program briefing {
       id_list = hacker_news.id_list(filesystem.CURRENT_CATALOG.resolve("../briefing/08-02/16-00"));
     }
     log.info("Got count " ++ id_list.size);
-    for (item_id : id_list) {
+    body_content : base_list[text_fragment].new();
+    for (item_id : id_list.slice(0, 10)) {
       item : hacker_news.get_item(item_id);
       if (item.score >= MIN_SCORE_THRESHOLD) {
+        body_content.append(render_html(item));
         log.info(item.title ++ " " ++ hacker_news.short_origin(item) ++
             " (" ++ item.by ++ ", " ++ item.score ++ ")");
       }
     }
+
+    body : base_element.new(BODY, text_utilities.join(body_content));
+    --body_string = text_utilities.to_markup_string(body);
+    log.info(text_utilities.to_markup_string(body));
+  }
+
+  text_element render_html(item the_item) {
+    title : text_utilities.make_html_link(the_item.title !> base_string, the_item.url.to_string);
+    origin : base_element.new(SPAN, CLASS, "origin" !> base_string, missing.instance);
+    return base_element.new(DIV, text_utilities.join(title, " " !> base_string, origin));
   }
 }

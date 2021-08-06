@@ -68,7 +68,7 @@ public class printer_target extends type_processor_target {
     assert full_name.is_not_empty();
 
     text_fragment result = new base_printer(printer_mode.CURLY).print_statements(constructs);
-    string string_result = text_util.to_plain_text(result);
+    string string_result = text_utilities.to_plain_text(result);
     the_writer.write(string_result, full_name, base_extension.TEXT);
   }
 

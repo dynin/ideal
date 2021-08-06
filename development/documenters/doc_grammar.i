@@ -29,7 +29,7 @@ class doc_grammar {
   text_element match_vbar_element(readonly list[any value] the_list) pure {
     text_content : the_list[1] !> text_fragment;
 
-    return base_element.make(doc_elements.CODE, text_content);
+    return base_element.new(doc_elements.CODE, text_content);
   }
 
   override void update_matchers() {

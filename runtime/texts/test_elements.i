@@ -36,7 +36,7 @@ test_suite test_elements {
     --string_text_node node1 : "foo";
 
     nodes : [node0, node1];
-    element : text_util.make_element(text_library.BODY, nodes);
+    element : text_utilities.make_element(text_library.BODY, nodes);
 
     assert element is base_element;
     assert element.get_id == text_library.BODY;

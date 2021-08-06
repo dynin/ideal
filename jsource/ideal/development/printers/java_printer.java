@@ -39,7 +39,7 @@ public class java_printer extends base_printer {
       fragments.append(print_punctuation(punctuation.CLOSE_PARENTHESIS));
       fragments.append(print_space());
       fragments.append(print(c.arguments.get(0)));
-      return text_util.join(fragments);
+      return text_utilities.join(fragments);
     }
   }
 
@@ -70,7 +70,7 @@ public class java_printer extends base_printer {
       fragments.append(print_punctuation(punctuation.ASTERISK));
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   public boolean has_modifier(import_construct c, modifier_kind modifier) {
@@ -103,7 +103,7 @@ public class java_printer extends base_printer {
         fragments.append(print_space());
       }
     }
-    return print_group(text_util.join(fragments), grouping_type.ANGLE_BRACKETS);
+    return print_group(text_utilities.join(fragments), grouping_type.ANGLE_BRACKETS);
   }
 
   protected text_fragment print_type_parameter(variable_construct c) {
@@ -118,7 +118,7 @@ public class java_printer extends base_printer {
       fragments.append(print(c.variable_type));
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
@@ -136,7 +136,7 @@ public class java_printer extends base_printer {
       }
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
@@ -161,7 +161,7 @@ public class java_printer extends base_printer {
     } else {
       body_statements = print_statements(filtered_body);
       if (enum_values.is_not_empty()) {
-        body_statements = text_util.join(print_enum_values(enum_values), body_statements);
+        body_statements = text_utilities.join(print_enum_values(enum_values), body_statements);
       }
     }
     return wrap_type_body(body_statements);
@@ -177,7 +177,7 @@ public class java_printer extends base_printer {
     if (c.grouping == grouping_type.BRACES &&
         c.parameters.is_not_empty() &&
         c.parameters.first() instanceof procedure_construct) {
-      return text_util.join(print(c.main), print_block(c.parameters, true, false));
+      return text_utilities.join(print(c.main), print_block(c.parameters, true, false));
     } else {
       return super.process_parameter(c);
     }
@@ -216,7 +216,7 @@ public class java_printer extends base_printer {
 
   @Override
   public text_fragment process_constraint(constraint_construct c) {
-    return text_util.join(print_simple_name(constraint_category.ASSERT_CONSTRAINT.constraint_name()),
+    return text_utilities.join(print_simple_name(constraint_category.ASSERT_CONSTRAINT.constraint_name()),
         print_space(), print(c.expr));
   }
 

@@ -33,7 +33,7 @@ namespace texts {
   class markup_parser;
 
   namespace text_library;
-  namespace text_util;
+  namespace text_utilities;
 
   test_suite test_elements;
   test_suite test_plain_text;

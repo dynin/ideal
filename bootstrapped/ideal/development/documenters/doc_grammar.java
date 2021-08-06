@@ -25,7 +25,7 @@ public class doc_grammar extends markup_grammar {
   }
   public text_element match_vbar_element(final readonly_list<Object> the_list) {
     final text_fragment text_content = (text_fragment) the_list.get(1);
-    return base_element.make(doc_elements.CODE, text_content);
+    return new base_element(doc_elements.CODE, text_content);
   }
   public @Override void update_matchers() {
     final pattern<Character> vbar = this.one_character('|');

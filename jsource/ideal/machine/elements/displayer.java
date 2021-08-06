@@ -73,7 +73,7 @@ public class displayer {
     } else {
       field.append(new base_string(value.toString()));
     }
-    return text_util.make_element(text_library.DIV, field);
+    return text_utilities.make_element(text_library.DIV, field);
   }
 
   static text_fragment display_object(readonly_value obj) {
@@ -100,7 +100,7 @@ public class displayer {
           field.append(new base_string(f.getName()));
           field.append(FIELD_IS);
           append(field, display_field(f, obj));
-          body.append(text_util.make_element(text_library.DIV, field));
+          body.append(text_utilities.make_element(text_library.DIV, field));
         }
       }
       if (obj instanceof Enum) {
@@ -141,8 +141,8 @@ public class displayer {
     list<text_node> result = new base_list<text_node>();
 
     result.append(start);
-    text_element content = text_util.make_element(text_library.INDENT, fragments.frozen_copy());
-    content = base_element.make(text_library.DIV, content);
+    text_element content = text_utilities.make_element(text_library.INDENT, fragments.frozen_copy());
+    content = new base_element(text_library.DIV, content);
     result.append(content);
     result.append(end);
 
@@ -155,7 +155,7 @@ public class displayer {
     for (int i = 0; i < list.size(); ++i) {
       Object obj = list.get(i);
       if (obj instanceof readonly_value) {
-        append(result, base_element.make(
+        append(result, new base_element(
             text_library.DIV, display_object((readonly_value) obj)));
       } else {
         throw new RuntimeException("Not data: " + obj);

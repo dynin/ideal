@@ -57,7 +57,7 @@ public class while_construct extends extension_construct {
     fragments.append(p.print_grouping_in_statement(p.print(condition)));
     fragments.append(p.print_indented_statement(body));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override

@@ -40,7 +40,7 @@ abstract class text_rewriter {
       result.append(process(source));
     }
 
-    return text_util.join(result);
+    return text_utilities.join(result);
   }
 
   protected override text_fragment process_attributes(list_attribute_fragment fragments) {

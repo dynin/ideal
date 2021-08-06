@@ -81,10 +81,10 @@ public class for_construct extends extension_construct {
       expressions.append(p.print(update));
     }
 
-    fragments.append(p.print_grouping_in_statement(text_util.join(expressions)));
+    fragments.append(p.print_grouping_in_statement(text_utilities.join(expressions)));
     fragments.append(p.print_indented_statement(body));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override

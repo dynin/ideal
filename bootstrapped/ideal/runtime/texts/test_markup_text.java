@@ -13,7 +13,7 @@ public class test_markup_text {
   public void test_writer_trivial() {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.P, (base_string) new base_string("foo")));
+    the_formatter.write(new base_element(text_library.P, (base_string) new base_string("foo")));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("<p>\n foo\n</p>\n"), the_writer.elements());
   }
   public void test_quoted() {
@@ -25,21 +25,21 @@ public class test_markup_text {
   public void test_writer_indent() {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.P, (base_string) new base_string("foo")));
-    the_formatter.write(base_element.make(text_library.INDENT, (base_string) new base_string("bar")));
+    the_formatter.write(new base_element(text_library.P, (base_string) new base_string("foo")));
+    the_formatter.write(new base_element(text_library.INDENT, (base_string) new base_string("bar")));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("<p>\n foo\n</p>\n<indent>\n bar\n</indent>\n"), the_writer.elements());
   }
   public void test_attribute() {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
-    the_formatter.write(base_element.make(text_library.P, text_library.NAME, (base_string) new base_string("foo"), (base_string) new base_string("bar")));
+    the_formatter.write(new base_element(text_library.P, text_library.NAME, (base_string) new base_string("foo"), (base_string) new base_string("bar")));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("<p name=\'foo\'>\n bar\n</p>\n"), the_writer.elements());
   }
   public void test_self_closing_tag() {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);
     the_formatter.write((base_string) new base_string("foo"));
-    the_formatter.write(base_element.make(text_library.BR, text_library.CLEAR, (base_string) new base_string("all"), null));
+    the_formatter.write(new base_element(text_library.BR, text_library.CLEAR, (base_string) new base_string("all"), null));
     the_formatter.write((base_string) new base_string("bar\n"));
     assert ideal.machine.elements.runtime_util.values_equal(new base_string("foo<br clear=\'all\' />\nbar\n"), the_writer.elements());
   }

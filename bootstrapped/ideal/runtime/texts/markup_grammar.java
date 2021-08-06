@@ -123,7 +123,7 @@ public class markup_grammar {
     return this.option_fragment_list(new base_immutable_list<matcher<Character, attribute_fragment>>(new ideal.machine.elements.array<matcher<Character, attribute_fragment>>(new matcher[]{ (matcher<Character, attribute_fragment>) (matcher) entity_ref, (matcher<Character, attribute_fragment>) (matcher) attr_value })));
   }
   public attribute_fragment join_fragments(final readonly_list<attribute_fragment> fragments) {
-    return text_util.join_attributes(fragments);
+    return text_utilities.join_attributes(fragments);
   }
   public matcher<Character, attribute_fragment> repeat_or_none_fragment(final matcher<Character, attribute_fragment> the_matcher) {
     return new repeat_matcher<Character, attribute_fragment, attribute_fragment>(the_matcher, true, new function1<attribute_fragment, readonly_list<attribute_fragment>>() {
@@ -133,7 +133,7 @@ public class markup_grammar {
     });
   }
   public text_fragment join_fragments_text(final readonly_list<text_fragment> fragments) {
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
   public matcher<Character, text_fragment> repeat_or_none_text(final matcher<Character, text_fragment> the_matcher) {
     return new repeat_matcher<Character, text_fragment, text_fragment>(the_matcher, true, new function1<text_fragment, readonly_list<text_fragment>>() {
@@ -223,7 +223,7 @@ public class markup_grammar {
   }
   public text_fragment join2(final readonly_list<Object> the_list) {
     assert ideal.machine.elements.runtime_util.values_equal(the_list.size(), 2);
-    return text_util.join((text_fragment) the_list.get(0), (text_fragment) the_list.get(1));
+    return text_utilities.join((text_fragment) the_list.get(0), (text_fragment) the_list.get(1));
   }
   protected matcher<Character, text_element> document() {
     final pattern<Character> lt = this.one_character('<');

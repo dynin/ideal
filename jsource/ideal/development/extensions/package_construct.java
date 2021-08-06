@@ -51,7 +51,7 @@ public class package_construct extends extension_construct {
     fragments.append(p.print(package_name));
 
     // TODO: semicolon?..  Newline?
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override

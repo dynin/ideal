@@ -48,7 +48,7 @@ public class use_construct extends extension_construct {
     fragments.append(p.print_space());
     fragments.append(p.print_simple_name(name));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override

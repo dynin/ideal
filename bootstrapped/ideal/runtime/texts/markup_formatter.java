@@ -37,7 +37,7 @@ public class markup_formatter extends text_formatter {
     return null;
   }
   public @Override Void process_element(final text_element element) {
-    final boolean is_block = this.write_newlines && text_util.is_block(element);
+    final boolean is_block = this.write_newlines && text_utilities.is_block(element);
     final immutable_dictionary<attribute_id, attribute_fragment> attributes = element.attributes();
     final @Nullable text_fragment children = element.children();
     if (children == null) {

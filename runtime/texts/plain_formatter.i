@@ -33,12 +33,12 @@ class plain_formatter {
   }
 
   override void process_element(text_element element) {
-    if (text_util.is_block(element)) {
+    if (text_utilities.is_block(element)) {
       if (!first || element.get_id == text_library.BR) {
         write_newline();
       }
 
-      if (text_util.is_indent(element)) {
+      if (text_utilities.is_indent(element)) {
         indent += 1;
       }
     }
@@ -53,12 +53,12 @@ class plain_formatter {
       process(children);
     }
 
-    if (text_util.is_block(element)) {
+    if (text_utilities.is_block(element)) {
       if (!first) {
         write_newline();
       }
 
-      if (text_util.is_indent(element)) {
+      if (text_utilities.is_indent(element)) {
         new_indent : indent - 1;
         assert new_indent is nonnegative;
         indent = new_indent;

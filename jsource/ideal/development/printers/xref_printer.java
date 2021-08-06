@@ -56,7 +56,7 @@ public class xref_printer extends base_printer {
 
     type_declaration the_declaration = (type_declaration) the_analyzable;
     if (the_declaration.has_errors()) {
-      return text_util.EMPTY_FRAGMENT;
+      return text_utilities.EMPTY_FRAGMENT;
     }
 
     list<text_fragment> fragments = new base_list<text_fragment>();
@@ -75,7 +75,7 @@ public class xref_printer extends base_printer {
 
     fragments.append(super.print_type_body(the_construct));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
@@ -104,12 +104,12 @@ public class xref_printer extends base_printer {
     // TODO: print override
     fragments.append(get_links("Use", the_declaration, xref_mode.USE, true));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
   public text_fragment process_supertype(supertype_construct c) {
-    return text_util.EMPTY_FRAGMENT;
+    return text_utilities.EMPTY_FRAGMENT;
   }
 
   @Override
@@ -135,12 +135,12 @@ public class xref_printer extends base_printer {
         xref_mode.INDIRECT_OVERRIDE, false));
     fragments.append(get_links("Use", the_declaration, xref_mode.USE, true));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
   public text_fragment print_procedure_body(@Nullable construct body) {
-    return text_util.EMPTY_FRAGMENT;
+    return text_utilities.EMPTY_FRAGMENT;
   }
 
   private text_fragment get_links(String name, declaration the_declaration, xref_mode mode,
@@ -154,7 +154,7 @@ public class xref_printer extends base_printer {
     }
 
     if (links == null || links.is_empty()) {
-      return text_util.EMPTY_FRAGMENT;
+      return text_utilities.EMPTY_FRAGMENT;
     }
 
     list<text_fragment> fragments = new base_list<text_fragment>();
@@ -179,7 +179,7 @@ public class xref_printer extends base_printer {
       fragments.append(render_origin(the_origin, mode));
     }
 
-    return styles.wrap(styles.xref_links_style, text_util.join(fragments));
+    return styles.wrap(styles.xref_links_style, text_utilities.join(fragments));
   }
 
   private text_fragment render_origin(origin the_origin, xref_mode mode) {
@@ -202,7 +202,7 @@ public class xref_printer extends base_printer {
     @Nullable string link = the_naming_strategy().link_to_construct(the_construct,
         printer_mode.STYLISH);
     if (link != null) {
-      return text_util.make_html_link(the_text, link);
+      return text_utilities.make_html_link(the_text, link);
     } else {
       return the_text;
     }
@@ -255,7 +255,7 @@ public class xref_printer extends base_printer {
       link = the_naming_strategy().declaration_link(the_declaration, printer_mode.STYLISH);
     }
     if (link != null) {
-      return text_util.make_html_link(the_text, link);
+      return text_utilities.make_html_link(the_text, link);
     } else {
       return the_text;
     }

@@ -226,7 +226,7 @@ public class publish_generator {
 
     text_fragment result = render_page(the_text, the_naming_strategy, printer_mode.DOC);
 
-    string result_string = text_util.to_markup_string(result);
+    string result_string = text_utilities.to_markup_string(result);
     processor.write(result_string, the_naming_strategy.get_resource_name());
   }
 
@@ -237,7 +237,7 @@ public class publish_generator {
     text_fragment body = printer.print_statements(constructs);
     text_fragment result = render_page(body, the_naming_strategy, printer_mode.STYLISH);
 
-    string result_string = text_util.to_markup_string(result);
+    string result_string = text_utilities.to_markup_string(result);
     processor.write(result_string, the_naming_strategy.get_resource_name());
 
     if (!GENERATE_XREF) {
@@ -248,7 +248,7 @@ public class publish_generator {
     text_fragment xref_body = the_xref_printer.print_statements(constructs);
     text_fragment xref_result = render_page(xref_body, the_naming_strategy, printer_mode.XREF);
 
-    string xref_string = text_util.to_markup_string(xref_result);
+    string xref_string = text_utilities.to_markup_string(xref_result);
     processor.write((base_string) xref_string, the_naming_strategy.get_xref_resource_name());
   }
 
@@ -260,7 +260,7 @@ public class publish_generator {
     body = styles.wrap(main_style, the_html_rewriter.rewrite(body));
 
     text_element navigation = make_navigation(the_naming_strategy, mode);
-    body = text_util.join(navigation, body, navigation);
+    body = text_utilities.join(navigation, body, navigation);
     return wrap_body(body, the_html_rewriter.get_title(), the_naming_strategy);
   }
 
@@ -276,7 +276,7 @@ public class publish_generator {
       result.append((base_string) full_name.get(i).to_string());
     }
 
-    return text_util.join(result);
+    return text_utilities.join(result);
   }
 
   private text_element make_navigation(naming_strategy the_naming_strategy, printer_mode mode) {
@@ -293,8 +293,8 @@ public class publish_generator {
     text_element right = make_nav_cell(
         the_xref_context.get_successor(the_declaration), false,
         the_naming_strategy, mode);
-    text_element row = text_util.make_element(TR, new base_list<text_node>(left, center, right));
-    return base_element.make(TABLE, text_library.CLASS, styles.nav_table_style, row);
+    text_element row = text_utilities.make_element(TR, new base_list<text_node>(left, center, right));
+    return new base_element(TABLE, text_library.CLASS, styles.nav_table_style, row);
   }
 
   private static base_string print_name(action_name the_name) {
@@ -312,18 +312,18 @@ public class publish_generator {
       the_text = print_name(the_type.short_name());
       @Nullable string link = the_naming_strategy.link_to_type(the_type, mode);
       if (link != null) {
-        the_text = text_util.make_html_link(the_text, link);
+        the_text = text_utilities.make_html_link(the_text, link);
       }
       if (left) {
-        the_text = text_util.join(text_library.LARR, text_library.NBSP, the_text);
+        the_text = text_utilities.join(text_library.LARR, text_library.NBSP, the_text);
       } else {
-        the_text = text_util.join(the_text, text_library.NBSP, text_library.RARR);
+        the_text = text_utilities.join(the_text, text_library.NBSP, text_library.RARR);
       }
     } else {
       the_text = null;
     }
 
-    return base_element.make(TD, text_library.CLASS, left ? styles.nav_left_style :
+    return new base_element(TD, text_library.CLASS, left ? styles.nav_left_style :
         styles.nav_right_style, the_text);
   }
 
@@ -339,10 +339,10 @@ public class publish_generator {
         @Nullable string link = current_type == the_type ? null :
             the_naming_strategy.link_to_type(current_type, mode);
         if (link != null) {
-          name_text = text_util.make_html_link(name_text, link);
+          name_text = text_utilities.make_html_link(name_text, link);
         }
         if (the_text != null) {
-          the_text = text_util.join(name_text, base_printer.bullet_fragment, the_text);
+          the_text = text_utilities.join(name_text, base_printer.bullet_fragment, the_text);
         } else {
           the_text = name_text;
         }
@@ -350,26 +350,21 @@ public class publish_generator {
       current_type = current_type.get_parent();
     }
 
-    return base_element.make(TD, text_library.CLASS, styles.nav_center_style, the_text);
+    return new base_element(TD, text_library.CLASS, styles.nav_center_style, the_text);
   }
 
   private static text_fragment wrap_body(text_fragment body_text, @Nullable text_element title,
       naming_strategy the_naming_strategy) {
     if (title == null) {
-      title = text_util.make_element(TITLE, text_util.to_list(make_title(
+      title = text_utilities.make_element(TITLE, text_utilities.to_list(make_title(
           the_naming_strategy.get_full_names())));
     }
     // TODO: introduce constants.
     base_string css_href = the_naming_strategy.link_to_resource(
         new base_list<simple_name>(ASSETS_NAME, IDEAL_STYLE_NAME), base_extension.CSS);
-    list_dictionary<attribute_id, attribute_fragment> attributes =
-        new list_dictionary<attribute_id, attribute_fragment>();
-    attributes.put(HREF, css_href);
-    attributes.put(REL, new base_string("stylesheet"));
-    attributes.put(TYPE, new base_string("text/css"));
-    text_element link = new base_element(LINK, attributes, null);
-    text_element head = text_util.make_element(HEAD, new base_list<text_node>(title, link));
-    text_element body = base_element.make(BODY, body_text);
-    return text_util.make_element(HTML, new base_list<text_node>(head, body));
+    text_element link = text_utilities.make_css_link(css_href);
+    text_element head = text_utilities.make_element(HEAD, new base_list<text_node>(title, link));
+    text_element body = new base_element(BODY, body_text);
+    return text_utilities.make_element(HTML, new base_list<text_node>(head, body));
   }
 }

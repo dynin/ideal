@@ -72,7 +72,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   public text_fragment print_line(text_fragment fragment) {
-    return base_element.make(text_library.DIV, fragment);
+    return new base_element(text_library.DIV, fragment);
   }
 
   public text_fragment print_word(string s) {
@@ -113,18 +113,18 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       if (statements == null) {
         fragments.append(print_space());
       } else {
-        fragments.append(base_element.make(text_library.INDENT, statements));
+        fragments.append(new base_element(text_library.INDENT, statements));
         if (end_line) {
           close_brace = print_line(close_brace);
         }
       }
       fragments.append(close_brace);
-      return text_util.join(fragments);
+      return text_utilities.join(fragments);
     } else {
       if (statements == null) {
-        return base_element.make(text_library.INDENT, print_pass());
+        return new base_element(text_library.INDENT, print_pass());
       } else {
-        return base_element.make(text_library.INDENT, statements);
+        return new base_element(text_library.INDENT, statements);
       }
     }
   }
@@ -132,7 +132,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   public text_fragment print_procedure_body(@Nullable construct body) {
     if (body == null) {
       if (is_stylish_mode()) {
-        return text_util.EMPTY_FRAGMENT;
+        return text_utilities.EMPTY_FRAGMENT;
       } else {
         return print_empty();
       }
@@ -149,7 +149,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       if (is_curly_mode()) {
         fragments.append(print_punctuation(punctuation.SEMICOLON));
       }
-      return text_util.join(fragments);
+      return text_utilities.join(fragments);
     }
   }
 
@@ -183,7 +183,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
         }
       }
     }
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   protected text_fragment print_enum_values(readonly_list<construct> constructs) {
@@ -191,7 +191,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     for (int i = 0; i < constructs.size(); ++i) {
       fragments.append(print_enum_value(constructs.get(i), i == (constructs.size() - 1)));
     }
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   protected text_fragment print_enum_value(construct the_construct, boolean last_value) {
@@ -206,7 +206,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     if (is_curly_mode()) {
       fragments.append(print_punctuation(enum_separator_token(last_value)));
     }
-    return print_line(text_util.join(fragments));
+    return print_line(text_utilities.join(fragments));
   }
 
   public text_fragment process_error(construct c) {
@@ -230,7 +230,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     text_fragment inside_text;
 
     if (params.is_empty()) {
-      inside_text = text_util.EMPTY_FRAGMENT;
+      inside_text = text_utilities.EMPTY_FRAGMENT;
     } else {
       boolean wrap_in_space = wrap_in_space(grouping);
       list<text_fragment> fragments = new base_list<text_fragment>();
@@ -257,7 +257,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
         fragments.append(print_space());
       }
 
-      inside_text = text_util.join(fragments);
+      inside_text = text_utilities.join(fragments);
     }
 
     return print_group(inside_text, grouping);
@@ -293,7 +293,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       fragments.append(print(c.init));
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   protected boolean print_variable_types() {
@@ -321,7 +321,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       }
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   protected boolean is_modifier_supported(modifier_kind the_kind) {
@@ -332,7 +332,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       construct the_declaration) {
     if (is_curly_mode()) {
       // TODO: handle doc comments in curly mode.
-      return text_util.EMPTY_FRAGMENT;
+      return text_utilities.EMPTY_FRAGMENT;
     }
 
     list<text_fragment> fragments = new base_list<text_fragment>();
@@ -355,14 +355,14 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       }
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
   public text_fragment process_block(block_construct c) {
     text_fragment block = print_block(c.body, false, true);
     if (c.annotations.is_not_empty()) {
-      block = text_util.join(print_modifiers(c.annotations, true), block);
+      block = text_utilities.join(print_modifiers(c.annotations, true), block);
     }
     if (is_curly_mode()) {
       block = print_line(block);
@@ -380,7 +380,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       block_construct bc = (block_construct) c;
       return print_block(bc.body, true, end_line);
     } else {
-      return base_element.make(text_library.INDENT, print_statement(c));
+      return new base_element(text_library.INDENT, print_statement(c));
     }
   }
 
@@ -395,7 +395,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_constraint(constraint_construct c) {
-    return text_util.join(print_simple_name(c.the_constraint_category.constraint_name()),
+    return text_utilities.join(print_simple_name(c.the_constraint_category.constraint_name()),
         print_space(), print(c.expr));
   }
 
@@ -454,9 +454,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     if (is_stylish_mode()) {
       return styles.wrap(styles.procedure_declaration_style,
-          text_util.join(fragments));
+          text_utilities.join(fragments));
     } else {
-      return print_line(text_util.join(fragments));
+      return print_line(text_utilities.join(fragments));
     }
   }
 
@@ -480,7 +480,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_punctuation(grouping.start));
     fragments.append(text);
     fragments.append(print_punctuation(grouping.end));
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   public text_fragment print_statement(construct c) {
@@ -489,7 +489,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     if (is_curly_mode()) {
       fragments.append(print_punctuation(punctuation.SEMICOLON));
     }
-    return print_line(text_util.join(fragments));
+    return print_line(text_utilities.join(fragments));
   }
 
   public text_fragment print_simple_name(simple_name name) {
@@ -530,7 +530,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       @Nullable string link = the_assistant.link_to_declaration(the_construct,
           printer_mode.STYLISH);
       if (link != null) {
-        return text_util.make_html_link(the_text, link);
+        return text_utilities.make_html_link(the_text, link);
       }
     }
     return the_text;
@@ -545,7 +545,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
         System.out.println("NOLINK " + the_construct + " TEXT " + the_text);
       }
       if (link != null) {
-        return text_util.make_html_link(the_text, link);
+        return text_utilities.make_html_link(the_text, link);
       }
     }
     return the_text;
@@ -577,7 +577,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_punctuation(punctuation.COLON));
     fragments.append(print_space());
     fragments.append(print(c.else_expr));
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   public text_fragment process_if(conditional_construct c) {
@@ -601,7 +601,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       fragments.append(print_indented_statement(c.then_expr));
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   public boolean is_chained_else(construct else_construct) {
@@ -619,12 +619,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_space());
     fragments.append(print(c.type_construct));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
   public text_fragment process_flavor(flavor_construct c) {
-    return text_util.join(print_flavor(c.flavor), print_space(),  print(c.expr));
+    return text_utilities.join(print_flavor(c.flavor), print_space(),  print(c.expr));
   }
 
   @Override
@@ -637,7 +637,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     /*
     if (c.parameters != null) {
-      result = text_util.join(result, process_list(c.parameters));
+      result = text_utilities.join(result, process_list(c.parameters));
     }
     */
 
@@ -659,7 +659,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_operator_name(c.the_operator));
     fragments.append(print_space());
     fragments.append(print(c.arguments.get(1)));
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   public text_fragment print_operator_name(operator the_operator) {
@@ -673,12 +673,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       fragments.append(print_space());
     }
     fragments.append(print(c.arguments.first()));
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override
   public text_fragment process_parameter(parameter_construct c) {
-    return text_util.join(print(c.main), print_params(c.parameters, c.grouping));
+    return text_utilities.join(print(c.main), print_params(c.parameters, c.grouping));
   }
 
   @Override
@@ -698,7 +698,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
   @Override
   public text_fragment process_resolve(resolve_construct c) {
-    return text_util.join(print(c.qualifier), print_connector_dot(), make_name(c.the_name, c));
+    return text_utilities.join(print(c.qualifier), print_connector_dot(), make_name(c.the_name, c));
   }
 
   public text_fragment print_connector_dot() {
@@ -714,7 +714,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     text_fragment return_keyword = print_word(RETURN);
 
     if (c.the_expression != null && !(c.the_expression instanceof empty_construct)) {
-      return text_util.join(return_keyword, print_space(), print(c.the_expression));
+      return text_utilities.join(return_keyword, print_space(), print(c.the_expression));
     } else {
       return return_keyword;
     }
@@ -742,7 +742,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       }
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   protected text_fragment print_type_parameters(readonly_list<construct> parameters) {
@@ -767,14 +767,14 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       fragments.append(print_type_parameters(c.parameters));
     }
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   private text_fragment wrap_with_span_id(text_fragment text, construct c) {
     if (the_assistant != null) {
       @Nullable string id = the_assistant.fragment_of_construct(c, printer_mode.STYLISH);
       if (id != null) {
-        return base_element.make(text_library.SPAN, text_library.ID, id, text);
+        return new base_element(text_library.SPAN, text_library.ID, id, text);
       }
     }
     return text;
@@ -802,9 +802,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_documentation(c.annotations, c));
 
     fragments.append(styles.wrap(styles.type_declaration_style,
-        text_util.join(print_type_start(c), print_type_body(c))));
+        text_utilities.join(print_type_start(c), print_type_body(c))));
 
-    return print_line(text_util.join(fragments));
+    return print_line(text_utilities.join(fragments));
   }
 
   @Override
@@ -824,7 +824,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     type_name = wrap_with_span_id(type_name, c);
     fragments.append(styles.wrap(styles.type_announcement_name_style, make_link(type_name, c)));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   public text_fragment print_integer_literal(integer_literal the_literal) {
@@ -832,7 +832,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   public text_fragment print_quoted_literal(quoted_literal the_literal) {
-    return text_util.join(print_punctuation(the_literal.quote),
+    return text_utilities.join(print_punctuation(the_literal.quote),
         print_word(the_literal.with_escapes), print_punctuation(the_literal.quote));
   }
 
@@ -857,7 +857,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_word(keywords.LOOP));
     fragments.append(print_indented_statement(c.body));
 
-    return text_util.join(fragments);
+    return text_utilities.join(fragments);
   }
 
   @Override

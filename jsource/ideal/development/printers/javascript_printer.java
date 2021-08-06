@@ -58,7 +58,7 @@ public class javascript_printer extends base_printer {
       fragments.append(print_procedure_body(c.body));
     }
 
-    return print_line(text_util.join(fragments));
+    return print_line(text_utilities.join(fragments));
   }
 
   @Override

@@ -300,7 +300,7 @@ public class runtime_util {
   }
 
   public static text_fragment display(readonly_value obj) {
-    return base_element.make(text_library.DIV, displayer.display_object(obj));
+    return new base_element(text_library.DIV, displayer.display_object(obj));
   }
 
   public static void start_test(string name) {

@@ -24,6 +24,7 @@ namespace text_utilities {
            id == text_library.HEAD ||
            id == text_library.BODY ||
            id == text_library.TITLE ||
+           id == text_library.META ||
            id == text_library.LINK ||
            id == text_library.P ||
            id == text_library.DIV ||

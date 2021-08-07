@@ -359,11 +359,16 @@ public class publish_generator {
       title = text_utilities.make_element(TITLE, text_utilities.to_list(make_title(
           the_naming_strategy.get_full_names())));
     }
+    text_node meta_charset = new base_element(META, CHARSET, (base_string) resource_util.UTF_8,
+        null);
+
     // TODO: introduce constants.
+
     base_string css_href = the_naming_strategy.link_to_resource(
         new base_list<simple_name>(ASSETS_NAME, IDEAL_STYLE_NAME), base_extension.CSS);
     text_element link = text_utilities.make_css_link(css_href);
-    text_element head = text_utilities.make_element(HEAD, new base_list<text_node>(title, link));
+    text_element head = text_utilities.make_element(HEAD,
+        new base_list<text_node>(meta_charset, title, link));
     text_element body = new base_element(BODY, body_text);
     return text_utilities.make_element(HTML, new base_list<text_node>(head, body));
   }

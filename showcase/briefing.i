@@ -43,7 +43,7 @@ program briefing {
   -- Hacker News API : https://github.com/HackerNews/API
   namespace hacker_news {
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
-    item_url_prefix : "https://news.ycombinator.com/item?id=";
+    item_page_url_prefix : "https://news.ycombinator.com/item?id=";
     parser : json_parser.new(normal_handler.instance);
     -- Minimum host length for which the www stripping is performed.
     www_stripping_threshold : 7;
@@ -71,6 +71,10 @@ program briefing {
       return network.url(api_url_prefix ++ "item/" ++ id ++ base_extension.JSON);
     }
 
+    resource_identifier item_page_url(item_id id) {
+      return network.url(item_page_url_prefix ++ id);
+    }
+
     item parse_item(item_id id, string json) {
       item_dictionary : parser.parse(json) !> dictionary[string, readonly value];
 
@@ -81,7 +85,7 @@ program briefing {
       if (url_string is_not null) {
         url = network.url(url_string);
       } else {
-        url = network.url(item_url_prefix ++ id);
+        url = item_page_url(id);
       }
       score : item_dictionary.get("score") !> nonnegative;
       title : item_dictionary.get("title") !> string;
@@ -105,14 +109,16 @@ program briefing {
     }
   }
 
+  PROGRAM_NAME : "news, !paper";
   MIN_SCORE_THRESHOLD : 100;
   HTML_FILE : filesystem.CURRENT_CATALOG.resolve("tmp/news-not-paper.html");
 
+  HEADER_CLASS : "header";
   TITLE_CLASS : "title";
   ORIGIN_CLASS : "origin";
   BY_CLASS : "by";
   SCORE_CLASS : "score";
-  DESCENDANTS_CLASS : "descendants";
+  DISCUSSION_CLASS : "discussion";
 
   void start() {
     log.info("Starting...");
@@ -124,7 +130,11 @@ program briefing {
       id_list = hacker_news.id_list(filesystem.CURRENT_CATALOG.resolve("../briefing/08-02/16-00"));
     }
     log.info("Got count " ++ id_list.size);
+
     body_content : base_list[text_fragment].new();
+    body_content.append(make_header());
+    body_content.append(base_element.new(HR));
+
     for (item_id : id_list.slice(0, 50)) {
       item : hacker_news.get_item(item_id);
       if (item.score >= MIN_SCORE_THRESHOLD) {
@@ -135,11 +145,12 @@ program briefing {
     }
 
     -- TODO: text_node redundant
-    text_node title : base_element.new(TITLE, "news, !paper" !> base_string);
+    text_node charset : base_element.new(META, CHARSET, resource_util.UTF_8 !> base_string,
+        missing.instance);
+    referrer : make_element(META, NAME, "referrer", CONTENT, "no-referrer", missing.instance);
+    title : base_element.new(TITLE, PROGRAM_NAME !> base_string);
     link : text_utilities.make_css_link("news-not-paper.css");
-    text_node head : text_utilities.make_element(HEAD, [ title, link ]);
-    --TODO: add <meta charset="UTF-8">
-    --TODO: add <meta name="referrer" content="origin">
+    text_node head : text_utilities.make_element(HEAD, [ charset, referrer, title, link ]);
 
     body_content.append(base_element.new(HR));
     body_content.append(text_utilities.make_html_link("a hack by dynin labs" !> base_string,
@@ -164,16 +175,33 @@ program briefing {
     item_fragments.append(base_element.new(SPAN, CLASS, ORIGIN_CLASS !> base_string,
         "/ " ++ hacker_news.short_origin(the_item) !> base_string));
     item_fragments.append(" " !> base_string);
-    item_fragments.append(base_element.new(SPAN, CLASS, DESCENDANTS_CLASS !> base_string,
-        "/ " ++ the_item.descendants !> base_string));
+    item_fragments.append(make_html_class_link("/ " ++ the_item.descendants !> base_string,
+        hacker_news.item_page_url(the_item.id).to_string, DISCUSSION_CLASS));
     item_fragments.append(" " !> base_string);
     return base_element.new(DIV, text_utilities.join(item_fragments));
   }
 
+  text_fragment make_header() {
+    header_fragments : base_list[text_fragment].new();
+    header_fragments.append(PROGRAM_NAME !> base_string);
+    header_fragments.append(NBSP);
+    header_fragments.append(NBSP);
+    header_fragments.append(LARR);
+    header_fragments.append(" 2021.08.06 " !> base_string);
+    header_fragments.append(RARR);
+    return base_element.new(DIV, CLASS, HEADER_CLASS !> base_string,
+        text_utilities.join(header_fragments));
+  }
+
   text_element make_html_class_link(text_fragment text, string link_target, string class_name) {
+    return make_element(A, HREF, link_target, CLASS, class_name, text);
+  }
+
+  text_element make_element(element_id id, attribute_id attr0, string value0,
+      attribute_id attr1, string value1, text_fragment or null children) {
     attributes : list_dictionary[attribute_id, attribute_fragment].new();
-    attributes.put(text_library.HREF, link_target !> base_string);
-    attributes.put(text_library.CLASS, class_name !> base_string);
-    return base_element.new(text_library.A, attributes, text);
+    attributes.put(attr0, value0 !> base_string);
+    attributes.put(attr1, value1 !> base_string);
+    return base_element.new(id, attributes, children);
   }
 }

@@ -35,12 +35,13 @@ program briefing {
     resource_identifier url;
     nonnegative score;
     string title;
+    nonnegative descendants;
 
     override string to_string => "item:" ++ id ++ "," ++ url;
   }
 
   -- Hacker News API : https://github.com/HackerNews/API
-  class hacker_news_api {
+  namespace hacker_news {
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
     item_url_prefix : "https://news.ycombinator.com/item?id=";
     parser : json_parser.new(normal_handler.instance);
@@ -84,8 +85,9 @@ program briefing {
       }
       score : item_dictionary.get("score") !> nonnegative;
       title : item_dictionary.get("title") !> string;
+      descendants : item_dictionary.get("descendants") !> nonnegative;
 
-      return item.new(id, by, time, url, score, title);
+      return item.new(id, by, time, url, score, title, descendants);
     }
 
     string short_origin(item the_item) {
@@ -104,10 +106,16 @@ program briefing {
   }
 
   MIN_SCORE_THRESHOLD : 100;
+  HTML_FILE : filesystem.CURRENT_CATALOG.resolve("tmp/news-not-paper.html");
+
+  TITLE_CLASS : "title";
+  ORIGIN_CLASS : "origin";
+  BY_CLASS : "by";
+  SCORE_CLASS : "score";
+  DESCENDANTS_CLASS : "descendants";
 
   void start() {
     log.info("Starting...");
-    hacker_news : hacker_news_api.new();
 
     var readonly list[item_id] id_list;
     if (true) {
@@ -117,7 +125,7 @@ program briefing {
     }
     log.info("Got count " ++ id_list.size);
     body_content : base_list[text_fragment].new();
-    for (item_id : id_list.slice(0, 10)) {
+    for (item_id : id_list.slice(0, 50)) {
       item : hacker_news.get_item(item_id);
       if (item.score >= MIN_SCORE_THRESHOLD) {
         body_content.append(render_html(item));
@@ -126,14 +134,46 @@ program briefing {
       }
     }
 
+    -- TODO: text_node redundant
+    text_node title : base_element.new(TITLE, "news, !paper" !> base_string);
+    link : text_utilities.make_css_link("news-not-paper.css");
+    text_node head : text_utilities.make_element(HEAD, [ title, link ]);
+    --TODO: add <meta charset="UTF-8">
+    --TODO: add <meta name="referrer" content="origin">
+
+    body_content.append(base_element.new(HR));
+    body_content.append(text_utilities.make_html_link("a hack by dynin labs" !> base_string,
+        "https://dynin.com" !> base_string));
     body : base_element.new(BODY, text_utilities.join(body_content));
-    --body_string = text_utilities.to_markup_string(body);
-    log.info(text_utilities.to_markup_string(body));
+
+    -- TODO: text_library redundant
+    html : text_utilities.make_element(text_library.HTML, [ head, body ]);
+
+    HTML_FILE.access_string(missing.instance).content = text_utilities.to_markup_string(html);
+    --log.info(text_utilities.to_markup_string(html));
   }
 
   text_element render_html(item the_item) {
-    title : text_utilities.make_html_link(the_item.title !> base_string, the_item.url.to_string);
-    origin : base_element.new(SPAN, CLASS, "origin" !> base_string, missing.instance);
-    return base_element.new(DIV, text_utilities.join(title, " " !> base_string, origin));
+    item_fragments : base_list[text_fragment].new();
+    item_fragments.append(base_element.new(SPAN, CLASS, SCORE_CLASS !> base_string,
+        the_item.score.to_string !> base_string));
+    item_fragments.append(" " !> base_string);
+    item_fragments.append(make_html_class_link(the_item.title !> base_string,
+        the_item.url.to_string, TITLE_CLASS));
+    item_fragments.append(" " !> base_string);
+    item_fragments.append(base_element.new(SPAN, CLASS, ORIGIN_CLASS !> base_string,
+        "/ " ++ hacker_news.short_origin(the_item) !> base_string));
+    item_fragments.append(" " !> base_string);
+    item_fragments.append(base_element.new(SPAN, CLASS, DESCENDANTS_CLASS !> base_string,
+        "/ " ++ the_item.descendants !> base_string));
+    item_fragments.append(" " !> base_string);
+    return base_element.new(DIV, text_utilities.join(item_fragments));
+  }
+
+  text_element make_html_class_link(text_fragment text, string link_target, string class_name) {
+    attributes : list_dictionary[attribute_id, attribute_fragment].new();
+    attributes.put(text_library.HREF, link_target !> base_string);
+    attributes.put(text_library.CLASS, class_name !> base_string);
+    return base_element.new(text_library.A, attributes, text);
   }
 }

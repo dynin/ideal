@@ -12,6 +12,7 @@ public namespace text_library {
   HTML : base_element_id.new(HTML_NS, "html");
   HEAD : base_element_id.new(HTML_NS, "head");
   TITLE : base_element_id.new(HTML_NS, "title");
+  META : base_element_id.new(HTML_NS, "meta");
   LINK : base_element_id.new(HTML_NS, "link");
   BODY : base_element_id.new(HTML_NS, "body");
   P : base_element_id.new(HTML_NS, "p");
@@ -45,6 +46,8 @@ public namespace text_library {
 
   ID : base_attribute_id.new(HTML_NS, "id");
   NAME : base_attribute_id.new(HTML_NS, "name");
+  CONTENT : base_attribute_id.new(HTML_NS, "content");
+  CHARSET : base_attribute_id.new(HTML_NS, "charset");
   CLEAR : base_attribute_id.new(HTML_NS, "clear");
   CLASS : base_attribute_id.new(HTML_NS, "class");
   STYLE : base_attribute_id.new(HTML_NS, "style");
@@ -70,7 +73,7 @@ public namespace text_library {
   DARR : text_entity.new(HTML_NS, "V", "darr");
 
   immutable list[element_id] HTML_ELEMENTS : [
-    HTML, HEAD, TITLE, LINK, BODY,
+    HTML, HEAD, TITLE, META, LINK, BODY,
     P, DIV, H1, H2, PRE,
     UL, LI,
     TABLE, TR, TH, TD,
@@ -81,7 +84,7 @@ public namespace text_library {
   ] !> immutable list[element_id];
 
   immutable list[attribute_id] HTML_ATTRIBUTES : [
-    ID, NAME, CLEAR, CLASS, STYLE, HREF, REL, TYPE
+    ID, NAME, CONTENT, CHARSET, CLEAR, CLASS, STYLE, HREF, REL, TYPE
     -- TODO: the cast should be redundant; use deeply_immutable
   ] !> immutable list[attribute_id];
 

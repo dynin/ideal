@@ -157,31 +157,44 @@ program briefing {
     }
   }
 
+  TEST_RUN : false;
   briefing_catalog : filesystem.CURRENT_CATALOG.resolve("../briefing").access_catalog();
   var resource_catalog output_catalog;
-  first : date.new(8, 8);
-  --first : date.new(7, 6);
+  first : date.new(7, 6);
   last : date.new(8, 9);
 
   void start() {
     output_catalog = briefing_catalog.resolve("output").access_catalog();
 
-    if (false) {
-      var readonly list[item_id] id_list;
-      id_list = hacker_news.topstories();
+    if (TEST_RUN) {
+      id_list : hacker_news.topstories();
       log.info("Got count " ++ id_list.size);
       write_page(id_list.slice(0, 50), last);
     } else {
-      the_date : last;
       all_item_ids : hash_set[item_id].new();
-      all_item_ids.add_all(read_ids(the_date));
-      write_page(all_item_ids.elements, the_date);
+      var the_date : first;
+      loop {
+        day_item_ids : hash_set[item_id].new();
+        for (id : read_ids(the_date).elements) {
+          if (!all_item_ids.contains(id)) {
+            day_item_ids.add(id);
+            all_item_ids.add(id);
+          }
+        }
+        log.info("Got " ++ day_item_ids.size ++ " items for " ++ the_date);
+        write_page(day_item_ids.elements, the_date);
+        if (the_date == last) {
+          break;
+        }
+        the_date = the_date.next();
+      }
     }
   }
 
   void write_page(readonly list[item_id] ids, date the_date) {
     page : render_page(ids, the_date);
     file : output_catalog.resolve(day_page_url(the_date));
+    log.info("=== " ++ file);
     file.access_string(make_catalog_option.instance).content =
         text_utilities.to_markup_string(page);
   }
@@ -257,12 +270,14 @@ program briefing {
 
   text_fragment make_header(date the_date) {
     header_fragments : base_list[text_fragment].new();
-    header_fragments.append(PROGRAM_NAME !> base_string);
+    header_fragments.append(text_utilities.make_html_link("hacker news" !> base_string,
+        "https://news.ycombinator.com/" !> base_string));
+    header_fragments.append(" digest" !> base_string);
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);
     if (the_date != first) {
       header_fragments.append(text_utilities.make_html_link(LARR,
-        day_page_url(the_date.prev()) !> base_string));
+          day_page_url(the_date.prev()) !> base_string));
       header_fragments.append(" " !> base_string);
     }
     header_fragments.append(the_date.dotted() !> base_string);

@@ -109,7 +109,7 @@ program briefing {
     }
   }
 
-  PROGRAM_NAME : "news, !paper";
+  PROGRAM_NAME : "hacker news digest";
   MIN_SCORE_THRESHOLD : 100;
   HTML_FILE : filesystem.CURRENT_CATALOG.resolve("tmp/news-not-paper.html");
 
@@ -120,8 +120,32 @@ program briefing {
   SCORE_CLASS : "score";
   DISCUSSION_CLASS : "discussion";
 
+  auto_constructor class date {
+    implements immutable data, stringable;
+
+    nonnegative month;
+    nonnegative day;
+
+    override string to_string => two_digit(month) ++ "-" ++ two_digit(day);
+
+    string dotted => "2021" ++ "." ++ two_digit(month) ++ "." ++ two_digit(day);
+
+    private static string two_digit(nonnegative number) {
+      if (number < 10) {
+        return "0" ++ number;
+      } else {
+        return number.to_string;
+      }
+    }
+  }
+
+  first : date.new(7, 6);
+  last : date.new(8, 9);
+
   void start() {
     log.info("Starting...");
+
+    hash : hash_set[item_id].new();
 
     var readonly list[item_id] id_list;
     if (true) {
@@ -131,11 +155,17 @@ program briefing {
     }
     log.info("Got count " ++ id_list.size);
 
+    page : render_page(id_list.slice(0, 50), last);
+    HTML_FILE.access_string(missing.instance).content = text_utilities.to_markup_string(page);
+    --log.info(text_utilities.to_markup_string(html));
+  }
+
+  text_element render_page(readonly list[item_id] ids, date the_date) {
     body_content : base_list[text_fragment].new();
-    body_content.append(make_header());
+    body_content.append(make_header(the_date));
     body_content.append(base_element.new(HR));
 
-    for (item_id : id_list.slice(0, 50)) {
+    for (item_id : ids) {
       item : hacker_news.get_item(item_id);
       if (item.score >= MIN_SCORE_THRESHOLD) {
         body_content.append(render_html(item));
@@ -148,7 +178,7 @@ program briefing {
     text_node charset : base_element.new(META, CHARSET, resource_util.UTF_8 !> base_string,
         missing.instance);
     referrer : make_element(META, NAME, "referrer", CONTENT, "no-referrer", missing.instance);
-    title : base_element.new(TITLE, PROGRAM_NAME !> base_string);
+    title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ the_date.dotted() !> base_string);
     link : text_utilities.make_css_link("news-not-paper.css");
     text_node head : text_utilities.make_element(HEAD, [ charset, referrer, title, link ]);
 
@@ -158,10 +188,7 @@ program briefing {
     body : base_element.new(BODY, text_utilities.join(body_content));
 
     -- TODO: text_library redundant
-    html : text_utilities.make_element(text_library.HTML, [ head, body ]);
-
-    HTML_FILE.access_string(missing.instance).content = text_utilities.to_markup_string(html);
-    --log.info(text_utilities.to_markup_string(html));
+    return text_utilities.make_element(text_library.HTML, [ head, body ]);
   }
 
   text_element render_html(item the_item) {
@@ -181,13 +208,15 @@ program briefing {
     return base_element.new(DIV, text_utilities.join(item_fragments));
   }
 
-  text_fragment make_header() {
+  text_fragment make_header(date the_date) {
     header_fragments : base_list[text_fragment].new();
     header_fragments.append(PROGRAM_NAME !> base_string);
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);
     header_fragments.append(LARR);
-    header_fragments.append(" 2021.08.06 " !> base_string);
+    header_fragments.append(" " !> base_string);
+    header_fragments.append(the_date.dotted() !> base_string);
+    header_fragments.append(" " !> base_string);
     header_fragments.append(RARR);
     return base_element.new(DIV, CLASS, HEADER_CLASS !> base_string,
         text_utilities.join(header_fragments));

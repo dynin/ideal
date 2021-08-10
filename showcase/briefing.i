@@ -121,7 +121,7 @@ program briefing {
   DISCUSSION_CLASS : "discussion";
 
   auto_constructor class date {
-    implements immutable data, stringable;
+    implements immutable data, equality_comparable, stringable;
 
     nonnegative month;
     nonnegative day;
@@ -129,6 +129,24 @@ program briefing {
     override string to_string => two_digit(month) ++ "-" ++ two_digit(day);
 
     string dotted => "2021" ++ "." ++ two_digit(month) ++ "." ++ two_digit(day);
+
+    date next() {
+      if (month == 7 && day == 31) {
+        return date.new(8, 1);
+      } else {
+        return date.new(month, day + 1);
+      }
+    }
+
+    date prev() {
+      if (month == 8 && day == 1) {
+        return date.new(7, 31);
+      } else {
+        new_day : day - 1;
+        assert new_day is nonnegative;
+        return date.new(month, new_day);
+      }
+    }
 
     private static string two_digit(nonnegative number) {
       if (number < 10) {
@@ -139,7 +157,9 @@ program briefing {
     }
   }
 
-  first : date.new(7, 6);
+  briefing_catalog : filesystem.CURRENT_CATALOG.resolve("../briefing/").access_catalog();
+  first : date.new(8, 8);
+  --first : date.new(7, 6);
   last : date.new(8, 9);
 
   void start() {
@@ -151,7 +171,7 @@ program briefing {
     if (true) {
       id_list = hacker_news.topstories();
     } else {
-      id_list = hacker_news.id_list(filesystem.CURRENT_CATALOG.resolve("../briefing/08-02/16-00"));
+      id_list = hacker_news.id_list(briefing_catalog.resolve("08-02/16-00"));
     }
     log.info("Got count " ++ id_list.size);
 
@@ -191,6 +211,10 @@ program briefing {
     return text_utilities.make_element(text_library.HTML, [ head, body ]);
   }
 
+  string day_page_url(date the_date) {
+    return the_date ++ base_extension.HTML;
+  }
+
   text_element render_html(item the_item) {
     item_fragments : base_list[text_fragment].new();
     item_fragments.append(base_element.new(SPAN, CLASS, SCORE_CLASS !> base_string,
@@ -213,11 +237,17 @@ program briefing {
     header_fragments.append(PROGRAM_NAME !> base_string);
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);
-    header_fragments.append(LARR);
-    header_fragments.append(" " !> base_string);
+    if (the_date != first) {
+      header_fragments.append(text_utilities.make_html_link(LARR,
+        day_page_url(the_date.prev()) !> base_string));
+      header_fragments.append(" " !> base_string);
+    }
     header_fragments.append(the_date.dotted() !> base_string);
-    header_fragments.append(" " !> base_string);
-    header_fragments.append(RARR);
+    if (the_date != last) {
+      header_fragments.append(" " !> base_string);
+      header_fragments.append(text_utilities.make_html_link(RARR,
+        day_page_url(the_date.next()) !> base_string));
+    }
     return base_element.new(DIV, CLASS, HEADER_CLASS !> base_string,
         text_utilities.join(header_fragments));
   }

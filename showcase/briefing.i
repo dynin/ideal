@@ -157,27 +157,50 @@ program briefing {
     }
   }
 
-  briefing_catalog : filesystem.CURRENT_CATALOG.resolve("../briefing/").access_catalog();
+  briefing_catalog : filesystem.CURRENT_CATALOG.resolve("../briefing").access_catalog();
+  var resource_catalog output_catalog;
   first : date.new(8, 8);
   --first : date.new(7, 6);
   last : date.new(8, 9);
 
   void start() {
-    log.info("Starting...");
+    output_catalog = briefing_catalog.resolve("output").access_catalog();
 
-    hash : hash_set[item_id].new();
-
-    var readonly list[item_id] id_list;
-    if (true) {
+    if (false) {
+      var readonly list[item_id] id_list;
       id_list = hacker_news.topstories();
+      log.info("Got count " ++ id_list.size);
+      write_page(id_list.slice(0, 50), last);
     } else {
-      id_list = hacker_news.id_list(briefing_catalog.resolve("08-02/16-00"));
+      the_date : last;
+      all_item_ids : hash_set[item_id].new();
+      all_item_ids.add_all(read_ids(the_date));
+      write_page(all_item_ids.elements, the_date);
     }
-    log.info("Got count " ++ id_list.size);
+  }
 
-    page : render_page(id_list.slice(0, 50), last);
-    HTML_FILE.access_string(missing.instance).content = text_utilities.to_markup_string(page);
-    --log.info(text_utilities.to_markup_string(html));
+  void write_page(readonly list[item_id] ids, date the_date) {
+    page : render_page(ids, the_date);
+    file : output_catalog.resolve(day_page_url(the_date));
+    file.access_string(make_catalog_option.instance).content =
+        text_utilities.to_markup_string(page);
+  }
+
+  set[item_id] read_ids(date the_date) {
+    input_catalog : briefing_catalog.resolve(the_date.to_string).access_catalog();
+    result : hash_set[item_id].new();
+
+    content : input_catalog.content;
+    assert content is_not null;
+    files : content.values().elements;
+    for (file : files) {
+      log.info("=== " ++ file);
+      file_content : hacker_news.id_list(file);
+      result.add_all(file_content);
+    }
+
+    log.info("Got " ++ result.size ++ " ids.");
+    return result;
   }
 
   text_element render_page(readonly list[item_id] ids, date the_date) {

@@ -42,4 +42,34 @@ test_suite test_calendars {
     assert nov.name == "November";
     assert nov.to_string == "November";
   }
+
+  test_case test_days() {
+    aug : month_of(7);
+    aug11 : day_of(2021, aug, 11);
+    assert aug11.year == 2021;
+    assert aug11.month == aug;
+    assert aug11.day == 11;
+    assert aug11 == day_of(2021, aug, 11);
+
+    mar : month_of(2);
+    mar30 : day_of(1993, mar, 30);
+    assert mar30.year == 1993;
+    assert mar30.month == mar;
+    assert mar30.day == 30;
+    assert mar30 == day_of(1993, mar, 30);
+
+    feb : month_of(1);
+    feb28 : day_of(2016, feb, 28);
+    assert feb28 == day_of(2016, feb, 28);
+    assert feb28.add_days(1) == day_of(2016, feb, 29);
+    assert feb28.add_days(2) == day_of(2016, mar, 1);
+
+    jan : month_of(0);
+    jan1 : day_of(2000, jan, 1);
+    assert jan1 == day_of(2000, jan, 1);
+    dec : month_of(11);
+    assert jan1.add_days(-1) == day_of(1999, dec, 31);
+    assert jan1.add_days(-365) == day_of(1999, jan, 1);
+    assert jan1.add_days(-365 * 2) == day_of(1998, jan, 1);
+  }
 }

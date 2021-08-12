@@ -29,7 +29,7 @@ public class base_gregorian_day implements gregorian_day {
 
   @Override
   public gregorian_month month() {
-    return base_gregorian_month.ALL[calendar.get(Calendar.YEAR)];
+    return base_gregorian_month.ALL[calendar.get(Calendar.MONTH)];
   }
 
   @Override
@@ -38,13 +38,10 @@ public class base_gregorian_day implements gregorian_day {
   }
 
   @Override
-  public gregorian_day previous() {
-    return null;
-  }
-
-  @Override
-  public gregorian_day next() {
-    return null;
+  public gregorian_day add_days(Integer num_days) {
+    GregorianCalendar new_calendar = (GregorianCalendar) calendar.clone();
+    new_calendar.add(Calendar.DAY_OF_MONTH, num_days);
+    return new base_gregorian_day(new_calendar);
   }
 
   @Override

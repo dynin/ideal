@@ -8,6 +8,5 @@ public interface gregorian_day extends deeply_immutable_data, deeply_immutable_e
   Integer year();
   gregorian_month month();
   Integer day();
-  gregorian_day previous();
-  gregorian_day next();
+  gregorian_day add_days(Integer num_days);
 }

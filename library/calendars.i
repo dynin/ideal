@@ -16,10 +16,9 @@ package calendars {
     gregorian_month month;
     nonnegative day;
 
-    gregorian_day previous();
-    gregorian_day next();
-
     -- TODO: add week info.
+
+    gregorian_day add_days(integer num_days);
   }
 
   --- Gregorian month.

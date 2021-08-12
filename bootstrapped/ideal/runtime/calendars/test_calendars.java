@@ -40,10 +40,39 @@ public class test_calendars {
     assert ideal.machine.elements.runtime_util.values_equal(nov.name(), new base_string("November"));
     assert ideal.machine.elements.runtime_util.values_equal(nov.to_string(), new base_string("November"));
   }
+  public void test_days() {
+    final gregorian_month aug = ideal.machine.calendars.calendar_utilities.month_of(7);
+    final gregorian_day aug11 = ideal.machine.calendars.calendar_utilities.day_of(2021, aug, 11);
+    assert ideal.machine.elements.runtime_util.values_equal(aug11.year(), 2021);
+    assert ideal.machine.elements.runtime_util.values_equal(aug11.month(), aug);
+    assert ideal.machine.elements.runtime_util.values_equal(aug11.day(), 11);
+    assert ideal.machine.elements.runtime_util.values_equal(aug11, ideal.machine.calendars.calendar_utilities.day_of(2021, aug, 11));
+    final gregorian_month mar = ideal.machine.calendars.calendar_utilities.month_of(2);
+    final gregorian_day mar30 = ideal.machine.calendars.calendar_utilities.day_of(1993, mar, 30);
+    assert ideal.machine.elements.runtime_util.values_equal(mar30.year(), 1993);
+    assert ideal.machine.elements.runtime_util.values_equal(mar30.month(), mar);
+    assert ideal.machine.elements.runtime_util.values_equal(mar30.day(), 30);
+    assert ideal.machine.elements.runtime_util.values_equal(mar30, ideal.machine.calendars.calendar_utilities.day_of(1993, mar, 30));
+    final gregorian_month feb = ideal.machine.calendars.calendar_utilities.month_of(1);
+    final gregorian_day feb28 = ideal.machine.calendars.calendar_utilities.day_of(2016, feb, 28);
+    assert ideal.machine.elements.runtime_util.values_equal(feb28, ideal.machine.calendars.calendar_utilities.day_of(2016, feb, 28));
+    assert ideal.machine.elements.runtime_util.values_equal(feb28.add_days(1), ideal.machine.calendars.calendar_utilities.day_of(2016, feb, 29));
+    assert ideal.machine.elements.runtime_util.values_equal(feb28.add_days(2), ideal.machine.calendars.calendar_utilities.day_of(2016, mar, 1));
+    final gregorian_month jan = ideal.machine.calendars.calendar_utilities.month_of(0);
+    final gregorian_day jan1 = ideal.machine.calendars.calendar_utilities.day_of(2000, jan, 1);
+    assert ideal.machine.elements.runtime_util.values_equal(jan1, ideal.machine.calendars.calendar_utilities.day_of(2000, jan, 1));
+    final gregorian_month dec = ideal.machine.calendars.calendar_utilities.month_of(11);
+    assert ideal.machine.elements.runtime_util.values_equal(jan1.add_days(-1), ideal.machine.calendars.calendar_utilities.day_of(1999, dec, 31));
+    assert ideal.machine.elements.runtime_util.values_equal(jan1.add_days(-365), ideal.machine.calendars.calendar_utilities.day_of(1999, jan, 1));
+    assert ideal.machine.elements.runtime_util.values_equal(jan1.add_days(-365 * 2), ideal.machine.calendars.calendar_utilities.day_of(1998, jan, 1));
+  }
   public test_calendars() { }
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test(new base_string("test_calendars.test_months"));
     this.test_months();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_calendars.test_days"));
+    this.test_days();
     ideal.machine.elements.runtime_util.end_test();
   }
 }

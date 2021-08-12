@@ -29,7 +29,7 @@ public class base_gregorian_day implements gregorian_day {
 
   @Override
   public gregorian_month month() {
-    return base_gregorian_month.ALL[calendar.get(Calendar.MONTH)];
+    return calendar_utilities.month_of(calendar.get(Calendar.MONTH));
   }
 
   @Override

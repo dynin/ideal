@@ -2870,6 +2870,7 @@
 ==== Loading machine/characters.i
 ==== Loading machine/channels.i
 ==== Loading machine/resources.i
+==== Loading machine/calendars.i
 ==== Loading machine/adapters.i
 ==== Loading machine/annotations.i
 ==== Loading library/library.i
@@ -2881,6 +2882,7 @@
 ==== Loading library/messages.i
 ==== Loading library/reflections.i
 ==== Loading library/graphs.i
+==== Loading library/calendars.i
 ============ SUPERTYPE_DECL
 ============ PREPARE_METHOD_AND_VARIABLE
 ============ METHOD_AND_VARIABLE_DECL

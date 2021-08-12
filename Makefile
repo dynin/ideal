@@ -85,6 +85,7 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/messages/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/library/reflections/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/library/graphs/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/library/calendars/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/elements/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/patterns/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/texts/*.java \
@@ -92,6 +93,7 @@ BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/channels/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/resources/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/graphs/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/runtime/calendars/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/logs/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/flags/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/runtime/tests/*.java

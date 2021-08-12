@@ -471,7 +471,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     // TODO: add overriden
     field_declaration ordinal_declaration = new field_declaration(
         PUBLIC_MODIFIERS, ordinal_name, variable_category.INSTANCE, flavor.readonly_flavor,
-        flavor.deeply_immutable_flavor, library().immutable_integer_type(),
+        flavor.deeply_immutable_flavor, library().immutable_nonnegative_type(),
         the_origin);
 
     if (has_analysis_errors(ordinal_declaration)) {

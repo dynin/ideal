@@ -64,6 +64,7 @@ public class to_java_transformer extends base_transformer {
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
   private static simple_name LIST_NAME = simple_name.make("list");
   private static simple_name STRING_NAME = simple_name.make("string");
+  private static simple_name ORDINAL_NAME = simple_name.make("ordinal");
   private static simple_name TO_STRING_NAME = simple_name.make("to_string");
   private static simple_name TO_STRING_JAVA = simple_name.make("toString");
   private static simple_name START_NAME = simple_name.make("start");
@@ -1098,6 +1099,11 @@ public class to_java_transformer extends base_transformer {
     if (type_utilities.is_union(return_type)) {
       annotations.append(make_nullable(the_origin));
       // make_type() strips null from union type
+    }
+    // This is a hack to get gregorian_month to work.
+    if (the_variable.short_name() == ORDINAL_NAME &&
+        return_type == library().immutable_nonnegative_type()) {
+      return_type = java_library.int_type().get_flavored(deeply_immutable_flavor);
     }
     return new procedure_construct(annotations,
         make_type(return_type, the_origin),

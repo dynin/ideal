@@ -10,5 +10,6 @@ namespace calendars {
   implicit import ideal.library.calendars;
   implicit import ideal.runtime.elements;
 
+  enum base_gregorian_month;
   test_suite test_calendars;
 }

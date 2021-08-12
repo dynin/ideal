@@ -16,4 +16,5 @@ namespace library {
   package messages;
   package reflections;
   package graphs;
+  package calendars;
 }

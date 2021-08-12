@@ -87,7 +87,12 @@ program briefing {
       } else {
         url = item_page_url(id);
       }
-      score : item_dictionary.get("score") !> nonnegative;
+      var nonnegative score;
+      if (item_dictionary.contains_key("score")) {
+        score = item_dictionary.get("score") !> nonnegative;
+      } else {
+        score = 0;
+      }
       title : item_dictionary.get("title") !> string;
       descendants : item_dictionary.get("descendants") !> nonnegative;
 
@@ -271,7 +276,7 @@ program briefing {
   text_fragment make_header(date the_date) {
     header_fragments : base_list[text_fragment].new();
     header_fragments.append(text_utilities.make_html_link("hacker news" !> base_string,
-        "https://news.ycombinator.com/" !> base_string));
+        "https://news.ycombinator.com" !> base_string));
     header_fragments.append(" digest" !> base_string);
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);

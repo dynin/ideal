@@ -14,6 +14,7 @@ namespace tests {
   implicit import ideal.runtime.formats;
   implicit import ideal.runtime.resources;
   implicit import ideal.runtime.channels;
+  implicit import ideal.runtime.calendars;
   implicit import ideal.runtime.graphs;
   implicit import ideal.runtime.logs;
   implicit import ideal.runtime.flags;

@@ -4,12 +4,11 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-namespace machine {
-  namespace elements;
-  namespace characters;
-  namespace channels;
-  namespace resources;
-  namespace calendars;
-  namespace adapters;
-  namespace annotations;
+--- Testing of calendar handling routines.
+namespace calendars {
+  implicit import ideal.library.elements;
+  implicit import ideal.library.calendars;
+  implicit import ideal.runtime.elements;
+
+  test_suite test_calendars;
 }

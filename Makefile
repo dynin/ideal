@@ -101,7 +101,8 @@ MACHINE_JAVA = \
     $(JSOURCE_DIR)/ideal/machine/annotations/*.java \
     $(JSOURCE_DIR)/ideal/machine/channels/*.java \
     $(JSOURCE_DIR)/ideal/machine/characters/*.java \
-    $(JSOURCE_DIR)/ideal/machine/resources/*.java
+    $(JSOURCE_DIR)/ideal/machine/resources/*.java \
+    $(JSOURCE_DIR)/ideal/machine/calendars/*.java
 
 PARSER_CUP = $(JSOURCE_DIR)/ideal/development/parsers/base_parser.cup
 

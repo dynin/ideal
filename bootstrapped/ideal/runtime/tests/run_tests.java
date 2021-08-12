@@ -10,6 +10,7 @@ import ideal.runtime.patterns.*;
 import ideal.runtime.formats.*;
 import ideal.runtime.resources.*;
 import ideal.runtime.channels.*;
+import ideal.runtime.calendars.*;
 import ideal.runtime.graphs.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.flags.*;

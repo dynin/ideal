@@ -43,6 +43,8 @@ namespace all_tests {
     test_repeat_matcher.new().run_all_tests();
     test_list_pattern.new().run_all_tests();
 
+    test_calendars.new().run_all_tests();
+
     test_markup_grammar.new().run_all_tests();
 
     test_resolver.new().run_all_tests();

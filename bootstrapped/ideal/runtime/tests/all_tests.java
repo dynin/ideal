@@ -10,6 +10,7 @@ import ideal.runtime.patterns.*;
 import ideal.runtime.formats.*;
 import ideal.runtime.resources.*;
 import ideal.runtime.channels.*;
+import ideal.runtime.calendars.*;
 import ideal.runtime.graphs.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.flags.*;
@@ -44,6 +45,7 @@ public class all_tests {
     new test_option_matcher().run_all_tests();
     new test_repeat_matcher().run_all_tests();
     new test_list_pattern().run_all_tests();
+    new test_calendars().run_all_tests();
     new test_markup_grammar().run_all_tests();
     new test_resolver().run_all_tests();
     new test_output_transformer().run_all_tests();

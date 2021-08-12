@@ -1,0 +1,29 @@
+/*
+ * Copyright 2014-2021 The Ideal Authors. All rights reserved.
+ *
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file or at
+ * https://developers.google.com/open-source/licenses/bsd
+ */
+
+package ideal.machine.calendars;
+
+import ideal.library.elements.*;
+import ideal.library.calendars.*;
+
+import java.util.GregorianCalendar;
+
+public class calendar_utilities {
+  public static gregorian_month month_of(Integer ordinal_base_0) {
+    assert ordinal_base_0 >= 0 && ordinal_base_0 < 12;
+    return base_gregorian_month.ALL[ordinal_base_0];
+  }
+
+  public static gregorian_day day_of(Integer year, gregorian_month month, Integer day_of_month) {
+    return new base_gregorian_day(new GregorianCalendar(year, month.ordinal(), day_of_month));
+  }
+
+  public static gregorian_day today() {
+    return new base_gregorian_day(new GregorianCalendar());
+  }
+}

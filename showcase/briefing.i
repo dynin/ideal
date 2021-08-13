@@ -7,6 +7,7 @@
 program briefing {
   implicit import ideal.library.resources;
   implicit import ideal.library.texts;
+  implicit import ideal.library.calendars;
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.resources;
   implicit import ideal.runtime.texts;
@@ -14,9 +15,11 @@ program briefing {
   implicit import ideal.runtime.patterns;
   implicit import ideal.runtime.logs;
   implicit import ideal.runtime.formats;
+  implicit import ideal.runtime.calendars;
   implicit import ideal.machine.resources;
   implicit import ideal.machine.characters;
   implicit import ideal.machine.resources;
+  implicit import ideal.machine.calendars.calendar_utilities;
 
   auto_constructor class item_id {
     implements identifier;
@@ -115,8 +118,10 @@ program briefing {
   }
 
   PROGRAM_NAME : "hacker news digest";
+  TEST_RUN : false;
   MIN_SCORE_THRESHOLD : 100;
-  HTML_FILE : filesystem.CURRENT_CATALOG.resolve("tmp/news-not-paper.html");
+
+  INDEX_HTML : "index" ++ base_extension.HTML;
 
   HEADER_CLASS : "header";
   TITLE_CLASS : "title";
@@ -125,50 +130,16 @@ program briefing {
   SCORE_CLASS : "score";
   DISCUSSION_CLASS : "discussion";
 
-  auto_constructor class date {
-    implements immutable data, equality_comparable, stringable;
-
-    nonnegative month;
-    nonnegative day;
-
-    override string to_string => two_digit(month) ++ "-" ++ two_digit(day);
-
-    string dotted => "2021" ++ "." ++ two_digit(month) ++ "." ++ two_digit(day);
-
-    date next() {
-      if (month == 7 && day == 31) {
-        return date.new(8, 1);
-      } else {
-        return date.new(month, day + 1);
-      }
-    }
-
-    date prev() {
-      if (month == 8 && day == 1) {
-        return date.new(7, 31);
-      } else {
-        new_day : day - 1;
-        assert new_day is nonnegative;
-        return date.new(month, new_day);
-      }
-    }
-
-    private static string two_digit(nonnegative number) {
-      if (number < 10) {
-        return "0" ++ number;
-      } else {
-        return number.to_string;
-      }
-    }
-  }
-
-  TEST_RUN : false;
   briefing_catalog : filesystem.CURRENT_CATALOG.resolve("../briefing").access_catalog();
+  var resource_catalog input_catalog;
   var resource_catalog output_catalog;
-  first : date.new(7, 6);
-  last : date.new(8, 9);
+  --first : day_of(2021, JULY, 6);
+  first : day_of(2021, AUGUST, 10);
+  --last : today();
+  last : day_of(2021, AUGUST, 12);
 
   void start() {
+    input_catalog = briefing_catalog.resolve("input").access_catalog();
     output_catalog = briefing_catalog.resolve("output").access_catalog();
 
     if (TEST_RUN) {
@@ -177,38 +148,57 @@ program briefing {
       write_page(id_list.slice(0, 50), last);
     } else {
       all_item_ids : hash_set[item_id].new();
-      var the_date : first;
+      var day : first;
       loop {
         day_item_ids : hash_set[item_id].new();
-        for (id : read_ids(the_date).elements) {
+        for (id : read_ids(day).elements) {
           if (!all_item_ids.contains(id)) {
             day_item_ids.add(id);
             all_item_ids.add(id);
           }
         }
-        log.info("Got " ++ day_item_ids.size ++ " items for " ++ the_date);
-        write_page(day_item_ids.elements, the_date);
-        if (the_date == last) {
+        log.info("Got " ++ day_item_ids.size ++ " items for " ++ day);
+        write_page(day_item_ids.elements, day);
+        if (day == last) {
           break;
         }
-        the_date = the_date.next();
+        day = next(day);
       }
     }
   }
 
-  void write_page(readonly list[item_id] ids, date the_date) {
-    page : render_page(ids, the_date);
-    file : output_catalog.resolve(day_page_url(the_date));
+  string describe_day(gregorian_day day, character separator) {
+    return day.year ++ separator ++ two_digit(day.month.index_base_1) ++ separator ++
+        two_digit(day.day);
+  }
+
+  string day_slashes(gregorian_day day) => describe_day(day, '/');
+  string day_dots(gregorian_day day) => describe_day(day, '.');
+
+  string two_digit(nonnegative number) {
+    if (number < 10) {
+      return "0" ++ number;
+    } else {
+      return number.to_string;
+    }
+  }
+
+  gregorian_day next(gregorian_day day) => day.add_days(1);
+  gregorian_day previous(gregorian_day day) => day.add_days(-1);
+
+  void write_page(readonly list[item_id] ids, gregorian_day day) {
+    page : render_page(ids, day);
+    file : output_catalog.resolve(day_page_file(day));
     log.info("=== " ++ file);
     file.access_string(make_catalog_option.instance).content =
         text_utilities.to_markup_string(page);
   }
 
-  set[item_id] read_ids(date the_date) {
-    input_catalog : briefing_catalog.resolve(the_date.to_string).access_catalog();
+  set[item_id] read_ids(gregorian_day day) {
+    day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
     result : hash_set[item_id].new();
 
-    content : input_catalog.content;
+    content : day_catalog.content;
     assert content is_not null;
     files : content.values().elements;
     for (file : files) {
@@ -221,9 +211,10 @@ program briefing {
     return result;
   }
 
-  text_element render_page(readonly list[item_id] ids, date the_date) {
+
+  text_element render_page(readonly list[item_id] ids, gregorian_day day) {
     body_content : base_list[text_fragment].new();
-    body_content.append(make_header(the_date));
+    body_content.append(make_header(day));
     body_content.append(base_element.new(HR));
 
     for (item_id : ids) {
@@ -239,8 +230,8 @@ program briefing {
     text_node charset : base_element.new(META, CHARSET, resource_util.UTF_8 !> base_string,
         missing.instance);
     referrer : make_element(META, NAME, "referrer", CONTENT, "no-referrer", missing.instance);
-    title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ the_date.dotted() !> base_string);
-    link : text_utilities.make_css_link("news-not-paper.css");
+    title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ day_dots(day) !> base_string);
+    link : text_utilities.make_css_link(top_prefix("news-not-paper.css"));
     text_node head : text_utilities.make_element(HEAD, [ charset, referrer, title, link ]);
 
     body_content.append(base_element.new(HR));
@@ -252,8 +243,16 @@ program briefing {
     return text_utilities.make_element(text_library.HTML, [ head, body ]);
   }
 
-  string day_page_url(date the_date) {
-    return the_date ++ base_extension.HTML;
+  string day_page_file(gregorian_day day) {
+    return day_slashes(day) ++ resource_util.PATH_SEPARATOR ++ INDEX_HTML;
+  }
+
+  string top_prefix(string filename) {
+    return "../../../" ++ filename;
+  }
+
+  string day_page_url(gregorian_day day) {
+    return top_prefix(day_page_file(day));
   }
 
   text_element render_html(item the_item) {
@@ -273,23 +272,23 @@ program briefing {
     return base_element.new(DIV, text_utilities.join(item_fragments));
   }
 
-  text_fragment make_header(date the_date) {
+  text_fragment make_header(gregorian_day day) {
     header_fragments : base_list[text_fragment].new();
     header_fragments.append(text_utilities.make_html_link("hacker news" !> base_string,
         "https://news.ycombinator.com" !> base_string));
     header_fragments.append(" digest" !> base_string);
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);
-    if (the_date != first) {
+    if (day != first) {
       header_fragments.append(text_utilities.make_html_link(LARR,
-          day_page_url(the_date.prev()) !> base_string));
+          day_page_url(previous(day)) !> base_string));
       header_fragments.append(" " !> base_string);
     }
-    header_fragments.append(the_date.dotted() !> base_string);
-    if (the_date != last) {
+    header_fragments.append(day_dots(day) !> base_string);
+    if (day != last) {
       header_fragments.append(" " !> base_string);
       header_fragments.append(text_utilities.make_html_link(RARR,
-        day_page_url(the_date.next()) !> base_string));
+        day_page_url(next(day)) !> base_string));
     }
     return base_element.new(DIV, CLASS, HEADER_CLASS !> base_string,
         text_utilities.join(header_fragments));

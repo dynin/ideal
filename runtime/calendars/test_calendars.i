@@ -6,6 +6,7 @@
 
 test_suite test_calendars {
   implicit import ideal.machine.calendars.calendar_utilities;
+  -- TODO: explicit import of months
   --implicit import ideal.runtime.calendars.base_gregorian_month;
 
   test_case test_months() {

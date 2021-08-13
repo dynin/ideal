@@ -71,4 +71,11 @@ test_suite test_calendars {
     assert jan1.add_days(-365) == day_of(1999, JANUARY, 1);
     assert jan1.add_days(-365 * 2) == day_of(1998, JANUARY, 1);
   }
+
+  --- Test equivalence relation.
+  test_case test_equivalence() {
+    day0 : today();
+    day1 : day_of(day0.year, day0.month, day0.day);
+    assert day0 == day1;
+  }
 }

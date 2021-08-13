@@ -15,7 +15,8 @@ import ideal.runtime.elements.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class base_gregorian_day implements gregorian_day {
+public class base_gregorian_day extends debuggable
+    implements gregorian_day, readonly_has_equivalence {
   private final GregorianCalendar calendar;
 
   base_gregorian_day(GregorianCalendar calendar) {
@@ -48,4 +49,27 @@ public class base_gregorian_day implements gregorian_day {
   public string to_string() {
     return new base_string(year() + "/", month().to_string(), "/" + day());
   }
+
+  @Override
+  public equivalence_relation<readonly_has_equivalence> equivalence() {
+    return (equivalence_relation<readonly_has_equivalence>) (equivalence_relation) day_equivalence;
+  }
+
+  equivalence_with_hash<base_gregorian_day> day_equivalence =
+    new equivalence_with_hash<base_gregorian_day>() {
+      @Override
+      public Boolean call(base_gregorian_day first, base_gregorian_day second) {
+        return ((int) first.year()) == ((int) second.year()) &&
+               first.month() == second.month() &&
+               ((int) first.day()) == ((int) second.day());
+      }
+
+      @Override
+      public Integer hash(base_gregorian_day the_value) {
+        int result = 12 + the_value.year();
+        result = result * 31 + the_value.month().ordinal();
+        result = result * 31 + the_value.day();
+        return result;
+      }
+    };
 }

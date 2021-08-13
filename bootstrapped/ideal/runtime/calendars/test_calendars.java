@@ -63,6 +63,11 @@ public class test_calendars {
     assert ideal.machine.elements.runtime_util.values_equal(jan1.add_days(-365), ideal.machine.calendars.calendar_utilities.day_of(1999, base_gregorian_month.JANUARY, 1));
     assert ideal.machine.elements.runtime_util.values_equal(jan1.add_days(-365 * 2), ideal.machine.calendars.calendar_utilities.day_of(1998, base_gregorian_month.JANUARY, 1));
   }
+  public void test_equivalence() {
+    final gregorian_day day0 = ideal.machine.calendars.calendar_utilities.today();
+    final gregorian_day day1 = ideal.machine.calendars.calendar_utilities.day_of(day0.year(), day0.month(), day0.day());
+    assert ideal.machine.elements.runtime_util.values_equal(day0, day1);
+  }
   public test_calendars() { }
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test(new base_string("test_calendars.test_months"));
@@ -70,6 +75,9 @@ public class test_calendars {
     ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test(new base_string("test_calendars.test_days"));
     this.test_days();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_calendars.test_equivalence"));
+    this.test_equivalence();
     ideal.machine.elements.runtime_util.end_test();
   }
 }

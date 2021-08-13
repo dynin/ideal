@@ -8,6 +8,8 @@
 namespace elements {
   implicit import ideal.library.elements;
 
+  interface has_equivalence;
+
   class empty;
 
   --- Base readonly list

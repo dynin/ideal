@@ -134,9 +134,9 @@ program briefing {
   var resource_catalog input_catalog;
   var resource_catalog output_catalog;
   --first : day_of(2021, JULY, 6);
-  first : day_of(2021, AUGUST, 10);
-  --last : today();
-  last : day_of(2021, AUGUST, 12);
+  first : day_of(2021, AUGUST, 11);
+  last : today();
+  --last : day_of(2021, AUGUST, 12);
 
   void start() {
     input_catalog = briefing_catalog.resolve("input").access_catalog();

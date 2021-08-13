@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import ideal.library.channels.*;
 import ideal.library.texts.text_fragment;
 import ideal.runtime.elements.base_string;
+import ideal.runtime.elements.readonly_has_equivalence;
 import ideal.runtime.elements.utilities;
 import ideal.runtime.texts.text_library;
 import ideal.runtime.texts.base_element;
@@ -101,6 +102,14 @@ public class runtime_util {
       return ((base_string) d).s().hashCode();
     }
 
+    if (d instanceof readonly_has_equivalence) {
+      readonly_has_equivalence dd = (readonly_has_equivalence) d;
+      equivalence_relation<readonly_has_equivalence> equivalence = dd.equivalence();
+      if (equivalence instanceof equivalence_with_hash<readonly_has_equivalence>) {
+        return ((equivalence_with_hash<readonly_has_equivalence>) equivalence).hash(dd);
+      }
+    }
+
     if (d instanceof immutable_list) {
       return compute_hash_code_list((immutable_list<readonly_data>) d);
     } else {
@@ -151,6 +160,7 @@ public class runtime_util {
     }
 
     if (d1.getClass() != d2.getClass()) {
+      // TODO: handle list vs. empty
       return false;
     }
 
@@ -160,6 +170,12 @@ public class runtime_util {
 
     if (d1 instanceof base_string) {
       return ((base_string) d1).s().equals(((base_string) d2).s());
+    }
+
+    if (d1 instanceof readonly_has_equivalence) {
+      readonly_has_equivalence e1 = (readonly_has_equivalence) d1;
+      readonly_has_equivalence e2 = (readonly_has_equivalence) d2;
+      return e1.equivalence().call(e1, e2);
     }
 
     if (d1 instanceof immutable_list) {

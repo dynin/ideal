@@ -86,5 +86,7 @@ class base_resource_identifier {
       the_identifier.the_resource_store.write_string(the_identifier.the_scheme,
           the_identifier.path, new_value);
     }
+
+    override string to_string => the_identifier.to_string();
   }
 }

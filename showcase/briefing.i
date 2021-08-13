@@ -151,7 +151,11 @@ program briefing {
       var day : first;
       loop {
         day_item_ids : hash_set[item_id].new();
-        for (id : read_ids(day).elements) {
+        id_set : read_ids(day);
+        if (id_set is null) {
+          break;
+        }
+        for (id : id_set.elements) {
           if (!all_item_ids.contains(id)) {
             day_item_ids.add(id);
             all_item_ids.add(id);
@@ -194,13 +198,17 @@ program briefing {
         text_utilities.to_markup_string(page);
   }
 
-  set[item_id] read_ids(gregorian_day day) {
+  readonly set[item_id] or null read_ids(gregorian_day day) {
     day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
-    result : hash_set[item_id].new();
 
     content : day_catalog.content;
-    assert content is_not null;
+    if (content is null) {
+      log.info("Can't access " ++ day_catalog);
+      return missing.instance;
+    }
+
     files : content.values().elements;
+    result : hash_set[item_id].new();
     for (file : files) {
       log.info("=== " ++ file);
       file_content : hacker_news.id_list(file);
@@ -231,7 +239,7 @@ program briefing {
         missing.instance);
     referrer : make_element(META, NAME, "referrer", CONTENT, "no-referrer", missing.instance);
     title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ day_dots(day) !> base_string);
-    link : text_utilities.make_css_link(top_prefix("news-not-paper.css"));
+    link : text_utilities.make_css_link(top_prefix("news-not-paper.css", day));
     text_node head : text_utilities.make_element(HEAD, [ charset, referrer, title, link ]);
 
     body_content.append(base_element.new(HR));
@@ -244,15 +252,23 @@ program briefing {
   }
 
   string day_page_file(gregorian_day day) {
-    return day_slashes(day) ++ resource_util.PATH_SEPARATOR ++ INDEX_HTML;
+    if (day == last) {
+      return INDEX_HTML;
+    } else {
+      return day_slashes(day) ++ resource_util.PATH_SEPARATOR ++ INDEX_HTML;
+    }
   }
 
-  string top_prefix(string filename) {
-    return "../../../" ++ filename;
+  string top_prefix(string filename, gregorian_day current) {
+    if (current == last) {
+      return filename;
+    } else {
+      return "../../../" ++ filename;
+    }
   }
 
-  string day_page_url(gregorian_day day) {
-    return top_prefix(day_page_file(day));
+  string day_page_url(gregorian_day day, gregorian_day current) {
+    return top_prefix(day_page_file(day), current);
   }
 
   text_element render_html(item the_item) {
@@ -281,14 +297,14 @@ program briefing {
     header_fragments.append(NBSP);
     if (day != first) {
       header_fragments.append(text_utilities.make_html_link(LARR,
-          day_page_url(previous(day)) !> base_string));
+          day_page_url(previous(day), day) !> base_string));
       header_fragments.append(" " !> base_string);
     }
     header_fragments.append(day_dots(day) !> base_string);
     if (day != last) {
       header_fragments.append(" " !> base_string);
       header_fragments.append(text_utilities.make_html_link(RARR,
-        day_page_url(next(day)) !> base_string));
+        day_page_url(next(day), day) !> base_string));
     }
     return base_element.new(DIV, CLASS, HEADER_CLASS !> base_string,
         text_utilities.join(header_fragments));

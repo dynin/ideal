@@ -4,4 +4,4 @@ package ideal.library.resources;
 
 import ideal.library.elements.*;
 
-public interface writeonly_resource<content_type> extends writeonly_value, any_resource<content_type> { }
+public interface writeonly_resource<content_type> extends writeonly_value, writeonly_stringable, any_resource<content_type> { }

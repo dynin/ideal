@@ -110,4 +110,7 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
       return this.resolve(name);
     }
   }
+  public @Override string to_string() {
+    return this.get_id().to_string();
+  }
 }

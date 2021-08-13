@@ -67,5 +67,8 @@ public class base_resource_identifier extends debuggable implements resource_ide
       }
       this.the_identifier.the_resource_store.write_string(this.the_identifier.the_scheme, this.the_identifier.path, new_value);
     }
+    public @Override string to_string() {
+      return this.the_identifier.to_string();
+    }
   }
 }

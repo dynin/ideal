@@ -4,4 +4,4 @@ package ideal.library.resources;
 
 import ideal.library.elements.*;
 
-public interface immutable_resource<content_type> extends immutable_value, readonly_resource<content_type> { }
+public interface immutable_resource<content_type> extends immutable_value, immutable_stringable, readonly_resource<content_type> { }

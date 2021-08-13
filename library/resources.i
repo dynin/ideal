@@ -9,7 +9,7 @@ package resources {
   implicit import ideal.library.elements;
 
   interface resource[value content_type] {
-    extends value;
+    extends value, stringable;
 
     -- TODO: properties type; name differently
     -- dictionary[identifier, deeply_immutable data] metadata();

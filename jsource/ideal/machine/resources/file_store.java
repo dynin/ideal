@@ -79,6 +79,10 @@ public class file_store extends base_resource_store {
     String name = utilities.s(build_name(scheme, path));
 
     String[] filenames = new File(name).list();
+    if (filenames == null) {
+      return null;
+    }
+
     hash_set<string> result = new hash_set<string>();
 
     for (int i = 0; i < filenames.length; ++i) {

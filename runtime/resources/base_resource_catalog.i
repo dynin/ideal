@@ -135,4 +135,6 @@ class base_resource_catalog {
       return resolve(name);
     }
   }
+
+  override string to_string => get_id().to_string;
 }

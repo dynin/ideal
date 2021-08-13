@@ -4,4 +4,4 @@ package ideal.library.resources;
 
 import ideal.library.elements.*;
 
-public interface readonly_resource<content_type> extends readonly_value, any_resource<content_type> { }
+public interface readonly_resource<content_type> extends readonly_value, readonly_stringable, any_resource<content_type> { }

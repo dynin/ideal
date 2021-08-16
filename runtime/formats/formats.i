@@ -14,5 +14,7 @@ namespace formats {
 
   enum json_token;
   class json_parser;
+  class json_printer;
   test_suite test_json_parser;
+  test_suite test_json_printer;
 }

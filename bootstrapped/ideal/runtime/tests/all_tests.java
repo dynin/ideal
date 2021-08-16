@@ -33,6 +33,7 @@ public class all_tests {
     new test_plain_text().run_all_tests();
     new test_markup_text().run_all_tests();
     new test_json_parser().run_all_tests();
+    new test_json_printer().run_all_tests();
     new test_display().run_all_tests();
     new test_singleton_pattern().run_all_tests();
     new test_predicate_pattern().run_all_tests();

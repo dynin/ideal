@@ -2173,6 +2173,12 @@ public class to_java_transformer extends base_transformer {
           the_origin);
     }
 
+    principal_type type_principal = the_type.principal();
+    if (type_principal instanceof parametrized_type) {
+      master_type the_master = ((parametrized_type) type_principal).get_master();
+      the_type = the_master.get_flavored(the_type.get_flavor());
+    }
+
     construct result = new operator_construct(operator.IS_OPERATOR, expression,
         make_type(the_type, the_origin), the_origin);
     if (negated) {

@@ -48,6 +48,7 @@ program briefing {
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
     item_page_url_prefix : "https://news.ycombinator.com/item?id=";
     parser : json_parser.new(normal_handler.instance);
+    printer : json_printer.new(normal_handler.instance);
     -- Minimum host length for which the www stripping is performed.
     www_stripping_threshold : 7;
     www_prefix_pattern : list_pattern[character].new("www.");
@@ -60,6 +61,14 @@ program briefing {
         result.append(item_id.new(number_id !> nonnegative));
       }
       return result;
+    }
+
+    string as_string(readonly list[item_id] item_ids) {
+      id_numbers : base_list[readonly value].new();
+      for (the_id : item_ids) {
+        id_numbers.append(the_id.id);
+      }
+      return printer.print(id_numbers);
     }
 
     readonly list[item_id] topstories() {
@@ -122,11 +131,11 @@ program briefing {
   MIN_SCORE_THRESHOLD : 100;
 
   INDEX_HTML : "index" ++ base_extension.HTML;
+  ALL_ITEMS_JSON : "all-items" ++ base_extension.JSON;
 
   HEADER_CLASS : "header";
   TITLE_CLASS : "title";
   ORIGIN_CLASS : "origin";
-  BY_CLASS : "by";
   SCORE_CLASS : "score";
   DISCUSSION_CLASS : "discussion";
 
@@ -143,32 +152,38 @@ program briefing {
     output_catalog = briefing_catalog.resolve("output").access_catalog();
 
     if (TEST_RUN) {
-      id_list : hacker_news.topstories();
-      log.info("Got count " ++ id_list.size);
-      write_page(id_list.slice(0, 50), last);
-    } else {
-      all_item_ids : hash_set[item_id].new();
-      var day : first;
-      loop {
-        day_item_ids : hash_set[item_id].new();
-        id_set : read_ids(day);
-        if (id_set is null) {
-          break;
-        }
-        for (id : id_set.elements) {
-          if (!all_item_ids.contains(id)) {
-            day_item_ids.add(id);
-            all_item_ids.add(id);
-          }
-        }
-        log.info("Got " ++ day_item_ids.size ++ " items for " ++ day);
-        write_page(day_item_ids.elements, day);
-        if (day == last) {
-          break;
-        }
-        day = next(day);
-      }
+      test_run();
+      return;
     }
+
+    all_item_ids : hash_set[item_id].new();
+    var day : first;
+    loop {
+      day_item_ids : hash_set[item_id].new();
+      id_set : read_ids(day);
+      if (id_set is null) {
+        break;
+      }
+      for (id : id_set.elements) {
+        if (!all_item_ids.contains(id)) {
+          day_item_ids.add(id);
+          all_item_ids.add(id);
+        }
+      }
+      log.info("Got " ++ day_item_ids.size ++ " items for " ++ day);
+      write_page(day_item_ids.elements, day);
+      if (day == last) {
+        break;
+      }
+      write_all_items(all_item_ids, day);
+      day = next(day);
+    }
+  }
+
+  private void test_run() {
+    id_list : hacker_news.topstories();
+    log.info("Got count " ++ id_list.size);
+    write_page(id_list.slice(0, 50), last);
   }
 
   string describe_day(gregorian_day day, character separator) {
@@ -207,18 +222,28 @@ program briefing {
       return missing.instance;
     }
 
-    files : content.values().elements;
+    files : content.elements;
     result : hash_set[item_id].new();
     for (file : files) {
-      log.info("=== " ++ file);
-      file_content : hacker_news.id_list(file);
-      result.add_all(file_content);
+      if (file.key != ALL_ITEMS_JSON) {
+        log.info("=== " ++ file.value);
+        file_content : hacker_news.id_list(file.value);
+        result.add_all(file_content);
+      } else {
+        log.info("=== Skipping " ++ file.value);
+      }
     }
 
     log.info("Got " ++ result.size ++ " ids.");
     return result;
   }
 
+  void write_all_items(readonly set[item_id] ids, gregorian_day day) {
+    day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
+    all_items_json : day_catalog.resolve(ALL_ITEMS_JSON).access_string(missing.instance);
+    log.info("=== " ++ all_items_json);
+    all_items_json.content = hacker_news.as_string(ids.elements);
+  }
 
   text_element render_page(readonly list[item_id] ids, gregorian_day day) {
     body_content : base_list[text_fragment].new();

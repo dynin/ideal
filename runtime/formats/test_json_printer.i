@@ -23,8 +23,6 @@ test_suite test_json_printer {
     json2 : printer.print([ 42, 68 ]);
     assert json2 == "[42, 68]";
 
-    -- TODO: boolean
-
     json3 : printer.print(missing.instance);
     assert json3 == "null";
 
@@ -33,5 +31,11 @@ test_suite test_json_printer {
     the_dictionary.put("baz", 68);
     json4 : printer.print(the_dictionary);
     assert json4 == "{\"foo\": \"bar\", \"baz\": 68}";
+
+    the_dictionary2 : list_dictionary[string, readonly value].new();
+    the_dictionary2.put("foo", false);
+    the_dictionary2.put("bar", true);
+    json5 : printer.print(the_dictionary2);
+    assert json5 == "{\"foo\": false, \"bar\": true}";
   }
 }

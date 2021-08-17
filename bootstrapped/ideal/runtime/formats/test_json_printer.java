@@ -26,6 +26,11 @@ public class test_json_printer {
     the_dictionary.put(new base_string("baz"), 68);
     final string json4 = printer.print(the_dictionary);
     assert ideal.machine.elements.runtime_util.values_equal(json4, new base_string("{\"foo\": \"bar\", \"baz\": 68}"));
+    final list_dictionary<string, Object> the_dictionary2 = new list_dictionary<string, Object>();
+    the_dictionary2.put(new base_string("foo"), false);
+    the_dictionary2.put(new base_string("bar"), true);
+    final string json5 = printer.print(the_dictionary2);
+    assert ideal.machine.elements.runtime_util.values_equal(json5, new base_string("{\"foo\": false, \"bar\": true}"));
   }
   public test_json_printer() { }
   public void run_all_tests() {

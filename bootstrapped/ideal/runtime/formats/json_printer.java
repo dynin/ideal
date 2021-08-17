@@ -26,6 +26,8 @@ public class json_printer {
       this.print_list(((readonly_list<Object>) the_value), result);
     } else if (the_value instanceof dictionary) {
       this.print_dictionary(((dictionary<string, Object>) the_value), result);
+    } else if (the_value instanceof Boolean) {
+      this.print_boolean(((boolean) the_value), result);
     } else if (the_value == null) {
       result.write_all(new base_string("null"));
     } else {
@@ -99,5 +101,8 @@ public class json_printer {
       }
     }
     result.write(json_token.CLOSE_BRACE.the_character);
+  }
+  private void print_boolean(final boolean the_boolean, final string_writer result) {
+    result.write_all(ideal.machine.elements.runtime_util.concatenate(the_boolean, new base_string("")));
   }
 }

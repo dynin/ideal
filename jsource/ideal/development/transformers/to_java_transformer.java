@@ -2180,7 +2180,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     construct result = new operator_construct(operator.IS_OPERATOR, expression,
-        make_type(the_type, the_origin), the_origin);
+        make_type_with_mapping(the_type, the_origin, mapping.MAP_TO_WRAPPER_TYPE), the_origin);
     if (negated) {
       return new operator_construct(operator.LOGICAL_NOT,
           new list_construct(new base_list<construct>(result), grouping_type.PARENS, false,

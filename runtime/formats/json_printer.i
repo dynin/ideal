@@ -29,10 +29,8 @@ class json_printer {
       print_list(the_value, result);
     } else if (the_value is dictionary[string, readonly value]) {
       print_dictionary(the_value, result);
---    } else if (the_value == false) {
---      result.write_all("false");
---    } else if (the_value == true) {
---      result.write_all("true");
+    } else if (the_value is boolean) {
+      print_boolean(the_value, result);
     } else if (the_value is null) {
       result.write_all("null");
     } else {
@@ -104,5 +102,10 @@ class json_printer {
       print_value(element.value, result);
     }
     result.write(json_token.CLOSE_BRACE.the_character);
+  }
+
+  private void print_boolean(boolean the_boolean, string_writer result) {
+    -- TODO: use the_boolean.to_string
+    result.write_all(the_boolean ++ "");
   }
 }

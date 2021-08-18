@@ -129,6 +129,8 @@ program briefing {
   PROGRAM_NAME : "hacker news digest";
   TEST_RUN : false;
   MIN_SCORE_THRESHOLD : 100;
+  HOUR_DAY_STARTS : 6;
+  DAYS_STORIES_EXPIRE : 5;
 
   INDEX_HTML : "index" ++ base_extension.HTML;
   ALL_ITEMS_JSON : "all-items" ++ base_extension.JSON;
@@ -142,9 +144,11 @@ program briefing {
   briefing_catalog : filesystem.CURRENT_CATALOG.resolve("../briefing").access_catalog();
   var resource_catalog input_catalog;
   var resource_catalog output_catalog;
+  hour : hour_now();
+  minute : minute_now();
   --first : day_of(2021, JULY, 6);
-  first : day_of(2021, AUGUST, 11);
-  last : today();
+  first : day_of(2021, AUGUST, 17);
+  var last : today();
   --last : day_of(2021, AUGUST, 12);
 
   void start() {
@@ -155,6 +159,12 @@ program briefing {
       test_run();
       return;
     }
+
+    if (hour < HOUR_DAY_STARTS) {
+      last = last.add_days(-1);
+    }
+
+    save_top();
 
     all_item_ids : hash_set[item_id].new();
     var day : first;
@@ -175,15 +185,30 @@ program briefing {
       if (day == last) {
         break;
       }
+      expired_ids : read_ids(day.add_days(-DAYS_STORIES_EXPIRE));
+      if (expired_ids is_not null) {
+        for (expired_id : expired_ids.elements) {
+          all_item_ids.remove(expired_id);
+        }
+      }
       write_all_items(all_item_ids, day);
       day = next(day);
     }
   }
 
   private void test_run() {
+    log.info("Now: " ++ two_digit(hour) ++ ":" ++ two_digit(minute));
     id_list : hacker_news.topstories();
     log.info("Got count " ++ id_list.size);
     write_page(id_list.slice(0, 50), last);
+  }
+
+  private void save_top() {
+    id_list : hacker_news.topstories();
+    day_catalog : input_catalog.resolve(day_slashes(today())).access_catalog();
+    time_id : day_catalog.resolve(two_digit(hour) ++ "-" ++ two_digit(minute));
+    log.info("Writing " ++ time_id);
+    time_id.access_string(missing.instance).content = hacker_news.as_string(id_list);
   }
 
   string describe_day(gregorian_day day, character separator) {
@@ -208,29 +233,36 @@ program briefing {
   void write_page(readonly list[item_id] ids, gregorian_day day) {
     page : render_page(ids, day);
     file : output_catalog.resolve(day_page_file(day));
-    log.info("=== " ++ file);
+    log.info("Writing " ++ file);
     file.access_string(make_catalog_option.instance).content =
         text_utilities.to_markup_string(page);
   }
 
   readonly set[item_id] or null read_ids(gregorian_day day) {
     day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
-
-    content : day_catalog.content;
-    if (content is null) {
-      log.info("Can't access " ++ day_catalog);
-      return missing.instance;
-    }
-
-    files : content.elements;
     result : hash_set[item_id].new();
-    for (file : files) {
-      if (file.key != ALL_ITEMS_JSON) {
-        log.info("=== " ++ file.value);
-        file_content : hacker_news.id_list(file.value);
-        result.add_all(file_content);
-      } else {
-        log.info("=== Skipping " ++ file.value);
+
+    all_items_json : day_catalog.resolve(ALL_ITEMS_JSON);
+    if (all_items_json.exists()) {
+      log.info("Reading " ++ all_items_json);
+      all_items : hacker_news.id_list(all_items_json);
+      result.add_all(all_items);
+    } else {
+      content : day_catalog.content;
+      if (content is null) {
+        log.info("Can't access " ++ day_catalog);
+        return missing.instance;
+      }
+
+      files : content.elements;
+      for (file : files) {
+        if (file.key != ALL_ITEMS_JSON) {
+          log.info("Reading " ++ file.value);
+          file_content : hacker_news.id_list(file.value);
+          result.add_all(file_content);
+        } else {
+          log.info("Skipping " ++ file.value);
+        }
       }
     }
 
@@ -241,7 +273,7 @@ program briefing {
   void write_all_items(readonly set[item_id] ids, gregorian_day day) {
     day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
     all_items_json : day_catalog.resolve(ALL_ITEMS_JSON).access_string(missing.instance);
-    log.info("=== " ++ all_items_json);
+    log.info("Writing " ++ all_items_json);
     all_items_json.content = hacker_news.as_string(ids.elements);
   }
 

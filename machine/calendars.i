@@ -14,5 +14,9 @@ namespace calendars {
     gregorian_day day_of(nonnegative year, gregorian_month month, nonnegative day_of_month);
     -- Today in local timezone.
     gregorian_day today();
+
+    -- This is used by Briefing.  Having it here is a hack.
+    nonnegative hour_now();
+    nonnegative minute_now();
   }
 }

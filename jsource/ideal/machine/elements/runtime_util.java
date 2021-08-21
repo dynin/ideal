@@ -105,7 +105,7 @@ public class runtime_util {
     if (d instanceof readonly_has_equivalence) {
       readonly_has_equivalence dd = (readonly_has_equivalence) d;
       equivalence_relation<readonly_has_equivalence> equivalence = dd.equivalence();
-      if (equivalence instanceof equivalence_with_hash<readonly_has_equivalence>) {
+      if (equivalence instanceof equivalence_with_hash) {
         return ((equivalence_with_hash<readonly_has_equivalence>) equivalence).hash(dd);
       }
     }

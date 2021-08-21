@@ -126,8 +126,9 @@ program briefing {
     }
   }
 
-  PROGRAM_NAME : "hacker news digest";
+  PROGRAM_NAME : "news, !paper";
   TEST_RUN : false;
+  DEPLOY_MODE : false;
   MIN_SCORE_THRESHOLD : 100;
   HOUR_DAY_STARTS : 6;
   DAYS_STORIES_EXPIRE : 5;
@@ -136,6 +137,7 @@ program briefing {
   ALL_ITEMS_JSON : "all-items" ++ base_extension.JSON;
 
   HEADER_CLASS : "header";
+  TOP_CLASS : "top";
   TITLE_CLASS : "title";
   ORIGIN_CLASS : "origin";
   SCORE_CLASS : "score";
@@ -217,7 +219,7 @@ program briefing {
   }
 
   string day_slashes(gregorian_day day) => describe_day(day, '/');
-  string day_dots(gregorian_day day) => describe_day(day, '.');
+  string day_dashes(gregorian_day day) => describe_day(day, '-');
 
   string two_digit(nonnegative number) {
     if (number < 10) {
@@ -295,12 +297,15 @@ program briefing {
     text_node charset : base_element.new(META, CHARSET, resource_util.UTF_8 !> base_string,
         missing.instance);
     referrer : make_element(META, NAME, "referrer", CONTENT, "no-referrer", missing.instance);
-    title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ day_dots(day) !> base_string);
+    title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ day_dashes(day) !> base_string);
     link : text_utilities.make_css_link(top_prefix("news-not-paper.css", day));
     text_node head : text_utilities.make_element(HEAD, [ charset, referrer, title, link ]);
 
     body_content.append(base_element.new(HR));
-    body_content.append(text_utilities.make_html_link("a hack by dynin labs" !> base_string,
+    body_content.append(text_utilities.make_html_link("a hack" !> base_string,
+        about_page_url(day)));
+    body_content.append(" by " !> base_string);
+    body_content.append(text_utilities.make_html_link("dynin labs" !> base_string,
         "https://dynin.com" !> base_string));
     body : base_element.new(BODY, text_utilities.join(body_content));
 
@@ -325,7 +330,23 @@ program briefing {
   }
 
   string day_page_url(gregorian_day day, gregorian_day current) {
-    return top_prefix(day_page_file(day), current);
+    if (DEPLOY_MODE) {
+      if (day == last) {
+        return resource_util.PATH_SEPARATOR;
+      } else {
+        return day_slashes(day) ++ resource_util.PATH_SEPARATOR;
+      }
+    } else {
+      return top_prefix(day_page_file(day), current);
+    }
+  }
+
+  string about_page_url(gregorian_day current) {
+    if (DEPLOY_MODE) {
+      return "/about/";
+    } else {
+      return top_prefix("about.html", current);
+    }
   }
 
   text_element render_html(item the_item) {
@@ -347,7 +368,10 @@ program briefing {
 
   text_fragment make_header(gregorian_day day) {
     header_fragments : base_list[text_fragment].new();
-    header_fragments.append(text_utilities.make_html_link("hacker news" !> base_string,
+    header_fragments.append(base_element.new(SPAN, CLASS, TOP_CLASS !> base_string,
+        PROGRAM_NAME !> base_string));
+    header_fragments.append(" / " !> base_string);
+    header_fragments.append(text_utilities.make_html_link("hn" !> base_string,
         "https://news.ycombinator.com" !> base_string));
     header_fragments.append(" digest" !> base_string);
     header_fragments.append(NBSP);
@@ -357,7 +381,7 @@ program briefing {
           day_page_url(previous(day), day) !> base_string));
       header_fragments.append(" " !> base_string);
     }
-    header_fragments.append(day_dots(day) !> base_string);
+    header_fragments.append(day_dashes(day) !> base_string);
     if (day != last) {
       header_fragments.append(" " !> base_string);
       header_fragments.append(text_utilities.make_html_link(RARR,

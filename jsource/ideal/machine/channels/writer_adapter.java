@@ -11,6 +11,7 @@ package ideal.machine.channels;
 import ideal.library.elements.*;
 import ideal.library.channels.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.resources.*;
 
 import java.io.*;
 
@@ -22,7 +23,11 @@ public class writer_adapter implements output<Character> {
   }
 
   public writer_adapter(OutputStream out) {
-    this(new OutputStreamWriter(out));
+    try {
+      this.out = new OutputStreamWriter(out, utilities.s(resource_util.UTF_8));
+    } catch (UnsupportedEncodingException e) {
+      utilities.panic(e.toString());
+    }
   }
 
   public void write(Character element) {

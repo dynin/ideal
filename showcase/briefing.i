@@ -128,7 +128,7 @@ program briefing {
 
   PROGRAM_NAME : "news, !paper";
   TEST_RUN : false;
-  DEPLOY_MODE : false;
+  DEPLOY_MODE : true;
   MIN_SCORE_THRESHOLD : 100;
   HOUR_DAY_STARTS : 6;
   DAYS_STORIES_EXPIRE : 5;
@@ -304,8 +304,8 @@ program briefing {
     body_content.append(base_element.new(HR));
     body_content.append(text_utilities.make_html_link("a hack" !> base_string,
         about_page_url(day)));
-    body_content.append(" by " !> base_string);
-    body_content.append(text_utilities.make_html_link("dynin labs" !> base_string,
+    body_content.append(" " !> base_string);
+    body_content.append(text_utilities.make_html_link("by dynin labs" !> base_string,
         "https://dynin.com" !> base_string));
     body : base_element.new(BODY, text_utilities.join(body_content));
 
@@ -334,7 +334,7 @@ program briefing {
       if (day == last) {
         return resource_util.PATH_SEPARATOR;
       } else {
-        return day_slashes(day) ++ resource_util.PATH_SEPARATOR;
+        return resource_util.PATH_SEPARATOR ++ day_slashes(day) ++ resource_util.PATH_SEPARATOR;
       }
     } else {
       return top_prefix(day_page_file(day), current);

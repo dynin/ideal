@@ -210,7 +210,7 @@ program briefing {
     day_catalog : input_catalog.resolve(day_slashes(today())).access_catalog();
     time_id : day_catalog.resolve(two_digit(hour) ++ "-" ++ two_digit(minute));
     log.info("Writing " ++ time_id);
-    time_id.access_string(missing.instance).content = hacker_news.as_string(id_list);
+    time_id.access_string(make_catalog_option.instance).content = hacker_news.as_string(id_list);
   }
 
   string describe_day(gregorian_day day, character separator) {
@@ -274,7 +274,8 @@ program briefing {
 
   void write_all_items(readonly set[item_id] ids, gregorian_day day) {
     day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
-    all_items_json : day_catalog.resolve(ALL_ITEMS_JSON).access_string(missing.instance);
+    all_items_json : day_catalog.resolve(ALL_ITEMS_JSON).access_string(
+        make_catalog_option.instance);
     log.info("Writing " ++ all_items_json);
     all_items_json.content = hacker_news.as_string(ids.elements);
   }
@@ -376,7 +377,7 @@ program briefing {
     header_fragments.append(" digest" !> base_string);
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);
-    if (day != first) {
+    if (day != first || output_catalog.resolve(day_page_file(previous(day))).exists()) {
       header_fragments.append(text_utilities.make_html_link(LARR,
           day_page_url(previous(day), day) !> base_string));
       header_fragments.append(" " !> base_string);

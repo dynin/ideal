@@ -135,4 +135,9 @@ class base_list[value element_type] {
     state.clear(last_index, 1);
     return result;
   }
+
+  implement void sort(order[element_type] the_order) {
+    new_state : writable_state();
+    new_state.the_elements.sort(the_order, 0, new_state.size);
+  }
 }

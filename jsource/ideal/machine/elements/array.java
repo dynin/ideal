@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class array<T> {
   private final T[] the_elements;
@@ -66,6 +67,20 @@ public class array<T> {
   public void copy(int source_begin, array destination, int destination_begin, int length) {
     Object[] destination_elements = destination.the_elements;
     System.arraycopy(the_elements, source_begin, destination_elements, destination_begin, length);
+  }
+
+  public void sort(final order<T> the_order, int begin, int length) {
+    assert begin >= 0 && length >= 0 && begin + length <= size;
+
+    Comparator<T> the_comparator = new Comparator<T>() {
+      @Override
+      public int compare(T first, T second) {
+        sign the_sign = the_order.call(first, second);
+        return the_sign.ordinal() - 1;
+      }
+    };
+
+    Arrays.sort(the_elements, begin, begin + length, the_comparator);
   }
 
   public void scrub(int index, int length) {

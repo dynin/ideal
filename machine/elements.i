@@ -27,6 +27,7 @@ namespace elements {
     void copy(nonnegative source_begin,
           array[any value] destination, nonnegative destination_begin,
           nonnegative length);
+    void sort(order[element] the_order, nonnegative begin, nonnegative length);
     void scrub(nonnegative index, nonnegative length); -- writeonly;
   }
 

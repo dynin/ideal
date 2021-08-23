@@ -9,4 +9,5 @@ public interface list<element> extends collection<element>, readonly_list<elemen
   void prepend(element the_element);
   element remove_last();
   element remove_at(Integer index);
+  void sort(order<element> the_order);
 }

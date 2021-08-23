@@ -107,4 +107,8 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
     this.state.clear(last_index, 1);
     return result;
   }
+  public @Override void sort(final order<element_type> the_order) {
+    final base_readonly_list.list_state<element_type> new_state = this.writable_state();
+    new_state.the_elements.sort(the_order, 0, new_state.size);
+  }
 }

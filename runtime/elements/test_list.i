@@ -136,4 +136,27 @@ test_suite test_list {
     assert strings.is_empty;
     assert !strings.is_not_empty;
   }
+
+  test_case test_list_sort() {
+    numbers : base_list[integer].new();
+    numbers.append_all([ -1, 68, 42, -2, 0]);
+
+    numbers.sort(number_order.new());
+
+    assert numbers.size == 5;
+    assert numbers[0] == -2;
+    assert numbers[1] == -1;
+    assert numbers[2] == 0;
+    assert numbers[3] == 42;
+    assert numbers[4] == 68;
+  }
+
+  -- TODO: should be a singleton
+  private class number_order {
+    implements order[integer];
+
+    implement implicit sign call(integer first, integer second) {
+      return first <=> second;
+    }
+  }
 }

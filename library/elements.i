@@ -326,6 +326,9 @@ package elements {
     --- Check whether the list has at least one element that satisfies the predicate.
     -- TODO: implement this for all collections.
     boolean has(predicate[element] the_predicate) pure;
+
+    --- Sort the list in place using the given sort order.
+    void sort(order[element] the_order);
   }
 
   --- A half-open range of nonnegative integers.

@@ -104,6 +104,23 @@ public class test_list {
     assert strings.is_empty();
     assert !strings.is_not_empty();
   }
+  public void test_list_sort() {
+    final base_list<Integer> numbers = new base_list<Integer>();
+    numbers.append_all(new base_immutable_list<Integer>(new ideal.machine.elements.array<Integer>(new Integer[]{ -1, 68, 42, -2, 0 })));
+    numbers.sort(new test_list.number_order());
+    assert ideal.machine.elements.runtime_util.values_equal(numbers.size(), 5);
+    assert ideal.machine.elements.runtime_util.values_equal(numbers.at(0).get(), -2);
+    assert ideal.machine.elements.runtime_util.values_equal(numbers.at(1).get(), -1);
+    assert ideal.machine.elements.runtime_util.values_equal(numbers.at(2).get(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(numbers.at(3).get(), 42);
+    assert ideal.machine.elements.runtime_util.values_equal(numbers.at(4).get(), 68);
+  }
+  private static class number_order implements order<Integer> {
+    public @Override sign call(final Integer first, final Integer second) {
+      return ideal.machine.elements.runtime_util.compare(first, second);
+    }
+    public number_order() { }
+  }
   public test_list() { }
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_empty"));
@@ -117,6 +134,9 @@ public class test_list {
     ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_list_remove"));
     this.test_list_remove();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_list_sort"));
+    this.test_list_sort();
     ideal.machine.elements.runtime_util.end_test();
   }
 }

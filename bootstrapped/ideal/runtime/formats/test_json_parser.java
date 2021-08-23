@@ -5,11 +5,11 @@ package ideal.runtime.formats;
 import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.runtime.elements.*;
-import ideal.machine.characters.normal_handler;
+import ideal.machine.characters.unicode_handler;
 
 public class test_json_parser {
   private json_parser make_parser() {
-    return new json_parser(normal_handler.instance);
+    return new json_parser(unicode_handler.instance);
   }
   public void test_tokenizer() {
     final json_parser parser = this.make_parser();

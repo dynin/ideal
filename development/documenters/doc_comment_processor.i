@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 class doc_comment_processor {
-  import ideal.machine.characters.normal_handler;
+  import ideal.machine.characters.unicode_handler;
 
   static var string or null saved_error;
 
@@ -17,7 +17,7 @@ class doc_comment_processor {
   }
 
   public static cache_result doc_grammar get_grammar() {
-    return doc_grammar.new(normal_handler.instance);
+    return doc_grammar.new(unicode_handler.instance);
   }
 
   private static void report_error(string error_message) {

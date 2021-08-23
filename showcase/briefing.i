@@ -47,8 +47,8 @@ program briefing {
   namespace hacker_news {
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
     item_page_url_prefix : "https://news.ycombinator.com/item?id=";
-    parser : json_parser.new(normal_handler.instance);
-    printer : json_printer.new(normal_handler.instance);
+    parser : json_parser.new(unicode_handler.instance);
+    printer : json_printer.new(unicode_handler.instance);
     -- Minimum host length for which the www stripping is performed.
     www_stripping_threshold : 7;
     www_prefix_pattern : list_pattern[character].new("www.");

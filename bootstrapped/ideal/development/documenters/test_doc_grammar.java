@@ -9,13 +9,13 @@ import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.library.channels.output;
 import ideal.runtime.texts.text_library.*;
-import ideal.machine.characters.normal_handler;
+import ideal.machine.characters.unicode_handler;
 import ideal.machine.channels.string_writer;
 
 public class test_doc_grammar {
   public string error_message;
   public doc_grammar make_grammar() {
-    return new doc_grammar(normal_handler.instance);
+    return new doc_grammar(unicode_handler.instance);
   }
   public void test_simple_parse() {
     final doc_grammar grammar = this.make_grammar();

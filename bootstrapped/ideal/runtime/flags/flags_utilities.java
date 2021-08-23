@@ -44,7 +44,7 @@ public class flags_utilities {
       for (Integer c_index = 0; c_index < c_list.size(); c_index += 1) {
         final char c = c_list.get(c_index);
         if (c != '-' && c != '_') {
-          result.write(normal_handler.instance.to_lower_case(c));
+          result.write(unicode_handler.instance.to_lower_case(c));
         }
       }
     }

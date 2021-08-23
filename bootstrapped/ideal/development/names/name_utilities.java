@@ -15,7 +15,7 @@ public class name_utilities {
   private static final simple_name FIRST = simple_name.make(new base_string("first"));
   private static final simple_name SECOND = simple_name.make(new base_string("second"));
   private static final simple_name THIRD = simple_name.make(new base_string("third"));
-  private static final normal_handler the_character_handler = normal_handler.instance;
+  private static final unicode_handler the_character_handler = unicode_handler.instance;
   public static string in_brackets(final readonly_stringable name) {
     return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("<"), name.to_string()), new base_string(">"));
   }

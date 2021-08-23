@@ -6,13 +6,13 @@
 
 test_suite test_doc_grammar {
   implicit import ideal.runtime.texts.text_library;
-  import ideal.machine.characters.normal_handler;
+  import ideal.machine.characters.unicode_handler;
   import ideal.machine.channels.string_writer;
 
   var string error_message;
 
   doc_grammar make_grammar() {
-    return doc_grammar.new(normal_handler.instance);
+    return doc_grammar.new(unicode_handler.instance);
   }
 
   test_case test_simple_parse() {

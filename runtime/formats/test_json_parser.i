@@ -5,10 +5,10 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 test_suite test_json_parser {
-  import ideal.machine.characters.normal_handler;
+  import ideal.machine.characters.unicode_handler;
 
   private json_parser make_parser() {
-    return json_parser.new(normal_handler.instance);
+    return json_parser.new(unicode_handler.instance);
   }
 
   test_case test_tokenizer() {

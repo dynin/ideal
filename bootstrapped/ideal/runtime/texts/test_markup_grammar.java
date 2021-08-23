@@ -8,13 +8,13 @@ import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 import ideal.runtime.texts.text_library.*;
-import ideal.machine.characters.normal_handler;
+import ideal.machine.characters.unicode_handler;
 import ideal.machine.channels.string_writer;
 
 public class test_markup_grammar {
   public string error_message;
   public markup_grammar make_grammar() {
-    final markup_grammar grammar = new markup_grammar(normal_handler.instance);
+    final markup_grammar grammar = new markup_grammar(unicode_handler.instance);
     grammar.add_elements(text_library.HTML_ELEMENTS);
     grammar.add_attributes(text_library.HTML_ATTRIBUTES);
     grammar.add_entities(text_library.HTML_ENTITIES);

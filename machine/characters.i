@@ -8,7 +8,7 @@
 namespace characters {
   implicit import ideal.library.characters;
 
-  singleton normal_handler {
+  singleton unicode_handler {
     subtypes character_handler;
   }
 }

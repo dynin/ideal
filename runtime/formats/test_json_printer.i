@@ -5,10 +5,10 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 test_suite test_json_printer {
-  import ideal.machine.characters.normal_handler;
+  import ideal.machine.characters.unicode_handler;
 
   private json_printer make_printer() {
-    return json_printer.new(normal_handler.instance);
+    return json_printer.new(unicode_handler.instance);
   }
 
   test_case test_basic_printer() {

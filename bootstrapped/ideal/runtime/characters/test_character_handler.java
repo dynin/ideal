@@ -4,11 +4,11 @@ package ideal.runtime.characters;
 
 import ideal.library.elements.*;
 import ideal.library.characters.*;
-import ideal.machine.characters.normal_handler;
+import ideal.machine.characters.unicode_handler;
 
 public class test_character_handler {
   public void predicate_test() {
-    final normal_handler the_character_handler = normal_handler.instance;
+    final unicode_handler the_character_handler = unicode_handler.instance;
     assert the_character_handler.is_letter('x');
     assert !the_character_handler.is_letter('6');
     assert the_character_handler.is_letter_or_digit('x');
@@ -29,14 +29,14 @@ public class test_character_handler {
     assert ideal.machine.elements.runtime_util.values_equal(radix.MINIMUM_RADIX, 2);
     assert ideal.machine.elements.runtime_util.values_equal(radix.DEFAULT_RADIX, 10);
     assert ideal.machine.elements.runtime_util.values_equal(radix.MAXIMUM_RADIX, 36);
-    final normal_handler the_character_handler = normal_handler.instance;
+    final unicode_handler the_character_handler = unicode_handler.instance;
     assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.from_digit('0', radix.DEFAULT_RADIX), 0);
     assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.from_digit('5', radix.DEFAULT_RADIX), 5);
     assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.from_digit('F', 16), 15);
     assert the_character_handler.from_digit('X', 16) == null;
   }
   public void conversion_test() {
-    final normal_handler the_character_handler = normal_handler.instance;
+    final unicode_handler the_character_handler = unicode_handler.instance;
     assert the_character_handler.to_lower_case('X') == 'x';
     assert the_character_handler.to_lower_case('x') == 'x';
     assert the_character_handler.to_lower_case('5') == '5';

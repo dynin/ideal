@@ -12,8 +12,8 @@ import ideal.library.characters.*;
 
 import javax.annotation.Nullable;
 
-public class normal_handler implements character_handler {
-  public static final normal_handler instance = new normal_handler();
+public class unicode_handler implements character_handler {
+  public static final unicode_handler instance = new unicode_handler();
 
   @Override
   public boolean is_letter(char the_character) {

@@ -53,7 +53,7 @@ namespace flags_utilities {
     -- TODO: cast is redundant.
     for (c : the_string .> readonly list[character]) {
       if (c != '-' && c != '_') {
-        result.write(normal_handler.instance.to_lower_case(c));
+        result.write(unicode_handler.instance.to_lower_case(c));
       }
     }
     return result.elements();

@@ -6,13 +6,13 @@
 
 test_suite test_markup_grammar {
   implicit import ideal.runtime.texts.text_library;
-  import ideal.machine.characters.normal_handler;
+  import ideal.machine.characters.unicode_handler;
   import ideal.machine.channels.string_writer;
 
   var string error_message;
 
   markup_grammar make_grammar() {
-    grammar : markup_grammar.new(normal_handler.instance);
+    grammar : markup_grammar.new(unicode_handler.instance);
     grammar.add_elements(text_library.HTML_ELEMENTS);
     grammar.add_attributes(text_library.HTML_ATTRIBUTES);
     grammar.add_entities(text_library.HTML_ENTITIES);

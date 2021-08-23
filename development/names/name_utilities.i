@@ -14,7 +14,7 @@ namespace name_utilities {
   private SECOND : simple_name.make("second");
   private THIRD : simple_name.make("third");
 
-  private the_character_handler : normal_handler.instance;
+  private the_character_handler : unicode_handler.instance;
 
   string in_brackets(readonly stringable name) pure {
     return "<" ++ name.to_string ++ ">";

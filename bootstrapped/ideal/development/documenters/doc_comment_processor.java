@@ -8,7 +8,7 @@ import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.library.channels.output;
-import ideal.machine.characters.normal_handler;
+import ideal.machine.characters.unicode_handler;
 
 import javax.annotation.Nullable;
 
@@ -35,7 +35,7 @@ public class doc_comment_processor {
     return result;
   }
   private static doc_grammar generated_get_grammar_compute() {
-    return new doc_grammar(normal_handler.instance);
+    return new doc_grammar(unicode_handler.instance);
   }
   private static void report_error(final string error_message) {
     doc_comment_processor.saved_error = error_message;

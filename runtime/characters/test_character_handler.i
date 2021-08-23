@@ -5,10 +5,10 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 test_suite test_character_handler {
-  import ideal.machine.characters.normal_handler;
+  import ideal.machine.characters.unicode_handler;
 
   test_case predicate_test() {
-    the_character_handler : normal_handler.instance;
+    the_character_handler : unicode_handler.instance;
 
     assert the_character_handler.is_letter('x');
     assert !the_character_handler.is_letter('6');
@@ -36,7 +36,7 @@ test_suite test_character_handler {
     assert radix.DEFAULT_RADIX == 10;
     assert radix.MAXIMUM_RADIX == 36;
 
-    the_character_handler : normal_handler.instance;
+    the_character_handler : unicode_handler.instance;
 
     assert the_character_handler.from_digit('0', radix.DEFAULT_RADIX) == 0;
     assert the_character_handler.from_digit('5', radix.DEFAULT_RADIX) == 5;
@@ -45,7 +45,7 @@ test_suite test_character_handler {
   }
 
   test_case conversion_test() {
-    the_character_handler : normal_handler.instance;
+    the_character_handler : unicode_handler.instance;
 
     assert the_character_handler.to_lower_case('X') == 'x';
     assert the_character_handler.to_lower_case('x') == 'x';

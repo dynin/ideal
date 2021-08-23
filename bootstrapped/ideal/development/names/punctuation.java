@@ -40,6 +40,7 @@ public class punctuation {
   public static final punctuation_type GREATER_THAN = new punctuation_type(new base_string(">"), base_symbols.GREATER_THAN);
   public static final punctuation_type LESS_THAN_EQUALS = new punctuation_type(new base_string("<="), base_symbols.LESS_THAN_EQUALS);
   public static final punctuation_type GREATER_THAN_EQUALS = new punctuation_type(new base_string(">="), base_symbols.GREATER_THAN_EQUALS);
+  public static final punctuation_type LESS_THAN_EQUALS_GREATER_THAN = new punctuation_type(new base_string("<=>"), base_symbols.LESS_THAN_EQUALS_GREATER_THAN);
   public static final punctuation_type DOT_GREATER_THAN = new punctuation_type(new base_string(".>"), base_symbols.DOT_GREATER_THAN);
   public static final punctuation_type EXCLAMATION_GREATER_THAN = new punctuation_type(new base_string("!>"), base_symbols.EXCLAMATION_GREATER_THAN);
   public static final punctuation_type QUESTION_MARK_GREATER_THAN = new punctuation_type(new base_string("?>"), base_symbols.QUESTION_MARK_GREATER_THAN);

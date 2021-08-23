@@ -39,6 +39,7 @@ public class operator extends debuggable implements action_name {
   public static final operator GREATER = new operator(operator_type.INFIX, punctuation.GREATER_THAN, new base_string("greater"));
   public static final operator LESS_EQUAL = new operator(operator_type.INFIX, punctuation.LESS_THAN_EQUALS, new base_string("less_equal"));
   public static final operator GREATER_EQUAL = new operator(operator_type.INFIX, punctuation.GREATER_THAN_EQUALS, new base_string("greater_equal"));
+  public static final operator COMPARE = new operator(operator_type.INFIX, punctuation.LESS_THAN_EQUALS_GREATER_THAN, new base_string("compare"));
   public static final operator BIT_AND = new operator(operator_type.INFIX, punctuation.AMPERSAND, new base_string("bit_and"));
   public static final operator XOR = new operator(operator_type.INFIX, punctuation.CARET, new base_string("xor"));
   public static final operator BIT_OR = new operator(operator_type.INFIX, punctuation.VERTICAL_BAR, new base_string("bit_or"));

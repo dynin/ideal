@@ -48,6 +48,7 @@ class operator {
   static GREATER : operator.new(INFIX, punctuation.GREATER_THAN, "greater");
   static LESS_EQUAL : operator.new(INFIX, punctuation.LESS_THAN_EQUALS, "less_equal");
   static GREATER_EQUAL : operator.new(INFIX, punctuation.GREATER_THAN_EQUALS, "greater_equal");
+  static COMPARE : operator.new(INFIX, punctuation.LESS_THAN_EQUALS_GREATER_THAN, "compare");
   static BIT_AND : operator.new(INFIX, punctuation.AMPERSAND, "bit_and");
   static XOR : operator.new(INFIX, punctuation.CARET, "xor");
   static BIT_OR : operator.new(INFIX, punctuation.VERTICAL_BAR, "bit_or");

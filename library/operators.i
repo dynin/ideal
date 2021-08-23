@@ -34,7 +34,6 @@ package operators {
   boolean greater(readonly comparable first, readonly comparable second) pure;
   boolean less_equal(readonly comparable first, readonly comparable second) pure;
   boolean greater_equal(readonly comparable first, readonly comparable second) pure;
-  -- Comparison operator: <=>
   sign compare(readonly comparable first, readonly comparable second) pure;
 
   boolean is_operator(entity argument, entity the_type) pure;

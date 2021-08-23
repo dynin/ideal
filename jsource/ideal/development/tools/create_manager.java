@@ -243,6 +243,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(operator.GREATER);
     add_operator(operator.LESS_EQUAL);
     add_operator(operator.GREATER_EQUAL);
+    add_operator(operator.COMPARE);
 
     add_operator(operator.LOGICAL_AND);
     add_operator(operator.LOGICAL_OR);

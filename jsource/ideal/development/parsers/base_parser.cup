@@ -38,7 +38,8 @@ terminal token<string>  EXCLAMATION_MARK;
 terminal token<string>  PLUS, MINUS, ASTERISK, SLASH, PERCENT;
 // terminal LSHIFT, RSHIFT, URSHIFT; // shift_expression
 // relational_expression
-terminal token<string>  LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS;
+terminal token<string>  LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS,
+    LESS_THAN_EQUALS_GREATER_THAN;
 terminal token<keyword> IS, IS_NOT;
 terminal token<string>  DOT_GREATER_THAN, EXCLAMATION_GREATER_THAN, QUESTION_MARK_GREATER_THAN;
 terminal token<string>  EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS; // equality_expression
@@ -111,7 +112,8 @@ precedence left VERTICAL_BAR;
 precedence left CARET;
 precedence left AMPERSAND;
 precedence left EQUALS_EQUALS, EXCLAMATION_MARK_EQUALS;
-precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, IS, IS_NOT,
+precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS,
+    LESS_THAN_EQUALS_GREATER_THAN, IS, IS_NOT,
     DOT_GREATER_THAN, EXCLAMATION_GREATER_THAN, QUESTION_MARK_GREATER_THAN;
 precedence left PLUS, MINUS, PLUS_PLUS;
 precedence left ASTERISK, SLASH, PERCENT;
@@ -391,6 +393,8 @@ expression ::=  name:n
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.GREATER); :}
         |       expression:e1 LESS_THAN_EQUALS:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.LESS_EQUAL); :}
+        |       expression:e1 LESS_THAN_EQUALS_GREATER_THAN:op expression:e2
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.COMPARE); :}
         |       expression:e1 GREATER_THAN_EQUALS:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.GREATER_EQUAL); :}
         |       expression:e DOT_GREATER_THAN:op expression:t

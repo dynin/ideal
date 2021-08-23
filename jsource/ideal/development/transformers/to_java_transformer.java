@@ -60,6 +60,7 @@ public class to_java_transformer extends base_transformer {
   private static simple_name OBJECTS_EQUAL_NAME = simple_name.make("values_equal");
   private static simple_name INT_TO_STRING_NAME = simple_name.make("int_to_string");
   private static simple_name CONCATENATE_NAME = simple_name.make("concatenate");
+  private static simple_name COMPARE_NAME = simple_name.make("compare");
 
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
   private static simple_name LIST_NAME = simple_name.make("list");
@@ -1484,6 +1485,10 @@ public class to_java_transformer extends base_transformer {
             the_origin);
       }
       // TODO: convert into an equivalence function call if the argument is not a primitive.
+    } else if (the_operator == operator.COMPARE) {
+      construct comparison = new resolve_construct(make_type(java_library.runtime_util_class(),
+          the_origin), COMPARE_NAME, the_origin);
+      return make_call(comparison, transform_parameters(arguments), the_origin);
     } else if (the_operator == operator.CONCATENATE) {
       if (!is_string_type(arguments.get(0)) || !is_string_type(arguments.get(1))) {
         construct concatenation = new resolve_construct(make_type(java_library.runtime_util_class(),

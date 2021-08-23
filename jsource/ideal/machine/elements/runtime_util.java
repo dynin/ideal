@@ -257,6 +257,21 @@ public class runtime_util {
     return new base_string(to_string(o1), to_string(o2));
   }
 
+  public static sign compare(Object first, Object second) {
+    // Handle only Integers for now.
+    assert first instanceof Integer && second instanceof Integer;
+    int first_int = (Integer) first;
+    int second_int = (Integer) second;
+
+    if (first_int < second_int) {
+      return sign.less;
+    } else if (first_int == second_int) {
+      return sign.equal;
+    } else {
+      return sign.greater;
+    }
+  }
+
   public static void do_panic(String message) {
     System.err.println("PANIC: " + message);
     print_stack();

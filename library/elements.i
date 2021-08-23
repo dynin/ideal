@@ -134,7 +134,7 @@ package elements {
   enum sign {
     subtypes deeply_immutable data;
     subtypes comparable;
-    -- TODO: subtypes stringable;
+    subtypes stringable;
 
     less;
     equal;

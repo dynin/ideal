@@ -173,7 +173,7 @@ program briefing {
   hour : hour_now();
   minute : minute_now();
   --first : day_of(2021, JULY, 6);
-  first : day_of(2021, AUGUST, 17);
+  first : day_of(2021, AUGUST, 20);
   var last : today();
   --last : day_of(2021, AUGUST, 12);
 
@@ -193,6 +193,10 @@ program briefing {
     save_top();
 
     all_item_ids : hash_set[item_id].new();
+    previous_ids : read_ids(previous(first));
+    if (previous_ids is_not null) {
+      all_item_ids.add_all(previous_ids);
+    }
     var day : first;
     loop {
       day_item_ids : hash_set[item_id].new();

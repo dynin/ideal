@@ -43,6 +43,18 @@ program briefing {
     override string to_string => "item:" ++ id ++ "," ++ url;
   }
 
+  private class item_order {
+    implements order[item];
+
+    implement implicit sign call(item first, item second) {
+      var sign result : second.score <=> first.score;
+      if (result == sign.equal) {
+        result = second.descendants <=> first.descendants;
+      }
+      return result;
+    }
+  }
+
   -- Hacker News API : https://github.com/HackerNews/API
   namespace hacker_news {
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
@@ -52,6 +64,7 @@ program briefing {
     -- Minimum host length for which the www stripping is performed.
     www_stripping_threshold : 7;
     www_prefix_pattern : list_pattern[character].new("www.");
+    slash_pattern : singleton_pattern[character].new('/');
 
     readonly list[item_id] id_list(resource_identifier list_resource) {
       content : list_resource.access_string(missing.instance).content;
@@ -112,13 +125,24 @@ program briefing {
     }
 
     string short_origin(item the_item) {
-      host : the_item.url.host;
+      url : the_item.url;
+      host : url.host;
       assert host is string;
 
       if (host.size > www_stripping_threshold) {
         www_prefix : www_prefix_pattern.match_prefix(host);
         if (www_prefix is_not null) {
           return host.skip(www_prefix);
+        }
+      }
+
+      if (host == "twitter.com" || host == "github.com") {
+        -- TODO: instead of this hack, expose path in resource_identifier.
+        url_string : url.to_string;
+        prefix_size : "https://".size + host.size;
+        segment : slash_pattern.find_first(url_string, prefix_size + 1);
+        if (segment is range) {
+          return host ++ url_string.slice(prefix_size, segment.end - 1 !> nonnegative);
         }
       }
 
@@ -285,13 +309,21 @@ program briefing {
     body_content.append(make_header(day));
     body_content.append(base_element.new(HR));
 
+    items : base_list[item].new();
+
     for (item_id : ids) {
       item : hacker_news.get_item(item_id);
       if (item.score >= MIN_SCORE_THRESHOLD) {
-        body_content.append(render_html(item));
+        items.append(item);
         log.info(item.title ++ " " ++ hacker_news.short_origin(item) ++
             " (" ++ item.by ++ ", " ++ item.score ++ ")");
       }
+    }
+
+    items.sort(item_order.new());
+
+    for (item : items .> readonly list[item]) {
+      body_content.append(render_html(item));
     }
 
     -- TODO: text_node redundant

@@ -32,8 +32,6 @@ public class action_utilities {
 
   private action_utilities() { }
 
-  public static final origin no_origin = new special_origin(new base_string("no-origin"));
-
   public static readonly_list<type> lookup_types(analysis_context context, type from,
       action_name name) {
     // TODO: use map.
@@ -274,7 +272,7 @@ public class action_utilities {
     assert !(from instanceof principal_type);
     assert !(to instanceof principal_type);
 
-    context.add(from, special_name.SUPERTYPE, to.to_action(the_origin));
+    context.add_supertype(from, to);
     action_utilities.add_promotion(context, from, to, the_origin);
   }
 }

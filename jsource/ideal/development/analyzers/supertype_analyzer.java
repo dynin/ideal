@@ -91,8 +91,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
       the_supertype = ((type_action) supertype_action).get_type();
 
-      get_context().add(declared_in_type(), special_name.SUPERTYPE,
-          the_supertype.to_action(the_origin));
+      get_context().add_supertype(declared_in_type(), the_supertype);
 
       // Note that promotion is from parent, not declared_in_type.
       // The reason for this is to allow accessing static symbols from the subtype.

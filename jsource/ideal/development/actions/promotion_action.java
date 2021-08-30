@@ -15,6 +15,7 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
+import ideal.development.origins.*;
 
 import javax.annotation.Nullable;
 
@@ -33,7 +34,7 @@ public class promotion_action extends base_action {
   }
 
   public promotion_action(type the_type) {
-    this(the_type, action_utilities.no_origin);
+    this(the_type, origin_utilities.no_origin);
   }
 
   public @Nullable action get_action() {

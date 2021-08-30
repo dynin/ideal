@@ -21,11 +21,9 @@ public class ok_signal extends debuggable implements signal {
 
   public static final ok_signal instance = new ok_signal();
 
-  static final origin no_origin = new special_origin(new base_string("no-origin"));
-
   @Override
   public origin deeper_origin() {
-    return no_origin;
+    return origin_utilities.no_origin;
   }
 
   @Override

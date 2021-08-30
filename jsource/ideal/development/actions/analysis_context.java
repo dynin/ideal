@@ -26,6 +26,8 @@ public interface analysis_context extends type_declaration_context, value_printe
 
   void add(type from, action_name name, action the_action);
 
+  void add_supertype(type subtype, type supertype);
+
   readonly_list<action> resolve(type from, action_name name, origin pos);
 
   boolean can_promote(action from, type target);

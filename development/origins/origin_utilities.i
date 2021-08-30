@@ -7,6 +7,8 @@
 --- Utilities for manipulating |origin|s.
 namespace origin_utilities {
 
+  no_origin : special_origin.new("no-origin");
+
   source_content or null get_source(var origin or null the_origin) {
     while (the_origin is_not null) {
       if (the_origin is source_content) {

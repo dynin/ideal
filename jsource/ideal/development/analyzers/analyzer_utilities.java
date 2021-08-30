@@ -355,8 +355,8 @@ public class analyzer_utilities {
   public static @Nullable abstract_value unify_values(abstract_value first, abstract_value second,
       analysis_context the_context) {
     // TODO: rewrite unify_values() to avoid overhead.
-    return unify(first.to_action(action_utilities.no_origin),
-        second.to_action(action_utilities.no_origin), the_context);
+    return unify(first.to_action(origin_utilities.no_origin),
+        second.to_action(origin_utilities.no_origin), the_context);
   }
 
   public static boolean supports_constraint(action the_action) {

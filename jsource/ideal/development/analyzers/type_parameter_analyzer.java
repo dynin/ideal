@@ -115,7 +115,7 @@ public class type_parameter_analyzer extends declaration_analyzer
 
       assert !new_master.has_flavor_profile();
       new_master.set_flavor_profile(var_type.principal().get_flavor_profile());
-      get_context().add(new_master, special_name.SUPERTYPE, var_type.to_action(this));
+      get_context().add_supertype(new_master, var_type);
       get_context().add(new_master, special_name.TYPE_ALIAS, var_type.to_action(this));
 
       declaration_analysis_in_progress = false;

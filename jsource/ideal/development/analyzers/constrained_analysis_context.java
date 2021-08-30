@@ -130,6 +130,11 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
+  public void add_supertype(type subtype, type supertype) {
+    parent.add_supertype(subtype, supertype);
+  }
+
+  @Override
   public readonly_list<action> resolve(type from, action_name name, origin pos) {
     return parent.resolve(from, name, pos);
   }

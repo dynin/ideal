@@ -17,6 +17,7 @@ import ideal.development.names.*;
 import javax.annotation.Nullable;
 
 public class origin_utilities {
+  public static final special_origin no_origin = new special_origin(new base_string("no-origin"));
   public static @Nullable source_content get_source(@Nullable origin the_origin) {
     while (the_origin != null) {
       if (the_origin instanceof source_content) {

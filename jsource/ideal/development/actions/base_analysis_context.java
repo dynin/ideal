@@ -20,6 +20,7 @@ import ideal.development.declarations.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.flavors.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 public abstract class base_analysis_context extends debuggable implements analysis_context {
@@ -50,6 +51,11 @@ public abstract class base_analysis_context extends debuggable implements analys
   @Override
   public void add(type from, action_name name, action the_action) {
     actions.add(from, name, the_action);
+  }
+
+  @Override
+  public void add_supertype(type subtype, type supertype) {
+    actions.add(subtype, special_name.SUPERTYPE, supertype.to_action(origin_utilities.no_origin));
   }
 
   @Override

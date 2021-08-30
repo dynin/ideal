@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 public class simple_name extends debuggable implements action_name, displayable {
   public static final char the_underscore = '_';
   public static final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>(simple_name.the_underscore);
-  private static final dictionary<immutable_list<string>, simple_name> all_names = new hash_dictionary<immutable_list<string>, simple_name>();
+  private final static dictionary<immutable_list<string>, simple_name> all_names = new hash_dictionary<immutable_list<string>, simple_name>();
   public final immutable_list<string> segments;
   private simple_name(final immutable_list<string> segments) {
     this.segments = segments;

@@ -44,8 +44,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   @dont_display private final Class this_class;
   private @Nullable declaration_analyzer the_declaration;
   private @Nullable modifier_construct the_modifier;
-  private boolean is_expanded_set;
-  private @Nullable declaration expanded;
+  private @Nullable immutable_list<declaration> expanded;
 
   public declaration_extension(String modifier_kind_name) {
     super(analyzer_utilities.UNINITIALIZED_POSITION);
@@ -57,7 +56,6 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       the_extension_kind =
           new extension_kind(new base_string(modifier_kind_name), this_class);
     }
-    is_expanded_set = false;
   }
 
   @Override
@@ -85,50 +83,59 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     this.the_modifier = the_modifier;
   }
 
-  public void set_expanded(declaration expanded) {
-    assert !is_expanded_set;
-    is_expanded_set = true;
-    this.expanded = expanded;
-    if (expanded instanceof analyzable) {
-      analysis_pass current_pass = analysis_pass.values()[last_pass.ordinal() + 1];
-      analyze_and_ignore_errors((analyzable) expanded, current_pass);
+  public void set_expanded(readonly_list<declaration> expanded) {
+    assert this.expanded == null;
+    this.expanded = expanded.frozen_copy();
+
+    analysis_pass current_pass = analysis_pass.values()[last_pass.ordinal() + 1];
+    for (int i = 0; i < expanded.size(); ++i) {
+      analyze_and_ignore_errors(expanded.get(i), current_pass);
     }
   }
 
-  public @Nullable declaration expand() {
-    if (has_errors()) {
-      return null;
-    } else if (is_expanded_set) {
+  public readonly_list<declaration> expand_to_list() {
+    if (expanded != null) {
       return expanded;
     } else {
-      return get_declaration();
+      return new base_list<declaration>(get_declaration());
     }
   }
 
   @Override
   public readonly_list<analyzable> children() {
-    if (!is_expanded_set) {
-      System.out.println("children of " + this);
-    }
-    assert is_expanded_set;
     if (expanded != null) {
-      return new base_list<analyzable>(expanded);
+      return (immutable_list<analyzable>) (immutable_list) expanded;
     } else {
       return new empty<analyzable>();
     }
   }
 
-  protected signal do_multi_pass_analysis(analysis_pass pass) {
+  protected final signal do_multi_pass_analysis(analysis_pass pass) {
     if (has_errors()) {
       return ok_signal.instance;
     }
 
-    if (is_expanded_set) {
-      if (expanded instanceof analyzable) {
-        analyze_and_ignore_errors((analyzable) expanded, pass);
+    if (expanded != null) {
+      for (int i = 0; i < expanded.size(); ++i) {
+        @Nullable error_signal result = find_error(expanded.get(i), pass);
+        if (result != null) {
+          return result;
+        }
       }
     }
 
+    signal result = process_declaration(pass);
+
+    if (result instanceof ok_signal &&
+        expanded == null &&
+        has_analysis_errors(the_declaration, pass)) {
+      return find_error(the_declaration);
+    }
+
+    return result;
+  }
+
+  protected final signal process_declaration(analysis_pass pass) {
     assert the_declaration != null;
     if (the_declaration instanceof procedure_analyzer) {
       return process_procedure((procedure_analyzer) the_declaration, pass);
@@ -136,13 +143,10 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
       return process_variable((variable_analyzer) the_declaration, pass);
     } else if (the_declaration instanceof type_declaration_analyzer) {
       return process_type_declaration((type_declaration_analyzer) the_declaration, pass);
+    } else {
+      utilities.panic("Unrecognized declaration: " + the_declaration);
+      return null;
     }
-
-    if (has_analysis_errors(get_declaration(), pass)) {
-      return find_error(get_declaration());
-    }
-
-    return ok_signal.instance;
   }
 
   public simple_name generated_name(simple_name name) {

@@ -42,10 +42,6 @@ public class supertype_of_string_extension extends declaration_extension {
     //      (type_declaration_analyzer) library().string_type().get_declaration();
     //System.out.println("P " + pass + " SPASS " + string_declaration2.get_pass());
 
-    if (pass == analysis_pass.TYPE_DECL) {
-      set_expanded(the_type_declaration);
-    }
-
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
       origin the_origin = this;
       principal_type string_type = library().string_type();

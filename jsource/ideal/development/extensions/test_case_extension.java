@@ -56,8 +56,6 @@ public class test_case_extension extends declaration_extension {
       the_procedure.set_return(common_library.get_instance().void_type());
     }
 
-    set_expanded(the_procedure);
-
     if (the_procedure.declared_in_type().get_kind() != type_kinds.test_suite_kind) {
       return new error_signal(new base_string("Test case must be part of a test suite"), this);
     }

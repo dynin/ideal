@@ -53,7 +53,6 @@ public class test_suite_extension extends declaration_extension {
       }
 
       the_type_declaration.append_to_body(generate_run_all_tests(the_type_declaration));
-      set_expanded(the_type_declaration);
     }
 
     return result;
@@ -79,7 +78,7 @@ public class test_suite_extension extends declaration_extension {
       }
 
       procedure_declaration the_procedure =
-          (procedure_declaration) ((test_case_extension) the_analyzable).expand();
+          (procedure_declaration) ((test_case_extension) the_analyzable).get_declaration();
       simple_name test_case_name = (simple_name) the_procedure.short_name();
 
       string name_string = new base_string(type_name, ".", test_case_name.to_string());

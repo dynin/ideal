@@ -118,10 +118,13 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     for (int i = 0; i < body.size(); ++i) {
       analyzable the_analyzable = body.get(i);
-      declaration the_declaration = null;
       if (the_analyzable instanceof declaration_extension) {
-        the_declaration = ((declaration_extension) the_analyzable).expand();
-      } else if (the_analyzable instanceof declaration) {
+        types.append_all(((declaration_extension) the_analyzable).expand_to_list());
+        continue;
+      }
+
+      declaration the_declaration = null;
+      if (the_analyzable instanceof declaration) {
         the_declaration = (declaration) the_analyzable;
       }
 

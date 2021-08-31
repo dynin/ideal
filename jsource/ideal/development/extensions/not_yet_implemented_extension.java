@@ -37,7 +37,7 @@ public class not_yet_implemented_extension extends declaration_extension {
 
   private signal skip_declaration(analysis_pass pass) {
     if (pass == analysis_pass.TARGET_DECL) {
-      set_expanded(null);
+      set_expanded(new empty<declaration>());
     }
 
     return ok_signal.instance;

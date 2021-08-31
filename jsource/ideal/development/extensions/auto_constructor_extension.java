@@ -57,7 +57,6 @@ public class auto_constructor_extension extends declaration_extension {
       analysis_pass pass) {
     if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
       the_type_declaration.append_to_body(generate_constructor(the_type_declaration));
-      set_expanded(the_type_declaration);
     }
 
     return analyze(the_type_declaration, pass);

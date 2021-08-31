@@ -157,8 +157,6 @@ public class meta_flags_extension extends declaration_extension {
         parameters, body, the_origin);
     the_type_declaration.append_to_body(constructor_procedure);
 
-    set_expanded(the_type_declaration);
-
     return ok_signal.instance;
   }
 }

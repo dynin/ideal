@@ -160,10 +160,7 @@ public class cache_result_extension extends declaration_extension {
         new empty<variable_declaration>(), the_procedure.get_body(), the_origin);
 
     // We replace the original declaration with three: one field and two procedures
-    declaration_list the_declaration_list = new declaration_list(
-        new base_list<analyzable>(field, caching_procedure, compute_procedure), the_origin);
-
-    set_expanded(the_declaration_list);
+    set_expanded(new base_list<declaration>(field, caching_procedure, compute_procedure));
 
     return ok_signal.instance;
   }

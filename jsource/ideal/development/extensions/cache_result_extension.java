@@ -159,6 +159,10 @@ public class cache_result_extension extends declaration_extension {
         procedure_annotations, to_analyzable(return_type), generated_procedure_name,
         new empty<variable_declaration>(), the_procedure.get_body(), the_origin);
 
+    analyze_and_ignore_errors(field, pass);
+    analyze_and_ignore_errors(caching_procedure, pass);
+    analyze_and_ignore_errors(compute_procedure, pass);
+
     // We replace the original declaration with three: one field and two procedures
     set_expanded(new base_list<declaration>(field, caching_procedure, compute_procedure));
 

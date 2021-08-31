@@ -85,12 +85,8 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   public void set_expanded(readonly_list<declaration> expanded) {
     assert this.expanded == null;
+    assert expanded != null;
     this.expanded = expanded.frozen_copy();
-
-    analysis_pass current_pass = analysis_pass.values()[last_pass.ordinal() + 1];
-    for (int i = 0; i < expanded.size(); ++i) {
-      analyze_and_ignore_errors(expanded.get(i), current_pass);
-    }
   }
 
   public readonly_list<declaration> expand_to_list() {
@@ -106,7 +102,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     if (expanded != null) {
       return (immutable_list<analyzable>) (immutable_list) expanded;
     } else {
-      return new empty<analyzable>();
+      return new base_list<analyzable>(get_declaration());
     }
   }
 

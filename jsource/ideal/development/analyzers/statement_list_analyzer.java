@@ -24,23 +24,40 @@ import ideal.development.types.*;
 /**
  * Analyze a sequence (list) of actions.  Unlike |block_analyzer|, no frame is created.
  */
-public class statement_list_analyzer extends single_pass_analyzer {
-  private readonly_list<analyzable> the_elements;
+public class statement_list_analyzer extends multi_pass_analyzer {
+  private @Nullable readonly_list<analyzable> the_elements;
+  private boolean declaration_list;
+  private analysis_result result;
 
-  public statement_list_analyzer(readonly_list<analyzable> the_elements, origin the_origin) {
+  public statement_list_analyzer(@Nullable readonly_list<analyzable> the_elements,
+      boolean declaration_list, origin the_origin) {
     super(the_origin);
     this.the_elements = the_elements;
+    this.declaration_list = declaration_list;
+  }
+
+  public statement_list_analyzer(readonly_list<analyzable> the_elements, origin the_origin) {
+    this(the_elements, false, the_origin);
   }
 
   public statement_list_analyzer(origin the_origin) {
-    super(the_origin);
-    the_elements = null;
+    this(null, false, the_origin);
   }
 
-  protected statement_list_analyzer(readonly_list<analyzable> the_elements, origin the_origin,
-      @Nullable principal_type parent, @Nullable analysis_context context) {
+  public statement_list_analyzer(readonly_list<construct> constructs, principal_type parent,
+      analysis_context context, origin the_origin) {
+    super(the_origin, parent, context);
+    assert constructs != null;
+    the_elements = make_list(constructs);
+    declaration_list = true;
+  }
+
+  protected statement_list_analyzer(readonly_list<analyzable> the_elements,
+      boolean declaration_list, principal_type parent, analysis_context context,
+      origin the_origin) {
     super(the_origin, parent, context);
     this.the_elements = the_elements;
+    this.declaration_list = declaration_list;
   }
 
   public void populate(readonly_list<analyzable> the_elements) {
@@ -58,8 +75,35 @@ public class statement_list_analyzer extends single_pass_analyzer {
     return the_elements;
   }
 
+  public readonly_list<declaration> declarations() {
+    // TODO: use list.filter()
+    list<declaration> result = new base_list<declaration>();
+    for (int i = 0; i < the_elements.size(); ++i) {
+      analyzable element = the_elements.get(i);
+      if (element instanceof declaration) {
+        result.append((declaration) element);
+      }
+    }
+    return result;
+  }
+
   @Override
-  protected analysis_result do_single_pass_analysis() {
+  protected signal do_multi_pass_analysis(analysis_pass pass) {
+    if (declaration_list) {
+      signal declaration_signal = declaration_analysis(pass);
+      if (declaration_signal instanceof error_signal) {
+        return declaration_signal;
+      }
+    } else {
+      if (pass == analysis_pass.BODY_CHECK) {
+        return sequence_analysis();
+      }
+    }
+
+    return ok_signal.instance;
+  }
+
+  protected signal sequence_analysis() {
     list<action> actions = new base_list<action>();
     analysis_context current_context = get_context();
     list<constraint> local_end_constraints = new base_list<constraint>();
@@ -125,13 +169,15 @@ public class statement_list_analyzer extends single_pass_analyzer {
       return error;
     }
 
-    action result = new list_action(actions, this);
+    list_action the_list_action = new list_action(actions, this);
     end_constraints.append_all(local_end_constraints);
     if (end_constraints.is_empty()) {
-      return result;
+      result = the_list_action;
     } else {
-      return action_plus_constraints.make_result(result, end_constraints);
+      result = action_plus_constraints.make_result(the_list_action, end_constraints);
     }
+
+    return ok_signal.instance;
   }
 
   @Override
@@ -154,7 +200,38 @@ public class statement_list_analyzer extends single_pass_analyzer {
     if (same) {
       return this;
     } else {
-      return new statement_list_analyzer(new_elements, this, new_parent, get_context());
+      return new statement_list_analyzer(new_elements, declaration_list, new_parent, get_context(),
+          this);
     }
+  }
+
+  protected signal declaration_analysis(analysis_pass pass) {
+    boolean is_last_pass = pass == analysis_pass.BODY_CHECK;
+    error_signal error = null;
+    list<action> actions = new base_list<action>();
+
+    for (int i = 0; i < the_elements.size(); ++i) {
+      analyzable element = the_elements.get(i);
+      signal element_result = analyze(element, pass);
+      if (element_result instanceof error_signal) {
+        if (error == null) {
+          error = new error_signal(messages.error_in_list, element, this);
+        }
+      } else if (is_last_pass) {
+        actions.append(action_not_error(element));
+      }
+    }
+
+    if (is_last_pass) {
+      result = new list_action(actions, this);
+    }
+
+    return error != null ? error : ok_signal.instance;
+  }
+
+  @Override
+  protected analysis_result do_get_result() {
+    assert result != null;
+    return result;
   }
 }

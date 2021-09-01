@@ -135,8 +135,8 @@ class create {
     }
 
     analysis_context the_context = cm.get_analysis_context();
-    declaration_list body =
-        new declaration_list(constructs, cm.root, the_context, input);
+    statement_list_analyzer body =
+        new statement_list_analyzer(constructs, cm.root, the_context, input);
 
     immutable_list<analysis_pass> passes = analysis_pass.all();
     assert passes.first() == analysis_pass.BEFORE_EVALUATION;
@@ -231,7 +231,7 @@ class create {
     return extensions;
   }
 
-  private readonly_list<target_declaration> find_targets(declaration_list body) {
+  private readonly_list<target_declaration> find_targets(statement_list_analyzer body) {
     list<target_declaration> results = new base_list<target_declaration>();
     // TODO: replace with list.filter() and list.map();
     readonly_list<analyzable> elements = body.elements();

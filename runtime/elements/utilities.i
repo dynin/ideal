@@ -58,4 +58,8 @@ class utilities {
   static overload noreturn void panic(String message) {
     runtime_util.do_panic(message);
   }
+
+  static void stack(String message) {
+    runtime_util.do_stack(message);
+  }
 }

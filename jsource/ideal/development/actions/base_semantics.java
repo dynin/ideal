@@ -209,7 +209,7 @@ public class base_semantics implements semantics {
     supertype_set supertypes = supertype_set.make(subtype, actions);
 
     // TODO: use filter.
-    immutable_list<type> supertypes_list =  supertypes.members.elements();
+    immutable_list<type> supertypes_list = supertypes.members.elements();
     list<type> candidates = new base_list<type>();
     for (int i = 0; i < supertypes_list.size(); ++i) {
       type candidate = supertypes_list.get(i);
@@ -285,15 +285,13 @@ public class base_semantics implements semantics {
     }
   }
 
-  /*
   private boolean xx_check_variance(action_table actions, parametrized_type subtype,
       parametrized_type supertype, type_flavor the_flavor) {
     boolean result = check_variance(actions, subtype, supertype, the_flavor);
-    log.debug("Subtype: " + subtype + " supertype: " + supertype +
+    utilities.stack("Subtype: " + subtype + " supertype: " + supertype +
         " FL: " + the_flavor + " GOT: " + result);
     return result;
   }
-  */
 
   private boolean check_variance(action_table actions, parametrized_type subtype,
       parametrized_type supertype, type_flavor the_flavor) {

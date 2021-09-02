@@ -46,4 +46,7 @@ public class utilities {
   public static void panic(final String message) {
     runtime_util.do_panic(message);
   }
+  public static void stack(final String message) {
+    runtime_util.do_stack(message);
+  }
 }

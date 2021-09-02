@@ -42,6 +42,7 @@ namespace elements {
     static string value_identifier(readonly value the_value);
     -- TODO: return unreachable
     static noreturn void do_panic(String message);
+    static void do_stack(String message);
     static string escape_markup(string the_string);
 
     static void start_test(string name);

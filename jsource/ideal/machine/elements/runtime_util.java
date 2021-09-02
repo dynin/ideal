@@ -297,6 +297,11 @@ public class runtime_util {
     System.err.flush();
   }
 
+  public static void do_stack(String message) {
+    System.err.println("TRACE: " + message);
+    print_stack();
+  }
+
   // TODO: optimize this; add HTML entity declarations.
   public static string escape_markup(string the_string) {
     StringBuilder sb = new StringBuilder();

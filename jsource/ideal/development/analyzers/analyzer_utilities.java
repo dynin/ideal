@@ -33,6 +33,7 @@ public class analyzer_utilities {
 
   public static final origin UNINITIALIZED_POSITION =
       new special_origin(new base_string("[uninitialized]"));
+  private static final boolean DO_REDUNDANT_PARAMETRIZABLE_CHECK = true;
 
   public static @Nullable procedure_declaration get_enclosing_procedure(
       base_analyzer the_analyzable) {
@@ -490,7 +491,9 @@ public class analyzer_utilities {
 
     abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...
-    assert is_parametrizable(action_result, parameters, the_context);
+    if (DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
+      assert is_parametrizable(action_result, parameters, the_context);
+    }
 
     type the_type = action_result.type_bound();
     if (the_type instanceof master_type && ((master_type) the_type).is_parametrizable()) {

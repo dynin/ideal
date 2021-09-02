@@ -68,6 +68,7 @@ VAR = $(TEST_DIR)/var.i
 TESTCACHE = $(TEST_DIR)/cache.i
 DIRECTORY = $(TEST_DIR)/directory.i
 TEST_STRING = $(TEST_DIR)/string.i
+TEST_LIST = $(TEST_DIR)/list.i
 
 SHOWCASE_DIR = showcase
 CIRCLE = $(SHOWCASE_DIR)/circle.i
@@ -193,6 +194,9 @@ generate_cache: $(IDEAL_TARGET)
 
 12: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(ONETWO)
+
+list: $(IDEAL_TARGET) $(TEST_LIST)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(TEST_LIST)
 
 generate_var: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(VAR) -target=generate_var -output=$(SCRATCH_DIR)

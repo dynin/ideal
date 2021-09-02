@@ -72,8 +72,7 @@ public class reflect_util {
       principal_type parent, analysis_context context) {
     list<construct> constructs = manager.parse(input);
     assert constructs != null;
-    statement_list_analyzer decls =
-        new statement_list_analyzer(constructs, parent, context, manager.root_origin);
+    list_analyzer decls = new list_analyzer(constructs, parent, context, manager.root_origin);
     manager.check(decls);
 
     readonly_list<analyzable> elements = decls.elements();

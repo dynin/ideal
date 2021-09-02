@@ -24,6 +24,10 @@ public abstract class declaration_visitor<T> implements value {
       return process_block((block_declaration) the_declaration);
     }
 
+    if (the_declaration instanceof list_analyzer) {
+      return process_list((list_analyzer) the_declaration);
+    }
+
     if (the_declaration instanceof import_declaration) {
       return process_import((import_declaration) the_declaration);
     }
@@ -71,6 +75,10 @@ public abstract class declaration_visitor<T> implements value {
 
   public T process_block(block_declaration the_block) {
     return process_default(the_block);
+  }
+
+  public T process_list(list_analyzer the_list_analyzer) {
+    return process_default(the_list_analyzer);
   }
 
   public T process_import(import_declaration the_import) {

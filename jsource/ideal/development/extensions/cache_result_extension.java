@@ -141,11 +141,11 @@ public class cache_result_extension extends declaration_extension {
         the_origin
     );
     analyzable then_block = new block_analyzer(
-        new statement_list_analyzer(new base_list<analyzable>(
+        new list_analyzer(new base_list<analyzable>(
             assign_result, assign_cache), the_origin),
         the_origin);
     analyzable if_statement = new conditional_analyzer(condition, then_block, null, the_origin);
-    block_analyzer caching_body = new block_analyzer(new statement_list_analyzer(
+    block_analyzer caching_body = new block_analyzer(new list_analyzer(
         new base_list<analyzable>(result, if_statement, return_result),
         the_origin), the_origin);
 

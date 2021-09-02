@@ -45,9 +45,8 @@ public class base_transformer extends declaration_visitor<Object> {
   }
 
   public list<construct> transform1(declaration the_analyzable) {
-    // TODO: statement_list_analyzer is not a declaration.  Fix this.
-    if (the_analyzable instanceof statement_list_analyzer) {
-      return transform_list(((statement_list_analyzer) the_analyzable).declarations());
+    if (the_analyzable instanceof list_analyzer) {
+      return transform_list(((list_analyzer) the_analyzable).declarations());
     } else {
       return transform_list(new base_list<declaration>(the_analyzable));
     }
@@ -153,6 +152,12 @@ public class base_transformer extends declaration_visitor<Object> {
 
   public construct process_enum_value(enum_value_analyzer the_enum_value) {
     return process_default(the_enum_value);
+  }
+
+  @Override
+  public construct process_list(list_analyzer the_list_analyzer) {
+    // TODO: report error
+    return process_default(the_list_analyzer);
   }
 
   public import_construct process_import(import_declaration the_import) {

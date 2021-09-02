@@ -46,7 +46,7 @@ public class attribute_handler implements sexpression_handler {
 
   public analyzable to_analyzable(readonly_list<construct> arguments, template_analyzer template,
       origin source) {
-    statement_list_analyzer result = new statement_list_analyzer(source);
+    list_analyzer result = new list_analyzer(source);
 
     list<analyzable> subactions = new base_list<analyzable>();
     string attr_start = new base_string(ATTRIBUTE_SEPARATOR, attribute.short_name(),

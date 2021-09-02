@@ -54,7 +54,7 @@ public class iteration_handler implements sexpression_handler {
     construct list_construct = var_decl.get(1);
     analyzable init_action = template.make(list_construct);
     analyzable body_action =
-        new statement_list_analyzer(template.process_constructs(arguments.skip(1)), source);
+        new list_analyzer(template.process_constructs(arguments.skip(1)), source);
 
     list_iteration_analyzer iterator = new list_iteration_analyzer(
         annotation_library.PRIVATE_MODIFIERS, name.the_name, init_action, body_action, source);

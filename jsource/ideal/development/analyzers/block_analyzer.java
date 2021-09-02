@@ -36,7 +36,7 @@ public class block_analyzer extends declaration_analyzer<origin>
   public block_analyzer(block_construct source) {
     super(source);
     annotations = source.annotations;
-    body = new statement_list_analyzer(make_list(source.body), this);
+    body = new list_analyzer(make_list(source.body), this);
   }
 
   // TODO: introduce an optional annotations parameter

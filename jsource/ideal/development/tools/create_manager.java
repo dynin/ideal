@@ -191,8 +191,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     list<construct> constructs = parse(type_source);
     assert constructs != null;
 
-    statement_list_analyzer body =
-        new statement_list_analyzer(constructs, root, bootstrap_context, root_origin);
+    list_analyzer body = new list_analyzer(constructs, root, bootstrap_context, root_origin);
     body.multi_pass_analysis(analysis_pass.TARGET_DECL);
 
     if (has_errors()) {

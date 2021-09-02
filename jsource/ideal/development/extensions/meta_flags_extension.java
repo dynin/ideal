@@ -150,7 +150,7 @@ public class meta_flags_extension extends declaration_extension {
         the_origin);
     statements.append(finish);
 
-    block_analyzer body = new block_analyzer(new statement_list_analyzer(statements, the_origin),
+    block_analyzer body = new block_analyzer(new list_analyzer(statements, the_origin),
         the_origin);
     procedure_analyzer constructor_procedure = new procedure_analyzer(
         PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),

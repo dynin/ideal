@@ -75,7 +75,7 @@ public class template_analyzer extends extension_analyzer implements declaration
     body_actions.append(body_action);
     body_actions.append(new return_analyzer(result_access, pos));
 
-    return new statement_list_analyzer(body_actions, pos);
+    return new list_analyzer(body_actions, pos);
   }
 
   public analyzable sexpr_to_analyzable(sexpression_construct sexpr) {

@@ -221,15 +221,15 @@ public class procedure_analyzer extends declaration_analyzer
         if (original_body instanceof block_analyzer) {
           analyzable inside_body = ((block_analyzer) original_body).get_body();
           body_origin = original_body.deeper_origin();
-          if (inside_body instanceof statement_list_analyzer) {
-            body_statements = ((statement_list_analyzer) inside_body).elements();
+          if (inside_body instanceof list_analyzer) {
+            body_statements = ((list_analyzer) inside_body).elements();
           } else {
             body_statements = new base_list<analyzable>(original_body);
           }
         } else {
           analyzable expression_body = original_body;
           if (category != procedure_category.CONSTRUCTOR &&
-              !(expression_body instanceof statement_list_analyzer ||
+              !(expression_body instanceof list_analyzer ||
                 expression_body instanceof return_analyzer)) {
             expression_body = new return_analyzer(expression_body, this);
           }
@@ -238,7 +238,7 @@ public class procedure_analyzer extends declaration_analyzer
         if (category == procedure_category.CONSTRUCTOR) {
           body_statements = rewrite_ctor_body(body_statements);
         }
-        body = new statement_list_analyzer(body_statements, body_origin);
+        body = new list_analyzer(body_statements, body_origin);
       }
 
       return process_declaration();

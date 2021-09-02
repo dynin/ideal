@@ -128,8 +128,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         the_declaration = (declaration) the_analyzable;
       }
 
-      if (the_declaration instanceof statement_list_analyzer) {
-        types.append_all(((statement_list_analyzer) the_declaration).declarations());
+      if (the_declaration instanceof list_analyzer) {
+        types.append_all(((list_analyzer) the_declaration).declarations());
       } else if (the_declaration != null) {
         types.append(the_declaration);
       }
@@ -499,7 +499,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     origin the_origin = this;
     analyzable body = new block_analyzer(
-        new statement_list_analyzer(new empty<analyzable>(), the_origin), the_origin);
+        new list_analyzer(new empty<analyzable>(), the_origin), the_origin);
     procedure_analyzer constructor_procedure = new procedure_analyzer(
         PUBLIC_MODIFIERS, null, (simple_name) short_name(), new empty<variable_declaration>(),
         body, the_origin);

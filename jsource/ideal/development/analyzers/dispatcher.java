@@ -115,7 +115,7 @@ public class dispatcher extends construct_visitor<analyzable> {
       return new supertype_analyzer(source.subtype_flavor, source.tag,
           process(source.type_constructs.first()), source);
     } else {
-      return new statement_list_analyzer(make_supertype_list(source, source), true, source);
+      return new list_analyzer(make_supertype_list(source, source), true, source);
     }
   }
 

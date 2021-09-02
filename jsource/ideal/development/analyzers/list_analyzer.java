@@ -24,27 +24,27 @@ import ideal.development.types.*;
 /**
  * Analyze a sequence (list) of actions.  Unlike |block_analyzer|, no frame is created.
  */
-public class statement_list_analyzer extends multi_pass_analyzer {
+public class list_analyzer extends multi_pass_analyzer implements declaration {
   private @Nullable readonly_list<analyzable> the_elements;
   private boolean declaration_list;
   private analysis_result result;
 
-  public statement_list_analyzer(@Nullable readonly_list<analyzable> the_elements,
+  public list_analyzer(@Nullable readonly_list<analyzable> the_elements,
       boolean declaration_list, origin the_origin) {
     super(the_origin);
     this.the_elements = the_elements;
     this.declaration_list = declaration_list;
   }
 
-  public statement_list_analyzer(readonly_list<analyzable> the_elements, origin the_origin) {
+  public list_analyzer(readonly_list<analyzable> the_elements, origin the_origin) {
     this(the_elements, false, the_origin);
   }
 
-  public statement_list_analyzer(origin the_origin) {
+  public list_analyzer(origin the_origin) {
     this(null, false, the_origin);
   }
 
-  public statement_list_analyzer(readonly_list<construct> constructs, principal_type parent,
+  public list_analyzer(readonly_list<construct> constructs, principal_type parent,
       analysis_context context, origin the_origin) {
     super(the_origin, parent, context);
     assert constructs != null;
@@ -52,7 +52,7 @@ public class statement_list_analyzer extends multi_pass_analyzer {
     declaration_list = true;
   }
 
-  protected statement_list_analyzer(readonly_list<analyzable> the_elements,
+  protected list_analyzer(readonly_list<analyzable> the_elements,
       boolean declaration_list, principal_type parent, analysis_context context,
       origin the_origin) {
     super(the_origin, parent, context);
@@ -73,6 +73,11 @@ public class statement_list_analyzer extends multi_pass_analyzer {
   @Override
   public readonly_list<analyzable> children() {
     return the_elements;
+  }
+
+  @Override
+  public principal_type declared_in_type() {
+    return parent();
   }
 
   public readonly_list<declaration> declarations() {
@@ -200,8 +205,7 @@ public class statement_list_analyzer extends multi_pass_analyzer {
     if (same) {
       return this;
     } else {
-      return new statement_list_analyzer(new_elements, declaration_list, new_parent, get_context(),
-          this);
+      return new list_analyzer(new_elements, declaration_list, new_parent, get_context(), this);
     }
   }
 

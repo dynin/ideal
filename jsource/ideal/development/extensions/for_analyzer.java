@@ -39,13 +39,13 @@ public class for_analyzer extends extension_analyzer {
   public analyzable do_expand() {
     origin the_origin = this;
 
-    analyzable body_and_update = new statement_list_analyzer(
+    analyzable body_and_update = new list_analyzer(
         new base_list<analyzable>(body, update), the_origin);
     analyzable break_statement = new jump_analyzer(jump_category.BREAK_JUMP, the_origin);
     analyzable if_statement = new conditional_analyzer(condition,
         body_and_update, break_statement, the_origin);
     analyzable loop_statement = new loop_analyzer(if_statement, the_origin);
-    return new block_analyzer(new statement_list_analyzer(
+    return new block_analyzer(new list_analyzer(
         new base_list<analyzable>(init, loop_statement), the_origin), the_origin);
   }
 }

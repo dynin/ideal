@@ -57,9 +57,10 @@ public class translator {
       }
       return new translation_result(new_world_schema);
     } else {
-      text_fragment error_messages = text_util.EMPTY_FRAGMENT;
+      text_fragment error_messages = text_utilities.EMPTY_FRAGMENT;
       for (int i = 0; i < notifications.size(); ++i) {
-        error_messages = text_util.join(error_messages, notifications.get(i).render_text(false));
+        error_messages = text_utilities.join(error_messages,
+            notifications.get(i).render_text(false));
       }
       return new translation_result(error_messages);
     }

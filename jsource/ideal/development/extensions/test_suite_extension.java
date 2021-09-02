@@ -119,7 +119,7 @@ public class test_suite_extension extends declaration_extension {
     assert test_calls.is_not_empty();
 
     block_analyzer body_block = new block_analyzer(
-        new statement_list_analyzer(test_calls, the_origin), the_origin);
+        new list_analyzer(test_calls, the_origin), the_origin);
     procedure_analyzer run_all_tests_procedure = new procedure_analyzer(
         annotation_library.PUBLIC_MODIFIERS, base_analyzable_action.from(library().void_type(),
         the_origin), RUN_ALL_TESTS_NAME, new empty<variable_declaration>(), body_block, the_origin);

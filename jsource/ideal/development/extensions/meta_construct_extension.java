@@ -217,7 +217,7 @@ public class meta_construct_extension extends declaration_extension {
           new base_list<analyzable>(new resolve_analyzer(generated_origin_name, the_origin));
       ctor_statements.prepend(new parameter_analyzer(super_name, super_arguments, the_origin));
 
-      block_analyzer ctor_body = new block_analyzer(new statement_list_analyzer(ctor_statements,
+      block_analyzer ctor_body = new block_analyzer(new list_analyzer(ctor_statements,
           the_origin), the_origin);
       procedure_analyzer constructor_procedure = new procedure_analyzer(
           PUBLIC_MODIFIERS, null, (simple_name) the_type_declaration.short_name(),
@@ -230,7 +230,7 @@ public class meta_construct_extension extends declaration_extension {
       return_analyzer children_return = new return_analyzer(
           new resolve_analyzer(generated_result_name, the_origin), the_origin);
       children_statements.append(children_return);
-      block_analyzer children_body = new block_analyzer(new statement_list_analyzer(
+      block_analyzer children_body = new block_analyzer(new list_analyzer(
           children_statements, the_origin), the_origin);
 
       analyzable children_return_type = new flavor_analyzer(flavor.readonly_flavor,

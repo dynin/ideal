@@ -166,7 +166,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         }
 
         inside_type = make_inside_type(parent(), this);
-        external_declaration = new statement_list_analyzer(subanalyzable, true, this);
+        external_declaration = new list_analyzer(subanalyzable, true, this);
         declarations = subdeclarations;
         init_context(external_declaration);
       }

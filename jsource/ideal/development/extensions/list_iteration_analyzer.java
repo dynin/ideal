@@ -182,7 +182,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
       body_list.append(body);
       body_origin = the_origin;
     }
-    statement_list_analyzer body_statements = new statement_list_analyzer(body_list, the_origin);
+    list_analyzer body_statements = new list_analyzer(body_list, the_origin);
 
     block_analyzer body_block = new block_analyzer(body_statements, body_origin);
 
@@ -194,10 +194,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
         the_origin);
 
     return new block_analyzer(
-        new statement_list_analyzer(
-            new base_list<analyzable>(list_declaration, for_statement),
-            the_origin
-        ),
+        new list_analyzer(new base_list<analyzable>(list_declaration, for_statement), the_origin),
         the_origin);
   }
 

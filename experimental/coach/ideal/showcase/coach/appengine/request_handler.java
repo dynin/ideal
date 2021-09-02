@@ -445,7 +445,7 @@ public class request_handler extends base_handler {
   }
 
   private String make_function_declarations() {
-    return utilities.s(text_util.to_plain_text(
+    return utilities.s(text_utilities.to_plain_text(
         new reflect_util().render_world(get_schema().declaration)));
   }
 

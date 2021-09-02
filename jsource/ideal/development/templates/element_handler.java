@@ -53,7 +53,7 @@ public class element_handler implements sexpression_handler {
       return template.make_appender(tag, source);
     }
 
-    statement_list_analyzer result = new statement_list_analyzer(source);
+    list_analyzer result = new list_analyzer(source);
 
     list<analyzable> subactions = new base_list<analyzable>();
     string start_tag = new base_string(OPEN_START_TAG, element.short_name());

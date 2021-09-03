@@ -399,9 +399,7 @@ public class procedure_analyzer extends declaration_analyzer
     proc_params.append(return_type);
     // TODO: this cast is redundant.
     proc_params.append_all((list<abstract_value>)(list) proc_args);
-    // TODO: use procedure_util...
-    master_type the_procedure_type = is_pure() ? library().function_type() :
-        library().procedure_type();
+    master_type the_procedure_type = library().master_procedure(is_pure());
     proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
         get_flavored(flavor.immutable_flavor);
 

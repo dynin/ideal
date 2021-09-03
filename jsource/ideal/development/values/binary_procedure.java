@@ -26,7 +26,7 @@ public abstract class binary_procedure extends base_procedure {
   public binary_procedure(action_name name, boolean is_function,
       type return_type, type first_argument_type,
       type second_argument_type) {
-    super(name, procedure_util.make_procedure_type(is_function, return_type, first_argument_type,
+    super(name, library().make_procedure(is_function, return_type, first_argument_type,
         second_argument_type));
 
     assert action_utilities.is_valid_procedure_arity(type_bound(), 2);

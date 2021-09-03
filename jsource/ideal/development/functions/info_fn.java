@@ -29,8 +29,7 @@ import ideal.development.notifications.*;
 public class info_fn extends base_procedure {
 
   public info_fn(action_name the_name) {
-    super(the_name, procedure_util.do_make_procedure(false,
-        new type_parameters(new base_list<abstract_value>(library().immutable_void_type()))));
+    super(the_name, library().make_procedure(false, library().immutable_void_type()));
   }
 
   @Override

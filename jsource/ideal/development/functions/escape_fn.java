@@ -29,7 +29,7 @@ import ideal.development.values.*;
 public class escape_fn extends base_procedure {
 
   public escape_fn(action_name name) {
-    super(name, procedure_util.make_procedure_type(true, library().immutable_string_type(),
+    super(name, library().make_procedure(true, library().immutable_string_type(),
         library().immutable_string_type()));
   }
 

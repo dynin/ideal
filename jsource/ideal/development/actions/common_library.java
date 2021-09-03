@@ -214,9 +214,21 @@ public class common_library implements value {
     return LIST_TYPE;
   }
 
+  private type_parameters make_parameters(abstract_value first) {
+    return new type_parameters(new base_list<abstract_value>(first));
+  }
+
+  private type_parameters make_parameters(abstract_value first, abstract_value second) {
+    return new type_parameters(new base_list<abstract_value>(first, second));
+  }
+
+  private type_parameters make_parameters(abstract_value first, abstract_value second,
+      abstract_value third) {
+    return new type_parameters(new base_list<abstract_value>(first, second, third));
+  }
+
   public type list_type_of(type element_type) {
-    return LIST_TYPE.bind_parameters(
-        new type_parameters(new base_list<abstract_value>(element_type)));
+    return LIST_TYPE.bind_parameters(make_parameters(element_type));
   }
 
   public principal_type null_type() {
@@ -236,8 +248,7 @@ public class common_library implements value {
   }
 
   public type get_reference(type_flavor flavor, type value_type) {
-    return REFERENCE_TYPE.bind_parameters(
-        new type_parameters(new base_list<abstract_value>(value_type))).get_flavored(flavor);
+    return REFERENCE_TYPE.bind_parameters(make_parameters(value_type)).get_flavored(flavor);
   }
 
   public boolean is_reference_type(type the_type) {
@@ -261,6 +272,30 @@ public class common_library implements value {
 
   public master_type function_type() {
     return FUNCTION_TYPE;
+  }
+
+  public master_type master_procedure(boolean is_function) {
+    return is_function ? FUNCTION_TYPE : PROCEDURE_TYPE;
+  }
+
+  // TODO: use list for arguments here
+  public type make_procedure(boolean is_function, abstract_value return_value) {
+    return master_procedure(is_function).bind_parameters(make_parameters(return_value)).
+        get_flavored(flavor.immutable_flavor);
+  }
+
+  public type make_procedure(boolean is_function, abstract_value return_value,
+      abstract_value first_argument) {
+    return master_procedure(is_function).bind_parameters(
+        make_parameters(return_value, first_argument)).
+        get_flavored(flavor.immutable_flavor);
+  }
+
+  public type make_procedure(boolean is_function, abstract_value return_value,
+      abstract_value first_argument, abstract_value second_argument) {
+    return master_procedure(is_function).bind_parameters(
+        make_parameters(return_value, first_argument, second_argument)).
+        get_flavored(flavor.immutable_flavor);
   }
 
   public singleton_value void_instance() {

@@ -33,7 +33,7 @@ namespace type_utilities {
 
   immutable list[abstract_value] get_union_parameters(type the_type) {
     assert is_union(the_type);
-    return (the_type.principal !> union_type).get_parameters().fixed_size_list();
+    return (the_type.principal !> union_type).get_parameters().the_list;
   }
 
   boolean is_type_alias(type the_type) {

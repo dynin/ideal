@@ -208,10 +208,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
       return null;
     }
     parametrized_type pt = (parametrized_type) should_be_list_type;
-    if (!pt.get_parameters().is_fixed_size()) {
-      return null;
-    }
-    immutable_list<abstract_value> parameters = pt.get_parameters().fixed_size_list();
+    immutable_list<abstract_value> parameters = pt.get_parameters().the_list;
     if (parameters.size() != 1) {
       return null;
     }

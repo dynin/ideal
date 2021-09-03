@@ -53,10 +53,10 @@ public class parametrized_type extends base_principal_type {
   }
   public void set_parameters(final type_parameters parameters) {
     assert this.parameters == null;
-    if (parameters.is_empty()) {
+    if (parameters.the_list.is_empty()) {
       utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("Attempt to parametrize "), this), new base_string(" with empty parameters")));
     }
-    assert parameters.is_not_empty();
+    assert parameters.the_list.is_not_empty();
     this.parameters = parameters;
   }
   private string parameter_names() {

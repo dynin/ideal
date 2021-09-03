@@ -36,7 +36,7 @@ public class type_utilities {
   }
   public static immutable_list<abstract_value> get_union_parameters(final type the_type) {
     assert type_utilities.is_union(the_type);
-    return ((union_type) the_type.principal()).get_parameters().fixed_size_list();
+    return ((union_type) the_type.principal()).get_parameters().the_list;
   }
   public static boolean is_type_alias(final type the_type) {
     return the_type.principal().get_kind() == type_kinds.type_alias_kind;

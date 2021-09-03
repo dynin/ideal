@@ -130,7 +130,7 @@ public class specialized_type_declaration extends debuggable implements type_dec
     flavor_profile the_flavor_profile = get_master().get_flavor_profile();
 
     if (ENABLE_SHALLOW && is_collection_type(the_type)) {
-      immutable_list<abstract_value> new_parameters = the_type.get_parameters().fixed_size_list();
+      immutable_list<abstract_value> new_parameters = the_type.get_parameters().the_list;
       assert new_parameters.size() == 1;
       if (new_parameters.first().type_bound().get_flavor() == flavor.deeply_immutable_flavor) {
         log.debug("*** " + the_type);
@@ -184,10 +184,10 @@ public class specialized_type_declaration extends debuggable implements type_dec
     }
 
     // TODO: this shouldn't be necessary once dependencies are robust.
-    immutable_list<principal_type> the_parameters =
-        the_type.get_parameters().principals_set().elements();
+    immutable_list<abstract_value> the_parameters = the_type.get_parameters().the_list;
     for (int i = 0; i < the_parameters.size(); ++i) {
-      type_utilities.prepare(the_parameters.get(i), declaration_pass.METHODS_AND_VARIABLES);
+      type_utilities.prepare(the_parameters.get(i).type_bound().principal(),
+          declaration_pass.METHODS_AND_VARIABLES);
     }
   }
 

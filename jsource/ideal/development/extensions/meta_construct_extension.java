@@ -278,8 +278,8 @@ public class meta_construct_extension extends declaration_extension {
       type_parameters list_parameters =
           ((parametrized_type) the_type).get_parameters();
       // List types have exactly one parameter
-      assert list_parameters.is_valid_arity(1);
-      return list_parameters.first().type_bound().principal();
+      assert list_parameters.the_list.size() == 1;
+      return list_parameters.the_list.first().type_bound().principal();
     }
     return null;
   }

@@ -297,10 +297,8 @@ public class base_semantics implements semantics {
       parametrized_type supertype, type_flavor the_flavor) {
     assert subtype.get_master() == supertype.get_master();
     // TODO: implement real variance check...
-    immutable_list<abstract_value> subtype_parameters =
-        subtype.get_parameters().fixed_size_list();
-    immutable_list<abstract_value> supertype_parameters =
-        supertype.get_parameters().fixed_size_list();
+    immutable_list<abstract_value> subtype_parameters = subtype.get_parameters().the_list;
+    immutable_list<abstract_value> supertype_parameters = supertype.get_parameters().the_list;
     int size = subtype_parameters.size();
     // TODO: handle extra procedure arguments...
     if (supertype_parameters.size() != size) {
@@ -470,9 +468,8 @@ public class base_semantics implements semantics {
         new list_dictionary<master_type, abstract_value>();
 
     if (new_type.get_kind() != procedure_kind) {
-      immutable_list<abstract_value> new_parameters = new_type.get_parameters().fixed_size_list();
-      immutable_list<abstract_value> declared_parameters =
-          declared_type.get_parameters().fixed_size_list();
+      immutable_list<abstract_value> new_parameters = new_type.get_parameters().the_list;
+      immutable_list<abstract_value> declared_parameters = declared_type.get_parameters().the_list;
 
       // TODO: signal error?
       if (new_parameters.size() != declared_parameters.size()) {
@@ -507,7 +504,7 @@ public class base_semantics implements semantics {
     declaration the_declaration = new_type.get_declaration();
     assert the_declaration != null;
 
-    immutable_list<abstract_value> params = new_type.get_parameters().fixed_size_list();
+    immutable_list<abstract_value> params = new_type.get_parameters().the_list;
     // TODO: signal an error
     assert params.size() == 1;
     assert params.first() instanceof type;

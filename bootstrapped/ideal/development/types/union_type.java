@@ -47,7 +47,7 @@ public class union_type extends base_principal_type {
   public @Override type get_flavored(final type_flavor flavor) {
     final base_list<abstract_value> new_parameters = new base_list<abstract_value>();
     {
-      final readonly_list<abstract_value> the_parameter_list = this.parameters.fixed_size_list();
+      final readonly_list<abstract_value> the_parameter_list = this.parameters.the_list;
       for (Integer the_parameter_index = 0; the_parameter_index < the_parameter_list.size(); the_parameter_index += 1) {
         final abstract_value the_parameter = the_parameter_list.get(the_parameter_index);
         if (the_parameter instanceof type) {
@@ -70,7 +70,7 @@ public class union_type extends base_principal_type {
   public @Override flavor_profile default_flavor_profile() {
     flavor_profile result = flavor_profiles.mutable_profile;
     {
-      final readonly_list<abstract_value> the_parameter_list = this.parameters.fixed_size_list();
+      final readonly_list<abstract_value> the_parameter_list = this.parameters.the_list;
       for (Integer the_parameter_index = 0; the_parameter_index < the_parameter_list.size(); the_parameter_index += 1) {
         final abstract_value the_parameter = the_parameter_list.get(the_parameter_index);
         final flavor_profile profile = type_utilities.get_flavor_profile(the_parameter.type_bound().principal());
@@ -81,7 +81,7 @@ public class union_type extends base_principal_type {
   }
   protected @Override void do_declare_actual(final declaration_pass pass) {
     {
-      final readonly_list<abstract_value> the_parameter_list = this.parameters.fixed_size_list();
+      final readonly_list<abstract_value> the_parameter_list = this.parameters.the_list;
       for (Integer the_parameter_index = 0; the_parameter_index < the_parameter_list.size(); the_parameter_index += 1) {
         final abstract_value the_parameter = the_parameter_list.get(the_parameter_index);
         type_utilities.prepare(the_parameter, pass);

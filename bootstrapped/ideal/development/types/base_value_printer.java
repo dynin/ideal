@@ -73,7 +73,7 @@ public class base_value_printer extends debuggable implements value_printer {
   }
   private string print_parameters(final parametrized_type the_type) {
     final string_writer the_writer = new string_writer();
-    final immutable_list<abstract_value> parameters = the_type.get_parameters().fixed_size_list();
+    final immutable_list<abstract_value> parameters = the_type.get_parameters().the_list;
     the_writer.write('[');
     boolean first = true;
     {

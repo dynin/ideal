@@ -263,7 +263,7 @@ public class common_library implements value {
   public type get_reference_parameter(type ref_type) {
     parametrized_type ptype = (parametrized_type) ref_type.principal();
     assert ptype.get_master() == REFERENCE_TYPE;
-    return (type) ptype.get_parameters().first();
+    return (type) ptype.get_parameters().the_list.first();
   }
 
   public master_type procedure_type() {

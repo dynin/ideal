@@ -43,7 +43,7 @@ class union_type {
     new_parameters : base_list[abstract_value].new();
 
     -- TODO: optimize when parameters don't change?
-    for (the_parameter : parameters.fixed_size_list()) {
+    for (the_parameter : parameters.the_list) {
       if (the_parameter is type) {
         new_parameters.append(the_parameter.get_flavored(flavor));
       } else {
@@ -67,7 +67,7 @@ class union_type {
   implement flavor_profile default_flavor_profile() {
     var flavor_profile result : flavor_profiles.mutable_profile;
 
-    for (the_parameter : parameters.fixed_size_list()) {
+    for (the_parameter : parameters.the_list) {
       profile : type_utilities.get_flavor_profile(the_parameter.type_bound.principal);
       result = flavor_profiles.combine(result, profile);
     }
@@ -76,7 +76,7 @@ class union_type {
   }
 
   implement protected void do_declare_actual(declaration_pass pass) {
-    for (the_parameter : parameters.fixed_size_list()) {
+    for (the_parameter : parameters.the_list) {
       type_utilities.prepare(the_parameter, pass);
     }
   }

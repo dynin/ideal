@@ -42,10 +42,10 @@ class parametrized_type {
 
   void set_parameters(type_parameters parameters) {
     assert this.parameters is null;
-    if (parameters.is_empty()) {
+    if (parameters.the_list.is_empty) {
       utilities.panic("Attempt to parametrize " ++ this ++ " with empty parameters");
     }
-    assert parameters.is_not_empty();  -- TODO: enforce this in the analyzer
+    assert parameters.the_list.is_not_empty;  -- TODO: enforce this in the analyzer
     this.parameters = parameters;
   }
 

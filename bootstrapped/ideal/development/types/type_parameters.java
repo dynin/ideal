@@ -13,72 +13,19 @@ import ideal.development.declarations.*;
 import ideal.development.kinds.*;
 import ideal.machine.channels.string_writer;
 
-import javax.annotation.Nullable;
-
 public class type_parameters extends debuggable implements deeply_immutable_data {
-  private final immutable_list<abstract_value> parameters;
-  private final @Nullable abstract_value repeated_parameter;
-  public type_parameters(final readonly_list<abstract_value> parameters) {
-    this.parameters = parameters.frozen_copy();
-    this.repeated_parameter = null;
-  }
-  public boolean is_fixed_size() {
-    return this.repeated_parameter == null;
-  }
-  public boolean is_empty() {
-    return this.parameters.is_empty() && this.is_fixed_size();
-  }
-  public boolean is_not_empty() {
-    return !this.is_empty();
-  }
-  public boolean is_valid_arity(final Integer arity) {
-    if (this.is_fixed_size()) {
-      return ideal.machine.elements.runtime_util.values_equal(arity, this.parameters.size());
-    } else {
-      return arity >= this.parameters.size();
-    }
-  }
-  public abstract_value first() {
-    return this.get(0);
-  }
-  public abstract_value get(final Integer index) {
-    if (index < this.parameters.size()) {
-      return this.parameters.get(index);
-    } else if (this.repeated_parameter != null) {
-      return this.repeated_parameter;
-    } else {
-      {
-        utilities.panic(new base_string("Parameter index out of range"));
-        return null;
-      }
-    }
-  }
-  public immutable_list<abstract_value> fixed_size_list() {
-    assert this.is_fixed_size();
-    return this.parameters;
-  }
-  public immutable_set<principal_type> principals_set() {
-    final hash_set<principal_type> result = new hash_set<principal_type>();
-    {
-      final readonly_list<abstract_value> parameter_list = this.parameters;
-      for (Integer parameter_index = 0; parameter_index < parameter_list.size(); parameter_index += 1) {
-        final abstract_value parameter = parameter_list.get(parameter_index);
-        result.add(parameter.type_bound().principal());
-      }
-    }
-    if (this.repeated_parameter != null) {
-      result.add(this.repeated_parameter.type_bound().principal());
-    }
-    return result.frozen_copy();
+  public final immutable_list<abstract_value> the_list;
+  public type_parameters(final readonly_list<abstract_value> the_list) {
+    this.the_list = the_list.frozen_copy();
   }
   public @Override string to_string() {
     final string_writer the_writer = new string_writer();
     the_writer.write_all(new base_string("["));
-    for (Integer i = 0; i < this.parameters.size(); i += 1) {
+    for (Integer i = 0; i < this.the_list.size(); i += 1) {
       if (i > 0) {
         the_writer.write_all(new base_string(", "));
       }
-      final abstract_value parameter = this.parameters.get(i);
+      final abstract_value parameter = this.the_list.get(i);
       string name;
       if (parameter instanceof base_type) {
         name = ((base_type) parameter).describe(type_format.TWO_PARENTS);

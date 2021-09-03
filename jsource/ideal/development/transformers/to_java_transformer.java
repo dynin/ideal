@@ -534,7 +534,7 @@ public class to_java_transformer extends base_transformer {
 
     if (include_parameters && principal instanceof parametrized_type) {
       immutable_list<abstract_value> type_params =
-          ((parametrized_type) principal).get_parameters().fixed_size_list();
+          ((parametrized_type) principal).get_parameters().the_list;
       list<construct> params = new base_list<construct>();
       for (int i = 0; i < type_params.size(); ++i) {
         abstract_value av = type_params.get(i);
@@ -588,7 +588,7 @@ public class to_java_transformer extends base_transformer {
     if (the_type.short_name() instanceof simple_name) {
       simple_name the_name = (simple_name) the_type.short_name();
       if (the_type.get_kind() == procedure_kind && the_type instanceof parametrized_type) {
-        int arity = ((parametrized_type) the_type).get_parameters().fixed_size_list().size() - 1;
+        int arity = ((parametrized_type) the_type).get_parameters().the_list.size() - 1;
         return make_procedure_name(the_name, arity);
       } else {
         return the_name;

@@ -191,7 +191,7 @@ concept null {
 --- to first through last arguent type of procedure.  For example,
 --- |procedure[boolean, integer]| is a procedure that takes an integer
 --- argument and returns boolean.
-procedure_kind procedure[entity ret, entity arg1] {
+procedure_kind procedure1[entity ret, entity arg1] {
   refines value;
 }
 
@@ -200,7 +200,7 @@ procedure_kind procedure[entity ret, entity arg1, entity arg2] {
 }
 
 --- A procedure that has no visible side effects.
-procedure_kind function[entity ret, entity arg1] {
+procedure_kind function1[entity ret, entity arg1] {
   refines procedure[ret, arg1];
   implements deeply_immutable data;
 }

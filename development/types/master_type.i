@@ -53,6 +53,7 @@ class master_type {
   boolean is_parametrizable => the_parametrizable_state is_not null;
 
   void make_parametrizable() {
+    assert the_parametrizable_state is null;
     the_parametrizable_state = parametrizable_state.new(this);
   }
 

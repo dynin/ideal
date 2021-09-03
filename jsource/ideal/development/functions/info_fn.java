@@ -29,8 +29,18 @@ import ideal.development.notifications.*;
 public class info_fn extends base_procedure {
 
   public info_fn(action_name the_name) {
-    super(the_name, procedure_util.make_varags_procedure_type(false,
-        library().immutable_void_type(), string_helper.readonly_stringable()));
+    super(the_name, procedure_util.do_make_procedure(false,
+        new type_parameters(new base_list<abstract_value>(library().immutable_void_type()))));
+  }
+
+  @Override
+  protected boolean is_valid_procedure_arity(int arity) {
+    return true;
+  }
+
+  @Override
+  protected final type get_argument_type(int index) {
+    return string_helper.readonly_stringable();
   }
 
   @Override

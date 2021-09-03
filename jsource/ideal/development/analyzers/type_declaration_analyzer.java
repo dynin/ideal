@@ -256,7 +256,9 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     if (pass == analysis_pass.TYPE_DECL) {
       if (has_parameters()) {
-        master.make_parametrizable();
+        if (!master.is_parametrizable()) {
+          master.make_parametrizable();
+        }
         parametrizable_state the_parametrizable_state = master.get_parametrizable();
         if (the_parametrizable_state.get_primary() != null) {
           // TODO: support multiple primary types.

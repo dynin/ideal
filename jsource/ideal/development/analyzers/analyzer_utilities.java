@@ -33,7 +33,7 @@ public class analyzer_utilities {
 
   public static final origin UNINITIALIZED_POSITION =
       new special_origin(new base_string("[uninitialized]"));
-  private static final boolean DO_REDUNDANT_PARAMETRIZABLE_CHECK = true;
+  public static final boolean DO_REDUNDANT_PARAMETRIZABLE_CHECK = true;
 
   public static @Nullable procedure_declaration get_enclosing_procedure(
       base_analyzer the_analyzable) {

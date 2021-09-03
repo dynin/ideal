@@ -13,16 +13,16 @@ class type_parameters {
   private immutable list[abstract_value] parameters;
   private abstract_value or null repeated_parameter;
 
-  overload type_parameters(readonly list[abstract_value] parameters) {
+  type_parameters(readonly list[abstract_value] parameters) {
     this.parameters = parameters.frozen_copy();
     this.repeated_parameter = missing.instance;
   }
 
-  overload type_parameters(readonly list[abstract_value] parameters,
-      abstract_value repeated_parameter) {
-    this.parameters = parameters.frozen_copy();
-    this.repeated_parameter = repeated_parameter;
-  }
+--  overload type_parameters(readonly list[abstract_value] parameters,
+--      abstract_value repeated_parameter) {
+--    this.parameters = parameters.frozen_copy();
+--    this.repeated_parameter = repeated_parameter;
+--  }
 
   boolean is_fixed_size => repeated_parameter is null;
 

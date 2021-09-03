@@ -50,13 +50,13 @@ concept null {
   refines deeply_immutable data;
   implements stringable;
 }
-procedure_kind procedure[entity ret, entity arg1] {
+procedure_kind procedure1[entity ret, entity arg1] {
   refines value;
 }
 procedure_kind procedure[entity ret, entity arg1, entity arg2] {
   refines value;
 }
-procedure_kind function[entity ret, entity arg1] {
+procedure_kind function1[entity ret, entity arg1] {
   refines procedure[ret, arg1];
   implements deeply_immutable data;
 }

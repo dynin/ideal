@@ -40,14 +40,7 @@ public class procedure_util {
     return do_make_procedure(is_function, new type_parameters(parameters));
   }
 
-  public static type make_varags_procedure_type(boolean is_function, type return_type,
-      type repeated_argument_type) {
-    list<abstract_value> parameters = new base_list<abstract_value>();
-    parameters.append(return_type);
-    return do_make_procedure(is_function, new type_parameters(parameters, repeated_argument_type));
-  }
-
-  private static type do_make_procedure(boolean is_function, type_parameters parameters) {
+  public static type do_make_procedure(boolean is_function, type_parameters parameters) {
     common_library library = common_library.get_instance();
     master_type the_master_type = is_function ? library.function_type() : library.procedure_type();
     return the_master_type.bind_parameters(parameters).get_flavored(flavor.immutable_flavor);

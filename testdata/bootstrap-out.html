@@ -423,7 +423,7 @@
           argument and returns boolean.
         </div>
         <div class='type-declaration'>
-         procedure kind <span class='type-declaration-name'><span id='procedure'>procedure</span></span>[<span id='entity4'>entity</span> <span class='var-declaration-name'><span id='ret'>ret</span></span>, <span id='entity5'>entity</span> <span class='var-declaration-name'><span id='arg1'>arg1</span></span>]
+         procedure kind <span class='type-declaration-name'><span id='procedure1'>procedure1</span></span>[<span id='entity4'>entity</span> <span class='var-declaration-name'><span id='ret'>ret</span></span>, <span id='entity5'>entity</span> <span class='var-declaration-name'><span id='arg1'>arg1</span></span>]
           <div class='indent'>
             <div>
              refines <span class='supertype-declaration-name'><span id='value6'>value</span></span>
@@ -432,7 +432,7 @@
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'><span id='procedure2'>procedure</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>, <span id='entity8'>entity</span> <span class='var-declaration-name'><span id='arg2'>arg2</span></span>]
+       procedure kind <span class='type-declaration-name'><span id='procedure'>procedure</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>, <span id='entity8'>entity</span> <span class='var-declaration-name'><span id='arg2'>arg2</span></span>]
         <div class='indent'>
           <div>
            refines <span class='supertype-declaration-name'><span id='value7'>value</span></span>
@@ -444,10 +444,10 @@
           A procedure that has no visible side effects.
         </div>
         <div class='type-declaration'>
-         procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity9'>entity</span> <span class='var-declaration-name'><span id='ret3'>ret</span></span>, <span id='entity10'>entity</span> <span class='var-declaration-name'><span id='arg13'>arg1</span></span>]
+         procedure kind <span class='type-declaration-name'><span id='function1'>function1</span></span>[<span id='entity9'>entity</span> <span class='var-declaration-name'><span id='ret3'>ret</span></span>, <span id='entity10'>entity</span> <span class='var-declaration-name'><span id='arg13'>arg1</span></span>]
           <div class='indent'>
             <div>
-             refines <span class='supertype-declaration-name'><span id='procedure3'>procedure</span>[<span id='ret4'>ret</span>, <span id='arg14'>arg1</span>]</span>
+             refines <span class='supertype-declaration-name'><span id='procedure2'>procedure</span>[<span id='ret4'>ret</span>, <span id='arg14'>arg1</span>]</span>
             </div>
             <div>
              implements <span class='supertype-declaration-name'>deeply immutable <span id='data10'>data</span></span>
@@ -456,10 +456,10 @@
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'><span id='function2'>function</span></span>[<span id='entity11'>entity</span> <span class='var-declaration-name'><span id='ret5'>ret</span></span>, <span id='entity12'>entity</span> <span class='var-declaration-name'><span id='arg15'>arg1</span></span>, <span id='entity13'>entity</span> <span class='var-declaration-name'><span id='arg22'>arg2</span></span>]
+       procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity11'>entity</span> <span class='var-declaration-name'><span id='ret5'>ret</span></span>, <span id='entity12'>entity</span> <span class='var-declaration-name'><span id='arg15'>arg1</span></span>, <span id='entity13'>entity</span> <span class='var-declaration-name'><span id='arg22'>arg2</span></span>]
         <div class='indent'>
           <div>
-           refines <span class='supertype-declaration-name'><span id='procedure4'>procedure</span>[<span id='ret6'>ret</span>, <span id='arg16'>arg1</span>, <span id='arg23'>arg2</span>]</span>
+           refines <span class='supertype-declaration-name'><span id='procedure3'>procedure</span>[<span id='ret6'>ret</span>, <span id='arg16'>arg1</span>, <span id='arg23'>arg2</span>]</span>
           </div>
           <div>
            implements <span class='supertype-declaration-name'>deeply immutable <span id='data11'>data</span></span>
@@ -470,7 +470,7 @@
        concept <span class='type-declaration-name'><span id='predicate'>predicate</span></span>[<span id='value8'>value</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
         <div class='indent'>
           <div>
-           refines <span class='supertype-declaration-name'><span id='function3'>function</span>[<span id='boolean2'>boolean</span>, <span id='element2'>element</span>]</span>
+           refines <span class='supertype-declaration-name'><span id='function2'>function</span>[<span id='boolean2'>boolean</span>, <span id='element2'>element</span>]</span>
           </div>
         </div>
       </div>
@@ -478,7 +478,7 @@
        concept <span class='type-declaration-name'><span id='relation'>relation</span></span>[<span id='value9'>value</span> <span class='var-declaration-name'><span id='element3'>element</span></span>]
         <div class='indent'>
           <div>
-           refines <span class='supertype-declaration-name'><span id='function4'>function</span>[<span id='boolean3'>boolean</span>, <span id='element4'>element</span>, <span id='element5'>element</span>]</span>
+           refines <span class='supertype-declaration-name'><span id='function3'>function</span>[<span id='boolean3'>boolean</span>, <span id='element4'>element</span>, <span id='element5'>element</span>]</span>
           </div>
         </div>
       </div>
@@ -735,7 +735,7 @@
            <span class='xref-name'>Direct subtypes:</span> value / reference
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>All subtypes:</span> data / stringable / void / nothing / equality comparable / boolean / integer / nonnegative / positive / null / procedure / procedure / function / function / predicate / relation / equivalence relation / collection / collection with equivalence / list / list with equivalence / character / string
+           <span class='xref-name'>All subtypes:</span> data / stringable / void / nothing / equality comparable / boolean / integer / nonnegative / positive / null / procedure1 / procedure / function1 / function / predicate / relation / equivalence relation / collection / collection with equivalence / list / list with equivalence / character / string
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Use:</span> entity / entity / entity / entity / entity / entity / entity / entity / entity / entity
@@ -785,10 +785,10 @@
            <span class='xref-name'>All supertypes:</span> value / entity
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Direct subtypes:</span> data / stringable / equality comparable / procedure / procedure / collection
+           <span class='xref-name'>Direct subtypes:</span> data / stringable / equality comparable / procedure1 / procedure / collection
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>All subtypes:</span> void / nothing / boolean / integer / nonnegative / positive / null / function / function / predicate / relation / equivalence relation / collection with equivalence / list / list with equivalence / character / string
+           <span class='xref-name'>All subtypes:</span> void / nothing / boolean / integer / nonnegative / positive / null / function1 / function / predicate / relation / equivalence relation / collection with equivalence / list / list with equivalence / character / string
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Use:</span> value / value / value / value / value / value / value / value / value / value
@@ -911,7 +911,7 @@
            <span class='xref-name'>All supertypes:</span> entity / value / entity
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Direct subtypes:</span> void / boolean / integer / null / function / function / character
+           <span class='xref-name'>Direct subtypes:</span> void / boolean / integer / null / function1 / function / character
           </div>
           <div class='xref-links'>
            <span class='xref-name'>All subtypes:</span> nothing / nonnegative / positive / predicate / relation / equivalence relation
@@ -1298,18 +1298,15 @@
           argument and returns boolean.
         </div>
         <div class='type-declaration'>
-         procedure kind <span class='type-declaration-name'><span id='procedure'>procedure</span></span>[<span id='entity4'>entity</span> <span class='var-declaration-name'><span id='ret'>ret</span></span>, <span id='entity5'>entity</span> <span class='var-declaration-name'><span id='arg1'>arg1</span></span>]
+         procedure kind <span class='type-declaration-name'><span id='procedure1'>procedure1</span></span>[<span id='entity4'>entity</span> <span class='var-declaration-name'><span id='ret'>ret</span></span>, <span id='entity5'>entity</span> <span class='var-declaration-name'><span id='arg1'>arg1</span></span>]
           <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> procedure
+           <span class='xref-name'>Declaration:</span> procedure1
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Direct supertypes:</span> value
           </div>
           <div class='xref-links'>
            <span class='xref-name'>All supertypes:</span> entity / value / entity
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Direct subtypes:</span> function / function
           </div>
           <div class='indent'>
             <div>
@@ -1318,7 +1315,7 @@
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'><span id='procedure2'>procedure</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>, <span id='entity8'>entity</span> <span class='var-declaration-name'><span id='arg2'>arg2</span></span>]
+       procedure kind <span class='type-declaration-name'><span id='procedure'>procedure</span></span>[<span id='entity6'>entity</span> <span class='var-declaration-name'><span id='ret2'>ret</span></span>, <span id='entity7'>entity</span> <span class='var-declaration-name'><span id='arg12'>arg1</span></span>, <span id='entity8'>entity</span> <span class='var-declaration-name'><span id='arg2'>arg2</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> procedure
         </div>
@@ -1327,6 +1324,9 @@
         </div>
         <div class='xref-links'>
          <span class='xref-name'>All supertypes:</span> entity / value / entity
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>Direct subtypes:</span> function1 / function
         </div>
         <div class='indent'>
           <div>
@@ -1338,18 +1338,15 @@
           A procedure that has no visible side effects.
         </div>
         <div class='type-declaration'>
-         procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity9'>entity</span> <span class='var-declaration-name'><span id='ret3'>ret</span></span>, <span id='entity10'>entity</span> <span class='var-declaration-name'><span id='arg13'>arg1</span></span>]
+         procedure kind <span class='type-declaration-name'><span id='function1'>function1</span></span>[<span id='entity9'>entity</span> <span class='var-declaration-name'><span id='ret3'>ret</span></span>, <span id='entity10'>entity</span> <span class='var-declaration-name'><span id='arg13'>arg1</span></span>]
           <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> function
+           <span class='xref-name'>Declaration:</span> function1
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Direct supertypes:</span> procedure / data
           </div>
           <div class='xref-links'>
            <span class='xref-name'>All supertypes:</span> value / entity / value / entity
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Direct subtypes:</span> predicate / relation
           </div>
           <div class='indent'>
             <div>
@@ -1360,7 +1357,7 @@
         </div>
       </div>
       <div class='type-declaration'>
-       procedure kind <span class='type-declaration-name'><span id='function2'>function</span></span>[<span id='entity11'>entity</span> <span class='var-declaration-name'><span id='ret5'>ret</span></span>, <span id='entity12'>entity</span> <span class='var-declaration-name'><span id='arg15'>arg1</span></span>, <span id='entity13'>entity</span> <span class='var-declaration-name'><span id='arg22'>arg2</span></span>]
+       procedure kind <span class='type-declaration-name'><span id='function'>function</span></span>[<span id='entity11'>entity</span> <span class='var-declaration-name'><span id='ret5'>ret</span></span>, <span id='entity12'>entity</span> <span class='var-declaration-name'><span id='arg15'>arg1</span></span>, <span id='entity13'>entity</span> <span class='var-declaration-name'><span id='arg22'>arg2</span></span>]
         <div class='xref-links'>
          <span class='xref-name'>Declaration:</span> function
         </div>
@@ -1369,6 +1366,9 @@
         </div>
         <div class='xref-links'>
          <span class='xref-name'>All supertypes:</span> value / entity / value / entity
+        </div>
+        <div class='xref-links'>
+         <span class='xref-name'>Direct subtypes:</span> predicate / relation
         </div>
         <div class='indent'>
           <div>

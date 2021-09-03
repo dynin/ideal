@@ -59,6 +59,7 @@ public class master_type extends base_principal_type {
     return this.the_parametrizable_state != null;
   }
   public void make_parametrizable() {
+    assert this.the_parametrizable_state == null;
     this.the_parametrizable_state = new parametrizable_state(this);
   }
   public parametrizable_state get_parametrizable() {

@@ -71,8 +71,10 @@ public class overloaded_procedure extends base_procedure {
   @Override
   public analysis_result bind_parameters(action_parameters parameters, analysis_context context,
       origin the_origin) {
-    // TODO: make the assertion optional
-    assert is_parametrizable(parameters, context);
+    if (analyzer_utilities.DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
+      assert is_parametrizable(parameters, context);
+    }
+
     for (int i = 0; i < procedures.size(); ++i) {
       if (procedures.get(i).is_parametrizable(parameters, context)) {
         return procedures.get(i).bind_parameters(parameters, context, the_origin);

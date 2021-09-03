@@ -22,10 +22,6 @@ public class type_parameters extends debuggable implements deeply_immutable_data
     this.parameters = parameters.frozen_copy();
     this.repeated_parameter = null;
   }
-  public type_parameters(final readonly_list<abstract_value> parameters, final abstract_value repeated_parameter) {
-    this.parameters = parameters.frozen_copy();
-    this.repeated_parameter = repeated_parameter;
-  }
   public boolean is_fixed_size() {
     return this.repeated_parameter == null;
   }

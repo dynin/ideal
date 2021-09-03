@@ -20,6 +20,7 @@ import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.analyzers.*;
 
 public abstract class base_procedure extends base_data_value<procedure_value>
     implements procedure_value<procedure_value> {
@@ -69,14 +70,18 @@ public abstract class base_procedure extends base_data_value<procedure_value>
     return action_utilities.get_procedure_return(type_bound());
   }
 
-  protected final type get_argument_type(int index) {
+  protected boolean is_valid_procedure_arity(int arity) {
+    return action_utilities.is_valid_procedure_arity(type_bound(), arity);
+  }
+
+  protected type get_argument_type(int index) {
     return action_utilities.get_procedure_argument(type_bound(), index).type_bound();
   }
 
   @Override
   public boolean is_parametrizable(action_parameters parameters, analysis_context context) {
     readonly_list<action> parameter_list = parameters.params();
-    if (!action_utilities.is_valid_procedure_arity(type_bound(), parameter_list.size())) {
+    if (!is_valid_procedure_arity(parameter_list.size())) {
       return false;
     }
 
@@ -98,9 +103,11 @@ public abstract class base_procedure extends base_data_value<procedure_value>
       origin pos) {
 
     readonly_list<action> aparams = params.params();
-    // This should never happen because of type checks done before bind_parameters() is called
-    if (!action_utilities.is_valid_procedure_arity(type_bound(), aparams.size())) {
-      return new error_signal(new base_string("Arity mismatch"), pos);
+    if (analyzer_utilities.DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
+      // This should never happen because of type checks done before bind_parameters() is called
+      if (!is_valid_procedure_arity(aparams.size())) {
+        return new error_signal(new base_string("Arity mismatch"), pos);
+      }
     }
 
     list<action> promoted_params = new base_list<action>();

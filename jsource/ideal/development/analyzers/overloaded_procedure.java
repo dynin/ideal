@@ -58,10 +58,10 @@ public class overloaded_procedure extends base_procedure {
   }
 
   @Override
-  public boolean is_parametrizable(action_parameters parameters, analysis_context context) {
+  public boolean supports_parameters(action_parameters parameters, analysis_context context) {
     int matches = 0;
     for (int i = 0; i < procedures.size(); ++i) {
-      if (procedures.get(i).is_parametrizable(parameters, context)) {
+      if (procedures.get(i).supports_parameters(parameters, context)) {
         ++matches;
       }
     }
@@ -72,11 +72,11 @@ public class overloaded_procedure extends base_procedure {
   public analysis_result bind_parameters(action_parameters parameters, analysis_context context,
       origin the_origin) {
     if (analyzer_utilities.DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
-      assert is_parametrizable(parameters, context);
+      assert supports_parameters(parameters, context);
     }
 
     for (int i = 0; i < procedures.size(); ++i) {
-      if (procedures.get(i).is_parametrizable(parameters, context)) {
+      if (procedures.get(i).supports_parameters(parameters, context)) {
         return procedures.get(i).bind_parameters(parameters, context, the_origin);
       }
     }

@@ -55,8 +55,8 @@ public class procedure_with_this extends base_data_value<procedure_value>
   }
 
   @Override
-  public boolean is_parametrizable(action_parameters parameters, analysis_context context) {
-    return the_procedure.is_parametrizable(parameters, context);
+  public boolean supports_parameters(action_parameters parameters, analysis_context context) {
+    return the_procedure.supports_parameters(parameters, context);
   }
 
   @Override

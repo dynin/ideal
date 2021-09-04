@@ -50,7 +50,7 @@ class master_type {
     this.the_context = the_context;
   }
 
-  boolean is_parametrizable => the_parametrizable_state is_not null;
+  boolean has_parametrizable_state => the_parametrizable_state is_not null;
 
   void make_parametrizable() {
     assert the_parametrizable_state is null;

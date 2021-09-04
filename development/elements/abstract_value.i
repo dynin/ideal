@@ -6,9 +6,10 @@
 
 --- Abstract value denotes a set of values used in abstract interpretation.
 --- It can either be a value (e.g. |42|) or a type (e.g. |integer|).
-interface abstract_value  {
+interface abstract_value {
   extends readonly data, stringable;
 
   type type_bound;
+  -- TODO: boolean is_parametrizable()
   action to_action(origin the_origin) pure;
 }

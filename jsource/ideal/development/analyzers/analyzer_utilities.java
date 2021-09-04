@@ -428,16 +428,16 @@ public class analyzer_utilities {
     return filtered_constraints;
   }
 
-  public static boolean is_parametrizable(abstract_value the_value, action_parameters parameters,
+  public static boolean supports_parameters(abstract_value the_value, action_parameters parameters,
       analysis_context the_context) {
     type the_type = the_value.type_bound();
-    if (the_type instanceof master_type && ((master_type) the_type).is_parametrizable()) {
+    if (the_type instanceof master_type && ((master_type) the_type).has_parametrizable_state()) {
       // TODO: more checks...
       return true;
     }
 
     if (the_value instanceof procedure_value) {
-      return ((procedure_value) the_value).is_parametrizable(parameters, the_context);
+      return ((procedure_value) the_value).supports_parameters(parameters, the_context);
     }
 
     type procedure_type = the_context.find_supertype_procedure(the_value);
@@ -492,16 +492,16 @@ public class analyzer_utilities {
     abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...
     if (DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
-      assert is_parametrizable(action_result, parameters, the_context);
+      assert supports_parameters(action_result, parameters, the_context);
     }
 
     type the_type = action_result.type_bound();
-    if (the_type instanceof master_type && ((master_type) the_type).is_parametrizable()) {
+    if (the_type instanceof master_type && ((master_type) the_type).has_parametrizable_state()) {
       return bind_type_parameters((master_type) the_type, parameters).to_action(the_origin);
     }
 
     if (action_result instanceof procedure_value &&
-        ((procedure_value) action_result).is_parametrizable(parameters, the_context)) {
+        ((procedure_value) action_result).supports_parameters(parameters, the_context)) {
       return ((procedure_value) action_result).bind_parameters(parameters, the_context, the_origin);
     }
 

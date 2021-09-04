@@ -10,6 +10,7 @@ class parametrizable_state {
   private master_type master;
   private dont_display dictionary[type_parameters, parametrized_type] parametrized_types;
   private var parametrized_type or null primary_type;
+  -- TODO: variance annotations
 
   parametrizable_state(master_type master) {
     this.master = master;

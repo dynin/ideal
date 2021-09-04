@@ -9,5 +9,5 @@ interface modifier_kind {
   extends identifier, reference_equality;
 
   simple_name name;
-  -- TODO: boolean supports_parameters();
+  -- TODO: boolean is_parametrizable();
 }

@@ -256,7 +256,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
 
     if (pass == analysis_pass.TYPE_DECL) {
       if (has_parameters()) {
-        if (!master.is_parametrizable()) {
+        if (!master.has_parametrizable_state()) {
           master.make_parametrizable();
         }
         parametrizable_state the_parametrizable_state = master.get_parametrizable();

@@ -55,7 +55,7 @@ public class master_type extends base_principal_type {
     assert this.the_context == null;
     this.the_context = the_context;
   }
-  public boolean is_parametrizable() {
+  public boolean has_parametrizable_state() {
     return this.the_parametrizable_state != null;
   }
   public void make_parametrizable() {

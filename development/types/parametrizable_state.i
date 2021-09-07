@@ -4,13 +4,15 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
+implicit import ideal.development.modifiers;
+
 class parametrizable_state {
   extends debuggable;
 
   private master_type master;
   private dont_display dictionary[type_parameters, parametrized_type] parametrized_types;
   private var parametrized_type or null primary_type;
-  -- TODO: variance annotations
+  private var immutable list[variance_modifier] or null variances;
 
   parametrizable_state(master_type master) {
     this.master = master;
@@ -65,6 +67,23 @@ class parametrizable_state {
 
     parametrized.set_parameters(parameters);
     parametrized_types.put(parameters, parametrized);
+  }
+
+  void set_variances(readonly list[variance_modifier] variances) {
+    assert this.variances is null;
+    this.variances = variances.frozen_copy();
+  }
+
+  variance_modifier get_variance(nonnegative parameter_index) {
+    if (variances is_not null) {
+      -- TODO: combine if statements
+      if (parameter_index < variances.size) {
+        -- TODO: variance_list is redundant
+        variance_list : variances;
+        return variance_list[parameter_index];
+      }
+    }
+    return variance_modifier.invariant_modifier;
   }
 
   implement string to_string => utilities.describe(this, master);

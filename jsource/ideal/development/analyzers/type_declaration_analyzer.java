@@ -300,6 +300,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     if (pass == analysis_pass.SUPERTYPE_DECL) {
       if (has_parameters()) {
         list<abstract_value> parameter_builder = new base_list<abstract_value>();
+        list<variance_modifier> variances = new base_list<variance_modifier>();
 
         for (int i = 0; i < parameters.size(); ++i) {
           type_parameter_analyzer tvar = parameters.get(i);
@@ -308,11 +309,18 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
           } else {
             parameter_builder.append(tvar.get_declared_type());
           }
+          @Nullable variance_modifier variance = tvar.annotations().variance();
+          if (variance != null) {
+            variances.append(variance);
+          } else {
+            variances.append(variance_modifier.invariant_modifier);
+          }
         }
 
         parameter_values = new type_parameters(parameter_builder);
+        parametrizable_state the_parametrizable_state = master.get_parametrizable();
         @Nullable parametrized_type already_defined =
-            master.get_parametrizable().lookup_parametrized(parameter_values);
+            the_parametrizable_state.lookup_parametrized(parameter_values);
         if (already_defined != null) {
           readonly_list<notification> secondary;
           if (already_defined.get_declaration() != null) {
@@ -325,8 +333,9 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
             new base_string("Parametrized type already defined"), this, secondary);
           return new error_signal(primary_notification, false);
         }
-        master.get_parametrizable().bind_parametrized((parametrized_type) result_type,
+        the_parametrizable_state.bind_parametrized((parametrized_type) result_type,
             parameter_values);
+        the_parametrizable_state.set_variances(variances);
       }
 
       maybe_add_default_supertype();

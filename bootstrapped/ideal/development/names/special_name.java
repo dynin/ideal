@@ -20,7 +20,7 @@ public class special_name extends debuggable implements action_name {
   public static final special_name CONSTRUCTOR = new special_name(new base_string("constructor"));
   public static final special_name THIS_CONSTRUCTOR = new special_name(new base_string("this_constructor"));
   public static final special_name SUPER_CONSTRUCTOR = new special_name(new base_string("super_constructor"));
-  public static final special_name RETURN = new special_name(keywords.RETURN);
+  public final static special_name RETURN = new special_name(keywords.RETURN);
   public final string name;
   public special_name(final token_type the_token_name) {
     this.name = the_token_name.name();

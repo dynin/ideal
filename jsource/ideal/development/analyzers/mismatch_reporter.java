@@ -73,7 +73,8 @@ public class mismatch_reporter {
 
     type failed_procedure_type = candidate.result().type_bound();
     if (!action_utilities.is_procedure_type(failed_procedure_type)) {
-      return new error_signal(messages.expression_not_parametrizable, source);
+      return new error_signal(new base_string(messages.expression_not_parametrizable + ": " +
+          context.print_value(failed_procedure_type)), source);
     }
 
     assert action_utilities.is_procedure_type(failed_procedure_type);

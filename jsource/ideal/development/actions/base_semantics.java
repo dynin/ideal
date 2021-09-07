@@ -296,6 +296,7 @@ public class base_semantics implements semantics {
   private boolean check_variance(action_table actions, parametrized_type subtype,
       parametrized_type supertype, type_flavor the_flavor) {
     assert subtype.get_master() == supertype.get_master();
+    master_type the_master = subtype.get_master();
     // TODO: implement real variance check...
     immutable_list<abstract_value> subtype_parameters = subtype.get_parameters().the_list;
     immutable_list<abstract_value> supertype_parameters = supertype.get_parameters().the_list;
@@ -305,15 +306,16 @@ public class base_semantics implements semantics {
       return false;
     }
     for (int i = 0; i < size; ++i) {
-      if (!check_equivalence(actions, subtype_parameters.get(i), supertype_parameters.get(i))) {
+      if (!check_one_variance(actions, subtype_parameters.get(i), supertype_parameters.get(i),
+          the_master.get_parametrizable().get_variance(i), the_flavor)) {
         return false;
       }
     }
     return true;
   }
 
-  private boolean check_equivalence(action_table actions, abstract_value subtype_value,
-      abstract_value supertype_value) {
+  private boolean check_one_variance(action_table actions, abstract_value subtype_value,
+      abstract_value supertype_value, variance_modifier variance, type_flavor the_flavor) {
     // TODO: handle non-types.
     assert subtype_value instanceof type;
     assert supertype_value instanceof type;
@@ -323,12 +325,22 @@ public class base_semantics implements semantics {
     type subtype_type = (type) subtype_value;
     type supertype_type = (type) supertype_value;
 
-    readonly_list<action> aliases = actions.lookup(subtype_type.principal(),
-        special_name.TYPE_ALIAS);
-    if (aliases.size() == 1 && aliases.first().result() == supertype_type) {
-      //log.debug("ALIAS " +  subtype_value + " SUPER: " + supertype_value);
-      return true;
+    if (variance == variance_modifier.invariant_modifier) {
+      readonly_list<action> aliases = actions.lookup(subtype_type.principal(),
+          special_name.TYPE_ALIAS);
+      if (aliases.size() == 1 && aliases.first().result() == supertype_type) {
+        //log.debug("ALIAS " +  subtype_value + " SUPER: " + supertype_value);
+        return true;
+      }
+    } else if (variance == variance_modifier.combivariant_modifier) {
+      // log.debug("SUB: " +  subtype_value + " SUPER: " + supertype_value + " FL: " + the_flavor);
+      if (the_flavor == flavor.readonly_flavor) {
+        if (is_subtype_of(actions, subtype_value, supertype_type)) {
+          return true;
+        }
+      }
     }
+
     return false;
   }
 

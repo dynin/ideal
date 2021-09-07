@@ -17,7 +17,6 @@ import ideal.development.elements.*;
 import ideal.development.components.*;
 import ideal.development.comments.*;
 import ideal.development.names.*;
-import ideal.development.literals.*;
 import ideal.development.scanners.*;
 import ideal.development.modifiers.*;
 import ideal.development.constructs.*;

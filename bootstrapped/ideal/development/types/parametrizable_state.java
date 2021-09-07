@@ -11,6 +11,7 @@ import ideal.development.names.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.kinds.*;
+import ideal.development.modifiers.*;
 
 import javax.annotation.Nullable;
 import ideal.machine.annotations.dont_display;
@@ -19,6 +20,7 @@ public class parametrizable_state extends debuggable {
   private final master_type master;
   private @dont_display final dictionary<type_parameters, parametrized_type> parametrized_types;
   private @Nullable parametrized_type primary_type;
+  private @Nullable immutable_list<variance_modifier> variances;
   public parametrizable_state(final master_type master) {
     this.master = master;
     this.parametrized_types = new hash_dictionary<type_parameters, parametrized_type>();
@@ -69,6 +71,19 @@ public class parametrizable_state extends debuggable {
     }
     parametrized.set_parameters(parameters);
     this.parametrized_types.put(parameters, parametrized);
+  }
+  public void set_variances(final readonly_list<variance_modifier> variances) {
+    assert this.variances == null;
+    this.variances = variances.frozen_copy();
+  }
+  public variance_modifier get_variance(final Integer parameter_index) {
+    if (this.variances != null) {
+      if (parameter_index < this.variances.size()) {
+        final immutable_list<variance_modifier> variance_list = this.variances;
+        return variance_list.get(parameter_index);
+      }
+    }
+    return variance_modifier.invariant_modifier;
   }
   public @Override string to_string() {
     return utilities.describe(this, this.master);

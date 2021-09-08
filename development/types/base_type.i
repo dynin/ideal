@@ -34,6 +34,10 @@ abstract class base_type {
 
   abstract string describe(type_format format);
 
+  implement boolean is_parametrizable() {
+    return get_context().is_parametrizable(this);
+  }
+
   implement boolean is_subtype_of(type the_supertype) {
     return get_context().is_subtype_of(this, the_supertype);
   }

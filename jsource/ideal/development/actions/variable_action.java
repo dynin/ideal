@@ -68,6 +68,11 @@ public abstract class variable_action extends base_action implements abstract_va
   }
 
   @Override
+  public boolean is_parametrizable() {
+    return type_bound().is_parametrizable();
+  }
+
+  @Override
   public action to_action(origin pos) {
     return this;
   }

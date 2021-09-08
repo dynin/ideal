@@ -6,5 +6,6 @@ import ideal.library.elements.*;
 
 public interface readonly_abstract_value extends readonly_data, readonly_stringable, any_abstract_value {
   type type_bound();
+  boolean is_parametrizable();
   action to_action(origin the_origin);
 }

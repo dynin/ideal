@@ -35,6 +35,9 @@ public abstract class base_type extends debuggable implements type {
   }
   protected abstract type_declaration_context get_context();
   public abstract string describe(type_format format);
+  public @Override boolean is_parametrizable() {
+    return this.get_context().is_parametrizable(this);
+  }
   public @Override boolean is_subtype_of(final type the_supertype) {
     return this.get_context().is_subtype_of(this, the_supertype);
   }

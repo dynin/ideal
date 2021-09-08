@@ -179,6 +179,11 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
+  public boolean is_parametrizable(type the_type) {
+    return parent.is_parametrizable(the_type);
+  }
+
+  @Override
   public graph<principal_type, origin> type_graph() {
     return parent.type_graph();
   }

@@ -42,6 +42,11 @@ public class error_action extends error_signal implements action, abstract_value
   }
 
   @Override
+  public boolean is_parametrizable() {
+    return false;
+  }
+
+  @Override
   public @Nullable declaration get_declaration() {
     return null;
   }

@@ -21,6 +21,7 @@ import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.flavors.*;
 import ideal.development.origins.*;
+import ideal.development.kinds.*;
 import ideal.development.notifications.*;
 
 public abstract class base_analysis_context extends debuggable implements analysis_context {
@@ -128,6 +129,15 @@ public abstract class base_analysis_context extends debuggable implements analys
   @Override
   public graph<principal_type, origin> type_graph() {
     return the_type_graph;
+  }
+
+  @Override
+  public boolean is_parametrizable(type the_type) {
+    if (the_type instanceof master_type) {
+      return ((master_type) the_type).has_parametrizable_state();
+    }
+
+    return action_utilities.is_procedure_type(the_type);
   }
 
   @Override

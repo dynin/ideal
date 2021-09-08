@@ -15,5 +15,6 @@ import ideal.library.graphs.*;
 
 public interface type_declaration_context extends value, readonly_type_declaration_context, writeonly_type_declaration_context {
   void declare_type(principal_type the_type, declaration_pass pass);
+  boolean is_parametrizable(type the_type);
   boolean is_subtype_of(abstract_value the_value, type the_type);
 }

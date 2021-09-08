@@ -79,6 +79,11 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   @Override
+  public boolean is_parametrizable() {
+    return true;
+  }
+
+  @Override
   public boolean supports_parameters(action_parameters parameters, analysis_context context) {
     readonly_list<action> parameter_list = parameters.params();
     if (!is_valid_procedure_arity(parameter_list.size())) {

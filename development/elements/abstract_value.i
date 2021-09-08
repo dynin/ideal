@@ -10,6 +10,6 @@ interface abstract_value {
   extends readonly data, stringable;
 
   type type_bound;
-  -- TODO: boolean is_parametrizable()
+  boolean is_parametrizable;
   action to_action(origin the_origin) pure;
 }

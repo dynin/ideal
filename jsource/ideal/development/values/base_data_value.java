@@ -18,7 +18,7 @@ import ideal.development.names.*;
 
 import javax.annotation.Nullable;
 
-public class base_data_value<T> extends debuggable
+public abstract class base_data_value<T> extends debuggable
     implements abstract_value, value_wrapper<T>, stringable {
 
   private type bound;
@@ -40,6 +40,11 @@ public class base_data_value<T> extends debuggable
   @Override
   public action to_action(origin pos) {
     return new value_action(this, pos);
+  }
+
+  @Override
+  public boolean is_parametrizable() {
+    return bound.is_parametrizable();
   }
 
   public base_data_value bind_from(action from, origin pos) {

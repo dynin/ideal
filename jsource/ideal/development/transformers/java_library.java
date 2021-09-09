@@ -18,6 +18,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.actions.*;
 import ideal.development.analyzers.*;
+import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 
 public class java_library implements value {
@@ -234,7 +235,9 @@ public class java_library implements value {
       utilities.panic("Got " + types.size() + " for " + sname);
       assert types.size() == 1;
     }
-    return (principal_type) types.first();
+    principal_type result = (principal_type) types.first();
+    type_utilities.prepare(result, declaration_pass.FLAVOR_PROFILE);
+    return result;
   }
 
   public static void bootstrap_on_demand(type_bootstrapper bootstrapper) {

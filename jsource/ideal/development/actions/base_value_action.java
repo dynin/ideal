@@ -39,7 +39,7 @@ public class base_value_action<T extends value_wrapper> extends base_action {
   }
 
   @Override
-  public value_wrapper execute(execution_context context) {
+  public value_wrapper execute(entity_wrapper from_entity, execution_context context) {
     return the_value;
   }
 

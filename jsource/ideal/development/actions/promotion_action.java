@@ -55,9 +55,15 @@ public class promotion_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context context) {
-    assert the_action != null;
-    entity_wrapper result = the_action.execute(context);
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
+    entity_wrapper result;
+
+    if (!(from_entity instanceof null_wrapper)) {
+      result = from_entity;
+    } else {
+      assert the_action != null;
+      result = the_action.execute(null_wrapper.instance, context);
+    }
 
     if (the_type == library().immutable_void_type()) {
       result = library().void_instance();

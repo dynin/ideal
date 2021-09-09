@@ -41,8 +41,8 @@ public class extension_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context context) {
-    return extended_action.execute(context);
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
+    return extended_action.execute(from_entity, context);
   }
 
   @Override

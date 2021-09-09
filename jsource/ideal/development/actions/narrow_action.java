@@ -53,8 +53,8 @@ public class narrow_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context the_context) {
-    entity_wrapper expression_result = expression.execute(the_context);
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
+    entity_wrapper expression_result = expression.execute(null_wrapper.instance, the_context);
     value_wrapper value_result;
     if (expression_result instanceof readonly_reference_wrapper) {
       value_result = ((readonly_reference_wrapper) expression_result).get();

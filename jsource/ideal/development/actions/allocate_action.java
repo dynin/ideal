@@ -40,7 +40,7 @@ public class allocate_action extends base_action {
 
   // TODO: instead of dummy_zone, use a zone derived from the execution_context
   @Override
-  public value_wrapper execute(execution_context context) {
+  public value_wrapper execute(entity_wrapper from_entity, execution_context context) {
     return new base_composite_value(the_type.get_flavored(flavor.mutable_flavor));
   }
 

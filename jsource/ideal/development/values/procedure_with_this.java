@@ -74,7 +74,7 @@ public class procedure_with_this extends base_data_value<procedure_value>
   public entity_wrapper execute(readonly_list<entity_wrapper> arguments,
       execution_context the_execution_context) {
 
-    entity_wrapper this_value = this_action.execute(the_execution_context);
+    entity_wrapper this_value = this_action.execute(null_wrapper.instance, the_execution_context);
     if (this_value instanceof jump_wrapper) {
       return this_value;
     }

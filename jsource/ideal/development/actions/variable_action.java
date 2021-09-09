@@ -82,11 +82,14 @@ public abstract class variable_action extends base_action implements abstract_va
   }
 
   @Override
-  public reference_wrapper execute(execution_context the_execution_context) {
-    return new variable_wrapper(this, get_context(the_execution_context));
+  public reference_wrapper execute(entity_wrapper from_entity,
+      execution_context the_execution_context) {
+    // TODO: handle jumps
+    return new variable_wrapper(this, get_context(from_entity, the_execution_context));
   }
 
-  protected abstract variable_context get_context(execution_context context);
+  protected abstract variable_context get_context(entity_wrapper from_entity,
+      execution_context context);
 
   protected abstract variable_action make_action(variable_declaration the_declaration,
       @Nullable action from, origin source);

@@ -16,5 +16,5 @@ interface action {
   declaration or null get_declaration;
   --- Check whether this action has logical side effects.
   boolean has_side_effects;
-  entity_wrapper execute(execution_context context);
+  entity_wrapper execute(entity_wrapper from_entity, execution_context context);
 }

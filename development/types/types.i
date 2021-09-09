@@ -32,5 +32,6 @@ package types {
   namespace type_utilities;
   class typeinfo_value;
   class union_type;
+  class null_wrapper;
   interface value_printer;
 }

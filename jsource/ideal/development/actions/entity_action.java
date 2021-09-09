@@ -37,7 +37,7 @@ public class entity_action extends base_action implements entity_wrapper {
   }
 
   @Override
-  public entity_wrapper execute(execution_context context) {
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     return the_entity;
   }
 

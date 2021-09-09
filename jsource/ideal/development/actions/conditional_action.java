@@ -53,13 +53,13 @@ public class conditional_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context the_context) {
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
     // TODO: handle jumps
-    entity_wrapper condition_value = condition.execute(the_context);
+    entity_wrapper condition_value = condition.execute(null_wrapper.instance, the_context);
     if (condition_value == common_library.get_instance().true_value()) {
-      return then_action.execute(the_context);
+      return then_action.execute(null_wrapper.instance, the_context);
     } else if (condition_value == common_library.get_instance().false_value()) {
-      return else_action.execute(the_context);
+      return else_action.execute(null_wrapper.instance, the_context);
     } else {
       return new panic_value(new base_string("Neither true nor false in a conditional"));
     }

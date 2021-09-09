@@ -16,6 +16,7 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
+import ideal.development.types.*;
 
 import javax.annotation.Nullable;
 
@@ -34,9 +35,15 @@ public class instance_variable extends variable_action {
   }
 
   @Override
-  protected variable_context get_context(execution_context context) {
-    assert from != null;
-    entity_wrapper the_value = from.execute(context);
+  protected variable_context get_context(entity_wrapper from_entity, execution_context context) {
+    entity_wrapper the_value;
+    if (from_entity instanceof value_wrapper) {
+      the_value = from_entity;
+    } else {
+      assert from != null;
+      the_value = from.execute(null_wrapper.instance, context);
+    }
+
     if (!(the_value instanceof composite_wrapper)) {
       // TODO: use list_wrapper here explicitly
       assert the_value instanceof value_wrapper;

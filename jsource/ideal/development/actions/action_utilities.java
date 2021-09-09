@@ -194,7 +194,8 @@ public class action_utilities {
       utilities.panic("No body action for " + the_procedure.short_name());
     }
     assert body_action != null;
-    result = body_action.execute(new_context);
+    result = body_action.execute(this_argument != null ? this_argument : null_wrapper.instance,
+        new_context);
 
     // TODO: uniformly hanlde jump_wrappers; do stack trace.
     if (result instanceof panic_value) {

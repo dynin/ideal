@@ -52,12 +52,13 @@ public class list_initializer_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context the_context) {
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
     // TODO: introduce list parameters
     list<value_wrapper> elements = new base_list<value_wrapper>();
 
     for (int i = 0; i < parameter_actions.size(); ++i) {
-      entity_wrapper param_entity = parameter_actions.get(i).execute(the_context);
+      entity_wrapper param_entity = parameter_actions.get(i).execute(null_wrapper.instance,
+          the_context);
       if (param_entity instanceof error_signal) {
         return param_entity;
       }

@@ -9,6 +9,7 @@
 package ideal.development.actions;
 
 import ideal.library.elements.*;
+import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
@@ -32,7 +33,8 @@ public class local_variable extends variable_action {
   }
 
   @Override
-  protected variable_context get_context(execution_context the_context) {
+  protected variable_context get_context(entity_wrapper from_entity,
+      execution_context the_context) {
     return action_utilities.get_context(the_context);
   }
 

@@ -53,11 +53,16 @@ public class dereference_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context context) {
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
+    // Handle jumps
+    if (from_entity instanceof reference_wrapper) {
+      return ((reference_wrapper) from_entity).get();
+    }
+
     if (from == null) {
       utilities.panic("Unbound " + value_type);
     }
-    return ((reference_wrapper) from.execute(context)).get();
+    return ((reference_wrapper) from.execute(null_wrapper.instance, context)).get();
   }
 
   @Override

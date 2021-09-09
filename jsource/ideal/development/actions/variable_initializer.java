@@ -17,6 +17,7 @@ import ideal.development.names.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
 import ideal.development.notifications.*;
+import ideal.development.types.*;
 import javax.annotation.Nullable;
 
 public class variable_initializer extends base_action {
@@ -40,15 +41,15 @@ public class variable_initializer extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context exec_context) {
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
     if (init != null) {
-      entity_wrapper init_value = init.execute(exec_context);
+      entity_wrapper init_value = init.execute(null_wrapper.instance, exec_context);
       if (init_value instanceof error_signal) {
         return init_value;
       }
       assert init_value instanceof value_wrapper;
       // TODO: add init method?  What to do if init is null?
-      the_variable_action.execute(exec_context).init((value_wrapper) init_value);
+      the_variable_action.execute(from_entity, exec_context).init((value_wrapper) init_value);
     }
 
     return common_library.get_instance().void_instance();

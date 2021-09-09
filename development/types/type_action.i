@@ -33,7 +33,9 @@ abstract class type_action {
 
   implement boolean has_side_effects => false;
 
-  implement entity_wrapper execute(execution_context context) => typeinfo_value.new(get_type());
+  implement entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
+    return typeinfo_value.new(get_type());
+  }
 
   implement string to_string => "type-action: " ++ get_type() ++ " @ " ++ the_origin;
 }

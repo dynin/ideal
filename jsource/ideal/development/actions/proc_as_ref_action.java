@@ -59,11 +59,18 @@ public class proc_as_ref_action extends base_action {
   }
 
   @Override
-  public reference_wrapper execute(execution_context the_context) {
-    if (from == null) {
-      utilities.panic("Unbound proc_as_ref " + the_declaration.short_name());
+  public reference_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
+    value_wrapper this_argument;
+
+    // TODO: handle jumps
+    if (from_entity instanceof value_wrapper) {
+      this_argument = (value_wrapper) from_entity;
+    } else {
+      if (from == null) {
+        utilities.panic("Unbound proc_as_ref " + the_declaration.short_name());
+      }
+      this_argument = (value_wrapper) from.execute(null_wrapper.instance, the_context);
     }
-    value_wrapper this_argument = (value_wrapper) from.execute(the_context);
 
     entity_wrapper result = action_utilities.execute_procedure(the_declaration,
         this_argument, new empty<entity_wrapper>(), the_context);

@@ -158,7 +158,7 @@ class create {
 
     if (the_create_flags.RUN && !cm.has_errors()) {
       create_util.progress("EXECUTE");
-      analyzer_utilities.to_action(body).execute(cm.new_execution_context());
+      analyzer_utilities.to_action(body).execute(null_wrapper.instance, cm.new_execution_context());
     }
 
     if (the_create_flags.PRINT) {

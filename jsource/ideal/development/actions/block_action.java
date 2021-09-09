@@ -45,7 +45,7 @@ public class block_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context exec_context) {
-    return get_declaration().get_body_action().execute(exec_context);
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
+    return get_declaration().get_body_action().execute(from_entity, exec_context);
   }
 }

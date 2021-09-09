@@ -40,10 +40,10 @@ public class constraint_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context exec_context) {
-    entity_wrapper expression_value = expression.execute(exec_context);
-    common_library library = common_library.get_instance();
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
     // TODO: handle jumps
+    entity_wrapper expression_value = expression.execute(null_wrapper.instance, exec_context);
+    common_library library = common_library.get_instance();
     if (expression_value == library.true_value()) {
       return library.void_instance();
     } else if (expression_value == library.false_value()) {

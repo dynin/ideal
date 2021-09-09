@@ -99,12 +99,20 @@ public class dispatch_action extends base_action implements action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context the_execution_context) {
-    if (from == null) {
-      utilities.panic("Unbound 'this' in " + primary_action);
+  public entity_wrapper execute(entity_wrapper from_entity,
+      execution_context the_execution_context) {
+    entity_wrapper this_entity;
+
+    if (from_entity instanceof value_wrapper) {
+      this_entity = from_entity;
+    } else {
+      if (from == null) {
+        utilities.panic("Unbound 'this' in " + primary_action);
+      }
+
+      this_entity = from.execute(null_wrapper.instance, the_execution_context);
     }
 
-    entity_wrapper this_entity = from.execute(the_execution_context);
     if (this_entity instanceof jump_wrapper) {
       return this_entity;
     }
@@ -141,7 +149,7 @@ public class dispatch_action extends base_action implements action {
     }
 
     return resolved_action.bind_from(new entity_action(this_entity, this), this).
-        execute(the_execution_context);
+        execute(this_entity, the_execution_context);
   }
 
   @Override

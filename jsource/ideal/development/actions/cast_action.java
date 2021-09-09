@@ -46,8 +46,9 @@ public class cast_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context the_context) {
-    entity_wrapper expression_result = expression.execute(the_context);
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
+    // TODO: handle jumps
+    entity_wrapper expression_result = expression.execute(null_wrapper.instance, the_context);
     assert expression_result instanceof value_wrapper;
 
     if (the_type == library().immutable_void_type()) {

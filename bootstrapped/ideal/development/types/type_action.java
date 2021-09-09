@@ -40,7 +40,7 @@ public abstract class type_action extends debuggable implements action {
   public @Override boolean has_side_effects() {
     return false;
   }
-  public @Override entity_wrapper execute(final execution_context context) {
+  public @Override entity_wrapper execute(final entity_wrapper from_entity, final execution_context context) {
     return new typeinfo_value(this.get_type());
   }
   public @Override string to_string() {

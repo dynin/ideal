@@ -46,8 +46,8 @@ public class return_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context exec_context) {
-    entity_wrapper result = expression.execute(exec_context);
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
+    entity_wrapper result = expression.execute(null_wrapper.instance, exec_context);
 
     assert !(result instanceof error_signal);
 

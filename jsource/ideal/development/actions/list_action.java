@@ -63,12 +63,12 @@ public class list_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context exec_context) {
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
     entity_wrapper result = common_library.get_instance().void_instance();
 
     for (int i = 0; i < subactions.size(); ++i) {
       // TODO: handle early returns, etc.
-      result = subactions.get(i).execute(exec_context);
+      result = subactions.get(i).execute(null_wrapper.instance, exec_context);
       if (result.type_bound() == core_types.unreachable_type()) {
         return result;
       }

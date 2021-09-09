@@ -47,8 +47,9 @@ public class is_action extends base_action {
   }
 
   @Override
-  public entity_wrapper execute(execution_context the_context) {
-    entity_wrapper expression_result = expression.execute(the_context);
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
+    // Handle jumps
+    entity_wrapper expression_result = expression.execute(null_wrapper.instance, the_context);
     assert expression_result instanceof value_wrapper;
 
     boolean result = action_utilities.is_of(expression_result, the_type);

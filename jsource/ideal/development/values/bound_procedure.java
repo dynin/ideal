@@ -18,7 +18,7 @@ import ideal.development.elements.*;
 import ideal.development.actions.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
-import ideal.development.values.*;
+import ideal.development.types.*;
 
 public class bound_procedure extends base_action implements stringable {
   public final action the_procedure_action;
@@ -80,8 +80,9 @@ public class bound_procedure extends base_action implements stringable {
   }
 
   @Override
-  public entity_wrapper execute(execution_context the_execution_context) {
-    entity_wrapper the_entity = the_procedure_action.execute(the_execution_context);
+  public entity_wrapper execute(entity_wrapper from_entity,
+      execution_context the_execution_context) {
+    entity_wrapper the_entity = the_procedure_action.execute(from_entity,the_execution_context);
     assert the_entity instanceof procedure_value;
     procedure_value the_procedure_value = (procedure_value) the_entity;
     assert !the_procedure_value.has_this_argument();
@@ -92,7 +93,8 @@ public class bound_procedure extends base_action implements stringable {
     for (int i = 0; i < action_parameters.size(); ++i) {
       action parameter = action_parameters.get(i);
       assert ! (parameter instanceof error_signal);
-      entity_wrapper concrete_value = parameter.execute(the_execution_context);
+      entity_wrapper concrete_value = parameter.execute(null_wrapper.instance,
+          the_execution_context);
       if (concrete_value instanceof jump_wrapper) {
         return concrete_value;
       }

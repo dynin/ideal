@@ -20,6 +20,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
+import ideal.development.origins.*;
 import ideal.development.declarations.*;
 
 import ideal.development.values.singleton_value;
@@ -240,11 +241,13 @@ public class base_semantics implements semantics {
     type the_supertype = find_supertype(actions, the_value, target);
     if (the_supertype != null) {
       return from; //new promotion_action(the_supertype);
+      //return new promotion_action(the_supertype, true).
+      // bind_from(from, origin_utilities.no_origin);
     }
 
     // Anything can be promoted to the 'void' value.
     if (target == library().immutable_void_type()) {
-      return new promotion_action(target);
+      return new promotion_action(target, false);
     }
 
     transitive_set promotions = transitive_set.make(subtype, actions);
@@ -334,7 +337,9 @@ public class base_semantics implements semantics {
       }
     } else if (variance == variance_modifier.combivariant_modifier) {
       // log.debug("SUB: " +  subtype_value + " SUPER: " + supertype_value + " FL: " + the_flavor);
-      if (the_flavor == flavor.readonly_flavor) {
+      if (the_flavor == flavor.readonly_flavor ||
+          the_flavor == flavor.immutable_flavor ||
+          the_flavor == flavor.deeply_immutable_flavor) {
         if (is_subtype_of(actions, subtype_value, supertype_type)) {
           return true;
         }
@@ -464,7 +469,7 @@ public class base_semantics implements semantics {
         type_flavor default_flavor = new_type.get_flavor_profile().default_flavor();
         type flavored_type = new_type.get_flavored(default_flavor);
         context.add(flavored_type, special_name.IMPLICIT_CALL,
-            new promotion_action(flavored_type, pos));
+            new promotion_action(flavored_type, false, pos));
       } else if (the_kind == singleton_kind) {
         context.add(new_type, INSTANCE_NAME, new singleton_value(new_type).to_action(pos));
       }

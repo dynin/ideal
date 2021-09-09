@@ -124,7 +124,7 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
   }
 
   protected void add_promotion(type from, type to) {
-    action_utilities.add_promotion(get_context(), from, to, this);
+    action_utilities.add_promotion(get_context(), from, to, false, this);
   }
 
   public principal_type inner_type() {

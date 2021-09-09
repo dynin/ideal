@@ -22,19 +22,22 @@ import javax.annotation.Nullable;
 public class promotion_action extends base_action {
   private final type the_type;
   private final @Nullable action the_action;
+  public final boolean is_supertype;
 
-  private promotion_action(type the_type, @Nullable action the_action, origin source) {
+  private promotion_action(type the_type, @Nullable action the_action, boolean is_supertype,
+      origin source) {
     super(source);
     this.the_type = the_type;
     this.the_action = the_action;
+    this.is_supertype = is_supertype;
   }
 
-  public promotion_action(type the_type, origin source) {
-    this(the_type, null, source);
+  public promotion_action(type the_type, boolean is_supertype, origin source) {
+    this(the_type, null, is_supertype, source);
   }
 
-  public promotion_action(type the_type) {
-    this(the_type, origin_utilities.no_origin);
+  public promotion_action(type the_type, boolean is_supertype) {
+    this(the_type, is_supertype, origin_utilities.no_origin);
   }
 
   public @Nullable action get_action() {
@@ -71,10 +74,16 @@ public class promotion_action extends base_action {
 
   @Override
   public @Nullable declaration get_declaration() {
+  /*
+    if (is_supertype) {
+      return the_type.principal().get_declaration();
+    }*/
+
     if (the_action != null) {
       return the_action.get_declaration();
     } else {
-      return null;
+      return the_type.principal().get_declaration();
+      //return null;
     }
   }
 
@@ -85,19 +94,23 @@ public class promotion_action extends base_action {
     }
 
     while (from instanceof promotion_action) {
-      from = ((promotion_action) from).get_action();
+      promotion_action action_from = (promotion_action) from;
+      //if (action_from.is_supertype != this.is_supertype) {
+      //  break;
+      //}
+      from = action_from.get_action();
       if (from == null) {
         return this;
       }
     }
 
-    if (the_action != null) {
+    if (the_action != null) { // && !is_supertype) {
       from = the_action.bind_from(from, source);
     }
 
     // TODO: verify that from.result() is a subtype of the_type
     // TODO: collapse chained promotion_actions
-    return new promotion_action(the_type, from, source);
+    return new promotion_action(the_type, from, is_supertype, source);
   }
 
   private static common_library library() {

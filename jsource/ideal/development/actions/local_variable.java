@@ -23,24 +23,13 @@ import javax.annotation.Nullable;
  */
 public class local_variable extends variable_action {
 
-  private local_variable(variable_declaration the_declaration, type_flavor reference_flavor,
-      origin source) {
-    super(the_declaration, reference_flavor, null, source);
-  }
-
-  public local_variable(variable_declaration decl, type_flavor reference_flavor) {
-    this(decl, reference_flavor, decl);
+  public local_variable(variable_declaration the_declaration, type_flavor reference_flavor) {
+    super(the_declaration, reference_flavor, the_declaration);
   }
 
   @Override
   protected variable_context get_context(entity_wrapper from_entity,
       execution_context the_context) {
     return action_utilities.get_context(the_context);
-  }
-
-  @Override
-  protected variable_action make_action(variable_declaration the_declaration,
-      @Nullable action from, origin source) {
-    return new local_variable(the_declaration, reference_flavor, source);
   }
 }

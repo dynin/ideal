@@ -25,39 +25,20 @@ import javax.annotation.Nullable;
  */
 public class instance_variable extends variable_action {
 
-  instance_variable(variable_declaration the_declaration, type_flavor reference_flavor,
-      @Nullable action from, origin source) {
-    super(the_declaration, reference_flavor, from, source);
-  }
-
   public instance_variable(variable_declaration the_declaration, type_flavor reference_flavor) {
-    this(the_declaration, reference_flavor, null, the_declaration);
+    super(the_declaration, reference_flavor, the_declaration);
   }
 
   @Override
   protected variable_context get_context(entity_wrapper from_entity, execution_context context) {
-    entity_wrapper the_value;
-    if (from_entity instanceof value_wrapper) {
-      the_value = from_entity;
-    } else {
-      assert from != null;
-      the_value = from.execute(null_wrapper.instance, context);
-    }
-
-    if (!(the_value instanceof composite_wrapper)) {
+    if (!(from_entity instanceof composite_wrapper)) {
       // TODO: use list_wrapper here explicitly
-      assert the_value instanceof value_wrapper;
+      assert from_entity instanceof value_wrapper;
       assert the_declaration.short_name() == common_library.size_name;
-      readonly_list the_list = (readonly_list) ((value_wrapper) the_value).unwrap();
+      readonly_list the_list = (readonly_list) ((value_wrapper) from_entity).unwrap();
       return new list_context(the_list);
     }
-    assert the_value instanceof composite_wrapper;
-    return (composite_wrapper) the_value;
-  }
-
-  @Override
-  protected variable_action make_action(variable_declaration the_declaration,
-      @Nullable action from, origin source) {
-    return new instance_variable(the_declaration, reference_flavor, from, source);
+    assert from_entity instanceof composite_wrapper;
+    return (composite_wrapper) from_entity;
   }
 }

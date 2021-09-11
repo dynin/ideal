@@ -65,8 +65,11 @@ public class to_javascript_transformer {
       return to_construct((variable_initializer) the_action);
     } else if (the_action instanceof local_variable) {
       return to_construct((local_variable) the_action);
-    } else if (the_action instanceof instance_variable) {
-      return to_construct((instance_variable) the_action);
+    } else if (the_action instanceof chain_action) {
+      chain_action the_chain_action = (chain_action) the_action;
+      if (the_chain_action.second instanceof instance_variable) {
+        return to_construct(the_chain_action.first, (instance_variable) the_chain_action.second);
+      }
     } else if (the_action instanceof dereference_action) {
       return to_construct((dereference_action) the_action);
     } else if (the_action instanceof return_action) {
@@ -268,10 +271,10 @@ public class to_javascript_transformer {
 
   private static final boolean ACCESS_FIELDS_DIRECTLY = false;
 
-  public construct to_construct(instance_variable fa) {
+  public construct to_construct(action from_action, instance_variable fa) {
     origin pos = fa;
-    assert fa.from != null;
-    construct from = to_construct_action(fa.from);
+    assert from_action != null;
+    construct from = to_construct_action(from_action);
     simple_name the_name = (simple_name) fa.short_name();
 
     if (ACCESS_FIELDS_DIRECTLY) {

@@ -372,8 +372,13 @@ public class analyzer_utilities {
 
       if (the_action instanceof dispatch_action) {
         from_action = ((dispatch_action) the_action).get_from();
-      } else if (the_action instanceof instance_variable) {
-        from_action = ((instance_variable) the_action).from;
+      } else if (the_action instanceof chain_action) {
+        chain_action the_chain_action = (chain_action) the_action;
+        if (the_chain_action.second instanceof instance_variable) {
+          from_action = the_chain_action.first;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -388,10 +393,15 @@ public class analyzer_utilities {
       }
       action promotion_subaction = ((promotion_action) from_derefence_action).get_action();
 
-      if (! (promotion_subaction instanceof local_variable)) {
+      if (! (promotion_subaction instanceof chain_action)) {
         return false;
       }
-      local_variable the_local_variable = (local_variable) promotion_subaction;
+      chain_action the_local_access = (chain_action) promotion_subaction;
+
+      if (! (the_local_access.second instanceof local_variable)) {
+        return false;
+      }
+      local_variable the_local_variable = (local_variable) the_local_access.second;
 
       return the_local_variable.short_name() == special_name.THIS;
     }

@@ -27,20 +27,17 @@ public abstract class variable_action extends base_action implements abstract_va
 
   public final variable_declaration the_declaration;
   public final type_flavor reference_flavor;
-  @Nullable
-  public final action from;
 
   protected variable_action(variable_declaration the_declaration, type_flavor reference_flavor,
-      @Nullable action from, origin source) {
-    super(source);
+      origin the_origin) {
+    super(the_origin);
     this.the_declaration = the_declaration;
     this.reference_flavor = reference_flavor;
-    this.from = from;
     assert the_declaration.value_type() != core_types.error_type();
   }
 
   public variable_action(variable_declaration the_declaration, type_flavor reference_flavor) {
-    this(the_declaration, reference_flavor, null, the_declaration);
+    this(the_declaration, reference_flavor, the_declaration);
   }
 
   @Override
@@ -55,7 +52,7 @@ public abstract class variable_action extends base_action implements abstract_va
 
   @Override
   public boolean has_side_effects() {
-    return from != null && from.has_side_effects();
+    return false;
   }
 
   @Override
@@ -91,15 +88,9 @@ public abstract class variable_action extends base_action implements abstract_va
   protected abstract variable_context get_context(entity_wrapper from_entity,
       execution_context context);
 
-  protected abstract variable_action make_action(variable_declaration the_declaration,
-      @Nullable action from, origin source);
-
   @Override
-  public action bind_from(action new_from, origin source) {
-    if (from != null) {
-      new_from = from.bind_from(new_from, source);
-    }
-    return make_action(the_declaration, new_from, source);
+  public action bind_from(action new_from, origin the_origin) {
+    return new chain_action(new_from, this, the_origin);
   }
 
   @Override

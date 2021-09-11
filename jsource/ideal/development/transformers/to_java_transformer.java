@@ -2071,27 +2071,16 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (the_action instanceof variable_action) {
-      variable_action the_variable_action = (variable_action) the_action;
-      // TODO: handle from
-      action_name the_name = map_name(the_variable_action.short_name());
-      if (the_variable_action instanceof static_variable) {
-        return new resolve_construct(
-            make_type(the_variable_action.the_declaration.declared_in_type(), the_origin),
-            the_name, the_origin);
-      } else if (the_variable_action instanceof instance_variable) {
-        assert the_variable_action.from != null;
-        construct from = transform_and_maybe_rewrite(the_variable_action.from);
-        construct result = new resolve_construct(from, the_name, the_origin);
-        return maybe_call(the_variable_action, result, the_origin);
-      } else if (the_variable_action instanceof local_variable &&
-          the_variable_action.short_name() == special_name.THIS) {
-        principal_type this_type = the_variable_action.value_type().principal();
-        if (this_type != enclosing_type) {
-          name_construct from = new name_construct(this_type.short_name(), the_origin);
-          return new resolve_construct(from, the_name, the_origin);
-        }
+      return process_variable_action(null, (variable_action) the_action, the_origin);
+    }
+
+    if (the_action instanceof chain_action) {
+      chain_action the_chain_action = (chain_action) the_action;
+      if (the_chain_action.second instanceof variable_action) {
+        return process_variable_action(the_chain_action.first,
+            (variable_action) the_chain_action.second, the_origin);
       }
-      return new name_construct(the_name, the_origin);
+      utilities.panic("Unrecognized chain action: " + the_chain_action);
     }
 
     if (the_action instanceof bound_procedure) {
@@ -2152,6 +2141,29 @@ public class to_java_transformer extends base_transformer {
     return null;
   }
 
+  private construct process_variable_action(@Nullable action from,
+      variable_action the_variable_action, origin the_origin) {
+    action_name the_name = map_name(the_variable_action.short_name());
+    if (the_variable_action instanceof static_variable) {
+      return new resolve_construct(
+          make_type(the_variable_action.the_declaration.declared_in_type(), the_origin),
+          the_name, the_origin);
+    } else if (the_variable_action instanceof instance_variable) {
+      assert from != null;
+      construct from_construct = transform_and_maybe_rewrite(from);
+      construct result = new resolve_construct(from_construct, the_name, the_origin);
+      return maybe_call(the_variable_action, result, the_origin);
+    } else if (the_variable_action instanceof local_variable &&
+        the_variable_action.short_name() == special_name.THIS) {
+      principal_type this_type = the_variable_action.value_type().principal();
+      if (this_type != enclosing_type) {
+        name_construct from_name = new name_construct(this_type.short_name(), the_origin);
+        return new resolve_construct(from_name, the_name, the_origin);
+      }
+    }
+    return new name_construct(the_name, the_origin);
+  }
+
   private construct process_cast(cast_action the_cast_action, origin the_origin) {
     return transform_cast(the_cast_action.expression, the_cast_action.the_type,
         the_cast_action.the_cast_type, the_origin);
@@ -2209,6 +2221,8 @@ public class to_java_transformer extends base_transformer {
       return get_procedure_declaration(((dereference_action) the_procedure_action).from);
     } else if (the_procedure_action instanceof variable_action) {
       return ((variable_action) the_procedure_action).get_declaration();
+    } else if (the_procedure_action instanceof chain_action) {
+      return ((chain_action) the_procedure_action).get_declaration();
     } else if (the_procedure_action instanceof bound_procedure) {
       return ((bound_procedure) the_procedure_action).get_declaration();
     } else {

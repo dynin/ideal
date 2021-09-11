@@ -90,8 +90,14 @@ public abstract class base_analysis_context extends debuggable implements analys
         if (narrowed != null) {
           origin the_origin = from;
           type narrowed_type = narrowed.type_bound();
-          narrow_action the_action = new narrow_action(from, narrowed_type,
-              the_variable_declaration, the_origin);
+          narrow_action the_action;
+          if (from instanceof narrow_action) {
+            the_action = new narrow_action((((narrow_action) from).expression), narrowed_type,
+                the_variable_declaration, the_origin);
+          } else {
+            the_action = new narrow_action(from, narrowed_type,
+                the_variable_declaration, the_origin);
+          }
           @Nullable action result = find_promotion(the_action, target, null);
           if (result != null) {
             return result;

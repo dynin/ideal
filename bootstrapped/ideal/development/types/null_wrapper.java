@@ -12,7 +12,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.kinds.*;
 
-public class null_wrapper implements entity_wrapper {
+public class null_wrapper extends debuggable implements entity_wrapper {
   public static final null_wrapper instance = new null_wrapper();
   public @Override type type_bound() {
     return core_types.error_type();

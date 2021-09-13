@@ -60,7 +60,7 @@ public class chain_action extends base_action {
 
   @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
-    entity_wrapper first_entity = first.execute(null_wrapper.instance, context);
+    entity_wrapper first_entity = first.execute(from_entity, context);
     if (first_entity instanceof jump_wrapper) {
       return first_entity;
     }
@@ -70,6 +70,6 @@ public class chain_action extends base_action {
 
   @Override
   public string to_string() {
-    return utilities.describe(this, second);
+    return utilities.describe(this, new base_string(first + " . " + second));
   }
 }

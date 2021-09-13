@@ -101,16 +101,13 @@ public class promotion_action extends base_action {
 
     while (from instanceof promotion_action) {
       promotion_action action_from = (promotion_action) from;
-      //if (action_from.is_supertype != this.is_supertype) {
-      //  break;
-      //}
       from = action_from.get_action();
       if (from == null) {
         return this;
       }
     }
 
-    if (the_action != null) { // && !is_supertype) {
+    if (the_action != null) {
       from = the_action.bind_from(from, source);
     }
 
@@ -125,6 +122,6 @@ public class promotion_action extends base_action {
 
   @Override
   public string to_string() {
-    return utilities.describe(this, the_type);
+    return utilities.describe(this, new base_string(the_action + " .> " + the_type));
   }
 }

@@ -7,7 +7,8 @@
 --- Invalid |entity_wrapper|, such as missing from_entity.
 -- TODO: use singleton kind here.
 class null_wrapper {
-  extends entity_wrapper;
+  implements entity_wrapper;
+  extends debuggable;
 
   static null_wrapper instance : null_wrapper.new();
 

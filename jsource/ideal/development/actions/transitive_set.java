@@ -39,7 +39,13 @@ class transitive_set extends debuggable implements readonly_displayable {
     list<type> considered = new base_list<type>();
 
     considered.append(from);
-    result.put(from, new type_and_action(from, new promotion_action(from, false)));
+    action from_action;
+    if (from instanceof principal_type) {
+      from_action = from.to_action(origin_utilities.no_origin);
+    } else {
+      from_action = new promotion_action(from, false);
+    }
+    result.put(from, new type_and_action(from, from_action));
 
     for (int i = 0; i < considered.size(); ++i) {
       type considered_type = considered.get(i);

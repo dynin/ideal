@@ -32,6 +32,10 @@ public class action_utilities {
 
   private action_utilities() { }
 
+  public static action combine(action first, action second, origin the_origin) {
+    return second.bind_from(first, the_origin);
+  }
+
   public static readonly_list<type> lookup_types(analysis_context context, type from,
       action_name name) {
     // TODO: use map.

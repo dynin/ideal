@@ -56,7 +56,8 @@ class transitive_set extends debuggable implements readonly_displayable {
         action new_action = new_actions.get(j);
         type new_action_type = new_action.result().type_bound();
         if (!result.contains_key(new_action_type)) {
-          action the_action = new_action.bind_from(considered_action, origin_utilities.no_origin);
+          action the_action = action_utilities.combine(considered_action, new_action,
+              origin_utilities.no_origin);
           assert the_action.result().type_bound() == new_action_type;
           considered.append(new_action_type);
           result.put(new_action_type, new type_and_action(considered_type, the_action));

@@ -50,7 +50,7 @@ public class bound_procedure extends base_action implements stringable {
 
   @Override
   public action bind_from(action from, origin pos) {
-    return new bound_procedure(the_procedure_action.bind_from(from, pos),
+    return new bound_procedure(action_utilities.combine(from, the_procedure_action, pos),
         return_value, parameters, pos);
   }
 

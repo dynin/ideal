@@ -96,7 +96,7 @@ public class proc_as_ref_action extends base_action {
   @Override
   public action bind_from(action new_from, origin source) {
     if (from != null) {
-      new_from = from.bind_from(new_from, source);
+      new_from = action_utilities.combine(new_from, from, source);
     }
     return new proc_as_ref_action(the_declaration, new_from, source);
   }

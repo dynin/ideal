@@ -87,7 +87,7 @@ public class dispatch_action extends base_action implements action {
   public action bind_from(action new_from, origin the_origin) {
     // TODO: may be narrow result_type here.
     if (from != null) {
-      new_from = from.bind_from(new_from, the_origin);
+      new_from = action_utilities.combine(new_from, from, the_origin);
     }
 
     if (true) {
@@ -152,7 +152,7 @@ public class dispatch_action extends base_action implements action {
       vtable.put(this_type, resolved_action);
     }
 
-    return resolved_action.bind_from(new entity_action(this_entity, this), this).
+    return action_utilities.combine(new entity_action(this_entity, this), resolved_action, this).
         execute(this_entity, the_execution_context);
   }
 

@@ -144,7 +144,7 @@ public class resolve_analyzer extends single_pass_analyzer {
 
     if (from != null) {
       // TODO: don't convert from to action twice...
-      main_candidate = main_candidate.bind_from(from_action, the_origin);
+      main_candidate = action_utilities.combine(from_action, main_candidate, the_origin);
     }
 
     type_utilities.prepare(main_candidate.result(), resolve_pass);

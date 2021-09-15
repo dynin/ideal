@@ -78,7 +78,7 @@ public class dereference_action extends base_action {
   public action bind_from(action new_from, origin pos) {
     if (from != null) {
       assert !(from instanceof type_action);
-      new_from = from.bind_from(new_from, pos);
+      new_from = action_utilities.combine(new_from, from, pos);
     }
 
     return new dereference_action(new_from, value_type, the_declaration, pos);

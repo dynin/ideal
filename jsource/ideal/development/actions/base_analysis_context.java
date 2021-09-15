@@ -123,7 +123,7 @@ public abstract class base_analysis_context extends debuggable implements analys
     @Nullable action result = find_promotion(from, target, null);
 
     if (result != null) {
-      return result.bind_from(from, pos);
+      return action_utilities.combine(from, result, pos);
     } else {
       error_signal signal = action_utilities.cant_promote(from.result(), target, this, pos);
       //return new error_action(signal);

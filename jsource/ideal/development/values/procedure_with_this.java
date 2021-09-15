@@ -51,7 +51,7 @@ public class procedure_with_this extends base_data_value<procedure_value>
 
   @Override
   public base_data_value bind_from(action from, origin pos) {
-    return new procedure_with_this(the_procedure, this_action.bind_from(from, pos));
+    return new procedure_with_this(the_procedure, action_utilities.combine(from, this_action, pos));
   }
 
   @Override
@@ -66,7 +66,7 @@ public class procedure_with_this extends base_data_value<procedure_value>
     if (bound_procedure instanceof error_signal) {
       return (error_signal) bound_procedure;
     } else {
-      return ((action) bound_procedure).bind_from(this_action, pos);
+      return action_utilities.combine(this_action, ((action) bound_procedure), pos);
     }
   }
 

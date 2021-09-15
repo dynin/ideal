@@ -133,7 +133,8 @@ public class local_variable_declaration extends single_pass_analyzer
 
   public action dereference_access() {
     origin the_origin = this;
-    return new dereference_action(var_type, null, the_origin).bind_from(get_access(), the_origin);
+    return action_utilities.combine(get_access(),
+        new dereference_action(var_type, null, the_origin), the_origin);
   }
 
   @Override

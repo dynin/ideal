@@ -108,7 +108,7 @@ public class promotion_action extends base_action {
     }
 
     if (the_action != null) {
-      from = the_action.bind_from(from, source);
+      from = action_utilities.combine(from, the_action, source);
     }
 
     // TODO: verify that from.result() is a subtype of the_type

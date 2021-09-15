@@ -37,5 +37,5 @@ abstract class type_action {
     return typeinfo_value.new(get_type());
   }
 
-  implement string to_string => "type-action: " ++ get_type() ++ " @ " ++ the_origin;
+  implement string to_string => utilities.describe(this, get_type());
 }

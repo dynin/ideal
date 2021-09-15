@@ -84,13 +84,17 @@ public class dispatch_action extends base_action implements action {
   }
 
   @Override
-  public dispatch_action bind_from(action new_from, origin the_origin) {
+  public action bind_from(action new_from, origin the_origin) {
     // TODO: may be narrow result_type here.
     if (from != null) {
       new_from = from.bind_from(new_from, the_origin);
     }
 
-    return new dispatch_action(this, new_from, the_origin);
+    if (true) {
+      return new dispatch_action(this, new_from, the_origin);
+    } else {
+      return new chain_action(new_from, this, the_origin);
+    }
   }
 
   @Override

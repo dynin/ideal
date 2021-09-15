@@ -134,12 +134,23 @@ public class analyzer_utilities {
         if (procedure_action == null) {
           continue;
         }
-        if (!(procedure_action instanceof dispatch_action)) {
+        dispatch_action the_dispatch = null;
+        if (procedure_action instanceof dispatch_action) {
+          the_dispatch = (dispatch_action) procedure_action;
+        }
+        /*
+        else if (procedure_action instanceof chain_action) {
+          chain_action the_chain_action = (chain_action) procedure_action;
+          if (the_chain_action.second instanceof dispatch_action) {
+            the_dispatch = (dispatch_action) the_chain_action.second;
+          }
+        }
+        */
+        if (the_dispatch == null) {
           // TODO: handle this case
           // System.out.println(the_procedure + " OVERRIDES " + procedure_action);
           continue;
         }
-        dispatch_action the_dispatch = (dispatch_action) overriden.procedure_action();
         assert !the_dispatch.handles_type(target_type);
         dispatches.add(the_dispatch);
       }
@@ -374,7 +385,8 @@ public class analyzer_utilities {
         from_action = ((dispatch_action) the_action).get_from();
       } else if (the_action instanceof chain_action) {
         chain_action the_chain_action = (chain_action) the_action;
-        if (the_chain_action.second instanceof instance_variable) {
+        if (the_chain_action.second instanceof instance_variable ||
+            the_chain_action.second instanceof dispatch_action) {
           from_action = the_chain_action.first;
         } else {
           return false;

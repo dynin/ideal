@@ -58,7 +58,8 @@ public class to_javascript_transformer {
     } else if (the_action instanceof value_action) {
       return to_construct((value_action) the_action);
     } else if (the_action instanceof dispatch_action) {
-      return to_construct((dispatch_action) the_action);
+      dispatch_action the_dispatch_action = (dispatch_action) the_action;
+      return process_dispatch_action(the_dispatch_action.get_from(), the_dispatch_action);
     } else if (the_action instanceof variable_declaration) {
       return to_construct((variable_declaration) the_action);
     } else if (the_action instanceof variable_initializer) {
@@ -68,7 +69,11 @@ public class to_javascript_transformer {
     } else if (the_action instanceof chain_action) {
       chain_action the_chain_action = (chain_action) the_action;
       if (the_chain_action.second instanceof instance_variable) {
-        return to_construct(the_chain_action.first, (instance_variable) the_chain_action.second);
+        return process_instance_variable(the_chain_action.first,
+            (instance_variable) the_chain_action.second);
+      } else if (the_chain_action.second instanceof dispatch_action) {
+        return process_dispatch_action(the_chain_action.first,
+            (dispatch_action) the_chain_action.second);
       }
     } else if (the_action instanceof dereference_action) {
       return to_construct((dereference_action) the_action);
@@ -261,17 +266,18 @@ public class to_javascript_transformer {
     return new parameter_construct(main, params, grouping_type.PARENS, pos);
   }
 
-  public construct to_construct(dispatch_action the_action) {
-    action primary = the_action.get_primary();
-    if (the_action.get_from() != null) {
-      primary = primary.bind_from(the_action.get_from(), the_action);
+  public construct process_dispatch_action(action from_action,
+      dispatch_action the_dispatch_action) {
+    action primary = the_dispatch_action.get_primary();
+    if (from_action != null) {
+      primary = primary.bind_from(from_action, the_dispatch_action);
     }
     return to_construct_action(primary);
   }
 
   private static final boolean ACCESS_FIELDS_DIRECTLY = false;
 
-  public construct to_construct(action from_action, instance_variable fa) {
+  public construct process_instance_variable(action from_action, instance_variable fa) {
     origin pos = fa;
     assert from_action != null;
     construct from = to_construct_action(from_action);

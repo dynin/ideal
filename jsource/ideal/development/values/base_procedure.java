@@ -139,6 +139,10 @@ public abstract class base_procedure extends base_data_value<procedure_value>
 
   @Override
   public string to_string() {
-    return utilities.describe(this, name);
+    if (the_declaration != null) {
+      return utilities.describe(this, the_declaration);
+    } else {
+      return utilities.describe(this, name);
+    }
   }
 }

@@ -44,6 +44,6 @@ public abstract class type_action extends debuggable implements action {
     return new typeinfo_value(this.get_type());
   }
   public @Override string to_string() {
-    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("type-action: "), this.get_type()), new base_string(" @ ")), this.the_origin);
+    return utilities.describe(this, this.get_type());
   }
 }

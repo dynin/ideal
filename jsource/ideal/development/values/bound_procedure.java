@@ -82,7 +82,7 @@ public class bound_procedure extends base_action implements stringable {
   @Override
   public entity_wrapper execute(entity_wrapper from_entity,
       execution_context the_execution_context) {
-    entity_wrapper the_entity = the_procedure_action.execute(from_entity,the_execution_context);
+    entity_wrapper the_entity = the_procedure_action.execute(from_entity, the_execution_context);
     assert the_entity instanceof procedure_value;
     procedure_value the_procedure_value = (procedure_value) the_entity;
     assert !the_procedure_value.has_this_argument();

@@ -27,11 +27,10 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 
 public class procedure_executor extends base_procedure {
-  public final procedure_declaration the_declaration;
 
   public procedure_executor(procedure_declaration the_declaration, action_name the_name) {
     super(the_name, the_declaration.get_procedure_type());
-    this.the_declaration = the_declaration;
+    this.set_declaration(the_declaration);
   }
 
   public procedure_executor(procedure_declaration the_declaration) {
@@ -44,22 +43,22 @@ public class procedure_executor extends base_procedure {
   }
 
   @Override
-  public declaration get_declaration() {
-    return the_declaration;
+  public procedure_declaration get_declaration() {
+    return (procedure_declaration) super.get_declaration();
   }
 
   public procedure_category get_category() {
-    return the_declaration.get_category();
+    return get_declaration().get_category();
   }
 
   @Override
   public entity_wrapper execute(readonly_list<entity_wrapper> arguments,
       execution_context the_context) {
     if (has_this_argument()) {
-      return action_utilities.execute_procedure(the_declaration, (value_wrapper) arguments.first(),
-          arguments.skip(1), the_context);
+      return action_utilities.execute_procedure(get_declaration(),
+          (value_wrapper) arguments.first(), arguments.skip(1), the_context);
     } else {
-      return action_utilities.execute_procedure(the_declaration, null, arguments, the_context);
+      return action_utilities.execute_procedure(get_declaration(), null, arguments, the_context);
     }
   }
 }

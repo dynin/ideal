@@ -2031,43 +2031,7 @@ public class to_java_transformer extends base_transformer {
     if (the_action instanceof dispatch_action) {
       dispatch_action the_dispatch_action = (dispatch_action) the_action;
       action from_action = the_dispatch_action.get_from();
-      assert from_action != null;
-      construct from_construct = transform_and_maybe_rewrite(from_action);
-      action primary = the_dispatch_action.get_primary();
-      if (primary instanceof variable_action) {
-        variable_action the_variable_action = (variable_action) primary;
-        action_name the_name = map_name(the_variable_action.short_name());
-        if (the_name == TO_STRING_NAME && from_action instanceof promotion_action) {
-          principal_type from_type = ((promotion_action) from_action).get_action().result()
-              .type_bound().principal();
-          // TODO: implement less hacky way to implement Integer.to_string
-          if (from_type == library().integer_type() || from_type == library().nonnegative_type()) {
-            return int_to_string(from_construct, the_origin);
-          }
-        }
-        construct result;
-        if (from_construct == null) {
-          result = new name_construct(the_name, the_origin);
-        } else {
-          result = new resolve_construct(from_construct, the_name, the_origin);
-        }
-        return maybe_call(the_variable_action, result, the_origin);
-      } else if (primary instanceof value_action) {
-        base_procedure the_procedure = (base_procedure) ((value_action) primary).the_value;
-        action_name the_name = map_name(the_procedure.name());
-        if (the_name != special_name.IMPLICIT_CALL) {
-          if (from_construct == null) {
-            return new name_construct(the_name, the_origin);
-          } else {
-            return new resolve_construct(from_construct, the_name, the_origin);
-          }
-        } else {
-          return from_construct;
-        }
-      } else {
-        utilities.panic("processing dispatch action, primary " + primary);
-        return null;
-      }
+      return process_dispatch_action(from_action, the_dispatch_action, the_origin);
     }
 
     if (the_action instanceof variable_action) {
@@ -2079,6 +2043,9 @@ public class to_java_transformer extends base_transformer {
       if (the_chain_action.second instanceof variable_action) {
         return process_variable_action(the_chain_action.first,
             (variable_action) the_chain_action.second, the_origin);
+      } else if (the_chain_action.second instanceof dispatch_action) {
+        return process_dispatch_action(the_chain_action.first,
+            (dispatch_action) the_chain_action.second, the_origin);
       }
       utilities.panic("Unrecognized chain action: " + the_chain_action);
     }
@@ -2162,6 +2129,46 @@ public class to_java_transformer extends base_transformer {
       }
     }
     return new name_construct(the_name, the_origin);
+  }
+
+  private construct process_dispatch_action(action from_action,
+      dispatch_action the_dispatch_action, origin the_origin) {
+    construct from_construct = transform_and_maybe_rewrite(from_action);
+    action primary = the_dispatch_action.get_primary();
+    if (primary instanceof variable_action) {
+      variable_action the_variable_action = (variable_action) primary;
+      action_name the_name = map_name(the_variable_action.short_name());
+      if (the_name == TO_STRING_NAME && from_action instanceof promotion_action) {
+        principal_type from_type = ((promotion_action) from_action).get_action().result()
+            .type_bound().principal();
+        // TODO: implement less hacky way to implement Integer.to_string
+        if (from_type == library().integer_type() || from_type == library().nonnegative_type()) {
+          return int_to_string(from_construct, the_origin);
+        }
+      }
+      construct result;
+      if (from_construct == null) {
+        result = new name_construct(the_name, the_origin);
+      } else {
+        result = new resolve_construct(from_construct, the_name, the_origin);
+      }
+      return maybe_call(the_variable_action, result, the_origin);
+    } else if (primary instanceof value_action) {
+      base_procedure the_procedure = (base_procedure) ((value_action) primary).the_value;
+      action_name the_name = map_name(the_procedure.name());
+      if (the_name != special_name.IMPLICIT_CALL) {
+        if (from_construct == null) {
+          return new name_construct(the_name, the_origin);
+        } else {
+          return new resolve_construct(from_construct, the_name, the_origin);
+        }
+      } else {
+        return from_construct;
+      }
+    } else {
+      utilities.panic("processing dispatch action, primary " + primary);
+      return null;
+    }
   }
 
   private construct process_cast(cast_action the_cast_action, origin the_origin) {

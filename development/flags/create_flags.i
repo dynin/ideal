@@ -22,6 +22,7 @@ meta_flags class create_flags {
   boolean HIDE_DECLARATIONS;
 
   boolean DEBUG_CONSTRUCTS;
+  boolean DEBUG_ACTIONS;
   boolean DEBUG_PROGRESS;
   boolean DEBUG_IMPORT;
   boolean DEBUG_REFLECT;

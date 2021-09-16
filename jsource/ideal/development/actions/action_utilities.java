@@ -32,6 +32,8 @@ public class action_utilities {
 
   private action_utilities() { }
 
+  public static boolean DEBUG_ACTIONS;
+
   public static action combine(action first, action second, origin the_origin) {
     return second.bind_from(first, the_origin);
   }

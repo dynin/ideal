@@ -74,6 +74,7 @@ class create {
       return status.ok;
     }
 
+    action_utilities.DEBUG_ACTIONS = the_create_flags.DEBUG_ACTIONS;
     create_util.DEBUG_PROGRESS = the_create_flags.DEBUG_PROGRESS;
 
     resolve_analyzer.CURE_UNDECLARED = the_create_flags.CURE_UNDECLARED;

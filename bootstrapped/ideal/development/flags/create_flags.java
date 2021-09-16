@@ -19,6 +19,7 @@ public class create_flags {
   public final boolean CURE_UNDECLARED;
   public final boolean HIDE_DECLARATIONS;
   public final boolean DEBUG_CONSTRUCTS;
+  public final boolean DEBUG_ACTIONS;
   public final boolean DEBUG_PROGRESS;
   public final boolean DEBUG_IMPORT;
   public final boolean DEBUG_REFLECT;
@@ -36,6 +37,7 @@ public class create_flags {
     this.CURE_UNDECLARED = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("CURE_UNDECLARED"));
     this.HIDE_DECLARATIONS = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("HIDE_DECLARATIONS"));
     this.DEBUG_CONSTRUCTS = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("DEBUG_CONSTRUCTS"));
+    this.DEBUG_ACTIONS = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("DEBUG_ACTIONS"));
     this.DEBUG_PROGRESS = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("DEBUG_PROGRESS"));
     this.DEBUG_IMPORT = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("DEBUG_IMPORT"));
     this.DEBUG_REFLECT = ideal.runtime.flags.flags_utilities.boolean_flag(arg_dictionary, new ideal.runtime.elements.base_string("DEBUG_REFLECT"));

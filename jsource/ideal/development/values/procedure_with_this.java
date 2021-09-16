@@ -50,7 +50,7 @@ public class procedure_with_this extends base_data_value<procedure_value>
   }
 
   @Override
-  public base_data_value bind_from(action from, origin pos) {
+  public base_data_value bind_value(action from, origin pos) {
     return new procedure_with_this(the_procedure, action_utilities.combine(from, this_action, pos));
   }
 

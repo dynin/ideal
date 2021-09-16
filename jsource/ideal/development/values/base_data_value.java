@@ -47,7 +47,7 @@ public abstract class base_data_value<T> extends debuggable
     return bound.is_parametrizable();
   }
 
-  public base_data_value bind_from(action from, origin pos) {
+  public base_data_value bind_value(action from, origin pos) {
     return this;
   }
 

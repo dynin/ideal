@@ -43,7 +43,8 @@ class transitive_set extends debuggable implements readonly_displayable {
     if (from instanceof principal_type) {
       from_action = from.to_action(origin_utilities.no_origin);
     } else {
-      from_action = new promotion_action(from, false);
+      from_action = new stub_action(from, origin_utilities.no_origin);
+      // from_action = new promotion_action(from, false);
     }
     result.put(from, new type_and_action(from, from_action));
 

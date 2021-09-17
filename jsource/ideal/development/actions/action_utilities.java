@@ -35,6 +35,41 @@ public class action_utilities {
   public static boolean DEBUG_ACTIONS;
 
   public static action combine(action first, action second, origin the_origin) {
+    if (first instanceof stub_action) {
+      return second;
+    } else if (second instanceof stub_action) {
+      return first;
+    }
+
+    if (second instanceof chain_action) {
+      chain_action the_chain_action = (chain_action) second;
+      action new_first = action_utilities.combine(first, the_chain_action.first, the_origin);
+      if (new_first != the_chain_action.first || the_chain_action.deeper_origin() != the_origin) {
+        return new chain_action(new_first, the_chain_action.second, the_origin);
+      } else {
+        return the_chain_action;
+      }
+    }
+
+    /*
+    if (first instanceof chain_action) {
+      chain_action the_chain_action = (chain_action) first;
+      action new_second = action_utilities.combine(the_chain_action.second, second, the_origin);
+      if (new_second != the_chain_action.second || the_chain_action.deeper_origin() != the_origin) {
+        return new chain_action(the_chain_action.first, new_second, the_origin);
+      } else {
+        return the_chain_action;
+      }
+    }
+    */
+
+    if (action_utilities.DEBUG_ACTIONS) {
+      if (second instanceof dispatch_action) {
+        assert ((dispatch_action) second).get_from() == null;
+        return new chain_action(first, second, the_origin);
+      }
+    }
+
     return second.bind_from(first, the_origin);
   }
 

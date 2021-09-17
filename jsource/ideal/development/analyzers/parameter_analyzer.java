@@ -70,7 +70,6 @@ public class parameter_analyzer extends single_pass_analyzer {
     return result;
   }
 
-
   @Override
   protected analysis_result do_single_pass_analysis() {
     if (is_logical_operator()) {

@@ -40,7 +40,11 @@ public class chain_action extends base_action {
 
   @Override
   public abstract_value result() {
-    return second.result();
+    if (action_utilities.DEBUG_ACTIONS && second instanceof dispatch_action) {
+      return ((dispatch_action) second).dispatch_result(first);
+    } else {
+      return second.result();
+    }
   }
 
   @Override
@@ -50,12 +54,8 @@ public class chain_action extends base_action {
 
   @Override
   public action bind_from(action from, origin the_origin) {
-    action new_first = action_utilities.combine(from, first, the_origin);
-    if (new_first != first || deeper_origin() != the_origin) {
-      return new chain_action(new_first, second, the_origin);
-    } else {
-      return this;
-    }
+    utilities.panic("chain_action.bind_from(): " + this);
+    return null;
   }
 
   @Override

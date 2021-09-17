@@ -38,7 +38,7 @@ public class dispatch_action extends base_action implements action {
     super(the_origin);
     this.primary_action = the_dispatch.primary_action;
     vtable = the_dispatch.vtable;
-    assert from != null;
+    //assert from != null;
     this.from = from;
   }
 
@@ -70,8 +70,20 @@ public class dispatch_action extends base_action implements action {
     return primary_action;
   }
 
+  public abstract_value dispatch_result(action from) {
+    assert from != null;
+
+    // TODO: implement full resolution logic
+    @Nullable action resolved_action = vtable.get(from.result().type_bound());
+    if (resolved_action != null) {
+      return resolved_action.result().type_bound();
+    }
+
+    return primary_action.result().type_bound();
+  }
+
   @Override
-  public type result() {
+  public abstract_value result() {
     if (from != null) {
       // TODO: implement full resolution logic
       @Nullable action resolved_action = vtable.get(from.result().type_bound());
@@ -90,10 +102,11 @@ public class dispatch_action extends base_action implements action {
       new_from = action_utilities.combine(new_from, from, the_origin);
     }
 
-    if (true) {
-      return new dispatch_action(this, new_from, the_origin);
+    if (action_utilities.DEBUG_ACTIONS) {
+      utilities.panic("dispatch_action.bind_from()");
+      return null;
     } else {
-      return new chain_action(new_from, this, the_origin);
+      return new dispatch_action(this, new_from, the_origin);
     }
   }
 
@@ -158,6 +171,10 @@ public class dispatch_action extends base_action implements action {
 
   @Override
   public string to_string() {
-    return utilities.describe(this, primary_action);
+    if (from != null) {
+      return utilities.describe(this, new base_string(from + " . " + primary_action));
+    } else {
+      return utilities.describe(this, primary_action);
+    }
   }
 }

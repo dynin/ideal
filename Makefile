@@ -154,7 +154,7 @@ analyze_all: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_all
 
 print_elements: $(IDEAL_TARGET)
-	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=print_elements
+	$(CREATE) -debug-actions -debug-progress -input=$(IDEAL_SOURCE) -target=print_elements
 
 generate_elements: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_elements
@@ -299,7 +299,8 @@ generate_development gd: $(IDEAL_TARGET)
 .PHONY: rm-scratch
 
 test_development td: $(IDEAL_TARGET) rm-scratch
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(SCRATCH_DIR)
+	$(CREATE) -input=$(IDEAL_SOURCE) -debug-actions -target=generate_development \
+            -output=$(SCRATCH_DIR)
 	$(JAVAC) $(SCRATCH_DIR)/ideal/development/*/*java
 
 tdc:

@@ -1271,6 +1271,10 @@ public class to_java_transformer extends base_transformer {
       return is_procedure_declaration(((dispatch_action) the_action).get_declaration());
     }
 
+    if (the_action instanceof chain_action) {
+      return is_procedure_declaration(((chain_action) the_action).get_declaration());
+    }
+
     if (the_action instanceof value_action) {
       Object the_value = ((value_action) the_action).the_value;
       if (the_value instanceof base_data_value) {

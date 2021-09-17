@@ -38,6 +38,10 @@ public class constrained_analysis_context extends debuggable implements analysis
               return null;
             }
           }
+
+          @Override public String toString() {
+            return constrained_analysis_context.this.toString();
+          }
       };
 
   private constrained_analysis_context(base_analysis_context parent,

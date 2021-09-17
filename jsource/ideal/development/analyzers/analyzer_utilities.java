@@ -137,6 +137,8 @@ public class analyzer_utilities {
         dispatch_action the_dispatch = null;
         if (procedure_action instanceof dispatch_action) {
           the_dispatch = (dispatch_action) procedure_action;
+        } else {
+          // utilities.stack("Procedure action is not dispatch_action: " + procedure_action);
         }
         /*
         else if (procedure_action instanceof chain_action) {

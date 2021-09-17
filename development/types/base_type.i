@@ -30,7 +30,7 @@ abstract class base_type {
     return flavored;
   }
 
-  protected abstract type_declaration_context get_context();
+  protected abstract type_declaration_context get_context() pure;
 
   abstract string describe(type_format format);
 

@@ -71,19 +71,21 @@ public class procedure_with_this extends base_data_value<procedure_value>
   }
 
   @Override
-  public entity_wrapper execute(readonly_list<entity_wrapper> arguments,
+  public entity_wrapper execute(entity_wrapper from_entity, readonly_list<entity_wrapper> arguments,
       execution_context the_execution_context) {
+    entity_wrapper this_value;
 
-    entity_wrapper this_value = this_action.execute(null_wrapper.instance, the_execution_context);
+    if (from_entity instanceof null_wrapper) {
+      this_value = this_action.execute(null_wrapper.instance, the_execution_context);
+    } else {
+      this_value = from_entity;
+    }
+
     if (this_value instanceof jump_wrapper) {
       return this_value;
     }
 
-    list<entity_wrapper> new_arguments = new base_list<entity_wrapper>();
-    new_arguments.append(this_value);
-    new_arguments.append_all(arguments);
-
-    return the_procedure.execute(new_arguments, the_execution_context);
+    return the_procedure.execute(this_value, arguments, the_execution_context);
   }
 
   @Override

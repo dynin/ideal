@@ -86,9 +86,9 @@ public class overloaded_procedure extends base_procedure {
   }
 
   @Override
-  public entity_wrapper execute(readonly_list<entity_wrapper> arguments,
-      execution_context the_context) {
-    return first().execute(arguments, the_context);
+  public entity_wrapper execute(entity_wrapper this_argument,
+      readonly_list<entity_wrapper> arguments, execution_context the_context) {
+    return first().execute(this_argument, arguments, the_context);
   }
 
   public string to_string() {

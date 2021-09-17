@@ -128,7 +128,10 @@ public class dispatch_action extends base_action implements action {
       vtable.put(this_type, resolved_action);
     }
 
-    return resolved_action.execute(from_entity, the_execution_context);
+    // TODO: revert to this
+    // return resolved_action.execute(from_entity, the_execution_context);
+    return action_utilities.combine(new entity_action(from_entity, this), resolved_action, this).
+        execute(from_entity, the_execution_context);
   }
 
   @Override

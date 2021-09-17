@@ -33,8 +33,9 @@ public abstract class binary_procedure extends base_procedure {
   }
 
   @Override
-  public final entity_wrapper execute(readonly_list<entity_wrapper> args,
-          execution_context exec_context) {
+  public final entity_wrapper execute(entity_wrapper this_argument,
+          readonly_list<entity_wrapper> args, execution_context exec_context) {
+    assert this_argument instanceof null_wrapper;
     assert args.size() == 2;
     return execute_binary(args.get(0), args.get(1), exec_context);
   }

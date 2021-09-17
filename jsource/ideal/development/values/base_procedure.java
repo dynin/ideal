@@ -134,8 +134,8 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   @Override
-  public abstract entity_wrapper execute(readonly_list<entity_wrapper> args,
-      execution_context the_execution_context);
+  public abstract entity_wrapper execute(entity_wrapper this_argument,
+      readonly_list<entity_wrapper> args, execution_context the_execution_context);
 
   @Override
   public string to_string() {

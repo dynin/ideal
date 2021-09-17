@@ -108,8 +108,8 @@ public class analyzer_utilities {
     action result_action;
     if (the_procedure.overrides_variable()) {
       // TODO: can this cast ever fail?
-      result_action = (action) new procedure_executor(the_procedure).
-          bind_parameters(new action_parameters(), the_context, the_origin);
+      result_action = (action) the_executor.bind_parameters(new action_parameters(), the_context,
+          the_origin);
       readonly_list<declaration> overriden = the_procedure.get_overriden();
       for (int i = 0; i < overriden.size(); ++i) {
         if (overriden.get(i) instanceof variable_declaration) {

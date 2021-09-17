@@ -101,7 +101,8 @@ public class bound_procedure extends base_action implements stringable {
       concrete_values.append(concrete_value);
     }
 
-    return the_procedure_value.execute(concrete_values, the_execution_context);
+    return the_procedure_value.execute(null_wrapper.instance, concrete_values,
+        the_execution_context);
   }
 
   @Override

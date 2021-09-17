@@ -43,9 +43,9 @@ public class info_fn extends base_procedure {
   }
 
   @Override
-  public entity_wrapper execute(readonly_list<entity_wrapper> args,
+  public entity_wrapper execute(entity_wrapper this_argument, readonly_list<entity_wrapper> args,
       execution_context context) {
-
+    assert this_argument instanceof null_wrapper;
     StringBuilder out = new StringBuilder();
     for (int i = 0; i < args.size(); ++i) {
       entity_wrapper arg = args.get(i);

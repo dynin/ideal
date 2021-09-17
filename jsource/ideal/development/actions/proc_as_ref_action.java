@@ -26,18 +26,10 @@ import ideal.development.flavors.*;
 public class proc_as_ref_action extends base_action {
 
   public final procedure_declaration the_declaration;
-  @Nullable
-  public final action from;
-
-  private proc_as_ref_action(procedure_declaration the_declaration, @Nullable action from,
-      origin source) {
-    super(source);
-    this.the_declaration = the_declaration;
-    this.from = from;
-  }
 
   public proc_as_ref_action(procedure_declaration the_declaration) {
-    this(the_declaration, null, the_declaration);
+    super(the_declaration);
+    this.the_declaration = the_declaration;
   }
 
   private type get_return_type() {
@@ -55,23 +47,13 @@ public class proc_as_ref_action extends base_action {
 
   @Override
   public boolean has_side_effects() {
-    return (from != null && from.has_side_effects()) || !the_declaration.is_pure();
+    return !the_declaration.is_pure();
   }
 
   @Override
   public reference_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
-    value_wrapper this_argument;
-
     // TODO: handle jumps
-    if (from_entity instanceof value_wrapper) {
-      this_argument = (value_wrapper) from_entity;
-    } else {
-      if (from == null) {
-        utilities.panic("Unbound proc_as_ref " + the_declaration.short_name());
-      }
-      this_argument = (value_wrapper) from.execute(null_wrapper.instance, the_context);
-    }
-
+    value_wrapper this_argument = (value_wrapper) from_entity;
     entity_wrapper result = action_utilities.execute_procedure(the_declaration,
         this_argument, new empty<entity_wrapper>(), the_context);
     // TODO: fix.
@@ -95,10 +77,8 @@ public class proc_as_ref_action extends base_action {
 
   @Override
   public action bind_from(action new_from, origin source) {
-    if (from != null) {
-      new_from = action_utilities.combine(new_from, from, source);
-    }
-    return new proc_as_ref_action(the_declaration, new_from, source);
+    utilities.panic("proc_as_ref_action.bind_from(): " + this);
+    return null;
   }
 
   @Override

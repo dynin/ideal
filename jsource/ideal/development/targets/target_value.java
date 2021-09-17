@@ -35,7 +35,7 @@ public abstract class target_value extends base_procedure {
   }
 
   @Override
-  public entity_wrapper execute(readonly_list<entity_wrapper> args,
+  public entity_wrapper execute(entity_wrapper this_argument, readonly_list<entity_wrapper> args,
       execution_context the_execution_context) {
     utilities.panic("Can't execute a target_value");
     return null;

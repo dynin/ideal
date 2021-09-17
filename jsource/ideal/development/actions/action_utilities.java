@@ -67,6 +67,10 @@ public class action_utilities {
       return new chain_action(first, second, the_origin);
     }
 
+    if (second instanceof proc_as_ref_action) {
+      return new chain_action(first, second, the_origin);
+    }
+
     return second.bind_from(first, the_origin);
   }
 

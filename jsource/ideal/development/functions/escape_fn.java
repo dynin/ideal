@@ -34,8 +34,9 @@ public class escape_fn extends base_procedure {
   }
 
   @Override
-  public final entity_wrapper execute(readonly_list<entity_wrapper> args,
-          execution_context exec_context) {
+  public final entity_wrapper execute(entity_wrapper this_argument,
+          readonly_list<entity_wrapper> args, execution_context exec_context) {
+    assert this_argument instanceof null_wrapper;
     assert args.size() == 1;
     string s = ((string_value) args.first()).unwrap();
     s = runtime_util.escape_markup(s);

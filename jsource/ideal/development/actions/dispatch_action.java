@@ -128,10 +128,11 @@ public class dispatch_action extends base_action implements action {
       vtable.put(this_type, resolved_action);
     }
 
-    // TODO: revert to this
-    // return resolved_action.execute(from_entity, the_execution_context);
-    return action_utilities.combine(new entity_action(from_entity, this), resolved_action, this).
-        execute(from_entity, the_execution_context);
+    if (resolved_action.result() instanceof procedure_value) {
+      return ((procedure_value) resolved_action.result()).bind_this(from_entity);
+    } else {
+      return resolved_action.execute(from_entity, the_execution_context);
+    }
   }
 
   @Override

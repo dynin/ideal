@@ -30,8 +30,8 @@ public class value_action<T extends base_data_value> extends base_value_action<T
   }
 
   @Override
-  public final action bind_from(action from, origin pos) {
-    return the_value.bind_value(from, pos).to_action(pos);
+  public final action bind_from(action from, origin the_origin) {
+    return the_value.bind_value(from, the_origin).to_action(the_origin);
   }
 
   @Override

@@ -23,7 +23,7 @@ import ideal.development.declarations.*;
 import ideal.development.analyzers.*;
 
 public abstract class base_procedure extends base_data_value<procedure_value>
-    implements procedure_value<procedure_value> {
+    implements procedure_value {
 
   private final action_name name;
   private @Nullable procedure_declaration the_declaration;
@@ -45,6 +45,15 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   @Override
   public boolean has_this_argument() {
     return false;
+  }
+
+  @Override
+  public procedure_value bind_this(entity_wrapper this_argument) {
+    if (has_this_argument()) {
+      return new procedure_with_this(this, new entity_action(this_argument));
+    } else {
+      return this;
+    }
   }
 
   @Override

@@ -16,6 +16,7 @@ import ideal.development.elements.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
+import ideal.development.origins.*;
 
 public class entity_action extends base_action implements entity_wrapper {
   private final entity_wrapper the_entity;
@@ -23,6 +24,10 @@ public class entity_action extends base_action implements entity_wrapper {
   public entity_action(entity_wrapper the_entity, origin the_origin) {
     super(the_origin);
     this.the_entity = the_entity;
+  }
+
+  public entity_action(entity_wrapper the_entity) {
+    this(the_entity, origin_utilities.no_origin);
   }
 
   @Override

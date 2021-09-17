@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.actions;
+package ideal.development.values;
 
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
@@ -16,6 +16,7 @@ import ideal.development.elements.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
+import ideal.development.actions.*;
 
 import javax.annotation.Nullable;
 

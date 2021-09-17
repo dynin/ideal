@@ -19,6 +19,7 @@ import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class jump_analyzer extends single_pass_analyzer {
 

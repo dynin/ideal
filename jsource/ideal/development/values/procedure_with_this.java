@@ -21,7 +21,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 
 public class procedure_with_this extends base_data_value<procedure_value>
-    implements procedure_value<procedure_value> {
+    implements procedure_value {
 
   private final procedure_value the_procedure;
   public final action this_action;
@@ -47,6 +47,11 @@ public class procedure_with_this extends base_data_value<procedure_value>
   @Override
   public boolean has_this_argument() {
     return false;
+  }
+
+  @Override
+  public procedure_value bind_this(entity_wrapper this_argument) {
+    return new procedure_with_this(this, new entity_action(this_argument));
   }
 
   @Override

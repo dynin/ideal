@@ -24,22 +24,18 @@ public class dispatch_action extends base_action implements action {
 
   private final action primary_action;
   private final dictionary<type, action> vtable;
-  private final action from;
 
   public dispatch_action(action primary_action, type from_type) {
     super(primary_action);
     this.primary_action = primary_action;
     vtable = new list_dictionary<type, action>();
     vtable.put(from_type, primary_action);
-    from = null;
   }
 
-  private dispatch_action(dispatch_action the_dispatch, action from, origin the_origin) {
+  private dispatch_action(dispatch_action the_dispatch, origin the_origin) {
     super(the_origin);
     this.primary_action = the_dispatch.primary_action;
     vtable = the_dispatch.vtable;
-    //assert from != null;
-    this.from = from;
   }
 
   public declaration get_declaration() {
@@ -62,10 +58,6 @@ public class dispatch_action extends base_action implements action {
     vtable.put(the_type, new_action);
   }
 
-  public @Nullable action get_from() {
-    return from;
-  }
-
   public action get_primary() {
     return primary_action;
   }
@@ -84,30 +76,13 @@ public class dispatch_action extends base_action implements action {
 
   @Override
   public abstract_value result() {
-    if (from != null) {
-      // TODO: implement full resolution logic
-      @Nullable action resolved_action = vtable.get(from.result().type_bound());
-      if (resolved_action != null) {
-        return resolved_action.result().type_bound();
-      }
-    }
-
     return primary_action.result().type_bound();
   }
 
   @Override
   public action bind_from(action new_from, origin the_origin) {
-    // TODO: may be narrow result_type here.
-    if (from != null) {
-      new_from = action_utilities.combine(new_from, from, the_origin);
-    }
-
-    if (action_utilities.DEBUG_ACTIONS) {
-      utilities.panic("dispatch_action.bind_from()");
-      return null;
-    } else {
-      return new dispatch_action(this, new_from, the_origin);
-    }
+    utilities.panic("dispatch_action.bind_from(): " + this);
+    return null;
   }
 
   @Override
@@ -118,23 +93,11 @@ public class dispatch_action extends base_action implements action {
   @Override
   public entity_wrapper execute(entity_wrapper from_entity,
       execution_context the_execution_context) {
-    entity_wrapper this_entity;
-
-    if (from_entity instanceof value_wrapper) {
-      this_entity = from_entity;
-    } else {
-      if (from == null) {
-        utilities.panic("Unbound 'this' in " + primary_action);
-      }
-
-      this_entity = from.execute(null_wrapper.instance, the_execution_context);
+    if (from_entity instanceof jump_wrapper) {
+      return from_entity;
     }
 
-    if (this_entity instanceof jump_wrapper) {
-      return this_entity;
-    }
-
-    type this_type = action_utilities.to_type(this_entity.type_bound());
+    type this_type = action_utilities.to_type(from_entity.type_bound());
 
     @Nullable action resolved_action = vtable.get(this_type);
     if (resolved_action == null) {
@@ -165,16 +128,11 @@ public class dispatch_action extends base_action implements action {
       vtable.put(this_type, resolved_action);
     }
 
-    return action_utilities.combine(new entity_action(this_entity, this), resolved_action, this).
-        execute(this_entity, the_execution_context);
+    return resolved_action.execute(from_entity, the_execution_context);
   }
 
   @Override
   public string to_string() {
-    if (from != null) {
-      return utilities.describe(this, new base_string(from + " . " + primary_action));
-    } else {
-      return utilities.describe(this, primary_action);
-    }
+    return utilities.describe(this, primary_action);
   }
 }

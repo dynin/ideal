@@ -2032,12 +2032,6 @@ public class to_java_transformer extends base_transformer {
           process_action(the_narrow_action.expression, the_origin), the_origin);
     }
 
-    if (the_action instanceof dispatch_action) {
-      dispatch_action the_dispatch_action = (dispatch_action) the_action;
-      action from_action = the_dispatch_action.get_from();
-      return process_dispatch_action(from_action, the_dispatch_action, the_origin);
-    }
-
     if (the_action instanceof variable_action) {
       return process_variable_action(null, (variable_action) the_action, the_origin);
     }

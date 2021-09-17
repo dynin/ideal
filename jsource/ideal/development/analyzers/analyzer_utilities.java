@@ -383,9 +383,7 @@ public class analyzer_utilities {
 
       action from_action;
 
-      if (the_action instanceof dispatch_action) {
-        from_action = ((dispatch_action) the_action).get_from();
-      } else if (the_action instanceof chain_action) {
+      if (the_action instanceof chain_action) {
         chain_action the_chain_action = (chain_action) the_action;
         if (the_chain_action.second instanceof instance_variable ||
             the_chain_action.second instanceof dispatch_action) {

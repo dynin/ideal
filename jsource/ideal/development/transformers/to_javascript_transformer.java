@@ -57,9 +57,6 @@ public class to_javascript_transformer {
       return to_construct((bound_procedure) the_action);
     } else if (the_action instanceof value_action) {
       return to_construct((value_action) the_action);
-    } else if (the_action instanceof dispatch_action) {
-      dispatch_action the_dispatch_action = (dispatch_action) the_action;
-      return process_dispatch_action(the_dispatch_action.get_from(), the_dispatch_action);
     } else if (the_action instanceof variable_declaration) {
       return to_construct((variable_declaration) the_action);
     } else if (the_action instanceof variable_initializer) {

@@ -63,11 +63,8 @@ public class action_utilities {
     }
     */
 
-    if (action_utilities.DEBUG_ACTIONS) {
-      if (second instanceof dispatch_action) {
-        assert ((dispatch_action) second).get_from() == null;
-        return new chain_action(first, second, the_origin);
-      }
+    if (second instanceof dispatch_action) {
+      return new chain_action(first, second, the_origin);
     }
 
     return second.bind_from(first, the_origin);

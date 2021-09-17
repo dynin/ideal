@@ -40,7 +40,7 @@ public class chain_action extends base_action {
 
   @Override
   public abstract_value result() {
-    if (action_utilities.DEBUG_ACTIONS && second instanceof dispatch_action) {
+    if (second instanceof dispatch_action) {
       return ((dispatch_action) second).dispatch_result(first);
     } else {
       return second.result();

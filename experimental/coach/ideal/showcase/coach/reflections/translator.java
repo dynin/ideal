@@ -49,7 +49,7 @@ public class translator {
 
     if (compile_ok) {
       execution_context exec_context = creator.new_execution_context();
-      analyzer_utilities.to_action(world_declaration).execute(exec_context);
+      analyzer_utilities.to_action(world_declaration).execute(null_wrapper.instance, exec_context);
       datastore_schema new_world_schema =
           new datastore_schema(world_declaration, source, creator.library(), exec_context);
       if (version_suffix != null) {

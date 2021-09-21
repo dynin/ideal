@@ -79,7 +79,7 @@ public class datastore_schema {
       if (utilities.eq(var_decl.short_name(), VERSION) && var_decl instanceof variable_analyzer) {
         action version_action = ((variable_analyzer) var_decl).get_init_action();
         if (version_action != null) {
-          entity_wrapper version_value = version_action.execute(exec_context);
+          entity_wrapper version_value = version_action.execute(null_wrapper.instance, exec_context);
           if (version_value instanceof string_value) {
             version = ((string_value) version_value).unwrap();
             break;
@@ -135,8 +135,7 @@ public class datastore_schema {
     assert list_principal instanceof parametrized_type;
     parametrized_type list_parametrized = (parametrized_type) list_principal;
     assert list_parametrized.get_master() == library.list_type();
-    immutable_list<abstract_value> list_parameters =
-        list_parametrized.get_parameters().fixed_size_list();
+    immutable_list<abstract_value> list_parameters = list_parametrized.get_parameters().the_list;
     assert list_parameters.size() == 1;
     return (type) list_parameters.get(0);
   }

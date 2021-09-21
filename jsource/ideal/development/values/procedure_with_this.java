@@ -39,6 +39,7 @@ public class procedure_with_this extends base_data_value<procedure_value>
   public procedure_with_this(procedure_value the_procedure, entity_wrapper this_entity) {
     super(the_procedure.type_bound());
     this.the_procedure = the_procedure;
+    assert this_entity != null;
     this.this_entity = this_entity;
     this.this_action = null;
     assert the_procedure.has_this_argument();

@@ -27,6 +27,7 @@ public interface procedure_value extends abstract_value, value_wrapper<procedure
   @Nullable declaration get_declaration();
   boolean has_this_argument();
   boolean supports_parameters(action_parameters parameters, analysis_context context);
+  action bind_value(action from, origin pos);
   procedure_value bind_this(entity_wrapper this_argument);
   analysis_result bind_parameters(action_parameters params, analysis_context context, origin pos);
   entity_wrapper execute(entity_wrapper this_argument, readonly_list<entity_wrapper> args,

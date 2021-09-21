@@ -9,6 +9,7 @@
 package ideal.development.values;
 
 import ideal.library.elements.*;
+import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
@@ -31,7 +32,12 @@ public class value_action<T extends base_data_value> extends base_value_action<T
 
   @Override
   public final action bind_from(action from, origin the_origin) {
-    return the_value.bind_value(from, the_origin).to_action(the_origin);
+    if (the_value instanceof procedure_value) {
+      procedure_value the_procedure_value = (procedure_value) the_value;
+      return the_procedure_value.bind_value(from, the_origin);
+    } else {
+      return this;
+    }
   }
 
   @Override

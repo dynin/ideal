@@ -35,6 +35,9 @@ public class action_utilities {
   public static boolean DEBUG_ACTIONS;
 
   public static action combine(action first, action second, origin the_origin) {
+    assert first != null;
+    assert second != null;
+
     if (first instanceof stub_action) {
       return second;
     } else if (second instanceof stub_action) {

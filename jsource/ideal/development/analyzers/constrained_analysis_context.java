@@ -172,8 +172,9 @@ public class constrained_analysis_context extends debuggable implements analysis
 
     @Nullable action result = parent.find_promotion(from, target, constraint_mapper);
 
+    // TODO: unify code with base_analysis_context
     if (result != null) {
-      return action_utilities.combine(from, result, pos);
+      return result;
     } else {
       error_signal signal = action_utilities.cant_promote(from.result(), target, this, pos);
       //return new error_action(signal);

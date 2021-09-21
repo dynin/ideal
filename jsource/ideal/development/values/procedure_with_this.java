@@ -24,14 +24,24 @@ public class procedure_with_this extends base_data_value<procedure_value>
     implements procedure_value {
 
   private final procedure_value the_procedure;
+  public final entity_wrapper this_entity;
   public final action this_action;
 
   public procedure_with_this(procedure_value the_procedure, action this_action) {
     super(the_procedure.type_bound());
     this.the_procedure = the_procedure;
+    this.this_entity = null;
+    assert this_action != null;
     this.this_action = this_action;
     assert the_procedure.has_this_argument();
-    assert this_action != null;
+  }
+
+  public procedure_with_this(procedure_value the_procedure, entity_wrapper this_entity) {
+    super(the_procedure.type_bound());
+    this.the_procedure = the_procedure;
+    this.this_entity = this_entity;
+    this.this_action = null;
+    assert the_procedure.has_this_argument();
   }
 
   @Override
@@ -51,12 +61,13 @@ public class procedure_with_this extends base_data_value<procedure_value>
 
   @Override
   public procedure_value bind_this(entity_wrapper this_argument) {
-    return new procedure_with_this(this, new entity_action(this_argument));
+    return new procedure_with_this(this, this_argument);
   }
 
   @Override
-  public base_data_value bind_value(action from, origin pos) {
-    return new procedure_with_this(the_procedure, action_utilities.combine(from, this_action, pos));
+  public action bind_value(action from, origin the_origin) {
+    return new procedure_with_this(the_procedure,
+        action_utilities.combine(from, this_action, the_origin)).to_action(the_origin);
   }
 
   @Override
@@ -66,24 +77,29 @@ public class procedure_with_this extends base_data_value<procedure_value>
 
   @Override
   public analysis_result bind_parameters(action_parameters params, analysis_context context,
-      origin pos) {
-    analysis_result bound_procedure = the_procedure.bind_parameters(params, context, pos);
+      origin the_origin) {
+    analysis_result bound_procedure = the_procedure.bind_parameters(params, context, the_origin);
     if (bound_procedure instanceof error_signal) {
       return (error_signal) bound_procedure;
     } else {
-      return action_utilities.combine(this_action, ((action) bound_procedure), pos);
+      return action_utilities.combine(this_action, ((action) bound_procedure), the_origin);
     }
   }
 
   @Override
   public entity_wrapper execute(entity_wrapper from_entity, readonly_list<entity_wrapper> arguments,
       execution_context the_execution_context) {
+    assert from_entity != null;
     entity_wrapper this_value;
 
-    if (from_entity instanceof null_wrapper) {
-      this_value = this_action.execute(null_wrapper.instance, the_execution_context);
+    if (this_entity != null) {
+      this_value = this_entity;
     } else {
-      this_value = from_entity;
+      if (from_entity instanceof null_wrapper) {
+        this_value = this_action.execute(null_wrapper.instance, the_execution_context);
+      } else {
+        this_value = from_entity;
+      }
     }
 
     if (this_value instanceof jump_wrapper) {

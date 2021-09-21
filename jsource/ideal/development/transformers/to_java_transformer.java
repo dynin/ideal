@@ -1934,6 +1934,7 @@ public class to_java_transformer extends base_transformer {
     } else if (the_value instanceof procedure_with_this) {
       procedure_with_this the_procedure_with_this = (procedure_with_this) the_value;
       action_name the_action_name = the_procedure_with_this.name();
+      // TODO: handle the_procedure_with_this.this_entity if set
       assert the_procedure_with_this.this_action != null;
       construct this_construct = process_action(the_procedure_with_this.this_action,
           the_origin);

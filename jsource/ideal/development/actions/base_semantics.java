@@ -247,14 +247,14 @@ public class base_semantics implements semantics {
 
     // Anything can be promoted to the 'void' value.
     if (target == library().immutable_void_type()) {
-      return new promotion_action(target, false);
+      return new promotion_action(target, from, false, origin_utilities.no_origin);
     }
 
     transitive_set promotions = transitive_set.make(subtype, actions);
 
     @Nullable type_and_action result = promotions.members.get(target);
     if (result != null) {
-      return result.get_action();
+      return action_utilities.combine(from, result.get_action(), origin_utilities.no_origin);
     }
     // TODO: use filter().
     readonly_list<dictionary.entry<type, type_and_action>> promotions_list =
@@ -268,7 +268,7 @@ public class base_semantics implements semantics {
     }
     readonly_list<action> best = select_best(actions, candidates);
     if (best.size() == 1) {
-      return best.first();
+      return action_utilities.combine(from, best.first(), origin_utilities.no_origin);
     }
     if (best.size() > 1) {
       utilities.panic("Multiple subtypes");

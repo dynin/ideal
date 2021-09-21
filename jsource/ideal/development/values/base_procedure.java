@@ -50,18 +50,18 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   @Override
   public procedure_value bind_this(entity_wrapper this_argument) {
     if (has_this_argument()) {
-      return new procedure_with_this(this, new entity_action(this_argument));
+      return new procedure_with_this(this, this_argument);
     } else {
       return this;
     }
   }
 
   @Override
-  public base_data_value bind_value(action from, origin pos) {
+  public action bind_value(action from, origin pos) {
     if (has_this_argument()) {
-      return new procedure_with_this(this, from);
+      return new procedure_with_this(this, from).to_action(pos);
     } else {
-      return this;
+      return to_action(pos);
     }
   }
 

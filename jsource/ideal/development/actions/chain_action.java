@@ -27,6 +27,10 @@ public class chain_action extends base_action {
     assert second != null;
     this.first = first;
     this.second = second;
+    if (first == second) {
+      // This condition is almost certainly triggered by a bug.
+      utilities.panic("Duplicate actions in chain: " + first);
+    }
   }
 
   @Override

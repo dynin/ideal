@@ -24,7 +24,7 @@ public class promotion_action extends base_action {
   private final @Nullable action the_action;
   public final boolean is_supertype;
 
-  private promotion_action(type the_type, @Nullable action the_action, boolean is_supertype,
+  public promotion_action(type the_type, @Nullable action the_action, boolean is_supertype,
       origin source) {
     super(source);
     this.the_type = the_type;

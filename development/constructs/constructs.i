@@ -26,7 +26,6 @@ package constructs {
   class grouping_type;
   class import_construct;
   class jump_construct;
-  enum jump_category;
   class list_construct;
   class literal_construct;
   class loop_construct;

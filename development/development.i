@@ -17,6 +17,7 @@ namespace development {
   package kinds;
   package origins;
   package documenters;
+  package jumps;
   package constructs;
   package flags;
   package tests;

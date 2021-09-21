@@ -13,7 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.scanners.*;
 import ideal.development.comments.*;
-import ideal.development.constructs.jump_category;
+import ideal.development.jumps.jump_category;
 import ideal.development.constructs.constraint_category;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;

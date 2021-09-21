@@ -14,6 +14,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.comments.*;
+import ideal.development.jumps.*;
 import ideal.development.constructs.*;
 import ideal.development.scanners.*;
 import ideal.development.names.*;

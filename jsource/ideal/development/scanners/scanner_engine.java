@@ -11,7 +11,7 @@ package ideal.development.scanners;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
-import ideal.development.constructs.jump_category;
+import ideal.development.jumps.jump_category;
 import ideal.development.comments.*;
 import ideal.development.notifications.*;
 import ideal.development.modifiers.*;

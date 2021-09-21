@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import ideal.development.jumps.*;
 
 public class jump_construct extends base_construct {
   public final jump_category the_jump_category;

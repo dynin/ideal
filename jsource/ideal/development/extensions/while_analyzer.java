@@ -16,6 +16,7 @@ import ideal.development.elements.*;
 import ideal.development.components.*;
 import ideal.development.names.*;
 import ideal.development.actions.*;
+import ideal.development.jumps.*;
 import ideal.development.constructs.*;
 import ideal.development.values.*;
 import ideal.development.analyzers.*;

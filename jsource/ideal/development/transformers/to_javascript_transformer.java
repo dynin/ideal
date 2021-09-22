@@ -71,9 +71,9 @@ public class to_javascript_transformer {
       } else if (the_chain_action.second instanceof dispatch_action) {
         return process_dispatch_action(the_chain_action.first,
             (dispatch_action) the_chain_action.second);
+      } else if (the_chain_action.second instanceof dereference_action) {
+        return to_construct_action(the_chain_action.first);
       }
-    } else if (the_action instanceof dereference_action) {
-      return to_construct((dereference_action) the_action);
     } else if (the_action instanceof return_action) {
       return to_construct((return_action) the_action);
     } else if (the_action instanceof extension_action) {
@@ -378,11 +378,6 @@ public class to_javascript_transformer {
 
   private type immutable_integer_type() {
     return common_library.get_instance().immutable_integer_type();
-  }
-
-  public construct to_construct(dereference_action deref) {
-    assert deref.from != null;
-    return to_construct_action(deref.from);
   }
 
   public construct to_construct(value_action the_action) {

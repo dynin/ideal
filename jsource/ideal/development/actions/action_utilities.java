@@ -37,9 +37,7 @@ public class action_utilities {
     assert first != null;
     assert second != null;
 
-    if (first instanceof stub_action) {
-      return second;
-    } else if (second instanceof stub_action) {
+    if (second instanceof stub_action) {
       return first;
     }
 
@@ -70,6 +68,10 @@ public class action_utilities {
     }
 
     if (second instanceof proc_as_ref_action) {
+      return new chain_action(first, second, the_origin);
+    }
+
+    if (second instanceof dereference_action) {
       return new chain_action(first, second, the_origin);
     }
 

@@ -2017,11 +2017,6 @@ public class to_java_transformer extends base_transformer {
       return process_value_action((base_value_action) the_action);
     }
 
-    if (the_action instanceof dereference_action) {
-      dereference_action deref_action = (dereference_action) the_action;
-      return process_action(deref_action.from, the_origin);
-    }
-
     if (the_action instanceof promotion_action) {
       promotion_action the_promotion_action = (promotion_action) the_action;
       return process_action(the_promotion_action.get_action(), the_origin);
@@ -2045,6 +2040,8 @@ public class to_java_transformer extends base_transformer {
       } else if (the_chain_action.second instanceof dispatch_action) {
         return process_dispatch_action(the_chain_action.first,
             (dispatch_action) the_chain_action.second, the_origin);
+      } else if (the_chain_action.second instanceof dereference_action) {
+        return process_action(the_chain_action.first, the_origin);
       }
       utilities.panic("Unrecognized chain action: " + the_chain_action);
     }
@@ -2223,12 +2220,15 @@ public class to_java_transformer extends base_transformer {
       return get_procedure_declaration(((dispatch_action) the_procedure_action).get_primary());
     } else if (the_procedure_action instanceof promotion_action) {
       return get_procedure_declaration(((promotion_action) the_procedure_action).get_action());
-    } else if (the_procedure_action instanceof dereference_action) {
-      return get_procedure_declaration(((dereference_action) the_procedure_action).from);
     } else if (the_procedure_action instanceof variable_action) {
       return ((variable_action) the_procedure_action).get_declaration();
     } else if (the_procedure_action instanceof chain_action) {
-      return ((chain_action) the_procedure_action).get_declaration();
+      chain_action the_chain_action = (chain_action) the_procedure_action;
+      if (the_chain_action.second instanceof dereference_action) {
+        return the_chain_action.first.get_declaration();
+      } else {
+        return the_chain_action.get_declaration();
+      }
     } else if (the_procedure_action instanceof bound_procedure) {
       return ((bound_procedure) the_procedure_action).get_declaration();
     } else {

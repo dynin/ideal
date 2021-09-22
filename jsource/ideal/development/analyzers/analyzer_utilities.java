@@ -395,22 +395,24 @@ public class analyzer_utilities {
         return false;
       }
 
-      if (! (from_action instanceof dereference_action)) {
+      action from_derefence_action;
+      if (!(from_action instanceof chain_action) ||
+          !(((chain_action) from_action).second instanceof dereference_action)) {
         return false;
       }
-      action from_derefence_action = ((dereference_action) from_action).from;
+      from_derefence_action = ((chain_action) from_action).first;
 
-      if (! (from_derefence_action instanceof promotion_action)) {
+      if (!(from_derefence_action instanceof promotion_action)) {
         return false;
       }
       action promotion_subaction = ((promotion_action) from_derefence_action).get_action();
 
-      if (! (promotion_subaction instanceof chain_action)) {
+      if (!(promotion_subaction instanceof chain_action)) {
         return false;
       }
       chain_action the_local_access = (chain_action) promotion_subaction;
 
-      if (! (the_local_access.second instanceof local_variable)) {
+      if (!(the_local_access.second instanceof local_variable)) {
         return false;
       }
       local_variable the_local_variable = (local_variable) the_local_access.second;

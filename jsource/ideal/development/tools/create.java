@@ -65,6 +65,7 @@ class create {
     };
 
   public status start(create_flags the_create_flags) {
+    debug.initialize(the_create_flags);
     if (the_create_flags.UNIT_TESTS) {
       if (false) {
         System.out.println(network.NETWORK_CATALOG.resolve(
@@ -73,12 +74,6 @@ class create {
       all_tests.run_all_tests();
       return status.ok;
     }
-
-    action_utilities.DEBUG_ACTIONS = the_create_flags.DEBUG_ACTIONS;
-    create_util.DEBUG_PROGRESS = the_create_flags.DEBUG_PROGRESS;
-
-    resolve_analyzer.CURE_UNDECLARED = the_create_flags.CURE_UNDECLARED;
-    resolve_analyzer.HIDE_DECLARATIONS = the_create_flags.HIDE_DECLARATIONS;
 
     if (the_create_flags.DEBUG_IMPORT) {
       import_util.start_import();

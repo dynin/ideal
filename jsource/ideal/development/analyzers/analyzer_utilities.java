@@ -20,6 +20,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import static ideal.development.flavors.flavor.*;
 import ideal.development.declarations.*;
+import ideal.development.flags.*;
 import ideal.development.modifiers.*;
 import ideal.development.kinds.*;
 import ideal.development.origins.*;
@@ -33,7 +34,6 @@ public class analyzer_utilities {
 
   public static final origin UNINITIALIZED_POSITION =
       new special_origin(new base_string("[uninitialized]"));
-  public static final boolean DO_REDUNDANT_PARAMETRIZABLE_CHECK = true;
 
   public static @Nullable procedure_declaration get_enclosing_procedure(
       base_analyzer the_analyzable) {
@@ -513,7 +513,7 @@ public class analyzer_utilities {
 
     abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...
-    if (DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
+    if (debug.DO_REDUNDANT_CHECKS) {
       assert supports_parameters(action_result, parameters, the_context);
     }
 

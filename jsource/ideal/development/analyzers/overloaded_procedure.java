@@ -25,6 +25,7 @@ import ideal.development.values.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.flags.*;
 
 public class overloaded_procedure extends base_procedure {
   private final list<procedure_value> procedures;
@@ -71,7 +72,7 @@ public class overloaded_procedure extends base_procedure {
   @Override
   public analysis_result bind_parameters(action_parameters parameters, analysis_context context,
       origin the_origin) {
-    if (analyzer_utilities.DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
+    if (debug.DO_REDUNDANT_CHECKS) {
       assert supports_parameters(parameters, context);
     }
 

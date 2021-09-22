@@ -9,4 +9,5 @@ package flags {
   implicit import ideal.library.elements;
 
   class create_flags;
+  namespace debug;
 }

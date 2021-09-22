@@ -20,11 +20,9 @@ import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.kinds.*;
 import ideal.development.declarations.*;
+import ideal.development.flags.*;
 
 public class resolve_analyzer extends single_pass_analyzer {
-
-  public static boolean CURE_UNDECLARED;
-  public static boolean HIDE_DECLARATIONS;
 
   private @Nullable analyzable from;
   private @Nullable action_name the_name;
@@ -114,7 +112,7 @@ public class resolve_analyzer extends single_pass_analyzer {
 
     if (all_resolved.is_empty()) {
       error_signal error;
-      if (from == null && CURE_UNDECLARED) {
+      if (from == null && debug.CURE_UNDECLARED) {
         error = new error_signal(messages.symbol_lookup_suppress, this);
         error_signal suppressed_error = new error_signal(messages.suppressed, error, the_origin);
         add_error(parent(), the_name, suppressed_error);
@@ -129,7 +127,7 @@ public class resolve_analyzer extends single_pass_analyzer {
 
     if (all_resolved.size() > 1) {
       readonly_list<notification> declarations;
-      if (HIDE_DECLARATIONS) {
+      if (debug.HIDE_DECLARATIONS) {
         declarations = null;
       } else {
         // TODO: fix this by introducing a stable order

@@ -20,6 +20,7 @@ import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.flags.*;
 import ideal.development.analyzers.*;
 
 public abstract class base_procedure extends base_data_value<procedure_value>
@@ -117,7 +118,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
       origin pos) {
 
     readonly_list<action> aparams = params.params();
-    if (analyzer_utilities.DO_REDUNDANT_PARAMETRIZABLE_CHECK) {
+    if (debug.DO_REDUNDANT_CHECKS) {
       // This should never happen because of type checks done before bind_parameters() is called
       if (!is_valid_procedure_arity(aparams.size())) {
         return new error_signal(new base_string("Arity mismatch"), pos);

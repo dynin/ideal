@@ -76,6 +76,10 @@ public class action_utilities {
       return new chain_action(first, second, the_origin);
     }
 
+    if (second instanceof variable_action) {
+      return new chain_action(first, second, the_origin);
+    }
+
     if (second instanceof base_value_action) {
       base_value_action value_action = (base_value_action) second;
       if (value_action.the_value instanceof procedure_value) {
@@ -91,6 +95,23 @@ public class action_utilities {
       return new bound_procedure(combine(first, the_bound_procedure.the_procedure_action,
               the_origin), the_bound_procedure.return_value,
               the_bound_procedure.parameters, the_origin);
+    }
+
+    if (second instanceof promotion_action) {
+      promotion_action the_promotion_action = (promotion_action) second;
+      if (first.result().type_bound() == the_promotion_action.the_type) {
+        return first;
+      }
+
+      action from = first;
+      while (from instanceof chain_action &&
+             ((chain_action) from).second instanceof promotion_action) {
+        from = ((chain_action) from).first;
+      }
+
+      // TODO: verify that from.result() is a subtype of the_type
+      // TODO: collapse chained promotion_actions
+      return new chain_action(from, the_promotion_action, the_origin);
     }
 
     return second.bind_from(first, the_origin);

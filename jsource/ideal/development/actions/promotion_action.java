@@ -20,28 +20,17 @@ import ideal.development.origins.*;
 import javax.annotation.Nullable;
 
 public class promotion_action extends base_action {
-  private final type the_type;
-  private final @Nullable action the_action;
+  public final type the_type;
   public final boolean is_supertype;
 
-  public promotion_action(type the_type, @Nullable action the_action, boolean is_supertype,
-      origin source) {
-    super(source);
+  public promotion_action(type the_type, boolean is_supertype, origin the_origin) {
+    super(the_origin);
     this.the_type = the_type;
-    this.the_action = the_action;
     this.is_supertype = is_supertype;
-  }
-
-  public promotion_action(type the_type, boolean is_supertype, origin source) {
-    this(the_type, null, is_supertype, source);
   }
 
   public promotion_action(type the_type, boolean is_supertype) {
     this(the_type, is_supertype, origin_utilities.no_origin);
-  }
-
-  public @Nullable action get_action() {
-    return the_action;
   }
 
   @Override
@@ -51,26 +40,18 @@ public class promotion_action extends base_action {
 
   @Override
   public boolean has_side_effects() {
-    return the_action != null && the_action.has_side_effects();
+    return false;
   }
 
   @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
-    entity_wrapper result;
-
-    if (!(from_entity instanceof null_wrapper)) {
-      result = from_entity;
-    } else {
-      assert the_action != null;
-      result = the_action.execute(null_wrapper.instance, context);
-    }
+    entity_wrapper result = from_entity;
 
     if (the_type == library().immutable_void_type()) {
       result = library().void_instance();
     }
 
-    if (result instanceof reference_wrapper &&
-        !library().is_reference_type(the_type)) {
+    if (result instanceof reference_wrapper && !library().is_reference_type(the_type)) {
       result = ((reference_wrapper) result).get();
       // TODO: verify that type matches
     }
@@ -85,35 +66,13 @@ public class promotion_action extends base_action {
       return the_type.principal().get_declaration();
     }*/
 
-    if (the_action != null) {
-      return the_action.get_declaration();
-    } else {
-      return the_type.principal().get_declaration();
-      //return null;
-    }
+    return null;
   }
 
   @Override
-  public action bind_from(action from, origin source) {
-    if (from.result() == the_type) {
-      return from;
-    }
-
-    while (from instanceof promotion_action) {
-      promotion_action action_from = (promotion_action) from;
-      from = action_from.get_action();
-      if (from == null) {
-        return this;
-      }
-    }
-
-    if (the_action != null) {
-      from = action_utilities.combine(from, the_action, source);
-    }
-
-    // TODO: verify that from.result() is a subtype of the_type
-    // TODO: collapse chained promotion_actions
-    return new promotion_action(the_type, from, is_supertype, source);
+  public action bind_from(action from, origin the_origin) {
+    utilities.panic("promotion_action.bind_from(): " + this);
+    return null;
   }
 
   private static common_library library() {
@@ -122,6 +81,6 @@ public class promotion_action extends base_action {
 
   @Override
   public string to_string() {
-    return utilities.describe(this, new base_string(the_action + " .> " + the_type));
+    return utilities.describe(this, the_type);
   }
 }

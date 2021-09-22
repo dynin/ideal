@@ -90,7 +90,8 @@ public abstract class variable_action extends base_action implements abstract_va
 
   @Override
   public action bind_from(action new_from, origin the_origin) {
-    return new chain_action(new_from, this, the_origin);
+    utilities.panic("variable_action.bind_from(): " + this);
+    return null;
   }
 
   @Override

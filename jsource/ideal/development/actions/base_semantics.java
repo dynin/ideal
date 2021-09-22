@@ -247,7 +247,9 @@ public class base_semantics implements semantics {
 
     // Anything can be promoted to the 'void' value.
     if (target == library().immutable_void_type()) {
-      return new promotion_action(target, from, false, origin_utilities.no_origin);
+      return new chain_action(from,
+          new promotion_action(target, false, origin_utilities.no_origin),
+          origin_utilities.no_origin);
     }
 
     transitive_set promotions = transitive_set.make(subtype, actions);

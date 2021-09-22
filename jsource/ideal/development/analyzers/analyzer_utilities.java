@@ -402,10 +402,11 @@ public class analyzer_utilities {
       }
       from_derefence_action = ((chain_action) from_action).first;
 
-      if (!(from_derefence_action instanceof promotion_action)) {
+      if (!(from_derefence_action instanceof chain_action) ||
+          !(((chain_action) from_derefence_action).second instanceof promotion_action)) {
         return false;
       }
-      action promotion_subaction = ((promotion_action) from_derefence_action).get_action();
+      action promotion_subaction = ((chain_action) from_derefence_action).first;
 
       if (!(promotion_subaction instanceof chain_action)) {
         return false;

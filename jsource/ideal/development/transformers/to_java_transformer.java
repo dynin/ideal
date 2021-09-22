@@ -1272,7 +1272,12 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (the_action instanceof chain_action) {
-      return is_procedure_declaration(((chain_action) the_action).get_declaration());
+      action second = ((chain_action) the_action).second;
+      if (second instanceof dereference_action ||
+          second instanceof dispatch_action ||
+          second instanceof variable_action) {
+        return is_procedure_declaration(((chain_action) the_action).get_declaration());
+      }
     }
 
     if (the_action instanceof data_value_action) {
@@ -1586,12 +1591,23 @@ public class to_java_transformer extends base_transformer {
       return true;
     }
 
-    if (the_action instanceof promotion_action) {
-      the_action = ((promotion_action) the_action).get_action();
+    if (is_promotion_action(the_action)) {
+      the_action = unwrap_promotion(the_action);
       return result_type(the_action).principal() == java_library.string_type();
     }
 
     return false;
+  }
+
+  private boolean is_promotion_action(action the_action) {
+    return the_action instanceof chain_action &&
+        ((chain_action) the_action).second instanceof promotion_action;
+  }
+
+  private action unwrap_promotion(action the_action) {
+    assert the_action instanceof chain_action &&
+        ((chain_action) the_action).second instanceof promotion_action;
+    return  ((chain_action) the_action).first;
   }
 
   private boolean is_reference_equality(action the_action) {
@@ -1601,8 +1617,8 @@ public class to_java_transformer extends base_transformer {
       return true;
     }
 
-    if (the_action instanceof promotion_action) {
-      the_action = ((promotion_action) the_action).get_action();
+    if (is_promotion_action(the_action)) {
+      the_action = unwrap_promotion(the_action);
       return result_type(the_action).is_subtype_of(reference_equality);
     }
 
@@ -1621,8 +1637,8 @@ public class to_java_transformer extends base_transformer {
       return true;
     }
 
-    if (the_action instanceof promotion_action) {
-      the_action = ((promotion_action) the_action).get_action();
+    if (is_promotion_action(the_action)) {
+      the_action = unwrap_promotion(the_action);
       return is_mapped(result_type(the_action).principal());
     }
 
@@ -2017,11 +2033,6 @@ public class to_java_transformer extends base_transformer {
       return process_value_action((base_value_action) the_action);
     }
 
-    if (the_action instanceof promotion_action) {
-      promotion_action the_promotion_action = (promotion_action) the_action;
-      return process_action(the_promotion_action.get_action(), the_origin);
-    }
-
     if (the_action instanceof narrow_action) {
       narrow_action the_narrow_action = (narrow_action) the_action;
       return process_narrow_action(the_narrow_action,
@@ -2041,6 +2052,8 @@ public class to_java_transformer extends base_transformer {
         return process_dispatch_action(the_chain_action.first,
             (dispatch_action) the_chain_action.second, the_origin);
       } else if (the_chain_action.second instanceof dereference_action) {
+        return process_action(the_chain_action.first, the_origin);
+      } else if (the_chain_action.second instanceof promotion_action) {
         return process_action(the_chain_action.first, the_origin);
       }
       utilities.panic("Unrecognized chain action: " + the_chain_action);
@@ -2134,9 +2147,8 @@ public class to_java_transformer extends base_transformer {
     if (primary instanceof variable_action) {
       variable_action the_variable_action = (variable_action) primary;
       action_name the_name = map_name(the_variable_action.short_name());
-      if (the_name == TO_STRING_NAME && from_action instanceof promotion_action) {
-        principal_type from_type = ((promotion_action) from_action).get_action().result()
-            .type_bound().principal();
+      if (the_name == TO_STRING_NAME && is_promotion_action(from_action)) {
+        principal_type from_type = unwrap_promotion(from_action).result().type_bound().principal();
         // TODO: implement less hacky way to implement Integer.to_string
         if (from_type == library().integer_type() || from_type == library().nonnegative_type()) {
           return int_to_string(from_construct, the_origin);
@@ -2218,8 +2230,8 @@ public class to_java_transformer extends base_transformer {
       return the_value.get_declaration();
     } else if (the_procedure_action instanceof dispatch_action) {
       return get_procedure_declaration(((dispatch_action) the_procedure_action).get_primary());
-    } else if (the_procedure_action instanceof promotion_action) {
-      return get_procedure_declaration(((promotion_action) the_procedure_action).get_action());
+    } else if (is_promotion_action(the_procedure_action)) {
+      return get_procedure_declaration(unwrap_promotion(the_procedure_action));
     } else if (the_procedure_action instanceof variable_action) {
       return ((variable_action) the_procedure_action).get_declaration();
     } else if (the_procedure_action instanceof chain_action) {

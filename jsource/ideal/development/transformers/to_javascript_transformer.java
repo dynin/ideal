@@ -71,15 +71,14 @@ public class to_javascript_transformer {
       } else if (the_chain_action.second instanceof dispatch_action) {
         return process_dispatch_action(the_chain_action.first,
             (dispatch_action) the_chain_action.second);
-      } else if (the_chain_action.second instanceof dereference_action) {
+      } else if (the_chain_action.second instanceof dereference_action ||
+                 the_chain_action.second instanceof promotion_action) {
         return to_construct_action(the_chain_action.first);
       }
     } else if (the_action instanceof return_action) {
       return to_construct((return_action) the_action);
     } else if (the_action instanceof extension_action) {
       return to_construct((extension_action) the_action);
-    } else if (the_action instanceof promotion_action) {
-      return to_construct((promotion_action) the_action);
     } else if (the_action instanceof list_action) {
       return to_construct((list_action) the_action);
     }
@@ -394,12 +393,6 @@ public class to_javascript_transformer {
 
     return signal(new error_signal(new base_string("Unsupported value: " + the_value.getClass()),
           pos));
-  }
-
-  public construct to_construct(promotion_action the_action) {
-    @Nullable action unwrapped = the_action.get_action();
-    assert unwrapped != null;
-    return to_construct_action(unwrapped);
   }
 
   private action_name process_name(variable_declaration decl) {

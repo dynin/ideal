@@ -1275,8 +1275,8 @@ public class to_java_transformer extends base_transformer {
       return is_procedure_declaration(((chain_action) the_action).get_declaration());
     }
 
-    if (the_action instanceof value_action) {
-      Object the_value = ((value_action) the_action).the_value;
+    if (the_action instanceof data_value_action) {
+      Object the_value = ((data_value_action) the_action).the_value;
       if (the_value instanceof base_data_value) {
         return is_procedure_declaration(((base_data_value) the_value).get_declaration());
       }
@@ -1698,8 +1698,8 @@ public class to_java_transformer extends base_transformer {
   }
 
   public boolean is_nothing(action the_action) {
-    if (the_action instanceof value_action) {
-      Object value = ((value_action) the_action).the_value;
+    if (the_action instanceof data_value_action) {
+      Object value = ((data_value_action) the_action).the_value;
       return value == library().void_instance();
     }
     return false;
@@ -2149,8 +2149,8 @@ public class to_java_transformer extends base_transformer {
         result = new resolve_construct(from_construct, the_name, the_origin);
       }
       return maybe_call(the_variable_action, result, the_origin);
-    } else if (primary instanceof value_action) {
-      base_procedure the_procedure = (base_procedure) ((value_action) primary).the_value;
+    } else if (primary instanceof data_value_action) {
+      base_procedure the_procedure = (base_procedure) ((data_value_action) primary).the_value;
       action_name the_name = map_name(the_procedure.name());
       if (the_name != special_name.IMPLICIT_CALL) {
         if (from_construct == null) {
@@ -2212,9 +2212,9 @@ public class to_java_transformer extends base_transformer {
   }
 
   private declaration get_procedure_declaration(action the_procedure_action) {
-    if (the_procedure_action instanceof value_action) {
+    if (the_procedure_action instanceof data_value_action) {
       base_data_value the_value =
-          (base_data_value) ((value_action) the_procedure_action).the_value;
+          (base_data_value) ((data_value_action) the_procedure_action).the_value;
       return the_value.get_declaration();
     } else if (the_procedure_action instanceof dispatch_action) {
       return get_procedure_declaration(((dispatch_action) the_procedure_action).get_primary());
@@ -2245,9 +2245,9 @@ public class to_java_transformer extends base_transformer {
     construct main;
     procedure_value the_procedure = null;
 
-    if (the_procedure_action instanceof value_action) {
+    if (the_procedure_action instanceof data_value_action) {
       base_data_value the_value =
-          (base_data_value) ((value_action) the_procedure_action).the_value;
+          (base_data_value) ((data_value_action) the_procedure_action).the_value;
       assert the_value instanceof procedure_value;
       the_procedure = (procedure_value) the_value;
       action_name the_name = the_procedure.name();
@@ -2255,7 +2255,7 @@ public class to_java_transformer extends base_transformer {
         operator the_operator = (operator) the_name;
         return process_operator(the_bound_procedure, the_operator);
       }
-      main = process_value_action((value_action) the_procedure_action);
+      main = process_value_action((data_value_action) the_procedure_action);
     } else {
       main = process_action(the_procedure_action, the_origin);
     }

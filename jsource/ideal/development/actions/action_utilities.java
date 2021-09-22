@@ -33,6 +33,7 @@ public class action_utilities {
 
   private action_utilities() { }
 
+  // TODO: this should be a multimethod
   public static action combine(action first, action second, origin the_origin) {
     assert first != null;
     assert second != null;
@@ -73,6 +74,23 @@ public class action_utilities {
 
     if (second instanceof dereference_action) {
       return new chain_action(first, second, the_origin);
+    }
+
+    if (second instanceof base_value_action) {
+      base_value_action value_action = (base_value_action) second;
+      if (value_action.the_value instanceof procedure_value) {
+        procedure_value the_procedure_value = (procedure_value) value_action.the_value;
+        return the_procedure_value.bind_value(first, the_origin);
+      } else {
+        return value_action;
+      }
+    }
+
+    if (second instanceof bound_procedure) {
+      bound_procedure the_bound_procedure = (bound_procedure) second;
+      return new bound_procedure(combine(first, the_bound_procedure.the_procedure_action,
+              the_origin), the_bound_procedure.return_value,
+              the_bound_procedure.parameters, the_origin);
     }
 
     return second.bind_from(first, the_origin);

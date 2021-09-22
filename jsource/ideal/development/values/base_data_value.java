@@ -39,7 +39,7 @@ public abstract class base_data_value<T> extends debuggable
 
   @Override
   public action to_action(origin pos) {
-    return new value_action(this, pos);
+    return new data_value_action(this, pos);
   }
 
   @Override

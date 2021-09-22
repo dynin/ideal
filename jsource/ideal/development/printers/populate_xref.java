@@ -169,11 +169,11 @@ public class populate_xref extends construct_visitor<Void> implements value {
 
     analysis_result result = the_analyzable.analyze();
 
-    if (result instanceof value_action &&
-        ((value_action) result).result() instanceof singleton_value) {
+    if (result instanceof data_value_action &&
+        ((data_value_action) result).result() instanceof singleton_value) {
       // TODO: better handle synthetic code.
       declaration the_declaration =
-          ((value_action) result).result().type_bound().principal().get_declaration();
+          ((data_value_action) result).result().type_bound().principal().get_declaration();
       assert the_declaration != null;
       add_xref(the_declaration, xref_mode.USE, c);
       return;

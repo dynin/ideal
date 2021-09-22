@@ -18,25 +18,15 @@ import ideal.development.declarations.*;
 
 import javax.annotation.Nullable;
 
-public class value_action<T extends base_data_value> extends base_value_action<T> {
+public class data_value_action<T extends base_data_value> extends base_value_action<T> {
 
-  public value_action(T the_value, origin source) {
+  public data_value_action(T the_value, origin source) {
     super(the_value, source);
   }
 
   @Override
   public abstract_value result() {
     return the_value;
-  }
-
-  @Override
-  public final action bind_from(action from, origin the_origin) {
-    if (the_value instanceof procedure_value) {
-      procedure_value the_procedure_value = (procedure_value) the_value;
-      return the_procedure_value.bind_value(from, the_origin);
-    } else {
-      return this;
-    }
   }
 
   @Override

@@ -49,7 +49,8 @@ public class stub_action extends base_action {
 
   @Override
   public action bind_from(action from, origin the_origin) {
-    return from;
+    utilities.panic("stub_action.bind_from(): " + this);
+    return null;
   }
 
   @Override

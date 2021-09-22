@@ -55,8 +55,8 @@ public class to_javascript_transformer {
 
     if (the_action instanceof bound_procedure) {
       return to_construct((bound_procedure) the_action);
-    } else if (the_action instanceof value_action) {
-      return to_construct((value_action) the_action);
+    } else if (the_action instanceof data_value_action) {
+      return to_construct((data_value_action) the_action);
     } else if (the_action instanceof variable_declaration) {
       return to_construct((variable_declaration) the_action);
     } else if (the_action instanceof variable_initializer) {
@@ -224,17 +224,17 @@ public class to_javascript_transformer {
     origin pos = bp;
     action proc_action = bp.the_procedure_action;
     procedure_value proc;
-    if (proc_action instanceof value_action) {
-      value_wrapper the_value = ((value_action) proc_action).the_value;
+    if (proc_action instanceof data_value_action) {
+      value_wrapper the_value = ((data_value_action) proc_action).the_value;
       proc = (base_procedure) the_value;
-      //return to_construct((value_action) proc_action);
+      //return to_construct((data_value_action) proc_action);
     } else if (proc_action instanceof procedure_value) {
       // TODO: handle other procedure value.
       proc = (procedure_value) proc_action;
     } else if (proc_action instanceof dispatch_action) {
       // TODO: handle other procedure value.
       action primary = ((dispatch_action) proc_action).get_primary();
-      value_wrapper the_value = ((value_action) primary).the_value;
+      value_wrapper the_value = ((data_value_action) primary).the_value;
       proc = (base_procedure) the_value;
     } else {
       return signal(new error_signal(
@@ -380,7 +380,7 @@ public class to_javascript_transformer {
     return common_library.get_instance().immutable_integer_type();
   }
 
-  public construct to_construct(value_action the_action) {
+  public construct to_construct(data_value_action the_action) {
     origin pos = the_action;
     value_wrapper the_value = the_action.the_value;
 

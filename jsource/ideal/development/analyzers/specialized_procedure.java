@@ -70,12 +70,12 @@ public class specialized_procedure extends debuggable implements procedure_decla
     readonly_list<action> overloaded_actions = context.lookup(from_type, short_name());
     for (int i = 0; i < overloaded_actions.size(); ++i) {
       action overloaded_action = overloaded_actions.get(i);
-      if (overloaded_action instanceof value_action &&
-          ((value_action) overloaded_action).the_value instanceof overloaded_procedure) {
+      if (overloaded_action instanceof data_value_action &&
+          ((data_value_action) overloaded_action).the_value instanceof overloaded_procedure) {
         // TODO: signal error instead
         assert the_overloaded_procedure == null;
         the_overloaded_procedure =
-            (overloaded_procedure) ((value_action) overloaded_action).the_value;
+            (overloaded_procedure) ((data_value_action) overloaded_action).the_value;
         continue;
       }
     }

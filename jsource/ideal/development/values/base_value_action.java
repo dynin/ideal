@@ -23,8 +23,8 @@ public class base_value_action<T extends value_wrapper> extends base_action {
 
   public final T the_value;
 
-  public base_value_action(T the_value, origin source) {
-    super(source);
+  public base_value_action(T the_value, origin the_origin) {
+    super(the_origin);
     this.the_value = the_value;
   }
 
@@ -44,8 +44,9 @@ public class base_value_action<T extends value_wrapper> extends base_action {
   }
 
   @Override
-  public action bind_from(action from, origin pos) {
-    return this;
+  public action bind_from(action from, origin the_origin) {
+    utilities.panic("base_value_action.bind_from(): " + this);
+    return null;
   }
 
   @Override

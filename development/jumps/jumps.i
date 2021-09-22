@@ -7,9 +7,13 @@
 --- Jumps, such as panic/break/continue/return.
 package jumps {
   implicit import ideal.library.elements;
+  implicit import ideal.library.reflections;
   implicit import ideal.runtime.elements;
   implicit import ideal.development.elements;
   implicit import ideal.development.names;
+  import ideal.development.types.core_types;
 
+  class jump_wrapper;
+  class panic_value;
   enum jump_category;
 }

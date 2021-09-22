@@ -26,6 +26,7 @@ import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
 import ideal.development.origins.*;
+import ideal.development.jumps.*;
 import ideal.development.values.*;
 
 public class action_utilities {

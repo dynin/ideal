@@ -17,6 +17,7 @@ import ideal.development.elements.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.declarations.*;
+import ideal.development.jumps.*;
 import ideal.development.values.*;
 
 public class constraint_action extends base_action {

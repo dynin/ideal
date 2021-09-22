@@ -16,7 +16,7 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
-import ideal.development.values.panic_value;
+import ideal.development.jumps.panic_value;
 
 import javax.annotation.Nullable;
 

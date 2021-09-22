@@ -18,6 +18,7 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.types.*;
 import ideal.development.declarations.*;
+import ideal.development.jumps.*;
 import ideal.development.values.*;
 
 public class dispatch_action extends base_action implements action {

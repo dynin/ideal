@@ -18,6 +18,7 @@ import ideal.development.elements.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
+import ideal.development.jumps.*;
 import ideal.development.values.*;
 
 public class list_initializer_action extends base_action {

@@ -19,6 +19,7 @@ import ideal.development.actions.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
+import ideal.development.jumps.*;
 
 public class bound_procedure extends base_action implements stringable {
   public final action the_procedure_action;

@@ -17,6 +17,7 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
+import ideal.development.jumps.*;
 import ideal.development.values.*;
 import ideal.development.flavors.*;
 

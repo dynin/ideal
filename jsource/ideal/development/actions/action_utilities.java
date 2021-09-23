@@ -52,32 +52,18 @@ public class action_utilities {
       }
     }
 
-    /*
-    if (first instanceof chain_action) {
-      chain_action the_chain_action = (chain_action) first;
-      action new_second = action_utilities.combine(the_chain_action.second, second, the_origin);
-      if (new_second != the_chain_action.second || the_chain_action.deeper_origin() != the_origin) {
-        return new chain_action(the_chain_action.first, new_second, the_origin);
-      } else {
-        return the_chain_action;
-      }
-    }
-    */
-
-    if (second instanceof dispatch_action) {
-      return new chain_action(first, second, the_origin);
-    }
-
-    if (second instanceof proc_as_ref_action) {
-      return new chain_action(first, second, the_origin);
-    }
-
-    if (second instanceof dereference_action) {
+    if (second instanceof dispatch_action ||
+        second instanceof proc_as_ref_action ||
+        second instanceof dereference_action) {
       return new chain_action(first, second, the_origin);
     }
 
     if (second instanceof variable_action) {
-      return new chain_action(first, second, the_origin);
+      if (second instanceof instance_variable) {
+        return new chain_action(first, second, the_origin);
+      } else {
+        return second;
+      }
     }
 
     if (second instanceof base_value_action) {
@@ -103,15 +89,14 @@ public class action_utilities {
         return first;
       }
 
-      action from = first;
-      while (from instanceof chain_action &&
-             ((chain_action) from).second instanceof promotion_action) {
-        from = ((chain_action) from).first;
+      if (first instanceof chain_action &&
+             ((chain_action) first).second instanceof promotion_action) {
+        first = ((chain_action) first).first;
       }
 
-      // TODO: verify that from.result() is a subtype of the_type
+      // TODO: verify that first.result() is a subtype of the_type
       // TODO: collapse chained promotion_actions
-      return new chain_action(from, the_promotion_action, the_origin);
+      return new chain_action(first, the_promotion_action, the_origin);
     }
 
     return second.bind_from(first, the_origin);
@@ -362,6 +347,6 @@ public class action_utilities {
     assert !(to instanceof principal_type);
 
     context.add_supertype(from, to);
-    action_utilities.add_promotion(context, from, to, true, the_origin);
+    add_promotion(context, from, to, true, the_origin);
   }
 }

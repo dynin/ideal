@@ -406,17 +406,12 @@ public class analyzer_utilities {
           !(((chain_action) from_derefence_action).second instanceof promotion_action)) {
         return false;
       }
-      action promotion_subaction = ((chain_action) from_derefence_action).first;
+      action local_subaction = ((chain_action) from_derefence_action).first;
 
-      if (!(promotion_subaction instanceof chain_action)) {
+      if (!(local_subaction instanceof local_variable)) {
         return false;
       }
-      chain_action the_local_access = (chain_action) promotion_subaction;
-
-      if (!(the_local_access.second instanceof local_variable)) {
-        return false;
-      }
-      local_variable the_local_variable = (local_variable) the_local_access.second;
+      local_variable the_local_variable = (local_variable) local_subaction;
 
       return the_local_variable.short_name() == special_name.THIS;
     }

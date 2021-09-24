@@ -184,6 +184,25 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
+  public action to_value(action expression, origin the_origin) {
+    // TODO: re-enable this if we run into errors.
+    //action narrowed_action = parent.can_narrow(expression, constraint_mapper);
+    //if (narrowed_action != null) {
+    //  return narrowed_action;
+    //}
+
+    type the_type = expression.result().type_bound();
+    if (common_library.get_instance().is_reference_type(the_type)) {
+      // TODO: check that flavor is readonly or mutable.
+      type value_type = common_library.get_instance().get_reference_parameter(the_type);
+      // TODO: replace this with a promotion lookup.
+      return promote(expression, value_type, the_origin);
+    } else {
+      return expression;
+    }
+  }
+
+  @Override
   public boolean is_parametrizable(type the_type) {
     return parent.is_parametrizable(the_type);
   }

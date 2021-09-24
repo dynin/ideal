@@ -24,9 +24,7 @@ class error_signal {
   overload error_signal(string message, analyzable primary, origin the_origin) {
     analyzed : primary.analyze();
     assert analyzed is error_signal;
-    -- TODO: cast is redundant.
-    this.cause = base_notification.new(message, the_origin, 
-        base_list[notification].new((analyzed !> error_signal).cause));
+    this.cause = base_notification.new(message, the_origin, [ analyzed.cause, ]);
     this.is_cascading = true;
   }
 

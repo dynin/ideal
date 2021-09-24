@@ -83,30 +83,52 @@ public abstract class base_analysis_context extends debuggable implements analys
       @Nullable function1<abstract_value, variable_declaration> constraint_mapper) {
 
     if (constraint_mapper != null) {
-      @Nullable declaration the_declaration = declaration_util.get_declaration(from);
-      if (the_declaration != null && the_declaration instanceof variable_declaration) {
-        variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
-        @Nullable abstract_value narrowed = constraint_mapper.call(the_variable_declaration);
-        if (narrowed != null) {
-          origin the_origin = from;
-          type narrowed_type = narrowed.type_bound();
-          narrow_action the_action;
-          if (from instanceof narrow_action) {
-            the_action = new narrow_action((((narrow_action) from).expression), narrowed_type,
-                the_variable_declaration, the_origin);
-          } else {
-            the_action = new narrow_action(from, narrowed_type,
-                the_variable_declaration, the_origin);
-          }
-          @Nullable action result = find_promotion(the_action, target, null);
-          if (result != null) {
-            return result;
-          }
+      @Nullable narrow_action the_action = can_narrow(from, constraint_mapper);
+      if (the_action != null) {
+        @Nullable action result = find_promotion(the_action, target, null);
+        if (result != null) {
+          return result;
         }
       }
     }
 
     return language.find_promotion(actions, from, target);
+  }
+
+  public @Nullable narrow_action can_narrow(action from,
+      @Nullable function1<abstract_value, variable_declaration> constraint_mapper) {
+
+    @Nullable declaration the_declaration = declaration_util.get_declaration(from);
+    if (the_declaration != null && the_declaration instanceof variable_declaration) {
+      variable_declaration the_variable_declaration = (variable_declaration) the_declaration;
+      @Nullable abstract_value narrowed = constraint_mapper.call(the_variable_declaration);
+      if (narrowed != null) {
+        origin the_origin = from;
+        type narrowed_type = narrowed.type_bound();
+        if (from instanceof narrow_action) {
+          return new narrow_action((((narrow_action) from).expression), narrowed_type,
+              the_variable_declaration, the_origin);
+        } else {
+          return new narrow_action(from, narrowed_type,
+              the_variable_declaration, the_origin);
+        }
+      }
+    }
+
+    return null;
+  }
+
+  @Override
+  public action to_value(action expression, origin the_origin) {
+    type the_type = expression.result().type_bound();
+    if (common_library.get_instance().is_reference_type(the_type)) {
+      // TODO: check that flavor is readonly or mutable.
+      type value_type = common_library.get_instance().get_reference_parameter(the_type);
+      // TODO: replace this with a promotion lookup.
+      return promote(expression, value_type, the_origin);
+    } else {
+      return expression;
+    }
   }
 
   @Override

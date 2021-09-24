@@ -399,15 +399,7 @@ public class analyzer_utilities {
 
   public static action to_value(action expression, analysis_context the_context,
       origin the_origin) {
-    type the_type = expression.result().type_bound();
-    if (common_library.get_instance().is_reference_type(the_type)) {
-      // TODO: check that flavor is readonly or mutable.
-      type value_type = common_library.get_instance().get_reference_parameter(the_type);
-      // TODO: replace this with a promotion lookup.
-      return the_context.promote(expression, value_type, the_origin);
-    } else {
-      return expression;
-    }
+    return the_context.to_value(expression, the_origin);
   }
 
   public static list<constraint> always_by_type(immutable_list<constraint> the_constraints,

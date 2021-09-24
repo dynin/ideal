@@ -14,6 +14,7 @@ package reflections {
     identifier short_name;
   }
 
+  --- Entity_wrapper is one of the three: value_wrapper, reference_wrapper, or jump_wrapper.
   interface entity_wrapper {
     extends stringable;
 

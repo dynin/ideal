@@ -44,10 +44,10 @@ public class base_wrapper extends base_parser {
       /* if (s.left != -1) {
         err.writeln(" at character " + ((Symbol)info).left + " of input"); */
       if (s.value instanceof origin) {
-        new base_notification(message, ((origin) s.value)).report();
+        new base_notification(new base_string(message), ((origin) s.value)).report();
         return;
       }
     }
-    new base_notification(message, null).report();
+    new base_notification(new base_string(message), null).report();
   }
 }

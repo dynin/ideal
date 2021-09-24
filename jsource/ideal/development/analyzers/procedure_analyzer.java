@@ -432,8 +432,8 @@ public class procedure_analyzer extends declaration_analyzer
         }
         */
         // To fix, add overloaded modifier
-        notification original_notification = new base_notification(
-          "Original declaration", other_procedure);
+        notification original_notification = new base_notification(messages.original_declaration,
+            other_procedure);
         base_string overloaded_message = get_category() == procedure_category.CONSTRUCTOR ?
             new base_string("Overloaded constructor declaration") :
             new base_string("Overloaded procedure declaration");

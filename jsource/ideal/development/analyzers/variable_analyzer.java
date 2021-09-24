@@ -238,7 +238,7 @@ public class variable_analyzer extends declaration_analyzer
           action shadowed = shadowed_actions.get(i);
           if (! (shadowed instanceof type_action) && ! (shadowed instanceof error_signal)
               && !annotations().has(general_modifier.override_modifier)) {
-            notification original = new base_notification("Shadowed declaration",
+            notification original = new base_notification(messages.shadowed_declaration,
                 shadowed.get_declaration());
             new base_notification(new base_string("Variable shadows another declaration"), this,
                 new base_list<notification>(original)).report();

@@ -165,7 +165,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
           body_list.append(new enum_value_analyzer(the_construct, enum_value_ordinal));
           enum_value_ordinal += 1;
         } else {
-          new base_notification("Value declaration in non-enum type", the_construct).report();
+          new base_notification(messages.value_declaration, the_construct).report();
         }
       } else if (the_construct instanceof supertype_construct) {
         // TODO: clean up.
@@ -325,7 +325,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
           readonly_list<notification> secondary;
           if (already_defined.get_declaration() != null) {
             secondary = new base_list<notification>(
-              new base_notification("First declaration", already_defined.get_declaration()));
+              new base_notification(messages.first_declaration, already_defined.get_declaration()));
           } else {
             secondary = null;
           }
@@ -533,7 +533,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     @Nullable declaration primary_declaration = master.get_parametrizable().get_primary().
         get_declaration();
     @Nullable notification primary_notification = primary_declaration != null ?
-        new base_notification("This is the primary", primary_declaration) : null;
+        new base_notification(messages.primary_declaration, primary_declaration) : null;
     notification already_notification = new base_notification(
         new base_string("Primary type already defined"), this,
         primary_notification != null ? new base_list<notification>(primary_notification) : null);

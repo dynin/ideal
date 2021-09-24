@@ -59,4 +59,9 @@ public class constraint_analyzer extends single_pass_analyzer {
 
     return the_action;
   }
+
+  @Override
+  public string to_string() {
+    return utilities.describe(this, expression);
+  }
 }

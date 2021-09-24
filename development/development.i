@@ -22,4 +22,5 @@ namespace development {
   package flags;
   package tests;
   package types;
+--  package notifications;
 }

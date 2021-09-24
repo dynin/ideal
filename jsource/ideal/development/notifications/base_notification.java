@@ -38,10 +38,6 @@ public class base_notification implements notification {
     this(message, the_origin, null);
   }
 
-  public base_notification(String message, origin the_origin) {
-    this(new base_string(message), the_origin, null);
-  }
-
   @Override
   public string message() {
     return message;

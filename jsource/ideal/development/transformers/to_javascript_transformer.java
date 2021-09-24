@@ -224,7 +224,7 @@ public class to_javascript_transformer {
     action proc_action = bp.the_procedure_action;
     procedure_value proc;
     if (proc_action instanceof data_value_action) {
-      value_wrapper the_value = ((data_value_action) proc_action).the_value;
+      value_wrapper the_value = ((data_value_action<base_data_value>) proc_action).the_value;
       proc = (base_procedure) the_value;
       //return to_construct((data_value_action) proc_action);
     } else if (proc_action instanceof procedure_value) {
@@ -233,7 +233,7 @@ public class to_javascript_transformer {
     } else if (proc_action instanceof dispatch_action) {
       // TODO: handle other procedure value.
       action primary = ((dispatch_action) proc_action).get_primary();
-      value_wrapper the_value = ((data_value_action) primary).the_value;
+      value_wrapper the_value = ((data_value_action<base_data_value>) primary).the_value;
       proc = (base_procedure) the_value;
     } else {
       return signal(new error_signal(
@@ -379,7 +379,7 @@ public class to_javascript_transformer {
     return common_library.get_instance().immutable_integer_type();
   }
 
-  public construct to_construct(data_value_action the_action) {
+  public construct to_construct(data_value_action<base_data_value> the_action) {
     origin pos = the_action;
     value_wrapper the_value = the_action.the_value;
 

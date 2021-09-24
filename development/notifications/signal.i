@@ -5,5 +5,5 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 interface signal {
-  extends analysis_result, deeply_immutable data, stringable;
+  extends mutable analysis_result, deeply_immutable data, stringable;
 }

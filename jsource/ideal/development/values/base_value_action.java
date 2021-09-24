@@ -19,7 +19,7 @@ import ideal.development.actions.*;
 
 import javax.annotation.Nullable;
 
-public class base_value_action<T extends value_wrapper> extends base_action {
+public class base_value_action<T extends entity_wrapper> extends base_action {
 
   public final T the_value;
 
@@ -39,7 +39,7 @@ public class base_value_action<T extends value_wrapper> extends base_action {
   }
 
   @Override
-  public value_wrapper execute(entity_wrapper from_entity, execution_context context) {
+  public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     return the_value;
   }
 

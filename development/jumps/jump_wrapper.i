@@ -5,9 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 abstract class jump_wrapper {
-  implements value_wrapper;
+  implements entity_wrapper;
 
   override type type_bound => core_types.unreachable_type();
-
-  override readonly value unwrap => core_types.unreachable_type();
 }

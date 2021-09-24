@@ -24,6 +24,7 @@ import ideal.development.constructs.*;
 import ideal.development.declarations.*;
 import ideal.development.actions.*;
 import ideal.development.analyzers.*;
+import ideal.development.flags.*;
 import ideal.development.actions.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
@@ -31,8 +32,6 @@ import ideal.development.values.*;
 import javax.annotation.Nullable;
 
 public class naming_strategy extends debuggable implements printer_assistant, immutable_data {
-
-  public static final boolean DEBUG_FRAGMENTS = false;
 
   private final immutable_list<simple_name> full_names;
   private final principal_type current_type;
@@ -249,7 +248,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
         return null;
       }
 
-      if (DEBUG_FRAGMENTS) {
+      if (debug.FRAGMENTS) {
         System.out.println("NOFRAG " + current_type + " C " + the_construct +
             " A " + the_analyzable + " AA " + the_analyzable.analyze());
       }
@@ -284,7 +283,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     @Nullable string fragment = fragments.get(the_construct);
     assert fragment == null;
 
-    if (DEBUG_FRAGMENTS) {
+    if (debug.FRAGMENTS) {
       System.out.println("FRAG " + current_type + " C " + the_construct);
     }
 
@@ -305,7 +304,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       result = new base_string(fragment, String.valueOf(index));
     }
 
-    if (DEBUG_FRAGMENTS) {
+    if (debug.FRAGMENTS) {
       System.out.println("PUTFRAG " + current_type + " C " + the_construct + " R " + result);
     }
 

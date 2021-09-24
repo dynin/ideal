@@ -60,9 +60,4 @@ public class error_action extends error_signal implements action, abstract_value
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     return new panic_value(new base_string("Attempting to execute error_signal"));
   }
-
-  @Override
-  public action bind_from(action from, origin pos) {
-    return this;
-  }
 }

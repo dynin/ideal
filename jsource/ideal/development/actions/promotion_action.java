@@ -69,12 +69,6 @@ public class promotion_action extends base_action implements chainable_action {
     return null;
   }
 
-  @Override
-  public action bind_from(action from, origin the_origin) {
-    utilities.panic("promotion_action.bind_from(): " + this);
-    return null;
-  }
-
   private static common_library library() {
     return common_library.get_instance();
   }

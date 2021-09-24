@@ -12,7 +12,6 @@ interface action {
   extends analysis_result, origin, readonly data;
 
   abstract_value result;
-  action bind_from(action from, origin the_origin) pure;
   declaration or null get_declaration;
   --- Check whether this action has logical side effects.
   boolean has_side_effects;

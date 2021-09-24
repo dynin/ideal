@@ -27,12 +27,6 @@ import ideal.development.values.singleton_value;
 
 public class base_semantics implements semantics {
 
-  public static final boolean DEBUG_RESOLVE = false;
-
-  public static final boolean DEBUG_SUBTYPE = false;
-
-  private static final boolean DEBUG_PROMOTION = false;
-
   private @Nullable value_printer the_value_printer;
 
   @Override
@@ -242,7 +236,6 @@ public class base_semantics implements semantics {
     if (the_supertype != null) {
       return from; //new promotion_action(the_supertype);
       //return new promotion_action(the_supertype, true).
-      // bind_from(from, origin_utilities.no_origin);
     }
 
     // Anything can be promoted to the 'void' value.

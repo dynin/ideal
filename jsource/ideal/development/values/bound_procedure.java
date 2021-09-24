@@ -50,12 +50,6 @@ public class bound_procedure extends base_action implements stringable {
   }
 
   @Override
-  public action bind_from(action from, origin the_origin) {
-    utilities.panic("bound_procedure.bind_from(): " + this);
-    return null;
-  }
-
-  @Override
   public boolean has_side_effects() {
     if (the_procedure_action.has_side_effects()) {
       return true;

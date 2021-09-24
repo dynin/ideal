@@ -10,6 +10,10 @@ namespace debug {
   var boolean ACTIONS;
   var boolean CURE_UNDECLARED;
   var boolean HIDE_DECLARATIONS;
+  var boolean RESOLVE : false; -- Currently unused.
+  var boolean SUBTYPE : false; -- Currently unused.
+  var boolean PROMOTION : false; -- Currently unused.
+  var boolean FRAGMENTS : false;
   var boolean DO_REDUNDANT_CHECKS : true;
 
   void initialize(create_flags flags) {

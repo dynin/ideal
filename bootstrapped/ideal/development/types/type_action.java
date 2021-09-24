@@ -27,13 +27,6 @@ public abstract class type_action extends debuggable implements action {
   public @Override final origin deeper_origin() {
     return this.the_origin;
   }
-  public @Override action bind_from(final action from, final origin new_origin) {
-    if (new_origin == this.the_origin) {
-      return this;
-    } else {
-      return new concrete_type_action(this.get_type(), new_origin);
-    }
-  }
   public @Override @Nullable declaration get_declaration() {
     return this.get_type().principal().get_declaration();
   }

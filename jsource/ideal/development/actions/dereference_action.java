@@ -60,12 +60,6 @@ public class dereference_action extends base_action implements chainable_action 
   }
 
   @Override
-  public action bind_from(action new_from, origin pos) {
-    utilities.panic("dereference_action.bind_from(): " + this);
-    return null;
-  }
-
-  @Override
   public string to_string() {
     return utilities.describe(this, value_type);
   }

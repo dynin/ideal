@@ -22,6 +22,7 @@ import ideal.development.scanners.*;
 import ideal.development.modifiers.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
+import ideal.development.flags.*;
 import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.documenters.*;
@@ -541,7 +542,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       printer_mode link_mode = (the_mode == printer_mode.XREF) ? printer_mode.STYLISH :
           printer_mode.XREF;
       @Nullable string link = the_assistant.link_to_construct(the_construct, link_mode);
-      if (link == null && naming_strategy.DEBUG_FRAGMENTS) {
+      if (link == null && debug.FRAGMENTS) {
         System.out.println("NOLINK " + the_construct + " TEXT " + the_text);
       }
       if (link != null) {

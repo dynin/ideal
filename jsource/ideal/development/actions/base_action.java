@@ -34,10 +34,4 @@ public abstract class base_action extends debuggable implements action {
   public @Nullable declaration get_declaration() {
     return null;
   }
-
-  @Override
-  public action bind_from(action from, origin the_origin) {
-    // TODO: subtypes should override this to update the source origin.
-    return this;
-  }
 }

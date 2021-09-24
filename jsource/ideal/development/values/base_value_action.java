@@ -44,12 +44,6 @@ public class base_value_action<T extends value_wrapper> extends base_action {
   }
 
   @Override
-  public action bind_from(action from, origin the_origin) {
-    utilities.panic("base_value_action.bind_from(): " + this);
-    return null;
-  }
-
-  @Override
   public @Nullable declaration get_declaration() {
     return null;
   }

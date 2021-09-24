@@ -58,12 +58,6 @@ public class chain_action extends base_action {
   }
 
   @Override
-  public action bind_from(action from, origin the_origin) {
-    utilities.panic("chain_action.bind_from(): " + this);
-    return null;
-  }
-
-  @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     entity_wrapper first_entity = first.execute(from_entity, context);
     if (first_entity instanceof jump_wrapper) {

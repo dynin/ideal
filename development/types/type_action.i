@@ -21,14 +21,6 @@ abstract class type_action {
 
   implement final origin deeper_origin => the_origin;
 
-  implement action bind_from(action from, origin new_origin) {
-    if (new_origin == the_origin) {
-      return this;
-    } else {
-      return concrete_type_action.new(get_type(), new_origin);
-    }
-  }
-
   implement declaration or null get_declaration => get_type().principal.get_declaration;
 
   implement boolean has_side_effects => false;

@@ -81,12 +81,6 @@ public class dispatch_action extends base_action implements action, chainable_ac
   }
 
   @Override
-  public action bind_from(action new_from, origin the_origin) {
-    utilities.panic("dispatch_action.bind_from(): " + this);
-    return null;
-  }
-
-  @Override
   public boolean has_side_effects() {
     return primary_action.has_side_effects();
   }

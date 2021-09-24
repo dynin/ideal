@@ -9,6 +9,10 @@ public class debug {
   public static boolean ACTIONS;
   public static boolean CURE_UNDECLARED;
   public static boolean HIDE_DECLARATIONS;
+  public static boolean RESOLVE = false;
+  public static boolean SUBTYPE = false;
+  public static boolean PROMOTION = false;
+  public static boolean FRAGMENTS = false;
   public static boolean DO_REDUNDANT_CHECKS = true;
   public static void initialize(final create_flags flags) {
     debug.PROGRESS = flags.DEBUG_PROGRESS;

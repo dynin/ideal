@@ -89,12 +89,6 @@ public abstract class variable_action extends base_action implements abstract_va
       execution_context context);
 
   @Override
-  public action bind_from(action new_from, origin the_origin) {
-    utilities.panic("variable_action.bind_from(): " + this);
-    return null;
-  }
-
-  @Override
   public string to_string() {
     return utilities.describe(this, short_name());
   }

@@ -40,6 +40,8 @@ public class action_utilities {
 
     if (second instanceof stub_action) {
       return first;
+    } else if (first instanceof stub_action) {
+      return second;
     }
 
     if (second instanceof chain_action) {
@@ -52,18 +54,27 @@ public class action_utilities {
       }
     }
 
-    if (second instanceof dispatch_action ||
-        second instanceof proc_as_ref_action ||
-        second instanceof dereference_action) {
-      return new chain_action(first, second, the_origin);
+    if (second instanceof promotion_action) {
+      promotion_action the_promotion_action = (promotion_action) second;
+      if (first.result().type_bound() == the_promotion_action.the_type) {
+        return first;
+      }
+
+      if (first instanceof chain_action &&
+             ((chain_action) first).second instanceof promotion_action) {
+        promotion_action candidate = (promotion_action) ((chain_action) first).second;
+        if (the_promotion_action.is_supertype == candidate.is_supertype) {
+          first = ((chain_action) first).first;
+        }
+      }
+
+      // TODO: verify that first.result() is a subtype of the_type
+      // TODO: collapse chained promotion_actions
+      return new chain_action(first, the_promotion_action, the_origin);
     }
 
-    if (second instanceof variable_action) {
-      if (second instanceof instance_variable) {
-        return new chain_action(first, second, the_origin);
-      } else {
-        return second;
-      }
+    if (second instanceof chainable_action) {
+      return new chain_action(first, (chainable_action) second, the_origin);
     }
 
     if (second instanceof base_value_action) {
@@ -83,23 +94,7 @@ public class action_utilities {
               the_bound_procedure.parameters, the_origin);
     }
 
-    if (second instanceof promotion_action) {
-      promotion_action the_promotion_action = (promotion_action) second;
-      if (first.result().type_bound() == the_promotion_action.the_type) {
-        return first;
-      }
-
-      if (first instanceof chain_action &&
-             ((chain_action) first).second instanceof promotion_action) {
-        first = ((chain_action) first).first;
-      }
-
-      // TODO: verify that first.result() is a subtype of the_type
-      // TODO: collapse chained promotion_actions
-      return new chain_action(first, the_promotion_action, the_origin);
-    }
-
-    return second.bind_from(first, the_origin);
+    return second;
   }
 
   public static readonly_list<type> lookup_types(analysis_context context, type from,

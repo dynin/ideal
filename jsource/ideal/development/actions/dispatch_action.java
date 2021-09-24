@@ -21,7 +21,7 @@ import ideal.development.declarations.*;
 import ideal.development.jumps.*;
 import ideal.development.values.*;
 
-public class dispatch_action extends base_action implements action {
+public class dispatch_action extends base_action implements action, chainable_action {
 
   private final action primary_action;
   private final dictionary<type, action> vtable;

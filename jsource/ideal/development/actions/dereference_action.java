@@ -22,7 +22,7 @@ import ideal.development.jumps.*;
 /**
  * Dereference a reference entity.  Implements calling ref.get().
  */
-public class dereference_action extends base_action {
+public class dereference_action extends base_action implements chainable_action {
 
   private final type value_type;
   @Nullable private final declaration the_declaration;

@@ -19,7 +19,7 @@ import ideal.development.origins.*;
 
 import javax.annotation.Nullable;
 
-public class promotion_action extends base_action {
+public class promotion_action extends base_action implements chainable_action {
   public final type the_type;
   public final boolean is_supertype;
 

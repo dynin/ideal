@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 /**
  * Implements access to instance variables.
  */
-public class instance_variable extends variable_action {
+public class instance_variable extends variable_action implements chainable_action {
 
   public instance_variable(variable_declaration the_declaration, type_flavor reference_flavor) {
     super(the_declaration, reference_flavor, the_declaration);

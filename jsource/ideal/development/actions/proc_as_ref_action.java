@@ -23,7 +23,7 @@ import ideal.development.flavors.*;
 /**
  * Reference a proc_as_ref.
  */
-public class proc_as_ref_action extends base_action {
+public class proc_as_ref_action extends base_action implements chainable_action {
 
   public final procedure_declaration the_declaration;
 

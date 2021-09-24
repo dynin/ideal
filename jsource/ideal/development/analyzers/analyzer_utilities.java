@@ -380,43 +380,22 @@ public class analyzer_utilities {
       if (the_category != variable_category.INSTANCE) {
         return true;
       }
-
-      action from_action;
-
-      if (the_action instanceof chain_action) {
-        chain_action the_chain_action = (chain_action) the_action;
-        if (the_chain_action.second instanceof instance_variable ||
-            the_chain_action.second instanceof dispatch_action) {
-          from_action = the_chain_action.first;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-
-      action from_derefence_action;
-      if (!(from_action instanceof chain_action) ||
-          !(((chain_action) from_action).second instanceof dereference_action)) {
-        return false;
-      }
-      from_derefence_action = ((chain_action) from_action).first;
-
-      if (!(from_derefence_action instanceof chain_action) ||
-          !(((chain_action) from_derefence_action).second instanceof promotion_action)) {
-        return false;
-      }
-      action local_subaction = ((chain_action) from_derefence_action).first;
-
-      if (!(local_subaction instanceof local_variable)) {
-        return false;
-      }
-      local_variable the_local_variable = (local_variable) local_subaction;
-
-      return the_local_variable.short_name() == special_name.THIS;
+      return is_this_access(the_action);
+    } else {
+      return false;
     }
+  }
 
-    return false;
+  private static boolean is_this_access(action the_action) {
+    if (the_action instanceof chain_action) {
+      chain_action the_chain_action = (chain_action) the_action;
+      return !the_chain_action.second.has_side_effects() &&
+          is_this_access(the_chain_action.first);
+    } else if (the_action instanceof local_variable) {
+      return ((local_variable) the_action).short_name() == special_name.THIS;
+    } else {
+      return false;
+    }
   }
 
   public static action to_value(action expression, analysis_context the_context,

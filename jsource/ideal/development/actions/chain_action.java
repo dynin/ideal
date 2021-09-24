@@ -20,9 +20,9 @@ import ideal.development.values.*;
 
 public class chain_action extends base_action {
   public final action first;
-  public final action second;
+  public final chainable_action second;
 
-  public chain_action(action first, action second, origin the_origin) {
+  public chain_action(action first, chainable_action second, origin the_origin) {
     super(the_origin);
     assert first != null;
     assert second != null;

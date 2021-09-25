@@ -17,10 +17,10 @@ package notifications {
   implicit import ideal.development.origins;
 
   class base_notification;
-  class error_signal;
-  --interface messages;
-  namespace notification_context;
-  --interface notification_util;
-  --interface ok_signal;
   interface signal;
+  class ok_signal;
+  class error_signal;
+  namespace messages;
+  namespace notification_context;
+  namespace notification_utilities;
 }

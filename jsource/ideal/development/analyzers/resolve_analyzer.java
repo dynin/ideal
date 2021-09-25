@@ -131,7 +131,7 @@ public class resolve_analyzer extends single_pass_analyzer {
         declarations = null;
       } else {
         // TODO: fix this by introducing a stable order
-        declarations = notification_util.to_notifications(all_resolved, get_context());
+        declarations = notification_utilities.to_notifications(all_resolved, get_context());
       }
       notification ambiguous = new base_notification(messages.ambiguous_access, this, declarations);
       return new error_signal(ambiguous, false);

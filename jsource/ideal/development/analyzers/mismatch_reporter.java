@@ -53,14 +53,14 @@ public class mismatch_reporter {
     if (filtered_candidates.is_empty()) {
       return new error_signal(new base_notification(
           new base_string("Can't find declarations with matching arity"),
-          source, notification_util.to_notifications(candidates, context)), false);
+          source, notification_utilities.to_notifications(candidates, context)), false);
     }
 
     if (filtered_candidates.size() > 1) {
       notification no_matching = new base_notification(
           new base_string("Can't find matching declaration for " +
               print_parameters(the_action_parameters, context) + " parameters"),
-          source, notification_util.to_notifications(filtered_candidates, context));
+          source, notification_utilities.to_notifications(filtered_candidates, context));
       return new error_signal(no_matching, false);
     }
 

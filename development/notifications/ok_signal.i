@@ -4,26 +4,14 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.logs.*;
-import ideal.runtime.reflections.*;
-import ideal.development.elements.*;
-import ideal.development.origins.*;
-import ideal.development.types.*;
-import javax.annotation.Nullable;
+-- TODO: use singleton.
+class ok_signal {
+  extends debuggable;
+  implements signal;
 
-public class ok_signal extends debuggable implements signal {
+  static ok_signal instance : ok_signal.new();
 
-  public static final ok_signal instance = new ok_signal();
+  override origin deeper_origin => origin_utilities.no_origin;
 
-  @Override
-  public origin deeper_origin() {
-    return origin_utilities.no_origin;
-  }
-
-  @Override
-  public string to_string() {
-    return new base_string("ok");
-  }
+  override string to_string => "ok";
 }

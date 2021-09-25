@@ -124,13 +124,13 @@ BOOTSTRAPPED_DEVELOPMENT = \
     $(BOOTSTRAPPED_DIR)/ideal/development/constructs/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/flags/*.java \
     $(BOOTSTRAPPED_DIR)/ideal/development/tests/*.java \
-    $(BOOTSTRAPPED_DIR)/ideal/development/types/*.java
+    $(BOOTSTRAPPED_DIR)/ideal/development/types/*.java \
+    $(BOOTSTRAPPED_DIR)/ideal/development/notifications/*.java
 
 DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/literals/*.java \
     \
     $(JSOURCE_DIR)/ideal/development/actions/*.java \
-    $(JSOURCE_DIR)/ideal/development/notifications/*.java \
     $(JSOURCE_DIR)/ideal/development/values/*.java \
     $(JSOURCE_DIR)/ideal/development/functions/*.java \
     $(JSOURCE_DIR)/ideal/development/scanners/*.java \

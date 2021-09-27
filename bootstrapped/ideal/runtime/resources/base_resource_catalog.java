@@ -53,10 +53,8 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     if (scheme_range != null) {
       final string candidate_scheme = name.slice(0, scheme_range.begin());
       if (!this.the_resource_store.allow_scheme(candidate_scheme)) {
-        {
-          utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("scheme "), candidate_scheme), new base_string(" not allowed")));
-          return null;
-        }
+        utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("scheme "), candidate_scheme), new base_string(" not allowed")));
+        return null;
       }
       final immutable_list<immutable_list<Character>> components = base_resource_catalog.path_separator.split(name.skip(scheme_range.end()));
       return new base_resource_identifier(this.the_resource_store, candidate_scheme, (immutable_list<string>) (immutable_list) components.frozen_copy());

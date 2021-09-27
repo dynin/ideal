@@ -28,12 +28,10 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
     this.process(fragment);
   }
   public @Override void write_all(final readonly_list<text_fragment> fragments) {
-    {
-      final readonly_list<text_fragment> fragment_list = fragments;
-      for (Integer fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
-        final text_fragment fragment = fragment_list.get(fragment_index);
-        this.process(fragment);
-      }
+    final readonly_list<text_fragment> fragment_list = fragments;
+    for (Integer fragment_index = 0; fragment_index < fragment_list.size(); fragment_index += 1) {
+      final text_fragment fragment = fragment_list.get(fragment_index);
+      this.process(fragment);
     }
   }
   public @Override void sync() {

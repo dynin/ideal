@@ -21,10 +21,8 @@ public abstract class text_visitor<result_type> {
     } else if (fragment instanceof list_attribute_fragment) {
       return this.process_attributes(((list_attribute_fragment) fragment));
     } else {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown fragment: "), fragment));
-        return null;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown fragment: "), fragment));
+      return null;
     }
   }
   protected abstract result_type process_string(string s);

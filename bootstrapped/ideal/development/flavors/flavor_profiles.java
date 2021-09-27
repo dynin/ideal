@@ -57,10 +57,8 @@ public class flavor_profiles {
     } else if (from == flavor.nameonly_flavor || from == flavor.raw_flavor) {
       return from;
     } else {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown flavor: "), from));
-        return null;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown flavor: "), from));
+      return null;
     }
   }
   public static final base_flavor_profile deeply_immutable_profile = new base_flavor_profile(new base_string("deeply_immutable_profile"), new function1<type_flavor, type_flavor>() {

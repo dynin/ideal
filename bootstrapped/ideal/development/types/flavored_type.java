@@ -19,10 +19,8 @@ public class flavored_type extends base_type {
     this.main_type = main_type;
     this.the_type_flavor = the_type_flavor;
     if (main_type.get_kind() == type_kinds.union_kind) {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Flavored union "), this));
-        return;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Flavored union "), this));
+      return;
     }
   }
   public @Override principal_type principal() {

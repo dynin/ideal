@@ -16,25 +16,19 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
     return false;
   }
   public @Override element_type first() {
-    {
-      utilities.panic(new base_string("Can\'t access the first element of the empty list"));
-      return null;
-    }
+    utilities.panic(new base_string("Can\'t access the first element of the empty list"));
+    return null;
   }
   public @Override element_type last() {
-    {
-      utilities.panic(new base_string("Can\'t access the last element of the empty list"));
-      return null;
-    }
+    utilities.panic(new base_string("Can\'t access the last element of the empty list"));
+    return null;
   }
   public @Override boolean contains(final element_type key) {
     return false;
   }
   public @Override element_type get(final Integer index) {
-    {
-      utilities.panic(new base_string("Empty list"));
-      return null;
-    }
+    utilities.panic(new base_string("Empty list"));
+    return null;
   }
   public @Override immutable_list<element_type> elements() {
     return this;

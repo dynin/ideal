@@ -36,10 +36,8 @@ public class origin_printer {
       } else if (the_origin instanceof source_content) {
         return (base_string) new base_string("");
       } else if (the_origin == null) {
-        {
-          utilities.panic(new base_string("Can\'t display origin"));
-          return null;
-        }
+        utilities.panic(new base_string("Can\'t display origin"));
+        return null;
       }
       assert the_origin != null;
       the_origin = the_origin.deeper_origin();

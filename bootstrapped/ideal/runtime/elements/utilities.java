@@ -17,10 +17,8 @@ public class utilities {
     final boolean first_null = first == null;
     final boolean second_null = second == null;
     if (first_null && second_null) {
-      {
-        utilities.panic(new base_string("double nulls in comparison"));
-        return false;
-      }
+      utilities.panic(new base_string("double nulls in comparison"));
+      return false;
     }
     if (first_null || second_null) {
       return false;

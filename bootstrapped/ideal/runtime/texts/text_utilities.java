@@ -33,10 +33,8 @@ public class text_utilities {
     } else if (fragment instanceof list_text_node) {
       return ((list_text_node) fragment).nodes();
     } else {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown type "), fragment));
-        return null;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown type "), fragment));
+      return null;
     }
   }
   public static text_fragment join(final readonly_list<text_fragment> fragments) {

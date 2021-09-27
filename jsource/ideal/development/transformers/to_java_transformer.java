@@ -458,11 +458,7 @@ public class to_java_transformer extends base_transformer {
 
     construct body = null;
     if (body_statements != null) {
-      if (body_statements.size() == 1 && body_statements.first() instanceof block_construct) {
-        body = body_statements.first();
-      } else {
-        body = new block_construct(body_statements, the_origin);
-      }
+      body = new block_construct(maybe_unwrap_block(body_statements), the_origin);
     }
 
     // Note: the flavor is always missing.
@@ -1359,12 +1355,24 @@ public class to_java_transformer extends base_transformer {
         grouping_type.BRACES, the_origin);
   }
 
+  protected readonly_list<construct> maybe_unwrap_block(readonly_list<construct> body) {
+    if (body.size() == 1 && body.first() instanceof block_construct) {
+      block_construct the_block_construct = (block_construct) body.first();
+      if (the_block_construct.annotations.is_empty()) {
+        return maybe_unwrap_block(the_block_construct.body);
+      }
+    }
+
+    return body;
+  }
+
   @Override
   public construct process_block(block_declaration the_block) {
     origin the_origin = the_block;
+    readonly_list<construct> body = maybe_unwrap_block(transform_action_list(
+        the_block.get_body_action()));
     return new block_construct(to_annotations(the_block.annotations(),
-        annotation_category.BLOCK, true, the_origin),
-        transform_action_list(the_block.get_body_action()), the_origin);
+        annotation_category.BLOCK, true, the_origin), body, the_origin);
   }
 
   private boolean is_explicit_reference(action the_action) {
@@ -1613,7 +1621,12 @@ public class to_java_transformer extends base_transformer {
   private action unwrap_promotion(action the_action) {
     assert the_action instanceof chain_action &&
         ((chain_action) the_action).second instanceof promotion_action;
-    return  ((chain_action) the_action).first;
+
+    do {
+      the_action = ((chain_action) the_action).first;
+    } while (is_promotion_action(the_action));
+
+    return the_action;
   }
 
   private boolean is_reference_equality(action the_action) {

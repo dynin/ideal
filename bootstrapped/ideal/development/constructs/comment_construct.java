@@ -27,10 +27,8 @@ public class comment_construct extends base_construct implements annotation_cons
       assert text != null;
       return (base_string) summary_extractor.get_summary(text);
     } else {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown section: "), the_section));
-        return null;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown section: "), the_section));
+      return null;
     }
   }
   public comment_construct(final comment the_comment, final @Nullable text_fragment the_text_fragment, final origin generated_origin) {

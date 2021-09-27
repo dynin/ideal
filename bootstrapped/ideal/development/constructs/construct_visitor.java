@@ -79,10 +79,8 @@ public abstract class construct_visitor<return_value> implements value {
       return this.process_jump(((jump_construct) c));
     }
     if (c == null) {
-      {
-        utilities.panic(new base_string("null construct in visitor"));
-        return null;
-      }
+      utilities.panic(new base_string("null construct in visitor"));
+      return null;
     }
     {
       utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("unknown construct type in construct_visitor.visit(): "), c));

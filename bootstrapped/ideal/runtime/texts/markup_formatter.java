@@ -106,16 +106,14 @@ public class markup_formatter extends text_formatter {
     this.write_string(markup_formatter.CLOSE_SELF_CLOSING_TAG);
   }
   private void write_tag_attributes(final readonly_dictionary<attribute_id, attribute_fragment> attributes) {
-    {
-      final readonly_list<dictionary.entry<attribute_id, attribute_fragment>> attribute_list = attributes.elements();
-      for (Integer attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
-        final dictionary.entry<attribute_id, attribute_fragment> attribute = attribute_list.get(attribute_index);
-        this.write_string(markup_formatter.ATTRIBUTE_SEPARATOR);
-        this.write_escaped(attribute.key().short_name());
-        this.write_string(markup_formatter.ATTRIBUTE_START);
-        this.process(attribute.value());
-        this.write_string(markup_formatter.ATTRIBUTE_END);
-      }
+    final readonly_list<dictionary.entry<attribute_id, attribute_fragment>> attribute_list = attributes.elements();
+    for (Integer attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
+      final dictionary.entry<attribute_id, attribute_fragment> attribute = attribute_list.get(attribute_index);
+      this.write_string(markup_formatter.ATTRIBUTE_SEPARATOR);
+      this.write_escaped(attribute.key().short_name());
+      this.write_string(markup_formatter.ATTRIBUTE_START);
+      this.process(attribute.value());
+      this.write_string(markup_formatter.ATTRIBUTE_END);
     }
   }
   private void write_escaped(final string s) {

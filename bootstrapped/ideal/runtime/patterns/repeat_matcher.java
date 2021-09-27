@@ -20,10 +20,8 @@ public class repeat_matcher<element_type, result_type, intermediate_type> extend
     while (index < the_list.size()) {
       final @Nullable Integer match = this.the_pattern.match_prefix(the_list.skip(index));
       if (match == null) {
-        {
-          utilities.panic(new base_string("Can\'t parse list in repeat_matcher"));
-          return null;
-        }
+        utilities.panic(new base_string("Can\'t parse list in repeat_matcher"));
+        return null;
       }
       assert match > 0;
       final intermediate_type matched = ((matcher<element_type, intermediate_type>) (matcher) this.the_pattern).parse(the_list.slice(index, index + match));

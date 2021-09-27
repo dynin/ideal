@@ -128,7 +128,10 @@ public class test_resolver {
         file_set.remove(name);
       }
     }
-    return;
+    {
+      file_set.is_empty();
+      return;
+    }
   }
   public test_resolver() { }
   public void run_all_tests() {

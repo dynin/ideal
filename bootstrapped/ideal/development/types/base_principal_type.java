@@ -35,10 +35,8 @@ public abstract class base_principal_type extends base_type implements principal
   }
   public @Override flavor_profile get_flavor_profile() {
     if (this.the_flavor_profile == null) {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("Unset profile in "), this), new base_string(" decl ")), this.the_declaration));
-        return null;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("Unset profile in "), this), new base_string(" decl ")), this.the_declaration));
+      return null;
     }
     return this.the_flavor_profile;
   }

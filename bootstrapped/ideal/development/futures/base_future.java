@@ -37,12 +37,10 @@ public class base_future<element> implements future<element> {
     assert !this.is_done();
     this.the_value = the_value;
     if (this.observers.is_not_empty()) {
-      {
-        final readonly_list<operation> observer_list = this.observers.elements();
-        for (Integer observer_index = 0; observer_index < observer_list.size(); observer_index += 1) {
-          final operation observer = observer_list.get(observer_index);
-          observer.schedule();
-        }
+      final readonly_list<operation> observer_list = this.observers.elements();
+      for (Integer observer_index = 0; observer_index < observer_list.size(); observer_index += 1) {
+        final operation observer = observer_list.get(observer_index);
+        observer.schedule();
       }
     }
   }

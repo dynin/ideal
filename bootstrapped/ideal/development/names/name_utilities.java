@@ -27,10 +27,8 @@ public class name_utilities {
     } else if (ideal.machine.elements.runtime_util.values_equal(index, 2)) {
       return name_utilities.THIRD;
     } else {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Don\'t know how to count up to "), index));
-        return null;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Don\'t know how to count up to "), index));
+      return null;
     }
   }
   public static simple_name join(final simple_name first, final simple_name second) {
@@ -57,10 +55,8 @@ public class name_utilities {
     if (segments.is_not_empty()) {
       return simple_name.make_from_segments(segments.frozen_copy());
     } else {
-      {
-        utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Can\'t parse name "), name));
-        return null;
-      }
+      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Can\'t parse name "), name));
+      return null;
     }
   }
 }

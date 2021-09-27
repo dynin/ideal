@@ -45,10 +45,8 @@ public class type_utilities {
     final base_principal_type the_principal = (base_principal_type) the_type;
     if (!the_principal.has_flavor_profile()) {
       if (!the_principal.get_pass().is_before(declaration_pass.FLAVOR_PROFILE)) {
-        {
-          utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("P "), the_principal.get_pass()), new base_string(" of ")), the_principal));
-          return null;
-        }
+        utilities.panic(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("P "), the_principal.get_pass()), new base_string(" of ")), the_principal));
+        return null;
       }
       assert the_principal.get_pass().is_before(declaration_pass.FLAVOR_PROFILE);
       the_principal.process_declaration(declaration_pass.FLAVOR_PROFILE);

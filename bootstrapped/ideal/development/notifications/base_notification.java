@@ -48,6 +48,7 @@ public class base_notification implements notification {
   }
   public @Override void report() {
     notification_context.get().write(this);
+    return;
   }
   public @Override text_fragment render_text(final boolean prefix_with_source) {
     string full_message;

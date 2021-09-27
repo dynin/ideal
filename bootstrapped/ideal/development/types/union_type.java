@@ -80,12 +80,10 @@ public class union_type extends base_principal_type {
     return result;
   }
   protected @Override void do_declare_actual(final declaration_pass pass) {
-    {
-      final readonly_list<abstract_value> the_parameter_list = this.parameters.the_list;
-      for (Integer the_parameter_index = 0; the_parameter_index < the_parameter_list.size(); the_parameter_index += 1) {
-        final abstract_value the_parameter = the_parameter_list.get(the_parameter_index);
-        type_utilities.prepare(the_parameter, pass);
-      }
+    final readonly_list<abstract_value> the_parameter_list = this.parameters.the_list;
+    for (Integer the_parameter_index = 0; the_parameter_index < the_parameter_list.size(); the_parameter_index += 1) {
+      final abstract_value the_parameter = the_parameter_list.get(the_parameter_index);
+      type_utilities.prepare(the_parameter, pass);
     }
   }
   protected @Override type_declaration_context get_context() {

@@ -1457,12 +1457,12 @@ testdata/sequence.i:105: Overloaded procedure declaration
                     ^^^^^^^^^^^
   testdata/sequence.i:96: Original declaration
 ============ BODY_CHECK
-    append_all(ns1);
-               ^^^
-testdata/sequence.i:36: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
-    append_all(ns2);
-               ^^^
-testdata/sequence.i:42: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
+  public overload sequence(sequence ns1, element n2) {
+                           ---------^^^
+testdata/sequence.i:34: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
+  public overload sequence(element n1, sequence ns2) {
+                                       ---------^^^
+testdata/sequence.i:39: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
     return result;
     ^^^^^^--------
 testdata/sequence.i:103: Can't promote immutable reference[mutable sequence[sequence.element]] to mutable sequence

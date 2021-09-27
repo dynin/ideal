@@ -397,7 +397,9 @@ public class to_java_transformer extends base_transformer {
       } else if (body.size() == 1) {
         // TODO: use analyzables instead of constructs here
         construct body_construct = body.first();
-        if (!is_constructor && !void_return && !unreachable_result) {
+        if (body_construct instanceof block_construct) {
+          body = new base_list<construct>(body_construct);
+        } else if (!is_constructor && !void_return && !unreachable_result) {
           body = new base_list<construct>(new return_construct(body_construct, the_origin));
         }
       }
@@ -456,7 +458,11 @@ public class to_java_transformer extends base_transformer {
 
     construct body = null;
     if (body_statements != null) {
-      body = new block_construct(body_statements, the_origin);
+      if (body_statements.size() == 1 && body_statements.first() instanceof block_construct) {
+        body = body_statements.first();
+      } else {
+        body = new block_construct(body_statements, the_origin);
+      }
     }
 
     // Note: the flavor is always missing.
@@ -1676,11 +1682,21 @@ public class to_java_transformer extends base_transformer {
 
     if (the_return.return_type.principal() == library().void_type()) {
       @Nullable procedure_declaration the_procedure = the_return.the_procedure;
+      return_construct the_return_construct;
       // We rewrite return constructs of procedures that return 'Void' with capital 'V'
       if (should_use_wrapper_in_return(the_procedure)) {
-        return new return_construct(make_null(the_origin), the_origin);
+        the_return_construct = new return_construct(make_null(the_origin), the_origin);
+      } else {
+        the_return_construct = new return_construct(null, the_origin);
       }
-      return new return_construct(null, the_origin);
+
+      if (is_nothing(the_return.expression)) {
+        return the_return_construct;
+      } else {
+        return new block_construct(new empty<annotation_construct>(),
+            new base_list<construct>(transform_action(the_return.expression),
+                the_return_construct), the_origin);
+      }
     }
 
     construct the_expression;

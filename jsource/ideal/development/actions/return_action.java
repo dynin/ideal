@@ -61,6 +61,6 @@ public class return_action extends base_action {
 
   @Override
   public string to_string() {
-    return new base_string("return: ", expression.to_string());
+    return utilities.describe(this, expression);
   }
 }

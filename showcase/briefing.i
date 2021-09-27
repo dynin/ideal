@@ -119,7 +119,12 @@ program briefing {
         score = 0;
       }
       title : item_dictionary.get("title") !> string;
-      descendants : item_dictionary.get("descendants") !> nonnegative;
+      var nonnegative descendants;
+      if (item_dictionary.contains_key("descendants")) {
+        descendants = item_dictionary.get("descendants") !> nonnegative;
+      } else {
+        descendants = 0;
+      }
 
       return item.new(id, by, time, url, score, title, descendants);
     }
@@ -172,10 +177,8 @@ program briefing {
   var resource_catalog output_catalog;
   hour : hour_now();
   minute : minute_now();
-  --first : day_of(2021, JULY, 6);
-  first : day_of(2021, AUGUST, 20);
+  var first : day_of(2021, SEPTEMBER, 24);
   var last : today();
-  --last : day_of(2021, AUGUST, 12);
 
   void start() {
     input_catalog = briefing_catalog.resolve("input").access_catalog();
@@ -185,6 +188,8 @@ program briefing {
       test_run();
       return;
     }
+
+    first = last.add_days(-3);
 
     if (hour < HOUR_DAY_STARTS) {
       last = last.add_days(-1);

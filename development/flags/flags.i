@@ -7,6 +7,7 @@
 --- Flags for the create applications.
 package flags {
   implicit import ideal.library.elements;
+  implicit import ideal.development.elements;
 
   class create_flags;
   namespace debug;

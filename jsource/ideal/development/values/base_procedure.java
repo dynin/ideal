@@ -21,7 +21,6 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.flags.*;
-import ideal.development.analyzers.*;
 
 public abstract class base_procedure extends base_data_value<procedure_value>
     implements procedure_value {

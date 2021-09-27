@@ -23,6 +23,7 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.flags.*;
 import static ideal.development.declarations.annotation_library.*;
 
 public class type_declaration_analyzer extends declaration_analyzer<type_declaration_construct>
@@ -425,7 +426,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       if (!in_progress) {
         multi_pass_analysis(analysis_pass.METHOD_AND_VARIABLE_DECL);
       } else {
-        if (DEBUG.in_progress_declaration) {
+        if (debug.IN_PROGRESS_DECLARATION) {
           log.debug("In progress mv: " + this + " lp " + last_pass);
         }
         //utilities.panic("In progress mv: " + this);

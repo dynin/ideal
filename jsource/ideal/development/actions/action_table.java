@@ -13,6 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.types.*;
+import ideal.development.flags.*;
 
 import javax.annotation.Nullable;
 
@@ -48,12 +49,11 @@ public class action_table implements value {
 
   private dictionary<action_key, list<action>> data =
       new hash_dictionary<action_key, list<action>>(new action_key_equivalence());
-  private static boolean debug = false;
 
   public readonly_list<action> lookup(type from, action_name name) {
     @Nullable list<action> rows = data.get(new action_key(from, name));
     if (rows != null) {
-      if (DEBUG.trace && name == DEBUG.trace_name) {
+      if (debug.TRACE && name == debug.TRACE_NAME) {
         log.debug("Found " + name + " in " + from);
       }
       return rows;
@@ -63,7 +63,7 @@ public class action_table implements value {
   }
 
   public void add(type from, action_name name, action the_action) {
-    if (DEBUG.trace && name == DEBUG.trace_name) {
+    if (debug.TRACE && name == debug.TRACE_NAME) {
       log.debug("Adding " + name + " in " + from);
     }
 

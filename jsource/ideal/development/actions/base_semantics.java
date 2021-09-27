@@ -22,6 +22,7 @@ import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
 import ideal.development.origins.*;
 import ideal.development.declarations.*;
+import ideal.development.flags.*;
 
 import ideal.development.values.singleton_value;
 
@@ -61,7 +62,7 @@ public class base_semantics implements semantics {
     }
 
     if (candidates.is_empty()) {
-      if (DEBUG.not_found && name == DEBUG.trace_name) {
+      if (debug.NOT_FOUND && name == debug.TRACE_NAME) {
         log.debug("Not found " + name + " for " + from + ": " + promotions);
       }
       return new empty<action>();

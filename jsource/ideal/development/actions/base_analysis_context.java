@@ -87,12 +87,12 @@ public abstract class base_analysis_context extends debuggable implements analys
       if (the_action != null) {
         @Nullable action result = find_promotion(the_action, target, null);
         if (result != null) {
-          return result;
+          return action_utilities.combine(the_action, result, origin_utilities.no_origin);
         }
       }
     }
 
-    return language.find_promotion(actions, from, target);
+    return language.find_promotion(actions, from.result().type_bound(), target);
   }
 
   public @Nullable narrow_action can_narrow(action from,
@@ -146,7 +146,7 @@ public abstract class base_analysis_context extends debuggable implements analys
 
     // TODO: unify code with constrained_analysis_context
     if (result != null) {
-      return result;
+      return action_utilities.combine(from, result, pos);
     } else {
       error_signal signal = action_utilities.cant_promote(from.result(), target, this, pos);
       //return new error_action(signal);

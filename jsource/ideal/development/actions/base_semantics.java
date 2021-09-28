@@ -225,23 +225,14 @@ public class base_semantics implements semantics {
   }
 
   @Nullable
-  public action find_promotion(action_table actions, action from, type target) {
-    abstract_value the_value = from.result();
-    type subtype = the_value.type_bound();
-
-    if (subtype == target) {
-      return from; //new promotion_action(subtype);
-    }
-
-    type the_supertype = find_supertype(actions, the_value, target);
-    if (the_supertype != null) {
-      return from; //new promotion_action(the_supertype);
-      //return new promotion_action(the_supertype, true).
+  public action find_promotion(action_table actions, type subtype, type target) {
+    if (subtype == target || find_supertype(actions, subtype, target) != null) {
+      return new stub_action(subtype);
     }
 
     // Anything can be promoted to the 'void' value.
     if (target == library().immutable_void_type()) {
-      return new chain_action(from,
+      return new chain_action(new stub_action(subtype),
           new promotion_action(target, false, origin_utilities.no_origin),
           origin_utilities.no_origin);
     }
@@ -250,7 +241,7 @@ public class base_semantics implements semantics {
 
     @Nullable type_and_action result = promotions.members.get(target);
     if (result != null) {
-      return action_utilities.combine(from, result.get_action(), origin_utilities.no_origin);
+      return result.get_action();
     }
     // TODO: use filter().
     readonly_list<dictionary.entry<type, type_and_action>> promotions_list =
@@ -264,7 +255,7 @@ public class base_semantics implements semantics {
     }
     readonly_list<action> best = select_best(actions, candidates);
     if (best.size() == 1) {
-      return action_utilities.combine(from, best.first(), origin_utilities.no_origin);
+      return best.first();
     }
     if (best.size() > 1) {
       utilities.panic("Multiple subtypes");

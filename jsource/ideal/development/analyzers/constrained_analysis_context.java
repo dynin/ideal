@@ -174,7 +174,7 @@ public class constrained_analysis_context extends debuggable implements analysis
 
     // TODO: unify code with base_analysis_context
     if (result != null) {
-      return result;
+      return action_utilities.combine(from, result, pos);
     } else {
       error_signal signal = action_utilities.cant_promote(from.result(), target, this, pos);
       //return new error_action(signal);

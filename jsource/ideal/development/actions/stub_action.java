@@ -22,8 +22,8 @@ import javax.annotation.Nullable;
 public class stub_action extends base_action {
   private final type the_type;
 
-  public stub_action(type the_type, origin the_origin) {
-    super(the_origin);
+  public stub_action(type the_type) {
+    super(origin_utilities.no_origin);
     this.the_type = the_type;
   }
 

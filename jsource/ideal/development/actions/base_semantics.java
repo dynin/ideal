@@ -205,7 +205,7 @@ public class base_semantics implements semantics {
     supertype_set supertypes = supertype_set.make(subtype, actions);
 
     // TODO: use filter.
-    immutable_list<type> supertypes_list = supertypes.members.elements();
+    immutable_list<type> supertypes_list = supertypes.type_list();
     list<type> candidates = new base_list<type>();
     for (int i = 0; i < supertypes_list.size(); ++i) {
       type candidate = supertypes_list.get(i);

@@ -10,6 +10,7 @@ namespace debug {
   var boolean ACTIONS;
   var boolean CURE_UNDECLARED;
   var boolean HIDE_DECLARATIONS;
+  var boolean CACHE_ACTIONS;
   var boolean RESOLVE : false; -- Currently unused.
   var boolean SUBTYPE : false; -- Currently unused.
   var boolean PROMOTION : false; -- Currently unused.
@@ -25,5 +26,6 @@ namespace debug {
     ACTIONS = flags.DEBUG_ACTIONS;
     CURE_UNDECLARED = flags.CURE_UNDECLARED;
     HIDE_DECLARATIONS = flags.HIDE_DECLARATIONS;
+    CACHE_ACTIONS = flags.CACHE_ACTIONS;
   }
 }

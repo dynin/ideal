@@ -19,6 +19,8 @@ target analyze_library: analyze(ideal.library);
 
 target analyze_runtime: analyze(ideal.runtime);
 
+target analyze_sources: analyze(ideal.library, ideal.runtime, ideal.development);
+
 target analyze_all: analyze(ideal);
 
 target print_elements: print_source(ideal.library.elements);

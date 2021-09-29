@@ -66,6 +66,7 @@ class create {
 
   public status start(create_flags the_create_flags) {
     debug.initialize(the_create_flags);
+    // debug.DO_REDUNDANT_CHECKS = !debug.CACHE_ACTIONS;
     if (the_create_flags.UNIT_TESTS) {
       if (false) {
         System.out.println(network.NETWORK_CATALOG.resolve(

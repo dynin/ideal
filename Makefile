@@ -154,6 +154,10 @@ analyze_runtime: $(IDEAL_TARGET)
 analyze_all: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=analyze_all
 
+time: $(IDEAL_TARGET)
+	time $(CREATE) -input=$(IDEAL_SOURCE) -target=analyze_sources
+	time $(CREATE) -cache-actions -input=$(IDEAL_SOURCE) -target=analyze_sources
+
 print_elements: $(IDEAL_TARGET)
 	$(CREATE) -debug-actions -debug-progress -input=$(IDEAL_SOURCE) -target=print_elements
 

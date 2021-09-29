@@ -10,6 +10,7 @@ public class debug {
   public static boolean ACTIONS;
   public static boolean CURE_UNDECLARED;
   public static boolean HIDE_DECLARATIONS;
+  public static boolean CACHE_ACTIONS;
   public static boolean RESOLVE = false;
   public static boolean SUBTYPE = false;
   public static boolean PROMOTION = false;
@@ -24,5 +25,6 @@ public class debug {
     debug.ACTIONS = flags.DEBUG_ACTIONS;
     debug.CURE_UNDECLARED = flags.CURE_UNDECLARED;
     debug.HIDE_DECLARATIONS = flags.HIDE_DECLARATIONS;
+    debug.CACHE_ACTIONS = flags.CACHE_ACTIONS;
   }
 }

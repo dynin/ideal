@@ -14,35 +14,71 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
+import ideal.development.flags.*;
 import ideal.development.notifications.*;
 
 class supertype_set extends debuggable implements readonly_displayable {
 
-  public final set<type> members;
+  private static dictionary<type, supertype_set> supertype_sets =
+      new hash_dictionary<type, supertype_set>(type_equivalence.instance);
 
-  private supertype_set(set<type> members) {
-    this.members = members;
+  private final procedure0<Void> clear_callback;
+  private set<type> members;
+
+  private supertype_set() {
+    clear_callback = new procedure0<Void>() {
+      @Override
+      public Void call() {
+        clear();
+        return null;
+      }
+    };
   }
 
-  public set<type> types() {
-    return members;
+  private void clear() {
+    this.members = null;
+  }
+
+  public immutable_list<type> type_list() {
+    return members.elements();
   }
 
   public boolean contains(type element) {
     return members.contains(element);
   }
 
-  public static supertype_set make(type from, action_table actions) {
-    assert from != null;
+  public static supertype_set make(type the_type, action_table actions) {
+    assert the_type != null;
+    if (debug.CACHE_ACTIONS) {
+      supertype_set result = supertype_sets.get(the_type);
+      if (result == null) {
+        result = new supertype_set();
+        supertype_sets.put(the_type, result);
+      }
+      if (result.members == null) {
+        result.populate(the_type, actions);
+      }
+      return result;
+    } else {
+      supertype_set result = new supertype_set();
+      result.populate(the_type, actions);
+      return result;
+    }
+  }
+
+  private void populate(type the_type, action_table actions) {
     set<type> result = new hash_set<type>();
     list<type> considered = new base_list<type>();
 
-    considered.append(from);
-    result.add(from);
+    considered.append(the_type);
+    result.add(the_type);
 
     for (int i = 0; i < considered.size(); ++i) {
       type considered_type = considered.get(i);
       readonly_list<action> new_actions = actions.lookup(considered_type, special_name.SUPERTYPE);
+      if (debug.CACHE_ACTIONS) {
+        actions.observe(considered_type, special_name.SUPERTYPE, clear_callback);
+      }
       for (int j = 0; j < new_actions.size(); ++j) {
         action new_action = new_actions.get(j);
         type new_action_type = new_action.result().type_bound();
@@ -53,7 +89,7 @@ class supertype_set extends debuggable implements readonly_displayable {
       }
     }
 
-    return new supertype_set(result);
+    this.members = result;
   }
 
   @Override

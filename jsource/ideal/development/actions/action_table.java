@@ -13,6 +13,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.types.*;
+import ideal.development.names.*;
 import ideal.development.flags.*;
 
 import javax.annotation.Nullable;
@@ -47,11 +48,15 @@ public class action_table implements value {
     }
   };
 
-  private dictionary<action_key, list<action>> data =
+  private dictionary<action_key, list<action>> action_dictionary =
       new hash_dictionary<action_key, list<action>>(new action_key_equivalence());
+  private dictionary<type, list<procedure0<Void>>> supertype_callbacks =
+      new hash_dictionary<type, list<procedure0<Void>>>(type_equivalence.instance);
+  private dictionary<type, list<procedure0<Void>>> promotion_callbacks =
+      new hash_dictionary<type, list<procedure0<Void>>>(type_equivalence.instance);
 
   public readonly_list<action> lookup(type from, action_name name) {
-    @Nullable list<action> rows = data.get(new action_key(from, name));
+    @Nullable list<action> rows = action_dictionary.get(new action_key(from, name));
     if (rows != null) {
       if (debug.TRACE && name == debug.TRACE_NAME) {
         log.debug("Found " + name + " in " + from);
@@ -62,20 +67,57 @@ public class action_table implements value {
     }
   }
 
-  public void add(type from, action_name name, action the_action) {
+  public void add(type the_type, action_name name, action the_action) {
     if (debug.TRACE && name == debug.TRACE_NAME) {
-      log.debug("Adding " + name + " in " + from);
+      log.debug("Adding " + name + " in " + the_type);
     }
 
-    action_key key = new action_key(from, name);
-    list<action> rows = data.get(key);
+    @Nullable dictionary<type, list<procedure0<Void>>> callbacks = get_callbacks(name);
+    if (callbacks != null) {
+      list<procedure0<Void>> callback_list = callbacks.get(the_type);
+      if (callback_list != null) {
+        for (int i = 0; i < callback_list.size(); ++i) {
+          callback_list.get(i).call();
+        }
+        callbacks.remove(the_type);
+      }
+    }
+
+    action_key key = new action_key(the_type, name);
+    list<action> rows = action_dictionary.get(key);
 
     if (rows == null) {
       list<action> ops = new base_list<action>();
       ops.append(the_action);
-      data.put(key, ops);
+      action_dictionary.put(key, ops);
     } else {
       rows.append(the_action);
+    }
+  }
+
+  private @Nullable dictionary<type, list<procedure0<Void>>> get_callbacks(action_name name) {
+    if (name == special_name.SUPERTYPE) {
+      return supertype_callbacks;
+    } else if (name == special_name.PROMOTION) {
+      return promotion_callbacks;
+    } else {
+      return null;
+    }
+  }
+
+  public void observe(type the_type, action_name name, procedure0<Void> callback) {
+    @Nullable dictionary<type, list<procedure0<Void>>> callbacks = get_callbacks(name);
+
+    if (callbacks == null) {
+      utilities.panic("Cannot observe " + name);
+    }
+
+    list<procedure0<Void>> callback_list = callbacks.get(the_type);
+
+    if (callback_list == null) {
+      callbacks.put(the_type, new base_list<procedure0<Void>>(callback));
+    } else {
+      callback_list.append(callback);
     }
   }
 }

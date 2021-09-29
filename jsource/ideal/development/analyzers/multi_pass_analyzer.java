@@ -74,7 +74,7 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
 
         if (current_signal instanceof error_signal) {
           last_error = (error_signal) current_signal;
-          maybe_report_error(last_error);
+          last_error.report_not_cascading();
         }
       }
       if (trace_analysis()) {

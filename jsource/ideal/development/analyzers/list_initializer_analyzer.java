@@ -69,7 +69,7 @@ public class list_initializer_analyzer extends single_pass_analyzer {
         } else {
           error_signal unify_error = new error_signal(
               new base_string("Can't figure out element type"), this);
-          maybe_report_error(unify_error);
+          unify_error.report_not_cascading();
           if (error == null) {
             error = unify_error;
           }

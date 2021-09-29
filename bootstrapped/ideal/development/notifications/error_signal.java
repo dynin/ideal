@@ -40,6 +40,11 @@ public class error_signal extends debuggable implements signal, analyzable {
   public @Override readonly_list<analyzable> children() {
     return new empty<analyzable>();
   }
+  public void report_not_cascading() {
+    if (!this.is_cascading) {
+      this.cause.report();
+    }
+  }
   public @Override analyzable specialize(final specialization_context context, final principal_type new_parent) {
     return this;
   }

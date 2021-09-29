@@ -440,7 +440,7 @@ public class procedure_analyzer extends declaration_analyzer
         notification duplicate_notification = new base_notification(overloaded_message, this,
             new base_list<notification>(original_notification));
         error_signal overloaded_error = new error_signal(duplicate_notification, false);
-        maybe_report_error(overloaded_error);
+        overloaded_error.report_not_cascading();
       }
     }
 

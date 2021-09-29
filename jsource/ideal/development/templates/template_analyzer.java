@@ -81,7 +81,7 @@ public class template_analyzer extends extension_analyzer implements declaration
   public analyzable sexpr_to_analyzable(sexpression_construct sexpr) {
     analyzable result = do_sexpr_to_analyzable(sexpr);
     if (result instanceof error_signal) {
-      maybe_report_error((error_signal) result);
+      ((error_signal) result).report_not_cascading();
     }
     return result;
   }

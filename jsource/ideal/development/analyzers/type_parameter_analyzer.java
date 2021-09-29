@@ -105,7 +105,7 @@ public class type_parameter_analyzer extends declaration_analyzer
       signal the_signal = process_parameter();
       if (the_signal instanceof error_signal) {
         var_type = library().value_type().get_flavored(flavor.any_flavor);
-        maybe_report_error((error_signal) the_signal);
+        ((error_signal) the_signal).report_not_cascading();
       } else {
         assert var_type != null;
       }

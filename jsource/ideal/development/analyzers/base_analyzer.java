@@ -183,19 +183,8 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     }
   }
 
-  protected void maybe_report_error(error_signal error) {
-    if (!error.is_cascading) {
-      error.cause.report();
-      if (false) {
-        log.debug("Error: " + this + " @ " + parent);
-        Thread.dumpStack();
-      }
-    }
-  }
-
-  // TODO: redundant with maybe_report_error()
-  protected void handle_error(error_signal signal) {
-    maybe_report_error(signal);
+  protected void handle_error(error_signal the_error_signal) {
+    the_error_signal.report_not_cascading();
   }
 
   protected void add_type_dependence(@Nullable principal_type subtype, principal_type supertype) {

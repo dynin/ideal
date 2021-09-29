@@ -54,14 +54,16 @@ public abstract class single_pass_analyzer extends base_analyzer {
     this.saved_result = saved_result;
 
     if (saved_result instanceof error_signal) {
-      maybe_report_error((error_signal) saved_result);
+      ((error_signal) saved_result).report_not_cascading();
     }
   }
 
   @Override
-  protected void handle_error(error_signal signal) {
-    this.saved_result = signal;
-    maybe_report_error(signal);
+  protected void handle_error(error_signal the_error_signal) {
+    super.handle_error(the_error_signal);
+    if (saved_result == null) {
+      saved_result = the_error_signal;
+    }
   }
 
   @Override

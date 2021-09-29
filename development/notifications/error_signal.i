@@ -36,6 +36,12 @@ class error_signal {
 
   override readonly list[analyzable] children => empty[analyzable].new();
 
+  void report_not_cascading() {
+    if (!is_cascading) {
+      cause.report();
+    }
+  }
+
   override analyzable specialize(specialization_context context,
       principal_type new_parent) => this;
 

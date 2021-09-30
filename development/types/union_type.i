@@ -31,7 +31,7 @@ class union_type {
     return result;
   }
 
-  type_parameters get_parameters => parameters;
+  var type_parameters get_parameters => parameters;
 
   implement kind get_kind => type_kinds.union_kind;
 

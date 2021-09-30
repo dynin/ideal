@@ -19,7 +19,7 @@ class parametrizable_state {
     this.parametrized_types = hash_dictionary[type_parameters, parametrized_type].new();
   }
 
-  master_type get_master => master;
+  var master_type get_master => master;
 
   type bind_parameters(type_parameters parameters) {
     -- TODO: use origin.
@@ -34,17 +34,17 @@ class parametrizable_state {
         assert !the_type_graph.introduces_cycle(result, primary_type);
         the_type_graph.add_edge(result, primary_type, type_utilities.PRIMARY_TYPE_ORIGIN);
       } else {
-        assert is_special();
+        assert is_special;
       }
     }
     return result;
   }
 
-  private boolean is_special => master.get_kind == type_kinds.#id:procedure_kind;
+  private var boolean is_special => master.get_kind == type_kinds.#id:procedure_kind;
 
   private parametrized_type make_parametrized() => parametrized_type.new(master);
 
-  parametrized_type or null get_primary => primary_type;
+  var parametrized_type or null get_primary => primary_type;
 
   parametrized_type make_primary() {
     assert primary_type is null;
@@ -60,7 +60,7 @@ class parametrizable_state {
   void bind_parametrized(parametrized_type parametrized, type_parameters parameters) {
     assert parametrized.get_master() == this.master;
     assert !parametrized.parameters_defined();
-    assert is_special() || primary_type == parametrized;
+    assert is_special || primary_type == parametrized;
     if (parametrized_types.contains_key(parameters)) {
       utilities.panic("Already defined param type " ++ parametrized ++ " for " ++ parameters);
     }

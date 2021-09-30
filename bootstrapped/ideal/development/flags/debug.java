@@ -25,6 +25,6 @@ public class debug {
     debug.ACTIONS = flags.DEBUG_ACTIONS;
     debug.CURE_UNDECLARED = flags.CURE_UNDECLARED;
     debug.HIDE_DECLARATIONS = flags.HIDE_DECLARATIONS;
-    debug.CACHE_ACTIONS = flags.CACHE_ACTIONS;
+    debug.CACHE_ACTIONS = !flags.SLOW_MODE;
   }
 }

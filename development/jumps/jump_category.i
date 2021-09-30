@@ -21,5 +21,5 @@ enum jump_category {
     return simple_name.make(name_string);
   }
 
-  override string to_string() => name_string;
+  override string to_string => name_string;
 }

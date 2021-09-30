@@ -23,12 +23,12 @@ namespace core_types {
     UNDEFINED = master_type.new(special_name.new("undefined"), type_kinds.block_kind);
   }
 
-  principal_type root_type => ROOT;
-  principal_type any_type => ANY_TYPE;
-  type error_type => ERROR;
-  type unreachable_type => UNREACHABLE;
-  type target_type => TARGET;
-  type undefined_type => UNDEFINED;
+  var principal_type root_type => ROOT;
+  var principal_type any_type => ANY_TYPE;
+  var type error_type => ERROR;
+  var type unreachable_type => UNREACHABLE;
+  var type target_type => TARGET;
+  var type undefined_type => UNDEFINED;
 
   void set_context(type_declaration_context the_context) {
     ROOT.set_context(the_context);

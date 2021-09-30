@@ -20,7 +20,7 @@ meta_flags class create_flags {
 
   boolean CURE_UNDECLARED;
   boolean HIDE_DECLARATIONS;
-  boolean CACHE_ACTIONS;
+  boolean SLOW_MODE;
 
   boolean DEBUG_CONSTRUCTS;
   boolean DEBUG_ACTIONS;

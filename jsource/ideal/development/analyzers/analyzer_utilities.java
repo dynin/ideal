@@ -86,6 +86,7 @@ public class analyzer_utilities {
       analysis_context the_context) {
 
     boolean is_explicit = the_procedure.annotations().has(general_modifier.explicit_modifier);
+    boolean is_var = the_procedure.annotations().has(general_modifier.var_modifier);
     origin the_origin = the_procedure;
     final type target_type =
         the_procedure.declared_in_type().get_flavored(the_procedure.get_flavor());
@@ -120,6 +121,15 @@ public class analyzer_utilities {
           }
         }
       }
+    } else if (is_var) {
+      // TODO: handle overloaded variable procedures.
+      assert the_overloaded_procedure == null;
+      // TODO: signal error instead of panicing.
+      assert the_procedure.get_parameter_variables().is_empty();
+      result_action = (action) the_executor.bind_parameters(new action_parameters(), the_context,
+          the_origin);
+      the_context.add(target_type, the_procedure.short_name(),
+          new proc_as_ref_action(the_procedure));
     } else if (can_be_overriden(the_procedure)) {
       readonly_list<declaration> overriden_list = the_procedure.get_overriden();
       set<dispatch_action> dispatches = new hash_set<dispatch_action>();
@@ -174,7 +184,7 @@ public class analyzer_utilities {
       result_action = executor_action;
     }
 
-    if (!is_explicit) {
+    if (!is_explicit && !is_var) {
       the_context.add(target_type, the_procedure.short_name(), result_action);
     }
 

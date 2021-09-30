@@ -147,10 +147,13 @@ class X {
     foo_value = true;
   }
 
+  var string get_string => "foo";
+
   void test_types() {
     b : X.new();
     foo_value = true;
     this.foo_value = "abc";
     string foo_string : foo_value;
+    println(get_string);
   }
 }

@@ -2084,6 +2084,9 @@ public class to_java_transformer extends base_transformer {
         return process_action(the_chain_action.first, the_origin);
       } else if (the_chain_action.second instanceof promotion_action) {
         return process_action(the_chain_action.first, the_origin);
+      } else if (the_chain_action.second instanceof proc_as_ref_action) {
+        return process_proc_as_ref_action(the_chain_action.first,
+            (proc_as_ref_action) the_chain_action.second, the_origin);
       }
       utilities.panic("Unrecognized chain action: " + the_chain_action);
     }
@@ -2206,6 +2209,16 @@ public class to_java_transformer extends base_transformer {
       utilities.panic("processing dispatch action, primary " + primary);
       return null;
     }
+  }
+
+  private construct process_proc_as_ref_action(action from_action,
+      proc_as_ref_action the_proc_as_ref_action, origin the_origin) {
+    procedure_declaration the_procedure_declaration = the_proc_as_ref_action.the_declaration;
+    construct from_construct = transform_and_maybe_rewrite(from_action);
+    assert from_construct != null;
+    action_name the_name = map_name(the_procedure_declaration.short_name());
+    construct result = new resolve_construct(from_construct, the_name, the_origin);
+    return make_call(result, new empty<construct>(), the_origin);
   }
 
   private construct process_cast(cast_action the_cast_action, origin the_origin) {

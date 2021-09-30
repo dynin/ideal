@@ -16,25 +16,69 @@ import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.origins.*;
 import ideal.development.notifications.*;
+import ideal.development.flags.*;
 
-class transitive_set extends debuggable implements readonly_displayable {
+class promotion_set extends debuggable implements readonly_displayable {
 
-  public final dictionary<type, type_and_action> members;
+  private static dictionary<type, promotion_set> promotion_sets =
+      new hash_dictionary<type, promotion_set>(type_equivalence.instance);
 
-  private transitive_set(dictionary<type, type_and_action> members) {
-    this.members = members;
+  private final procedure0<Void> clear_callback;
+  private dictionary<type, type_and_action> members;
+
+  private promotion_set() {
+    clear_callback = new procedure0<Void>() {
+      @Override
+      public Void call() {
+        clear();
+        return null;
+      }
+    };
   }
 
-  public readonly_set<type> types() {
-    return members.keys();
+  private void clear() {
+    this.members = null;
+  }
+
+  public action get_action(type the_type) {
+    type_and_action result = members.get(the_type);
+    if (result != null) {
+      return result.get_action();
+    } else {
+      return null;
+    }
+  }
+
+  public readonly_list<dictionary.entry<type, type_and_action>> entry_list() {
+    return members.elements();
   }
 
   public boolean contains(type element) {
     return members.contains_key(element);
   }
 
-  public static transitive_set make(type from, action_table actions) {
-    assert from != null;
+  public static promotion_set make(type the_type, action_table actions) {
+    assert the_type != null;
+
+    promotion_set result;
+    if (debug.CACHE_ACTIONS) {
+      result = promotion_sets.get(the_type);
+      if (result == null) {
+        result = new promotion_set();
+        promotion_sets.put(the_type, result);
+      }
+      if (result.members == null) {
+        result.populate(the_type, actions);
+      }
+    } else {
+      result = new promotion_set();
+      result.populate(the_type, actions);
+    }
+
+    return result;
+  }
+
+  private void populate(type from, action_table actions) {
     dictionary<type, type_and_action> result = new hash_dictionary<type, type_and_action>();
     list<type> considered = new base_list<type>();
 
@@ -44,7 +88,6 @@ class transitive_set extends debuggable implements readonly_displayable {
       from_action = from.to_action(origin_utilities.no_origin);
     } else {
       from_action = new stub_action(from);
-      // from_action = new promotion_action(from, false);
     }
     result.put(from, new type_and_action(from, from_action));
 
@@ -53,6 +96,9 @@ class transitive_set extends debuggable implements readonly_displayable {
       action considered_action = result.get(considered_type).get_action();
       assert considered_action != null;
       readonly_list<action> new_actions = actions.lookup(considered_type, special_name.PROMOTION);
+      if (debug.CACHE_ACTIONS) {
+        actions.observe(considered_type, special_name.PROMOTION, clear_callback);
+      }
       for (int j = 0; j < new_actions.size(); ++j) {
         action new_action = new_actions.get(j);
         type new_action_type = new_action.result().type_bound();
@@ -66,7 +112,7 @@ class transitive_set extends debuggable implements readonly_displayable {
       }
     }
 
-    return new transitive_set(result);
+    members = result;
   }
 
   @Override

@@ -40,9 +40,9 @@ public class base_semantics implements semantics {
 
     assert name != special_name.PROMOTION;
 
-    transitive_set promotions = transitive_set.make(from, actions);
+    promotion_set promotions = promotion_set.make(from, actions);
 
-    readonly_list<dictionary.entry<type, type_and_action>> members = promotions.members.elements();
+    readonly_list<dictionary.entry<type, type_and_action>> members = promotions.entry_list();
     list<type_and_action> candidates = new base_list<type_and_action>();
 
     for (int i = 0; i < members.size(); ++i) {
@@ -120,8 +120,8 @@ public class base_semantics implements semantics {
   }
 
   private boolean is_better(action_table actions, type_and_action r1, type_and_action r2) {
-    transitive_set s1 = transitive_set.make(r1.get_type(), actions);
-    transitive_set s2 = transitive_set.make(r2.get_type(), actions);
+    promotion_set s1 = promotion_set.make(r1.get_type(), actions);
+    promotion_set s2 = promotion_set.make(r2.get_type(), actions);
 
     return s1.contains(r2.get_type()) && !s2.contains(r1.get_type());
   }
@@ -237,15 +237,15 @@ public class base_semantics implements semantics {
           origin_utilities.no_origin);
     }
 
-    transitive_set promotions = transitive_set.make(subtype, actions);
+    promotion_set promotions = promotion_set.make(subtype, actions);
 
-    @Nullable type_and_action result = promotions.members.get(target);
+    @Nullable action result = promotions.get_action(target);
     if (result != null) {
-      return result.get_action();
+      return result;
     }
     // TODO: use filter().
     readonly_list<dictionary.entry<type, type_and_action>> promotions_list =
-        promotions.members.elements();
+        promotions.entry_list();
     list<type_and_action> candidates = new base_list<type_and_action>();
     for (int i = 0; i < promotions_list.size(); ++i) {
       dictionary.entry<type, type_and_action> entry = promotions_list.get(i);

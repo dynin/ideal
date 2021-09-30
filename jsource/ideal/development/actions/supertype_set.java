@@ -49,8 +49,10 @@ class supertype_set extends debuggable implements readonly_displayable {
 
   public static supertype_set make(type the_type, action_table actions) {
     assert the_type != null;
+
+    supertype_set result;
     if (debug.CACHE_ACTIONS) {
-      supertype_set result = supertype_sets.get(the_type);
+      result = supertype_sets.get(the_type);
       if (result == null) {
         result = new supertype_set();
         supertype_sets.put(the_type, result);
@@ -58,12 +60,12 @@ class supertype_set extends debuggable implements readonly_displayable {
       if (result.members == null) {
         result.populate(the_type, actions);
       }
-      return result;
     } else {
-      supertype_set result = new supertype_set();
+      result = new supertype_set();
       result.populate(the_type, actions);
-      return result;
     }
+
+    return result;
   }
 
   private void populate(type the_type, action_table actions) {

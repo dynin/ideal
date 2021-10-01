@@ -77,7 +77,7 @@ public class loop_action extends base_action {
             switch (the_loop_jump.the_jump_category) {
               case BREAK_JUMP:
                 // Yay! I get a break!
-                return common_library.get_instance().void_instance();
+                return common_values.void_instance();
               case CONTINUE_JUMP:
                 continue;
             }

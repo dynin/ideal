@@ -32,6 +32,7 @@ import ideal.development.modifiers.*;
 import ideal.development.scanners.*;
 import ideal.development.transformers.*;
 import ideal.development.printers.*;
+import ideal.development.values.*;
 
 public class declaration_extension extends multi_pass_analyzer implements syntax_extension {
 
@@ -171,7 +172,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   }
 
   protected analysis_result do_get_result() {
-    return library().noop(this);
+    return common_values.noop(this);
   }
 
   protected void display_code(declaration code) {

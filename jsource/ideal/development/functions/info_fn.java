@@ -57,7 +57,7 @@ public class info_fn extends base_procedure {
     log_message the_message = new simple_message(log_level.INFORMATIONAL, line);
     log.log_output.write(the_message);
 
-    return library().void_instance();
+    return common_values.void_instance();
   }
 
   @Override

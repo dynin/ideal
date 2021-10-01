@@ -16,6 +16,7 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.origins.*;
+import ideal.development.values.*;
 
 import javax.annotation.Nullable;
 
@@ -48,7 +49,7 @@ public class promotion_action extends base_action implements chainable_action {
     entity_wrapper result = from_entity;
 
     if (the_type == library().immutable_void_type()) {
-      result = library().void_instance();
+      result = common_values.void_instance();
     }
 
     if (result instanceof reference_wrapper && !library().is_reference_type(the_type)) {

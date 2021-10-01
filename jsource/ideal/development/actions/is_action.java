@@ -56,7 +56,7 @@ public class is_action extends base_action {
     if (negated) {
       result = !result;
     }
-    return common_library.get_instance().to_boolean_value(result);
+    return common_values.to_boolean_value(result);
   }
 
   @Override

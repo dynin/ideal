@@ -17,6 +17,7 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
+import ideal.development.values.*;
 
 /**
  * Create an action out of a sequence (list) of actions.
@@ -37,7 +38,7 @@ public class list_action extends base_action {
   // TODO: cache
   @Override
   public abstract_value result() {
-    abstract_value result = common_library.get_instance().void_instance();
+    abstract_value result = common_values.void_instance();
 
     for (int i = 0; i < subactions.size(); ++i) {
       result = subactions.get(i).result();
@@ -64,7 +65,7 @@ public class list_action extends base_action {
 
   @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
-    entity_wrapper result = common_library.get_instance().void_instance();
+    entity_wrapper result = common_values.void_instance();
 
     for (int i = 0; i < subactions.size(); ++i) {
       // TODO: handle early returns, etc.

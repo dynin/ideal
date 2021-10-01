@@ -44,10 +44,9 @@ public class constraint_action extends base_action {
   public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
     // TODO: handle jumps
     entity_wrapper expression_value = expression.execute(null_wrapper.instance, exec_context);
-    common_library library = common_library.get_instance();
-    if (expression_value == library.true_value()) {
-      return library.void_instance();
-    } else if (expression_value == library.false_value()) {
+    if (expression_value == common_values.true_value()) {
+      return common_values.void_instance();
+    } else if (expression_value == common_values.false_value()) {
       return new panic_value(new base_string("Assertion failure"));
     } else {
       return new panic_value(new base_string("Neither true nor false in a conditional"));

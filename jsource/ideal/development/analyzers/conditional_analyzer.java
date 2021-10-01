@@ -20,6 +20,7 @@ import ideal.development.types.*;
 import ideal.development.notifications.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class conditional_analyzer extends single_pass_analyzer {
 
@@ -115,7 +116,7 @@ public class conditional_analyzer extends single_pass_analyzer {
         else_constraints = else_result.the_constraints;
       }
     } else {
-      else_action = library().void_instance().to_action(the_origin);
+      else_action = common_values.void_instance().to_action(the_origin);
     }
 
     then_action = analyzer_utilities.to_value(then_action, get_context(), the_origin);

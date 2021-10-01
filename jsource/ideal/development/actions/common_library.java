@@ -67,13 +67,6 @@ public class common_library implements value {
   private master_type REFERENCE_EQUALITY_TYPE;
   private master_type LIST_TYPE;
 
-  private singleton_value VOID_INSTANCE;
-  private singleton_value UNDEFINED_INSTANCE;
-  private singleton_value MISSING_INSTANCE;
-
-  private enum_value FALSE_VALUE;
-  private enum_value TRUE_VALUE;
-
   public common_library(analysis_context context) {
     this.context = context;
     elementary_types.set_context(context);
@@ -108,10 +101,6 @@ public class common_library implements value {
     LIST_TYPE = get_type("list", interface_kind, mutable_profile);
     LIST_TYPE.make_parametrizable();
 
-    VOID_INSTANCE = new singleton_value(VOID_TYPE);
-    UNDEFINED_INSTANCE = new singleton_value(UNDEFINED_TYPE);
-    MISSING_INSTANCE = new singleton_value(MISSING_TYPE);
-
     assert instance == null;
     instance = this;
   }
@@ -120,7 +109,7 @@ public class common_library implements value {
     return VOID_TYPE;
   }
 
-  public type undefined_type() {
+  public principal_type undefined_type() {
     return UNDEFINED_TYPE;
   }
 
@@ -158,24 +147,6 @@ public class common_library implements value {
 
   public type immutable_boolean_type() {
     return boolean_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
-
-  public enum_value true_value() {
-    if (TRUE_VALUE == null) {
-      TRUE_VALUE = get_boolean_value("true");
-    }
-    return TRUE_VALUE;
-  }
-
-  public enum_value false_value() {
-    if (FALSE_VALUE == null) {
-      FALSE_VALUE = get_boolean_value("false");
-    }
-    return FALSE_VALUE;
-  }
-
-  public enum_value to_boolean_value(boolean the_value) {
-    return the_value ? true_value() : false_value();
   }
 
   public type immutable_integer_type() {
@@ -298,22 +269,6 @@ public class common_library implements value {
         get_flavored(flavor.immutable_flavor);
   }
 
-  public singleton_value void_instance() {
-    return VOID_INSTANCE;
-  }
-
-  public action noop(origin the_origin) {
-    return void_instance().to_action(the_origin);
-  }
-
-  public singleton_value undefined_instance() {
-    return UNDEFINED_INSTANCE;
-  }
-
-  public singleton_value missing_instance() {
-    return MISSING_INSTANCE;
-  }
-
   public principal_type ideal_namespace() {
     return ideal_type;
   }
@@ -393,11 +348,5 @@ public class common_library implements value {
 
   public analysis_context get_context() {
     return context;
-  }
-
-  // TODO: fix this hack
-  public static singleton_value do_get_undefined_instance() {
-    assert instance != null;
-    return instance.UNDEFINED_INSTANCE;
   }
 }

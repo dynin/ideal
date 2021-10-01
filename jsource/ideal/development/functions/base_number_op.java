@@ -90,7 +90,7 @@ public abstract class base_number_op extends binary_procedure {
               library().immutable_integer_type());
     } else {
       boolean boolean_result = (Boolean) result;
-      return boolean_result ? library().true_value() : library().false_value();
+      return boolean_result ? common_values.true_value() : common_values.false_value();
     }
   }
 

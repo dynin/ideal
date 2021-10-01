@@ -18,14 +18,12 @@ public class elementary_types {
   private static master_type ANY_TYPE;
   private static master_type UNREACHABLE;
   private static master_type TARGET;
-  private static master_type UNDEFINED;
   static {
     elementary_types.ROOT = new master_type(new special_name(new base_string("root")), type_kinds.block_kind);
     elementary_types.ANY_TYPE = new master_type(new special_name(new base_string("any_type")), type_kinds.block_kind);
     elementary_types.ERROR = new master_type(new special_name(new base_string("error")), type_kinds.block_kind);
     elementary_types.UNREACHABLE = new master_type(new special_name(new base_string("unreachable")), type_kinds.block_kind);
     elementary_types.TARGET = new master_type(new special_name(new base_string("unreachable")), type_kinds.block_kind);
-    elementary_types.UNDEFINED = new master_type(new special_name(new base_string("undefined")), type_kinds.block_kind);
   }
   public static principal_type root_type() {
     return elementary_types.ROOT;
@@ -42,15 +40,11 @@ public class elementary_types {
   public static type target_type() {
     return elementary_types.TARGET;
   }
-  public static type undefined_type() {
-    return elementary_types.UNDEFINED;
-  }
   public static void set_context(final type_declaration_context the_context) {
     elementary_types.ROOT.set_context(the_context);
     elementary_types.ERROR.set_context(the_context);
     elementary_types.ANY_TYPE.set_context(the_context);
     elementary_types.UNREACHABLE.set_context(the_context);
-    elementary_types.UNDEFINED.set_context(the_context);
     elementary_types.TARGET.set_context(the_context);
     union_type.set_context(the_context);
   }

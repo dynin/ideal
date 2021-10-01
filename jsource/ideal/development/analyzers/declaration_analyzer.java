@@ -22,6 +22,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
+import ideal.development.values.*;
 
 public abstract class declaration_analyzer<C extends origin> extends multi_pass_analyzer<C>
     implements declaration {
@@ -52,7 +53,7 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
 
   @Override
   protected analysis_result do_get_result() {
-    return library().noop(this);
+    return common_values.noop(this);
   }
 
   public principal_type declared_in_type() {

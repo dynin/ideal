@@ -19,6 +19,7 @@ import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class return_analyzer extends single_pass_analyzer {
 
@@ -63,7 +64,7 @@ public class return_analyzer extends single_pass_analyzer {
 
     if (the_procedure.has_errors()) {
       // The return type might be not set
-      return library().noop(this);
+      return common_values.noop(this);
     }
 
     // TODO: add support for return type inference...

@@ -52,6 +52,6 @@ public class variable_initializer extends base_action {
       the_variable_action.execute(from_entity, exec_context).init((value_wrapper) init_value);
     }
 
-    return common_library.get_instance().void_instance();
+    return common_values.void_instance();
   }
 }

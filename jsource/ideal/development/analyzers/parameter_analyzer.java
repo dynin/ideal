@@ -20,6 +20,7 @@ import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.kinds.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class parameter_analyzer extends single_pass_analyzer {
 
@@ -163,10 +164,10 @@ public class parameter_analyzer extends single_pass_analyzer {
     analyzable second = analyzable_parameters.get(1);
     action_name name = ((resolve_analyzer) main_analyzable).short_name();
     if (name == operator.LOGICAL_AND) {
-      analyzable false_value = base_analyzable_action.from(library().false_value(), the_origin);
+      analyzable false_value = base_analyzable_action.from(common_values.false_value(), the_origin);
       return new conditional_analyzer(first, second, false_value, the_origin);
     } else if (name == operator.LOGICAL_OR) {
-      analyzable true_value = base_analyzable_action.from(library().true_value(), the_origin);
+      analyzable true_value = base_analyzable_action.from(common_values.true_value(), the_origin);
       return new conditional_analyzer(first, true_value, second, the_origin);
     } else {
       utilities.panic("Unknown logical operator");

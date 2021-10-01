@@ -24,6 +24,7 @@ import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.flags.*;
+import ideal.development.values.*;
 import static ideal.development.declarations.annotation_library.*;
 
 public class type_declaration_analyzer extends declaration_analyzer<type_declaration_construct>
@@ -407,7 +408,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   @Override
   public future<analysis_result> process_type(declaration_pass pass) {
     process_declaration(pass);
-    return new base_future<analysis_result>(common_library.get_instance().noop(this));
+    return new base_future<analysis_result>(common_values.noop(this));
   }
 
   @Override

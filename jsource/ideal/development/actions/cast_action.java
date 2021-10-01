@@ -53,7 +53,7 @@ public class cast_action extends base_action {
     assert expression_result instanceof value_wrapper;
 
     if (the_type == library().immutable_void_type()) {
-      return library().void_instance();
+      return common_values.void_instance();
     }
 
     if (action_utilities.is_of(expression_result, the_type)) {

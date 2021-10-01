@@ -46,7 +46,7 @@ public class builtin_declaration implements declaration {
 
   @Override
   public analysis_result analyze() {
-    return common_library.get_instance().noop(this);
+    return common_values.noop(this);
   }
 
   @Override

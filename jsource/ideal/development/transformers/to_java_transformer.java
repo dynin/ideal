@@ -32,6 +32,7 @@ import ideal.development.analyzers.*;
 import ideal.development.extensions.*;
 import ideal.development.notifications.*;
 import ideal.development.values.*;
+import static ideal.development.values.common_values.*;
 import ideal.development.origins.*;
 import ideal.development.literals.*;
 
@@ -1451,7 +1452,7 @@ public class to_java_transformer extends base_transformer {
 
   private construct make_default_value(type the_type, origin the_origin) {
     if (the_type == library().immutable_boolean_type()) {
-      return new name_construct(library().false_value().short_name(), the_origin);
+      return new name_construct(false_value().short_name(), the_origin);
     } else {
       // TODO: handle other non-Object types
       return make_null(the_origin);
@@ -1685,7 +1686,7 @@ public class to_java_transformer extends base_transformer {
 
   public construct process_loop_action(loop_action the_loop_action) {
     origin the_origin = the_loop_action;
-    construct true_construct = new name_construct(library().true_value().short_name(), the_origin);
+    construct true_construct = new name_construct(true_value().short_name(), the_origin);
     return new while_construct(true_construct, transform_action(the_loop_action.get_body()),
         the_origin);
   }
@@ -1745,7 +1746,7 @@ public class to_java_transformer extends base_transformer {
   public boolean is_nothing(action the_action) {
     if (the_action instanceof data_value_action) {
       Object value = ((data_value_action) the_action).the_value;
-      return value == library().void_instance();
+      return value == void_instance();
     }
     return false;
   }
@@ -1765,11 +1766,11 @@ public class to_java_transformer extends base_transformer {
 
   public construct process_conditional_action(conditional_action the_conditional) {
     origin the_origin = the_conditional;
-    if (is_value(the_conditional.else_action, library().false_value())) {
+    if (is_value(the_conditional.else_action, false_value())) {
       return new operator_construct(operator.LOGICAL_AND,
           transform_action(the_conditional.condition),
           transform_action(the_conditional.then_action), the_origin);
-    } else if (is_value(the_conditional.then_action, library().true_value())) {
+    } else if (is_value(the_conditional.then_action, true_value())) {
       return new operator_construct(operator.LOGICAL_OR,
           transform_action(the_conditional.condition),
           transform_action(the_conditional.else_action), the_origin);

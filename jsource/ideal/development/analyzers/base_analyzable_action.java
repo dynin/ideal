@@ -22,6 +22,7 @@ import ideal.development.flavors.*;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class base_analyzable_action extends debuggable implements analyzable_action {
   private final action the_action;
@@ -45,7 +46,7 @@ public class base_analyzable_action extends debuggable implements analyzable_act
   }
 
   public static analyzable_action nothing(origin the_origin) {
-    return from(common_library.get_instance().void_instance(), the_origin);
+    return from(common_values.void_instance(), the_origin);
   }
 
   @Override

@@ -37,6 +37,9 @@ public abstract class base_analysis_context extends debuggable implements analys
     if (!common_library.is_initialized()) {
       new common_library(this);
     }
+    if (!common_values.is_initialized()) {
+      common_values.initialize(common_library.get_instance());
+    }
   }
 
   @Override

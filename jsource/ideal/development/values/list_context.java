@@ -14,6 +14,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.runtime.reflections.*;
 import ideal.development.declarations.*;
+import ideal.development.names.*;
 import ideal.development.actions.*;
 
 public class list_context implements variable_context {
@@ -30,7 +31,7 @@ public class list_context implements variable_context {
 
   @Override
   public value_wrapper get_var(variable_id key) {
-    if (key.short_name() == common_library.size_name) {
+    if (key.short_name() == common_names.size_name) {
       return new integer_value(the_list.size(),
           common_library.get_instance().immutable_nonnegative_type());
     }

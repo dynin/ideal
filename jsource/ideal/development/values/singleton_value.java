@@ -27,6 +27,6 @@ public class singleton_value extends base_data_value {
 
   public string to_string() {
     return new base_string(type_bound().to_string(), ".",
-        common_names.INSTANCE_NAME.to_string());
+        common_names.instance_name.to_string());
   }
 }

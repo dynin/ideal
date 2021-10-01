@@ -63,14 +63,14 @@ public class java_library implements value {
   private final dictionary<principal_type, principal_type> primitive_mapping;
   private final dictionary<principal_type, simple_name> wrapper_mapping;
 
-  private java_library(type_bootstrapper bootstrapper) {
+  private java_library(type_bootstrapper bootstrapper, analysis_context the_analysis_context) {
     this.bootstrapper = bootstrapper;
 
     primitive_mapping = new list_dictionary<principal_type, principal_type>();
     wrapper_mapping = new list_dictionary<principal_type, simple_name>();
 
+    context = the_analysis_context;
     common_library library = common_library.get_instance();
-    context = library.get_context();
 
     runtime_namespace = get_namespace(runtime_name, library.ideal_namespace());
     runtime_elements_namespace = get_namespace(elements_name, runtime_namespace);
@@ -240,9 +240,10 @@ public class java_library implements value {
     return result;
   }
 
-  public static void bootstrap_on_demand(type_bootstrapper bootstrapper) {
+  public static void bootstrap_on_demand(type_bootstrapper bootstrapper,
+      analysis_context the_analysis_context) {
     assert instance == null;
-    instance = new java_library(bootstrapper);
+    instance = new java_library(bootstrapper, the_analysis_context);
   }
 
   public static java_library get_instance() {

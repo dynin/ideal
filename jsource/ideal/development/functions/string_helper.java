@@ -47,7 +47,7 @@ public class string_helper {
     type_declaration the_declaration = (type_declaration)
         action_utilities.to_type(the_value.type_bound()).principal().get_declaration();
     @Nullable procedure_declaration method = lookup_method(the_declaration,
-        common_library.to_string_name);
+        common_names.to_string_name);
     if (method == null) {
       return new base_string("Not found to_string() in " + the_value.type_bound());
     }

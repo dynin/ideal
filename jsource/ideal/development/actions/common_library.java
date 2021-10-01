@@ -14,32 +14,18 @@ import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import static ideal.development.names.common_names.*;
 import ideal.development.kinds.*;
 import static ideal.development.kinds.type_kinds.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import static ideal.development.flavors.flavor_profiles.*;
 import ideal.development.declarations.*;
-import ideal.development.values.*;
 
 public class common_library implements value {
-
-  public static final simple_name ideal_name = simple_name.make(new base_string("ideal"));
-  public static final simple_name library_name = simple_name.make(new base_string("library"));
-  public static final simple_name elements_name = simple_name.make(new base_string("elements"));
-  public static final simple_name operators_name = simple_name.make(new base_string("operators"));
-
-  public static final simple_name procedure_name = simple_name.make(new base_string("procedure"));
-  public static final simple_name function_name = simple_name.make(new base_string("function"));
-
-  public static final simple_name to_string_name = simple_name.make(new base_string("to_string"));
-
-  public static final simple_name size_name = simple_name.make("size");
-  public static final simple_name get_name = simple_name.make("get");
-
   private static common_library instance;
 
-  private analysis_context context;
+  private type_declaration_context context;
 
   private principal_type ideal_type;
   private principal_type library_type;
@@ -67,7 +53,7 @@ public class common_library implements value {
   private master_type REFERENCE_EQUALITY_TYPE;
   private master_type LIST_TYPE;
 
-  public common_library(analysis_context context) {
+  public common_library(type_declaration_context context) {
     this.context = context;
     elementary_types.set_context(context);
 
@@ -330,7 +316,7 @@ public class common_library implements value {
     return instance;
   }
 
-  public analysis_context get_context() {
+  public type_declaration_context get_context() {
     return context;
   }
 }

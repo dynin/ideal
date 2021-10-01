@@ -41,7 +41,7 @@ public class list_value extends debuggable implements composite_wrapper<any_list
 
   @Override
   public value_wrapper get_var(variable_id key) {
-    if (key.short_name() == common_library.size_name) {
+    if (key.short_name() == common_names.size_name) {
       return new integer_value(((readonly_list) list_value).size(),
           common_library.get_instance().immutable_nonnegative_type());
     }

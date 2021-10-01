@@ -141,7 +141,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
           new base_analyzable_action(index_declaration.dereference_access()),
           new resolve_analyzer(
             new base_analyzable_action(list_declaration.dereference_access()),
-            common_library.size_name,
+            common_names.size_name,
             the_origin
           )
         ),

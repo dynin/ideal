@@ -14,6 +14,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
+import ideal.development.names.*;
 import ideal.development.values.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
@@ -34,7 +35,7 @@ public class instance_variable extends variable_action implements chainable_acti
     if (!(from_entity instanceof composite_wrapper)) {
       // TODO: use list_wrapper here explicitly
       assert from_entity instanceof value_wrapper;
-      assert the_declaration.short_name() == common_library.size_name;
+      assert the_declaration.short_name() == common_names.size_name;
       readonly_list the_list = (readonly_list) ((value_wrapper) from_entity).unwrap();
       return new list_context(the_list);
     }

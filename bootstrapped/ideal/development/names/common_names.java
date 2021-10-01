@@ -9,17 +9,26 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class common_names {
-  public static final simple_name INSTANCE_NAME = simple_name.make(new base_string("instance"));
-  private static final simple_name FIRST = simple_name.make(new base_string("first"));
-  private static final simple_name SECOND = simple_name.make(new base_string("second"));
-  private static final simple_name THIRD = simple_name.make(new base_string("third"));
+  public static final simple_name instance_name = simple_name.make(new base_string("instance"));
+  public static final simple_name ideal_name = simple_name.make(new base_string("ideal"));
+  public static final simple_name library_name = simple_name.make(new base_string("library"));
+  public static final simple_name elements_name = simple_name.make(new base_string("elements"));
+  public static final simple_name operators_name = simple_name.make(new base_string("operators"));
+  public static final simple_name procedure_name = simple_name.make(new base_string("procedure"));
+  public static final simple_name function_name = simple_name.make(new base_string("function"));
+  public static final simple_name to_string_name = simple_name.make(new base_string("to_string"));
+  public static final simple_name size_name = simple_name.make(new base_string("size"));
+  public static final simple_name get_name = simple_name.make(new base_string("get"));
+  private static final simple_name first = simple_name.make(new base_string("first"));
+  private static final simple_name second = simple_name.make(new base_string("second"));
+  private static final simple_name third = simple_name.make(new base_string("third"));
   public static simple_name make_numbered_name(final Integer index) {
     if (ideal.machine.elements.runtime_util.values_equal(index, 0)) {
-      return common_names.FIRST;
+      return common_names.first;
     } else if (ideal.machine.elements.runtime_util.values_equal(index, 1)) {
-      return common_names.SECOND;
+      return common_names.second;
     } else if (ideal.machine.elements.runtime_util.values_equal(index, 2)) {
-      return common_names.THIRD;
+      return common_names.third;
     } else {
       utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Don\'t know how to count up to "), index));
       return null;

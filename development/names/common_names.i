@@ -6,19 +6,32 @@
 
 namespace common_names {
 
-  public INSTANCE_NAME : simple_name.make("instance");
+  instance_name : simple_name.make("instance");
 
-  private FIRST : simple_name.make("first");
-  private SECOND : simple_name.make("second");
-  private THIRD : simple_name.make("third");
+  ideal_name : simple_name.make("ideal");
+  library_name : simple_name.make("library");
+  elements_name : simple_name.make("elements");
+  operators_name : simple_name.make("operators");
+
+  procedure_name : simple_name.make("procedure");
+  function_name : simple_name.make("function");
+
+  to_string_name : simple_name.make("to_string");
+
+  size_name : simple_name.make("size");
+  get_name : simple_name.make("get");
+
+  private first : simple_name.make("first");
+  private second : simple_name.make("second");
+  private third : simple_name.make("third");
 
   simple_name make_numbered_name(nonnegative index) pure {
     if (index == 0) {
-      return FIRST;
+      return first;
     } else if (index == 1) {
-      return SECOND;
+      return second;
     } else if (index == 2) {
-      return THIRD;
+      return third;
     } else {
       utilities.panic("Don't know how to count up to " ++ index);
     }

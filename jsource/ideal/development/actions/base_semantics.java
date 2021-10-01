@@ -393,7 +393,7 @@ public class base_semantics implements semantics {
     if (pass == declaration_pass.FLAVOR_PROFILE) {
       if (the_kind == procedure_kind &&
           new_type instanceof parametrized_type &&
-          new_type.short_name() == common_library.function_name) {
+          new_type.short_name() == common_names.function_name) {
         // TODO: this should be done in type_declaration_analyzer.
         type procedure_type = library().procedure_type().bind_parameters(
           ((parametrized_type) new_type).get_parameters()).get_flavored(
@@ -458,7 +458,7 @@ public class base_semantics implements semantics {
         context.add(flavored_type, special_name.IMPLICIT_CALL,
             new promotion_action(flavored_type, false, pos));
       } else if (the_kind == singleton_kind) {
-        context.add(new_type, common_names.INSTANCE_NAME,
+        context.add(new_type, common_names.instance_name,
             new singleton_value(new_type).to_action(pos));
       }
     } else {

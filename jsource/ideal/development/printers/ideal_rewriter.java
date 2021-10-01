@@ -53,7 +53,7 @@ public class ideal_rewriter extends debuggable implements naming_rewriter {
   private readonly_list<simple_name> rewrite_name(readonly_list<simple_name> the_name) {
     assert the_name.is_not_empty();
     readonly_list<simple_name> old_name = the_name;
-    if (the_name.is_not_empty() && the_name.first() == common_library.ideal_name) {
+    if (the_name.is_not_empty() && the_name.first() == common_names.ideal_name) {
       the_name = the_name.skip(1);
       if (the_name.is_empty()) {
         the_name = new base_list<simple_name>(SOURCE_NAME);

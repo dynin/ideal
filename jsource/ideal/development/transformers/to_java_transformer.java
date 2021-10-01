@@ -22,6 +22,7 @@ import static ideal.development.modifiers.general_modifier.*;
 import ideal.development.flavors.*;
 import static ideal.development.flavors.flavor.*;
 import ideal.development.names.*;
+import static ideal.development.names.common_names.*;
 import ideal.development.kinds.*;
 import static ideal.development.kinds.type_kinds.*;
 import static ideal.development.kinds.subtype_tags.*;
@@ -1126,9 +1127,9 @@ public class to_java_transformer extends base_transformer {
       type_declaration the_type_declaration) {
     action_name the_name = the_type_declaration.short_name();
     boolean is_function;
-    if (utilities.eq(the_name, common_library.procedure_name)) {
+    if (utilities.eq(the_name, procedure_name)) {
       is_function = false;
-    } else if (utilities.eq(the_name, common_library.function_name)) {
+    } else if (utilities.eq(the_name, function_name)) {
       is_function = true;
     } else {
       utilities.panic("Unexpected procedure type " + the_name);
@@ -1209,8 +1210,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private simple_name make_procedure_name(boolean is_function, int arity) {
-    simple_name base_name = is_function ? common_library.function_name :
-        common_library.procedure_name;
+    simple_name base_name = is_function ? function_name : procedure_name;
     return make_procedure_name(base_name, arity);
   }
 
@@ -1395,8 +1395,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct do_explicitly_derefence(construct the_construct, origin the_origin) {
-    construct get_construct = new resolve_construct(the_construct, common_library.get_name,
-        the_origin);
+    construct get_construct = new resolve_construct(the_construct, get_name, the_origin);
     return new parameter_construct(get_construct, new empty<construct>(), grouping_type.PARENS,
         the_origin);
   }
@@ -1942,7 +1941,7 @@ public class to_java_transformer extends base_transformer {
         return make_null(the_origin);
       }
       construct type_construct = make_type(singleton_type, the_origin);
-      return new resolve_construct(type_construct, common_names.INSTANCE_NAME, the_origin);
+      return new resolve_construct(type_construct, common_names.instance_name, the_origin);
     } else if (the_value instanceof integer_value) {
       integer_value the_integer_value = (integer_value) the_value;
       return new literal_construct(new integer_literal(the_integer_value.unwrap()), the_origin);

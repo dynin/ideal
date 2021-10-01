@@ -131,7 +131,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     process_bootstrap_ops(bootstrap_context);
 
-    java_library.bootstrap_on_demand(this);
+    java_library.bootstrap_on_demand(this, bootstrap_context);
 
     if (load_library) {
       bootstrap_ideal_namespace();

@@ -176,4 +176,17 @@ public abstract class base_analysis_context extends debuggable implements analys
   public void declare_type(principal_type new_type, declaration_pass pass) {
     language.declare_type(new_type, pass, this);
   }
+
+  @Override
+  public master_type get_or_create_type(action_name name, kind kind, principal_type parent,
+      flavor_profile the_flavor_profile) {
+    readonly_list<type> types = action_utilities.lookup_types(this, parent, name);
+    // TODO: handle error conditions
+    if (types.size() == 1) {
+      return (master_type) types.first();
+    } else {
+      return action_utilities.make_type(this, kind, the_flavor_profile, name, parent,
+          null, semantics.BUILTIN_POSITION);
+    }
+  }
 }

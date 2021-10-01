@@ -13,4 +13,7 @@ interface type_declaration_context {
   void declare_type(principal_type the_type, declaration_pass pass);
   boolean is_parametrizable(type the_type);
   boolean is_subtype_of(abstract_value the_value, type the_type);
+  --- Used when creating common_types.
+  master_type get_or_create_type(action_name name, kind kind, principal_type parent,
+      flavor_profile the_flavor_profile);
 }

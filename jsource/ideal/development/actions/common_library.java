@@ -285,34 +285,18 @@ public class common_library implements value {
     return operators_type;
   }
 
-  private master_type get_type(String sname, kind kind, flavor_profile the_flavor_profile) {
+  private master_type get_type(String sname, kind the_kind, flavor_profile the_flavor_profile) {
     simple_name name = simple_name.make(new base_string(sname));
-    return get_type(name, kind, the_flavor_profile);
+    return get_type(name, the_kind, the_flavor_profile);
   }
 
-  private master_type get_type(action_name name, kind kind, flavor_profile the_flavor_profile) {
-    readonly_list<type> types = action_utilities.lookup_types(context, elements_type, name);
-    // TODO: handle error conditions
-    if (types.size() == 1) {
-      return (master_type) types.first();
-    } else {
-      return action_utilities.make_type(context, kind, the_flavor_profile, name, elements_type,
-          null, semantics.BUILTIN_POSITION);
-    }
-  }
-
-  private enum_value get_boolean_value(String sname) {
-    simple_name the_name = simple_name.make(new base_string(sname));
-    readonly_list<action> actions = context.lookup(boolean_type(), the_name);
-    assert actions.size() == 1;
-    abstract_value the_value = actions.first().result();
-    assert the_value instanceof enum_value;
-    return (enum_value) the_value;
+  private master_type get_type(action_name name, kind the_kind, flavor_profile the_flavor_profile) {
+    return context.get_or_create_type(name, the_kind, elements_type, the_flavor_profile);
   }
 
   private principal_type make_namespace(action_name name, principal_type parent, kind the_kind) {
-    master_type result = action_utilities.make_type(context, the_kind,
-        flavor_profiles.nameonly_profile, name, parent, null, semantics.BUILTIN_POSITION);
+    master_type result = context.get_or_create_type(name, the_kind, parent,
+        flavor_profiles.nameonly_profile);
     result.process_declaration(declaration_pass.METHODS_AND_VARIABLES);
     return result;
   }

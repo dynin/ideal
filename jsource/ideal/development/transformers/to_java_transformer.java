@@ -55,20 +55,13 @@ public class to_java_transformer extends base_transformer {
   private @Nullable principal_type enclosing_type;
   private @Nullable procedure_declaration the_enclosing_procedure;
 
-  private static simple_name SET_NAME = simple_name.make("set");
-  private static simple_name VALUE_NAME = simple_name.make("value");
-  private static simple_name CALL_NAME = simple_name.make("call");
-
   private static simple_name OBJECTS_EQUAL_NAME = simple_name.make("values_equal");
   private static simple_name INT_TO_STRING_NAME = simple_name.make("int_to_string");
   private static simple_name CONCATENATE_NAME = simple_name.make("concatenate");
   private static simple_name COMPARE_NAME = simple_name.make("compare");
 
   private static simple_name BASE_STRING_NAME = simple_name.make("base_string");
-  private static simple_name LIST_NAME = simple_name.make("list");
-  private static simple_name STRING_NAME = simple_name.make("string");
   private static simple_name ORDINAL_NAME = simple_name.make("ordinal");
-  private static simple_name TO_STRING_NAME = simple_name.make("to_string");
   private static simple_name TO_STRING_JAVA = simple_name.make("toString");
   private static simple_name START_NAME = simple_name.make("start");
   private static simple_name MAIN_NAME = simple_name.make("main");
@@ -432,7 +425,7 @@ public class to_java_transformer extends base_transformer {
             // TODO: use copy ctor.
             list<construct> new_parameters = new base_list<construct>(parameters);
             new_parameters.append(
-                new variable_construct(new empty<annotation_construct>(), ret, VALUE_NAME,
+                new variable_construct(new empty<annotation_construct>(), ret, value_name,
                     new empty<annotation_construct>(), null, the_origin));
             parameters = new_parameters;
             ret = make_type(library().void_type(), the_origin);
@@ -888,7 +881,7 @@ public class to_java_transformer extends base_transformer {
         }
       } else if (decl instanceof procedure_declaration) {
         procedure_declaration proc_decl = (procedure_declaration) decl;
-        if (proc_decl.short_name() == TO_STRING_NAME) {
+        if (proc_decl.short_name() == to_string_name) {
           generate_to_string = false;
         }
         @Nullable procedure_construct proc_construct = (procedure_construct) transform(proc_decl);
@@ -958,8 +951,8 @@ public class to_java_transformer extends base_transformer {
 
       procedure_construct to_string_procedure = new procedure_construct(
           modifier_list,
-          new name_construct(STRING_NAME, the_origin),
-          TO_STRING_NAME,
+          new name_construct(string_name, the_origin),
+          to_string_name,
           new empty<construct>(),
           new empty<annotation_construct>(),
           to_string_body,
@@ -1201,7 +1194,7 @@ public class to_java_transformer extends base_transformer {
 
     if (!is_function) {
       type_body.append(new procedure_construct(empty_annotations, return_construct,
-          CALL_NAME, call_parameters, empty_annotations, null, the_origin));
+          call_name, call_parameters, empty_annotations, null, the_origin));
     }
 
     simple_name type_name = make_procedure_name(is_function, arity);
@@ -1344,7 +1337,7 @@ public class to_java_transformer extends base_transformer {
         annotations,
         make_type_with_mapping(the_procedure.get_return_type(), the_origin,
             mapping.MAP_TO_WRAPPER_TYPE),
-        CALL_NAME,
+        call_name,
         declaration_arguments,
         new empty<annotation_construct>(),
         new block_construct(body, the_origin),
@@ -1476,7 +1469,7 @@ public class to_java_transformer extends base_transformer {
             construct main = transform_action(lhs2.the_procedure_action);
             readonly_list<construct> set_params =
                 new base_list<construct>(transform_action(plhs.first()), rhs);
-            construct set = new resolve_construct(main, SET_NAME, the_origin);
+            construct set = new resolve_construct(main, set_name, the_origin);
             return make_call(set, set_params, the_origin);
           }
         }
@@ -1484,7 +1477,7 @@ public class to_java_transformer extends base_transformer {
       if (is_explicit_reference(lhs)) {
         construct main = transform_action(lhs);
         readonly_list<construct> set_params = new base_list<construct>(rhs);
-        construct set = new resolve_construct(main, SET_NAME, the_origin);
+        construct set = new resolve_construct(main, set_name, the_origin);
         return make_call(set, set_params, the_origin);
       }
       // TODO: this should be generic...
@@ -2179,7 +2172,7 @@ public class to_java_transformer extends base_transformer {
     if (primary instanceof variable_action) {
       variable_action the_variable_action = (variable_action) primary;
       action_name the_name = map_name(the_variable_action.short_name());
-      if (the_name == TO_STRING_NAME && is_promotion_action(from_action)) {
+      if (the_name == to_string_name && is_promotion_action(from_action)) {
         principal_type from_type = unwrap_promotion(from_action).result().type_bound().principal();
         // TODO: implement less hacky way to implement Integer.to_string
         if (from_type == library().integer_type() || from_type == library().nonnegative_type()) {
@@ -2335,7 +2328,7 @@ public class to_java_transformer extends base_transformer {
 
     // TODO: better way to detect procedure variables?
     if (is_procedure_variable(declaration_util.get_declaration(the_procedure_action))) {
-      main = new resolve_construct(main, CALL_NAME, the_origin);
+      main = new resolve_construct(main, call_name, the_origin);
     }
 
     construct transformed = make_call(main, parameters, the_origin);

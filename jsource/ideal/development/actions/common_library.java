@@ -62,29 +62,29 @@ public class common_library implements value {
     elements_type = make_namespace(elements_name, library_type, package_kind);
     operators_type = make_namespace(operators_name, library_type, package_kind);
 
-    VOID_TYPE = get_type("void", singleton_kind, deeply_immutable_profile);
-    UNDEFINED_TYPE = get_type("undefined", singleton_kind, deeply_immutable_profile);
-    ENTITY_TYPE = get_type("entity", concept_kind, mutable_profile);
-    VALUE_TYPE = get_type("value", concept_kind, mutable_profile);
-    DATA_TYPE = get_type("data", concept_kind, mutable_profile);
-    BOOLEAN_TYPE = get_type("boolean", enum_kind, deeply_immutable_profile);
-    CHARACTER_TYPE = get_type("character", datatype_kind, deeply_immutable_profile);
-    INTEGER_TYPE = get_type("integer", datatype_kind, deeply_immutable_profile);
-    NONNEGATIVE_TYPE = get_type("nonnegative", datatype_kind, deeply_immutable_profile);
-    STRING_TYPE = get_type("string", datatype_kind, deeply_immutable_profile);
-    NULL_TYPE = get_type("null", interface_kind, deeply_immutable_profile);
-    MISSING_TYPE = get_type("missing", singleton_kind, deeply_immutable_profile);
+    VOID_TYPE = get_type(void_name, singleton_kind, deeply_immutable_profile);
+    UNDEFINED_TYPE = get_type(undefined_name, singleton_kind, deeply_immutable_profile);
+    ENTITY_TYPE = get_type(entity_name, concept_kind, mutable_profile);
+    VALUE_TYPE = get_type(value_name, concept_kind, mutable_profile);
+    DATA_TYPE = get_type(data_name, concept_kind, mutable_profile);
+    BOOLEAN_TYPE = get_type(boolean_name, enum_kind, deeply_immutable_profile);
+    CHARACTER_TYPE = get_type(character_name, datatype_kind, deeply_immutable_profile);
+    INTEGER_TYPE = get_type(integer_name, datatype_kind, deeply_immutable_profile);
+    NONNEGATIVE_TYPE = get_type(nonnegative_name, datatype_kind, deeply_immutable_profile);
+    STRING_TYPE = get_type(string_name, datatype_kind, deeply_immutable_profile);
+    NULL_TYPE = get_type(null_name, interface_kind, deeply_immutable_profile);
+    MISSING_TYPE = get_type(missing_name, singleton_kind, deeply_immutable_profile);
 
-    REFERENCE_TYPE = get_type("reference", reference_kind, mutable_profile);
+    REFERENCE_TYPE = get_type(reference_name, reference_kind, mutable_profile);
     REFERENCE_TYPE.make_parametrizable();
     PROCEDURE_TYPE = get_type(procedure_name, procedure_kind, immutable_profile);
     PROCEDURE_TYPE.make_parametrizable();
     FUNCTION_TYPE = get_type(function_name, procedure_kind, deeply_immutable_profile);
     FUNCTION_TYPE.make_parametrizable();
-    STRINGABLE_TYPE = get_type("stringable", interface_kind, mutable_profile);
-    EQUALITY_COMPARABLE_TYPE = get_type("equality_comparable", concept_kind, mutable_profile);
-    REFERENCE_EQUALITY_TYPE = get_type("reference_equality", interface_kind, mutable_profile);
-    LIST_TYPE = get_type("list", interface_kind, mutable_profile);
+    STRINGABLE_TYPE = get_type(stringable_name, interface_kind, mutable_profile);
+    EQUALITY_COMPARABLE_TYPE = get_type(equality_comparable_name, concept_kind, mutable_profile);
+    REFERENCE_EQUALITY_TYPE = get_type(reference_equality_name, interface_kind, mutable_profile);
+    LIST_TYPE = get_type(list_name, interface_kind, mutable_profile);
     LIST_TYPE.make_parametrizable();
 
     assert instance == null;
@@ -269,11 +269,6 @@ public class common_library implements value {
 
   public principal_type operators_package() {
     return operators_type;
-  }
-
-  private master_type get_type(String sname, kind the_kind, flavor_profile the_flavor_profile) {
-    simple_name name = simple_name.make(new base_string(sname));
-    return get_type(name, the_kind, the_flavor_profile);
   }
 
   private master_type get_type(action_name name, kind the_kind, flavor_profile the_flavor_profile) {

@@ -13,13 +13,31 @@ namespace common_names {
   elements_name : simple_name.make("elements");
   operators_name : simple_name.make("operators");
 
+  entity_name : simple_name.make("entity");
+  value_name : simple_name.make("value");
+  void_name : simple_name.make("void");
+  data_name : simple_name.make("data");
+  boolean_name : simple_name.make("boolean");
+  character_name : simple_name.make("character");
+  integer_name : simple_name.make("integer");
+  nonnegative_name : simple_name.make("nonnegative");
+  string_name : simple_name.make("string");
+  null_name : simple_name.make("null");
+  missing_name : simple_name.make("missing");
+  undefined_name : simple_name.make("undefined");
+  reference_name : simple_name.make("reference");
+  stringable_name : simple_name.make("stringable");
+  equality_comparable_name : simple_name.make("equality_comparable");
+  reference_equality_name : simple_name.make("reference_equality");
   procedure_name : simple_name.make("procedure");
   function_name : simple_name.make("function");
+  list_name : simple_name.make("list");
 
-  to_string_name : simple_name.make("to_string");
-
-  size_name : simple_name.make("size");
   get_name : simple_name.make("get");
+  set_name : simple_name.make("set");
+  size_name : simple_name.make("size");
+  call_name : simple_name.make("call");
+  to_string_name : simple_name.make("to_string");
 
   private first : simple_name.make("first");
   private second : simple_name.make("second");

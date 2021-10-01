@@ -15,7 +15,7 @@ import ideal.development.kinds.*;
 public class null_wrapper extends debuggable implements entity_wrapper {
   public static final null_wrapper instance = new null_wrapper();
   public @Override type type_bound() {
-    return core_types.error_type();
+    return elementary_types.error_type();
   }
   public @Override string to_string() {
     return new base_string("<null_wrapper>");

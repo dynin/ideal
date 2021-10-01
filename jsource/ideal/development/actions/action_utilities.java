@@ -119,7 +119,7 @@ public class action_utilities {
 
   public static principal_type lookup_type(analysis_context context, string full_name) {
     immutable_list<immutable_list<Character>> type_names = dot_pattern.split(full_name);
-    principal_type the_type = core_types.root_type();
+    principal_type the_type = elementary_types.root_type();
 
     for (int i = 0; i < type_names.size(); ++i) {
       simple_name name = simple_name.make((base_string) type_names.get(i));

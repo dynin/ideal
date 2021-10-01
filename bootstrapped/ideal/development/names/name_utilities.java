@@ -12,24 +12,9 @@ import ideal.machine.characters.*;
 import ideal.machine.channels.string_writer;
 
 public class name_utilities {
-  private static final simple_name FIRST = simple_name.make(new base_string("first"));
-  private static final simple_name SECOND = simple_name.make(new base_string("second"));
-  private static final simple_name THIRD = simple_name.make(new base_string("third"));
   private static final unicode_handler the_character_handler = unicode_handler.instance;
   public static string in_brackets(final readonly_stringable name) {
     return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("<"), name.to_string()), new base_string(">"));
-  }
-  public static simple_name make_numbered_name(final Integer index) {
-    if (ideal.machine.elements.runtime_util.values_equal(index, 0)) {
-      return name_utilities.FIRST;
-    } else if (ideal.machine.elements.runtime_util.values_equal(index, 1)) {
-      return name_utilities.SECOND;
-    } else if (ideal.machine.elements.runtime_util.values_equal(index, 2)) {
-      return name_utilities.THIRD;
-    } else {
-      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Don\'t know how to count up to "), index));
-      return null;
-    }
   }
   public static simple_name join(final simple_name first, final simple_name second) {
     final base_list<string> segments = new base_list<string>();

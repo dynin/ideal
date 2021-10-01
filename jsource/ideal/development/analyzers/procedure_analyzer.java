@@ -387,7 +387,7 @@ public class procedure_analyzer extends declaration_analyzer
 
       if (annotations().has(general_modifier.noreturn_modifier)) {
         // TODO: check that return original return type is void..
-        return_type = core_types.unreachable_type();
+        return_type = elementary_types.unreachable_type();
       } else {
         return_type = analyzer_utilities.handle_default_flavor(
             ((type_action) return_action).get_type());

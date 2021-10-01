@@ -7,7 +7,7 @@ import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
-import ideal.development.types.core_types;
+import ideal.development.types.elementary_types;
 
 public class panic_value extends jump_wrapper {
   public final string message;

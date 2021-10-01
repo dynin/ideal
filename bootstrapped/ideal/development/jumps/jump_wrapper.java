@@ -7,11 +7,11 @@ import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
-import ideal.development.types.core_types;
+import ideal.development.types.elementary_types;
 
 public abstract class jump_wrapper implements entity_wrapper {
   public @Override type type_bound() {
-    return core_types.unreachable_type();
+    return elementary_types.unreachable_type();
   }
   public jump_wrapper() { }
 }

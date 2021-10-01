@@ -247,7 +247,7 @@ public class variable_analyzer extends declaration_analyzer
       }
     }
 
-    assert var_value_type != core_types.error_type();
+    assert var_value_type != elementary_types.error_type();
     if (library().is_reference_type(var_value_type)) {
       return report_error(new error_signal(
           new base_string("Reference type not allowed in the variable declaration"),
@@ -336,7 +336,7 @@ public class variable_analyzer extends declaration_analyzer
     assert ! (new_value_action instanceof error_signal);
 
     type new_value_type = new_value_action.result().type_bound();
-    assert new_value_type != core_types.error_type();
+    assert new_value_type != elementary_types.error_type();
     new_value_type = analyzer_utilities.handle_default_flavor(new_value_type);
 
     type_flavor reference_flavor = var_reference_type.get_flavor();

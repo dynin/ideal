@@ -23,6 +23,7 @@ package names {
   class keyword;
   namespace keywords;
   class special_name;
+  namespace common_names;
   namespace name_utilities;
 
   test_suite test_names;

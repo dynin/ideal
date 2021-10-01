@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM='jump_type'
-TO='jump_category'
+FROM='core_types'
+TO='elementary_types'
 
 #cd $HOME/Projects/ideal
 

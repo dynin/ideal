@@ -33,9 +33,6 @@ namespace type_kinds {
 
   singleton_kind : base_kind.new("singleton", deeply_immutable_profile, false);
 
-  -- TODO: where should we put this?
-  INSTANCE_NAME : simple_name.make("instance");
-
   project_kind : base_kind.new("project", nameonly_profile, false);
 
   service_kind : base_kind.new("service", mutable_profile, false);

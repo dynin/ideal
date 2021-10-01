@@ -43,7 +43,7 @@ public class list_action extends base_action {
       result = subactions.get(i).result();
       // TODO: this should never happen.
       assert ! (result instanceof error_signal);
-      if (result.type_bound() == core_types.unreachable_type()) {
+      if (result.type_bound() == elementary_types.unreachable_type()) {
         return result;
       }
     }
@@ -69,7 +69,7 @@ public class list_action extends base_action {
     for (int i = 0; i < subactions.size(); ++i) {
       // TODO: handle early returns, etc.
       result = subactions.get(i).execute(null_wrapper.instance, exec_context);
-      if (result.type_bound() == core_types.unreachable_type()) {
+      if (result.type_bound() == elementary_types.unreachable_type()) {
         return result;
       }
     }

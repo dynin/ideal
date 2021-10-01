@@ -28,7 +28,7 @@ public class error_action extends error_signal implements action, abstract_value
 
   @Override
   public type type_bound() {
-    return core_types.error_type();
+    return elementary_types.error_type();
   }
 
   @Override

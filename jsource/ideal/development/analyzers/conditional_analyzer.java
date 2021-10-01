@@ -124,12 +124,12 @@ public class conditional_analyzer extends single_pass_analyzer {
     @Nullable type result_type = analyzer_utilities.unify(then_action, else_action, get_context());
 
     list<constraint> resulting_constraints = new base_list<constraint>();
-    if (result_type != core_types.unreachable_type()) {
-      if (else_action.result() == core_types.unreachable_type()) {
+    if (result_type != elementary_types.unreachable_type()) {
+      if (else_action.result() == elementary_types.unreachable_type()) {
         resulting_constraints = analyzer_utilities.always_by_type(new_constraints,
             constraint_type.ON_TRUE);
         resulting_constraints.append_all(then_constraints);
-      } else if (then_action.result() == core_types.unreachable_type()) {
+      } else if (then_action.result() == elementary_types.unreachable_type()) {
         resulting_constraints = analyzer_utilities.always_by_type(new_constraints,
             constraint_type.ON_FALSE);
         resulting_constraints.append_all(else_constraints);

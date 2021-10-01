@@ -33,7 +33,7 @@ public abstract class variable_action extends base_action implements abstract_va
     super(the_origin);
     this.the_declaration = the_declaration;
     this.reference_flavor = reference_flavor;
-    assert the_declaration.value_type() != core_types.error_type();
+    assert the_declaration.value_type() != elementary_types.error_type();
   }
 
   public variable_action(variable_declaration the_declaration, type_flavor reference_flavor) {

@@ -163,7 +163,7 @@ public class list_analyzer extends multi_pass_analyzer implements declaration {
       }
 
       actions.append(the_action);
-      if (the_action.result() == core_types.unreachable_type() && i > (the_elements.size() - 1)) {
+      if (the_action.result() == elementary_types.unreachable_type() && i > (the_elements.size() - 1)) {
         if (error == null) {
           error = new error_signal(new base_string("Unreachable code"), the_elements.get(i + 1));
         }

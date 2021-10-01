@@ -21,7 +21,7 @@ import ideal.development.values.*;
 public abstract class target_value extends base_procedure {
 
   public target_value(simple_name the_name) {
-    super(the_name, library().make_procedure(true, core_types.target_type()));
+    super(the_name, library().make_procedure(true, elementary_types.target_type()));
   }
 
   @Override
@@ -31,7 +31,7 @@ public abstract class target_value extends base_procedure {
 
   @Override
   protected final type get_argument_type(int index) {
-    return core_types.any_type();
+    return elementary_types.any_type();
   }
 
   @Override

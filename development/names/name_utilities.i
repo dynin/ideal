@@ -10,40 +10,11 @@ import ideal.machine.channels.string_writer;
 
 namespace name_utilities {
 
-  private FIRST : simple_name.make("first");
-  private SECOND : simple_name.make("second");
-  private THIRD : simple_name.make("third");
-
   private the_character_handler : unicode_handler.instance;
 
   string in_brackets(readonly stringable name) pure {
     return "<" ++ name.to_string ++ ">";
   }
-
-  simple_name make_numbered_name(nonnegative index) pure {
-    if (index == 0) {
-      return FIRST;
-    } else if (index == 1) {
-      return SECOND;
-    } else if (index == 2) {
-      return THIRD;
-    } else {
-      utilities.panic("Don't know how to count up to " ++ index);
-    }
-  }
--- TODO: implement switch
---    switch (index) {
---      case 0:
---        return FIRST;
---      case 1:
---        return SECOND;
---      case 2:
---        return THIRD;
---      default:
---        utilities.panic("Don't know how to count up to " + index);
---        return null;
---    }
---  }
 
   simple_name join(simple_name first, simple_name second) pure {
     -- TODO: use list.join() once it's implemented

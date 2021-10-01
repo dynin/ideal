@@ -36,7 +36,7 @@ public class builtin_declaration implements declaration {
 
   @Override
   public principal_type declared_in_type() {
-    return core_types.root_type();
+    return elementary_types.root_type();
   }
 
   @Override

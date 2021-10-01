@@ -38,7 +38,7 @@ public class return_action extends base_action {
 
   @Override
   public abstract_value result() {
-    return core_types.unreachable_type();
+    return elementary_types.unreachable_type();
   }
 
   @Override

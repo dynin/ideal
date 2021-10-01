@@ -93,7 +93,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
         return ((type_action) the_action).get_type();
       }
     }
-    return core_types.error_type();
+    return elementary_types.error_type();
   }
 
   private static @Nullable action_name get_action_name(construct c) {

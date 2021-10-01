@@ -11,7 +11,7 @@ package jumps {
   implicit import ideal.runtime.elements;
   implicit import ideal.development.elements;
   implicit import ideal.development.names;
-  import ideal.development.types.core_types;
+  import ideal.development.types.elementary_types;
 
   class jump_wrapper;
   class panic_value;

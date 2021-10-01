@@ -140,12 +140,12 @@ public class base_semantics implements semantics {
     }
 
     // Unreachable type can pretend to be anything.
-    if (subtype == core_types.unreachable_type()) {
+    if (subtype == elementary_types.unreachable_type()) {
       return target;
     }
 
     // TODO: switch to using type_identifiers.
-    if (target == core_types.any_type()) {
+    if (target == elementary_types.any_type()) {
       return subtype;
     }
 
@@ -458,7 +458,8 @@ public class base_semantics implements semantics {
         context.add(flavored_type, special_name.IMPLICIT_CALL,
             new promotion_action(flavored_type, false, pos));
       } else if (the_kind == singleton_kind) {
-        context.add(new_type, INSTANCE_NAME, new singleton_value(new_type).to_action(pos));
+        context.add(new_type, common_names.INSTANCE_NAME,
+            new singleton_value(new_type).to_action(pos));
       }
     } else {
       utilities.panic("Unknown declaration pass: " + pass);

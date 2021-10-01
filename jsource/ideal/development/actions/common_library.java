@@ -76,9 +76,9 @@ public class common_library implements value {
 
   public common_library(analysis_context context) {
     this.context = context;
-    core_types.set_context(context);
+    elementary_types.set_context(context);
 
-    ideal_type = make_namespace(ideal_name, core_types.root_type(), namespace_kind);
+    ideal_type = make_namespace(ideal_name, elementary_types.root_type(), namespace_kind);
     library_type = make_namespace(library_name, ideal_type, namespace_kind);
     elements_type = make_namespace(elements_name, library_type, package_kind);
     operators_type = make_namespace(operators_name, library_type, package_kind);

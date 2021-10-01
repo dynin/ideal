@@ -33,7 +33,7 @@ public class cast_op extends binary_procedure {
     super(the_cast_type, true,
         library().value_type().get_flavored(flavor.any_flavor),
         library().value_type().get_flavored(flavor.any_flavor),
-        core_types.any_type());
+        elementary_types.any_type());
   }
 
   public cast_type the_cast_type() {

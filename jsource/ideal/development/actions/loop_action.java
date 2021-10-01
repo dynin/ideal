@@ -54,7 +54,7 @@ public class loop_action extends base_action {
     if (has_breaks) {
       return common_library.get_instance().immutable_void_type();
     } else {
-      return core_types.unreachable_type();
+      return elementary_types.unreachable_type();
     }
   }
 

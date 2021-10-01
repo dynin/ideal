@@ -79,7 +79,7 @@ public class to_java_transformer extends base_transformer {
     common_headers = new base_list<construct>();
 
     implicit_names = new hash_set<principal_type>();
-    implicit_names.add(core_types.root_type());
+    implicit_names.add(elementary_types.root_type());
     implicit_names.add(java_library.lang_package());
     implicit_names.add(java_library.builtins_package());
 
@@ -90,12 +90,12 @@ public class to_java_transformer extends base_transformer {
       origin the_origin) {
     package_type = main_type.get_parent();
 
-    assert package_type == core_types.root_type() ||
+    assert package_type == elementary_types.root_type() ||
         package_type.short_name() instanceof simple_name;
 
     common_headers.append(make_newline(the_origin));
 
-    if (package_type != core_types.root_type()) {
+    if (package_type != elementary_types.root_type()) {
       common_headers.append(new package_construct(make_type(package_type, the_origin), the_origin));
       common_headers.append(make_newline(the_origin));
       implicit_names.add(package_type);
@@ -366,7 +366,7 @@ public class to_java_transformer extends base_transformer {
 
   private boolean is_unreachable_result(procedure_declaration the_procedure) {
     return the_procedure.get_body_action() != null &&
-        the_procedure.get_body_action().result().type_bound() == core_types.unreachable_type();
+        the_procedure.get_body_action().result().type_bound() == elementary_types.unreachable_type();
   }
 
   public construct process_procedure(procedure_declaration the_procedure,
@@ -443,7 +443,7 @@ public class to_java_transformer extends base_transformer {
           // Note: if Java return type is 'Void' (with the capital V),
           // then we may need to insert "return null" to keep javac happy.
         } else {
-          if (the_procedure.get_return_type() == core_types.unreachable_type()) {
+          if (the_procedure.get_return_type() == elementary_types.unreachable_type()) {
             ret = make_type(library().void_type(), the_origin);
           } else {
             if (is_object_type(the_procedure.get_return_type())) {
@@ -629,7 +629,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     @Nullable principal_type parent = the_type.get_parent();
-    if (parent == null || parent == core_types.root_type() ||
+    if (parent == null || parent == elementary_types.root_type() ||
         (!is_import && implicit_names.contains(parent))) {
       return null;
     }
@@ -1167,7 +1167,7 @@ public class to_java_transformer extends base_transformer {
       type_parameters.append(new variable_construct(empty_annotations, null, argument_type,
           empty_annotations, null, the_origin));
       supertype_parameters.append(new name_construct(argument_type, the_origin));
-      simple_name argument_name = name_utilities.make_numbered_name(i);
+      simple_name argument_name = common_names.make_numbered_name(i);
       call_parameters.append(new variable_construct(empty_annotations,
           new name_construct(argument_type, the_origin), argument_name, empty_annotations, null,
           the_origin));
@@ -1319,7 +1319,7 @@ public class to_java_transformer extends base_transformer {
     readonly_list<type> argument_types = the_procedure.get_argument_types();
 
     for (int i = 0; i < argument_types.size(); ++i) {
-      simple_name argument_name = name_utilities.make_numbered_name(i);
+      simple_name argument_name = common_names.make_numbered_name(i);
       type argument_type = argument_types.get(i);
       declaration_arguments.append(new variable_construct(
           new empty<annotation_construct>(),
@@ -1941,7 +1941,7 @@ public class to_java_transformer extends base_transformer {
         return make_null(the_origin);
       }
       construct type_construct = make_type(singleton_type, the_origin);
-      return new resolve_construct(type_construct, type_kinds.INSTANCE_NAME, the_origin);
+      return new resolve_construct(type_construct, common_names.INSTANCE_NAME, the_origin);
     } else if (the_value instanceof integer_value) {
       integer_value the_integer_value = (integer_value) the_value;
       return new literal_construct(new integer_literal(the_integer_value.unwrap()), the_origin);
@@ -2343,10 +2343,10 @@ public class to_java_transformer extends base_transformer {
     type procedure_return_type = the_procedure_action.result().type_bound();
     if (action_utilities.is_procedure_type(procedure_return_type) &&
         action_utilities.get_procedure_return(procedure_return_type) ==
-            core_types.unreachable_type()) {
+            elementary_types.unreachable_type()) {
       assert the_enclosing_procedure != null;
       type return_type = the_enclosing_procedure.get_return_type();
-      if (return_type != core_types.unreachable_type() &&
+      if (return_type != elementary_types.unreachable_type() &&
           return_type != library().immutable_void_type()) {
         list<construct> statements = new base_list<construct>();
         statements.append(transformed);

@@ -20,7 +20,7 @@ package types {
   class base_type;
   class base_value_printer;
   class concrete_type_action;
-  namespace core_types;
+  namespace elementary_types;
   class flavored_type;
   class master_type;
   class parametrizable_state;

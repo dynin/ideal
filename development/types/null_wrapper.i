@@ -12,7 +12,7 @@ class null_wrapper {
 
   static null_wrapper instance : null_wrapper.new();
 
-  implement type type_bound => core_types.error_type;
+  implement type type_bound => elementary_types.error_type;
 
   implement string to_string => "<null_wrapper>";
 }

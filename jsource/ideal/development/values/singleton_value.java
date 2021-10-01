@@ -14,6 +14,7 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.kinds.*;
 import ideal.development.flavors.*;
+import ideal.development.names.*;
 
 public class singleton_value extends base_data_value {
 
@@ -26,6 +27,6 @@ public class singleton_value extends base_data_value {
 
   public string to_string() {
     return new base_string(type_bound().to_string(), ".",
-        type_kinds.INSTANCE_NAME.to_string());
+        common_names.INSTANCE_NAME.to_string());
   }
 }

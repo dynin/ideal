@@ -35,7 +35,7 @@ public class is_op extends binary_procedure {
     super(the_operator, true,
         library().immutable_boolean_type(),
         library().value_type().get_flavored(flavor.any_flavor),
-        core_types.any_type());
+        elementary_types.any_type());
     this.negated = negated;
   }
 

@@ -34,4 +34,5 @@ package types {
   class union_type;
   class null_wrapper;
   interface value_printer;
+  class common_library;
 }

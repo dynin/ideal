@@ -15,6 +15,7 @@ import ideal.development.elements.*;
 import ideal.runtime.reflections.*;
 import ideal.development.declarations.*;
 import ideal.development.names.*;
+import ideal.development.types.*;
 import ideal.development.actions.*;
 
 public class list_context implements variable_context {

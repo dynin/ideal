@@ -187,6 +187,19 @@ public class variable_analyzer extends declaration_analyzer
     init_action = analyzer_utilities.to_value(action_not_error(init), get_context(), the_origin);
   }
 
+  private boolean is_private(action the_action) {
+    @Nullable declaration the_declaration = the_action.get_declaration();
+    if (the_declaration instanceof variable_declaration) {
+      return ((variable_declaration) the_declaration).annotations().access_level() ==
+          access_modifier.private_modifier;
+    } else if (the_declaration instanceof procedure_declaration) {
+      return ((procedure_declaration) the_declaration).annotations().access_level() ==
+          access_modifier.private_modifier;
+    } else {
+      return false;
+    }
+  }
+
   private signal process_declaration() {
     // TODO: handle init
     if (variable_type != null) {
@@ -237,7 +250,8 @@ public class variable_analyzer extends declaration_analyzer
         for (int i = 0; i < shadowed_actions.size(); ++i) {
           action shadowed = shadowed_actions.get(i);
           if (! (shadowed instanceof type_action) && ! (shadowed instanceof error_signal)
-              && !annotations().has(general_modifier.override_modifier)) {
+              && !annotations().has(general_modifier.override_modifier)
+              && !is_private(shadowed)) {
             notification original = new base_notification(messages.shadowed_declaration,
                 shadowed.get_declaration());
             new base_notification(new base_string("Variable shadows another declaration"), this,

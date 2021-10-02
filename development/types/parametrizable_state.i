@@ -58,7 +58,7 @@ class parametrizable_state {
   }
 
   void bind_parametrized(parametrized_type parametrized, type_parameters parameters) {
-    assert parametrized.get_master() == this.master;
+    assert parametrized.get_master == this.master;
     assert !parametrized.parameters_defined();
     assert is_special || primary_type == parametrized;
     if (parametrized_types.contains_key(parameters)) {

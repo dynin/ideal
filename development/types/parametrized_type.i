@@ -15,11 +15,11 @@ class parametrized_type {
     this.master = master;
   }
 
-  master_type get_master => master;
+  var master_type get_master => master;
 
   boolean parameters_defined => parameters is_not null;
 
-  type_parameters get_parameters() {
+  var type_parameters get_parameters() {
     assert parameters is_not null;
     return parameters;
   }

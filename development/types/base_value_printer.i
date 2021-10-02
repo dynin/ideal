@@ -78,7 +78,7 @@ class base_value_printer {
 
   private string print_parameters(parametrized_type the_type) {
     the_writer : string_writer.new();
-    parameters : the_type.get_parameters().the_list;
+    parameters : the_type.get_parameters.the_list;
 
     the_writer.write('[');
     var boolean first : true;

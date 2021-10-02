@@ -2076,7 +2076,8 @@ public class to_java_transformer extends base_transformer {
       } else if (the_chain_action.second instanceof dereference_action) {
         return process_action(the_chain_action.first, the_origin);
       } else if (the_chain_action.second instanceof promotion_action) {
-        return process_action(the_chain_action.first, the_origin);
+        return process_promotion_action(the_chain_action.first,
+            (promotion_action) the_chain_action.second, the_origin);
       } else if (the_chain_action.second instanceof proc_as_ref_action) {
         return process_proc_as_ref_action(the_chain_action.first,
             (proc_as_ref_action) the_chain_action.second, the_origin);
@@ -2163,6 +2164,17 @@ public class to_java_transformer extends base_transformer {
       }
     }
     return new name_construct(the_name, the_origin);
+  }
+
+  private construct process_promotion_action(action from_action,
+      promotion_action the_promotion_action, origin the_origin) {
+    /*
+    if (from_action instanceof list_initializer_action) {
+      return transform_cast(from_action, the_promotion_action.the_type, operator.SOFT_CAST,
+          the_origin);
+    } else {
+    */
+    return process_action(from_action, the_origin);
   }
 
   private construct process_dispatch_action(action from_action,

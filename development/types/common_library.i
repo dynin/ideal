@@ -79,121 +79,65 @@ class common_library {
     instance = this;
   }
 
-  principal_type void_type() {
-    return VOID_TYPE;
-  }
+  var principal_type void_type => VOID_TYPE;
 
-  principal_type undefined_type() {
-    return UNDEFINED_TYPE;
-  }
+  var principal_type undefined_type => UNDEFINED_TYPE;
 
-  principal_type entity_type() {
-    return ENTITY_TYPE;
-  }
+  var principal_type entity_type => ENTITY_TYPE;
 
-  principal_type value_type() {
-    return VALUE_TYPE;
-  }
+  var principal_type value_type => VALUE_TYPE;
 
-  principal_type data_type() {
-    return DATA_TYPE;
-  }
+  var principal_type data_type => DATA_TYPE;
 
-  principal_type boolean_type() {
-    return BOOLEAN_TYPE;
-  }
+  var principal_type boolean_type => BOOLEAN_TYPE;
 
-  principal_type character_type() {
-    return CHARACTER_TYPE;
-  }
+  var principal_type character_type => CHARACTER_TYPE;
 
-  principal_type integer_type() {
-    return INTEGER_TYPE;
-  }
+  var principal_type integer_type => INTEGER_TYPE;
 
-  principal_type nonnegative_type() {
-    return NONNEGATIVE_TYPE;
-  }
+  var principal_type nonnegative_type => NONNEGATIVE_TYPE;
 
-  type immutable_void_type() {
-    return void_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_void_type => void_type.get_flavored(flavor.deeply_immutable_flavor);
 
-  type immutable_boolean_type() {
-    return boolean_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_boolean_type => boolean_type.get_flavored(flavor.deeply_immutable_flavor);
 
-  type immutable_integer_type() {
-    return integer_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_integer_type => integer_type.get_flavored(flavor.deeply_immutable_flavor);
 
-  type immutable_nonnegative_type() {
-    return nonnegative_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_nonnegative_type =>
+      nonnegative_type.get_flavored(flavor.deeply_immutable_flavor);
 
-  type immutable_character_type() {
-    return character_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_character_type =>
+      character_type.get_flavored(flavor.deeply_immutable_flavor);
 
-  principal_type string_type() {
-    return STRING_TYPE;
-  }
+  var principal_type string_type => STRING_TYPE;
 
-  type immutable_string_type() {
-    return string_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_string_type => string_type.get_flavored(flavor.deeply_immutable_flavor);
 
-  master_type stringable_type() {
-    return STRINGABLE_TYPE;
-  }
+  var master_type stringable_type => STRINGABLE_TYPE;
 
-  principal_type equality_comparable_type() {
-    return EQUALITY_COMPARABLE_TYPE;
-  }
+  var principal_type equality_comparable_type => EQUALITY_COMPARABLE_TYPE;
 
-  principal_type reference_equality_type() {
-    return REFERENCE_EQUALITY_TYPE;
-  }
+  var principal_type reference_equality_type => REFERENCE_EQUALITY_TYPE;
 
-  master_type list_type() {
-    return LIST_TYPE;
-  }
-
-  private overload type_parameters make_parameters(abstract_value first) {
-    return type_parameters.new(base_list[abstract_value].new(first));
-  }
-
-  private overload type_parameters make_parameters(abstract_value first, abstract_value second) {
-    return type_parameters.new(base_list[abstract_value].new(first, second));
-  }
-
-  private overload type_parameters make_parameters(abstract_value first, abstract_value second,
-      abstract_value third) {
-    return type_parameters.new(base_list[abstract_value].new(first, second, third));
-  }
+  var master_type list_type => LIST_TYPE;
 
   type list_type_of(type element_type) {
-    return LIST_TYPE.bind_parameters(make_parameters(element_type));
+    -- TODO: cast is redundant, needed by to_java_transformer.
+    return LIST_TYPE.bind_parameters(type_parameters.new([ element_type .> abstract_value, ]));
   }
 
-  principal_type null_type() {
-    return NULL_TYPE;
-  }
+  var principal_type null_type => NULL_TYPE;
 
-  type immutable_null_type() {
-    return null_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_null_type => null_type.get_flavored(flavor.deeply_immutable_flavor);
 
-  principal_type missing_type() {
-    return MISSING_TYPE;
-  }
+  var principal_type missing_type => MISSING_TYPE;
 
-  type immutable_missing_type() {
-    return missing_type().get_flavored(flavor.deeply_immutable_flavor);
-  }
+  var type immutable_missing_type => missing_type.get_flavored(flavor.deeply_immutable_flavor);
 
   type get_reference(type_flavor flavor, type value_type) {
-    return REFERENCE_TYPE.bind_parameters(make_parameters(value_type)).get_flavored(flavor);
+    -- TODO: cast is redundant, needed by to_java_transformer.
+    return REFERENCE_TYPE.bind_parameters(type_parameters.new([ value_type .> abstract_value, ])).
+        get_flavored(flavor);
   }
 
   boolean is_reference_type(type the_type) {
@@ -211,13 +155,9 @@ class common_library {
     return the_parametrized_type.get_parameters.the_list.first !> type;
   }
 
-  master_type procedure_type() {
-    return PROCEDURE_TYPE;
-  }
+  master_type procedure_type => PROCEDURE_TYPE;
 
-  master_type function_type() {
-    return FUNCTION_TYPE;
-  }
+  master_type function_type => FUNCTION_TYPE;
 
   master_type master_procedure(boolean is_function) {
     return is_function ? FUNCTION_TYPE : PROCEDURE_TYPE;
@@ -225,39 +165,32 @@ class common_library {
 
   -- TODO: use list for arguments here
   overload type make_procedure(boolean is_function, abstract_value return_value) {
-    return master_procedure(is_function).bind_parameters(make_parameters(return_value)).
+    return master_procedure(is_function).bind_parameters(
+        type_parameters.new([ return_value, ])).
         get_flavored(flavor.immutable_flavor);
   }
 
   overload type make_procedure(boolean is_function, abstract_value return_value,
       abstract_value first_argument) {
     return master_procedure(is_function).bind_parameters(
-        make_parameters(return_value, first_argument)).
+        type_parameters.new([ return_value, first_argument ])).
         get_flavored(flavor.immutable_flavor);
   }
 
   overload type make_procedure(boolean is_function, abstract_value return_value,
       abstract_value first_argument, abstract_value second_argument) {
     return master_procedure(is_function).bind_parameters(
-        make_parameters(return_value, first_argument, second_argument)).
+        type_parameters.new([ return_value, first_argument, second_argument ])).
         get_flavored(flavor.immutable_flavor);
   }
 
-  principal_type ideal_namespace() {
-    return ideal_type;
-  }
+  var principal_type ideal_namespace => ideal_type;
 
-  principal_type library_namespace() {
-    return library_type;
-  }
+  var principal_type library_namespace => library_type;
 
-  principal_type elements_package() {
-    return elements_type;
-  }
+  var principal_type elements_package => elements_type;
 
-  principal_type operators_package() {
-    return operators_type;
-  }
+  var principal_type operators_package => operators_type;
 
   private master_type get_type(action_name name, kind the_kind, flavor_profile the_flavor_profile) {
     return context.get_or_create_type(name, the_kind, elements_type, the_flavor_profile);
@@ -276,7 +209,7 @@ class common_library {
     assert the_values.size == 2;
     -- TODO: handle when null is the first in union, as in "null or foo_type"
     the_null_type : the_values[1] !> type;
-    assert the_null_type.principal == null_type();
+    assert the_null_type.principal == null_type;
     var result : the_values[0] !> type;
     if (union_flavor != flavor.nameonly_flavor) {
       result = result.get_flavored(union_flavor);
@@ -284,13 +217,9 @@ class common_library {
     return result;
   }
 
-  boolean is_bootstrapped() {
-    return VOID_TYPE.get_declaration is_not null;
-  }
+  var boolean is_bootstrapped => VOID_TYPE.get_declaration is_not null;
 
-  static boolean is_initialized() {
-    return instance is_not null;
-  }
+  static var boolean is_initialized => instance is_not null;
 
   -- TODO: fix this hack
   static common_library get_instance() {
@@ -298,7 +227,5 @@ class common_library {
     return instance;
   }
 
-  type_declaration_context get_context() {
-    return context;
-  }
+  var type_declaration_context get_context => context;
 }

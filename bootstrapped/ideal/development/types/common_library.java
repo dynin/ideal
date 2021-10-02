@@ -134,17 +134,8 @@ public class common_library implements value {
   public master_type list_type() {
     return this.LIST_TYPE;
   }
-  private type_parameters make_parameters(final abstract_value first) {
-    return new type_parameters(new base_list<abstract_value>(first));
-  }
-  private type_parameters make_parameters(final abstract_value first, final abstract_value second) {
-    return new type_parameters(new base_list<abstract_value>(first, second));
-  }
-  private type_parameters make_parameters(final abstract_value first, final abstract_value second, final abstract_value third) {
-    return new type_parameters(new base_list<abstract_value>(first, second, third));
-  }
   public type list_type_of(final type element_type) {
-    return this.LIST_TYPE.bind_parameters(this.make_parameters(element_type));
+    return this.LIST_TYPE.bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ (abstract_value) element_type }))));
   }
   public principal_type null_type() {
     return this.NULL_TYPE;
@@ -159,7 +150,7 @@ public class common_library implements value {
     return this.missing_type().get_flavored(flavor.deeply_immutable_flavor);
   }
   public type get_reference(final type_flavor flavor, final type value_type) {
-    return this.REFERENCE_TYPE.bind_parameters(this.make_parameters(value_type)).get_flavored(flavor);
+    return this.REFERENCE_TYPE.bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ (abstract_value) value_type })))).get_flavored(flavor);
   }
   public boolean is_reference_type(final type the_type) {
     final principal_type principal = the_type.principal();
@@ -184,13 +175,13 @@ public class common_library implements value {
     return is_function ? this.FUNCTION_TYPE : this.PROCEDURE_TYPE;
   }
   public type make_procedure(final boolean is_function, final abstract_value return_value) {
-    return this.master_procedure(is_function).bind_parameters(this.make_parameters(return_value)).get_flavored(flavor.immutable_flavor);
+    return this.master_procedure(is_function).bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ return_value })))).get_flavored(flavor.immutable_flavor);
   }
   public type make_procedure(final boolean is_function, final abstract_value return_value, final abstract_value first_argument) {
-    return this.master_procedure(is_function).bind_parameters(this.make_parameters(return_value, first_argument)).get_flavored(flavor.immutable_flavor);
+    return this.master_procedure(is_function).bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ return_value, first_argument })))).get_flavored(flavor.immutable_flavor);
   }
   public type make_procedure(final boolean is_function, final abstract_value return_value, final abstract_value first_argument, final abstract_value second_argument) {
-    return this.master_procedure(is_function).bind_parameters(this.make_parameters(return_value, first_argument, second_argument)).get_flavored(flavor.immutable_flavor);
+    return this.master_procedure(is_function).bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ return_value, first_argument, second_argument })))).get_flavored(flavor.immutable_flavor);
   }
   public principal_type ideal_namespace() {
     return this.ideal_type;

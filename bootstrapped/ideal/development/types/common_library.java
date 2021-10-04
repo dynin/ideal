@@ -137,6 +137,19 @@ public class common_library implements value {
   public type list_type_of(final type element_type) {
     return this.LIST_TYPE.bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ (abstract_value) element_type }))));
   }
+  public boolean is_list_type(final type the_type) {
+    final principal_type principal = the_type.principal();
+    if (principal instanceof parametrized_type) {
+      return ((parametrized_type) principal).get_master() == this.LIST_TYPE;
+    } else {
+      return false;
+    }
+  }
+  public type get_list_parameter(final type list_type) {
+    final parametrized_type the_parametrized_type = (parametrized_type) list_type.principal();
+    assert the_parametrized_type.get_master() == this.LIST_TYPE;
+    return (type) the_parametrized_type.get_parameters().the_list.first();
+  }
   public principal_type null_type() {
     return this.NULL_TYPE;
   }

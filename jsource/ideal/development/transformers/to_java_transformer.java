@@ -1116,6 +1116,11 @@ public class to_java_transformer extends base_transformer {
     return new list_construct(new base_list<construct>(), grouping_type.PARENS, false, the_origin);
   }
 
+  private list_construct in_parens(construct the_construct, origin the_origin) {
+    return new list_construct(new base_list<construct>(the_construct), grouping_type.PARENS,
+        false, the_origin);
+  }
+
   private Object make_procedure_declarations(readonly_list<annotation_construct> annotations,
       type_declaration the_type_declaration) {
     action_name the_name = the_type_declaration.short_name();
@@ -2168,12 +2173,18 @@ public class to_java_transformer extends base_transformer {
 
   private construct process_promotion_action(action from_action,
       promotion_action the_promotion_action, origin the_origin) {
-    /*
-    if (from_action instanceof list_initializer_action) {
-      return transform_cast(from_action, the_promotion_action.the_type, operator.SOFT_CAST,
-          the_origin);
-    } else {
-    */
+    type action_type = from_action.result().type_bound();
+    type promotion_type = the_promotion_action.the_type;
+    if (false && the_promotion_action.is_supertype &&
+        library().is_list_type(action_type) &&
+        library().is_list_type(promotion_type) &&
+        library().get_list_parameter(action_type) != library().get_list_parameter(promotion_type)) {
+      //System.out.println("68A " + action_type);
+      //System.out.println("68B " + promotion_type);
+      return in_parens(transform_cast(from_action, the_promotion_action.the_type, operator.SOFT_CAST,
+          the_origin), the_origin);
+    }
+
     return process_action(from_action, the_origin);
   }
 

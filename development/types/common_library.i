@@ -126,6 +126,21 @@ class common_library {
     return LIST_TYPE.bind_parameters(type_parameters.new([ element_type .> abstract_value, ]));
   }
 
+  boolean is_list_type(type the_type) {
+    principal : the_type.principal;
+    if (principal is parametrized_type) {
+      return principal.get_master == LIST_TYPE;
+    } else {
+      return false;
+    }
+  }
+
+  type get_list_parameter(type list_type) {
+    the_parametrized_type : list_type.principal !> parametrized_type;
+    assert the_parametrized_type.get_master == LIST_TYPE;
+    return the_parametrized_type.get_parameters.the_list.first !> type;
+  }
+
   var principal_type null_type => NULL_TYPE;
 
   var type immutable_null_type => null_type.get_flavored(flavor.deeply_immutable_flavor);

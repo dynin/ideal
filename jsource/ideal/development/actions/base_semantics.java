@@ -18,6 +18,7 @@ import ideal.development.kinds.*;
 import static ideal.development.kinds.type_kinds.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
+import static ideal.development.flavors.flavor.*;
 import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
 import ideal.development.origins.*;
@@ -132,7 +133,6 @@ public class base_semantics implements semantics {
 
   @Nullable
   public type find_supertype(action_table actions, abstract_value the_value, type target) {
-
     type subtype = the_value.type_bound();
 
     if (subtype == target) {
@@ -171,11 +171,10 @@ public class base_semantics implements semantics {
       return null;
     }
 
-    if (subtype.get_flavor() == target.get_flavor() &&
-        subtype.get_flavor() != flavor.nameonly_flavor &&
+    if (subtype.principal() instanceof parametrized_type &&
+        target.principal() instanceof parametrized_type &&
         maybe_master(subtype) == maybe_master(target)) {
-      if (check_variance(actions, (parametrized_type) subtype.principal(),
-          (parametrized_type) target.principal(), subtype.get_flavor())) {
+      if (check_variance(actions, subtype, target)) {
         return target;
       }
     }
@@ -226,8 +225,14 @@ public class base_semantics implements semantics {
 
   @Nullable
   public action find_promotion(action_table actions, type subtype, type target) {
-    if (subtype == target || find_supertype(actions, subtype, target) != null) {
+    if (subtype == target || target == elementary_types.any_type()) {
       return new stub_action(subtype);
+    }
+
+    @Nullable type supertype = find_supertype(actions, subtype, target);
+    if (supertype != null) {
+      return new stub_action(subtype);
+      //return new promotion_action(target, true);
     }
 
     // Anything can be promoted to the 'void' value.
@@ -275,32 +280,65 @@ public class base_semantics implements semantics {
     }
   }
 
+  /*
   private boolean xx_check_variance(action_table actions, parametrized_type subtype,
-      parametrized_type supertype, type_flavor the_flavor) {
+      parametrized_type supertype, type_flavor subtype_flavor, type_flavor supertype_flavor) {
     boolean result = check_variance(actions, subtype, supertype, the_flavor);
     utilities.stack("Subtype: " + subtype + " supertype: " + supertype +
-        " FL: " + the_flavor + " GOT: " + result);
+        " SUBF: " + subtype_flavor + " SUPF: " + supertype_flavor + " GOT: " + result);
     return result;
   }
+  */
 
-  private boolean check_variance(action_table actions, parametrized_type subtype,
-      parametrized_type supertype, type_flavor the_flavor) {
-    assert subtype.get_master() == supertype.get_master();
-    master_type the_master = subtype.get_master();
+  private @Nullable type_flavor get_super_flavor(type_flavor subtype_flavor,
+      type_flavor supertype_flavor) {
+
+    if (subtype_flavor == nameonly_flavor || supertype_flavor == nameonly_flavor) {
+      return null;
+    }
+
+    if (subtype_flavor == supertype_flavor) {
+      return subtype_flavor;
+    }
+
+    // TODO: real superflavor check.
+    if (subtype_flavor == immutable_flavor && supertype_flavor == readonly_flavor) {
+      return readonly_flavor;
+    }
+
+    return null;
+  }
+
+  private boolean check_variance(action_table actions, type subtype, type supertype) {
+    @Nullable type_flavor super_flavor = get_super_flavor(subtype.get_flavor(),
+        supertype.get_flavor());
+    if (super_flavor == null) {
+      return false;
+    }
+
+    parametrized_type subtype_principal = (parametrized_type) subtype.principal();
+    parametrized_type supertype_principal = (parametrized_type) supertype.principal();
+    assert subtype_principal.get_master() == supertype_principal.get_master();
+    master_type the_master = subtype_principal.get_master();
+
     // TODO: implement real variance check...
-    immutable_list<abstract_value> subtype_parameters = subtype.get_parameters().the_list;
-    immutable_list<abstract_value> supertype_parameters = supertype.get_parameters().the_list;
+    immutable_list<abstract_value> subtype_parameters =
+        subtype_principal.get_parameters().the_list;
+    immutable_list<abstract_value> supertype_parameters =
+        supertype_principal.get_parameters().the_list;
     int size = subtype_parameters.size();
     // TODO: handle extra procedure arguments...
     if (supertype_parameters.size() != size) {
       return false;
     }
+
     for (int i = 0; i < size; ++i) {
       if (!check_one_variance(actions, subtype_parameters.get(i), supertype_parameters.get(i),
-          the_master.get_parametrizable().get_variance(i), the_flavor)) {
+          the_master.get_parametrizable().get_variance(i), super_flavor)) {
         return false;
       }
     }
+
     return true;
   }
 
@@ -323,10 +361,10 @@ public class base_semantics implements semantics {
         return true;
       }
     } else if (variance == variance_modifier.combivariant_modifier) {
-      // log.debug("SUB: " +  subtype_value + " SUPER: " + supertype_value + " FL: " + the_flavor);
-      if (the_flavor == flavor.readonly_flavor ||
-          the_flavor == flavor.immutable_flavor ||
-          the_flavor == flavor.deeply_immutable_flavor) {
+      //log.debug("SUB: " +  subtype_value + " SUPER: " + supertype_value + " FL: " + the_flavor);
+      if (the_flavor == readonly_flavor ||
+          the_flavor == immutable_flavor ||
+          the_flavor == deeply_immutable_flavor) {
         if (is_subtype_of(actions, subtype_value, supertype_type)) {
           return true;
         }
@@ -396,8 +434,7 @@ public class base_semantics implements semantics {
           new_type.short_name() == common_names.function_name) {
         // TODO: this should be done in type_declaration_analyzer.
         type procedure_type = library().procedure_type().bind_parameters(
-          ((parametrized_type) new_type).get_parameters()).get_flavored(
-            flavor.immutable_flavor);
+          ((parametrized_type) new_type).get_parameters()).get_flavored(immutable_flavor);
         action_utilities.process_super_flavors(new_type, null, procedure_type, pos, context);
       }
     } else if (pass == declaration_pass.TYPES_AND_PROMOTIONS) {
@@ -516,7 +553,7 @@ public class base_semantics implements semantics {
     type param = (type) params.first();
 
     action deref = new dereference_action(param, the_declaration, the_declaration);
-    context.add(new_type.get_flavored(flavor.readonly_flavor), special_name.PROMOTION, deref);
+    context.add(new_type.get_flavored(readonly_flavor), special_name.PROMOTION, deref);
   }
 
   public string print_value(abstract_value the_value) {

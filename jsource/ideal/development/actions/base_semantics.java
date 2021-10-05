@@ -27,7 +27,7 @@ import ideal.development.flags.*;
 
 import ideal.development.values.singleton_value;
 
-public class base_semantics implements semantics {
+public class base_semantics implements language_settings {
 
   private @Nullable value_printer the_value_printer;
 

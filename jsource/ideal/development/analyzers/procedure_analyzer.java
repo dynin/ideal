@@ -202,7 +202,7 @@ public class procedure_analyzer extends declaration_analyzer
         joined_annotations.append_all(post_annotations);
         // TODO: if not specified, inherit access modifier from the overriden method
         process_annotations(joined_annotations,
-            language().get_default_procedure_access(outer_kind()));
+            settings().get_default_procedure_access(outer_kind()));
       }
       the_flavor = process_flavor(post_annotations);
 

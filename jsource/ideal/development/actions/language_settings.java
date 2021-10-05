@@ -19,7 +19,7 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.origins.*;
 
-public interface semantics extends data {
+public interface language_settings extends data {
 
   access_modifier get_default_type_access(kind the_kind);
 

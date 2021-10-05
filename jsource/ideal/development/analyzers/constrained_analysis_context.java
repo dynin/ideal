@@ -119,8 +119,8 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public semantics language() {
-    return parent.language();
+  public language_settings settings() {
+    return parent.settings();
   }
 
   @Override

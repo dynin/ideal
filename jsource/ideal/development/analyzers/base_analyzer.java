@@ -131,8 +131,8 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     return parent();
   }
 
-  protected semantics language() {
-    return context.language();
+  protected language_settings settings() {
+    return context.settings();
   }
 
   protected void init_context(analyzable the_analyzable) {

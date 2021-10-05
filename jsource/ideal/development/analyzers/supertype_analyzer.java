@@ -78,7 +78,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
       assert the_supertype == null;
 
-      // TODO: detect loops in inheritance hierarchy; move to semantics
+      // TODO: detect loops in inheritance hierarchy; move to base_semantics
       error_signal error = find_error(the_analyzable);
       if (error != null) {
         return new error_signal(messages.error_in_supertype, error, source);

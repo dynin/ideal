@@ -16,11 +16,10 @@ import ideal.development.elements.*;
 import ideal.development.constructs.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
-import ideal.development.notifications.error_signal;
 
 public interface analysis_context extends type_declaration_context, value_printer, value {
 
-  semantics language();
+  language_settings settings();
 
   readonly_list<action> lookup(type from, action_name name);
 
@@ -41,8 +40,6 @@ public interface analysis_context extends type_declaration_context, value_printe
   @Nullable type find_supertype_procedure(abstract_value the_value);
 
   action promote(action from, type target, origin pos);
-
-  graph<principal_type, origin> type_graph();
 
   @Nullable readonly_list<construct> load_resource(type_announcement_construct the_announcement);
 }

@@ -33,8 +33,7 @@ public class list_context implements variable_context {
   @Override
   public value_wrapper get_var(variable_id key) {
     if (key.short_name() == common_names.size_name) {
-      return new integer_value(the_list.size(),
-          common_types.immutable_nonnegative_type());
+      return new integer_value(the_list.size(), common_types.immutable_nonnegative_type());
     }
 
     utilities.panic("list_context.get_var() for " + key);

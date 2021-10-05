@@ -147,7 +147,7 @@ public class variable_analyzer extends declaration_analyzer
         }
         // TODO: if not specified, inherit access modifier from the overriden method
         process_annotations(joined_annotations,
-            language().get_default_variable_access(outer_kind()));
+            settings().get_default_variable_access(outer_kind()));
       }
 
       if (outer_kind() == type_kinds.block_kind) {

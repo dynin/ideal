@@ -216,7 +216,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     */
 
     if (pass == analysis_pass.TARGET_DECL) {
-      process_annotations(annotations_list, language().get_default_type_access(outer_kind()));
+      process_annotations(annotations_list, settings().get_default_type_access(outer_kind()));
 
       readonly_list<action> resolved = get_context().lookup(declared_in_type(), short_name());
 
@@ -447,7 +447,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       readonly_list<annotation_construct> super_annotations =
           new base_list<annotation_construct>(new modifier_construct(
               general_modifier.synthetic_modifier, the_origin));
-      // TODO: move default supertype to semantics
+      // TODO: move default supertype to language_settings
       principal_type default_supertype = common_types.value_type();
 
       assert body != null;

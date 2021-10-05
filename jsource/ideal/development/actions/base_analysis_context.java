@@ -43,7 +43,7 @@ public abstract class base_analysis_context extends debuggable implements analys
   }
 
   @Override
-  public semantics language() {
+  public language_settings settings() {
     return language;
   }
 

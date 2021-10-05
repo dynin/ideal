@@ -179,7 +179,8 @@ public class conditional_analyzer extends single_pass_analyzer {
         if (second_constraint.the_declaration == the_declaration) {
           @Nullable abstract_value unified_value = analyzer_utilities.unify_values(
               first_constraint.the_value(), second_constraint.the_value(), get_context());
-          if (unified_value != null) {
+          if (unified_value != null &&
+              unified_value.type_bound() != library().immutable_void_type()) {
             result.append(new constraint(the_declaration, unified_value, constraint_type.ALWAYS));
             continue;
           }

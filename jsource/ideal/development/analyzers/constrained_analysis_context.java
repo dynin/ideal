@@ -185,11 +185,14 @@ public class constrained_analysis_context extends debuggable implements analysis
 
   @Override
   public action to_value(action expression, origin the_origin) {
-    // TODO: re-enable this if we run into errors.
-    //action narrowed_action = parent.can_narrow(expression, constraint_mapper);
-    //if (narrowed_action != null) {
-    //  return narrowed_action;
-    //}
+    // We need to specially handled narrowed variables here
+    // because the reference type is not narrowed.
+    // Say the variable declaration is "string or null foo", and it's narrowed to string.
+    // The is_reference_type(the_type) would return a union type, which is not what we want.
+    action narrowed_action = parent.can_narrow(expression, constraint_mapper);
+    if (narrowed_action != null) {
+      return narrowed_action;
+    }
 
     type the_type = expression.result().type_bound();
     if (common_library.get_instance().is_reference_type(the_type)) {

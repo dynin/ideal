@@ -35,4 +35,5 @@ package types {
   class null_wrapper;
   interface value_printer;
   class common_library;
+  namespace common_types;
 }

@@ -8,6 +8,7 @@
 namespace origin_utilities {
 
   no_origin : special_origin.new("no-origin");
+  builtin_origin : special_origin.new("[builtin]");
 
   source_content or null get_source(var origin or null the_origin) {
     while (the_origin is_not null) {

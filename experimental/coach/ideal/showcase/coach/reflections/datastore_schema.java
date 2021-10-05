@@ -17,6 +17,7 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.scanners.*;
 import ideal.development.types.*;
+import static ideal.development.types.common_types.*;
 import ideal.development.actions.*;
 import ideal.development.analyzers.*;
 import ideal.development.flavors.*;
@@ -36,7 +37,6 @@ public class datastore_schema {
 
   public final type_declaration declaration;
   public final source_content source;
-  private final common_library library;
   public final execution_context exec_context;
   private final variable_id data_id_field;
   private final list<data_type> data_types;
@@ -44,15 +44,14 @@ public class datastore_schema {
   public string version;
 
   public datastore_schema(type_declaration declaration, source_content source,
-      common_library library, execution_context exec_context) {
+      execution_context exec_context) {
     this.declaration = declaration;
     this.source = source;
-    this.library = library;
     this.exec_context = exec_context;
 
     // TODO: reference should be of immutable flavor
-    data_id_field = new simple_variable_id(DATA_ID, library.immutable_string_type(),
-        library.get_reference(flavor.immutable_flavor, library.immutable_string_type()));
+    data_id_field = new simple_variable_id(DATA_ID, immutable_string_type(),
+        get_reference(flavor.immutable_flavor, immutable_string_type()));
 
     data_types = new base_list<data_type>();
     enum_types = new base_list<enum_type>();
@@ -101,12 +100,12 @@ public class datastore_schema {
     return new datastore_state(this, source_version, version_id);
   }
 
-  public type_id immutable_string_type() {
-    return library.immutable_string_type();
+  public type immutable_string_type() {
+    return common_types.immutable_string_type();
   }
 
   public type get_mutable_reference(type_id value_type) {
-    return library.get_reference(flavor.mutable_flavor, action_utilities.to_type(value_type));
+    return get_reference(flavor.mutable_flavor, action_utilities.to_type(value_type));
   }
 
   public variable_id data_id_field() {
@@ -125,7 +124,7 @@ public class datastore_schema {
     principal_type candidate = ((type) the_type_id).principal();
     if (candidate instanceof parametrized_type) {
       master_type the_master_type = ((parametrized_type) candidate).get_master();
-      return the_master_type == library.list_type();
+      return the_master_type == list_type();
     }
     return false;
   }
@@ -134,14 +133,14 @@ public class datastore_schema {
     principal_type list_principal = ((type) the_type_id).principal();
     assert list_principal instanceof parametrized_type;
     parametrized_type list_parametrized = (parametrized_type) list_principal;
-    assert list_parametrized.get_master() == library.list_type();
+    assert list_parametrized.get_master() == list_type();
     immutable_list<abstract_value> list_parameters = list_parametrized.get_parameters().the_list;
     assert list_parameters.size() == 1;
     return (type) list_parameters.get(0);
   }
 
   public string_value new_string(string s) {
-    return new base_string_value(s, library.immutable_string_type());
+    return new base_string_value(s, immutable_string_type());
   }
 
   public datastore_state make_new_state() {

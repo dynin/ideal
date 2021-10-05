@@ -57,7 +57,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     root = elementary_types.root_type();
     this.top_catalog = top_catalog;
     bootstrap_context = new create_analysis_context(this, language);
-    root_origin = semantics.BUILTIN_POSITION; // TODO: use resource id as origin
+    root_origin = origin_utilities.builtin_origin; // TODO: use resource id as origin
     scanner = new common_scanner();
     set_notification_handler((output<notification>) (output) log.log_output);
   }

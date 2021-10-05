@@ -26,6 +26,4 @@ public interface semantics extends data {
   access_modifier get_default_variable_access(kind the_kind);
 
   access_modifier get_default_procedure_access(kind the_kind);
-
-  static final origin BUILTIN_POSITION = new special_origin(new base_string("[builtin]"));
 }

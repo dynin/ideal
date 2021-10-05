@@ -186,7 +186,7 @@ public abstract class base_analysis_context extends debuggable implements analys
       return (master_type) types.first();
     } else {
       return action_utilities.make_type(this, kind, the_flavor_profile, name, parent,
-          null, semantics.BUILTIN_POSITION);
+          null, origin_utilities.builtin_origin);
     }
   }
 }

@@ -20,6 +20,7 @@ import ideal.development.actions.*;
 import ideal.development.analyzers.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
+import ideal.development.origins.*;
 
 public class java_library implements value {
 
@@ -219,7 +220,7 @@ public class java_library implements value {
       return (principal_type) types.first();
     }
     master_type result = action_utilities.make_type(context, type_kinds.namespace_kind,
-        flavor_profiles.nameonly_profile, name, parent, null, semantics.BUILTIN_POSITION);
+        flavor_profiles.nameonly_profile, name, parent, null, origin_utilities.builtin_origin);
     return result;
   }
 

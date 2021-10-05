@@ -21,6 +21,7 @@ import ideal.development.types.*;
 import ideal.development.values.*;
 import ideal.development.analyzers.*;
 import ideal.development.flavors.*;
+import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
 public class test_library {
@@ -29,8 +30,8 @@ public class test_library {
   private static simple_name PLUS_NAME = simple_name.make(new base_string("plus"));
 
   public static void init(analysis_context context, type parent) {
-    origin pos = semantics.BUILTIN_POSITION;
-    context.add(parent, PRINTLN_NAME, new info_fn(PRINTLN_NAME).to_action(pos));
-    context.add(parent, PLUS_NAME, new add_op().to_action(pos));
+    origin the_origin = origin_utilities.builtin_origin;
+    context.add(parent, PRINTLN_NAME, new info_fn(PRINTLN_NAME).to_action(the_origin));
+    context.add(parent, PLUS_NAME, new add_op().to_action(the_origin));
   }
 }

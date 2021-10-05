@@ -27,6 +27,7 @@ import ideal.development.kinds.*;
 import static ideal.development.kinds.type_kinds.*;
 import static ideal.development.kinds.subtype_tags.*;
 import ideal.development.types.*;
+import static ideal.development.types.common_types.*;
 import ideal.development.declarations.*;
 import ideal.development.scanners.*;
 import ideal.development.analyzers.*;
@@ -162,8 +163,8 @@ public class to_java_transformer extends base_transformer {
 
   private type result_type(action the_action) {
     type the_type = the_action.result().type_bound();
-    if (library().is_reference_type(the_type)) {
-      return library().get_reference_parameter(the_type);
+    if (is_reference_type(the_type)) {
+      return get_reference_parameter(the_type);
     } else {
       return the_type;
     }
@@ -174,7 +175,7 @@ public class to_java_transformer extends base_transformer {
       return false;
     }
 
-    if (the_original_type == library().immutable_integer_type()) {
+    if (the_original_type == immutable_integer_type()) {
       return false;
     }
 
@@ -242,7 +243,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean is_null_subtype(type the_type) {
-    return the_type.principal() == library().missing_type();
+    return the_type.principal() == missing_type();
   }
 
   private action_name map_name(action_name the_name) {
@@ -378,7 +379,7 @@ public class to_java_transformer extends base_transformer {
 
     if (the_procedure.get_body_action() != null) {
       boolean is_constructor = the_procedure.get_category() == procedure_category.CONSTRUCTOR;
-      boolean void_return = the_procedure.get_return_type().principal() == library().void_type();
+      boolean void_return = the_procedure.get_return_type().principal() == void_type();
       boolean unreachable_result = is_unreachable_result(the_procedure);
 
       boolean add_return = !is_constructor && !unreachable_result && void_return &&
@@ -408,9 +409,9 @@ public class to_java_transformer extends base_transformer {
       type return_type = the_procedure.get_return_type();
       if (type_utilities.is_union(return_type)) {
         annotations.append(make_nullable(the_origin));
-        ret = make_type_with_mapping(library().remove_null_type(return_type), the_origin,
+        ret = make_type_with_mapping(remove_null_type(return_type), the_origin,
             mapping.MAP_TO_WRAPPER_TYPE);
-      } else if (library().is_reference_type(return_type)) {
+      } else if (is_reference_type(return_type)) {
         type_flavor ref_flavor = return_type.get_flavor();
         ret = make_type(return_type, the_origin);
         if (ref_flavor != mutable_flavor) {
@@ -428,7 +429,7 @@ public class to_java_transformer extends base_transformer {
                 new variable_construct(new empty<annotation_construct>(), ret, value_name,
                     new empty<annotation_construct>(), null, the_origin));
             parameters = new_parameters;
-            ret = make_type(library().void_type(), the_origin);
+            ret = make_type(void_type(), the_origin);
           }
         }
       } else {
@@ -439,7 +440,7 @@ public class to_java_transformer extends base_transformer {
           // then we may need to insert "return null" to keep javac happy.
         } else {
           if (the_procedure.get_return_type() == elementary_types.unreachable_type()) {
-            ret = make_type(library().void_type(), the_origin);
+            ret = make_type(void_type(), the_origin);
           } else {
             if (is_object_type(the_procedure.get_return_type())) {
               ret = make_object_type(the_origin);
@@ -489,12 +490,12 @@ public class to_java_transformer extends base_transformer {
 
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
-        if (principal == library().void_type()) {
+        if (principal == void_type()) {
           break;
-        } else if (principal == library().boolean_type()) {
+        } else if (principal == boolean_type()) {
           principal = java_library.boolean_type();
           break;
-        } else if (principal == library().character_type()) {
+        } else if (principal == character_type()) {
           principal = java_library.char_type();
           break;
         }
@@ -520,7 +521,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     if (type_utilities.is_union(principal)) {
-      type removed_null = library().remove_null_type(principal);
+      type removed_null = remove_null_type(principal);
       principal = removed_null.principal();
       the_flavor = removed_null.get_flavor();
     }
@@ -579,7 +580,7 @@ public class to_java_transformer extends base_transformer {
   @Override
   protected simple_name get_simple_name(principal_type the_type) {
     if (type_utilities.is_union(the_type)) {
-      the_type = library().remove_null_type(the_type).principal();
+      the_type = remove_null_type(the_type).principal();
     }
 
     if (the_type.short_name() instanceof simple_name) {
@@ -710,7 +711,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean skip_type_declaration(principal_type the_type) {
-    if (java_library.is_mapped(the_type) || the_type.is_subtype_of(library().null_type())) {
+    if (java_library.is_mapped(the_type) || the_type.is_subtype_of(null_type())) {
       return true;
     }
     kind the_kind = the_type.get_kind();
@@ -993,7 +994,7 @@ public class to_java_transformer extends base_transformer {
       );
       procedure_construct main_procedure = new procedure_construct(
           modifier_list,
-          make_type(library().immutable_void_type(), the_origin),
+          make_type(immutable_void_type(), the_origin),
           MAIN_NAME,
           new base_list<construct>(
               new variable_construct(
@@ -1069,12 +1070,12 @@ public class to_java_transformer extends base_transformer {
   }
 
   private principal_type substitute_aliased_type(principal_type the_principal_type) {
-    return library().string_type();
+    return string_type();
   }
 
   private boolean skip_supertype(type_declaration the_type_declaration, type supertype) {
     return the_type_declaration.short_name() == STRING_TEXT_NODE &&
-        supertype.principal() == library().string_type();
+        supertype.principal() == string_type();
   }
 
   private static boolean is_readonly_flavor(type_flavor the_flavor) {
@@ -1100,7 +1101,7 @@ public class to_java_transformer extends base_transformer {
     }
     // This is a hack to get gregorian_month to work.
     if (the_variable.short_name() == ORDINAL_NAME &&
-        return_type == library().immutable_nonnegative_type()) {
+        return_type == immutable_nonnegative_type()) {
       return_type = java_library.int_type().get_flavored(deeply_immutable_flavor);
     }
     return new procedure_construct(annotations,
@@ -1167,7 +1168,7 @@ public class to_java_transformer extends base_transformer {
       type_parameters.append(new variable_construct(empty_annotations, null, argument_type,
           empty_annotations, null, the_origin));
       supertype_parameters.append(new name_construct(argument_type, the_origin));
-      simple_name argument_name = common_names.make_numbered_name(i);
+      simple_name argument_name = make_numbered_name(i);
       call_parameters.append(new variable_construct(empty_annotations,
           new name_construct(argument_type, the_origin), argument_name, empty_annotations, null,
           the_origin));
@@ -1247,7 +1248,7 @@ public class to_java_transformer extends base_transformer {
     construct type;
     if (type_utilities.is_union(var_type)) {
       annotations.append(make_nullable(the_origin));
-      type not_null_type = library().remove_null_type(var_type);
+      type not_null_type = remove_null_type(var_type);
       if (is_object_type(not_null_type)) {
         type = make_object_type(the_origin);
       } else {
@@ -1318,7 +1319,7 @@ public class to_java_transformer extends base_transformer {
     readonly_list<type> argument_types = the_procedure.get_argument_types();
 
     for (int i = 0; i < argument_types.size(); ++i) {
-      simple_name argument_name = common_names.make_numbered_name(i);
+      simple_name argument_name = make_numbered_name(i);
       type argument_type = argument_types.get(i);
       declaration_arguments.append(new variable_construct(
           new empty<annotation_construct>(),
@@ -1330,7 +1331,7 @@ public class to_java_transformer extends base_transformer {
     list<construct> body = new base_list<construct>();
     construct body_call = new parameter_construct(transform_action(the_action), call_arguments,
         grouping_type.PARENS, the_origin);
-    if (the_procedure.get_return_type() == library().immutable_void_type()) {
+    if (the_procedure.get_return_type() == immutable_void_type()) {
       // We need this because the return type is Void, not void
       body.append(body_call);
       body.append(new return_construct(make_null(the_origin), the_origin));
@@ -1387,7 +1388,7 @@ public class to_java_transformer extends base_transformer {
     if (the_declaration instanceof procedure_declaration) {
       procedure_declaration the_procedure = (procedure_declaration) the_declaration;
       type return_type = the_procedure.get_return_type();
-      return library().is_reference_type(return_type) && return_type.get_flavor() == mutable_flavor;
+      return is_reference_type(return_type) && return_type.get_flavor() == mutable_flavor;
     }
     return false;
   }
@@ -1405,16 +1406,16 @@ public class to_java_transformer extends base_transformer {
 
   private boolean is_object_type(type the_type) {
     principal_type the_principal_type = the_type.principal();
-    return the_principal_type == library().value_type() ||
-           the_principal_type == library().equality_comparable_type() ||
-           the_principal_type == library().data_type();
+    return the_principal_type == value_type() ||
+           the_principal_type == equality_comparable_type() ||
+           the_principal_type == data_type();
   }
 
   @Override
   public construct process_type_parameter(type_parameter_declaration the_type_parameter) {
     origin the_origin = the_type_parameter;
     type type_bound = the_type_parameter.variable_type();
-    if (!type_bound.is_subtype_of(library().value_type().get_flavored(any_flavor))) {
+    if (!type_bound.is_subtype_of(value_type().get_flavored(any_flavor))) {
       utilities.panic("Type bound is not a value but " + type_bound);
     }
     @Nullable construct type_construct;
@@ -1438,7 +1439,7 @@ public class to_java_transformer extends base_transformer {
   // TODO: better way to detect procedure variables?
   private boolean is_procedure_variable(@Nullable declaration the_declaration) {
     return the_declaration instanceof type_declaration &&
-        library().is_reference_type(((type_declaration) the_declaration).get_declared_type());
+        is_reference_type(((type_declaration) the_declaration).get_declared_type());
   }
 
   private construct make_default_return(type the_type, boolean is_constructor, origin the_origin) {
@@ -1448,7 +1449,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private construct make_default_value(type the_type, origin the_origin) {
-    if (the_type == library().immutable_boolean_type()) {
+    if (the_type == immutable_boolean_type()) {
       return new name_construct(false_value().short_name(), the_origin);
     } else {
       // TODO: handle other non-Object types
@@ -1558,8 +1559,8 @@ public class to_java_transformer extends base_transformer {
     construct transformed_expression = transform_action(expression);
     construct transformed_type = make_type(the_type, the_origin);
 
-    if (the_type == library().nonnegative_type() &&
-        expression_type == library().immutable_integer_type()) {
+    if (the_type == nonnegative_type() &&
+        expression_type == immutable_integer_type()) {
       // we drop the integer -> nonnegative cast
       return transformed_expression;
     }
@@ -1628,7 +1629,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private boolean is_reference_equality(action the_action) {
-    type reference_equality = library().reference_equality_type().get_flavored(any_flavor);
+    type reference_equality = reference_equality_type().get_flavored(any_flavor);
     boolean result = result_type(the_action).is_subtype_of(reference_equality);
     if (result) {
       return true;
@@ -1643,9 +1644,9 @@ public class to_java_transformer extends base_transformer {
   }
 
   public boolean is_mapped(principal_type the_type) {
-    return the_type == library().boolean_type() ||
-           the_type == library().character_type() ||
-           the_type == library().void_type();
+    return the_type == boolean_type() ||
+           the_type == character_type() ||
+           the_type == void_type();
   }
 
   private boolean is_java_primitive(action the_action) {
@@ -1691,7 +1692,7 @@ public class to_java_transformer extends base_transformer {
   public construct process_return_action(return_action the_return) {
     origin the_origin = the_return;
 
-    if (the_return.return_type.principal() == library().void_type()) {
+    if (the_return.return_type.principal() == void_type()) {
       @Nullable procedure_declaration the_procedure = the_return.the_procedure;
       return_construct the_return_construct;
       // We rewrite return constructs of procedures that return 'Void' with capital 'V'
@@ -1711,7 +1712,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     construct the_expression;
-    if (library().is_reference_type(the_return.return_type)) {
+    if (is_reference_type(the_return.return_type)) {
       the_expression = transform_action(the_return.expression);
     } else {
       the_expression = transform_and_maybe_rewrite(the_return.expression);
@@ -1869,8 +1870,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private static construct make_null(origin the_origin) {
-    // TODO: use common_library.null_type
-    return new name_construct(simple_name.make("null"), the_origin);
+    return new name_construct(null_name, the_origin);
   }
 
   private static construct make_zero(origin the_origin) {
@@ -1939,13 +1939,13 @@ public class to_java_transformer extends base_transformer {
         return make_null(the_origin);
       }
       construct type_construct = make_type(singleton_type, the_origin);
-      return new resolve_construct(type_construct, common_names.instance_name, the_origin);
+      return new resolve_construct(type_construct, instance_name, the_origin);
     } else if (the_value instanceof integer_value) {
       integer_value the_integer_value = (integer_value) the_value;
       return new literal_construct(new integer_literal(the_integer_value.unwrap()), the_origin);
     } else if (the_value instanceof enum_value) {
       enum_value the_enum_value = (enum_value) the_value;
-      if (the_enum_value.type_bound() == library().immutable_boolean_type()) {
+      if (the_enum_value.type_bound() == immutable_boolean_type()) {
         return new name_construct(the_enum_value.short_name(), the_origin);
       } else {
         return new resolve_construct(make_type(the_enum_value.type_bound(), the_origin),
@@ -1954,11 +1954,11 @@ public class to_java_transformer extends base_transformer {
     } else if (the_value instanceof string_value) {
       string_value the_string_value = (string_value) the_value;
       type the_type = the_value_action.result().type_bound();
-      quote_type literal_type = (the_type == library().immutable_character_type()) ?
+      quote_type literal_type = (the_type == immutable_character_type()) ?
           punctuation.SINGLE_QUOTE : punctuation.DOUBLE_QUOTE;
       construct result = new literal_construct(new quoted_literal(the_string_value.unwrap(),
           literal_type), the_origin);
-      if (the_type == library().immutable_string_type()) {
+      if (the_type == immutable_string_type()) {
         result = base_string_wrap(result, the_origin);
       }
       return result;
@@ -2176,9 +2176,9 @@ public class to_java_transformer extends base_transformer {
     type action_type = from_action.result().type_bound();
     type promotion_type = the_promotion_action.the_type;
     if (false && the_promotion_action.is_supertype &&
-        library().is_list_type(action_type) &&
-        library().is_list_type(promotion_type) &&
-        library().get_list_parameter(action_type) != library().get_list_parameter(promotion_type)) {
+        is_list_type(action_type) &&
+        is_list_type(promotion_type) &&
+        get_list_parameter(action_type) != get_list_parameter(promotion_type)) {
       //System.out.println("68A " + action_type);
       //System.out.println("68B " + promotion_type);
       return in_parens(transform_cast(from_action, the_promotion_action.the_type, operator.SOFT_CAST,
@@ -2198,7 +2198,7 @@ public class to_java_transformer extends base_transformer {
       if (the_name == to_string_name && is_promotion_action(from_action)) {
         principal_type from_type = unwrap_promotion(from_action).result().type_bound().principal();
         // TODO: implement less hacky way to implement Integer.to_string
-        if (from_type == library().integer_type() || from_type == library().nonnegative_type()) {
+        if (from_type == integer_type() || from_type == nonnegative_type()) {
           return int_to_string(from_construct, the_origin);
         }
       }
@@ -2251,12 +2251,12 @@ public class to_java_transformer extends base_transformer {
       origin the_origin) {
     construct expression = transform_action(the_action);
 
-    if (the_type.principal() == library().null_type()) {
+    if (the_type.principal() == null_type()) {
       return new operator_construct(negated ? operator.NOT_EQUAL_TO : operator.EQUAL_TO,
           expression, make_null(the_origin), the_origin);
     }
 
-    if (the_type.principal() == library().nonnegative_type()) {
+    if (the_type.principal() == nonnegative_type()) {
       // TODO: handle is_not
       assert !negated;
       return new operator_construct(operator.GREATER_EQUAL, expression, make_zero(the_origin),
@@ -2363,7 +2363,7 @@ public class to_java_transformer extends base_transformer {
       assert the_enclosing_procedure != null;
       type return_type = the_enclosing_procedure.get_return_type();
       if (return_type != elementary_types.unreachable_type() &&
-          return_type != library().immutable_void_type()) {
+          return_type != immutable_void_type()) {
         list<construct> statements = new base_list<construct>();
         statements.append(transformed);
         boolean is_constructor =

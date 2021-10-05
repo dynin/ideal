@@ -135,10 +135,6 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     return context.language();
   }
 
-  protected common_library library() {
-    return language().library();
-  }
-
   protected void init_context(analyzable the_analyzable) {
     assert the_analyzable != null;
     if (the_analyzable instanceof base_analyzer) {

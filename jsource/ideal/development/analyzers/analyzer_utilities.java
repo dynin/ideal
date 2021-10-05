@@ -61,7 +61,7 @@ public class analyzer_utilities {
   }
 
   public static boolean is_readonly_reference(type the_type) {
-    return common_library.get_instance().is_reference_type(the_type) &&
+    return common_types.is_reference_type(the_type) &&
            the_type.get_flavor() == readonly_flavor;
   }
 
@@ -193,12 +193,12 @@ public class analyzer_utilities {
 
   private static boolean can_be_overriden(procedure_declaration the_procedure) {
     return the_procedure.get_category() == procedure_category.METHOD &&
-           !common_library.get_instance().is_reference_type(the_procedure.declared_in_type());
+           !common_types.is_reference_type(the_procedure.declared_in_type());
   }
 
   public static boolean is_immutable(variable_declaration the_variable_declaration) {
     type reference_type = the_variable_declaration.reference_type();
-    assert common_library.get_instance().is_reference_type(reference_type);
+    assert common_types.is_reference_type(reference_type);
     type_flavor reference_flavor = reference_type.get_flavor();
     return reference_flavor == immutable_flavor || reference_flavor == deeply_immutable_flavor;
   }
@@ -366,7 +366,7 @@ public class analyzer_utilities {
       return first_type;
     }
 
-    type immutable_void_type = common_library.get_instance().immutable_void_type();
+    type immutable_void_type = common_types.immutable_void_type();
     if (the_context.can_promote(first, immutable_void_type) &&
         the_context.can_promote(second, immutable_void_type)) {
       return immutable_void_type;

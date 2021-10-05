@@ -28,15 +28,15 @@ import ideal.development.notifications.*;
 public abstract class base_number_op extends binary_procedure {
 
   public base_number_op(operator the_operator, type return_type) {
-    super(the_operator, true, return_type, library().immutable_integer_type(),
-        library().immutable_integer_type());
+    super(the_operator, true, return_type, common_types.immutable_integer_type(),
+        common_types.immutable_integer_type());
   }
 
   private action promote_to_integer(action argument, analysis_context context, origin pos) {
-    if (context.can_promote(argument, library().immutable_nonnegative_type())) {
-      return context.promote(argument, library().immutable_nonnegative_type(), pos);
+    if (context.can_promote(argument, common_types.immutable_nonnegative_type())) {
+      return context.promote(argument, common_types.immutable_nonnegative_type(), pos);
     } else {
-      return context.promote(argument, library().immutable_integer_type(), pos);
+      return context.promote(argument, common_types.immutable_integer_type(), pos);
     }
   }
 
@@ -46,16 +46,16 @@ public abstract class base_number_op extends binary_procedure {
     boolean all_nonnegative = true;
 
     first = promote_to_integer(first, context, pos);
-    all_nonnegative &= (first.result().type_bound() == library().immutable_nonnegative_type());
+    all_nonnegative &= (first.result().type_bound() == common_types.immutable_nonnegative_type());
     second = promote_to_integer(second, context, pos);
-    all_nonnegative &= (second.result().type_bound() == library().immutable_nonnegative_type());
+    all_nonnegative &= (second.result().type_bound() == common_types.immutable_nonnegative_type());
 
     type result;
-    if (return_value() == library().immutable_boolean_type()) {
-      result = library().immutable_boolean_type();
+    if (return_value() == common_types.immutable_boolean_type()) {
+      result = common_types.immutable_boolean_type();
     } else {
-      result = all_nonnegative ? library().immutable_nonnegative_type() :
-          library().immutable_integer_type();
+      result = all_nonnegative ? common_types.immutable_nonnegative_type() :
+          common_types.immutable_integer_type();
     }
     return make_action(result, first, second, pos);
   }
@@ -86,8 +86,8 @@ public abstract class base_number_op extends binary_procedure {
     if (result instanceof Integer) {
       int integer_result = (Integer) result;
       return new integer_value(integer_result,
-          (integer_result > 0) ? library().immutable_nonnegative_type() :
-              library().immutable_integer_type());
+          (integer_result > 0) ? common_types.immutable_nonnegative_type() :
+              common_types.immutable_integer_type());
     } else {
       boolean boolean_result = (Boolean) result;
       return boolean_result ? common_values.true_value() : common_values.false_value();

@@ -52,7 +52,7 @@ public class loop_action extends base_action {
   @Override
   public abstract_value result() {
     if (has_breaks) {
-      return common_library.get_instance().immutable_void_type();
+      return common_types.immutable_void_type();
     } else {
       return elementary_types.unreachable_type();
     }

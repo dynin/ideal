@@ -33,10 +33,6 @@ public abstract class base_procedure extends base_data_value<procedure_value>
     this.name = name;
   }
 
-  protected static common_library library() {
-    return common_library.get_instance();
-  }
-
   @Override
   public action_name name() {
     return name;

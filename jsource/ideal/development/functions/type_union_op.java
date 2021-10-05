@@ -27,7 +27,7 @@ public class type_union_op extends binary_procedure {
 
   public type_union_op() {
     super(operator.GENERAL_OR, true,
-        library().value_type().get_flavored(flavor.any_flavor),
+        common_types.value_type().get_flavored(flavor.any_flavor),
         elementary_types.any_type(),
         elementary_types.any_type());
   }
@@ -36,7 +36,7 @@ public class type_union_op extends binary_procedure {
   protected analysis_result bind_binary(action first, action second, analysis_context context,
       origin the_origin) {
 
-    principal_type null_type = common_library.get_instance().null_type();
+    principal_type null_type = common_types.null_type();
     action primary_action;
 
     if (first.result() == null_type) {

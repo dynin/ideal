@@ -17,11 +17,12 @@ import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import ideal.development.types.*;
 import ideal.development.analyzers.*;
 
 public class add_op extends base_number_op {
   public add_op() {
-    super(operator.ADD, library().immutable_integer_type());
+    super(operator.ADD, common_types.immutable_integer_type());
   }
 
   @Override

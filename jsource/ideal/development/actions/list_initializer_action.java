@@ -32,7 +32,7 @@ public class list_initializer_action extends base_action {
     this.element_type = element_type;
     this.parameter_actions = parameter_actions;
 
-    result_type = common_library.get_instance().list_type_of(element_type).
+    result_type = common_types.list_type_of(element_type).
         get_flavored(flavor.immutable_flavor);
   }
 

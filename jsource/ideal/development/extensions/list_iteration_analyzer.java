@@ -107,7 +107,6 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
 
   private analyzable rewrite_as_for_loop() {
     origin the_origin = this;
-    common_library library = common_library.get_instance();
 
     if (! (var_name instanceof simple_name)) {
       return new error_signal(new base_string("Simple name expected"), this);
@@ -116,7 +115,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     simple_name list_name = name_utilities.join(element_name, LIST_NAME);
     simple_name index_name = name_utilities.join(element_name, INDEX_NAME);
 
-    type list_type = library().list_type_of(element_type).get_flavored(flavor.readonly_flavor);
+    type list_type = common_types.list_type_of(element_type).get_flavored(flavor.readonly_flavor);
 
     origin list_origin;
     if (source instanceof list_iteration_construct) {
@@ -130,9 +129,9 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
         list_origin);
 
     local_variable_declaration index_declaration = new local_variable_declaration(
-        PRIVATE_MODIFIERS, index_name,
-        flavor.mutable_flavor, library.immutable_nonnegative_type(), new base_analyzable_action(
-        new integer_value(0, library.immutable_nonnegative_type()).to_action(the_origin)),
+        PRIVATE_MODIFIERS, index_name, flavor.mutable_flavor,
+        common_types.immutable_nonnegative_type(), new base_analyzable_action(
+            new integer_value(0, common_types.immutable_nonnegative_type()).to_action(the_origin)),
         the_origin);
 
     analyzable index_condition = new parameter_analyzer(
@@ -153,7 +152,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
         new base_list<analyzable>(
           new base_analyzable_action(index_declaration.get_access()),
           new base_analyzable_action(
-            new integer_value(1, library.immutable_nonnegative_type()).to_action(the_origin)
+            new integer_value(1, common_types.immutable_nonnegative_type()).to_action(the_origin)
           )
         ),
         the_origin
@@ -215,9 +214,9 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     type param = (type) parameters.first();
     principal_type master = pt.get_master();
 
-    if (master == library().list_type()) {
+    if (master == common_types.list_type()) {
       return param;
-    } else if (library().is_reference_type(pt)) {
+    } else if (common_types.is_reference_type(pt)) {
       return element_type_of_list(param);
     } else {
       return null;

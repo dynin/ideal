@@ -441,14 +441,14 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   private void maybe_add_default_supertype() {
     if (!has_supertype_declarations() &&
         !get_kind().is_namespace() &&
-        result_type != library().entity_type() &&
-        result_type != library().value_type()) {
+        result_type != common_types.entity_type() &&
+        result_type != common_types.value_type()) {
       origin the_origin = this;
       readonly_list<annotation_construct> super_annotations =
           new base_list<annotation_construct>(new modifier_construct(
               general_modifier.synthetic_modifier, the_origin));
       // TODO: move default supertype to semantics
-      principal_type default_supertype = library().value_type();
+      principal_type default_supertype = common_types.value_type();
 
       assert body != null;
       append_to_body(new supertype_analyzer(super_annotations, null, subtype_tags.subtypes_tag,
@@ -458,9 +458,9 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     /*
     if (false && get_kind() == type_kinds.procedure_kind &&
         has_parameters() &&
-        short_name() == common_library.function_name) {
+        short_name() == common_names.function_name) {
       log.debug("FUN: " + result_type);
-      type procedure_supertype = library().procedure_type().bind_parameters(parameter_values).
+      type procedure_supertype = common_types.procedure_type().bind_parameters(parameter_values).
           get_flavored(flavor.immutable_flavor);
       assert body != null;
       origin pos = this;
@@ -487,7 +487,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     // TODO: add overriden
     field_declaration ordinal_declaration = new field_declaration(
         PUBLIC_MODIFIERS, ordinal_name, variable_category.INSTANCE, flavor.readonly_flavor,
-        flavor.deeply_immutable_flavor, library().immutable_nonnegative_type(),
+        flavor.deeply_immutable_flavor, common_types.immutable_nonnegative_type(),
         the_origin);
 
     if (has_analysis_errors(ordinal_declaration)) {
@@ -497,7 +497,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     // TODO: add overriden
     field_declaration name_declaration = new field_declaration(
         PUBLIC_MODIFIERS, name_name, variable_category.INSTANCE, flavor.readonly_flavor,
-        flavor.deeply_immutable_flavor, library().immutable_string_type(),
+        flavor.deeply_immutable_flavor, common_types.immutable_string_type(),
         the_origin);
 
     if (has_analysis_errors(name_declaration)) {

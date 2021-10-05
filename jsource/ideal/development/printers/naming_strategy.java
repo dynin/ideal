@@ -100,7 +100,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       }
 
       // TODO: switch mode for ideal.documentation and subnames too
-      if (the_type == common_library.get_instance().ideal_namespace()) {
+      if (the_type == common_types.ideal_namespace()) {
         mode = printer_mode.DOC;
       }
     }

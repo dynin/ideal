@@ -372,11 +372,11 @@ public class to_javascript_transformer {
   */
 
   private type immutable_string_type() {
-    return common_library.get_instance().immutable_string_type();
+    return common_types.immutable_string_type();
   }
 
   private type immutable_integer_type() {
-    return common_library.get_instance().immutable_integer_type();
+    return common_types.immutable_integer_type();
   }
 
   public construct to_construct(data_value_action<base_data_value> the_action) {

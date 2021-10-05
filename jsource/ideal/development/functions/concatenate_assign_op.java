@@ -28,9 +28,9 @@ public class concatenate_assign_op extends binary_procedure {
 
   public concatenate_assign_op() {
     super(operator.CONCATENATE_ASSIGN, false,
-        library().immutable_string_type(),
-        library().get_reference(flavor.mutable_flavor, library().immutable_string_type()),
-        library().immutable_string_type());
+        common_types.immutable_string_type(),
+        common_types.get_reference(flavor.mutable_flavor, common_types.immutable_string_type()),
+        common_types.immutable_string_type());
   }
 
   @Override
@@ -43,7 +43,7 @@ public class concatenate_assign_op extends binary_procedure {
     string_value s2 = (string_value) second;
 
     string_value result = new base_string_value(new base_string(s1.unwrap(), s2.unwrap()),
-        library().immutable_string_type());
+        common_types.immutable_string_type());
     ref.set(result);
 
     return result;

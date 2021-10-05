@@ -372,7 +372,7 @@ public class procedure_analyzer extends declaration_analyzer
       if (return_analyzable != null) {
         add_dependence(return_analyzable, null, declaration_pass.TYPES_AND_PROMOTIONS);
       } else {
-        return_analyzable = base_analyzable_action.from(library().void_type(), this);
+        return_analyzable = base_analyzable_action.from(common_types.void_type(), this);
       }
       @Nullable error_signal return_error = find_error(return_analyzable);
       if (return_error != null) {
@@ -399,7 +399,7 @@ public class procedure_analyzer extends declaration_analyzer
     proc_params.append(return_type);
     // TODO: this cast is redundant.
     proc_params.append_all((list<abstract_value>)(list) proc_args);
-    master_type the_procedure_type = library().master_procedure(is_pure());
+    master_type the_procedure_type = common_types.master_procedure(is_pure());
     proc_type = the_procedure_type.bind_parameters(new type_parameters(proc_params)).
         get_flavored(flavor.immutable_flavor);
 

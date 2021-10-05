@@ -28,9 +28,9 @@ public class multiply_assign_op extends binary_procedure {
 
   public multiply_assign_op() {
     super(operator.MULTIPLY_ASSIGN, false,
-        library().immutable_integer_type(),
-        library().get_reference(flavor.readonly_flavor, library().immutable_integer_type()),
-        library().immutable_integer_type());
+        common_types.immutable_integer_type(),
+        common_types.get_reference(flavor.readonly_flavor, common_types.immutable_integer_type()),
+        common_types.immutable_integer_type());
   }
 
   @Override
@@ -43,7 +43,7 @@ public class multiply_assign_op extends binary_procedure {
     integer_value second_integer = (integer_value) second;
 
     integer_value result = new integer_value(first_integer.unwrap() * second_integer.unwrap(),
-        library().immutable_integer_type());
+        common_types.immutable_integer_type());
     ref.set(result);
 
     return result;

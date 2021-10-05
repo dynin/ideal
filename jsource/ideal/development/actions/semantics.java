@@ -21,8 +21,6 @@ import ideal.development.origins.*;
 
 public interface semantics extends data {
 
-  common_library library();
-
   access_modifier get_default_type_access(kind the_kind);
 
   access_modifier get_default_variable_access(kind the_kind);

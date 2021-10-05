@@ -195,9 +195,9 @@ public class constrained_analysis_context extends debuggable implements analysis
     }
 
     type the_type = expression.result().type_bound();
-    if (common_library.get_instance().is_reference_type(the_type)) {
+    if (common_types.is_reference_type(the_type)) {
       // TODO: check that flavor is readonly or mutable.
-      type value_type = common_library.get_instance().get_reference_parameter(the_type);
+      type value_type = common_types.get_reference_parameter(the_type);
       // TODO: replace this with a promotion lookup.
       return promote(expression, value_type, the_origin);
     } else {

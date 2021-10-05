@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FROM='core_types'
-TO='elementary_types'
+FROM='library()'
+TO='common_types'
 
 #cd $HOME/Projects/ideal
 

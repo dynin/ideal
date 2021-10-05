@@ -31,11 +31,6 @@ public class base_semantics implements semantics {
 
   private @Nullable value_printer the_value_printer;
 
-  @Override
-  public common_library library() {
-    return common_library.get_instance();
-  }
-
   public readonly_list<action> resolve(action_table actions, type from, action_name name,
       origin pos) {
 
@@ -236,7 +231,7 @@ public class base_semantics implements semantics {
     }
 
     // Anything can be promoted to the 'void' value.
-    if (target == library().immutable_void_type()) {
+    if (target == common_types.immutable_void_type()) {
       return new chain_action(new stub_action(subtype),
           new promotion_action(target, false, origin_utilities.no_origin),
           origin_utilities.no_origin);
@@ -433,7 +428,7 @@ public class base_semantics implements semantics {
           new_type instanceof parametrized_type &&
           new_type.short_name() == common_names.function_name) {
         // TODO: this should be done in type_declaration_analyzer.
-        type procedure_type = library().procedure_type().bind_parameters(
+        type procedure_type = common_types.procedure_type().bind_parameters(
           ((parametrized_type) new_type).get_parameters()).get_flavored(immutable_flavor);
         action_utilities.process_super_flavors(new_type, null, procedure_type, pos, context);
       }
@@ -558,7 +553,7 @@ public class base_semantics implements semantics {
 
   public string print_value(abstract_value the_value) {
     if (the_value_printer == null) {
-      the_value_printer = new base_value_printer(library().elements_package());
+      the_value_printer = new base_value_printer(common_types.elements_package());
     }
 
     return the_value_printer.print_value(the_value);

@@ -38,7 +38,7 @@ public class is_action extends base_action {
 
   @Override
   public abstract_value result() {
-    return common_library.get_instance().immutable_boolean_type();
+    return common_types.immutable_boolean_type();
   }
 
   @Override

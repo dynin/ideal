@@ -30,7 +30,7 @@ public class add_assign_op extends binary_procedure {
 
   public add_assign_op(type integral_type) {
     super(operator.ADD_ASSIGN, false, integral_type,
-        library().get_reference(flavor.mutable_flavor, integral_type), integral_type);
+        common_types.get_reference(flavor.mutable_flavor, integral_type), integral_type);
     this.integral_type = integral_type;
   }
 

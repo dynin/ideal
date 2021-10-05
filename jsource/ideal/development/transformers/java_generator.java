@@ -94,7 +94,7 @@ public class java_generator {
   }
 
   private boolean skip_type(principal_type the_type) {
-    return the_type == common_library.get_instance().operators_package();
+    return the_type == common_types.operators_package();
   }
 
   private void filter_imports(readonly_list<declaration> declarations,

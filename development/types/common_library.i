@@ -237,7 +237,7 @@ class common_library {
   static var boolean is_initialized => instance is_not null;
 
   -- TODO: fix this hack
-  static common_library get_instance() {
+  static common_types {
     assert instance is_not null;
     return instance;
   }

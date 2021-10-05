@@ -64,7 +64,7 @@ public class template_analyzer extends extension_analyzer implements declaration
     template_block = make_block(BLOCK_NAME, this);
     local_variable_declaration result_decl = new local_variable_declaration(
         annotation_library.PRIVATE_MODIFIERS, RESULT_NAME,
-        flavor.mutable_flavor, library().immutable_string_type(),
+        flavor.mutable_flavor, common_types.immutable_string_type(),
         new base_analyzable_action(make_string_value(new base_string("")).to_action(pos)), pos);
     result_access = base_analyzable_action.from(result_decl.get_access(), pos);
 
@@ -151,7 +151,7 @@ public class template_analyzer extends extension_analyzer implements declaration
   TODO: remove.
   private void check_string(analyzable string_action) {
     type result = string_action.to_action().result().type_bound();
-    if (result != library().immutable_string_type()) {
+    if (result != common_types.immutable_string_type()) {
       utilities.panic("Not string: " + result);
     }
   }
@@ -178,6 +178,6 @@ public class template_analyzer extends extension_analyzer implements declaration
   }
 
   private abstract_value make_string_value(string s) {
-    return new base_string_value(s, library().immutable_string_type());
+    return new base_string_value(s, common_types.immutable_string_type());
   }
 }

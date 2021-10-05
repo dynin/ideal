@@ -39,12 +39,12 @@ public class supertype_of_string_extension extends declaration_extension {
       analysis_pass pass) {
 
     //type_declaration_analyzer string_declaration2 =
-    //      (type_declaration_analyzer) library().string_type().get_declaration();
+    //      (type_declaration_analyzer) common_types.string_type().get_declaration();
     //System.out.println("P " + pass + " SPASS " + string_declaration2.get_pass());
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
       origin the_origin = this;
-      principal_type string_type = library().string_type();
+      principal_type string_type = common_types.string_type();
       type_declaration_analyzer string_declaration =
           (type_declaration_analyzer) string_type.get_declaration();
     // System.out.println("PASS " + string_declaration.get_pass());

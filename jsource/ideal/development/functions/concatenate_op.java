@@ -28,7 +28,7 @@ public class concatenate_op extends binary_procedure {
 
   public concatenate_op() {
     super(operator.CONCATENATE, true,
-        library().immutable_string_type(),
+        common_types.immutable_string_type(),
         string_helper.readonly_stringable(),
         string_helper.readonly_stringable());
   }
@@ -43,6 +43,6 @@ public class concatenate_op extends binary_procedure {
     result.append(utilities.s(string_helper.to_string(second, the_execution_context)));
 
     return new base_string_value(new base_string(result.toString()),
-        library().immutable_string_type());
+        common_types.immutable_string_type());
   }
 }

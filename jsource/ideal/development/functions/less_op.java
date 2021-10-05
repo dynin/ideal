@@ -17,10 +17,11 @@ import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import ideal.development.types.*;
 
 public class less_op extends base_number_op {
   public less_op() {
-    super(operator.LESS, library().immutable_boolean_type());
+    super(operator.LESS, common_types.immutable_boolean_type());
   }
 
   @Override

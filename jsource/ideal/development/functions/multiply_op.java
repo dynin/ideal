@@ -17,10 +17,11 @@ import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import ideal.development.types.*;
 
 public class multiply_op extends base_number_op {
   public multiply_op() {
-    super(operator.MULTIPLY, library().immutable_integer_type());
+    super(operator.MULTIPLY, common_types.immutable_integer_type());
   }
 
   @Override

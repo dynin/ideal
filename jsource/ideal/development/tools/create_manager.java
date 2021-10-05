@@ -62,10 +62,6 @@ public class create_manager implements target_manager, type_bootstrapper {
     set_notification_handler((output<notification>) (output) log.log_output);
   }
 
-  public common_library library() {
-    return language.library();
-  }
-
   public void set_notification_handler(output<notification> handler) {
     notifications = new output_counter<notification>(handler);
     notification_context.set(notifications);
@@ -125,9 +121,9 @@ public class create_manager implements target_manager, type_bootstrapper {
     // TODO: resolve interdependency.
     process_type_operators();
 
-    principal_type elements = library().elements_package();
+    principal_type elements = common_types.elements_package();
     bootstrap_type(elements, analysis_pass.IMPORT_AND_TYPE_VAR_DECL);
-    bootstrap_type(library().operators_package(), analysis_pass.METHOD_AND_VARIABLE_DECL);
+    bootstrap_type(common_types.operators_package(), analysis_pass.METHOD_AND_VARIABLE_DECL);
 
     process_bootstrap_ops(bootstrap_context);
 
@@ -141,7 +137,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   public void process_type_operators() {
-    principal_type operators = library().operators_package();
+    principal_type operators = common_types.operators_package();
     type_union_op the_op = new type_union_op();
     bootstrap_context.add(operators, the_op.name(), the_op.to_action(root_origin));
   }
@@ -156,7 +152,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     assert the_type.get_declaration() == null;
 
     resource_catalog source_catalog;
-    if (the_type.get_parent() == library().ideal_namespace()) {
+    if (the_type.get_parent() == common_types.ideal_namespace()) {
       source_catalog = top_catalog.resolve(to_resource_name(the_type.short_name())).
           access_catalog();
     } else {
@@ -184,7 +180,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   public void bootstrap_ideal_namespace() {
-    principal_type the_type = library().ideal_namespace();
+    principal_type the_type = common_types.ideal_namespace();
     assert the_type.get_declaration() == null;
 
     source_content type_source = load_source(top_catalog, to_resource_name(the_type.short_name()));
@@ -205,7 +201,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   public boolean is_bootstrapped() {
-    return language.library().is_bootstrapped();
+    return common_types.is_bootstrapped();
   }
 
   private void process_bootstrap_ops(analysis_context context) {
@@ -219,8 +215,8 @@ public class create_manager implements target_manager, type_bootstrapper {
     add_operator(new add_op());
 
     overloaded_procedure add_assign = new overloaded_procedure(
-        new add_assign_op(library().immutable_nonnegative_type()));
-    add_assign.add(new add_assign_op(library().immutable_integer_type()));
+        new add_assign_op(common_types.immutable_nonnegative_type()));
+    add_assign.add(new add_assign_op(common_types.immutable_integer_type()));
     add_operator(add_assign);
 
     add_operator(new multiply_op());
@@ -320,7 +316,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   private void add_operator(operator the_operator, @Nullable procedure_value operator_procedure) {
-    principal_type parent = library().operators_package();
+    principal_type parent = common_types.operators_package();
     simple_name symbol = the_operator.symbol();
 
     readonly_list<action> actions = bootstrap_context.lookup(parent, symbol);

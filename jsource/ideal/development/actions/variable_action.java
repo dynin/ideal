@@ -42,7 +42,7 @@ public abstract class variable_action extends base_action implements abstract_va
 
   @Override
   public type type_bound() {
-    return common_library.get_instance().get_reference(reference_flavor, value_type());
+    return common_types.get_reference(reference_flavor, value_type());
   }
 
   @Override

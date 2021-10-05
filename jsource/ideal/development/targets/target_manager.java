@@ -40,8 +40,6 @@ import ideal.development.functions.*;
 
 public interface target_manager {
 
-  common_library library();
-
   @Nullable resource_catalog top_catalog();
 
   @Nullable resource_catalog output_catalog();

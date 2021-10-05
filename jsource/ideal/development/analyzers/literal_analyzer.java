@@ -44,17 +44,17 @@ public class literal_analyzer extends single_pass_analyzer {
   protected action do_single_pass_analysis() {
     if (the_literal instanceof integer_literal) {
       int the_value = ((integer_literal) the_literal).the_value();
-      type bound = the_value >= 0 ? library().immutable_nonnegative_type() :
-          library().immutable_integer_type();
+      type bound = the_value >= 0 ? common_types.immutable_nonnegative_type() :
+          common_types.immutable_integer_type();
       return new integer_value(the_value, bound).to_action(this);
     } else if (the_literal instanceof quoted_literal) {
       quoted_literal the_quoted_literal = (quoted_literal) the_literal;
       string the_value = the_quoted_literal.the_value();
       type bound;
       if (the_quoted_literal.quote == punctuation.SINGLE_QUOTE) {
-        bound = library().immutable_character_type();
+        bound = common_types.immutable_character_type();
       } else if (the_quoted_literal.quote == punctuation.DOUBLE_QUOTE) {
-        bound = library().immutable_string_type();
+        bound = common_types.immutable_string_type();
       } else {
         utilities.panic("Unrecognized quote type: " + the_quoted_literal.quote);
         return null;

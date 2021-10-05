@@ -207,7 +207,7 @@ public class action_utilities {
     principal_type declared_in_type = the_procedure.declared_in_type();
     if (declared_in_type instanceof parametrized_type &&
         ((parametrized_type) declared_in_type).get_master() ==
-            common_library.get_instance().list_type()) {
+            common_types.list_type()) {
       if (the_procedure.original_name() == common_names.get_name) {
         // TODO: implement a type_bound check here instead of instanceof
         // assert this_argument instanceof list_value;
@@ -216,7 +216,7 @@ public class action_utilities {
         assert arguments.size() == 1;
         Integer index = (Integer) ((value_wrapper) arguments.first()).unwrap();
         value_wrapper element = unwrapped_list.get(index);
-        type ref_type = common_library.get_instance().get_reference(
+        type ref_type = common_types.get_reference(
             flavor.readonly_flavor, to_type(element.type_bound()));
         return new constant_reference(element, ref_type);
       }

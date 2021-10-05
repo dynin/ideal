@@ -59,7 +59,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
     }
     argument_types = type_params;
     // TODO: use function_type() for pure fn.
-    procedure_type = common_library.get_instance().
+    procedure_type = common_types.
         procedure_type().bind_parameters(new type_parameters(procedure_params)).
             get_flavored(flavor.immutable_flavor);
   }

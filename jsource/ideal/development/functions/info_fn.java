@@ -29,7 +29,7 @@ import ideal.development.notifications.*;
 public class info_fn extends base_procedure {
 
   public info_fn(action_name the_name) {
-    super(the_name, library().make_procedure(false, library().immutable_void_type()));
+    super(the_name, common_types.make_procedure(false, common_types.immutable_void_type()));
   }
 
   @Override

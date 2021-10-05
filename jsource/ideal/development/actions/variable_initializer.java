@@ -32,7 +32,7 @@ public class variable_initializer extends base_action {
 
   @Override
   public abstract_value result() {
-    return common_library.get_instance().void_type();
+    return common_types.void_type();
   }
 
   @Override

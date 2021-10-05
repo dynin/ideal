@@ -35,7 +35,7 @@ public class narrow_action extends base_action {
     assert !(expression instanceof narrow_action);
     assert expression.get_declaration() == the_declaration;
     assert the_type.is_subtype_of(
-        common_library.get_instance().value_type().get_flavored(flavor.any_flavor));
+        common_types.value_type().get_flavored(flavor.any_flavor));
   }
 
   @Override

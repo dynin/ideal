@@ -33,9 +33,9 @@ public class assign_op extends binary_procedure {
   // TODO: this should use any flavor, not readonly.
   public assign_op() {
     super(operator.ASSIGN, false,
-        library().value_type().get_flavored(flavor.any_flavor),
-        library().entity_type().get_flavored(flavor.any_flavor),
-        library().value_type().get_flavored(flavor.any_flavor));
+        common_types.value_type().get_flavored(flavor.any_flavor),
+        common_types.entity_type().get_flavored(flavor.any_flavor),
+        common_types.value_type().get_flavored(flavor.any_flavor));
   }
 
   @Override
@@ -43,15 +43,15 @@ public class assign_op extends binary_procedure {
       origin the_origin) {
 
     type reference_type = first.result().type_bound();
-    if (!library().is_reference_type(reference_type)) {
+    if (!common_types.is_reference_type(reference_type)) {
       // TODO: check that this is a writable reference.
       return new error_signal(new base_string("Reference expected, got ",
           context.print_value(reference_type)), the_origin);
     }
 
-    type value_type = library().get_reference_parameter(reference_type);
+    type value_type = common_types.get_reference_parameter(reference_type);
 
-    type writable_ref = library().get_reference(flavor.writeonly_flavor, value_type);
+    type writable_ref = common_types.get_reference(flavor.writeonly_flavor, value_type);
     if (!context.can_promote(first, writable_ref)) {
       return new error_signal(new base_string("Writable reference expected, got ",
           context.print_value(reference_type)), the_origin);
@@ -64,7 +64,7 @@ public class assign_op extends binary_procedure {
       type java_string = java_library.get_instance().string_type().
           get_flavored(flavor.deeply_immutable_flavor);
       if (value_type == java_string && !context.can_promote(second, java_string)) {
-        value_type = library().immutable_string_type();
+        value_type = common_types.immutable_string_type();
       }
     }
 

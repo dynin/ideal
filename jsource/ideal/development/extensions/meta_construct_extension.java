@@ -18,6 +18,7 @@ import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
+import static ideal.development.types.common_types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
@@ -101,9 +102,8 @@ public class meta_construct_extension extends declaration_extension {
     children_statements.append(result_var);
 
     // TODO: factor this into cacheable methods.
-    common_library library = common_library.get_instance();
-    principal_type null_type = library.null_type();
-    principal_type development_type = lookup(library.ideal_namespace(), DEVELOPMENT_NAME);
+    principal_type null_type = null_type();
+    principal_type development_type = lookup(ideal_namespace(), DEVELOPMENT_NAME);
     principal_type elements_type = lookup(development_type, ELEMENTS_NAME);
     principal_type construct_type = lookup(elements_type, CONSTRUCT_NAME);
 
@@ -148,7 +148,7 @@ public class meta_construct_extension extends declaration_extension {
       simple_name procedure_name;
 
       if (union_field) {
-        removed_null = library.remove_null_type(value_type);
+        removed_null = remove_null_type(value_type);
       } else {
         removed_null = value_type;
       }
@@ -170,7 +170,7 @@ public class meta_construct_extension extends declaration_extension {
         procedure_name = APPEND_ALL_NAME;
         if (union_field || list_element_type != construct_type) {
           // TODO: the cast should be redundant.
-          type construct_list = library.list_type_of(
+          type construct_list = list_type_of(
               construct_type.get_flavored(flavor.mutable_flavor)).get_flavored(
               flavor.readonly_flavor);
           field_access = new parameter_analyzer(
@@ -268,13 +268,13 @@ public class meta_construct_extension extends declaration_extension {
   }
 
   private boolean introduce_assert(type the_type) {
-    return the_type.principal() != common_library.get_instance().boolean_type();
+    return the_type.principal() != common_types.boolean_type();
   }
 
   private @Nullable principal_type element_type(type the_type) {
     the_type = the_type.principal();
     if (the_type instanceof parametrized_type &&
-        ((parametrized_type) the_type).get_master() == common_library.get_instance().list_type()) {
+        ((parametrized_type) the_type).get_master() == common_types.list_type()) {
       type_parameters list_parameters =
           ((parametrized_type) the_type).get_parameters();
       // List types have exactly one parameter

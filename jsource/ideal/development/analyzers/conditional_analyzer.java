@@ -73,7 +73,7 @@ public class conditional_analyzer extends single_pass_analyzer {
       new_constraints = the_result.the_constraints;
     }
 
-    type boolean_type = library().immutable_boolean_type();
+    type boolean_type = common_types.immutable_boolean_type();
     if (!get_context().can_promote(condition_action, boolean_type)) {
       return new error_signal(new base_string("Boolean value expected, got " +
           condition_action.result()), condition_action);
@@ -180,7 +180,7 @@ public class conditional_analyzer extends single_pass_analyzer {
           @Nullable abstract_value unified_value = analyzer_utilities.unify_values(
               first_constraint.the_value(), second_constraint.the_value(), get_context());
           if (unified_value != null &&
-              unified_value.type_bound() != library().immutable_void_type()) {
+              unified_value.type_bound() != common_types.immutable_void_type()) {
             result.append(new constraint(the_declaration, unified_value, constraint_type.ALWAYS));
             continue;
           }

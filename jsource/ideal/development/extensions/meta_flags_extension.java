@@ -62,15 +62,15 @@ public class meta_flags_extension extends declaration_extension {
   }
 
   private type string_list_type() {
-    return library().list_type_of(library().immutable_string_type()).get_flavored(
+    return common_types.list_type_of(common_types.immutable_string_type()).get_flavored(
         flavor.readonly_flavor);
   }
 
   private type procedure_string_type() {
-    return library().procedure_type().bind_parameters(
+    return common_types.procedure_type().bind_parameters(
         new type_parameters(new base_list<abstract_value>(
-            library().immutable_void_type(),
-            library().immutable_string_type()))).get_flavored(flavor.immutable_flavor);
+            common_types.immutable_void_type(),
+            common_types.immutable_string_type()))).get_flavored(flavor.immutable_flavor);
   }
 
   private principal_type flags_utilities_type() {
@@ -79,8 +79,8 @@ public class meta_flags_extension extends declaration_extension {
   }
 
   private type string_or_null_type() {
-    return type_utilities.make_union(new base_list<abstract_value>(library().immutable_string_type(),
-        library().immutable_null_type()));
+    return type_utilities.make_union(new base_list<abstract_value>(common_types.immutable_string_type(),
+        common_types.immutable_null_type()));
   }
 
   public signal generate_constructor(type_declaration_analyzer the_type_declaration) {
@@ -112,7 +112,7 @@ public class meta_flags_extension extends declaration_extension {
       the_type_declaration.analyze(variable, analysis_pass.METHOD_AND_VARIABLE_DECL);
       simple_name flag_procedure_name;
 
-      if (variable.value_type() == library().immutable_boolean_type()) {
+      if (variable.value_type() == common_types.immutable_boolean_type()) {
         flag_procedure_name = BOOLEAN_FLAG_NAME;
       } else if (variable.value_type() == string_or_null_type()) {
         flag_procedure_name = STRING_FLAG_NAME;

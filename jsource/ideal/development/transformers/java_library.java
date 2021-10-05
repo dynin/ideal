@@ -70,12 +70,11 @@ public class java_library implements value {
     wrapper_mapping = new list_dictionary<principal_type, simple_name>();
 
     context = the_analysis_context;
-    common_library library = common_library.get_instance();
 
-    runtime_namespace = get_namespace(runtime_name, library.ideal_namespace());
+    runtime_namespace = get_namespace(runtime_name, common_types.ideal_namespace());
     runtime_elements_namespace = get_namespace(elements_name, runtime_namespace);
 
-    machine_namespace = get_namespace(machine_name, library.ideal_namespace());
+    machine_namespace = get_namespace(machine_name, common_types.ideal_namespace());
     machine_adapters_namespace = get_namespace(adapters_name, machine_namespace);
   }
 
@@ -103,13 +102,11 @@ public class java_library implements value {
     annotation_package = get_type(javax_package, "annotation");
     nullable_type = get_type(annotation_package, "Nullable");
 
-    common_library library = common_library.get_instance();
-
-    add_mapping(library.boolean_type(), boolean_type(), "Boolean");
-    add_mapping(library.character_type(), char_type(), "Character");
-    add_mapping(library.integer_type(), int_type(), "Integer");
-    add_mapping(library.nonnegative_type(), int_type(), "Integer");
-    add_mapping(library.void_type(), library.void_type(), "Void");
+    add_mapping(common_types.boolean_type(), boolean_type(), "Boolean");
+    add_mapping(common_types.character_type(), char_type(), "Character");
+    add_mapping(common_types.integer_type(), int_type(), "Integer");
+    add_mapping(common_types.nonnegative_type(), int_type(), "Integer");
+    add_mapping(common_types.void_type(), common_types.void_type(), "Void");
   }
 
   private void add_mapping(principal_type ideal_type, principal_type java_type,

@@ -35,7 +35,7 @@ public class conditional_action extends base_action {
     this.result = result;
 
     assert action_utilities.is_result(condition,
-        common_library.get_instance().immutable_boolean_type());
+        common_types.immutable_boolean_type());
     assert action_utilities.is_result(then_action, result);
     assert action_utilities.is_result(else_action, result);
   }

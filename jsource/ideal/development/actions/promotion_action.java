@@ -48,11 +48,11 @@ public class promotion_action extends base_action implements chainable_action {
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     entity_wrapper result = from_entity;
 
-    if (the_type == library().immutable_void_type()) {
+    if (the_type == common_types.immutable_void_type()) {
       result = common_values.void_instance();
     }
 
-    if (result instanceof reference_wrapper && !library().is_reference_type(the_type)) {
+    if (result instanceof reference_wrapper && !common_types.is_reference_type(the_type)) {
       result = ((reference_wrapper) result).get();
       // TODO: verify that type matches
     }
@@ -68,10 +68,6 @@ public class promotion_action extends base_action implements chainable_action {
     }*/
 
     return null;
-  }
-
-  private static common_library library() {
-    return common_library.get_instance();
   }
 
   @Override

@@ -100,7 +100,7 @@ public class resolve_analyzer extends single_pass_analyzer {
     } else {
       assert the_name != null;
       from_action = null;
-      from_type = (the_name instanceof operator) ? library().operators_package() : parent();
+      from_type = (the_name instanceof operator) ? common_types.operators_package() : parent();
     }
 
     declaration the_declaration = from_type.principal().get_declaration();

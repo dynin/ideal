@@ -101,7 +101,7 @@ public class local_variable_declaration extends single_pass_analyzer
 
   @Override
   public type reference_type() {
-    return common_library.get_instance().get_reference(reference_flavor, var_type);
+    return common_types.get_reference(reference_flavor, var_type);
   }
 
   @Override

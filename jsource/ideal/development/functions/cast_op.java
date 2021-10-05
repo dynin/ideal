@@ -31,8 +31,8 @@ public class cast_op extends binary_procedure {
   // TODO: this should use any flavor, not readonly.
   public cast_op(cast_type the_cast_type) {
     super(the_cast_type, true,
-        library().value_type().get_flavored(flavor.any_flavor),
-        library().value_type().get_flavored(flavor.any_flavor),
+        common_types.value_type().get_flavored(flavor.any_flavor),
+        common_types.value_type().get_flavored(flavor.any_flavor),
         elementary_types.any_type());
   }
 
@@ -62,7 +62,7 @@ public class cast_op extends binary_procedure {
 
     type the_type = analyzer_utilities.handle_default_flavor(second.result());
 
-    if (!the_type.is_subtype_of(library().value_type().get_flavored(flavor.any_flavor))) {
+    if (!the_type.is_subtype_of(common_types.value_type().get_flavored(flavor.any_flavor))) {
       return new error_signal(new base_string("Expected value subtype, got " + the_type), pos);
     }
 

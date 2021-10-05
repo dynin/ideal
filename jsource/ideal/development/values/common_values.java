@@ -21,8 +21,6 @@ import ideal.development.declarations.*;
 import ideal.development.actions.*;
 
 public class common_values {
-  private static common_library common_types;
-
   private static singleton_value VOID_INSTANCE;
   private static singleton_value MISSING_INSTANCE;
   private static singleton_value UNDEFINED_INSTANCE;
@@ -34,9 +32,7 @@ public class common_values {
     return VOID_INSTANCE != null;
   }
 
-  public static void initialize(common_library common_types) {
-    common_values.common_types = common_types;
-
+  public static void initialize() {
     VOID_INSTANCE = new singleton_value(common_types.void_type());
     MISSING_INSTANCE = new singleton_value(common_types.missing_type());
     UNDEFINED_INSTANCE = new singleton_value(common_types.undefined_type());

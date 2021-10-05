@@ -91,7 +91,7 @@ public class cache_result_extension extends declaration_extension {
 
     type return_type = the_procedure.get_return_type();
 
-    if (get_context().is_subtype_of(library().immutable_null_type(), return_type)) {
+    if (get_context().is_subtype_of(common_types.immutable_null_type(), return_type)) {
        // Since null value is used to mark uninitalized cache values,
        return new error_signal(new base_string("Typed of cache value cannot be supertype of null"),
           the_origin);
@@ -105,7 +105,7 @@ public class cache_result_extension extends declaration_extension {
         PRIVATE_STATIC_MODIFIERS : PRIVATE_MODIFIERS;
 
     type variable_type = type_utilities.make_union(new base_list<abstract_value>(
-        return_type, library().immutable_null_type()));
+        return_type, common_types.immutable_null_type()));
 
     // Generate the field that contains the cached value
     variable_analyzer field = new variable_analyzer(variable_annotations,
@@ -119,7 +119,7 @@ public class cache_result_extension extends declaration_extension {
     analyzable condition = new parameter_analyzer(
         new resolve_analyzer(operator.IS_OPERATOR, the_origin),
         new base_list<analyzable>(new resolve_analyzer(result_name, the_origin),
-            to_analyzable(library().immutable_null_type())), the_origin);
+            to_analyzable(common_types.immutable_null_type())), the_origin);
     analyzable assign_result = new parameter_analyzer(
         new resolve_analyzer(operator.ASSIGN, the_origin),
         new base_list<analyzable>(

@@ -40,10 +40,6 @@ public class base_transformer extends declaration_visitor<Object> {
     return new_construct;
   }
 
-  protected common_library library() {
-    return common_library.get_instance();
-  }
-
   public list<construct> transform1(declaration the_analyzable) {
     if (the_analyzable instanceof list_analyzer) {
       return transform_list(((list_analyzer) the_analyzable).declarations());
@@ -169,7 +165,7 @@ public class base_transformer extends declaration_visitor<Object> {
 
   protected simple_name get_simple_name(principal_type the_type) {
     if (type_utilities.is_union(the_type)) {
-      the_type = library().remove_null_type(the_type).principal();
+      the_type = common_types.remove_null_type(the_type).principal();
     }
 
     if (the_type.short_name() instanceof simple_name) {
@@ -215,7 +211,7 @@ public class base_transformer extends declaration_visitor<Object> {
     principal_type principal = the_type.principal();
 
     if (type_utilities.is_union(principal)) {
-      principal = library().remove_null_type(principal).principal();
+      principal = common_types.remove_null_type(principal).principal();
     }
 
     action_name the_name = make_name(get_simple_name(principal), principal, the_type.get_flavor());

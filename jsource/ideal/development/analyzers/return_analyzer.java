@@ -71,7 +71,7 @@ public class return_analyzer extends single_pass_analyzer {
     return_type = the_procedure.get_return_type();
 
     if (analyzer_utilities.is_readonly_reference(return_type)) {
-      return_type = library().get_reference_parameter(return_type);
+      return_type = common_types.get_reference_parameter(return_type);
     }
 
     return_expr = action_not_error(the_expression);

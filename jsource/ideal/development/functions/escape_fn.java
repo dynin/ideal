@@ -29,8 +29,8 @@ import ideal.development.values.*;
 public class escape_fn extends base_procedure {
 
   public escape_fn(action_name name) {
-    super(name, library().make_procedure(true, library().immutable_string_type(),
-        library().immutable_string_type()));
+    super(name, common_types.make_procedure(true, common_types.immutable_string_type(),
+        common_types.immutable_string_type()));
   }
 
   @Override
@@ -40,6 +40,6 @@ public class escape_fn extends base_procedure {
     assert args.size() == 1;
     string s = ((string_value) args.first()).unwrap();
     s = runtime_util.escape_markup(s);
-    return new base_string_value(s, library().immutable_string_type());
+    return new base_string_value(s, common_types.immutable_string_type());
   }
 }

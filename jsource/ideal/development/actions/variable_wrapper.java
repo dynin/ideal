@@ -45,7 +45,7 @@ public class variable_wrapper extends debuggable implements reference_wrapper {
     value_wrapper val = the_context.get_var(the_action.the_declaration);
     if (val == null) {
       utilities.panic("Not defined: " + the_action.short_name() + " in " + the_context);
-      // return common_library.do_get_undefined_instance();
+      // return common_types.do_get_undefined_instance();
     }
     return val;
   }

@@ -31,8 +31,7 @@ public class string_helper {
   private string_helper() { }
 
   public static type readonly_stringable() {
-    return common_library.get_instance().
-        stringable_type().get_flavored(flavor.readonly_flavor);
+    return common_types.stringable_type().get_flavored(flavor.readonly_flavor);
   }
 
   public static string to_string(entity_wrapper the_entity, execution_context the_context) {

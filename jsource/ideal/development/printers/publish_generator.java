@@ -74,7 +74,7 @@ public class publish_generator {
   }
 
   private principal_type ideal_namespace() {
-    return common_library.get_instance().ideal_namespace();
+    return common_types.ideal_namespace();
   }
 
   public void add_type(principal_type the_type) {

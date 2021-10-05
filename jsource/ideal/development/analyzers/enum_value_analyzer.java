@@ -71,7 +71,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
 
   @Override
   public type reference_type() {
-    return library().get_reference(flavor.deeply_immutable_flavor, value_type());
+    return common_types.get_reference(flavor.deeply_immutable_flavor, value_type());
   }
 
   @Override

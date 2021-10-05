@@ -53,7 +53,7 @@ public class test_case_extension extends declaration_extension {
     origin the_origin = this;
 
     if (!the_procedure.has_return()) {
-      the_procedure.set_return(common_library.get_instance().void_type());
+      the_procedure.set_return(common_types.void_type());
     }
 
     if (the_procedure.declared_in_type().get_kind() != type_kinds.test_suite_kind) {

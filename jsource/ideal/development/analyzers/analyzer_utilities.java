@@ -35,6 +35,22 @@ public class analyzer_utilities {
   public static final origin UNINITIALIZED_POSITION =
       new special_origin(new base_string("[uninitialized]"));
 
+  private static @Nullable procedure1<readonly_list<construct>, type_announcement_construct>
+      resource_loader;
+
+  public static void set_loader(procedure1<readonly_list<construct>, type_announcement_construct>
+      loader) {
+    assert resource_loader == null;
+    assert loader != null;
+    resource_loader = loader;
+  }
+
+  public static @Nullable readonly_list<construct> load_resource(
+      type_announcement_construct the_declaration) {
+    assert resource_loader != null;
+    return resource_loader.call(the_declaration);
+  }
+
   public static analysis_context clear_non_local(analysis_context clear_parent) {
     if (clear_parent instanceof base_analysis_context) {
       return clear_parent;

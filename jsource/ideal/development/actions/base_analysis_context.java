@@ -24,14 +24,14 @@ import ideal.development.origins.*;
 import ideal.development.kinds.*;
 import ideal.development.notifications.*;
 
-public abstract class base_analysis_context extends debuggable implements analysis_context {
+public class base_analysis_context extends debuggable implements analysis_context {
 
   private static action_table actions = new action_table();
 
   private final base_semantics language;
   private graph<principal_type, origin> the_type_graph;
 
-  protected base_analysis_context(base_semantics language) {
+  public base_analysis_context(base_semantics language) {
     this.language = language;
     this.the_type_graph = new base_graph<principal_type, origin>();
     if (!common_types.is_initialized()) {

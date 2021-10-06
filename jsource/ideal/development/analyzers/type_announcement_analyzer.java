@@ -101,7 +101,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         external_declaration = the_type_declaration;
         declarations = new base_list<declaration>(the_type_declaration);
       } else {
-        readonly_list<construct> external_body = get_context().load_resource(source);
+        readonly_list<construct> external_body = analyzer_utilities.load_resource(source);
 
         if (external_body == null) {
           // Assume the error has been reported.

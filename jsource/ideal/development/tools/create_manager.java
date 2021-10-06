@@ -56,7 +56,8 @@ public class create_manager implements target_manager, type_bootstrapper {
     language = new base_semantics();
     root = elementary_types.root_type();
     this.top_catalog = top_catalog;
-    bootstrap_context = new create_analysis_context(this, language);
+    bootstrap_context = new base_analysis_context(language);
+    analyzer_utilities.set_loader(loader_procedure());
     root_origin = origin_utilities.builtin_origin; // TODO: use resource id as origin
     scanner = new common_scanner();
     set_notification_handler((output<notification>) (output) log.log_output);
@@ -304,6 +305,15 @@ public class create_manager implements target_manager, type_bootstrapper {
       assert constructs.is_not_empty();
       return constructs;
     }
+  }
+
+  procedure1<readonly_list<construct>, type_announcement_construct> loader_procedure() {
+    return new procedure1<readonly_list<construct>, type_announcement_construct>() {
+      @Override
+      public readonly_list<construct> call(type_announcement_construct announcement) {
+        return load_resource(announcement);
+      }
+    };
   }
 
   private void add_operator(procedure_value pv) {

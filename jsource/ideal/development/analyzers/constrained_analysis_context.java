@@ -137,12 +137,6 @@ public class constrained_analysis_context extends debuggable implements analysis
   }
 
   @Override
-  public @Nullable readonly_list<construct> load_resource(
-      type_announcement_construct the_announcement) {
-    return parent.load_resource(the_announcement);
-  }
-
-  @Override
   public master_type get_or_create_type(action_name name, kind kind, principal_type parent,
       flavor_profile the_flavor_profile) {
     utilities.panic("get_or_create_type() not supported");

@@ -35,6 +35,39 @@ public class analyzer_utilities {
   public static final origin UNINITIALIZED_POSITION =
       new special_origin(new base_string("[uninitialized]"));
 
+  public static analysis_context clear_non_local(analysis_context clear_parent) {
+    if (clear_parent instanceof base_analysis_context) {
+      return clear_parent;
+    }
+
+    base_analysis_context new_parent = ((constrained_analysis_context) clear_parent).parent;
+    constraint_state new_state =
+        ((constrained_analysis_context) clear_parent).state.clear_non_local();
+
+    if (new_state != null) {
+      return new constrained_analysis_context(new_parent, new_state);
+    } else {
+      return new_parent;
+    }
+  }
+
+  public static analysis_context combine(analysis_context combine_parent,
+      readonly_list<constraint> the_constraints) {
+    if (the_constraints.is_empty()) {
+      return combine_parent;
+    }
+
+    if (combine_parent instanceof base_analysis_context) {
+      return new constrained_analysis_context((base_analysis_context) combine_parent,
+          new constraint_state(the_constraints));
+    }
+
+    base_analysis_context the_parent = ((constrained_analysis_context) combine_parent).parent;
+    constraint_state the_state = ((constrained_analysis_context) combine_parent).state;
+
+    return new constrained_analysis_context(the_parent, the_state.combine(the_constraints));
+  }
+
   public static @Nullable procedure_declaration get_enclosing_procedure(
       base_analyzer the_analyzable) {
     principal_type frame = the_analyzable.parent();

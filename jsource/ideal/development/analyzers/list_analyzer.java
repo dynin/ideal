@@ -126,7 +126,7 @@ public class list_analyzer extends multi_pass_analyzer implements declaration {
       if (the_result instanceof action) {
         the_action = (action) the_result;
         if (the_action.has_side_effects()) {
-          current_context = constrained_analysis_context.clear_non_local(current_context);
+          current_context = analyzer_utilities.clear_non_local(current_context);
           end_constraints.clear();
         }
       } else if (the_result instanceof error_signal) {
@@ -139,7 +139,7 @@ public class list_analyzer extends multi_pass_analyzer implements declaration {
         immutable_list<constraint> the_constraints =
             ((action_plus_constraints) the_result).the_constraints;
         if (the_action.has_side_effects()) {
-          current_context = constrained_analysis_context.clear_non_local(current_context);
+          current_context = analyzer_utilities.clear_non_local(current_context);
           end_constraints.clear();
         }
 
@@ -156,7 +156,7 @@ public class list_analyzer extends multi_pass_analyzer implements declaration {
             }
           }
         }
-        current_context = constrained_analysis_context.combine(current_context, always_constraints);
+        current_context = analyzer_utilities.combine(current_context, always_constraints);
       } else {
         utilities.panic("Unexpected result: " + the_result);
         return null;

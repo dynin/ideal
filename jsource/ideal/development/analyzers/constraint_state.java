@@ -39,9 +39,25 @@ public class constraint_state extends debuggable
     }
   }
 
-  private constraint_state(immutable_dictionary<variable_declaration, constraint>
+  public constraint_state(immutable_dictionary<variable_declaration, constraint>
       constraint_bindings) {
     this.constraint_bindings = constraint_bindings;
+  }
+
+  public constraint_state(readonly_list<constraint> new_constraints) {
+    assert new_constraints.is_not_empty();
+
+    dictionary<variable_declaration, constraint> constraint_dictionary =
+        new list_dictionary<variable_declaration, constraint>();
+
+    for (int i = 0; i < new_constraints.size(); ++i) {
+      constraint the_constraint = new_constraints.get(i);
+      // TODO: check that constraint isn't trivial
+      //  and is either part of the declaration or part of the context.
+      constraint_dictionary.put(the_constraint.the_declaration, the_constraint);
+    }
+
+    this.constraint_bindings = constraint_dictionary.frozen_copy();
   }
 
   public @Nullable constraint_state clear_non_local() {
@@ -100,7 +116,7 @@ public class constraint_state extends debuggable
   @Override
   public string to_string() {
     string_writer content = new string_writer();
-    content.write_all(new base_string("context {"));
+    content.write_all(new base_string("{"));
     readonly_list<constraint> constraints = constraint_bindings.values().elements();
     for (int i = 0; i < constraints.size(); ++i) {
       constraint the_constraint = constraints.get(i);

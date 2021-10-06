@@ -26,96 +26,12 @@ import ideal.development.notifications.*;
 
 public class constrained_analysis_context extends debuggable implements analysis_context {
 
-  private final base_analysis_context parent;
-  private final immutable_dictionary<variable_declaration, constraint> constraint_bindings;
-  private function1<abstract_value, variable_declaration> constraint_mapper =
-      new function1<abstract_value, variable_declaration>() {
-          @Override public abstract_value call(variable_declaration the_declaration) {
-            constraint the_constraint = constraint_bindings.get(the_declaration);
-            if (the_constraint != null) {
-              return the_constraint.the_value();
-            } else {
-              return null;
-            }
-          }
+  public final base_analysis_context parent;
+  public final constraint_state state;
 
-          @Override public String toString() {
-            return constrained_analysis_context.this.toString();
-          }
-      };
-
-  private constrained_analysis_context(base_analysis_context parent,
-      immutable_dictionary<variable_declaration, constraint> constraint_bindings) {
+  public constrained_analysis_context(base_analysis_context parent, constraint_state state) {
     this.parent = parent;
-    this.constraint_bindings = constraint_bindings;
-  }
-
-  public static analysis_context clear_non_local(analysis_context clear_parent) {
-    if (clear_parent instanceof base_analysis_context) {
-      return clear_parent;
-    }
-
-    base_analysis_context new_parent = ((constrained_analysis_context) clear_parent).parent;
-    readonly_list<dictionary.entry<variable_declaration, constraint>> parent_constraints =
-        ((constrained_analysis_context) clear_parent).constraints().elements();
-
-    dictionary<variable_declaration, constraint> constraint_dictionary =
-        new list_dictionary<variable_declaration, constraint>();
-
-    for (int i = 0; i < parent_constraints.size(); ++i) {
-      dictionary.entry<variable_declaration, constraint> the_constraint =
-          parent_constraints.get(i);
-      if (the_constraint.value().is_local()) {
-        constraint_dictionary.put(the_constraint.key(), the_constraint.value());
-      }
-    }
-
-    if (constraint_dictionary.is_empty()) {
-      return new_parent;
-    }
-
-    return new constrained_analysis_context(new_parent, constraint_dictionary.frozen_copy());
-  }
-
-  public static analysis_context combine(analysis_context combine_parent,
-      readonly_list<constraint> the_constraints) {
-    if (the_constraints.is_empty()) {
-      return combine_parent;
-    }
-
-    base_analysis_context new_parent;
-    if (combine_parent instanceof base_analysis_context) {
-      new_parent = (base_analysis_context) combine_parent;
-    } else {
-      new_parent = ((constrained_analysis_context) combine_parent).parent;
-    }
-
-    dictionary<variable_declaration, constraint> constraint_dictionary =
-        new list_dictionary<variable_declaration, constraint>();
-
-    // TODO: implement dictionary.copy() or dictionary.add_all()
-    if (combine_parent instanceof constrained_analysis_context) {
-      readonly_list<dictionary.entry<variable_declaration, constraint>> parent_constraints =
-          ((constrained_analysis_context) combine_parent).constraints().elements();
-      for (int i = 0; i < parent_constraints.size(); ++i) {
-        dictionary.entry<variable_declaration, constraint> the_constraint =
-            parent_constraints.get(i);
-        constraint_dictionary.put(the_constraint.key(), the_constraint.value());
-      }
-    }
-
-    for (int i = 0; i < the_constraints.size(); ++i) {
-      constraint the_constraint = the_constraints.get(i);
-      // TODO: check that constraint isn't trivial
-      //  and is either part of the declaration or part of the context.
-      constraint_dictionary.put(the_constraint.the_declaration, the_constraint);
-    }
-
-    if (constraint_dictionary.is_empty()) {
-      return new_parent;
-    }
-
-    return new constrained_analysis_context(new_parent, constraint_dictionary.frozen_copy());
+    this.state = state;
   }
 
   @Override
@@ -160,7 +76,7 @@ public class constrained_analysis_context extends debuggable implements analysis
 
   @Override
   public boolean can_promote(action from, type target) {
-    return parent.find_promotion(from, target, constraint_mapper) != null;
+    return parent.find_promotion(from, target, state) != null;
   }
 
   @Override
@@ -170,7 +86,7 @@ public class constrained_analysis_context extends debuggable implements analysis
       return from;
     }
 
-    @Nullable action result = parent.find_promotion(from, target, constraint_mapper);
+    @Nullable action result = parent.find_promotion(from, target, state);
 
     // TODO: unify code with base_analysis_context
     if (result != null) {
@@ -189,7 +105,7 @@ public class constrained_analysis_context extends debuggable implements analysis
     // because the reference type is not narrowed.
     // Say the variable declaration is "string or null foo", and it's narrowed to string.
     // The is_reference_type(the_type) would return a union type, which is not what we want.
-    action narrowed_action = parent.can_narrow(expression, constraint_mapper);
+    action narrowed_action = parent.can_narrow(expression, state);
     if (narrowed_action != null) {
       return narrowed_action;
     }
@@ -233,22 +149,17 @@ public class constrained_analysis_context extends debuggable implements analysis
     return null;
   }
 
-  public immutable_dictionary<variable_declaration, constraint> constraints() {
-    return constraint_bindings;
+  public constraint_state constraints() {
+    return state;
   }
 
   @Override
   public string to_string() {
     string_writer content = new string_writer();
     content.write_all(new base_string("context "));
-    content.write_all(new base_string(parent.to_string(), " {"));
-    readonly_list<constraint> constraints = constraints().values().elements();
-    for (int i = 0; i < constraints.size(); ++i) {
-      constraint the_constraint = constraints.get(i);
-      content.write_all(the_constraint.to_string());
-      content.write_all(new base_string(", "));
-    }
-    content.write_all(new base_string("}"));
+    content.write_all(parent.to_string());
+    content.write_all(new base_string(" "));
+    content.write_all(state.to_string());
     return content.elements();
   }
 }

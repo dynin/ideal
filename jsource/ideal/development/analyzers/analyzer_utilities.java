@@ -52,18 +52,14 @@ public class analyzer_utilities {
   }
 
   public static analysis_context clear_non_local(analysis_context clear_parent) {
-    if (clear_parent instanceof base_analysis_context) {
-      return clear_parent;
-    }
+    assert clear_parent instanceof base_analysis_context;
+    base_analysis_context parent = (base_analysis_context) clear_parent;
+    constraint_state state = (constraint_state) parent.constraints;
 
-    base_analysis_context new_parent = ((constrained_analysis_context) clear_parent).parent;
-    constraint_state new_state =
-        ((constrained_analysis_context) clear_parent).state.clear_non_local();
-
-    if (new_state != null) {
-      return new constrained_analysis_context(new_parent, new_state);
+    if (state == null) {
+      return parent;
     } else {
-      return new_parent;
+      return parent.with_constraints(state.clear_non_local());
     }
   }
 
@@ -73,15 +69,13 @@ public class analyzer_utilities {
       return combine_parent;
     }
 
-    if (combine_parent instanceof base_analysis_context) {
-      return new constrained_analysis_context((base_analysis_context) combine_parent,
-          new constraint_state(the_constraints));
+    base_analysis_context parent = (base_analysis_context) combine_parent;
+    constraint_state state = (constraint_state) parent.constraints;
+    if (state == null) {
+      return parent.with_constraints(new constraint_state(the_constraints));
     }
 
-    base_analysis_context the_parent = ((constrained_analysis_context) combine_parent).parent;
-    constraint_state the_state = ((constrained_analysis_context) combine_parent).state;
-
-    return new constrained_analysis_context(the_parent, the_state.combine(the_constraints));
+    return parent.with_constraints(state.combine(the_constraints));
   }
 
   public static @Nullable procedure_declaration get_enclosing_procedure(

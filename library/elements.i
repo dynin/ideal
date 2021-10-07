@@ -209,6 +209,7 @@ package elements {
   procedure_kind procedure[covariant entity return_type, ... contravariant entity argument_types] {
     subtypes immutable value;
     subtypes equality_comparable;
+    -- TODO: subtypes stringable;
   }
 
   --- A procedure that has no visible side effects.

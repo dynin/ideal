@@ -30,16 +30,30 @@ public class base_analysis_context extends debuggable implements analysis_contex
 
   private final base_semantics language;
   private graph<principal_type, origin> the_type_graph;
+  public final @Nullable function1<abstract_value, variable_declaration> constraints;
 
   public base_analysis_context(base_semantics language) {
     this.language = language;
     this.the_type_graph = new base_graph<principal_type, origin>();
+    this.constraints = null;
     if (!common_types.is_initialized()) {
       new common_types(this);
     }
     if (!common_values.is_initialized()) {
       common_values.initialize();
     }
+  }
+
+  private base_analysis_context(base_analysis_context parent,
+      @Nullable function1<abstract_value, variable_declaration> constraints) {
+    this.language = parent.language;
+    this.the_type_graph = parent.the_type_graph;
+    this.constraints = constraints;
+  }
+
+  public analysis_context with_constraints(
+      @Nullable function1<abstract_value, variable_declaration> constraints) {
+    return new base_analysis_context(this, constraints);
   }
 
   @Override
@@ -123,6 +137,17 @@ public class base_analysis_context extends debuggable implements analysis_contex
 
   @Override
   public action to_value(action expression, origin the_origin) {
+    if (constraints != null) {
+      // We need to specially handled narrowed variables here
+      // because the reference type is not narrowed.
+      // Say the variable declaration is "string or null foo", and it's narrowed to string.
+      // The is_reference_type(the_type) would return a union type, which is not what we want.
+      action narrowed_action = can_narrow(expression, constraints);
+      if (narrowed_action != null) {
+        return narrowed_action;
+      }
+    }
+
     type the_type = expression.result().type_bound();
     if (common_types.is_reference_type(the_type)) {
       // TODO: check that flavor is readonly or mutable.
@@ -136,7 +161,7 @@ public class base_analysis_context extends debuggable implements analysis_contex
 
   @Override
   public boolean can_promote(action from, type target) {
-    return find_promotion(from, target, null) != null;
+    return find_promotion(from, target, constraints) != null;
   }
 
   @Override
@@ -145,9 +170,8 @@ public class base_analysis_context extends debuggable implements analysis_contex
       return from;
     }
 
-    @Nullable action result = find_promotion(from, target, null);
+    @Nullable action result = find_promotion(from, target, constraints);
 
-    // TODO: unify code with constrained_analysis_context
     if (result != null) {
       return action_utilities.combine(from, result, pos);
     } else {
@@ -188,5 +212,10 @@ public class base_analysis_context extends debuggable implements analysis_contex
       return action_utilities.make_type(this, kind, the_flavor_profile, name, parent,
           null, origin_utilities.builtin_origin);
     }
+  }
+
+  @Override
+  public string to_string() {
+    return new base_string("context ", constraints.toString());
   }
 }

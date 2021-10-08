@@ -29,8 +29,6 @@ import ideal.development.values.singleton_value;
 
 public class base_semantics implements language_settings {
 
-  private @Nullable value_printer the_value_printer;
-
   public readonly_list<action> resolve(action_table actions, type from, action_name name,
       origin pos) {
 
@@ -549,14 +547,6 @@ public class base_semantics implements language_settings {
 
     action deref = new dereference_action(param, the_declaration, the_declaration);
     context.add(new_type.get_flavored(readonly_flavor), special_name.PROMOTION, deref);
-  }
-
-  public string print_value(abstract_value the_value) {
-    if (the_value_printer == null) {
-      the_value_printer = new base_value_printer(common_types.elements_package());
-    }
-
-    return the_value_printer.print_value(the_value);
   }
 
   @Override

@@ -13,10 +13,10 @@ class base_value_printer {
 
   private static OMIT_DEFAULT_FLAVOR : false;
 
-  private principal_type library_elements_type;
+  public static instance : base_value_printer.new();
 
-  base_value_printer(principal_type library_elements_type) {
-    this.library_elements_type = library_elements_type;
+  private boolean use_short_name(principal_type the_type) {
+    return the_type.get_parent == common_types.elements_package;
   }
 
   implement string print_value(abstract_value the_value) {
@@ -39,8 +39,8 @@ class base_value_printer {
       if (type_utilities.is_union(principal)) {
         return print_union_type(principal);
       }
-      principal_name : (principal.get_parent == library_elements_type) ?
-          principal.short_name.to_string : print_hierarchical_name(principal);
+      principal_name : use_short_name(principal) ? principal.short_name.to_string :
+          print_hierarchical_name(principal);
       if (principal is parametrized_type) {
         return principal_name ++ print_parameters(principal);
       } else {

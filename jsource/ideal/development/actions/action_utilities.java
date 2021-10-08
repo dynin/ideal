@@ -292,10 +292,11 @@ public class action_utilities {
     return to_type(the_entity.type_bound()).is_subtype_of(the_type);
   }
 
-  public static error_signal cant_promote(abstract_value from, type target,
-      analysis_context the_context, origin pos) {
-    return new error_signal(new base_string("Can't promote " + the_context.print_value(from) +
-        " to " + the_context.print_value(target)), pos);
+  public static error_signal cant_promote(abstract_value from, type target, origin the_origin) {
+    // TODO: move to messages/mismatch_reporter
+    value_printer printer = base_value_printer.instance;
+    return new error_signal(new base_string("Can't promote " + printer.print_value(from) +
+        " to " + printer.print_value(target)), the_origin);
   }
 
   public static @Nullable flavor_profile get_profile(supertype_declaration the_supertype) {

@@ -27,6 +27,7 @@ import ideal.development.flavors.*;
 import ideal.development.analyzers.*;
 import ideal.development.notifications.*;
 import ideal.development.transformers.*;
+import ideal.development.analyzers.*;
 
 public class assign_op extends binary_procedure {
 
@@ -45,16 +46,14 @@ public class assign_op extends binary_procedure {
     type reference_type = first.result().type_bound();
     if (!common_types.is_reference_type(reference_type)) {
       // TODO: check that this is a writable reference.
-      return new error_signal(new base_string("Reference expected, got ",
-          context.print_value(reference_type)), the_origin);
+      return mismatch_reporter.reference_expected(reference_type, the_origin);
     }
 
     type value_type = common_types.get_reference_parameter(reference_type);
 
     type writable_ref = common_types.get_reference(flavor.writeonly_flavor, value_type);
     if (!context.can_promote(first, writable_ref)) {
-      return new error_signal(new base_string("Writable reference expected, got ",
-          context.print_value(reference_type)), the_origin);
+      return mismatch_reporter.writable_reference_expected(reference_type, the_origin);
     }
     action left = context.promote(first, writable_ref, the_origin);
 
@@ -70,7 +69,7 @@ public class assign_op extends binary_procedure {
 
     second = analyzer_utilities.to_value(second, context, the_origin);
     if (!context.can_promote(second, value_type)) {
-      return action_utilities.cant_promote(second.result(), value_type, context, the_origin);
+      return action_utilities.cant_promote(second.result(), value_type, the_origin);
     }
     constraint the_constraint = null;
     if (second.result() != value_type && analyzer_utilities.supports_constraint(first)) {

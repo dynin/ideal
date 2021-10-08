@@ -24,6 +24,8 @@ import ideal.development.declarations.*;
 
 public class mismatch_reporter {
 
+  public static final value_printer printer = base_value_printer.instance;
+
   private static readonly_list<action> filter_by_arity(readonly_list<action> candidates,
       int arity) {
 
@@ -53,14 +55,14 @@ public class mismatch_reporter {
     if (filtered_candidates.is_empty()) {
       return new error_signal(new base_notification(
           new base_string("Can't find declarations with matching arity"),
-          source, notification_utilities.to_notifications(candidates, context)), false);
+          source, notification_utilities.to_notifications(candidates, printer)), false);
     }
 
     if (filtered_candidates.size() > 1) {
       notification no_matching = new base_notification(
           new base_string("Can't find matching declaration for " +
-              print_parameters(the_action_parameters, context) + " parameters"),
-          source, notification_utilities.to_notifications(filtered_candidates, context));
+              print_parameters(the_action_parameters) + " parameters"),
+          source, notification_utilities.to_notifications(filtered_candidates, printer));
       return new error_signal(no_matching, false);
     }
 
@@ -74,7 +76,7 @@ public class mismatch_reporter {
     type failed_procedure_type = candidate.result().type_bound();
     if (!action_utilities.is_procedure_type(failed_procedure_type)) {
       return new error_signal(new base_string(messages.expression_not_parametrizable + ": " +
-          context.print_value(failed_procedure_type)), source);
+          printer.print_value(failed_procedure_type)), source);
     }
 
     assert action_utilities.is_procedure_type(failed_procedure_type);
@@ -95,8 +97,8 @@ public class mismatch_reporter {
 
       if (!context.can_promote(supplied_action, declared_type)) {
         return new error_signal(new base_string("Argument #" + i + ": expected " +
-            context.print_value(declared_type) + ", found " +
-            context.print_value(supplied_value)),
+            printer.print_value(declared_type) + ", found " +
+            printer.print_value(supplied_value)),
             supplied_arguments.get(i));
         // TODO: origin that highlights argument while showing the full expression
         // TODO: continue and report other arg mismatches
@@ -110,8 +112,8 @@ public class mismatch_reporter {
       type declared_type = action_utilities.get_procedure_argument(
           failed_procedure_type, i).type_bound();
       log.debug("MM #" + i + ": expected " +
-            context.print_value(declared_type) + ", found " +
-            context.print_value(supplied_value) +
+            printer.print_value(declared_type) + ", found " +
+            printer.print_value(supplied_value) +
             " @ " + (((base_principal_type) supplied_value.type_bound().principal()).get_pass()));
     }
 
@@ -120,18 +122,17 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_lookup_failure(action_name the_name, type from_type,
-      action_parameters the_action_parameters, value_printer printer, origin source) {
+      action_parameters the_action_parameters, origin source) {
     base_string error_message = new base_string(new base_string("Lookup failed: no "),
         the_name.to_string(), new base_string(" in "), printer.print_value(from_type));
     if (the_action_parameters != null) {
       error_message = new base_string(error_message, ", target parameters ",
-          print_parameters(the_action_parameters, printer));
+          print_parameters(the_action_parameters));
     }
     return new error_signal(error_message, source);
   }
 
-  private static string print_parameters(action_parameters the_action_parameters,
-      value_printer printer) {
+  private static string print_parameters(action_parameters the_action_parameters) {
     immutable_list<action> parameters = the_action_parameters.params();
     StringBuilder s = new StringBuilder();
     boolean first = true;
@@ -150,6 +151,16 @@ public class mismatch_reporter {
 
     s.append(')');
     return new base_string(s.toString());
+  }
+
+  public static error_signal reference_expected(type the_type, origin the_origin) {
+    return new error_signal(new base_string("Reference expected, got ",
+        printer.print_value(the_type)), the_origin);
+  }
+
+  public static error_signal writable_reference_expected(type the_type, origin the_origin) {
+    return new error_signal(new base_string("Writable reference expected, got ",
+        printer.print_value(the_type)), the_origin);
   }
 
   // TODO: this is for debug only.

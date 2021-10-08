@@ -32,13 +32,11 @@ import javax.annotation.Nullable;
 
 public class analyze_target extends type_processor_target {
 
-  base_value_printer printer;
   analysis_context the_context;
   mapping_visitor mapping;
 
   public analyze_target(simple_name the_name, target_manager the_manager) {
     super(the_name, the_manager);
-    printer = new base_value_printer(null);
   }
 
   @Override
@@ -64,7 +62,7 @@ public class analyze_target extends type_processor_target {
     }
 
     // TODO: only do this in verbose mode
-    log.info(new base_string(printer.print_type(the_type), " looking good."));
+    log.info(new base_string(base_value_printer.instance.print_type(the_type), " looking good."));
   }
 
   private void ensure_is_analyzed(construct the_construct) {

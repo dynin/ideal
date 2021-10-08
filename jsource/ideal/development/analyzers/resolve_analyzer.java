@@ -117,8 +117,7 @@ public class resolve_analyzer extends single_pass_analyzer {
         error_signal suppressed_error = new error_signal(messages.suppressed, error, the_origin);
         add_error(parent(), the_name, suppressed_error);
       } else {
-        error = mismatch_reporter.signal_lookup_failure(the_name, from_type, null,
-            get_context(), the_origin);
+        error = mismatch_reporter.signal_lookup_failure(the_name, from_type, null, the_origin);
       }
       return error;
     }
@@ -131,7 +130,8 @@ public class resolve_analyzer extends single_pass_analyzer {
         declarations = null;
       } else {
         // TODO: fix this by introducing a stable order
-        declarations = notification_utilities.to_notifications(all_resolved, get_context());
+        declarations = notification_utilities.to_notifications(all_resolved,
+            mismatch_reporter.printer);
       }
       notification ambiguous = new base_notification(messages.ambiguous_access, this, declarations);
       return new error_signal(ambiguous, false);

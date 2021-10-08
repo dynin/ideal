@@ -17,7 +17,7 @@ import ideal.development.constructs.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
 
-public interface analysis_context extends type_declaration_context, value_printer, value {
+public interface analysis_context extends type_declaration_context, value {
 
   language_settings settings();
 
@@ -32,8 +32,6 @@ public interface analysis_context extends type_declaration_context, value_printe
   boolean can_promote(action from, type target);
 
   action to_value(action expression, origin the_origin);
-
-  string print_value(abstract_value the_value);
 
   boolean is_subtype_of(abstract_value the_value, type the_type);
 

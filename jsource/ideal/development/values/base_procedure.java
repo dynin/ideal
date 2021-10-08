@@ -131,7 +131,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
       if (context.can_promote(param, target)) {
         promoted_params.append(context.promote(param, target, pos));
       } else {
-        return action_utilities.cant_promote(param.result(), target, context, pos);
+        return action_utilities.cant_promote(param.result(), target, pos);
       }
     }
 

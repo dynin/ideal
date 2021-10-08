@@ -148,8 +148,7 @@ public class local_variable_declaration extends single_pass_analyzer
       }
       init_action = action_not_error(init_analyzable);
       if (!get_context().can_promote(init_action, var_type)) {
-        return action_utilities.cant_promote(init_action.result(), var_type,
-              get_context(), the_origin);
+        return action_utilities.cant_promote(init_action.result(), var_type, the_origin);
       }
       init_action = get_context().promote(init_action, var_type, the_origin);
     }

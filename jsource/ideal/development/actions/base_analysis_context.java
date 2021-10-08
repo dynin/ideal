@@ -82,11 +82,6 @@ public class base_analysis_context extends debuggable implements analysis_contex
   }
 
   @Override
-  public string print_value(abstract_value the_value) {
-    return language.print_value(the_value);
-  }
-
-  @Override
   public boolean is_subtype_of(abstract_value the_value, type the_type) {
     return language.is_subtype_of(actions, the_value, the_type);
   }
@@ -175,7 +170,7 @@ public class base_analysis_context extends debuggable implements analysis_contex
     if (result != null) {
       return action_utilities.combine(from, result, pos);
     } else {
-      error_signal signal = action_utilities.cant_promote(from.result(), target, this, pos);
+      error_signal signal = action_utilities.cant_promote(from.result(), target, pos);
       //return new error_action(signal);
       utilities.panic(signal.to_string());
       return null;

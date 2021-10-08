@@ -170,8 +170,7 @@ public class variable_analyzer extends declaration_analyzer
         }
         set_init();
         if (!get_context().can_promote(init_action, value_type())) {
-          return action_utilities.cant_promote(init_action.result(), value_type(),
-              get_context(), this);
+          return action_utilities.cant_promote(init_action.result(), value_type(), this);
         }
         init_action = get_context().promote(init_action, value_type(), this);
         assert !(init_action instanceof error_signal);

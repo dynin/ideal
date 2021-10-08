@@ -78,8 +78,7 @@ public class return_analyzer extends single_pass_analyzer {
     type_utilities.prepare(return_expr.result(), declaration_pass.METHODS_AND_VARIABLES);
 
     if (!get_context().can_promote(return_expr, return_type)) {
-      return action_utilities.cant_promote(return_expr.result(), return_type,
-          get_context(), this);
+      return action_utilities.cant_promote(return_expr.result(), return_type, this);
     }
     return_expr = get_context().promote(return_expr, return_type, this);
 

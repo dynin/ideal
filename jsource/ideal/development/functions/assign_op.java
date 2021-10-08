@@ -40,7 +40,7 @@ public class assign_op extends binary_procedure {
   }
 
   @Override
-  protected analysis_result bind_binary(action first, action second, analysis_context context,
+  protected analysis_result bind_binary(action first, action second, action_context context,
       origin the_origin) {
 
     type reference_type = first.result().type_bound();

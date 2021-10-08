@@ -46,7 +46,7 @@ public class publish_generator {
   private final content_writer processor;
   private boolean initialized;
 
-  public publish_generator(publish_mode mode, analysis_context context, content_writer processor) {
+  public publish_generator(publish_mode mode, action_context context, content_writer processor) {
     naming_rewriter backend;
 
     switch (mode) {

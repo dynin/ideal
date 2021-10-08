@@ -41,7 +41,7 @@ public abstract class binary_procedure extends base_procedure {
   }
 
   @Override
-  public final analysis_result bind_parameters(action_parameters params, analysis_context context,
+  public final analysis_result bind_parameters(action_parameters params, action_context context,
       origin pos) {
 
     // TODO: unify this with base_procedure.bind_parameters()
@@ -65,11 +65,11 @@ public abstract class binary_procedure extends base_procedure {
   }
 
   protected analysis_result do_bind_parameters(readonly_list<action> aparams,
-      analysis_context context, origin pos) {
+      action_context context, origin pos) {
     return bind_binary(aparams.get(0), aparams.get(1), context, pos);
   }
 
-  protected analysis_result bind_binary(action first, action second, analysis_context context,
+  protected analysis_result bind_binary(action first, action second, action_context context,
       origin pos) {
     first = context.promote(first, get_argument_type(0), pos);
     second = context.promote(second, get_argument_type(1), pos);

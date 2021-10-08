@@ -31,7 +31,7 @@ public class specialized_type_declaration extends debuggable implements type_dec
   public specialized_type_declaration(parametrized_type the_type,
       parametrized_type main_type,
       specialization_context the_specialization_context,
-      analysis_context the_analysis_context) {
+      action_context the_action_context) {
     this.the_type = the_type;
     this.main_type = main_type;
     this.main_declaration = (type_declaration) main_type.get_declaration();
@@ -43,7 +43,7 @@ public class specialized_type_declaration extends debuggable implements type_dec
 
     // We need this so that code in specialized type can access the static declarations
     // in the master type.
-    action_utilities.add_promotion(the_analysis_context, the_type, get_master(), false, this);
+    action_utilities.add_promotion(the_action_context, the_type, get_master(), false, this);
   }
 
   @Override

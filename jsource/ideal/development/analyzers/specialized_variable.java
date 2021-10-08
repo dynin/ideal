@@ -62,7 +62,7 @@ public class specialized_variable extends debuggable implements variable_declara
     return common_values.noop(this);
   }
 
-  public void add(analysis_context context) {
+  public void add(action_context context) {
     if (get_category() == variable_category.LOCAL) {
       local_variable the_variable = new local_variable(this, reference_type.get_flavor());
       context.add(parent_type, short_name(), the_variable.to_action(this));

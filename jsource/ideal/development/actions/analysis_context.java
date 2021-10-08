@@ -9,35 +9,11 @@
 package ideal.development.actions;
 
 import ideal.library.elements.*;
-import ideal.library.graphs.*;
 import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 import ideal.development.elements.*;
-import ideal.development.constructs.*;
-import ideal.development.declarations.*;
+import ideal.development.names.*;
 import ideal.development.types.*;
 
-public interface analysis_context extends value {
-
-  language_settings settings();
-
-  readonly_list<action> lookup(type from, action_name name);
-
-  void add(type from, action_name name, action the_action);
-
-  void add_supertype(type subtype, type supertype);
-
-  readonly_list<action> resolve(type from, action_name name, origin pos);
-
-  boolean can_promote(action from, type target);
-
-  action to_value(action expression, origin the_origin);
-
-  boolean is_subtype_of(abstract_value the_value, type the_type);
-
-  @Nullable type find_supertype_procedure(abstract_value the_value);
-
-  action promote(action from, type target, origin pos);
-
-  graph<principal_type, origin> type_graph();
+public interface analysis_context extends action_context, type_declaration_context {
 }

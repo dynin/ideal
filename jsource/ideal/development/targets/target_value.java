@@ -41,5 +41,5 @@ public abstract class target_value extends base_procedure {
     return null;
   }
 
-  public abstract void process(action_parameters parameters, analysis_context the_context);
+  public abstract void process(action_parameters parameters, action_context the_context);
 }

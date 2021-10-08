@@ -44,7 +44,7 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_not_matching(readonly_list<action> candidates,
-      action_parameters the_action_parameters, analysis_context context, origin source) {
+      action_parameters the_action_parameters, action_context context, origin source) {
 
     //dump_dependencies(context.type_graph());
     assert candidates.is_not_empty();
@@ -71,7 +71,7 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_mismatch(action candidate, action_parameters the_action_parameters,
-      analysis_context context, origin source) {
+      action_context context, origin source) {
 
     type failed_procedure_type = candidate.result().type_bound();
     if (!action_utilities.is_procedure_type(failed_procedure_type)) {

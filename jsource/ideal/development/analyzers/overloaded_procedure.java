@@ -59,7 +59,7 @@ public class overloaded_procedure extends base_procedure {
   }
 
   @Override
-  public boolean supports_parameters(action_parameters parameters, analysis_context context) {
+  public boolean supports_parameters(action_parameters parameters, action_context context) {
     int matches = 0;
     for (int i = 0; i < procedures.size(); ++i) {
       if (procedures.get(i).supports_parameters(parameters, context)) {
@@ -70,7 +70,7 @@ public class overloaded_procedure extends base_procedure {
   }
 
   @Override
-  public analysis_result bind_parameters(action_parameters parameters, analysis_context context,
+  public analysis_result bind_parameters(action_parameters parameters, action_context context,
       origin the_origin) {
     if (debug.DO_REDUNDANT_CHECKS) {
       assert supports_parameters(parameters, context);

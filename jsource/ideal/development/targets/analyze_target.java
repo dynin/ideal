@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 public class analyze_target extends type_processor_target {
 
-  analysis_context the_context;
+  action_context the_context;
   mapping_visitor mapping;
 
   public analyze_target(simple_name the_name, target_manager the_manager) {
@@ -40,7 +40,7 @@ public class analyze_target extends type_processor_target {
   }
 
   @Override
-  public void setup(analysis_context the_context) {
+  public void setup(action_context the_context) {
     this.the_context = the_context;
     this.mapping = new mapping_visitor();
   }

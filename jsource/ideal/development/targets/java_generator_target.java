@@ -28,7 +28,7 @@ public class java_generator_target extends type_processor_target {
   }
 
   @Override
-  public void setup(analysis_context the_context) {
+  public void setup(action_context the_context) {
     generator = new java_generator(java_library.get_instance(),
         new content_writer(the_manager.output_catalog(), null));
   }

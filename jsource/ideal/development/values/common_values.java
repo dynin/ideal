@@ -74,7 +74,7 @@ public class common_values {
 
   private static enum_value get_boolean_value(String sname) {
     simple_name the_name = simple_name.make(new base_string(sname));
-    readonly_list<action> actions = ((analysis_context) common_types.get_context()).lookup(
+    readonly_list<action> actions = ((action_context) common_types.get_context()).lookup(
         common_types.boolean_type(), the_name);
     assert actions.size() == 1;
     abstract_value the_value = actions.first().result();

@@ -73,12 +73,12 @@ public class procedure_with_this extends base_data_value<procedure_value>
   }
 
   @Override
-  public boolean supports_parameters(action_parameters parameters, analysis_context context) {
+  public boolean supports_parameters(action_parameters parameters, action_context context) {
     return the_procedure.supports_parameters(parameters, context);
   }
 
   @Override
-  public analysis_result bind_parameters(action_parameters params, analysis_context context,
+  public analysis_result bind_parameters(action_parameters params, action_context context,
       origin the_origin) {
     analysis_result bound_procedure = the_procedure.bind_parameters(params, context, the_origin);
     if (bound_procedure instanceof error_signal) {

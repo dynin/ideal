@@ -368,7 +368,7 @@ public class base_semantics implements language_settings {
   }
 
   public void declare_type(principal_type new_type, declaration_pass pass,
-      analysis_context context) {
+      action_context context) {
 
     kind the_kind = new_type.get_kind();
 
@@ -526,7 +526,7 @@ public class base_semantics implements language_settings {
 
   private specialized_type_declaration specialize_declaration(parametrized_type new_type,
       parametrized_type declared_type, declaration_pass pass,
-      analysis_context context) {
+      action_context context) {
 
     specialization_context spec_context = make_specialization_context(new_type, declared_type);
 
@@ -535,7 +535,7 @@ public class base_semantics implements language_settings {
     //the_type_decl.process_declaration(pass);
   }
 
-  private void declare_reference(parametrized_type new_type, analysis_context context) {
+  private void declare_reference(parametrized_type new_type, action_context context) {
     declaration the_declaration = new_type.get_declaration();
     assert the_declaration != null;
 

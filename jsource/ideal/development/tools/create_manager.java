@@ -46,7 +46,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   public final base_semantics language;
   public final principal_type root;
   private final resource_catalog top_catalog;
-  public final base_analysis_context bootstrap_context;
+  public final analysis_context bootstrap_context;
   public final origin root_origin;
   private final scanner_config scanner;
   private output_counter<notification> notifications;
@@ -88,7 +88,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     this.output_catalog = output_catalog;
   }
 
-  public base_analysis_context get_analysis_context() {
+  public analysis_context get_analysis_context() {
     return bootstrap_context;
   }
 
@@ -96,7 +96,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     return new base_execution_context(root.short_name());
   }
 
-  public principal_type new_block(string name, base_analysis_context context) {
+  public principal_type new_block(string name, analysis_context context) {
     master_type result = new master_type(type_kinds.block_kind, flavor_profiles.nameonly_profile,
         new special_name(name, new base_string("create_manager")), root, context, null);
     // TODO: create a declaration and call result.process_declaration();
@@ -205,7 +205,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     return common_types.is_bootstrapped();
   }
 
-  private void process_bootstrap_ops(analysis_context context) {
+  private void process_bootstrap_ops(action_context context) {
     add_operator(new is_op(operator.IS_OPERATOR, false));
     add_operator(new is_op(operator.IS_NOT_OPERATOR, true));
 

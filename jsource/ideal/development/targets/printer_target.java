@@ -40,7 +40,7 @@ public class printer_target extends type_processor_target {
   }
 
   @Override
-  public void setup(analysis_context the_context) {
+  public void setup(action_context the_context) {
     the_writer = new content_writer(the_manager.output_catalog(), printer_util.dash_renderer);
   }
 

@@ -64,7 +64,7 @@ public class specialized_procedure extends debuggable implements procedure_decla
             get_flavored(flavor.immutable_flavor);
   }
 
-  public void add(analysis_context context) {
+  public void add(action_context context) {
     type from_type = declared_in_type().get_flavored(get_flavor());
     @Nullable overloaded_procedure the_overloaded_procedure = null;
     readonly_list<action> overloaded_actions = context.lookup(from_type, short_name());

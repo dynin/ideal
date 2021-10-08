@@ -126,7 +126,7 @@ public class analyzer_utilities {
 
   public static @Nullable action add_procedure(procedure_declaration the_procedure,
       @Nullable overloaded_procedure the_overloaded_procedure,
-      analysis_context the_context) {
+      action_context the_context) {
 
     boolean is_explicit = the_procedure.annotations().has(general_modifier.explicit_modifier);
     boolean is_var = the_procedure.annotations().has(general_modifier.var_modifier);
@@ -249,7 +249,7 @@ public class analyzer_utilities {
   private static final type_flavor dispatch_flavor = readonly_flavor;
 
   private static dispatch_action get_readonly_action(variable_declaration the_variable,
-      analysis_context the_context) {
+      action_context the_context) {
     assert the_variable.get_category() == variable_category.INSTANCE;
     readonly_list<action> actions = the_context.lookup(
         the_variable.declared_in_type().get_flavored(dispatch_flavor), the_variable.short_name());
@@ -258,7 +258,7 @@ public class analyzer_utilities {
   }
 
   public static instance_variable add_instance_variable(variable_declaration the_variable,
-      analysis_context the_context) {
+      action_context the_context) {
     assert the_variable.get_category() == variable_category.INSTANCE;
     principal_type parent_type = the_variable.declared_in_type();
     action_name the_name = the_variable.short_name();
@@ -397,7 +397,7 @@ public class analyzer_utilities {
     }
   }
 
-  public static @Nullable type unify(action first, action second, analysis_context the_context) {
+  public static @Nullable type unify(action first, action second, action_context the_context) {
     type first_type = first.result().type_bound();
     type second_type = second.result().type_bound();
 
@@ -419,7 +419,7 @@ public class analyzer_utilities {
   }
 
   public static @Nullable abstract_value unify_values(abstract_value first, abstract_value second,
-      analysis_context the_context) {
+      action_context the_context) {
     // TODO: rewrite unify_values() to avoid overhead.
     return unify(first.to_action(origin_utilities.no_origin),
         second.to_action(origin_utilities.no_origin), the_context);
@@ -450,7 +450,7 @@ public class analyzer_utilities {
     }
   }
 
-  public static action to_value(action expression, analysis_context the_context,
+  public static action to_value(action expression, action_context the_context,
       origin the_origin) {
     return the_context.to_value(expression, the_origin);
   }
@@ -472,7 +472,7 @@ public class analyzer_utilities {
   }
 
   public static boolean supports_parameters(abstract_value the_value, action_parameters parameters,
-      analysis_context the_context) {
+      action_context the_context) {
     type the_type = the_value.type_bound();
     if (the_type instanceof master_type && ((master_type) the_type).has_parametrizable_state()) {
       // TODO: more checks...
@@ -530,7 +530,7 @@ public class analyzer_utilities {
   }
 
   public static analysis_result bind_parameters(action the_action, action_parameters parameters,
-      analysis_context the_context, origin the_origin) {
+      action_context the_context, origin the_origin) {
 
     abstract_value action_result = the_action.result();
     // TODO: this is redundant, drop...

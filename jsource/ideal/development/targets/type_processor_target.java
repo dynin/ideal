@@ -30,14 +30,14 @@ public abstract class type_processor_target extends target_value {
     this.the_manager = the_manager;
   }
 
-  public abstract void setup(analysis_context the_context);
+  public abstract void setup(action_context the_context);
 
   public abstract void process_type(principal_type the_type);
 
   public abstract void finish_processing();
 
   @Override
-  public void process(action_parameters parameters, analysis_context the_context) {
+  public void process(action_parameters parameters, action_context the_context) {
 
     setup(the_context);
 

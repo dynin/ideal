@@ -97,7 +97,7 @@ public class action_utilities {
     return second;
   }
 
-  public static readonly_list<type> lookup_types(analysis_context context, type from,
+  public static readonly_list<type> lookup_types(action_context context, type from,
       action_name name) {
     // TODO: use map.
     list<type> result = new base_list<type>();
@@ -117,7 +117,7 @@ public class action_utilities {
 
   private static pattern<Character> dot_pattern = new singleton_pattern<Character>('.');
 
-  public static principal_type lookup_type(analysis_context context, string full_name) {
+  public static principal_type lookup_type(action_context context, string full_name) {
     immutable_list<immutable_list<Character>> type_names = dot_pattern.split(full_name);
     principal_type the_type = elementary_types.root_type();
 
@@ -150,7 +150,7 @@ public class action_utilities {
     return result;
   }
 
-  public static void add_promotion(analysis_context context, type from, type to,
+  public static void add_promotion(action_context context, type from, type to,
       boolean is_supertype, origin pos) {
     if (to instanceof principal_type) {
       context.add(from, special_name.PROMOTION, to.to_action(pos));
@@ -159,7 +159,7 @@ public class action_utilities {
     }
   }
 
-  public static master_type make_type(base_analysis_context context, kind kind,
+  public static master_type make_type(analysis_context context, kind kind,
       @Nullable flavor_profile the_flavor_profile, action_name name, principal_type parent,
       @Nullable declaration the_declaration, origin pos) {
     master_type result = new master_type(kind, the_flavor_profile, name, parent, context,
@@ -315,7 +315,7 @@ public class action_utilities {
 
   public static void process_super_flavors(principal_type the_subtype,
       @Nullable type_flavor subtype_flavor, type the_supertype, origin the_origin,
-      analysis_context the_context) {
+      action_context the_context) {
 
     immutable_list<type_flavor> supported_flavors =
         the_subtype.get_flavor_profile().supported_flavors();
@@ -337,7 +337,7 @@ public class action_utilities {
     }
   }
 
-  public static void add_supertype_and_promotion(type from, type to, analysis_context context,
+  public static void add_supertype_and_promotion(type from, type to, action_context context,
       origin the_origin) {
     assert !(from instanceof principal_type);
     assert !(to instanceof principal_type);

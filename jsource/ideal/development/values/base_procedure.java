@@ -89,7 +89,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   @Override
-  public boolean supports_parameters(action_parameters parameters, analysis_context context) {
+  public boolean supports_parameters(action_parameters parameters, action_context context) {
     readonly_list<action> parameter_list = parameters.params();
     if (!is_valid_procedure_arity(parameter_list.size())) {
       return false;
@@ -109,7 +109,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   @Override
-  public analysis_result bind_parameters(action_parameters params, analysis_context context,
+  public analysis_result bind_parameters(action_parameters params, action_context context,
       origin pos) {
 
     readonly_list<action> aparams = params.params();

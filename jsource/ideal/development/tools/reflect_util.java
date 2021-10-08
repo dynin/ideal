@@ -54,7 +54,7 @@ public class reflect_util {
   public static void start_reflect(create_manager manager, source_content input) {
     manager.process_bootstrap(true);
 
-    analysis_context context = manager.get_analysis_context();
+    base_analysis_context context = manager.get_analysis_context();
     principal_type parent = manager.new_block(new base_string("reflect"), context);
 
     type_declaration world_decl = get_world(manager, input, parent, context);

@@ -79,11 +79,11 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     }
   }
 
-  public analysis_context get_context() {
+  public base_analysis_context get_context() {
     if (context == null) {
       utilities.panic("Context not set in " + this);
     }
-    return context;
+    return (base_analysis_context) context;
   }
 
   public principal_type parent() {

@@ -32,7 +32,7 @@ public class java_library implements value {
   private static java_library instance;
 
   private type_bootstrapper bootstrapper;
-  private analysis_context context;
+  private base_analysis_context context;
 
   private principal_type java_package;
   private principal_type builtins_package;
@@ -64,7 +64,7 @@ public class java_library implements value {
   private final dictionary<principal_type, principal_type> primitive_mapping;
   private final dictionary<principal_type, simple_name> wrapper_mapping;
 
-  private java_library(type_bootstrapper bootstrapper, analysis_context the_analysis_context) {
+  private java_library(type_bootstrapper bootstrapper, base_analysis_context the_analysis_context) {
     this.bootstrapper = bootstrapper;
 
     primitive_mapping = new list_dictionary<principal_type, principal_type>();
@@ -239,7 +239,7 @@ public class java_library implements value {
   }
 
   public static void bootstrap_on_demand(type_bootstrapper bootstrapper,
-      analysis_context the_analysis_context) {
+      base_analysis_context the_analysis_context) {
     assert instance == null;
     instance = new java_library(bootstrapper, the_analysis_context);
   }

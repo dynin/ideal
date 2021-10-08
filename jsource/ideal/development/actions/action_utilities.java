@@ -159,7 +159,7 @@ public class action_utilities {
     }
   }
 
-  public static master_type make_type(analysis_context context, kind kind,
+  public static master_type make_type(base_analysis_context context, kind kind,
       @Nullable flavor_profile the_flavor_profile, action_name name, principal_type parent,
       @Nullable declaration the_declaration, origin pos) {
     master_type result = new master_type(kind, the_flavor_profile, name, parent, context,

@@ -17,7 +17,7 @@ import ideal.development.constructs.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
 
-public interface analysis_context extends type_declaration_context, value {
+public interface analysis_context extends value {
 
   language_settings settings();
 
@@ -38,4 +38,6 @@ public interface analysis_context extends type_declaration_context, value {
   @Nullable type find_supertype_procedure(abstract_value the_value);
 
   action promote(action from, type target, origin pos);
+
+  graph<principal_type, origin> type_graph();
 }

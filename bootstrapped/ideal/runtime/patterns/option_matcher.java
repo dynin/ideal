@@ -22,7 +22,7 @@ public class option_matcher<element_type, result_type> extends option_pattern<el
         final pattern<element_type> option = option_list.get(option_index);
         if (option.call(the_list)) {
           if (option instanceof matcher) {
-            final matcher<element_type, Object> the_matcher = (matcher<element_type, Object>) (matcher) option;
+            final matcher<element_type, Object> the_matcher = (matcher<element_type, Object>) ((matcher) option);
             return (result_type) the_matcher.parse(the_list);
           } else {
             return null;

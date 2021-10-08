@@ -138,7 +138,7 @@ public class base_string extends debuggable implements string, string_text_node 
     return false;
   }
   public @Override boolean equals(final Object other) {
-    return other instanceof base_string && this.state.equals(((base_string) other).state);
+    return other instanceof base_string && this.state.equals(((base_string) ((base_string) other)).state);
   }
   public @Override string to_string() {
     return this;

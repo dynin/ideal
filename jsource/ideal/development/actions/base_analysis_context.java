@@ -24,7 +24,8 @@ import ideal.development.origins.*;
 import ideal.development.kinds.*;
 import ideal.development.notifications.*;
 
-public class base_analysis_context extends debuggable implements analysis_context {
+public class base_analysis_context extends debuggable implements analysis_context,
+    type_declaration_context {
 
   private static action_table actions = new action_table();
 

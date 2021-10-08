@@ -38,7 +38,7 @@ public class translator {
 
   public translation_result translate_source(source_content source, string name,
       @Nullable string version_suffix) {
-    analysis_context context = creator.get_analysis_context();
+    base_analysis_context context = creator.get_analysis_context();
     principal_type parent = creator.new_block(name, context);
     list<notification> notifications = new base_list<notification>();
     creator.set_notification_handler(new appender<notification>(notifications));

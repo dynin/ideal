@@ -23,7 +23,7 @@ public class sequence_matcher<element_type, result_type> extends sequence_patter
       final @Nullable Integer match = pattern_element.match_prefix(the_list.skip(prefix));
       assert match != null;
       if (pattern_element instanceof matcher) {
-        final matcher<element_type, Object> matcher_element = (matcher<element_type, Object>) (matcher) pattern_element;
+        final matcher<element_type, Object> matcher_element = (matcher<element_type, Object>) ((matcher) pattern_element);
         matches.append(matcher_element.parse(the_list.slice(prefix, prefix + match)));
       } else {
         matches.append(null);

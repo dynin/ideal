@@ -15,9 +15,9 @@ import ideal.machine.channels.string_writer;
 
 public class base_value_printer extends debuggable implements value_printer {
   private static final boolean OMIT_DEFAULT_FLAVOR = false;
-  private final principal_type library_elements_type;
-  public base_value_printer(final principal_type library_elements_type) {
-    this.library_elements_type = library_elements_type;
+  public static final base_value_printer instance = new base_value_printer();
+  private boolean use_short_name(final principal_type the_type) {
+    return the_type.get_parent() == common_types.elements_package();
   }
   public @Override string print_value(final abstract_value the_value) {
     return this.print_type(the_value.type_bound());
@@ -36,7 +36,7 @@ public class base_value_printer extends debuggable implements value_printer {
       if (type_utilities.is_union(principal)) {
         return this.print_union_type(principal);
       }
-      final string principal_name = (principal.get_parent() == this.library_elements_type) ? principal.short_name().to_string() : this.print_hierarchical_name(principal);
+      final string principal_name = this.use_short_name(principal) ? principal.short_name().to_string() : this.print_hierarchical_name(principal);
       if (principal instanceof parametrized_type) {
         return ideal.machine.elements.runtime_util.concatenate(principal_name, this.print_parameters(((parametrized_type) principal)));
       } else {
@@ -91,4 +91,5 @@ public class base_value_printer extends debuggable implements value_printer {
     the_writer.write(']');
     return the_writer.elements();
   }
+  public base_value_printer() { }
 }

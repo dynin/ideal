@@ -11,7 +11,7 @@ meta_construct class type_declaration_construct {
   readonly list[construct] or null parameters;
   readonly list[construct] body;
 
-  boolean has_parameters => parameters is_not null;
+  var boolean has_parameters => parameters is_not null;
 
   override string to_string => utilities.describe(this, name);
 }

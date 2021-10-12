@@ -41,7 +41,7 @@ public abstract class type_processor_target extends target_value {
 
     setup(the_context);
 
-    immutable_list<action> actions = parameters.params();
+    immutable_list<action> actions = parameters.parameters;
     list<principal_type> types = new base_list<principal_type>();
 
     for (int i = 0; i < actions.size(); ++i) {

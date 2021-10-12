@@ -1459,7 +1459,7 @@ public class to_java_transformer extends base_transformer {
 
   public construct process_operator(bound_procedure the_bound_procedure, operator the_operator) {
     origin the_origin = the_bound_procedure;
-    readonly_list<action> arguments = the_bound_procedure.parameters.params();
+    readonly_list<action> arguments = the_bound_procedure.parameters.parameters;
 
     // TODO: handle other assignment operators.
     if (the_operator == operator.ASSIGN) {
@@ -1467,7 +1467,7 @@ public class to_java_transformer extends base_transformer {
       construct rhs = transform_and_maybe_rewrite(arguments.get(1));
       if (lhs instanceof bound_procedure) {
         bound_procedure lhs2 = (bound_procedure) lhs;
-        readonly_list<action> plhs = lhs2.parameters.params();
+        readonly_list<action> plhs = lhs2.parameters.parameters;
         @Nullable declaration the_declaration = declaration_util.get_declaration(lhs2);
         if (the_declaration instanceof procedure_declaration) {
           procedure_declaration proc_decl = (procedure_declaration) the_declaration;
@@ -2331,7 +2331,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     readonly_list<construct> parameters =
-        transform_parameters(the_bound_procedure.parameters.params());
+        transform_parameters(the_bound_procedure.parameters.parameters);
 
     @Nullable declaration the_declaration = get_procedure_declaration(the_procedure_action);
 
@@ -2386,7 +2386,7 @@ public class to_java_transformer extends base_transformer {
         grouping = ((parameter_construct) the_construct).grouping;
       }
       return new parameter_construct(the_name, 
-          transform_parameters(the_enum_value.get_parameters().params()), grouping, the_origin);
+          transform_parameters(the_enum_value.get_parameters().parameters), grouping, the_origin);
     } else {
       return the_name;
     }

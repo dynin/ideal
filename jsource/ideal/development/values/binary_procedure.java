@@ -45,7 +45,7 @@ public abstract class binary_procedure extends base_procedure {
       origin pos) {
 
     // TODO: unify this with base_procedure.bind_parameters()
-    readonly_list<action> aparams = params.params();
+    readonly_list<action> aparams = params.parameters;
     if (!action_utilities.is_valid_procedure_arity(type_bound(), aparams.size())) {
       return new error_signal(new base_string("Arity mismatch"), pos);
     }

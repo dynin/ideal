@@ -90,7 +90,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
 
   @Override
   public boolean supports_parameters(action_parameters parameters, action_context context) {
-    readonly_list<action> parameter_list = parameters.params();
+    readonly_list<action> parameter_list = parameters.parameters;
     if (!is_valid_procedure_arity(parameter_list.size())) {
       return false;
     }
@@ -112,9 +112,9 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   public analysis_result bind_parameters(action_parameters params, action_context context,
       origin pos) {
 
-    readonly_list<action> aparams = params.params();
+    readonly_list<action> aparams = params.parameters;
     if (debug.DO_REDUNDANT_CHECKS) {
-      // This should never happen because of type checks done before bind_parameters() is called
+      // This should never happen because of type checks done before bind_parameters is called
       if (!is_valid_procedure_arity(aparams.size())) {
         return new error_signal(new base_string("Arity mismatch"), pos);
       }

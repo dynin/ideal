@@ -152,7 +152,7 @@ public class analyzer_utilities {
     action result_action;
     if (the_procedure.overrides_variable()) {
       // TODO: can this cast ever fail?
-      result_action = (action) the_executor.bind_parameters(new action_parameters(), the_context,
+      result_action = (action) the_executor.bind_parameters(action_parameters.EMPTY, the_context,
           the_origin);
       readonly_list<declaration> overriden = the_procedure.get_overriden();
       for (int i = 0; i < overriden.size(); ++i) {
@@ -169,7 +169,7 @@ public class analyzer_utilities {
       assert the_overloaded_procedure == null;
       // TODO: signal error instead of panicing.
       assert the_procedure.get_parameter_variables().is_empty();
-      result_action = (action) the_executor.bind_parameters(new action_parameters(), the_context,
+      result_action = (action) the_executor.bind_parameters(action_parameters.EMPTY, the_context,
           the_origin);
       the_context.add(target_type, the_procedure.short_name(),
           new proc_as_ref_action(the_procedure));
@@ -495,7 +495,7 @@ public class analyzer_utilities {
       return false;
     }
 
-    immutable_list<action> argument_actions = parameters.params();
+    immutable_list<action> argument_actions = parameters.parameters;
 
     if (!action_utilities.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
       return false;
@@ -557,7 +557,7 @@ public class analyzer_utilities {
     // TODO: actually, if this happens, just return the error.
     assert !(the_procedure instanceof error_signal);
 
-    immutable_list<action> argument_actions = parameters.params();
+    immutable_list<action> argument_actions = parameters.parameters;
 
     if (!action_utilities.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
       utilities.panic("Invalid procedure arity: " + procedure_type);
@@ -577,7 +577,7 @@ public class analyzer_utilities {
   }
 
   private static type bind_type_parameters(master_type the_type, action_parameters parameters) {
-    immutable_list<action> action_parameters = parameters.params();
+    immutable_list<action> action_parameters = parameters.parameters;
     list<abstract_value> args = new base_list<abstract_value>();
     for (int i = 0; i < action_parameters.size(); ++i) {
       abstract_value arg = action_parameters.get(i).result();

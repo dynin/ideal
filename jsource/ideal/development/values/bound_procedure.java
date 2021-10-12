@@ -62,7 +62,7 @@ public class bound_procedure extends base_action implements stringable {
       }
     }
 
-    readonly_list<action> action_parameters = parameters.params();
+    readonly_list<action> action_parameters = parameters.parameters;
     // TODO: use list.has()
     for (int i = 0; i < action_parameters.size(); ++i) {
       action parameter = action_parameters.get(i);
@@ -81,7 +81,7 @@ public class bound_procedure extends base_action implements stringable {
     assert the_entity instanceof procedure_value;
     procedure_value the_procedure_value = (procedure_value) the_entity;
 
-    readonly_list<action> action_parameters = parameters.params();
+    readonly_list<action> action_parameters = parameters.parameters;
     list<entity_wrapper> concrete_values = new base_list<entity_wrapper>();
 
     for (int i = 0; i < action_parameters.size(); ++i) {

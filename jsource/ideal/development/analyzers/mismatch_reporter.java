@@ -81,7 +81,7 @@ public class mismatch_reporter {
 
     assert action_utilities.is_procedure_type(failed_procedure_type);
 
-    immutable_list<action> supplied_arguments = the_action_parameters.params();
+    immutable_list<action> supplied_arguments = the_action_parameters.parameters;
 
     if (!action_utilities.is_valid_procedure_arity(failed_procedure_type,
         supplied_arguments.size())) {
@@ -133,7 +133,7 @@ public class mismatch_reporter {
   }
 
   private static string print_parameters(action_parameters the_action_parameters) {
-    immutable_list<action> parameters = the_action_parameters.params();
+    immutable_list<action> parameters = the_action_parameters.parameters;
     StringBuilder s = new StringBuilder();
     boolean first = true;
     s.append('(');

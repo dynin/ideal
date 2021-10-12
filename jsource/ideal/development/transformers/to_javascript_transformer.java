@@ -245,7 +245,7 @@ public class to_javascript_transformer {
       the_name = simple_name.make("get");
     }
 
-    list<construct> params = to_param_list(bp.parameters.params());
+    list<construct> params = to_param_list(bp.parameters.parameters);
 
     if (the_name instanceof operator) {
       return new operator_construct(map_operator((operator) the_name), params, pos);

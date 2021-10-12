@@ -44,4 +44,11 @@ package reflections {
     type_id value_type;
     type_id reference_type;
   }
+
+  --- Describes the context for accessing variables.
+  --- Can refer to local stack, static frame, or composite object state.
+  interface variable_context {
+    void put_var(variable_id key, value_wrapper value);
+    value_wrapper get_var(variable_id key);
+  }
 }

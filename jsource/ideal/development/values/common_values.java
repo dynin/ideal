@@ -18,7 +18,6 @@ import ideal.development.kinds.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
-import ideal.development.actions.*;
 
 public class common_values {
   private static singleton_value VOID_INSTANCE;

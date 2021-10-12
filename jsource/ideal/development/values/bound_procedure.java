@@ -15,28 +15,34 @@ import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
-import ideal.development.actions.*;
 import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
 import ideal.development.jumps.*;
 
-public class bound_procedure extends base_action implements stringable {
+public class bound_procedure extends debuggable implements action, stringable {
+  private final origin the_origin;
   public final action the_procedure_action;
   public final action_parameters parameters;
   public final abstract_value return_value;
 
   public bound_procedure(action the_procedure_action, abstract_value return_value,
-      action_parameters parameters, origin source) {
-    super(source);
+      action_parameters parameters, origin the_origin) {
+    assert the_origin != null;
+    this.the_origin = the_origin;
     this.the_procedure_action = the_procedure_action;
     this.return_value = return_value;
     this.parameters = parameters;
   }
 
   public bound_procedure(procedure_value the_procedure_value, abstract_value return_value,
-      action_parameters parameters, origin source) {
-    this(the_procedure_value.to_action(source), return_value, parameters, source);
+      action_parameters parameters, origin the_origin) {
+    this(the_procedure_value.to_action(the_origin), return_value, parameters, the_origin);
+  }
+
+  @Override
+  public final origin deeper_origin() {
+    return the_origin;
   }
 
   @Override

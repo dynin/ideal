@@ -15,17 +15,24 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.types.*;
 import ideal.development.declarations.*;
-import ideal.development.actions.*;
 
 import javax.annotation.Nullable;
 
-public class base_value_action<T extends entity_wrapper> extends base_action {
+public class base_value_action<T extends entity_wrapper> extends debuggable
+    implements action {
 
+  private final origin the_origin;
   public final T the_value;
 
   public base_value_action(T the_value, origin the_origin) {
-    super(the_origin);
+    assert the_origin != null;
+    this.the_origin = the_origin;
     this.the_value = the_value;
+  }
+
+  @Override
+  public final origin deeper_origin() {
+    return the_origin;
   }
 
   @Override

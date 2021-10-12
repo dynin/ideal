@@ -29,4 +29,7 @@ package elements {
   interface notification;
   interface subtype_tag;
   class simple_name;
+  class access_modifier;
+--  interface action_context;
+--  interface language_settings;
 }

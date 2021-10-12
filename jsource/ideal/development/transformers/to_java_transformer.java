@@ -17,7 +17,7 @@ import ideal.development.comments.*;
 import ideal.development.actions.*;
 import ideal.development.constructs.*;
 import ideal.development.modifiers.*;
-import static ideal.development.modifiers.access_modifier.*;
+import static ideal.development.elements.access_modifier.*;
 import static ideal.development.modifiers.general_modifier.*;
 import ideal.development.flavors.*;
 import static ideal.development.flavors.flavor.*;

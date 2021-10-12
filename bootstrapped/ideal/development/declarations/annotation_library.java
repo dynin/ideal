@@ -12,7 +12,7 @@ import ideal.development.names.*;
 import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
-import static ideal.development.modifiers.access_modifier.*;
+import static ideal.development.elements.access_modifier.*;
 import static ideal.development.modifiers.general_modifier.*;
 
 public class annotation_library {

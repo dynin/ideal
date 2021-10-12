@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-implicit import ideal.development.modifiers.access_modifier;
+implicit import ideal.development.elements.access_modifier;
 implicit import ideal.development.modifiers.general_modifier;
 
 --- A selection of annotations that can be reused.

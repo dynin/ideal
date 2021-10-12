@@ -24,7 +24,7 @@ import ideal.development.names.*;
 import ideal.development.values.*;
 import ideal.development.constructs.*;
 import ideal.development.modifiers.*;
-import static ideal.development.modifiers.access_modifier.*;
+import static ideal.development.elements.access_modifier.*;
 import static ideal.development.modifiers.general_modifier.*;
 import ideal.development.names.*;
 import ideal.development.kinds.*;

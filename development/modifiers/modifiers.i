@@ -13,7 +13,6 @@ package modifiers {
   implicit import ideal.development.names;
 
   class base_modifier_kind;
-  class access_modifier;
   class variance_modifier;
   namespace general_modifier;
 }

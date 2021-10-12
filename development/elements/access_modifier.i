@@ -26,7 +26,8 @@ class access_modifier {
 
   override simple_name name => the_name;
 
-  override string to_string => the_name.to_string();
+  -- TODO: share code with name_utilities.in_brackets
+  override string to_string => "<" ++ the_name.to_string() ++ ">";
 
   override string display => to_string();
 }

@@ -30,6 +30,6 @@ package elements {
   interface subtype_tag;
   class simple_name;
   class access_modifier;
---  interface action_context;
---  interface language_settings;
+  interface action_context;
+  interface language_settings;
 }

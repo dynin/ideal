@@ -19,7 +19,7 @@ public class access_modifier extends debuggable implements modifier_kind, readon
     return this.the_name;
   }
   public @Override string to_string() {
-    return this.the_name.to_string();
+    return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new ideal.runtime.elements.base_string("<"), this.the_name.to_string()), new ideal.runtime.elements.base_string(">"));
   }
   public @Override string display() {
     return this.to_string();

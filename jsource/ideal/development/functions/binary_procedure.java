@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.values;
+package ideal.development.functions;
 
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
@@ -18,6 +18,7 @@ import ideal.development.elements.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
+import ideal.development.values.*;
 
 public abstract class binary_procedure extends base_procedure {
 

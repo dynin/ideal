@@ -15,7 +15,6 @@ import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
-import ideal.development.actions.action_utilities;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
@@ -68,8 +67,8 @@ public class procedure_with_this extends base_data_value<procedure_value>
 
   @Override
   public action bind_value(action from, origin the_origin) {
-    return new procedure_with_this(the_procedure,
-        action_utilities.combine(from, this_action, the_origin)).to_action(the_origin);
+    return new procedure_with_this(the_procedure, this_action.combine(from, the_origin)).
+        to_action(the_origin);
   }
 
   @Override
@@ -83,9 +82,11 @@ public class procedure_with_this extends base_data_value<procedure_value>
     analysis_result bound_procedure = the_procedure.bind_parameters(params, context, the_origin);
     if (bound_procedure instanceof error_signal) {
       return (error_signal) bound_procedure;
-    } else {
-      return action_utilities.combine(this_action, ((action) bound_procedure), the_origin);
     }
+
+    // TODO: what if this is action_plus_constraints?
+    assert bound_procedure instanceof action;
+    return ((action) bound_procedure).combine(this_action, the_origin);
   }
 
   @Override

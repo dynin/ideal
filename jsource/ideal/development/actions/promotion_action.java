@@ -45,6 +45,25 @@ public class promotion_action extends base_action implements chainable_action {
   }
 
   @Override
+  public final action combine(action from, origin the_origin) {
+    if (from.result().type_bound() == the_type) {
+      return from;
+    }
+
+    if (from instanceof chain_action &&
+           ((chain_action) from).second instanceof promotion_action) {
+      promotion_action candidate = (promotion_action) ((chain_action) from).second;
+      if (is_supertype == candidate.is_supertype) {
+        from = ((chain_action) from).first;
+      }
+    }
+
+    // TODO: verify that from.result() is a subtype of the_type
+    // TODO: collapse chained promotion_actions
+    return new chain_action(from, this, the_origin);
+  }
+
+  @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     entity_wrapper result = from_entity;
 

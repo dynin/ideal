@@ -86,6 +86,11 @@ public class dispatch_action extends base_action implements action, chainable_ac
   }
 
   @Override
+  public final action combine(action from, origin the_origin) {
+    return new chain_action(from, this, the_origin);
+  }
+
+  @Override
   public entity_wrapper execute(entity_wrapper from_entity,
       execution_context the_execution_context) {
     if (from_entity instanceof jump_wrapper) {

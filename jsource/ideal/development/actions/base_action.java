@@ -29,6 +29,11 @@ public abstract class base_action extends debuggable implements action {
     return the_origin;
   }
 
+  @Override
+  public action combine(action from, origin the_origin) {
+    return this;
+  }
+
   // TODO: subtypes may override this.
   @Override
   public @Nullable declaration get_declaration() {

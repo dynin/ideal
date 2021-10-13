@@ -25,6 +25,8 @@ abstract class type_action {
 
   implement boolean has_side_effects => false;
 
+  final implement action combine(action from, origin the_origin) => this;
+
   implement entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     return typeinfo_value.new(get_type());
   }

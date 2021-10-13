@@ -51,6 +51,11 @@ public class proc_as_ref_action extends base_action implements chainable_action 
   }
 
   @Override
+  public final action combine(action from, origin the_origin) {
+    return new chain_action(from, this, the_origin);
+  }
+
+  @Override
   public reference_wrapper execute(entity_wrapper from_entity, execution_context the_context) {
     // TODO: handle jumps
     value_wrapper this_argument = (value_wrapper) from_entity;

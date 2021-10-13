@@ -45,7 +45,7 @@ public class base_semantics implements language_settings {
       type implicit_from = entry.key();
       readonly_list<action> results = actions.lookup(implicit_from, name);
       for (int j = 0; j < results.size(); ++j) {
-        action result = action_utilities.combine(implicit_action, results.get(j), pos);
+        action result = results.get(j).combine(implicit_action, pos);
 
         if (result instanceof error_signal) {
           return new base_list<action>(result);

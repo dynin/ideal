@@ -81,6 +81,12 @@ public class bound_procedure extends debuggable implements action, stringable {
   }
 
   @Override
+  public final action combine(action from, origin the_origin) {
+    return new bound_procedure(the_procedure_action.combine(from, the_origin), return_value,
+        parameters, the_origin);
+  }
+
+  @Override
   public entity_wrapper execute(entity_wrapper from_entity,
       execution_context the_execution_context) {
     entity_wrapper the_entity = the_procedure_action.execute(from_entity, the_execution_context);

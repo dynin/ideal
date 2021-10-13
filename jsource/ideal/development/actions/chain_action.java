@@ -58,6 +58,16 @@ public class chain_action extends base_action {
   }
 
   @Override
+  public final action combine(action from, origin the_origin) {
+    action new_from = first.combine(from, the_origin);
+    if (new_from != first) {
+      return new chain_action(new_from, second, the_origin);
+    } else {
+      return this;
+    }
+  }
+
+  @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     entity_wrapper first_entity = first.execute(from_entity, context);
     if (first_entity instanceof jump_wrapper) {

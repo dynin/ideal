@@ -99,7 +99,7 @@ public class base_analysis_context extends debuggable implements analysis_contex
       if (the_action != null) {
         @Nullable action result = find_promotion(the_action, target, null);
         if (result != null) {
-          return action_utilities.combine(the_action, result, origin_utilities.no_origin);
+          return result.combine(the_action, origin_utilities.no_origin);
         }
       }
     }
@@ -168,7 +168,7 @@ public class base_analysis_context extends debuggable implements analysis_contex
     @Nullable action result = find_promotion(from, target, constraints);
 
     if (result != null) {
-      return action_utilities.combine(from, result, pos);
+      return result.combine(from, pos);
     } else {
       error_signal signal = action_utilities.cant_promote(from.result(), target, pos);
       //return new error_action(signal);

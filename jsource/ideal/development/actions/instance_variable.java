@@ -31,6 +31,11 @@ public class instance_variable extends variable_action implements chainable_acti
   }
 
   @Override
+  public final action combine(action from, origin the_origin) {
+    return new chain_action(from, this, the_origin);
+  }
+
+  @Override
   protected variable_context get_context(entity_wrapper from_entity, execution_context context) {
     if (!(from_entity instanceof composite_wrapper)) {
       // TODO: use list_wrapper here explicitly

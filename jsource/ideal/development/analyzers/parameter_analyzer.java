@@ -125,8 +125,7 @@ public class parameter_analyzer extends single_pass_analyzer {
       }
 
       if (implicit_results.size() == 1) {
-        action implicit_action = action_utilities.combine(main_action, implicit_results.first(),
-            main_analyzable);
+        action implicit_action = implicit_results.first().combine(main_action, main_analyzable);
         if (!analyzer_utilities.supports_parameters(implicit_action.result(), aparams,
             get_context())) {
           return mismatch_reporter.signal_mismatch(implicit_action, aparams, get_context(),

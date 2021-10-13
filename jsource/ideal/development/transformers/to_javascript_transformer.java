@@ -266,7 +266,7 @@ public class to_javascript_transformer {
       dispatch_action the_dispatch_action) {
     action primary = the_dispatch_action.get_primary();
     if (from_action != null) {
-      primary = action_utilities.combine(from_action, primary, the_dispatch_action);
+      primary = primary.combine(from_action, the_dispatch_action);
     }
     return to_construct_action(primary);
   }

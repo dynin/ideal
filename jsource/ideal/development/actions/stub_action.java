@@ -38,6 +38,11 @@ public class stub_action extends base_action {
   }
 
   @Override
+  public final action combine(action from, origin the_origin) {
+    return from;
+  }
+
+  @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     return from_entity;
   }

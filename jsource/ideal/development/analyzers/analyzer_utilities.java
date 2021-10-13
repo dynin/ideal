@@ -497,13 +497,13 @@ public class analyzer_utilities {
 
     immutable_list<action> argument_actions = parameters.parameters;
 
-    if (!action_utilities.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
+    if (!common_types.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
       return false;
     }
 
     for (int i = 0; i < argument_actions.size(); ++i) {
       if (!the_context.can_promote(argument_actions.get(i),
-          action_utilities.get_procedure_argument(procedure_type, i).type_bound())) {
+          common_types.get_procedure_argument(procedure_type, i).type_bound())) {
         return false;
       }
     }
@@ -559,7 +559,7 @@ public class analyzer_utilities {
 
     immutable_list<action> argument_actions = parameters.parameters;
 
-    if (!action_utilities.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
+    if (!common_types.is_valid_procedure_arity(procedure_type, argument_actions.size())) {
       utilities.panic("Invalid procedure arity: " + procedure_type);
     }
 
@@ -567,11 +567,11 @@ public class analyzer_utilities {
 
     for (int i = 0; i < argument_actions.size(); ++i) {
       promoted_parameters.append(the_context.promote(argument_actions.get(i),
-          action_utilities.get_procedure_argument(procedure_type, i).type_bound(),
+          common_types.get_procedure_argument(procedure_type, i).type_bound(),
           the_origin));
     }
 
-    abstract_value return_type = action_utilities.get_procedure_return(procedure_type);
+    abstract_value return_type = common_types.get_procedure_return(procedure_type);
     return new bound_procedure(the_procedure, return_type,
         new action_parameters(promoted_parameters), the_origin);
   }

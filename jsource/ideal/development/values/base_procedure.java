@@ -15,7 +15,6 @@ import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
-import ideal.development.actions.action_utilities;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
@@ -72,15 +71,15 @@ public abstract class base_procedure extends base_data_value<procedure_value>
   }
 
   protected final abstract_value return_value() {
-    return action_utilities.get_procedure_return(type_bound());
+    return common_types.get_procedure_return(type_bound());
   }
 
   protected boolean is_valid_procedure_arity(int arity) {
-    return action_utilities.is_valid_procedure_arity(type_bound(), arity);
+    return common_types.is_valid_procedure_arity(type_bound(), arity);
   }
 
   protected type get_argument_type(int index) {
-    return action_utilities.get_procedure_argument(type_bound(), index).type_bound();
+    return common_types.get_procedure_argument(type_bound(), index).type_bound();
   }
 
   @Override
@@ -131,7 +130,7 @@ public abstract class base_procedure extends base_data_value<procedure_value>
       if (context.can_promote(param, target)) {
         promoted_params.append(context.promote(param, target, pos));
       } else {
-        return action_utilities.cant_promote(param.result(), target, pos);
+        return notification_utilities.cant_promote(param.result(), target, pos);
       }
     }
 

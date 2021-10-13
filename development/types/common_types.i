@@ -192,6 +192,34 @@ namespace common_types {
         get_flavored(flavor.immutable_flavor);
   }
 
+  boolean is_procedure_type(type the_type) {
+    if (the_type.principal.get_kind == type_kinds.#id:procedure_kind) {
+      the_flavor : the_type.get_flavor;
+      return the_flavor == flavor.immutable_flavor ||
+             the_flavor == flavor.deeply_immutable_flavor;
+    }
+    return false;
+  }
+
+  boolean is_valid_procedure_arity(type procedure_type, nonnegative arity) {
+    assert is_procedure_type(procedure_type);
+    -- TODO: handle variable number of arguments here!
+    return (procedure_type.principal !> parametrized_type).get_parameters.the_list.size ==
+        arity + 1;
+  }
+
+  abstract_value get_procedure_argument(type procedure_type, nonnegative index) {
+    assert is_procedure_type(procedure_type);
+    return (procedure_type.principal !> parametrized_type).get_parameters.the_list[index + 1];
+  }
+
+  abstract_value get_procedure_return(type procedure_type) {
+    principal_type the_principal : procedure_type.principal;
+    assert the_principal.get_kind == type_kinds.#id:procedure_kind;
+
+    return (the_principal !> parametrized_type).get_parameters.the_list.first;
+  }
+
   var principal_type ideal_namespace => ideal_type;
 
   var principal_type library_namespace => library_type;

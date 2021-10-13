@@ -28,4 +28,8 @@ public class notification_utilities {
     }
     return notifications;
   }
+  public static error_signal cant_promote(final abstract_value from, final type target_type, final origin the_origin) {
+    final base_value_printer printer = base_value_printer.instance;
+    return new error_signal(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(new base_string("Can\'t promote "), printer.print_value(from)), new base_string(" to ")), printer.print_value(target_type)), the_origin);
+  }
 }

@@ -193,6 +193,26 @@ public class common_types {
   public static type make_procedure(final boolean is_function, final abstract_value return_value, final abstract_value first_argument, final abstract_value second_argument) {
     return common_types.master_procedure(is_function).bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ return_value, first_argument, second_argument })))).get_flavored(flavor.immutable_flavor);
   }
+  public static boolean is_procedure_type(final type the_type) {
+    if (the_type.principal().get_kind() == type_kinds.procedure_kind) {
+      final type_flavor the_flavor = the_type.get_flavor();
+      return the_flavor == flavor.immutable_flavor || the_flavor == flavor.deeply_immutable_flavor;
+    }
+    return false;
+  }
+  public static boolean is_valid_procedure_arity(final type procedure_type, final Integer arity) {
+    assert common_types.is_procedure_type(procedure_type);
+    return ideal.machine.elements.runtime_util.values_equal(((parametrized_type) procedure_type.principal()).get_parameters().the_list.size(), arity + 1);
+  }
+  public static abstract_value get_procedure_argument(final type procedure_type, final Integer index) {
+    assert common_types.is_procedure_type(procedure_type);
+    return ((parametrized_type) procedure_type.principal()).get_parameters().the_list.get(index + 1);
+  }
+  public static abstract_value get_procedure_return(final type procedure_type) {
+    final principal_type the_principal = procedure_type.principal();
+    assert the_principal.get_kind() == type_kinds.procedure_kind;
+    return ((parametrized_type) the_principal).get_parameters().the_list.first();
+  }
   public static principal_type ideal_namespace() {
     return common_types.ideal_type;
   }

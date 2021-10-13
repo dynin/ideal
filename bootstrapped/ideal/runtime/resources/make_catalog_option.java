@@ -7,6 +7,6 @@ import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 
 public class make_catalog_option extends debuggable implements access_option {
-  public static final make_catalog_option instance = new make_catalog_option();
+  public final static make_catalog_option instance = new make_catalog_option();
   private make_catalog_option() { }
 }

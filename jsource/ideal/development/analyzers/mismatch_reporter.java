@@ -34,8 +34,8 @@ public class mismatch_reporter {
     for (int i = 0; i < candidates.size(); ++i) {
       action candidate = candidates.get(i);
       type result_type = candidate.result().type_bound();
-      if (action_utilities.is_procedure_type(result_type) &&
-          action_utilities.is_valid_procedure_arity(result_type, arity)) {
+      if (common_types.is_procedure_type(result_type) &&
+          common_types.is_valid_procedure_arity(result_type, arity)) {
         selected.append(candidate);
       }
     }
@@ -74,16 +74,16 @@ public class mismatch_reporter {
       action_context context, origin source) {
 
     type failed_procedure_type = candidate.result().type_bound();
-    if (!action_utilities.is_procedure_type(failed_procedure_type)) {
+    if (!common_types.is_procedure_type(failed_procedure_type)) {
       return new error_signal(new base_string(messages.expression_not_parametrizable + ": " +
           printer.print_value(failed_procedure_type)), source);
     }
 
-    assert action_utilities.is_procedure_type(failed_procedure_type);
+    assert common_types.is_procedure_type(failed_procedure_type);
 
     immutable_list<action> supplied_arguments = the_action_parameters.parameters;
 
-    if (!action_utilities.is_valid_procedure_arity(failed_procedure_type,
+    if (!common_types.is_valid_procedure_arity(failed_procedure_type,
         supplied_arguments.size())) {
       return new error_signal(new base_string(supplied_arguments.size() +
           " parameter(s) not supported"), source);
@@ -92,7 +92,7 @@ public class mismatch_reporter {
     for (int i = 0; i < supplied_arguments.size(); ++i) {
       action supplied_action = supplied_arguments.get(i);
       abstract_value supplied_value = supplied_action.result();
-      type declared_type = action_utilities.get_procedure_argument(
+      type declared_type = common_types.get_procedure_argument(
           failed_procedure_type, i).type_bound();
 
       if (!context.can_promote(supplied_action, declared_type)) {
@@ -109,7 +109,7 @@ public class mismatch_reporter {
     new base_notification(new base_string("All arguments appear to match"), source).report();
     for (int i = 0; i < supplied_arguments.size(); ++i) {
       abstract_value supplied_value = supplied_arguments.get(i).result();
-      type declared_type = action_utilities.get_procedure_argument(
+      type declared_type = common_types.get_procedure_argument(
           failed_procedure_type, i).type_bound();
       log.debug("MM #" + i + ": expected " +
             printer.print_value(declared_type) + ", found " +

@@ -4,4 +4,6 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface writeonly_variable_context extends any_variable_context { }
+public interface writeonly_variable_context extends any_variable_context {
+  void put_var(variable_id key, value_wrapper value);
+}

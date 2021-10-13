@@ -168,35 +168,6 @@ public class action_utilities {
     return result;
   }
 
-  public static boolean is_procedure_type(type the_type) {
-    if (the_type.principal().get_kind() == type_kinds.procedure_kind) {
-      type_flavor the_flavor = the_type.get_flavor();
-      return the_flavor == flavor.immutable_flavor ||
-             the_flavor == flavor.deeply_immutable_flavor;
-    }
-    return false;
-  }
-
-  public static boolean is_valid_procedure_arity(type procedure_type, int arity) {
-    assert is_procedure_type(procedure_type);
-    // TODO: handle variable number of arguments here!
-    return ((parametrized_type) procedure_type.principal()).get_parameters().
-        the_list.size() == arity + 1;
-  }
-
-  public static abstract_value get_procedure_argument(type procedure_type, int index) {
-    assert is_procedure_type(procedure_type);
-    return ((parametrized_type) procedure_type.principal()).
-        get_parameters().the_list.get(index + 1);
-  }
-
-  public static abstract_value get_procedure_return(type procedure_type) {
-    principal_type the_principal = procedure_type.principal();
-    assert the_principal.get_kind() == type_kinds.procedure_kind;
-
-    return ((parametrized_type) the_principal).get_parameters().the_list.first();
-  }
-
   public static base_execution_context get_context(execution_context the_context) {
     return (base_execution_context) the_context;
   }

@@ -4,4 +4,6 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface readonly_variable_context extends any_variable_context { }
+public interface readonly_variable_context extends any_variable_context {
+  value_wrapper get_var(variable_id key);
+}

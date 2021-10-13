@@ -2357,9 +2357,8 @@ public class to_java_transformer extends base_transformer {
     construct transformed = make_call(main, parameters, the_origin);
 
     type procedure_return_type = the_procedure_action.result().type_bound();
-    if (action_utilities.is_procedure_type(procedure_return_type) &&
-        action_utilities.get_procedure_return(procedure_return_type) ==
-            elementary_types.unreachable_type()) {
+    if (is_procedure_type(procedure_return_type) &&
+        get_procedure_return(procedure_return_type) == elementary_types.unreachable_type()) {
       assert the_enclosing_procedure != null;
       type return_type = the_enclosing_procedure.get_return_type();
       if (return_type != elementary_types.unreachable_type() &&

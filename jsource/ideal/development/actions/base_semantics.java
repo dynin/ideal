@@ -180,7 +180,7 @@ public class base_semantics implements language_settings {
   public type find_supertype_procedure(action_table actions, abstract_value the_value) {
     type subtype = the_value.type_bound();
 
-    if (action_utilities.is_procedure_type(subtype)) {
+    if (common_types.is_procedure_type(subtype)) {
       return subtype;
     }
 
@@ -201,7 +201,7 @@ public class base_semantics implements language_settings {
     list<type> candidates = new base_list<type>();
     for (int i = 0; i < supertypes_list.size(); ++i) {
       type candidate = supertypes_list.get(i);
-      if (action_utilities.is_procedure_type(candidate)) {
+      if (common_types.is_procedure_type(candidate)) {
         candidates.append(candidate);
       }
     }

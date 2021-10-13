@@ -188,7 +188,7 @@ public class base_analysis_context extends debuggable implements analysis_contex
       return ((master_type) the_type).has_parametrizable_state();
     }
 
-    return action_utilities.is_procedure_type(the_type);
+    return common_types.is_procedure_type(the_type);
   }
 
   @Override

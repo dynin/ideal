@@ -15,7 +15,6 @@ import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
-import ideal.development.actions.action_utilities;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
@@ -29,7 +28,7 @@ public abstract class binary_procedure extends base_procedure {
     super(name, common_types.make_procedure(is_function, return_type, first_argument_type,
         second_argument_type));
 
-    assert action_utilities.is_valid_procedure_arity(type_bound(), 2);
+    assert common_types.is_valid_procedure_arity(type_bound(), 2);
   }
 
   @Override
@@ -46,7 +45,7 @@ public abstract class binary_procedure extends base_procedure {
 
     // TODO: unify this with base_procedure.bind_parameters()
     readonly_list<action> aparams = params.parameters;
-    if (!action_utilities.is_valid_procedure_arity(type_bound(), aparams.size())) {
+    if (!common_types.is_valid_procedure_arity(type_bound(), aparams.size())) {
       return new error_signal(new base_string("Arity mismatch"), pos);
     }
 

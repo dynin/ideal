@@ -25,4 +25,10 @@ namespace notification_utilities {
     -- TODO: fix this by introducing a stable order
     return notifications;
   }
+
+  error_signal cant_promote(abstract_value from, type target_type, origin the_origin) {
+    printer : base_value_printer.instance;
+    return error_signal.new("Can't promote " ++ printer.print_value(from) ++
+        " to " ++ printer.print_value(target_type), the_origin);
+  }
 }

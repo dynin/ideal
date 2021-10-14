@@ -6,6 +6,7 @@
 
 class error_signal {
   extends debuggable;
+  implements deeply_immutable data;
   implements signal, mutable analyzable;
 
   notification cause;

@@ -6,13 +6,16 @@ import ideal.library.elements.*;
 import ideal.library.channels.*;
 import ideal.library.texts.*;
 import ideal.library.messages.*;
+import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.texts.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.origins.*;
+import ideal.development.types.*;
+import ideal.development.jumps.panic_value;
 
-public class error_signal extends debuggable implements signal, analyzable {
+public class error_signal extends debuggable implements deeply_immutable_data, signal, analyzable {
   public final notification cause;
   public final boolean is_cascading;
   public error_signal(final notification cause, final boolean is_cascading) {

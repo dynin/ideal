@@ -72,11 +72,8 @@ public class common_values {
   }
 
   public static boolean is_nothing(action the_action) {
-    if (the_action instanceof data_value_action) {
-      Object value = ((data_value_action) the_action).the_value;
-      return value == VOID_INSTANCE;
-    }
-    return false;
+    return the_action instanceof base_value_action &&
+           the_action.result().type_bound().principal() == common_types.void_type();
   }
 
   private static enum_value get_boolean_value(String sname) {

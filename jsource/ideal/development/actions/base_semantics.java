@@ -133,12 +133,12 @@ public class base_semantics implements language_settings {
     }
 
     // Unreachable type can pretend to be anything.
-    if (subtype == elementary_types.unreachable_type()) {
+    if (subtype == common_types.unreachable_type()) {
       return target;
     }
 
     // TODO: switch to using type_identifiers.
-    if (target == elementary_types.any_type()) {
+    if (target == common_types.any_type()) {
       return subtype;
     }
 
@@ -218,7 +218,7 @@ public class base_semantics implements language_settings {
 
   @Nullable
   public action find_promotion(action_table actions, type subtype, type target) {
-    if (subtype == target || target == elementary_types.any_type()) {
+    if (subtype == target || target == common_types.any_type()) {
       return new stub_action(subtype);
     }
 

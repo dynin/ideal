@@ -23,7 +23,7 @@ class master_type {
     this.parent = parent;
   }
 
-  --- Constructor for simple types.  See |elementary_types|.
+  --- Constructor for simple types.  See |common_types|.
   overload master_type(action_name the_name, kind the_kind) {
     super(the_kind.default_profile, declaration_pass.METHODS_AND_VARIABLES, missing.instance);
     this.the_name = the_name;

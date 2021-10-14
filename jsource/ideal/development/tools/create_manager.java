@@ -54,9 +54,9 @@ public class create_manager implements target_manager, type_bootstrapper {
 
   public create_manager(resource_catalog top_catalog) {
     language = new base_semantics();
-    root = elementary_types.root_type();
-    this.top_catalog = top_catalog;
     bootstrap_context = new base_analysis_context(language);
+    root = common_types.root_type();
+    this.top_catalog = top_catalog;
     analyzer_utilities.set_loader(loader_procedure());
     root_origin = origin_utilities.builtin_origin; // TODO: use resource id as origin
     scanner = new common_scanner();

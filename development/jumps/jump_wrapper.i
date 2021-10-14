@@ -7,5 +7,5 @@
 abstract class jump_wrapper {
   implements entity_wrapper;
 
-  override type type_bound => elementary_types.unreachable_type;
+  override type type_bound => common_types.unreachable_type;
 }

@@ -195,7 +195,7 @@ public class base_transformer extends declaration_visitor<Object> {
   }
 
   private @Nullable construct make_full_name(principal_type the_type, origin the_origin) {
-    if (the_type == null || the_type == elementary_types.root_type()) {
+    if (the_type == null || the_type == common_types.root_type()) {
       return null;
     }
 

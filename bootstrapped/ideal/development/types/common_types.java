@@ -17,6 +17,11 @@ import static ideal.development.flavors.flavor_profiles.*;
 
 public class common_types {
   private static type_declaration_context context;
+  private static master_type ROOT;
+  private static master_type ERROR;
+  private static master_type ANY_TYPE;
+  private static master_type UNREACHABLE;
+  private static master_type TARGET;
   private static principal_type ideal_type;
   private static principal_type library_type;
   private static principal_type elements_type;
@@ -42,8 +47,13 @@ public class common_types {
   private static master_type LIST_TYPE;
   public common_types(final type_declaration_context context) {
     common_types.context = context;
-    elementary_types.set_context(context);
-    common_types.ideal_type = common_types.make_namespace(common_names.ideal_name, elementary_types.root_type(), type_kinds.namespace_kind);
+    common_types.ROOT = common_types.make_master(new base_string("root"));
+    common_types.ANY_TYPE = common_types.make_master(new base_string("any_type"));
+    common_types.ERROR = common_types.make_master(new base_string("error"));
+    common_types.UNREACHABLE = common_types.make_master(new base_string("unreachable"));
+    common_types.TARGET = common_types.make_master(new base_string("target"));
+    union_type.set_context(context);
+    common_types.ideal_type = common_types.make_namespace(common_names.ideal_name, common_types.root_type(), type_kinds.namespace_kind);
     common_types.library_type = common_types.make_namespace(common_names.library_name, common_types.ideal_type, type_kinds.namespace_kind);
     common_types.elements_type = common_types.make_namespace(common_names.elements_name, common_types.library_type, type_kinds.package_kind);
     common_types.operators_type = common_types.make_namespace(common_names.operators_name, common_types.library_type, type_kinds.package_kind);
@@ -70,6 +80,21 @@ public class common_types {
     common_types.REFERENCE_EQUALITY_TYPE = common_types.get_type(common_names.reference_equality_name, type_kinds.interface_kind, flavor_profiles.mutable_profile);
     common_types.LIST_TYPE = common_types.get_type(common_names.list_name, type_kinds.interface_kind, flavor_profiles.mutable_profile);
     common_types.LIST_TYPE.make_parametrizable();
+  }
+  public static principal_type root_type() {
+    return common_types.ROOT;
+  }
+  public static principal_type any_type() {
+    return common_types.ANY_TYPE;
+  }
+  public static type error_type() {
+    return common_types.ERROR;
+  }
+  public static type unreachable_type() {
+    return common_types.UNREACHABLE;
+  }
+  public static type target_type() {
+    return common_types.TARGET;
   }
   public static principal_type void_type() {
     return common_types.VOID_TYPE;
@@ -227,6 +252,11 @@ public class common_types {
   }
   private static master_type get_type(final action_name name, final kind the_kind, final flavor_profile the_flavor_profile) {
     return common_types.context.get_or_create_type(name, the_kind, common_types.elements_type, the_flavor_profile);
+  }
+  private static master_type make_master(final string name) {
+    final master_type the_type = new master_type(new special_name(name), type_kinds.block_kind);
+    the_type.set_context(common_types.context);
+    return the_type;
   }
   private static principal_type make_namespace(final action_name name, final principal_type parent, final kind the_kind) {
     final master_type result = common_types.context.get_or_create_type(name, the_kind, parent, flavor_profiles.nameonly_profile);

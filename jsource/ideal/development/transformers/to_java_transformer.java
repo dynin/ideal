@@ -75,7 +75,7 @@ public class to_java_transformer extends base_transformer {
     common_headers = new base_list<construct>();
 
     implicit_names = new hash_set<principal_type>();
-    implicit_names.add(elementary_types.root_type());
+    implicit_names.add(root_type());
     implicit_names.add(java_library.lang_package());
     implicit_names.add(java_library.builtins_package());
 
@@ -86,12 +86,11 @@ public class to_java_transformer extends base_transformer {
       origin the_origin) {
     package_type = main_type.get_parent();
 
-    assert package_type == elementary_types.root_type() ||
-        package_type.short_name() instanceof simple_name;
+    assert package_type == root_type() || package_type.short_name() instanceof simple_name;
 
     common_headers.append(make_newline(the_origin));
 
-    if (package_type != elementary_types.root_type()) {
+    if (package_type != root_type()) {
       common_headers.append(new package_construct(make_type(package_type, the_origin), the_origin));
       common_headers.append(make_newline(the_origin));
       implicit_names.add(package_type);
@@ -362,7 +361,7 @@ public class to_java_transformer extends base_transformer {
 
   private boolean is_unreachable_result(procedure_declaration the_procedure) {
     return the_procedure.get_body_action() != null &&
-        the_procedure.get_body_action().result().type_bound() == elementary_types.unreachable_type();
+        the_procedure.get_body_action().result().type_bound() == unreachable_type();
   }
 
   public construct process_procedure(procedure_declaration the_procedure,
@@ -439,7 +438,7 @@ public class to_java_transformer extends base_transformer {
           // Note: if Java return type is 'Void' (with the capital V),
           // then we may need to insert "return null" to keep javac happy.
         } else {
-          if (the_procedure.get_return_type() == elementary_types.unreachable_type()) {
+          if (the_procedure.get_return_type() == unreachable_type()) {
             ret = make_type(void_type(), the_origin);
           } else {
             if (is_object_type(the_procedure.get_return_type())) {
@@ -625,7 +624,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     @Nullable principal_type parent = the_type.get_parent();
-    if (parent == null || parent == elementary_types.root_type() ||
+    if (parent == null || parent == root_type() ||
         (!is_import && implicit_names.contains(parent))) {
       return null;
     }
@@ -2350,10 +2349,10 @@ public class to_java_transformer extends base_transformer {
 
     type procedure_return_type = the_procedure_action.result().type_bound();
     if (is_procedure_type(procedure_return_type) &&
-        get_procedure_return(procedure_return_type) == elementary_types.unreachable_type()) {
+        get_procedure_return(procedure_return_type) == unreachable_type()) {
       assert the_enclosing_procedure != null;
       type return_type = the_enclosing_procedure.get_return_type();
-      if (return_type != elementary_types.unreachable_type() &&
+      if (return_type != unreachable_type() &&
           return_type != immutable_void_type()) {
         list<construct> statements = new base_list<construct>();
         statements.append(transformed);

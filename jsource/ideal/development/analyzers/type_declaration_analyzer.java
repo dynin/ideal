@@ -275,8 +275,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       }
 
 
-      if (parent() != elementary_types.root_type()) {
-        add_promotion(inside_type, elementary_types.root_type());
+      if (parent() != common_types.root_type()) {
+        add_promotion(inside_type, common_types.root_type());
       }
 
       if (has_parameters()) {
@@ -307,7 +307,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         for (int i = 0; i < parameters.size(); ++i) {
           type_parameter_analyzer tvar = parameters.get(i);
           if (has_analysis_errors(tvar, pass)) {
-            parameter_builder.append(elementary_types.error_type());
+            parameter_builder.append(common_types.error_type());
           } else {
             parameter_builder.append(tvar.get_declared_type());
           }

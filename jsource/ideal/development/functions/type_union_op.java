@@ -28,8 +28,8 @@ public class type_union_op extends binary_procedure {
   public type_union_op() {
     super(operator.GENERAL_OR, true,
         common_types.value_type().get_flavored(flavor.any_flavor),
-        elementary_types.any_type(),
-        elementary_types.any_type());
+        common_types.any_type(),
+        common_types.any_type());
   }
 
   @Override

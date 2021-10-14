@@ -11,6 +11,12 @@ implicit import ideal.development.flavors.flavor_profiles;
 namespace common_types {
   private var type_declaration_context context;
 
+  private var master_type ROOT;
+  private var master_type ERROR;
+  private var master_type ANY_TYPE;
+  private var master_type UNREACHABLE;
+  private var master_type TARGET;
+
   private var principal_type ideal_type;
   private var principal_type library_type;
   private var principal_type elements_type;
@@ -39,9 +45,17 @@ namespace common_types {
 
   common_types(type_declaration_context context) {
     this.context = context;
-    elementary_types.set_context(context);
 
-    ideal_type = make_namespace(ideal_name, elementary_types.root_type, namespace_kind);
+    -- TODO: the above declarations shouldn't be var
+    ROOT = make_master("root");
+    ANY_TYPE = make_master("any_type");
+    ERROR = make_master("error");
+    UNREACHABLE = make_master("unreachable");
+    TARGET = make_master("target");
+
+    union_type.set_context(context);
+
+    ideal_type = make_namespace(ideal_name, root_type, namespace_kind);
     library_type = make_namespace(library_name, ideal_type, namespace_kind);
     elements_type = make_namespace(elements_name, library_type, package_kind);
     operators_type = make_namespace(operators_name, library_type, package_kind);
@@ -71,6 +85,16 @@ namespace common_types {
     LIST_TYPE = get_type(list_name, interface_kind, mutable_profile);
     LIST_TYPE.make_parametrizable();
   }
+
+  var principal_type root_type => ROOT;
+
+  var principal_type any_type => ANY_TYPE;
+
+  var type error_type => ERROR;
+
+  var type unreachable_type => UNREACHABLE;
+
+  var type target_type => TARGET;
 
   var principal_type void_type => VOID_TYPE;
 
@@ -230,6 +254,12 @@ namespace common_types {
 
   private master_type get_type(action_name name, kind the_kind, flavor_profile the_flavor_profile) {
     return context.get_or_create_type(name, the_kind, elements_type, the_flavor_profile);
+  }
+
+  private master_type make_master(string name) {
+    the_type : master_type.new(special_name.new(name), type_kinds.block_kind);
+    the_type.set_context(context);
+    return the_type;
   }
 
   private principal_type make_namespace(action_name name, principal_type parent, kind the_kind) {

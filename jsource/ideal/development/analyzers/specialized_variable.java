@@ -59,7 +59,7 @@ public class specialized_variable extends debuggable implements variable_declara
   }
 
   public action analyze() {
-    return common_values.noop(this);
+    return common_values.nothing(this);
   }
 
   public void add(action_context context) {

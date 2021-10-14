@@ -6,5 +6,6 @@ import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
 public interface action extends analysis_result, origin, readonly_action, writeonly_action {
+  action combine(action from, origin the_origin);
   entity_wrapper execute(entity_wrapper from_entity, execution_context context);
 }

@@ -67,8 +67,16 @@ public class common_values {
     return UNDEFINED_INSTANCE;
   }
 
-  public static action noop(origin the_origin) {
-    return void_instance().to_action(the_origin);
+  public static action nothing(origin the_origin) {
+    return VOID_INSTANCE.to_action(the_origin);
+  }
+
+  public static boolean is_nothing(action the_action) {
+    if (the_action instanceof data_value_action) {
+      Object value = ((data_value_action) the_action).the_value;
+      return value == VOID_INSTANCE;
+    }
+    return false;
   }
 
   private static enum_value get_boolean_value(String sname) {

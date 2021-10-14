@@ -46,7 +46,7 @@ public class base_analyzable_action extends debuggable implements analyzable_act
   }
 
   public static analyzable_action nothing(origin the_origin) {
-    return from(common_values.void_instance(), the_origin);
+    return new base_analyzable_action(common_values.nothing(the_origin));
   }
 
   @Override

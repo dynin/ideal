@@ -53,7 +53,7 @@ public abstract class declaration_analyzer<C extends origin> extends multi_pass_
 
   @Override
   protected analysis_result do_get_result() {
-    return common_values.noop(this);
+    return common_values.nothing(this);
   }
 
   public principal_type declared_in_type() {

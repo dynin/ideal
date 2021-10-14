@@ -1741,14 +1741,6 @@ public class to_java_transformer extends base_transformer {
     return process_variable(the_declaration);
   }
 
-  public boolean is_nothing(action the_action) {
-    if (the_action instanceof data_value_action) {
-      Object value = ((data_value_action) the_action).the_value;
-      return value == void_instance();
-    }
-    return false;
-  }
-
   public @Nullable construct transform_or_null(action the_action) {
     if (is_nothing(the_action)) {
       return null;

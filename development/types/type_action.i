@@ -15,6 +15,7 @@ abstract class type_action {
     this.the_origin = the_origin;
   }
 
+  -- TODO: use var here
   abstract type get_type();
 
   implement abstract_value result => get_type();

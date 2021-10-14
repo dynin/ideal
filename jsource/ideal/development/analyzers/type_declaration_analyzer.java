@@ -408,7 +408,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
   @Override
   public future<analysis_result> process_type(declaration_pass pass) {
     process_declaration(pass);
-    return new base_future<analysis_result>(common_values.noop(this));
+    return new base_future<analysis_result>(common_values.nothing(this));
   }
 
   @Override

@@ -172,7 +172,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   }
 
   protected analysis_result do_get_result() {
-    return common_values.noop(this);
+    return common_values.nothing(this);
   }
 
   protected void display_code(declaration code) {

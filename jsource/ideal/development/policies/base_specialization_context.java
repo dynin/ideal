@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.actions;
+package ideal.development.policies;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
@@ -14,6 +14,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.declarations.*;
 import ideal.development.types.*;
+import ideal.development.actions.*;
 
 public class base_specialization_context extends debuggable implements specialization_context {
 

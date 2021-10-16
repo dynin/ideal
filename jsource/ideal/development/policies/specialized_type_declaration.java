@@ -6,7 +6,7 @@
  * https://developers.google.com/open-source/licenses/bsd
  */
 
-package ideal.development.actions;
+package ideal.development.policies;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
@@ -17,6 +17,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.values.*;
 import ideal.development.futures.*;
+import ideal.development.actions.*;
 import javax.annotation.Nullable;
 
 public class specialized_type_declaration extends debuggable implements type_declaration {

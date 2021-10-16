@@ -132,6 +132,7 @@ DEVELOPMENT_JAVA = \
     \
     $(JSOURCE_DIR)/ideal/development/actions/*.java \
     $(JSOURCE_DIR)/ideal/development/values/*.java \
+    $(JSOURCE_DIR)/ideal/development/policies/*.java \
     $(JSOURCE_DIR)/ideal/development/functions/*.java \
     $(JSOURCE_DIR)/ideal/development/scanners/*.java \
     $(JSOURCE_DIR)/ideal/development/analyzers/*.java \

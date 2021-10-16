@@ -38,6 +38,7 @@ import ideal.development.declarations.*;
 import ideal.development.functions.*;
 import ideal.development.transformers.*;
 import ideal.development.origins.*;
+import ideal.development.policies.*;
 import ideal.development.comments.*;
 import ideal.development.targets.*;
 
@@ -54,6 +55,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
   public create_manager(resource_catalog top_catalog) {
     language = new base_semantics();
+    language.set_policy(new general_policy());
     bootstrap_context = new base_analysis_context(language);
     root = common_types.root_type();
     this.top_catalog = top_catalog;

@@ -49,20 +49,47 @@ public class create_manager implements target_manager, type_bootstrapper {
   private final resource_catalog top_catalog;
   public final analysis_context bootstrap_context;
   public final origin root_origin;
-  private final scanner_config scanner;
+  private final common_scanner scanner;
   private output_counter<notification> notifications;
   private @Nullable resource_catalog output_catalog;
 
   public create_manager(resource_catalog top_catalog) {
     language = new base_semantics();
-    language.set_policy(new general_policy());
+    process_kinds(language);
     bootstrap_context = new base_analysis_context(language);
     root = common_types.root_type();
     this.top_catalog = top_catalog;
     analyzer_utilities.set_loader(loader_procedure());
     root_origin = origin_utilities.builtin_origin; // TODO: use resource id as origin
     scanner = new common_scanner();
+    scanner.add_kinds(language.all_kinds());
     set_notification_handler((output<notification>) (output) log.log_output);
+  }
+
+  private void process_kinds(base_semantics language) {
+    language.add_kind(type_kinds.union_kind, general_policy.instance);
+    language.add_kind(type_kinds.type_alias_kind, general_policy.instance);
+    language.add_kind(type_kinds.block_kind, general_policy.instance);
+
+    language.add_kind(type_kinds.class_kind, general_policy.instance);
+    language.add_kind(type_kinds.datatype_kind, general_policy.instance);
+    language.add_kind(type_kinds.interface_kind, general_policy.instance);
+    language.add_kind(type_kinds.singleton_kind, general_policy.instance);
+    language.add_kind(type_kinds.package_kind, general_policy.instance);
+    language.add_kind(type_kinds.program_kind, general_policy.instance);
+    language.add_kind(type_kinds.module_kind, general_policy.instance);
+    language.add_kind(type_kinds.concept_kind, general_policy.instance);
+    language.add_kind(type_kinds.enum_kind, general_policy.instance);
+    language.add_kind(type_kinds.project_kind, general_policy.instance);
+    language.add_kind(type_kinds.service_kind, general_policy.instance);
+    language.add_kind(type_kinds.world_kind, general_policy.instance);
+    language.add_kind(type_kinds.namespace_kind, general_policy.instance);
+    language.add_kind(type_kinds.test_suite_kind, general_policy.instance);
+    // TODO: this should be a special keyword
+    language.add_kind(type_kinds.reference_kind, general_policy.instance);
+    // TODO: this should be a special keyword
+    language.add_kind(type_kinds.procedure_kind, general_policy.instance);
+    language.add_kind(type_kinds.html_content_kind, general_policy.instance);
   }
 
   public void set_notification_handler(output<notification> handler) {

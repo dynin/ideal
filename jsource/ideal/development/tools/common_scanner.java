@@ -117,25 +117,6 @@ public class common_scanner extends base_scanner_config {
     add_constraint(constraint_category.ASSERT_CONSTRAINT);
     add_constraint(constraint_category.VERIFY_CONSTRAINT);
 
-    add_kind(type_kinds.class_kind);
-    add_kind(type_kinds.datatype_kind);
-    add_kind(type_kinds.interface_kind);
-    // add_kind(type_kinds.typedecl_kind);
-    add_kind(type_kinds.singleton_kind);
-    add_kind(type_kinds.package_kind);
-    add_kind(type_kinds.program_kind);
-    add_kind(type_kinds.module_kind);
-    add_kind(type_kinds.concept_kind); // TODO: factor out bootstrap_scanner
-    add_kind(type_kinds.enum_kind);
-    add_kind(type_kinds.project_kind);
-    add_kind(type_kinds.service_kind);
-    add_kind(type_kinds.world_kind);
-    add_kind(type_kinds.namespace_kind);
-    add_kind(type_kinds.test_suite_kind);
-    add_kind(type_kinds.reference_kind); // TODO: this should be a special keyword
-    add_kind(type_kinds.procedure_kind); // TODO: this should be a special keyword
-    add_kind(type_kinds.html_content_kind);
-
     add_subtype_tag(subtype_tags.subtypes_tag);
     add_subtype_tag(subtype_tags.extends_tag);
     add_subtype_tag(subtype_tags.implements_tag);
@@ -183,5 +164,17 @@ public class common_scanner extends base_scanner_config {
     meta_flags_extension.instance.register_syntax_extension(this);
     test_case_extension.instance.register_syntax_extension(this);
     meta_construct_extension.instance.register_syntax_extension(this);
+  }
+
+  public void add_kinds(readonly_set<kind> kinds) {
+    readonly_list<kind> kinds_list = kinds.elements();
+    for (int i = 0; i < kinds_list.size(); ++i) {
+      kind the_kind = kinds_list.get(i);
+      if (the_kind != type_kinds.block_kind &&
+          the_kind != type_kinds.union_kind &&
+          the_kind != type_kinds.type_alias_kind) {
+        add_kind(the_kind);
+      }
+    }
   }
 }

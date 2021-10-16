@@ -27,12 +27,7 @@ import ideal.development.flags.*;
 
 public class base_semantics implements language_settings {
 
-  private type_policy the_type_policy;
-
-  public void set_policy(type_policy the_type_policy) {
-    assert this.the_type_policy == null;
-    this.the_type_policy = the_type_policy;
-  }
+  private dictionary<kind, type_policy> policies = new hash_dictionary<kind, type_policy>();
 
   public readonly_list<action> resolve(action_table actions, type from, action_name name,
       origin pos) {
@@ -372,7 +367,18 @@ public class base_semantics implements language_settings {
     return false;
   }
 
+  public void add_kind(kind the_kind, type_policy the_type_policy) {
+    assert !policies.contains_key(the_kind);
+    policies.put(the_kind, the_type_policy);
+  }
+
+  public readonly_set<kind> all_kinds() {
+    return policies.keys();
+  }
+
   public void declare_type(principal_type new_type, declaration_pass pass, action_context context) {
+    type_policy the_type_policy = policies.get(new_type.get_kind());
+    // TODO: signal an error instead of panicing
     assert the_type_policy != null;
     the_type_policy.declare_type(new_type, pass, context);
   }

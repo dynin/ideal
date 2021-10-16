@@ -30,6 +30,8 @@ import ideal.development.values.singleton_value;
 
 public class general_policy implements type_policy {
 
+  public static final general_policy instance = new general_policy();
+
   @Override
   public signal declare_type(principal_type new_type, declaration_pass pass,
       action_context context) {

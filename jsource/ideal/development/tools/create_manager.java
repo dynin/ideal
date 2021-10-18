@@ -67,29 +67,29 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   private void process_kinds(base_semantics language) {
-    language.add_kind(type_kinds.union_kind, general_policy.instance);
-    language.add_kind(type_kinds.type_alias_kind, general_policy.instance);
-    language.add_kind(type_kinds.block_kind, general_policy.instance);
+    language.add_kind(type_kinds.union_kind, trivial_policy.instance);
+    language.add_kind(type_kinds.type_alias_kind, trivial_policy.instance);
+    language.add_kind(type_kinds.block_kind, namespace_policy.instance);
 
     language.add_kind(type_kinds.class_kind, general_policy.instance);
     language.add_kind(type_kinds.datatype_kind, general_policy.instance);
     language.add_kind(type_kinds.interface_kind, general_policy.instance);
     language.add_kind(type_kinds.singleton_kind, general_policy.instance);
-    language.add_kind(type_kinds.package_kind, general_policy.instance);
+    language.add_kind(type_kinds.package_kind, namespace_policy.instance);
     language.add_kind(type_kinds.program_kind, general_policy.instance);
-    language.add_kind(type_kinds.module_kind, general_policy.instance);
+    language.add_kind(type_kinds.module_kind, namespace_policy.instance);
     language.add_kind(type_kinds.concept_kind, general_policy.instance);
     language.add_kind(type_kinds.enum_kind, general_policy.instance);
-    language.add_kind(type_kinds.project_kind, general_policy.instance);
+    language.add_kind(type_kinds.project_kind, namespace_policy.instance);
     language.add_kind(type_kinds.service_kind, general_policy.instance);
     language.add_kind(type_kinds.world_kind, general_policy.instance);
-    language.add_kind(type_kinds.namespace_kind, general_policy.instance);
+    language.add_kind(type_kinds.namespace_kind, namespace_policy.instance);
     language.add_kind(type_kinds.test_suite_kind, general_policy.instance);
     // TODO: this should be a special keyword
     language.add_kind(type_kinds.reference_kind, general_policy.instance);
     // TODO: this should be a special keyword
     language.add_kind(type_kinds.procedure_kind, general_policy.instance);
-    language.add_kind(type_kinds.html_content_kind, general_policy.instance);
+    language.add_kind(type_kinds.html_content_kind, namespace_policy.instance);
   }
 
   public void set_notification_handler(output<notification> handler) {

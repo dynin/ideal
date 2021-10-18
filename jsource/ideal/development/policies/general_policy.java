@@ -38,20 +38,6 @@ public class general_policy implements type_policy {
 
     kind the_kind = new_type.get_kind();
 
-    if (the_kind.is_namespace()) {
-      assert !(new_type instanceof parametrized_type);
-      if (new_type.has_flavor_profile()) {
-        assert new_type.get_flavor_profile() == flavor_profiles.nameonly_profile;
-      } else {
-        ((base_principal_type) new_type).set_flavor_profile(flavor_profiles.nameonly_profile);
-      }
-      return ok_signal.instance;
-    }
-
-    if (the_kind == union_kind || the_kind == type_alias_kind) {
-      return ok_signal.instance;
-    }
-
     readonly_list<principal_type> adjacent = context.type_graph().adjacent(new_type).elements();
     for (int k = 0; k < adjacent.size(); ++k) {
       type_utilities.prepare(adjacent.get(k), pass);

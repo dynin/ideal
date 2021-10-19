@@ -210,6 +210,11 @@ public class base_analysis_context extends debuggable implements analysis_contex
   }
 
   @Override
+  public type_policy get_policy(kind the_kind) {
+    return language.get_policy(the_kind);
+  }
+
+  @Override
   public string to_string() {
     return new base_string("context ", constraints.toString());
   }

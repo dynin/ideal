@@ -26,7 +26,7 @@ import ideal.development.actions.*;
 
 import ideal.development.values.singleton_value;
 
-public class namespace_policy implements type_policy {
+public class namespace_policy extends base_policy {
 
   public static final namespace_policy instance = new namespace_policy();
 

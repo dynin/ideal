@@ -28,7 +28,7 @@ import ideal.development.actions.*;
 
 import ideal.development.values.singleton_value;
 
-public class general_policy implements type_policy {
+public class general_policy extends base_policy {
 
   public static final general_policy instance = new general_policy();
 
@@ -108,15 +108,7 @@ public class general_policy implements type_policy {
       for (int j = 0; j < declarations.size(); ++j) {
         declaration the_declaration = declarations.get(j);
         if (the_declaration instanceof supertype_declaration) {
-          supertype_declaration the_supertype_declaration =
-              (supertype_declaration) the_declaration;
-          if (the_supertype_declaration.has_errors()) {
-            continue;
-          }
-          type the_supertype = the_supertype_declaration.get_supertype();
-          action_utilities.process_super_flavors(new_type,
-              the_supertype_declaration.subtype_flavor(),
-              the_supertype, the_supertype_declaration, context);
+          declare_supertype(new_type, (supertype_declaration) the_declaration, context);
         }
       }
     } else if (pass == declaration_pass.METHODS_AND_VARIABLES) {
@@ -148,6 +140,18 @@ public class general_policy implements type_policy {
     }
 
     return ok_signal.instance;
+  }
+
+  @Override
+  public void declare_supertype(principal_type new_type,
+      supertype_declaration the_supertype_declaration, action_context context) {
+    if (the_supertype_declaration.has_errors()) {
+      return;
+    }
+    type the_supertype = the_supertype_declaration.get_supertype();
+    action_utilities.process_super_flavors(new_type,
+        the_supertype_declaration.subtype_flavor(),
+        the_supertype, the_supertype_declaration, context);
   }
 
   private specialization_context make_specialization_context(parametrized_type new_type,

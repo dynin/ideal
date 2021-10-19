@@ -336,19 +336,16 @@ program briefing {
     }
 
     -- TODO: text_node redundant
-    text_node charset : base_element.new(META, CHARSET, resource_util.UTF_8 !> base_string,
-        missing.instance);
+    text_node charset : base_element.new(META, CHARSET, resource_util.UTF_8, missing.instance);
     referrer : make_element(META, NAME, "referrer", CONTENT, "no-referrer", missing.instance);
-    title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ day_dashes(day) !> base_string);
+    title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ day_dashes(day));
     link : text_utilities.make_css_link(top_prefix("news-not-paper.css", day));
     text_node head : text_utilities.make_element(HEAD, [ charset, referrer, title, link ]);
 
     body_content.append(base_element.new(HR));
-    body_content.append(text_utilities.make_html_link("a hack" !> base_string,
-        about_page_url(day)));
-    body_content.append(" " !> base_string);
-    body_content.append(text_utilities.make_html_link("by dynin labs" !> base_string,
-        "https://dynin.com" !> base_string));
+    body_content.append(text_utilities.make_html_link("a hack", about_page_url(day)));
+    body_content.append(" ");
+    body_content.append(text_utilities.make_html_link("by dynin labs", "https://dynin.com"));
     body : base_element.new(BODY, text_utilities.join(body_content));
 
     -- TODO: text_library redundant
@@ -393,44 +390,39 @@ program briefing {
 
   text_element render_html(item the_item) {
     item_fragments : base_list[text_fragment].new();
-    item_fragments.append(base_element.new(SPAN, CLASS, SCORE_CLASS !> base_string,
-        the_item.score.to_string !> base_string));
-    item_fragments.append(" " !> base_string);
-    item_fragments.append(make_html_class_link(the_item.title !> base_string,
-        the_item.url.to_string, TITLE_CLASS));
-    item_fragments.append(" " !> base_string);
-    item_fragments.append(base_element.new(SPAN, CLASS, ORIGIN_CLASS !> base_string,
-        "/ " ++ hacker_news.short_origin(the_item) !> base_string));
-    item_fragments.append(" " !> base_string);
-    item_fragments.append(make_html_class_link("/ " ++ the_item.descendants !> base_string,
+    item_fragments.append(base_element.new(SPAN, CLASS, SCORE_CLASS, the_item.score.to_string));
+    item_fragments.append(" ");
+    item_fragments.append(make_html_class_link(the_item.title, the_item.url.to_string,
+        TITLE_CLASS));
+    item_fragments.append(" ");
+    item_fragments.append(base_element.new(SPAN, CLASS, ORIGIN_CLASS,
+        "/ " ++ hacker_news.short_origin(the_item)));
+    item_fragments.append(" ");
+    item_fragments.append(make_html_class_link("/ " ++ the_item.descendants,
         hacker_news.item_page_url(the_item.id).to_string, DISCUSSION_CLASS));
-    item_fragments.append(" " !> base_string);
+    item_fragments.append(" ");
     return base_element.new(DIV, text_utilities.join(item_fragments));
   }
 
   text_fragment make_header(gregorian_day day) {
     header_fragments : base_list[text_fragment].new();
-    header_fragments.append(base_element.new(SPAN, CLASS, TOP_CLASS !> base_string,
-        PROGRAM_NAME !> base_string));
-    header_fragments.append(" / " !> base_string);
-    header_fragments.append(text_utilities.make_html_link("hn" !> base_string,
-        "https://news.ycombinator.com" !> base_string));
-    header_fragments.append(" digest" !> base_string);
+    header_fragments.append(base_element.new(SPAN, CLASS, TOP_CLASS, PROGRAM_NAME));
+    header_fragments.append(" / ");
+    header_fragments.append(text_utilities.make_html_link("hn", "https://news.ycombinator.com"));
+    header_fragments.append(" digest");
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);
     if (day != first || output_catalog.resolve(day_page_file(previous(day))).exists()) {
       header_fragments.append(text_utilities.make_html_link(LARR,
-          day_page_url(previous(day), day) !> base_string));
-      header_fragments.append(" " !> base_string);
+          day_page_url(previous(day), day)));
+      header_fragments.append(" ");
     }
-    header_fragments.append(day_dashes(day) !> base_string);
+    header_fragments.append(day_dashes(day));
     if (day != last) {
-      header_fragments.append(" " !> base_string);
-      header_fragments.append(text_utilities.make_html_link(RARR,
-        day_page_url(next(day), day) !> base_string));
+      header_fragments.append(" ");
+      header_fragments.append(text_utilities.make_html_link(RARR, day_page_url(next(day), day)));
     }
-    return base_element.new(DIV, CLASS, HEADER_CLASS !> base_string,
-        text_utilities.join(header_fragments));
+    return base_element.new(DIV, CLASS, HEADER_CLASS, text_utilities.join(header_fragments));
   }
 
   text_element make_html_class_link(text_fragment text, string link_target, string class_name) {
@@ -440,8 +432,8 @@ program briefing {
   text_element make_element(element_id id, attribute_id attr0, string value0,
       attribute_id attr1, string value1, text_fragment or null children) {
     attributes : list_dictionary[attribute_id, attribute_fragment].new();
-    attributes.put(attr0, value0 !> base_string);
-    attributes.put(attr1, value1 !> base_string);
+    attributes.put(attr0, value0);
+    attributes.put(attr1, value1);
     return base_element.new(id, attributes, children);
   }
 }

@@ -477,6 +477,11 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       pass = analysis_pass.values()[pass.ordinal() + 1];
     }
     analyze_and_ignore_errors(the_analyzable, pass);
+    if (the_analyzable instanceof supertype_declaration &&
+        last_pass == analysis_pass.SUPERTYPE_DECL) {
+      get_context().get_policy(get_kind()).declare_supertype(result_type,
+          (supertype_declaration) the_analyzable, get_context());
+    }
   }
 
   private void add_enum_members() {

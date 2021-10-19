@@ -26,13 +26,18 @@ import ideal.development.actions.*;
 
 import ideal.development.values.singleton_value;
 
-public class trivial_policy implements type_policy {
+public class base_policy implements type_policy {
 
-  public static final trivial_policy instance = new trivial_policy();
+  public static final base_policy instance = new base_policy();
 
   @Override
   public signal declare_type(principal_type new_type, declaration_pass pass,
       action_context context) {
     return ok_signal.instance;
+  }
+
+  @Override
+  public void declare_supertype(principal_type new_type,
+      supertype_declaration the_supertype_declaration, action_context context) {
   }
 }

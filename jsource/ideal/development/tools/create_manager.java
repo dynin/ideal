@@ -67,8 +67,8 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   private void process_kinds(base_semantics language) {
-    language.add_kind(type_kinds.union_kind, trivial_policy.instance);
-    language.add_kind(type_kinds.type_alias_kind, trivial_policy.instance);
+    language.add_kind(type_kinds.union_kind, base_policy.instance);
+    language.add_kind(type_kinds.type_alias_kind, base_policy.instance);
     language.add_kind(type_kinds.block_kind, namespace_policy.instance);
 
     language.add_kind(type_kinds.class_kind, general_policy.instance);

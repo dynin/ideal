@@ -16,4 +16,5 @@ import ideal.development.names.*;
 import ideal.development.types.*;
 
 public interface analysis_context extends action_context, type_declaration_context {
+  type_policy get_policy(kind the_kind);
 }

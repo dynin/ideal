@@ -376,11 +376,14 @@ public class base_semantics implements language_settings {
     return policies.keys();
   }
 
-  public void declare_type(principal_type new_type, declaration_pass pass, action_context context) {
-    type_policy the_type_policy = policies.get(new_type.get_kind());
-    // TODO: signal an error instead of panicing
+  public type_policy get_policy(kind the_kind) {
+    type_policy the_type_policy = policies.get(the_kind);
     assert the_type_policy != null;
-    the_type_policy.declare_type(new_type, pass, context);
+    return the_type_policy;
+  }
+
+  public void declare_type(principal_type new_type, declaration_pass pass, action_context context) {
+    get_policy(new_type.get_kind()).declare_type(new_type, pass, context);
   }
 
   @Override

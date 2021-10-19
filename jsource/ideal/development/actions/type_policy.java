@@ -20,4 +20,6 @@ import ideal.development.declarations.*;
 
 public interface type_policy {
   signal declare_type(principal_type new_type, declaration_pass pass, action_context context);
+  void declare_supertype(principal_type new_type, supertype_declaration the_supertype_declaration,
+      action_context context);
 }

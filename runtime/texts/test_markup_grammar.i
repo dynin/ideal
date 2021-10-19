@@ -116,7 +116,7 @@ test_suite test_markup_grammar {
     assert element1.children is null;
     assert element1.attributes.size == 1;
     assert element1.attributes.elements[0].key == text_library.CLASS;
-    assert element1.attributes.elements[0].value !> base_string == "foo";
+    assert element1.attributes.elements[0].value == "foo";
 
     element2 : empty_element.parse("<a class='foo' href='https://theideal.org/'/>");
     assert element2.get_id == text_library.A;
@@ -124,9 +124,9 @@ test_suite test_markup_grammar {
     assert element2.attributes.size == 2;
     attributes : element2.attributes.elements;
     assert attributes[0].key == text_library.CLASS;
-    assert attributes[0].value !> base_string == "foo";
+    assert attributes[0].value == "foo";
     assert attributes[1].key == text_library.HREF;
-    assert attributes[1].value !> base_string == "https://theideal.org/";
+    assert attributes[1].value == "https://theideal.org/";
   }
 
   test_case test_content() {

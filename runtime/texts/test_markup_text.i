@@ -12,7 +12,7 @@ test_suite test_markup_text {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
-    the_formatter.write(base_element.new(text_library.P, "foo" !> base_string));
+    the_formatter.write(base_element.new(text_library.P, "foo"));
 
     assert "<p>\n foo\n</p>\n" == the_writer.elements();
   }
@@ -21,7 +21,7 @@ test_suite test_markup_text {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
-    the_formatter.write("AT&T <etc.> q1:' q2:\"" !> base_string);
+    the_formatter.write("AT&T <etc.> q1:' q2:\"");
 
     assert "AT&amp;T &lt;etc.&gt; q1:&apos; q2:&quot;" == the_writer.elements();
   }
@@ -30,8 +30,8 @@ test_suite test_markup_text {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
-    the_formatter.write(base_element.new(text_library.P, "foo" !> base_string));
-    the_formatter.write(base_element.new(text_library.INDENT, "bar" !> base_string));
+    the_formatter.write(base_element.new(text_library.P, "foo"));
+    the_formatter.write(base_element.new(text_library.INDENT, "bar"));
 
     assert "<p>\n foo\n</p>\n<indent>\n bar\n</indent>\n" == the_writer.elements();
   }
@@ -40,8 +40,7 @@ test_suite test_markup_text {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
-    the_formatter.write(base_element.new(text_library.P,
-        text_library.NAME, "foo" !> base_string, "bar" !> base_string));
+    the_formatter.write(base_element.new(text_library.P, text_library.NAME, "foo", "bar"));
 
     assert "<p name='foo'>\n bar\n</p>\n" == the_writer.elements();
   }
@@ -50,10 +49,10 @@ test_suite test_markup_text {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer);
 
-    the_formatter.write("foo" !> base_string);
-    the_formatter.write(base_element.new(text_library.BR,
-        text_library.CLEAR, "all" !> base_string, missing.instance));
-    the_formatter.write("bar\n" !> base_string);
+    the_formatter.write("foo");
+    the_formatter.write(base_element.new(text_library.BR, text_library.CLEAR, "all",
+        missing.instance));
+    the_formatter.write("bar\n");
 
     assert "foo<br clear='all' />\nbar\n" == the_writer.elements();
   }
@@ -64,9 +63,9 @@ test_suite test_markup_text {
 
     the_entity : text_entity.new(text_library.IDEAL_TEXT, "*", "middot");
 
-    the_formatter.write("one" !> base_string);
+    the_formatter.write("one");
     the_formatter.write(the_entity);
-    the_formatter.write("two" !> base_string);
+    the_formatter.write("two");
 
     assert "one&middot;two" == the_writer.elements();
   }

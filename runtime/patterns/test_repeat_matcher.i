@@ -19,7 +19,8 @@ test_suite test_repeat_matcher {
   }
 
   private string as_string(readonly list[character] char_list) {
-    return char_list.frozen_copy() !> base_string;
+    -- TODO: redundant cast.
+    return char_list.frozen_copy() !> string;
   }
 
   -- TODO: use list.join() when it's implemented.

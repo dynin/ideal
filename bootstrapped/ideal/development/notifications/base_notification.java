@@ -61,7 +61,7 @@ public class base_notification implements notification {
       full_message = this.the_message;
     }
     final string MESSAGE_CLASS = new base_string("message");
-    final text_fragment primary = text_utilities.join(origin_printer.show_origin(this.the_origin), new base_element(text_library.DIV, text_library.CLASS, (base_string) MESSAGE_CLASS, (base_string) full_message));
+    final text_fragment primary = text_utilities.join(origin_printer.show_origin(this.the_origin), new base_element(text_library.DIV, text_library.CLASS, MESSAGE_CLASS, full_message));
     if (this.the_secondary != null) {
       text_fragment secondaries_text = text_utilities.EMPTY_FRAGMENT;
       {

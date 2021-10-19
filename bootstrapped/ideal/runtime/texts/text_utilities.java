@@ -133,13 +133,13 @@ public class text_utilities {
     return new base_element(id, new list_dictionary<attribute_id, attribute_fragment>(), child_fragment);
   }
   public static text_element make_html_link(final text_fragment text, final string link_target) {
-    return new base_element(text_library.A, text_library.HREF, (base_string) link_target, text);
+    return new base_element(text_library.A, text_library.HREF, link_target, text);
   }
   public static text_element make_css_link(final string css_href) {
     final list_dictionary<attribute_id, attribute_fragment> attributes = new list_dictionary<attribute_id, attribute_fragment>();
-    attributes.put(text_library.HREF, (base_string) css_href);
-    attributes.put(text_library.REL, (base_string) new base_string("stylesheet"));
-    attributes.put(text_library.TYPE, (base_string) new base_string("text/css"));
+    attributes.put(text_library.HREF, css_href);
+    attributes.put(text_library.REL, new base_string("stylesheet"));
+    attributes.put(text_library.TYPE, new base_string("text/css"));
     return new base_element(text_library.LINK, attributes, null);
   }
 }

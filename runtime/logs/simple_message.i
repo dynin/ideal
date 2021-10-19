@@ -31,7 +31,7 @@ class simple_message {
       return base_element.new(text_library.BR);
     } else {
       -- TODO: get rid of the cast.
-      return base_element.new(text_library.DIV, the_string !> base_string);
+      return base_element.new(text_library.DIV, the_string);
     }
   }
 }

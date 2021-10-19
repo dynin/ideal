@@ -97,16 +97,16 @@ public class test_markup_grammar {
     assert element1.children() == null;
     assert ideal.machine.elements.runtime_util.values_equal(element1.attributes().size(), 1);
     assert element1.attributes().elements().get(0).key() == text_library.CLASS;
-    assert ideal.machine.elements.runtime_util.values_equal((base_string) element1.attributes().elements().get(0).value(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(element1.attributes().elements().get(0).value(), new base_string("foo"));
     final text_element element2 = empty_element.parse(new base_string("<a class=\'foo\' href=\'https://theideal.org/\'/>"));
     assert element2.get_id() == text_library.A;
     assert element2.children() == null;
     assert ideal.machine.elements.runtime_util.values_equal(element2.attributes().size(), 2);
     final immutable_list<dictionary.entry<attribute_id, attribute_fragment>> attributes = element2.attributes().elements();
     assert attributes.get(0).key() == text_library.CLASS;
-    assert ideal.machine.elements.runtime_util.values_equal((base_string) attributes.get(0).value(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(attributes.get(0).value(), new base_string("foo"));
     assert attributes.get(1).key() == text_library.HREF;
-    assert ideal.machine.elements.runtime_util.values_equal((base_string) attributes.get(1).value(), new base_string("https://theideal.org/"));
+    assert ideal.machine.elements.runtime_util.values_equal(attributes.get(1).value(), new base_string("https://theideal.org/"));
   }
   public void test_content() {
     final ideal.library.patterns.matcher<Character, text_fragment> content = this.make_grammar().content;

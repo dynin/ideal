@@ -26,8 +26,7 @@ meta_construct class comment_construct {
     } else if (the_section == documentation_section.SUMMARY) {
       text : the_text_fragment;
       assert text is_not null;
-      -- TODO: cast should be redundant.
-      return summary_extractor.get_summary(text) !> base_string;
+      return summary_extractor.get_summary(text);
     } else {
       utilities.panic("Unknown section: " ++ the_section);
     }

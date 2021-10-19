@@ -153,7 +153,7 @@ public class markup_grammar {
     });
   }
   public string as_string_procedure(final readonly_list<Character> the_character_list) {
-    return (base_string) the_character_list.frozen_copy();
+    return (string) the_character_list.frozen_copy();
   }
   public matcher<Character, string> as_string(final pattern<Character> the_pattern) {
     return new procedure_matcher<Character, string>(the_pattern, new function1<string, readonly_list<Character>>() {

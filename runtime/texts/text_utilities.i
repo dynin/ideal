@@ -174,16 +174,16 @@ namespace text_utilities {
 
   text_element make_html_link(text_fragment text, string link_target) {
     -- TODO: cast is redundant.
-    return base_element.new(text_library.A, text_library.HREF, link_target !> base_string, text);
+    return base_element.new(text_library.A, text_library.HREF, link_target, text);
   }
 
   text_element make_css_link(string css_href) {
     attributes : list_dictionary[attribute_id, attribute_fragment].new();
     -- TODO: the casts are redundant.
-    attributes.put(text_library.HREF, css_href !> base_string);
+    attributes.put(text_library.HREF, css_href);
     -- TODO: introduce string constants
-    attributes.put(text_library.REL, "stylesheet" !> base_string);
-    attributes.put(text_library.TYPE, "text/css" !> base_string);
+    attributes.put(text_library.REL, "stylesheet");
+    attributes.put(text_library.TYPE, "text/css");
     return base_element.new(text_library.LINK, attributes, missing.instance);
   }
 }

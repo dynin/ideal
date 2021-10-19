@@ -16,7 +16,7 @@ public abstract class text_rewriter extends text_visitor<text_fragment> {
   }
   protected abstract text_fragment rewrite_element(element_id id, immutable_dictionary<attribute_id, attribute_fragment> attributes, @Nullable text_fragment children);
   protected @Override text_fragment process_string(final string s) {
-    return (base_string) s;
+    return s;
   }
   protected @Override text_fragment process_element(final text_element element) {
     @Nullable text_fragment children = element.children();

@@ -52,8 +52,7 @@ class base_notification {
     MESSAGE_CLASS : "message";
     -- TODO: casts are redundant.
     primary : text_utilities.join(origin_printer.show_origin(the_origin),
-        base_element.new(text_library.DIV, text_library.CLASS,
-            MESSAGE_CLASS !> base_string, full_message !> base_string));
+        base_element.new(text_library.DIV, text_library.CLASS, MESSAGE_CLASS, full_message));
 
     if (the_secondary is_not null) {
       var text_fragment secondaries_text : text_utilities.EMPTY_FRAGMENT;

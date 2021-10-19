@@ -25,7 +25,7 @@ public class comment_construct extends base_construct implements annotation_cons
     } else if (the_section == documentation_section.SUMMARY) {
       final text_fragment text = this.the_text_fragment;
       assert text != null;
-      return (base_string) summary_extractor.get_summary(text);
+      return summary_extractor.get_summary(text);
     } else {
       utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown section: "), the_section));
       return null;

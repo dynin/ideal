@@ -24,7 +24,7 @@ public class origin_printer {
       if (the_origin instanceof text_origin) {
         return origin_printer.render_text_origin(((text_origin) the_origin), fragment_begin, fragment_end);
       } else if (the_origin instanceof special_origin) {
-        final base_string description = (base_string) ((special_origin) the_origin).description;
+        final string description = ((special_origin) the_origin).description;
         return new base_element(text_library.DIV, description);
       } else if (the_origin instanceof fragment_origin) {
         if (fragment_begin == null) {
@@ -34,7 +34,7 @@ public class origin_printer {
           fragment_end = origin_printer.find_text_origin(((fragment_origin) the_origin).end, false);
         }
       } else if (the_origin instanceof source_content) {
-        return (base_string) new base_string("");
+        return new base_string("");
       } else if (the_origin == null) {
         utilities.panic(new base_string("Can\'t display origin"));
         return null;
@@ -123,15 +123,15 @@ public class origin_printer {
         }
       }
     }
-    final base_element underlined_element = new base_element(text_library.U, (base_string) underlined);
+    final base_element underlined_element = new base_element(text_library.U, underlined);
     text_element highlighted_element;
     if (highlight_prefix.is_empty() && highlight_suffix.is_empty()) {
       highlighted_element = underlined_element;
     } else {
-      final text_fragment highlighted = text_utilities.join((base_string) highlight_prefix, underlined_element, (base_string) highlight_suffix);
+      final text_fragment highlighted = text_utilities.join(highlight_prefix, underlined_element, highlight_suffix);
       highlighted_element = new base_element(text_library.U2, new list_dictionary<attribute_id, attribute_fragment>(), highlighted);
     }
-    final text_fragment text_line = text_utilities.join((base_string) prefix, ((base_element) highlighted_element), (base_string) suffix);
+    final text_fragment text_line = text_utilities.join(prefix, ((base_element) highlighted_element), suffix);
     return new base_element(text_library.DIV, new list_dictionary<attribute_id, attribute_fragment>(), text_line);
   }
 }

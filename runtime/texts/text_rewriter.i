@@ -18,7 +18,7 @@ abstract class text_rewriter {
 
   -- TODO: inherit protected access modifier from supertype.
   protected override text_fragment process_string(string s) {
-    return s !> base_string;
+    return s;
   }
 
   protected override text_fragment process_element(text_element element) {

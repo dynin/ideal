@@ -19,7 +19,7 @@ namespace origin_printer {
         return render_text_origin(the_origin, fragment_begin, fragment_end);
       } else if (the_origin is special_origin) {
         -- TODO: retire cast
-        description : the_origin.description !> base_string;
+        description : the_origin.description;
         return base_element.new(text_library.DIV, description);
       } else if (the_origin is fragment_origin) {
         if (fragment_begin is null) {
@@ -31,7 +31,7 @@ namespace origin_printer {
       } else if (the_origin is source_content) {
         -- TODO: is there a better way to handle this?
         -- TODO: redundant cast.
-        return "" !> base_string;
+        return "";
       } else if (the_origin is null) {
         utilities.panic("Can't display origin");
       }
@@ -154,19 +154,18 @@ namespace origin_printer {
     }
 
     -- TODO: the cast is redundant
-    underlined_element : base_element.new(text_library.U, underlined !> base_string);
+    underlined_element : base_element.new(text_library.U, underlined);
     var text_element highlighted_element;
     if (highlight_prefix.is_empty && highlight_suffix.is_empty) {
       highlighted_element = underlined_element;
     } else {
       -- TODO: the casts are redundant
-      highlighted : text_utilities.join(highlight_prefix !> base_string,
-          underlined_element, highlight_suffix !> base_string);
+      highlighted : text_utilities.join(highlight_prefix, underlined_element, highlight_suffix);
       highlighted_element = base_element.new(text_library.U2,
           list_dictionary[attribute_id, attribute_fragment].new(), highlighted);
     }
     -- TODO: the casts are redundant
-    text_line : text_utilities.join(prefix !> base_string, highlighted_element, suffix !> base_string);
+    text_line : text_utilities.join(prefix, highlighted_element, suffix);
 
     return base_element.new(text_library.DIV,
           list_dictionary[attribute_id, attribute_fragment].new(), text_line);

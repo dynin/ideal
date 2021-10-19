@@ -17,7 +17,7 @@ public class test_repeat_matcher {
     return c == 'c' || c == 'C';
   }
   private string as_string(final readonly_list<Character> char_list) {
-    return (base_string) char_list.frozen_copy();
+    return (string) char_list.frozen_copy();
   }
   private string join_list(final readonly_list<string> strings) {
     string result = new base_string("");

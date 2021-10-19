@@ -17,7 +17,7 @@ public class test_option_matcher {
     return c == 'c' || c == 'C';
   }
   private string as_string(final readonly_list<Character> char_list) {
-    return ideal.machine.elements.runtime_util.concatenate(new base_string("*"), ((base_string) char_list.frozen_copy()));
+    return ideal.machine.elements.runtime_util.concatenate(new base_string("*"), ((string) char_list.frozen_copy()));
   }
   public matcher<Character, string> make_matcher(final function1<Boolean, Character> the_predicate) {
     return new procedure_matcher<Character, string>(new repeat_element<Character>(the_predicate, false), new procedure1<string, readonly_list<Character>>() {

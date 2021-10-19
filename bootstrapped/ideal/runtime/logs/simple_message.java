@@ -25,7 +25,7 @@ public class simple_message implements log_message {
     if (this.the_string.is_empty()) {
       return new base_element(text_library.BR);
     } else {
-      return new base_element(text_library.DIV, (base_string) this.the_string);
+      return new base_element(text_library.DIV, this.the_string);
     }
   }
 }

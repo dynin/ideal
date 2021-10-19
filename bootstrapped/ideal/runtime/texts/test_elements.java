@@ -31,7 +31,7 @@ public class test_elements {
   }
   public void test_make_element() {
     final base_element node0 = new base_element(text_library.P);
-    final text_node node1 = (base_string) new base_string("foo");
+    final text_node node1 = new base_string("foo");
     final immutable_list<text_node> nodes = new base_immutable_list<text_node>(new ideal.machine.elements.array<text_node>(new text_node[]{ node0, node1 }));
     final text_element element = text_utilities.make_element(text_library.BODY, nodes);
     assert element instanceof base_element;

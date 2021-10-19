@@ -337,7 +337,7 @@ program briefing {
 
     -- TODO: text_node redundant
     text_node charset : base_element.new(META, CHARSET, resource_util.UTF_8, missing.instance);
-    referrer : make_element(META, NAME, "referrer", CONTENT, "no-referrer", missing.instance);
+    referrer : make_element(META, NAME, "referrer", CONTENT, "origin", missing.instance);
     title : base_element.new(TITLE, PROGRAM_NAME ++ " " ++ day_dashes(day));
     link : text_utilities.make_css_link(top_prefix("news-not-paper.css", day));
     text_node head : text_utilities.make_element(HEAD, [ charset, referrer, title, link ]);

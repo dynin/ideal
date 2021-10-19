@@ -357,7 +357,8 @@ deploy_site: $(IDEAL_TARGET)
 	rm -rf $(SITE_DIR)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=deploy_site \
             -output=$(SITE_DIR)
-#	cd $(BUILD_DIR) ; tar cvfz ../tmp/site.tgz theideal.org/*
+	$(MKDIR) tmp
+	cd $(BUILD_DIR) ; tar cvfz ../tmp/site.tgz theideal.org/*
 
 ### Other targets
 

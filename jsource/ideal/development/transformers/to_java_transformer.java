@@ -80,6 +80,9 @@ public class to_java_transformer extends base_transformer {
     implicit_names.add(java_library.builtins_package());
 
     imported_names = new hash_set<principal_type>();
+    //principal_type runtime_util_type = action_utilities.lookup_type(get_context(),
+    //    new base_string("ideal.machine.elements.runtime_util"));
+
   }
 
   public void set_type_context(principal_type main_type, readonly_list<import_declaration> imports,

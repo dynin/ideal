@@ -2,7 +2,7 @@
 
 package ideal.library.elements;
 
-public interface string extends deeply_immutable_list<Character>, deeply_immutable_stringable, deeply_immutable_data, deeply_immutable_equality_comparable, ideal.library.texts.string_text_node {
+public interface string extends deeply_immutable_list<Character>, deeply_immutable_stringable, deeply_immutable_data, deeply_immutable_equality_comparable, ideal.library.texts.string_text_node, ideal.library.formats.json_string {
   @Override string skip(Integer count);
   @Override string slice(Integer begin, Integer end);
 }

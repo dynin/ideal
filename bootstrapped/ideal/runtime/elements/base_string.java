@@ -3,13 +3,12 @@
 package ideal.runtime.elements;
 
 import ideal.library.elements.*;
-import ideal.library.texts.string_text_node;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
 import ideal.machine.channels.string_writer;
 
-public class base_string extends debuggable implements string, string_text_node {
+public class base_string extends debuggable implements string {
   private final String state;
   public base_string(final String s1) {
     this.state = s1;

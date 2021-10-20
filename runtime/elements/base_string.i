@@ -4,7 +4,6 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.texts.string_text_node;
 import ideal.machine.adapters.java.builtins.char;
 import ideal.machine.adapters.java.lang.Object;
 import ideal.machine.adapters.java.lang.String;
@@ -14,7 +13,6 @@ import ideal.machine.channels.string_writer;
 class base_string {
   extends debuggable;
   implements string;
-  implements string_text_node;
 
   private String state;
 

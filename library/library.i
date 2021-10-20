@@ -14,6 +14,7 @@ namespace library {
   package texts;
   package resources;
   package messages;
+  package formats;
   package reflections;
   package graphs;
   package calendars;

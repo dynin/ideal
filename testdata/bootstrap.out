@@ -162,6 +162,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -186,6 +187,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: writeonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -253,6 +255,7 @@
         annotations: [
           modifier_construct {
             the_kind: <not_yet_implemented>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -263,6 +266,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -271,6 +275,7 @@
         annotations: [
           modifier_construct {
             the_kind: <not_yet_implemented>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -281,6 +286,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -289,6 +295,7 @@
         annotations: [
           modifier_construct {
             the_kind: <not_yet_implemented>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -302,6 +309,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -310,6 +318,7 @@
         annotations: [
           modifier_construct {
             the_kind: <not_yet_implemented>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -323,6 +332,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -375,6 +385,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -525,6 +536,7 @@
         annotations: [
           modifier_construct {
             the_kind: <static>
+            parameters: <null>
           }
         ]
         variable_type: parameter_construct {
@@ -1299,6 +1311,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1331,6 +1344,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1363,6 +1377,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1406,6 +1421,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1449,6 +1465,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: immutable
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1491,6 +1508,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: writeonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1568,6 +1586,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1600,6 +1619,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>
@@ -1720,6 +1740,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implicit>
+            parameters: <null>
           }
         ]
         ret: parameter_construct {
@@ -1748,6 +1769,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: readonly
+            parameters: <null>
           }
         ]
         body: <null>

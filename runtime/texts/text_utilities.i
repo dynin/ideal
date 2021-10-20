@@ -123,7 +123,7 @@ namespace text_utilities {
   }
 
   private void append(list[text_node] nodes, text_fragment fragment) {
-    if (fragment is string_text_node) {
+    if (fragment is string) {
       if (fragment.is_empty) {
         return;
       }

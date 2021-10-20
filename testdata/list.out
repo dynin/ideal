@@ -99,6 +99,7 @@
           }
           modifier_construct {
             the_kind: <protected>
+            parameters: <null>
           }
         ]
         kind: class
@@ -150,6 +151,7 @@
               }
               modifier_construct {
                 the_kind: <var>
+                parameters: <null>
               }
             ]
             variable_type: name_construct {
@@ -177,6 +179,7 @@
               }
               modifier_construct {
                 the_kind: <var>
+                parameters: <null>
               }
             ]
             variable_type: parameter_construct {
@@ -214,6 +217,7 @@
               }
               modifier_construct {
                 the_kind: <var>
+                parameters: <null>
               }
             ]
             variable_type: name_construct {
@@ -241,6 +245,7 @@
               }
               modifier_construct {
                 the_kind: <overload>
+                parameters: <null>
               }
             ]
             ret: <null>
@@ -350,6 +355,7 @@
               }
               modifier_construct {
                 the_kind: <overload>
+                parameters: <null>
               }
             ]
             ret: <null>
@@ -398,6 +404,7 @@
               }
               modifier_construct {
                 the_kind: <overload>
+                parameters: <null>
               }
             ]
             ret: <null>
@@ -546,6 +553,7 @@
                   annotations: [
                     modifier_construct {
                       the_kind: <var>
+                      parameters: <null>
                     }
                   ]
                   variable_type: <null>
@@ -1034,6 +1042,7 @@
               }
               modifier_construct {
                 the_kind: <private>
+                parameters: <null>
               }
             ]
             ret: name_construct {
@@ -1493,9 +1502,11 @@
         annotations: [
           modifier_construct {
             the_kind: <protected>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <var>
+            parameters: <null>
           }
         ]
         variable_type: parameter_construct {
@@ -1517,9 +1528,11 @@
         annotations: [
           modifier_construct {
             the_kind: <protected>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -1568,9 +1581,11 @@
         annotations: [
           modifier_construct {
             the_kind: <protected>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -1625,6 +1640,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1644,6 +1660,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1678,6 +1695,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1712,6 +1730,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1759,6 +1778,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1852,9 +1872,11 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <implicit>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -1886,6 +1908,7 @@
         post_annotations: [
           modifier_construct {
             the_kind: <pure>
+            parameters: <null>
           }
         ]
         body: block_construct {
@@ -1939,6 +1962,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -1970,6 +1994,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -2025,6 +2050,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -2271,6 +2297,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -2398,9 +2425,11 @@
         annotations: [
           modifier_construct {
             the_kind: <protected>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -2466,9 +2495,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -2537,6 +2568,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -2573,6 +2605,7 @@
         annotations: [
           modifier_construct {
             the_kind: <implement>
+            parameters: <null>
           }
         ]
         ret: flavor_construct {
@@ -2664,6 +2697,7 @@
                 annotations: [
                   modifier_construct {
                     the_kind: <var>
+                    parameters: <null>
                   }
                 ]
                 variable_type: name_construct {

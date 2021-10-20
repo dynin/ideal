@@ -35,7 +35,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   protected final printer_mode the_mode;
   protected final @Nullable printer_assistant the_assistant;
 
-  private static final string_text_node SPACE = new base_string(" ");
+  private static final string SPACE = new base_string(" ");
   // TODO: define token
   private static final string PASS = new base_string("pass");
   private static final string RETURN = new base_string("return");
@@ -77,7 +77,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   public text_fragment print_word(string s) {
-    return (string_text_node) s;
+    return s;
   }
 
   // TODO: remove references to java.lang.String so this can be retired.
@@ -636,11 +636,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     text_fragment result = print_modifier_kind(c.the_kind);
 
-    /*
     if (c.parameters != null) {
       result = text_utilities.join(result, process_list(c.parameters));
     }
-    */
 
     return result;
   }

@@ -483,10 +483,6 @@ public class to_java_transformer extends base_transformer {
     principal_type principal = the_type.principal();
     type_flavor the_flavor = the_type.get_flavor();
 
-    if (mapping_strategy != mapping.MAP_PRESERVE_ALIAS && is_aliased_type(principal)) {
-      principal = substitute_aliased_type(principal);
-    }
-
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
         if (principal == void_type()) {
@@ -825,9 +821,6 @@ public class to_java_transformer extends base_transformer {
           continue;
         }
         type supertype = supertype_decl.get_supertype();
-        if (skip_supertype(the_type_declaration, supertype)) {
-          continue;
-        }
         kind supertype_kind = supertype.principal().get_kind();
         if (concrete_mode) {
           // TODO: use NO_MAPPING here.
@@ -1060,21 +1053,6 @@ public class to_java_transformer extends base_transformer {
     enclosing_type = old_enclosing_type;
 
     return type_decls;
-  }
-
-  private static simple_name STRING_TEXT_NODE = simple_name.make("string_text_node");
-
-  private boolean is_aliased_type(principal_type the_principal_type) {
-    return the_principal_type.short_name() == STRING_TEXT_NODE;
-  }
-
-  private principal_type substitute_aliased_type(principal_type the_principal_type) {
-    return string_type();
-  }
-
-  private boolean skip_supertype(type_declaration the_type_declaration, type supertype) {
-    return the_type_declaration.short_name() == STRING_TEXT_NODE &&
-        supertype.principal() == string_type();
   }
 
   private static boolean is_readonly_flavor(type_flavor the_flavor) {

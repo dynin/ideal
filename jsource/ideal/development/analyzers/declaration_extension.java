@@ -46,6 +46,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   private @Nullable declaration_analyzer the_declaration;
   private @Nullable modifier_construct the_modifier;
   private @Nullable immutable_list<declaration> expanded;
+  public @Nullable readonly_list<analyzable> analyzable_parameters;
 
   public declaration_extension(String modifier_kind_name) {
     super(analyzer_utilities.UNINITIALIZED_POSITION);
@@ -84,6 +85,10 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     this.the_modifier = the_modifier;
   }
 
+  public boolean supports_parameters() {
+    return false;
+  }
+
   public void set_expanded(readonly_list<declaration> expanded) {
     assert this.expanded == null;
     assert expanded != null;
@@ -108,6 +113,15 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
   }
 
   protected final signal do_multi_pass_analysis(analysis_pass pass) {
+    if (pass == analysis_pass.TYPE_DECL) {
+      if (the_modifier.parameters != null) {
+        if (!supports_parameters()) {
+          return new error_signal(new base_string("Extension doesn't support parameters"), this);
+        }
+        analyzable_parameters = make_list(the_modifier.parameters.the_elements);
+      }
+    }
+
     if (has_errors()) {
       return ok_signal.instance;
     }

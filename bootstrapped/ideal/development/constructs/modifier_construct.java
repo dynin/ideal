@@ -7,15 +7,21 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
+import javax.annotation.Nullable;
+
 public class modifier_construct extends base_construct implements annotation_construct {
   public final modifier_kind the_kind;
+  public final @Nullable list_construct parameters;
+  public modifier_construct(final modifier_kind the_kind, final @Nullable list_construct parameters, final origin the_origin) {
+    super(the_origin);
+    this.the_kind = the_kind;
+    this.parameters = parameters;
+  }
+  public modifier_construct(final modifier_kind the_kind, final origin the_origin) {
+    this(the_kind, null, the_origin);
+  }
   public @Override string to_string() {
     return utilities.describe(this, this.the_kind);
-  }
-  public modifier_construct(final modifier_kind the_kind, final origin generated_origin) {
-    super(generated_origin);
-    assert the_kind != null;
-    this.the_kind = the_kind;
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();

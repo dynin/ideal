@@ -160,7 +160,7 @@ public class common_scanner extends base_scanner_config {
     not_yet_implemented_extension.instance.register_syntax_extension(this);
     auto_constructor_extension.instance.register_syntax_extension(this);
     new cache_result_extension().register_syntax_extension(this);
-    new supertype_of_string_extension().register_syntax_extension(this);
+    new supertype_of_extension().register_syntax_extension(this);
     meta_flags_extension.instance.register_syntax_extension(this);
     test_case_extension.instance.register_syntax_extension(this);
     meta_construct_extension.instance.register_syntax_extension(this);

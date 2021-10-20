@@ -35,7 +35,7 @@ import ideal.development.documenters.*;
  */
 public class xref_printer extends base_printer {
 
-  private static final string_text_node XREF_SEPARATOR = new base_string(" / ");
+  private static final string XREF_SEPARATOR = new base_string(" / ");
 
   public xref_printer(naming_strategy the_naming_strategy) {
     super(printer_mode.XREF, the_naming_strategy);

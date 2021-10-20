@@ -256,13 +256,9 @@ variable_or_expression_opt ::=
                 {: RESULT = v; :}
         ;
 
-annotation ::=  MODIFIER_KIND:mk
-                {: RESULT = new modifier_construct(mk.payload(), mk); :}
-                /*
-        |       MODIFIER_KIND:mk parameters:p
-                {: RESULT = new annotation_construct(mk.payload(), p,
+annotation ::=  MODIFIER_KIND:mk parameters_opt:p
+                {: RESULT = new modifier_construct(mk.payload(), p,
                     new fragment_origin(mk, mk, p)); :}
-                */
         |       COMMENT:c
                 {: RESULT = new comment_construct(c.payload(), null, c); :}
         ;
@@ -274,8 +270,9 @@ annotations_opt ::=
                 {: RESULT = new base_list<annotation_construct>(hd); RESULT.append_all(tl); :}
         ;
 
-post_annotation ::=     MODIFIER_KIND:mk
-                {: RESULT = new modifier_construct(mk.payload(), mk); :}
+post_annotation ::=     MODIFIER_KIND:mk parameters_opt:p
+                {: RESULT = new modifier_construct(mk.payload(), p,
+                    new fragment_origin(mk, mk, p)); :}
         |       FLAVOR:f
                 {: RESULT = new modifier_construct(f.payload(), f); :}
         ;

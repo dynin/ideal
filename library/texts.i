@@ -59,8 +59,8 @@ package texts {
     string to_markup;
   }
 
-  supertype_of_string interface string_text_node {
-    extends text_node, attribute_fragment, string;
+  supertype_of[string] interface string_text_node {
+    extends text_node, attribute_fragment;
   }
 
   interface element_id {

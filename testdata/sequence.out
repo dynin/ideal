@@ -35,6 +35,7 @@
     annotations: [
       modifier_construct {
         the_kind: <implicit>
+        parameters: <null>
       }
     ]
     type_construct: resolve_construct {
@@ -48,6 +49,7 @@
     annotations: [
       modifier_construct {
         the_kind: <implicit>
+        parameters: <null>
       }
     ]
     type_construct: resolve_construct {
@@ -97,6 +99,7 @@
     annotations: [
       modifier_construct {
         the_kind: <public>
+        parameters: <null>
       }
     ]
     kind: class
@@ -127,6 +130,7 @@
         annotations: [
           modifier_construct {
             the_kind: <private>
+            parameters: <null>
           }
         ]
         variable_type: name_construct {
@@ -140,9 +144,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -177,9 +183,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -226,9 +234,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -295,9 +305,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -364,9 +376,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -433,9 +447,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -522,9 +538,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -631,9 +649,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -760,9 +780,11 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
           modifier_construct {
             the_kind: <overload>
+            parameters: <null>
           }
         ]
         ret: <null>
@@ -909,6 +931,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -939,6 +962,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -962,6 +986,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -991,6 +1016,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1047,6 +1073,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1089,6 +1116,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1124,6 +1152,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1238,6 +1267,7 @@
                 annotations: [
                   modifier_construct {
                     the_kind: <var>
+                    parameters: <null>
                   }
                 ]
                 variable_type: name_construct {
@@ -1322,6 +1352,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {
@@ -1370,6 +1401,7 @@
         annotations: [
           modifier_construct {
             the_kind: <public>
+            parameters: <null>
           }
         ]
         ret: name_construct {

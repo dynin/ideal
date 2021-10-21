@@ -4,4 +4,4 @@ package ideal.library.formats;
 
 import ideal.library.elements.*;
 
-public interface json_data extends data, readonly_json_data, writeonly_json_data { }
+public interface json_data extends data, equality_comparable, readonly_json_data, writeonly_json_data { }

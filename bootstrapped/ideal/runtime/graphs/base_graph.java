@@ -27,7 +27,7 @@ public class base_graph<vertice_type, edge_type> extends debuggable implements g
     this.all_edges = new hash_dictionary<vertice_type, set<base_graph.edge<vertice_type, edge_type>>>();
   }
   public base_graph() {
-    this((equivalence_relation<vertice_type>) (readonly_value) runtime_util.default_equivalence);
+    this((equivalence_relation<vertice_type>) runtime_util.default_equivalence);
   }
   public @Override readonly_set<vertice_type> vertices() {
     return this.all_edges.keys();

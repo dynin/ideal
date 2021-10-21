@@ -12,7 +12,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
     super(equivalence);
   }
   public hash_set() {
-    super((equivalence_with_hash<element_type>) (any_value) runtime_util.default_equivalence);
+    super((equivalence_with_hash<element_type>) runtime_util.default_equivalence);
   }
   private void copy_on_write() {
     if (!this.state.writable) {

@@ -4,4 +4,4 @@ package ideal.library.formats;
 
 import ideal.library.elements.*;
 
-public interface json_object extends dictionary<string, readonly_json_data>, readonly_json_object, writeonly_json_object { }
+public interface json_object extends json_data, dictionary<string, Object>, readonly_json_object, writeonly_json_object { }

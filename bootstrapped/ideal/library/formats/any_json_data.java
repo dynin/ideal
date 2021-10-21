@@ -4,4 +4,4 @@ package ideal.library.formats;
 
 import ideal.library.elements.*;
 
-public interface any_json_data extends any_data { }
+public interface any_json_data extends any_data, any_equality_comparable { }

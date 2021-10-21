@@ -99,7 +99,7 @@ public class mismatch_reporter {
         return new error_signal(new base_string("Argument #" + i + ": expected " +
             printer.print_value(declared_type) + ", found " +
             printer.print_value(supplied_value)),
-            supplied_arguments.get(i));
+            supplied_action);
         // TODO: origin that highlights argument while showing the full expression
         // TODO: continue and report other arg mismatches
       }

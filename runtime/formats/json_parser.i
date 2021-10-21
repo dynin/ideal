@@ -11,7 +11,7 @@ class json_parser {
   import ideal.machine.channels.string_writer;
 
   auto_constructor class parse_result {
-    readonly value the_value;
+    readonly json_data the_json_data;
     nonnegative end_index;
   }
 
@@ -41,12 +41,12 @@ class json_parser {
     return tokens;
   }
 
-  readonly value parse(string input) {
+  readonly json_data parse(string input) {
     tokenize(input);
     assert !has_error();
     result : parse_value(0);
     assert !has_error();
-    return result.the_value;
+    return result.the_json_data;
   }
 
   private nonnegative scan(string input, nonnegative start) {
@@ -238,7 +238,7 @@ class json_parser {
       return parse_error("Unexpected token: " ++ next);
     }
 
-    return parse_result.new(next, start + 1);
+    return parse_result.new(next !> readonly json_data, start + 1);
   }
 
   private parse_result parse_object(nonnegative start) {
@@ -246,7 +246,7 @@ class json_parser {
       return parse_error("Open brace expected");
     }
 
-    result : hash_dictionary[string, readonly value].new();
+    json_object result : json_object_impl.new();
     var index : start + 1;
 
     while (index < tokens.size) {
@@ -266,7 +266,7 @@ class json_parser {
       if (has_error()) {
         return element;
       }
-      result.put(next, element.the_value);
+      result.put(next, element.the_json_data);
       index = element.end_index;
       if (index >= tokens.size) {
         return parse_error("No closing brace in object");
@@ -288,7 +288,7 @@ class json_parser {
       return parse_error("Open bracket expected");
     }
 
-    result : base_list[readonly value].new();
+    json_array result : json_array_impl.new();
     var index : start + 1;
 
     while (index < tokens.size) {
@@ -299,7 +299,7 @@ class json_parser {
       if (has_error()) {
         return element;
       }
-      result.append(element.the_value);
+      result.append(element.the_json_data);
       index = element.end_index;
       if (index >= tokens.size) {
         return parse_error("No closing bracket in array");

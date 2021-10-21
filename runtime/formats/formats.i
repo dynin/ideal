@@ -10,7 +10,18 @@
 namespace formats {
   implicit import ideal.library.elements;
   implicit import ideal.library.characters;
+  implicit import ideal.library.formats;
   implicit import ideal.runtime.elements;
+
+  class json_array_impl {
+    extends json_array;
+    extends base_list[readonly json_data];
+  }
+
+  class json_object_impl {
+    extends json_object;
+    extends hash_dictionary[string, readonly json_data];
+  }
 
   enum json_token;
   class json_parser;

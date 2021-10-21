@@ -4,4 +4,4 @@ package ideal.library.formats;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_json_array extends deeply_immutable_list<readonly_json_data>, immutable_json_array { }
+public interface deeply_immutable_json_array extends deeply_immutable_json_data, deeply_immutable_list<Object>, immutable_json_array { }

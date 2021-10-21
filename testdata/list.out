@@ -2914,6 +2914,7 @@
 ==== Loading library/texts.i
 ==== Loading library/resources.i
 ==== Loading library/messages.i
+==== Loading library/formats.i
 ==== Loading library/reflections.i
 ==== Loading library/graphs.i
 ==== Loading library/calendars.i

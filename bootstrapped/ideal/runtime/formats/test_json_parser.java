@@ -4,6 +4,7 @@ package ideal.runtime.formats;
 
 import ideal.library.elements.*;
 import ideal.library.characters.*;
+import ideal.library.formats.*;
 import ideal.runtime.elements.*;
 import ideal.machine.characters.unicode_handler;
 
@@ -54,7 +55,7 @@ public class test_json_parser {
     assert !((boolean) w53);
     assert words5.at(4).get() == json_token.COMMA;
     final Object w55 = words5.at(5).get();
-    assert ((value) w55) == null;
+    assert w55 == null;
     assert words5.at(6).get() == json_token.CLOSE_BRACKET;
   }
   public void test_parser() {
@@ -65,18 +66,18 @@ public class test_json_parser {
     assert ideal.machine.elements.runtime_util.values_equal(parsed1, 68);
     final Object parsed2 = parser.parse(new base_string(" false "));
     assert ((boolean) parsed2) == false;
-    final readonly_dictionary<string, Object> parsed3 = (readonly_dictionary<string, Object>) parser.parse(new base_string("{ \"foo\" : \"bar\", \"baz\":68 } "));
+    final readonly_json_object parsed3 = (readonly_json_object) parser.parse(new base_string("{ \"foo\" : \"bar\", \"baz\":68 } "));
     assert ideal.machine.elements.runtime_util.values_equal(parsed3.size(), 2);
     assert ideal.machine.elements.runtime_util.values_equal(parsed3.get(new base_string("foo")), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(parsed3.get(new base_string("baz")), 68);
-    final readonly_list<Object> parsed4 = (readonly_list<Object>) parser.parse(new base_string("[ \"foo\" , \"bar\", -68  ] "));
+    final readonly_json_array parsed4 = (readonly_json_array) parser.parse(new base_string("[ \"foo\" , \"bar\", -68  ] "));
     assert ideal.machine.elements.runtime_util.values_equal(parsed4.size(), 3);
     assert ideal.machine.elements.runtime_util.values_equal(parsed4.get(0), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(parsed4.get(1), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(parsed4.get(2), -68);
-    final readonly_dictionary<string, Object> parsed5 = (readonly_dictionary<string, Object>) parser.parse(new base_string("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } "));
+    final readonly_json_object parsed5 = (readonly_json_object) parser.parse(new base_string("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } "));
     assert ideal.machine.elements.runtime_util.values_equal(parsed5.size(), 2);
-    final readonly_list<Object> the_object = (readonly_list<Object>) parsed5.get(new base_string("foo"));
+    final readonly_json_array the_object = (readonly_json_array) parsed5.get(new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(the_object.get(0), new base_string("bar"));
     assert ((boolean) the_object.get(1)) == true;
     assert ideal.machine.elements.runtime_util.values_equal(parsed5.get(new base_string("baz")), -68);

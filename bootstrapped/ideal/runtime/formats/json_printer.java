@@ -4,6 +4,7 @@ package ideal.runtime.formats;
 
 import ideal.library.elements.*;
 import ideal.library.characters.*;
+import ideal.library.formats.*;
 import ideal.runtime.elements.*;
 import ideal.machine.channels.string_writer;
 

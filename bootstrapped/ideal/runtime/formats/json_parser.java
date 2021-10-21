@@ -4,6 +4,7 @@ package ideal.runtime.formats;
 
 import ideal.library.elements.*;
 import ideal.library.characters.*;
+import ideal.library.formats.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.patterns.list_pattern;
 import ideal.machine.channels.string_writer;
@@ -12,10 +13,10 @@ import javax.annotation.Nullable;
 
 public class json_parser {
   public static class parse_result {
-    public final Object the_value;
+    public final Object the_json_data;
     public final Integer end_index;
-    public parse_result(final Object the_value, final Integer end_index) {
-      this.the_value = the_value;
+    public parse_result(final Object the_json_data, final Integer end_index) {
+      this.the_json_data = the_json_data;
       this.end_index = end_index;
     }
   }
@@ -46,7 +47,7 @@ public class json_parser {
     assert !this.has_error();
     final json_parser.parse_result result = this.parse_value(0);
     assert !this.has_error();
-    return result.the_value;
+    return result.the_json_data;
   }
   private Integer scan(final string input, final Integer start) {
     final char next = input.get(start);
@@ -211,7 +212,7 @@ public class json_parser {
     if (this.tokens.at(start).get() != json_token.OPEN_BRACE) {
       return this.parse_error(new base_string("Open brace expected"));
     }
-    final hash_dictionary<string, Object> result = new hash_dictionary<string, Object>();
+    final json_object result = new json_object_impl();
     Integer index = start + 1;
     while (index < this.tokens.size()) {
       final Object next = this.tokens.at(index).get();
@@ -230,7 +231,7 @@ public class json_parser {
       if (this.has_error()) {
         return element;
       }
-      result.put(((string) next), element.the_value);
+      result.put(((string) next), element.the_json_data);
       index = element.end_index;
       if (index >= this.tokens.size()) {
         return this.parse_error(new base_string("No closing brace in object"));
@@ -249,7 +250,7 @@ public class json_parser {
     if (this.tokens.at(start).get() != json_token.OPEN_BRACKET) {
       return this.parse_error(new base_string("Open bracket expected"));
     }
-    final base_list<Object> result = new base_list<Object>();
+    final json_array result = new json_array_impl();
     Integer index = start + 1;
     while (index < this.tokens.size()) {
       if (this.tokens.at(index).get() == json_token.CLOSE_BRACKET) {
@@ -259,7 +260,7 @@ public class json_parser {
       if (this.has_error()) {
         return element;
       }
-      result.append(element.the_value);
+      result.append(element.the_json_data);
       index = element.end_index;
       if (index >= this.tokens.size()) {
         return this.parse_error(new base_string("No closing bracket in array"));

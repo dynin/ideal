@@ -4,4 +4,4 @@ package ideal.library.formats;
 
 import ideal.library.elements.*;
 
-public interface immutable_json_object extends immutable_dictionary<string, readonly_json_data>, readonly_json_object { }
+public interface immutable_json_object extends immutable_json_data, immutable_dictionary<string, Object>, readonly_json_object { }

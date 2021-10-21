@@ -60,7 +60,7 @@ test_suite test_json_parser {
     assert !(w53 !> boolean);
     assert words5[4] == json_token.COMMA;
     w55 : words5[5];
-    assert (w55 !> value) is null;
+    assert w55 is null;
     assert words5[6] == json_token.CLOSE_BRACKET;
   }
 
@@ -77,22 +77,20 @@ test_suite test_json_parser {
     -- TODO: cast is redundant
     assert (parsed2 !> boolean) == false;
 
-    parsed3 : parser.parse("{ \"foo\" : \"bar\", \"baz\":68 } ") !>
-        readonly dictionary[string, readonly value];
+    parsed3 : parser.parse("{ \"foo\" : \"bar\", \"baz\":68 } ") !> readonly json_object;
     assert parsed3.size == 2;
     assert parsed3.get("foo") == "bar";
     assert parsed3.get("baz") == 68;
 
-    parsed4 : parser.parse("[ \"foo\" , \"bar\", -68  ] ") !> readonly list[readonly value];
+    parsed4 : parser.parse("[ \"foo\" , \"bar\", -68  ] ") !> readonly json_array;
     assert parsed4.size == 3;
     assert parsed4[0] == "foo";
     assert parsed4[1] == "bar";
     assert parsed4[2] == -68;
 
-    parsed5 : parser.parse("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } ") !>
-        readonly dictionary[string, readonly value];
+    parsed5 : parser.parse("{ \"foo\" : [ \"bar\", true ],\"baz\":-68 } ") !> readonly json_object;
     assert parsed5.size == 2;
-    the_object : parsed5.get("foo") !> readonly list[readonly value];
+    the_object : parsed5.get("foo") !> readonly json_array;
     assert the_object[0] == "bar";
     -- TODO: cast is redundant
     assert (the_object[1] !> boolean) == true;

@@ -51,6 +51,7 @@ public class java_library implements value {
 
   private principal_type runtime_namespace;
   private principal_type runtime_elements_namespace;
+  private principal_type json_data_class;
 
   private principal_type machine_namespace;
   private principal_type machine_elements_namespace;
@@ -205,6 +206,14 @@ public class java_library implements value {
       runtime_util_class = get_type(machine_elements_namespace(), "runtime_util");
     }
     return runtime_util_class;
+  }
+
+  public principal_type json_data_class() {
+    if (json_data_class == null) {
+       json_data_class = action_utilities.lookup_type(context,
+           new base_string("ideal.library.formats.json_data"));
+    }
+    return json_data_class;
   }
 
   public principal_type array_class() {

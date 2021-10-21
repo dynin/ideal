@@ -1388,7 +1388,8 @@ public class to_java_transformer extends base_transformer {
     principal_type the_principal_type = the_type.principal();
     return the_principal_type == value_type() ||
            the_principal_type == equality_comparable_type() ||
-           the_principal_type == data_type();
+           the_principal_type == data_type() ||
+           the_principal_type == java_library.json_data_class();
   }
 
   @Override
@@ -1537,13 +1538,19 @@ public class to_java_transformer extends base_transformer {
     type expression_type = result_type(expression);
 
     construct transformed_expression = transform_action(expression);
-    construct transformed_type = make_type(the_type, the_origin);
 
     if (the_type == nonnegative_type() &&
         expression_type == immutable_integer_type()) {
       // we drop the integer -> nonnegative cast
       return transformed_expression;
     }
+
+    if (is_object_type(the_type)) {
+      // we drop casts to value, data, etc.
+      return transformed_expression;
+    }
+
+    construct transformed_type = make_type(the_type, the_origin);
 
     principal_type expression_principal = expression_type.principal();
     principal_type type_principal = the_type.principal();

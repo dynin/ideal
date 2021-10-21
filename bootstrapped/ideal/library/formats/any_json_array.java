@@ -4,4 +4,4 @@ package ideal.library.formats;
 
 import ideal.library.elements.*;
 
-public interface any_json_array extends any_list<readonly_json_data> { }
+public interface any_json_array extends any_json_data, any_list<Object> { }

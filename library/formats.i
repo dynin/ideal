@@ -9,7 +9,7 @@ package formats {
   implicit import ideal.library.elements;
 
   interface json_data {
-    extends data;
+    extends data, equality_comparable;
   }
 
   supertype_of[integer] interface json_number {
@@ -29,10 +29,12 @@ package formats {
   }
 
   interface json_array {
+    extends json_data;
     extends list[readonly json_data];
   }
 
   interface json_object {
+    extends json_data;
     extends dictionary[string, readonly json_data];
   }
 }

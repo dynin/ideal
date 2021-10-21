@@ -71,6 +71,12 @@ public class parameter_analyzer extends single_pass_analyzer {
     return result;
   }
 
+  // Used by calls to mismatch_reporter
+  private readonly_list<origin> action_origins() {
+    // Java ugliness.
+    return (readonly_list<origin>) (readonly_list) analyzable_parameters;
+  }
+
   @Override
   protected analysis_result do_single_pass_analysis() {
     if (is_logical_operator()) {
@@ -116,24 +122,26 @@ public class parameter_analyzer extends single_pass_analyzer {
           special_name.IMPLICIT_CALL, main_analyzable);
 
       if (implicit_results.is_empty()) {
-        return mismatch_reporter.signal_mismatch(main_action, aparams, get_context(), this);
+        return mismatch_reporter.signal_mismatch(main_action, aparams, action_origins(),
+            get_context(), this);
       }
 
       if (implicit_results.size() > 1) {
-        return mismatch_reporter.signal_not_matching(implicit_results, aparams, get_context(),
-            this);
+        return mismatch_reporter.signal_not_matching(implicit_results, aparams, action_origins(),
+            get_context(), this);
       }
 
       if (implicit_results.size() == 1) {
         action implicit_action = implicit_results.first().combine(main_action, main_analyzable);
         if (!analyzer_utilities.supports_parameters(implicit_action.result(), aparams,
             get_context())) {
-          return mismatch_reporter.signal_mismatch(implicit_action, aparams, get_context(),
-            this);
+          return mismatch_reporter.signal_mismatch(implicit_action, aparams, action_origins(),
+              get_context(), this);
         }
         main_action = implicit_action;
       } else {
-        return mismatch_reporter.signal_mismatch(main_action, aparams, get_context(), this);
+        return mismatch_reporter.signal_mismatch(main_action, aparams, action_origins(),
+            get_context(), this);
       }
     }
 

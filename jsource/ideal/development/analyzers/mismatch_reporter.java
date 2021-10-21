@@ -44,7 +44,8 @@ public class mismatch_reporter {
   }
 
   static error_signal signal_not_matching(readonly_list<action> candidates,
-      action_parameters the_action_parameters, action_context context, origin source) {
+      action_parameters the_action_parameters, readonly_list<origin> action_origins,
+      action_context context, origin the_origin) {
 
     //dump_dependencies(context.type_graph());
     assert candidates.is_not_empty();
@@ -55,28 +56,29 @@ public class mismatch_reporter {
     if (filtered_candidates.is_empty()) {
       return new error_signal(new base_notification(
           new base_string("Can't find declarations with matching arity"),
-          source, notification_utilities.to_notifications(candidates, printer)), false);
+          the_origin, notification_utilities.to_notifications(candidates, printer)), false);
     }
 
     if (filtered_candidates.size() > 1) {
       notification no_matching = new base_notification(
           new base_string("Can't find matching declaration for " +
               print_parameters(the_action_parameters) + " parameters"),
-          source, notification_utilities.to_notifications(filtered_candidates, printer));
+          the_origin, notification_utilities.to_notifications(filtered_candidates, printer));
       return new error_signal(no_matching, false);
     }
 
     assert filtered_candidates.size() == 1;
-    return signal_mismatch(filtered_candidates.first(), the_action_parameters, context, source);
+    return signal_mismatch(filtered_candidates.first(), the_action_parameters, action_origins,
+        context, the_origin);
   }
 
   static error_signal signal_mismatch(action candidate, action_parameters the_action_parameters,
-      action_context context, origin source) {
+      readonly_list<origin> action_origins, action_context context, origin the_origin) {
 
     type failed_procedure_type = candidate.result().type_bound();
     if (!common_types.is_procedure_type(failed_procedure_type)) {
       return new error_signal(new base_string(messages.expression_not_parametrizable + ": " +
-          printer.print_value(failed_procedure_type)), source);
+          printer.print_value(failed_procedure_type)), the_origin);
     }
 
     assert common_types.is_procedure_type(failed_procedure_type);
@@ -86,7 +88,7 @@ public class mismatch_reporter {
     if (!common_types.is_valid_procedure_arity(failed_procedure_type,
         supplied_arguments.size())) {
       return new error_signal(new base_string(supplied_arguments.size() +
-          " parameter(s) not supported"), source);
+          " parameter(s) not supported"), the_origin);
     }
 
     for (int i = 0; i < supplied_arguments.size(); ++i) {
@@ -96,17 +98,23 @@ public class mismatch_reporter {
           failed_procedure_type, i).type_bound();
 
       if (!context.can_promote(supplied_action, declared_type)) {
+        origin action_origin;
+        if (action_origins != null && i < action_origins.size()) {
+          action_origin = action_origins.get(i);
+        } else {
+          action_origin = the_origin;
+        }
         return new error_signal(new base_string("Argument #" + i + ": expected " +
             printer.print_value(declared_type) + ", found " +
             printer.print_value(supplied_value)),
-            supplied_action);
+            action_origin);
         // TODO: origin that highlights argument while showing the full expression
         // TODO: continue and report other arg mismatches
       }
     }
 
     // This should never happen.
-    new base_notification(new base_string("All arguments appear to match"), source).report();
+    new base_notification(new base_string("All arguments appear to match"), the_origin).report();
     for (int i = 0; i < supplied_arguments.size(); ++i) {
       abstract_value supplied_value = supplied_arguments.get(i).result();
       type declared_type = common_types.get_procedure_argument(
@@ -118,7 +126,7 @@ public class mismatch_reporter {
     }
 
     utilities.panic("Unexpected: all procedure arguments match...");
-    return new error_signal(new base_string("Bad arguments " + failed_procedure_type), source);
+    return new error_signal(new base_string("Bad arguments " + failed_procedure_type), the_origin);
   }
 
   static error_signal signal_lookup_failure(action_name the_name, type from_type,

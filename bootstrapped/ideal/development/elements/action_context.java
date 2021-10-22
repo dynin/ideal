@@ -5,8 +5,6 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.graphs.graph;
 
-import javax.annotation.Nullable;
-
 public interface action_context extends readonly_action_context, writeonly_action_context {
   readonly_list<action> lookup(type from, action_name name);
   void add(type from, action_name name, action the_action);
@@ -15,6 +13,6 @@ public interface action_context extends readonly_action_context, writeonly_actio
   boolean can_promote(action from, type target_type);
   action to_value(action expression, origin the_origin);
   boolean is_subtype_of(abstract_value the_value, type the_type);
-  @Nullable type find_supertype_procedure(abstract_value the_value);
+  readonly_set<type> find_supertype_procedure(type the_type);
   action promote(action from, type target_type, origin pos);
 }

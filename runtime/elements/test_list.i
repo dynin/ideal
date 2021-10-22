@@ -21,6 +21,56 @@ test_suite test_list {
     -- TODO: test exception throwing on out-of-bounds
   }
 
+  test_case test_singleton_collection() {
+    strings : singleton_collection[string].new("foo");
+
+    assert !strings.is_empty;
+    assert strings.is_not_empty;
+    assert strings.size == 1;
+
+    assert strings.first == "foo";
+    assert strings.last == "foo";
+    assert strings.contains("foo");
+    assert !strings.contains("bar");
+    assert strings[0] == "foo";
+
+    strings_elements : strings.elements;
+    assert strings_elements.size == 1;
+    assert strings_elements[0] == "foo";
+
+    strings_copy : strings.frozen_copy();
+    assert strings_copy.size == 1;
+    assert strings_copy[0] == "foo";
+
+    skip0 : strings.skip(0);
+    assert skip0.size == 1;
+    assert skip0[0] == "foo";
+
+    skip1 : strings.skip(1);
+    assert skip1.size == 0;
+    assert skip1.is_empty;
+
+    slice0 : strings.slice(0, 0);
+    assert slice0.is_empty;
+    assert slice0.size == 0;
+
+    slice1 : strings.slice(1, 1);
+    assert slice1.is_empty;
+    assert slice1.size == 0;
+
+    slice01 : strings.slice(0, 1);
+    assert slice01.is_not_empty;
+    assert slice01.size == 1;
+    assert slice01[0] == "foo";
+
+    strings.reverse();
+    assert strings.is_not_empty;
+    assert strings.size == 1;
+    assert strings[0] == "foo";
+
+    -- TODO: test exception throwing on out-of-bounds
+  }
+
   test_case test_simple_list() {
     strings : base_list[string].new();
 

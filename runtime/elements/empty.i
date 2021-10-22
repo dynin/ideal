@@ -9,7 +9,7 @@ class empty[value element_type] {
   implements immutable list[element_type];
   implements immutable set[element_type];
 
-  public empty() { }
+  empty() { }
 
   implement nonnegative size => 0;
 

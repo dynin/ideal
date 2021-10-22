@@ -177,43 +177,36 @@ public class base_semantics implements language_settings {
   }
 
   @Nullable
-  public type find_supertype_procedure(action_table actions, abstract_value the_value) {
-    type subtype = the_value.type_bound();
-
+  public readonly_set<type> find_supertype_procedure(action_table actions, type subtype) {
     if (common_types.is_procedure_type(subtype)) {
-      return subtype;
+      return new singleton_collection(subtype);
     }
 
     if (type_utilities.is_union(subtype)) {
       immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(subtype);
       for (int i = 0; i < parameters.size(); ++i) {
-        if (find_supertype_procedure(actions, parameters.get(i)) == null) {
-          return null;
+        readonly_set<type> supertypes =
+            find_supertype_procedure(actions, parameters.get(i).type_bound());
+        if (supertypes.is_empty()) {
+          return supertypes;
         }
       }
-      return subtype;
+      return new singleton_collection(subtype);
     }
 
     supertype_set supertypes = supertype_set.make(subtype, actions);
 
     // TODO: use filter.
     immutable_list<type> supertypes_list = supertypes.type_list();
-    list<type> candidates = new base_list<type>();
+    set<type> candidates = new hash_set<type>();
     for (int i = 0; i < supertypes_list.size(); ++i) {
       type candidate = supertypes_list.get(i);
       if (common_types.is_procedure_type(candidate)) {
-        candidates.append(candidate);
+        candidates.add(candidate);
       }
     }
 
-    if (candidates.size() > 1) {
-      // TODO: unexpected--can just return null here...
-      utilities.panic("Too many supertypes");
-    } else if (candidates.size() == 1) {
-      return candidates.first();
-    }
-
-    return null;
+    return candidates;
   }
 
   @Nullable

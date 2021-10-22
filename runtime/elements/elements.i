@@ -11,6 +11,7 @@ namespace elements {
   interface has_equivalence;
 
   class empty;
+  class singleton_collection;
 
   --- Base readonly list
   class base_readonly_list;

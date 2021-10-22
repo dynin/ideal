@@ -483,10 +483,12 @@ public class analyzer_utilities {
       return ((procedure_value) the_value).supports_parameters(parameters, the_context);
     }
 
-    type procedure_type = the_context.find_supertype_procedure(the_value);
-    if (procedure_type == null) {
+    readonly_set<type> procedures = the_context.find_supertype_procedure(the_type);
+    if (procedures.size() != 1) {
+      // TODO: signal error if ambiguous result
       return false;
     }
+    type procedure_type = procedures.elements().first();
     principal_type procedure_principal = procedure_type.principal();
     assert procedure_principal.get_kind() == type_kinds.procedure_kind;
     if (! (procedure_principal instanceof parametrized_type)) {
@@ -548,8 +550,9 @@ public class analyzer_utilities {
       return ((procedure_value) action_result).bind_parameters(parameters, the_context, the_origin);
     }
 
-    type procedure_type = the_context.find_supertype_procedure(action_result);
-    assert procedure_type != null;
+    readonly_set<type> procedures = the_context.find_supertype_procedure(the_type);
+    assert procedures.size() == 1;
+    type procedure_type = procedures.elements().first();
     assert procedure_type.principal().get_kind() == type_kinds.procedure_kind;
 
     action the_procedure = the_context.promote(the_action, procedure_type, the_origin);

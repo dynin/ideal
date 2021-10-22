@@ -24,7 +24,7 @@ interface action_context {
 
   boolean is_subtype_of(abstract_value the_value, type the_type);
 
-  type or null find_supertype_procedure(abstract_value the_value);
+  readonly set[type] find_supertype_procedure(type the_type);
 
   action promote(action from, type target_type, origin pos);
 

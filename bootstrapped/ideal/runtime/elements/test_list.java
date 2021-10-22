@@ -14,6 +14,43 @@ public class test_list {
     assert !slice.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(slice.size(), 0);
   }
+  public void test_singleton_collection() {
+    final singleton_collection<string> strings = new singleton_collection<string>(new base_string("foo"));
+    assert !strings.is_empty();
+    assert strings.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(strings.size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(strings.first(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("foo"));
+    assert strings.contains(new base_string("foo"));
+    assert !strings.contains(new base_string("bar"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.get(0), new base_string("foo"));
+    final immutable_list<string> strings_elements = strings.elements();
+    assert ideal.machine.elements.runtime_util.values_equal(strings_elements.size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(strings_elements.get(0), new base_string("foo"));
+    final singleton_collection<string> strings_copy = strings.frozen_copy();
+    assert ideal.machine.elements.runtime_util.values_equal(strings_copy.size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(strings_copy.get(0), new base_string("foo"));
+    final immutable_list<string> skip0 = strings.skip(0);
+    assert ideal.machine.elements.runtime_util.values_equal(skip0.size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(skip0.get(0), new base_string("foo"));
+    final immutable_list<string> skip1 = strings.skip(1);
+    assert ideal.machine.elements.runtime_util.values_equal(skip1.size(), 0);
+    assert skip1.is_empty();
+    final immutable_list<string> slice0 = strings.slice(0, 0);
+    assert slice0.is_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(slice0.size(), 0);
+    final immutable_list<string> slice1 = strings.slice(1, 1);
+    assert slice1.is_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(slice1.size(), 0);
+    final immutable_list<string> slice01 = strings.slice(0, 1);
+    assert slice01.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(slice01.size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(slice01.get(0), new base_string("foo"));
+    strings.reverse();
+    assert strings.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(strings.size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(strings.get(0), new base_string("foo"));
+  }
   public void test_simple_list() {
     final base_list<string> strings = new base_list<string>();
     assert strings.is_empty();
@@ -125,6 +162,9 @@ public class test_list {
   public void run_all_tests() {
     ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_empty"));
     this.test_empty();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_singleton_collection"));
+    this.test_singleton_collection();
     ideal.machine.elements.runtime_util.end_test();
     ideal.machine.elements.runtime_util.start_test(new base_string("test_list.test_simple_list"));
     this.test_simple_list();

@@ -32,6 +32,13 @@ public class analyzer_utilities {
 
   private analyzer_utilities() { }
 
+  private static final predicate<type> is_procedure =
+    new predicate<type>() {
+      @Override public Boolean call(type the_type) {
+        return common_types.is_procedure_type(the_type);
+      }
+    };
+
   public static final origin UNINITIALIZED_POSITION =
       new special_origin(new base_string("[uninitialized]"));
 
@@ -483,7 +490,7 @@ public class analyzer_utilities {
       return ((procedure_value) the_value).supports_parameters(parameters, the_context);
     }
 
-    readonly_set<type> procedures = the_context.find_supertype_procedure(the_type);
+    readonly_set<type> procedures = the_context.find_matching_supertype(the_type, is_procedure);
     if (procedures.size() != 1) {
       // TODO: signal error if ambiguous result
       return false;
@@ -550,7 +557,7 @@ public class analyzer_utilities {
       return ((procedure_value) action_result).bind_parameters(parameters, the_context, the_origin);
     }
 
-    readonly_set<type> procedures = the_context.find_supertype_procedure(the_type);
+    readonly_set<type> procedures = the_context.find_matching_supertype(the_type, is_procedure);
     assert procedures.size() == 1;
     type procedure_type = procedures.elements().first();
     assert procedure_type.principal().get_kind() == type_kinds.procedure_kind;

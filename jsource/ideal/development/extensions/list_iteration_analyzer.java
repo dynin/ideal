@@ -29,6 +29,14 @@ import static ideal.development.declarations.annotation_library.*;
 
 public class list_iteration_analyzer extends extension_analyzer implements declaration {
 
+  private static final predicate<type> is_readonly_list =
+    new predicate<type>() {
+      @Override public Boolean call(type the_type) {
+        return common_types.is_list_type(the_type) &&
+               the_type.get_flavor() == flavor.readonly_flavor;
+      }
+    };
+
   private static final action_name BLOCK_NAME =
       new special_name(new base_string("iterate"), new base_string("list_iteration_analyzer"));
   private static simple_name LIST_NAME = simple_name.make("list");
@@ -201,25 +209,18 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     return action_not_error(body);
   }
 
-  private @Nullable type element_type_of_list(type should_be_list_type) {
-    should_be_list_type = should_be_list_type.principal();
-    if (! (should_be_list_type instanceof parametrized_type)) {
-      return null;
+  private @Nullable type element_type_of_list(type the_type) {
+    if (common_types.is_reference_type(the_type)) {
+      the_type = common_types.get_reference_parameter(the_type);
     }
-    parametrized_type pt = (parametrized_type) should_be_list_type;
-    immutable_list<abstract_value> parameters = pt.get_parameters().the_list;
-    if (parameters.size() != 1) {
-      return null;
-    }
-    type param = (type) parameters.first();
-    principal_type master = pt.get_master();
 
-    if (master == common_types.list_type()) {
-      return param;
-    } else if (common_types.is_reference_type(pt)) {
-      return element_type_of_list(param);
-    } else {
+    readonly_set<type> list_types = get_context().find_matching_supertype(the_type,
+        is_readonly_list);
+    if (list_types.size() != 1) {
       return null;
     }
+
+    type list_type = list_types.elements().first();
+    return common_types.get_list_parameter(list_type);
   }
 }

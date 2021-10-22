@@ -87,8 +87,8 @@ public class base_analysis_context extends debuggable implements analysis_contex
   }
 
   @Override
-  public readonly_set<type> find_supertype_procedure(type the_type) {
-    return language.find_supertype_procedure(actions, the_type);
+  public readonly_set<type> find_matching_supertype(type the_type, predicate<type> the_predicate) {
+    return language.find_matching_supertype(actions, the_type, the_predicate);
   }
 
   public @Nullable action find_promotion(action from, type target,

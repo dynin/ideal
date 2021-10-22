@@ -40,7 +40,7 @@ public class flags_utilities {
   private static string normalize(final string the_string) {
     final string_writer result = new string_writer();
     {
-      final readonly_list<Character> c_list = (readonly_list<Character>) the_string;
+      final readonly_list<Character> c_list = the_string;
       for (Integer c_index = 0; c_index < c_list.size(); c_index += 1) {
         final char c = c_list.get(c_index);
         if (c != '-' && c != '_') {

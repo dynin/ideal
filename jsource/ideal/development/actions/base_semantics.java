@@ -177,8 +177,9 @@ public class base_semantics implements language_settings {
   }
 
   @Nullable
-  public readonly_set<type> find_supertype_procedure(action_table actions, type subtype) {
-    if (common_types.is_procedure_type(subtype)) {
+  public readonly_set<type> find_matching_supertype(action_table actions, type subtype,
+      predicate<type> the_predicate) {
+    if (the_predicate.call(subtype)) {
       return new singleton_collection(subtype);
     }
 
@@ -186,7 +187,7 @@ public class base_semantics implements language_settings {
       immutable_list<abstract_value> parameters = type_utilities.get_union_parameters(subtype);
       for (int i = 0; i < parameters.size(); ++i) {
         readonly_set<type> supertypes =
-            find_supertype_procedure(actions, parameters.get(i).type_bound());
+            find_matching_supertype(actions, parameters.get(i).type_bound(), the_predicate);
         if (supertypes.is_empty()) {
           return supertypes;
         }
@@ -201,7 +202,7 @@ public class base_semantics implements language_settings {
     set<type> candidates = new hash_set<type>();
     for (int i = 0; i < supertypes_list.size(); ++i) {
       type candidate = supertypes_list.get(i);
-      if (common_types.is_procedure_type(candidate)) {
+      if (the_predicate.call(candidate)) {
         candidates.add(candidate);
       }
     }

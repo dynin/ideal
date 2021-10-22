@@ -13,6 +13,6 @@ public interface action_context extends readonly_action_context, writeonly_actio
   boolean can_promote(action from, type target_type);
   action to_value(action expression, origin the_origin);
   boolean is_subtype_of(abstract_value the_value, type the_type);
-  readonly_set<type> find_supertype_procedure(type the_type);
+  readonly_set<type> find_matching_supertype(type the_type, predicate<type> the_predicate);
   action promote(action from, type target_type, origin pos);
 }

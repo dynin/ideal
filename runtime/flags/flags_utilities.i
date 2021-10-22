@@ -50,8 +50,7 @@ namespace flags_utilities {
 
   private string normalize(string the_string) {
     result : string_writer.new();
-    -- TODO: cast is redundant.
-    for (c : the_string .> readonly list[character]) {
+    for (c : the_string) {
       if (c != '-' && c != '_') {
         result.write(unicode_handler.instance.to_lower_case(c));
       }

@@ -38,7 +38,7 @@ public class json_printer {
   private void print_string(final string the_string, final string_writer result) {
     result.write('\"');
     {
-      final readonly_list<Character> the_character_list = (immutable_list<Character>) the_string;
+      final readonly_list<Character> the_character_list = the_string;
       for (Integer the_character_index = 0; the_character_index < the_character_list.size(); the_character_index += 1) {
         final char the_character = the_character_list.get(the_character_index);
         if (the_character == '\"' || the_character == '\\' || the_character == '/') {
@@ -68,7 +68,7 @@ public class json_printer {
     result.write(json_token.OPEN_BRACKET.the_character);
     boolean start = true;
     {
-      final readonly_list<Object> element_list = (readonly_list<Object>) the_array;
+      final readonly_list<Object> element_list = the_array;
       for (Integer element_index = 0; element_index < element_list.size(); element_index += 1) {
         final Object element = element_list.get(element_index);
         if (start) {

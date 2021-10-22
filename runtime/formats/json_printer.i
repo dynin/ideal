@@ -41,8 +41,7 @@ class json_printer {
 
   private void print_string(string the_string, string_writer result) {
     result.write('"');
-    -- TODO: cast is redundant
-    for (the_character : the_string .> immutable list[character]) {
+    for (the_character : the_string) {
       if (the_character == '"' ||
           the_character == '\\' ||
           the_character == '/') {
@@ -72,9 +71,8 @@ class json_printer {
   private void print_array(readonly json_array the_array, string_writer result) {
     result.write(json_token.OPEN_BRACKET.the_character);
     var start : true;
-    -- TODO: cast is redundant
     -- TODO: implement list.join()
-    for (element : the_array .> readonly list[readonly json_data]) {
+    for (element : the_array) {
       if (start) {
         start = false;
       } else {

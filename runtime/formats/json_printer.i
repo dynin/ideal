@@ -14,28 +14,28 @@ class json_printer {
     this.the_character_handler = the_character_handler;
   }
 
-  string print(readonly value the_value) {
+  string print(readonly json_data the_json_data) {
     result : string_writer.new();
-    print_value(the_value, result);
+    print_data(the_json_data, result);
     return result.elements();
   }
 
-  private void print_value(readonly value the_value, string_writer result) {
-    if (the_value is string) {
-      print_string(the_value, result);
-    } else if (the_value is integer) {
-      print_integer(the_value, result);
-    } else if (the_value is readonly list[readonly value]) {
-      print_list(the_value, result);
-    } else if (the_value is dictionary[string, readonly value]) {
-      print_dictionary(the_value, result);
-    } else if (the_value is boolean) {
-      print_boolean(the_value, result);
-    } else if (the_value is null) {
+  private void print_data(readonly json_data the_json_data, string_writer result) {
+    if (the_json_data is string) {
+      print_string(the_json_data, result);
+    } else if (the_json_data is integer) {
+      print_integer(the_json_data, result);
+    } else if (the_json_data is readonly json_array) {
+      print_array(the_json_data, result);
+    } else if (the_json_data is readonly json_object) {
+      print_object(the_json_data, result);
+    } else if (the_json_data is boolean) {
+      print_boolean(the_json_data, result);
+    } else if (the_json_data is null) {
       result.write_all("null");
     } else {
       -- TODO: introduce displayable
-      utilities.panic("Unknown JSON value");
+      utilities.panic("Unknown JSON data value");
     }
   }
 
@@ -69,27 +69,27 @@ class json_printer {
     result.write_all(the_integer.to_string);
   }
 
-  private void print_list(readonly list[readonly value] the_list, string_writer result) {
+  private void print_array(readonly json_array the_array, string_writer result) {
     result.write(json_token.OPEN_BRACKET.the_character);
     var start : true;
+    -- TODO: cast is redundant
     -- TODO: implement list.join()
-    for (element : the_list) {
+    for (element : the_array .> readonly list[readonly json_data]) {
       if (start) {
         start = false;
       } else {
         result.write(json_token.COMMA.the_character);
         result.write(' ');
       }
-      print_value(element, result);
+      print_data(element, result);
     }
     result.write(json_token.CLOSE_BRACKET.the_character);
   }
 
-  private void print_dictionary(dictionary[string, readonly value] the_dictionary,
-      string_writer result) {
+  private void print_object(readonly json_object the_object, string_writer result) {
     result.write(json_token.OPEN_BRACE.the_character);
     var start : true;
-    for (element : the_dictionary.elements) {
+    for (element : the_object.elements) {
       if (start) {
         start = false;
       } else {
@@ -99,7 +99,7 @@ class json_printer {
       print_string(element.key, result);
       result.write(json_token.COLON.the_character);
       result.write(' ');
-      print_value(element.value, result);
+      print_data(element.value, result);
     }
     result.write(json_token.CLOSE_BRACE.the_character);
   }

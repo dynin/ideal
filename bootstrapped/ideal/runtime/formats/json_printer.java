@@ -13,26 +13,26 @@ public class json_printer {
   public json_printer(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;
   }
-  public string print(final Object the_value) {
+  public string print(final Object the_json_data) {
     final string_writer result = new string_writer();
-    this.print_value(the_value, result);
+    this.print_data(the_json_data, result);
     return result.elements();
   }
-  private void print_value(final Object the_value, final string_writer result) {
-    if (the_value instanceof string) {
-      this.print_string(((string) the_value), result);
-    } else if (the_value instanceof Integer) {
-      this.print_integer(((Integer) the_value), result);
-    } else if (the_value instanceof readonly_list) {
-      this.print_list(((readonly_list<Object>) the_value), result);
-    } else if (the_value instanceof dictionary) {
-      this.print_dictionary(((dictionary<string, Object>) the_value), result);
-    } else if (the_value instanceof Boolean) {
-      this.print_boolean(((boolean) the_value), result);
-    } else if (the_value == null) {
+  private void print_data(final Object the_json_data, final string_writer result) {
+    if (the_json_data instanceof string) {
+      this.print_string(((string) the_json_data), result);
+    } else if (the_json_data instanceof Integer) {
+      this.print_integer(((Integer) the_json_data), result);
+    } else if (the_json_data instanceof readonly_json_array) {
+      this.print_array(((readonly_json_array) the_json_data), result);
+    } else if (the_json_data instanceof readonly_json_object) {
+      this.print_object(((readonly_json_object) the_json_data), result);
+    } else if (the_json_data instanceof Boolean) {
+      this.print_boolean(((boolean) the_json_data), result);
+    } else if (the_json_data == null) {
       result.write_all(new base_string("null"));
     } else {
-      utilities.panic(new base_string("Unknown JSON value"));
+      utilities.panic(new base_string("Unknown JSON data value"));
     }
   }
   private void print_string(final string the_string, final string_writer result) {
@@ -64,11 +64,11 @@ public class json_printer {
   private void print_integer(final Integer the_integer, final string_writer result) {
     result.write_all(ideal.machine.elements.runtime_util.int_to_string(the_integer));
   }
-  private void print_list(final readonly_list<Object> the_list, final string_writer result) {
+  private void print_array(final readonly_json_array the_array, final string_writer result) {
     result.write(json_token.OPEN_BRACKET.the_character);
     boolean start = true;
     {
-      final readonly_list<Object> element_list = the_list;
+      final readonly_list<Object> element_list = (readonly_list<Object>) the_array;
       for (Integer element_index = 0; element_index < element_list.size(); element_index += 1) {
         final Object element = element_list.get(element_index);
         if (start) {
@@ -77,16 +77,16 @@ public class json_printer {
           result.write(json_token.COMMA.the_character);
           result.write(' ');
         }
-        this.print_value(element, result);
+        this.print_data(element, result);
       }
     }
     result.write(json_token.CLOSE_BRACKET.the_character);
   }
-  private void print_dictionary(final dictionary<string, Object> the_dictionary, final string_writer result) {
+  private void print_object(final readonly_json_object the_object, final string_writer result) {
     result.write(json_token.OPEN_BRACE.the_character);
     boolean start = true;
     {
-      final readonly_list<dictionary.entry<string, Object>> element_list = the_dictionary.elements();
+      final readonly_list<dictionary.entry<string, Object>> element_list = the_object.elements();
       for (Integer element_index = 0; element_index < element_list.size(); element_index += 1) {
         final dictionary.entry<string, Object> element = element_list.get(element_index);
         if (start) {
@@ -98,7 +98,7 @@ public class json_printer {
         this.print_string(element.key(), result);
         result.write(json_token.COLON.the_character);
         result.write(' ');
-        this.print_value(element.value(), result);
+        this.print_data(element.value(), result);
       }
     }
     result.write(json_token.CLOSE_BRACE.the_character);

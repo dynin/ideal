@@ -20,22 +20,25 @@ test_suite test_json_printer {
     json1 : printer.print(68);
     assert json1 == "68";
 
-    json2 : printer.print([ 42, 68 ]);
+    json_array array : json_array_impl.new();
+    -- TODO: cast should be redundant
+    array.append_all([ 42, 68 ] .> readonly list[readonly json_data]);
+    json2 : printer.print(array);
     assert json2 == "[42, 68]";
 
     json3 : printer.print(missing.instance);
     assert json3 == "null";
 
-    the_dictionary : list_dictionary[string, readonly value].new();
-    the_dictionary.put("foo", "bar");
-    the_dictionary.put("baz", 68);
-    json4 : printer.print(the_dictionary);
+    json_object the_object : json_object_list.new();
+    the_object.put("foo", "bar");
+    the_object.put("baz", 68);
+    json4 : printer.print(the_object);
     assert json4 == "{\"foo\": \"bar\", \"baz\": 68}";
 
-    the_dictionary2 : list_dictionary[string, readonly value].new();
-    the_dictionary2.put("foo", false);
-    the_dictionary2.put("bar", true);
-    json5 : printer.print(the_dictionary2);
+    json_object the_object2 : json_object_list.new();
+    the_object2.put("foo", false);
+    the_object2.put("bar", true);
+    json5 : printer.print(the_object2);
     assert json5 == "{\"foo\": false, \"bar\": true}";
   }
 }

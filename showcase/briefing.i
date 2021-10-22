@@ -6,6 +6,7 @@
 
 program briefing {
   implicit import ideal.library.resources;
+  implicit import ideal.library.formats;
   implicit import ideal.library.texts;
   implicit import ideal.library.calendars;
   implicit import ideal.runtime.elements;
@@ -68,16 +69,17 @@ program briefing {
 
     readonly list[item_id] id_list(resource_identifier list_resource) {
       content : list_resource.access_string(missing.instance).content;
-      json_list : parser.parse(content) !> readonly list[readonly value];
+      the_json_array : parser.parse(content) !> json_array;
       result : base_list[item_id].new();
-      for (number_id : json_list) {
+      -- TODO: cast is redudnant
+      for (number_id : the_json_array .> readonly list[readonly json_data]) {
         result.append(item_id.new(number_id !> nonnegative));
       }
       return result;
     }
 
     string as_string(readonly list[item_id] item_ids) {
-      id_numbers : base_list[readonly value].new();
+      id_numbers : json_array_impl.new();
       for (the_id : item_ids) {
         id_numbers.append(the_id.id);
       }
@@ -101,7 +103,7 @@ program briefing {
     }
 
     item parse_item(item_id id, string json) {
-      item_dictionary : parser.parse(json) !> dictionary[string, readonly value];
+      item_dictionary : parser.parse(json) !> readonly json_object;
 
       by : item_dictionary.get("by") !> string;
       time : item_dictionary.get("time") !> nonnegative;

@@ -238,7 +238,7 @@ package elements {
   concept equivalence_with_hash[contravariant value element] {
     subtypes equivalence_relation[element];
     -- TODO: instead of returning integer, have a type declaration.
-    integer hash(element the_element) pure;
+    integer hash(the element) pure;
   }
 
   --- Order defined by a relation that is transitive, antisymmetric, and total.
@@ -266,13 +266,12 @@ package elements {
     immutable list[element] elements readonly;
 
     --- Check whether the collection has at least one element that satisfies the predicate.
-    not_yet_implemented boolean has(predicate[element] the_predicate) pure;
-    not_yet_implemented nonnegative count(predicate[element] the_predicate) pure;
-    not_yet_implemented readonly collection[element] filter(predicate[element] the_predicate) pure;
-    not_yet_implemented readonly list[element] order_by(order[element] the_order) pure;
-    not_yet_implemented immutable collection[element]
-        filter(predicate[element] the_predicate) immutable pure;
-    not_yet_implemented void remove(predicate[element] the_predicate);
+    not_yet_implemented boolean has(the predicate[element]) pure;
+    not_yet_implemented nonnegative count(the predicate[element]) pure;
+    not_yet_implemented readonly collection[element] filter(the predicate[element]) pure;
+    not_yet_implemented readonly list[element] order_by(the order[element]) pure;
+    not_yet_implemented immutable collection[element] filter(the predicate[element]) immutable pure;
+    not_yet_implemented void remove(the predicate[element]);
 
     void clear() writeonly;
   }
@@ -295,13 +294,13 @@ package elements {
     --- Assumes the list is not empty.
     element last readonly;
 
-    void append(element the_element);
-    void append_all(readonly list[element] the_list);
-    void prepend(element the_element);
+    void append(the element);
+    void append_all(the readonly list[element]);
+    void prepend(the element);
 
-    not_yet_implemented void prepend_all(readonly list[element] the_list);
-    not_yet_implemented void insert(nonnegative index, element the_element);
-    not_yet_implemented void insert_all(nonnegative index, readonly list[element] the_list);
+    not_yet_implemented void prepend_all(the readonly list[element]);
+    not_yet_implemented void insert(nonnegative index, the element);
+    not_yet_implemented void insert_all(nonnegative index, the readonly list[element]);
     not_yet_implemented element remove_at(nonnegative index);
 
     element remove_last();
@@ -326,10 +325,10 @@ package elements {
 
     --- Check whether the list has at least one element that satisfies the predicate.
     -- TODO: implement this for all collections.
-    boolean has(predicate[element] the_predicate) pure;
+    boolean has(the predicate[element]) pure;
 
     --- Sort the list in place using the given sort order.
-    void sort(order[element] the_order);
+    void sort(the order[element]);
   }
 
   --- A half-open range of nonnegative integers.
@@ -353,11 +352,11 @@ package elements {
   interface set[combivariant value element] {
     subtypes collection[element];
 
-    boolean contains(element the_element) pure;
+    boolean contains(the element) pure;
 
-    void add(element the_element);
-    void add_all(readonly collection[element] the_collection);
-    boolean remove(element the_element);
+    void add(the element);
+    void add_all(the readonly collection[element]);
+    boolean remove(the element);
 
     -- TODO: this should be in data
     not_yet_implemented set[element] copy() pure;
@@ -373,9 +372,9 @@ package elements {
     immutable subtypes immutable list[element], immutable set[element];
     deeply_immutable subtypes deeply_immutable list[element], deeply_immutable set[element];
 
-    void append(element the_element);
-    void append_all(readonly list[element] the_list);
-    void prepend(element the_element);
+    void append(the element);
+    void append_all(the readonly list[element]);
+    void prepend(the element);
 
     immutable ordered_set[element] frozen_copy() pure;
 

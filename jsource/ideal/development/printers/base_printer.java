@@ -275,15 +275,23 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_documentation(c.annotations, c));
     fragments.append(print_modifiers(c.annotations, true));
 
-    if (c.variable_type != null && print_variable_types()) {
-      fragments.append(print(c.variable_type));
-      fragments.append(print_space());
-    }
+    if (c.name != null) {
+      if (c.variable_type != null && print_variable_types()) {
+        fragments.append(print(c.variable_type));
+        fragments.append(print_space());
+      }
 
-    text_fragment var_name = print_action_name(c.name);
-    var_name = wrap_with_span_id(var_name, c);
-    fragments.append(styles.wrap(styles.var_declaration_name_style,
-        make_declaration_link(var_name, c)));
+      text_fragment var_name = print_action_name(c.name);
+      var_name = wrap_with_span_id(var_name, c);
+      fragments.append(styles.wrap(styles.var_declaration_name_style,
+          make_declaration_link(var_name, c)));
+    } else {
+      assert c.variable_type != null;
+      text_fragment type_fragment = print(c.variable_type);
+      type_fragment = wrap_with_span_id(type_fragment, c);
+      fragments.append(styles.wrap(styles.var_declaration_name_style,
+          make_declaration_link(type_fragment, c)));
+    }
 
     fragments.append(print_modifiers(c.post_annotations, false));
 

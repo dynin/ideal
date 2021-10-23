@@ -13,6 +13,7 @@ public class general_modifier {
   public static final modifier_kind final_modifier = new base_modifier_kind(new base_string("final"));
   public static final modifier_kind pure_modifier = new base_modifier_kind(new base_string("pure"));
   public static final modifier_kind var_modifier = new base_modifier_kind(new base_string("var"));
+  public static final modifier_kind the_modifier = new base_modifier_kind(new base_string("the"));
   public static final modifier_kind abstract_modifier = new base_modifier_kind(new base_string("abstract"));
   public static final modifier_kind implicit_modifier = new base_modifier_kind(new base_string("implicit"));
   public static final modifier_kind explicit_modifier = new base_modifier_kind(new base_string("explicit"));

@@ -13,6 +13,7 @@ namespace general_modifier {
   modifier_kind pure_modifier : base_modifier_kind.new("pure");
 
   modifier_kind var_modifier : base_modifier_kind.new("var");
+  modifier_kind the_modifier : base_modifier_kind.new("the");
   modifier_kind abstract_modifier : base_modifier_kind.new("abstract");
   modifier_kind implicit_modifier : base_modifier_kind.new("implicit");
   modifier_kind explicit_modifier : base_modifier_kind.new("explicit");

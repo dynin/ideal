@@ -260,7 +260,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     return fragment;
   }
 
-  private action_name name_of_construct(construct the_construct) {
+  private action_name name_of_construct(construct the_construct,
+      @Nullable declaration the_declaration) {
     if (the_construct instanceof name_construct) {
       return ((name_construct) the_construct).the_name;
     } else if (the_construct instanceof resolve_construct) {
@@ -270,16 +271,27 @@ public class naming_strategy extends debuggable implements printer_assistant, im
     } else if (the_construct instanceof type_announcement_construct) {
       return ((type_announcement_construct) the_construct).name;
     } else if (the_construct instanceof variable_construct) {
-      return ((variable_construct) the_construct).name;
+      variable_construct the_variable_construct = (variable_construct) the_construct;
+      if (the_variable_construct.name != null) {
+        return the_variable_construct.name;
+      } else {
+        assert the_declaration != null;
+        // TODO: move short_name up to declaration
+        if (the_declaration instanceof variable_declaration) {
+          return ((variable_declaration) the_declaration).short_name();
+        } else if (the_declaration instanceof procedure_declaration) {
+          return ((procedure_declaration) the_declaration).short_name();
+        }
+      }
     } else if (the_construct instanceof procedure_construct) {
       return ((procedure_construct) the_construct).name;
-    } else {
-      utilities.panic("Unknown construct " + the_construct);
-      return null;
     }
+
+    utilities.panic("Unknown construct " + the_construct);
+    return null;
   }
 
-  public string add_fragment(construct the_construct) {
+  public string add_fragment(construct the_construct, @Nullable declaration the_declaration) {
     @Nullable string fragment = fragments.get(the_construct);
     assert fragment == null;
 
@@ -287,7 +299,10 @@ public class naming_strategy extends debuggable implements printer_assistant, im
       System.out.println("FRAG " + current_type + " C " + the_construct);
     }
 
-    action_name name = name_of_construct(the_construct);
+    action_name name = name_of_construct(the_construct, the_declaration);
+    if (name == null) {
+      utilities.panic("No name for " + the_construct);
+    }
 
     if (name instanceof special_name) {
       // TODO: handle special names such as super and new
@@ -321,6 +336,7 @@ public class naming_strategy extends debuggable implements printer_assistant, im
   }
 
   private string name_to_id(action_name the_action_name) {
+    assert the_action_name != null;
     return printer_util.dash_renderer.call((simple_name) the_action_name);
   }
 

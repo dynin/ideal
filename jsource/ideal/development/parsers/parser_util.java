@@ -24,11 +24,23 @@ public class parser_util {
 
   public static origin empty_origin = new special_origin(new base_string("empty"));
 
+  public static construct maybe_variable(readonly_list<annotation_construct> annotations,
+      construct expression, origin the_origin) {
+    if (annotations.is_not_empty()) {
+      return new variable_construct(annotations, expression, null,
+          new empty<annotation_construct>(), null, the_origin);
+    } else {
+      return expression;
+    }
+  }
+
+  /*
   public static void ensure_empty(readonly_list<annotation_construct> seq) {
     if (seq.is_not_empty()) {
       new base_notification(messages.unexpected_modifier, seq.first()).report();
     }
   }
+  */
 
   public static construct expr_or_ctor(list<annotation_construct> annotations, construct expression,
       @Nullable construct body) {

@@ -32,7 +32,7 @@ public class variable_analyzer extends declaration_analyzer
 
   private final @Nullable readonly_list<annotation_construct> variable_annotations;
   private final @Nullable analyzable variable_type;
-  private final action_name name;
+  private @Nullable action_name name;
   private final @Nullable readonly_list<annotation_construct> post_annotations;
   private final @Nullable analyzable init;
   private @Nullable variable_category category;
@@ -77,6 +77,7 @@ public class variable_analyzer extends declaration_analyzer
 
   @Override
   public action_name short_name() {
+    assert name != null;
     return name;
   }
 
@@ -133,9 +134,6 @@ public class variable_analyzer extends declaration_analyzer
   @Override
   protected signal do_multi_pass_analysis(analysis_pass pass) {
     if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
-      // TODO: signal error
-      assert short_name() instanceof simple_name;
-
       // TODO: select default access modifier based on the frame
       if (variable_annotations != null || post_annotations != null) {
         list<annotation_construct> joined_annotations = new base_list<annotation_construct>();
@@ -148,6 +146,28 @@ public class variable_analyzer extends declaration_analyzer
         // TODO: if not specified, inherit access modifier from the overriden method
         process_annotations(joined_annotations,
             settings().get_default_variable_access(outer_kind()));
+      }
+
+      if (name != null) {
+        // TODO: signal error
+        assert short_name() instanceof simple_name;
+        if (annotations().has(general_modifier.the_modifier)) {
+          return new error_signal(
+             new base_string("Both modifier 'the' and name present"), this);
+        }
+      } else {
+        if (!annotations().has(general_modifier.the_modifier)) {
+          return new error_signal(
+             new base_string("Both modifier 'the' and name absent"), this);
+        }
+        // TODO: signal error
+        assert variable_type != null;
+        simple_name the_simple_name = infer_name(variable_type);
+        if (the_simple_name == null) {
+          return new error_signal(
+             new base_string("Can't infer variable name"), variable_type);
+        }
+        name = name_utilities.join(general_modifier.the_modifier.name(), the_simple_name);
       }
 
       if (outer_kind() == type_kinds.block_kind) {
@@ -178,6 +198,21 @@ public class variable_analyzer extends declaration_analyzer
     }
 
     return ok_signal.instance;
+  }
+
+  private @Nullable simple_name infer_name(analyzable the_analyzable) {
+    if (the_analyzable instanceof resolve_analyzer) {
+      action_name the_action_name = ((resolve_analyzer) the_analyzable).short_name();
+      if (the_action_name instanceof simple_name) {
+        return (simple_name) the_action_name;
+      }
+    } else if (the_analyzable instanceof parameter_analyzer) {
+      return infer_name(((parameter_analyzer) the_analyzable).main_analyzable);
+    } else if (the_analyzable instanceof flavor_analyzer) {
+      return infer_name(((flavor_analyzer) the_analyzable).expression);
+    }
+
+    return null;
   }
 
   private void set_init() {
@@ -370,6 +405,6 @@ public class variable_analyzer extends declaration_analyzer
   @Override
   public string to_string() {
     return utilities.describe(this, new base_string(parent_name(), ".",
-        short_name().to_string()));
+        name != null ?  name.to_string() : new base_string("<noname>")));
   }
 }

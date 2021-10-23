@@ -11,15 +11,15 @@ package characters {
   interface character_handler {
     extends deeply_immutable data;
 
-    boolean is_letter(character the_character) pure;
-    boolean is_letter_or_digit(character the_character) pure;
-    boolean is_whitespace(character the_character) pure;
-    boolean is_upper_case(character the_character) pure;
-    boolean is_digit(character the_character) pure;
+    boolean is_letter(the character) pure;
+    boolean is_letter_or_digit(the character) pure;
+    boolean is_whitespace(the character) pure;
+    boolean is_upper_case(the character) pure;
+    boolean is_digit(the character) pure;
 
-    nonnegative or null from_digit(character the_character, nonnegative radix) pure;
+    nonnegative or null from_digit(the character, nonnegative radix) pure;
 
-    character to_lower_case(character the_character);
+    character to_lower_case(the character);
 
     character from_code(nonnegative code);
   }

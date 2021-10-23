@@ -163,7 +163,7 @@ public class populate_xref extends construct_visitor<Void> implements value {
   public void populate_name(construct c) {
     @Nullable analyzable the_analyzable = the_xref_context.get_analyzable(c);
     if (the_analyzable == null || the_analyzable.has_errors() || the_xref_context.is_ignorable(c)) {
-      add_fragment(c);
+      the_xref_context.get_naming_strategy(current_type).add_fragment(c, null);
       return;
     }
 
@@ -185,12 +185,8 @@ public class populate_xref extends construct_visitor<Void> implements value {
   }
 
   private void add_xref(declaration the_declaration, xref_mode mode, construct the_construct) {
-    add_fragment(the_construct);
+    the_xref_context.get_naming_strategy(current_type).add_fragment(the_construct, the_declaration);
     the_xref_context.add(the_declaration, mode, the_construct);
-  }
-
-  private void add_fragment(construct the_construct) {
-    the_xref_context.get_naming_strategy(current_type).add_fragment(the_construct);
   }
 
   @Override

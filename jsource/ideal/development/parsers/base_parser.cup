@@ -250,8 +250,8 @@ block_statement ::=
         ;
 
 variable_or_expression_opt ::=
-                annotations_opt:m expression_opt:e     // annotations are an artifact of grammar
-                {: parser_util.ensure_empty(m); RESULT = e; :}
+                annotations_opt:m expression_opt:e
+                {: RESULT = parser_util.maybe_variable(m, e, e); :}
         |       variable_declaration:v
                 {: RESULT = v; :}
         ;
@@ -335,8 +335,8 @@ parameter_list_opt ::=
         ;
 
 parameter ::=
-                annotations_opt:m expression:e     // annotations are an artifact of grammar
-                {: parser_util.ensure_empty(m); RESULT = e; :}
+                annotations_opt:m expression:e
+                {: RESULT = parser_util.maybe_variable(m, e, e); :}
         |       annotations_opt:m expression:t name:n post_annotations_opt:pm COLON expression:e
                 {: RESULT = new variable_construct(m, t, n.the_name, pm, e,
                     new fragment_origin(t, n, e)); :}

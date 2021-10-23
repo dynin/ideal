@@ -64,6 +64,10 @@ public abstract class multi_pass_analyzer<C extends origin> extends base_analyze
       in_progress = true;
       int start = last_pass.ordinal() + 1;
       for (int pass_index = start; pass_index <= pass.ordinal(); ++pass_index) {
+        if (last_error != null) {
+          break;
+        }
+
         analysis_pass current_pass = analysis_pass.values()[pass_index];
 
         signal current_signal = do_multi_pass_analysis(current_pass);

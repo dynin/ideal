@@ -122,6 +122,10 @@ public class analyzer_utilities {
   }
 
   public static boolean has_overriden(variable_declaration the_variable) {
+    if (the_variable.has_errors()) {
+      return false;
+    }
+
     return the_variable.get_category() == variable_category.INSTANCE &&
         (the_variable.annotations().has(general_modifier.override_modifier) ||
          the_variable.annotations().has(general_modifier.implement_modifier));

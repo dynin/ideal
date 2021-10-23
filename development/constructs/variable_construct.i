@@ -7,7 +7,7 @@
 meta_construct class variable_construct {
   readonly list[annotation_construct] annotations;
   construct or null variable_type;
-  action_name name;
+  action_name or null name;
   readonly list[annotation_construct] post_annotations;
   construct or null init;
 

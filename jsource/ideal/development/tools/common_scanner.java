@@ -134,6 +134,7 @@ public class common_scanner extends base_scanner_config {
     add_modifier(general_modifier.explicit_modifier);
 
     add_modifier(general_modifier.var_modifier);
+    add_modifier(general_modifier.the_modifier);
     add_modifier(general_modifier.pure_modifier);
 
     add_modifier(general_modifier.mutable_var_modifier);

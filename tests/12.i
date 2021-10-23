@@ -149,10 +149,10 @@ class X {
 
   var string get_string => "foo";
 
-  void test_types() {
+  void test_types(the string) {
     b : X.new();
     foo_value = true;
-    this.foo_value = "abc";
+    this.foo_value = "abc" ++ the_string;
     string foo_string : foo_value;
     println(get_string);
   }

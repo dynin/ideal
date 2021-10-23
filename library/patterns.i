@@ -14,18 +14,18 @@ package patterns {
     extends predicate[readonly list[element_type]];
 
     --- Check whether the given list can be a start of the sequence that matches this pattern.
-    boolean is_viable_prefix(readonly list[element_type] the_list);
+    boolean is_viable_prefix(the readonly list[element_type]);
 
     --- Returns the maximum number of the elements of a given list that matches the pattern,
     --- or |null| if there is no prefix match.
     --- This is a greedy match: it mtaches the longest prefix.
-    nonnegative or null match_prefix(readonly list[element_type] the_list);
+    nonnegative or null match_prefix(the readonly list[element_type]);
 
     --- Gets the first non-empty match for this pattern.
     -- TODO: default null for start_index
-    range or null find_first(readonly list[element_type] the_list, nonnegative start_index);
+    range or null find_first(the readonly list[element_type], nonnegative start_index);
 
-    immutable list[immutable list[element_type]] split(immutable list[element_type] the_list);
+    immutable list[immutable list[element_type]] split(the immutable list[element_type]);
   }
 
   --- A reversible_pattern is a pattern that can be matched end-to-start.
@@ -35,9 +35,9 @@ package patterns {
     --- Gets the last non-empty match in the end-to-start direction.
     --- When |end_index| is specified, it defines the element index after the last element
     --- index after the one being matched.  If |end_index| is null, it defaults to
-    --- |the_list.size|.
+    --- the size of the list.
     -- TODO: default null for end_index
-    range or null find_last(readonly list[element_type] the_list, nonnegative or null end_index);
+    range or null find_last(the readonly list[element_type], nonnegative or null end_index);
   }
 
   --- A matcher is a pattern with an associated parse procedure that generates a result.
@@ -46,6 +46,6 @@ package patterns {
 
     --- Parse the list and produce a result.
     --- Assumes this pattern matches the list.
-    result_type parse(readonly list[element_type] the_list);
+    result_type parse(the readonly list[element_type]);
   }
 }

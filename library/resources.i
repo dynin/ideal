@@ -7,6 +7,7 @@
 --- Declarations for resources, resource catalogs and resource identifiers.
 package resources {
   implicit import ideal.library.elements;
+  import ideal.library.formats.json_data;
 
   interface resource[value content_type] {
     extends value, stringable;
@@ -31,6 +32,7 @@ package resources {
     boolean exists() pure;
 
     resource[string] access_string(access_option or null options);
+    resource[readonly json_data] access_json_data(access_option or null options);
     resource_catalog access_catalog();
   }
 

@@ -3,6 +3,7 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 public interface readonly_resource_catalog extends readonly_resource<dictionary<string, resource_identifier>>, any_resource_catalog {
   resource_identifier get_id();

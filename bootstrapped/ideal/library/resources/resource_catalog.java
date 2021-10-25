@@ -3,5 +3,6 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 public interface resource_catalog extends resource<dictionary<string, resource_identifier>>, readonly_resource_catalog, writeonly_resource_catalog { }

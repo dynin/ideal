@@ -3,5 +3,6 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 public interface immutable_resource<content_type> extends immutable_value, immutable_stringable, readonly_resource<content_type> { }

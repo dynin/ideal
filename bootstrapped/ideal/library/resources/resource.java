@@ -3,6 +3,7 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 public interface resource<content_type> extends value, stringable, readonly_resource<content_type>, writeonly_resource<content_type> {
   reference<content_type> content();

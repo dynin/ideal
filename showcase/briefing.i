@@ -60,30 +60,29 @@ program briefing {
   namespace hacker_news {
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
     item_page_url_prefix : "https://news.ycombinator.com/item?id=";
-    parser : json_parser.new(unicode_handler.instance);
-    printer : json_printer.new(unicode_handler.instance);
     -- Minimum host length for which the www stripping is performed.
     www_stripping_threshold : 7;
     www_prefix_pattern : list_pattern[character].new("www.");
     slash_pattern : singleton_pattern[character].new('/');
 
     readonly list[item_id] id_list(resource_identifier list_resource) {
-      content : list_resource.access_string(missing.instance).content;
-      the_json_array : parser.parse(content) !> json_array;
+      content : list_resource.access_json_data(missing.instance).content;
+      the json_array : content !> json_array;
       result : base_list[item_id].new();
       -- TODO: cast is redudnant
-      for (number_id : the_json_array .> readonly list[readonly json_data]) {
+      for (number_id : the_json_array) {
         result.append(item_id.new(number_id !> nonnegative));
       }
       return result;
     }
 
-    string as_string(readonly list[item_id] item_ids) {
+    -- TODO: type promotion should handle this.
+    json_array as_json_array(readonly list[item_id] item_ids) {
       id_numbers : json_array_impl.new();
       for (the_id : item_ids) {
         id_numbers.append(the_id.id);
       }
-      return printer.print(id_numbers);
+      return id_numbers;
     }
 
     readonly list[item_id] topstories() {
@@ -91,7 +90,8 @@ program briefing {
     }
 
     item get_item(item_id id) {
-      return parse_item(id, item_url(id).access_string(missing.instance).content);
+      content : item_url(id).access_json_data(missing.instance).content;
+      return parse_item(id, content !> readonly json_object);
     }
 
     resource_identifier item_url(item_id id) {
@@ -102,12 +102,10 @@ program briefing {
       return network.url(item_page_url_prefix ++ id);
     }
 
-    item parse_item(item_id id, string json) {
-      item_dictionary : parser.parse(json) !> readonly json_object;
-
-      by : item_dictionary.get("by") !> string;
-      time : item_dictionary.get("time") !> nonnegative;
-      url_string : item_dictionary.get("url") !> (string or null);
+    item parse_item(item_id id, readonly json_object item_object) {
+      by : item_object.get("by") !> string;
+      time : item_object.get("time") !> nonnegative;
+      url_string : item_object.get("url") !> (string or null);
       var resource_identifier url;
       if (url_string is_not null) {
         url = network.url(url_string);
@@ -115,15 +113,15 @@ program briefing {
         url = item_page_url(id);
       }
       var nonnegative score;
-      if (item_dictionary.contains_key("score")) {
-        score = item_dictionary.get("score") !> nonnegative;
+      if (item_object.contains_key("score")) {
+        score = item_object.get("score") !> nonnegative;
       } else {
         score = 0;
       }
-      title : item_dictionary.get("title") !> string;
+      title : item_object.get("title") !> string;
       var nonnegative descendants;
-      if (item_dictionary.contains_key("descendants")) {
-        descendants = item_dictionary.get("descendants") !> nonnegative;
+      if (item_object.contains_key("descendants")) {
+        descendants = item_object.get("descendants") !> nonnegative;
       } else {
         descendants = 0;
       }
@@ -131,7 +129,7 @@ program briefing {
       return item.new(id, by, time, url, score, title, descendants);
     }
 
-    string short_origin(item the_item) {
+    string short_origin(the item) {
       url : the_item.url;
       host : url.host;
       assert host is string;
@@ -245,7 +243,8 @@ program briefing {
     day_catalog : input_catalog.resolve(day_slashes(today())).access_catalog();
     time_id : day_catalog.resolve(two_digit(hour) ++ "-" ++ two_digit(minute));
     log.info("Writing " ++ time_id);
-    time_id.access_string(make_catalog_option.instance).content = hacker_news.as_string(id_list);
+    time_id.access_json_data(make_catalog_option.instance).content =
+        hacker_news.as_json_array(id_list);
   }
 
   string describe_day(gregorian_day day, character separator) {
@@ -309,10 +308,10 @@ program briefing {
 
   void write_all_items(readonly set[item_id] ids, gregorian_day day) {
     day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
-    all_items_json : day_catalog.resolve(ALL_ITEMS_JSON).access_string(
+    all_items_json : day_catalog.resolve(ALL_ITEMS_JSON).access_json_data(
         make_catalog_option.instance);
     log.info("Writing " ++ all_items_json);
-    all_items_json.content = hacker_news.as_string(ids.elements);
+    all_items_json.content = hacker_news.as_json_array(ids.elements);
   }
 
   text_element render_page(readonly list[item_id] ids, gregorian_day day) {
@@ -333,7 +332,7 @@ program briefing {
 
     items.sort(item_order.new());
 
-    for (item : items .> readonly list[item]) {
+    for (item : items) {
       body_content.append(render_html(item));
     }
 
@@ -390,7 +389,7 @@ program briefing {
     }
   }
 
-  text_element render_html(item the_item) {
+  text_element render_html(the item) {
     item_fragments : base_list[text_fragment].new();
     item_fragments.append(base_element.new(SPAN, CLASS, SCORE_CLASS, the_item.score.to_string));
     item_fragments.append(" ");

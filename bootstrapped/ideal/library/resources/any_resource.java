@@ -3,5 +3,6 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 public interface any_resource<content_type> extends any_value, any_stringable { }

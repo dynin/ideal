@@ -23,7 +23,7 @@ public class typeinfo_value extends debuggable implements value_wrapper {
   public @Override type type_bound() {
     return this.the_type;
   }
-  public @Override value unwrap() {
+  public @Override Object unwrap() {
     return this.the_type;
   }
   public @Override string to_string() {

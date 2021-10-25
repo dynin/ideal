@@ -3,5 +3,6 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 public interface deeply_immutable_resource<content_type> extends deeply_immutable_value, deeply_immutable_stringable, immutable_resource<content_type> { }

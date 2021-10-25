@@ -3,5 +3,6 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 public interface writeonly_resource<content_type> extends writeonly_value, writeonly_stringable, any_resource<content_type> { }

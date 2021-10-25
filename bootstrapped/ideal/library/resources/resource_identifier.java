@@ -3,6 +3,7 @@
 package ideal.library.resources;
 
 import ideal.library.elements.*;
+import ideal.library.formats.json_data;
 
 import javax.annotation.Nullable;
 
@@ -12,5 +13,6 @@ public interface resource_identifier extends identifier {
   resource_identifier parent();
   boolean exists();
   resource<string> access_string(@Nullable access_option options);
+  resource<Object> access_json_data(@Nullable access_option options);
   resource_catalog access_catalog();
 }

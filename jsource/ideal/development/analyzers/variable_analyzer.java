@@ -31,7 +31,7 @@ public class variable_analyzer extends declaration_analyzer
     implements variable_declaration {
 
   private final @Nullable readonly_list<annotation_construct> variable_annotations;
-  private final @Nullable analyzable variable_type;
+  private @Nullable analyzable variable_type;
   private @Nullable action_name name;
   private final @Nullable readonly_list<annotation_construct> post_annotations;
   private final @Nullable analyzable init;
@@ -152,8 +152,14 @@ public class variable_analyzer extends declaration_analyzer
         // TODO: signal error
         assert short_name() instanceof simple_name;
         if (annotations().has(general_modifier.the_modifier)) {
-          return new error_signal(
-             new base_string("Both modifier 'the' and name present"), this);
+          if (variable_type == null) {
+            variable_type = new resolve_analyzer(name, this);
+            name = name_utilities.join(general_modifier.the_modifier.name(),
+                (simple_name) short_name());
+          } else {
+            return new error_signal(
+               new base_string("Both modifier 'the' and name present"), this);
+          }
         }
       } else {
         if (!annotations().has(general_modifier.the_modifier)) {

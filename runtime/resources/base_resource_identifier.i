@@ -4,6 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
+implicit import ideal.library.formats;
+implicit import ideal.runtime.formats;
+import ideal.machine.characters.unicode_handler;
+
 --- Implement resource identifier associated with a |resource_store| and a path.
 class base_resource_identifier {
   extends debuggable;
@@ -50,12 +54,27 @@ class base_resource_identifier {
     return string_resource.new(this, options);
   }
 
+  override resource[readonly json_data] access_json_data(access_option or null options) {
+    return json_data_resource.new(this, options);
+  }
+
   override resource_catalog access_catalog() {
     return base_resource_catalog.new(the_resource_store, the_scheme, path);
   }
 
   override string to_string() {
     return the_resource_store.build_name(the_scheme, path);
+  }
+
+  private string get_string() {
+    return the_resource_store.read_string(the_scheme, path);
+  }
+
+  private void set_string(string new_value, access_option or null options) {
+    if (options is make_catalog_option && path.size > 1) {
+      the_resource_store.make_catalog(the_scheme, parent().path);
+    }
+    the_resource_store.write_string(the_scheme, path, new_value);
   }
 
   private class string_resource {
@@ -74,17 +93,39 @@ class base_resource_identifier {
     }
 
     override string get() {
-      return the_identifier.the_resource_store.read_string(the_identifier.the_scheme,
-          the_identifier.path);
+      return the_identifier.get_string();
     }
 
     override void set(string new_value) {
-      if (options is make_catalog_option && the_identifier.path.size > 1) {
-        the_identifier.the_resource_store.make_catalog(the_identifier.the_scheme,
-            the_identifier.parent().path);
-      }
-      the_identifier.the_resource_store.write_string(the_identifier.the_scheme,
-          the_identifier.path, new_value);
+      the_identifier.set_string(new_value, options);
+    }
+
+    override string to_string => the_identifier.to_string();
+  }
+
+  private class json_data_resource {
+    implements resource[readonly json_data], reference[readonly json_data];
+
+
+    private base_resource_identifier the_identifier;
+    private access_option or null options;
+
+    json_data_resource(base_resource_identifier the_identifier, access_option or null options) {
+      this.the_identifier = the_identifier;
+      this.options = options;
+    }
+
+    override reference[readonly json_data] content() {
+      return this;
+    }
+
+    override readonly json_data get() {
+      return json_parser.new(unicode_handler.instance).parse(the_identifier.get_string());
+    }
+
+    override void set(readonly json_data new_data) {
+      the string : json_printer.new(unicode_handler.instance).print(new_data);
+      the_identifier.set_string(the_string, options);
     }
 
     override string to_string => the_identifier.to_string();

@@ -5,6 +5,9 @@ package ideal.runtime.resources;
 import ideal.library.elements.*;
 import ideal.library.resources.*;
 import ideal.runtime.elements.*;
+import ideal.library.formats.*;
+import ideal.runtime.formats.*;
+import ideal.machine.characters.unicode_handler;
 
 import javax.annotation.Nullable;
 
@@ -42,11 +45,23 @@ public class base_resource_identifier extends debuggable implements resource_ide
   public @Override resource<string> access_string(final @Nullable access_option options) {
     return new base_resource_identifier.string_resource(this, options);
   }
+  public @Override resource<Object> access_json_data(final @Nullable access_option options) {
+    return new base_resource_identifier.json_data_resource(this, options);
+  }
   public @Override resource_catalog access_catalog() {
     return new base_resource_catalog(this.the_resource_store, this.the_scheme, this.path);
   }
   public @Override string to_string() {
     return this.the_resource_store.build_name(this.the_scheme, this.path);
+  }
+  private string get_string() {
+    return this.the_resource_store.read_string(this.the_scheme, this.path);
+  }
+  private void set_string(final string new_value, final @Nullable access_option options) {
+    if (options instanceof make_catalog_option && this.path.size() > 1) {
+      this.the_resource_store.make_catalog(this.the_scheme, this.parent().path);
+    }
+    this.the_resource_store.write_string(this.the_scheme, this.path, new_value);
   }
   private static class string_resource implements resource<string>, reference<string> {
     private final base_resource_identifier the_identifier;
@@ -59,13 +74,31 @@ public class base_resource_identifier extends debuggable implements resource_ide
       return this;
     }
     public @Override string get() {
-      return this.the_identifier.the_resource_store.read_string(this.the_identifier.the_scheme, this.the_identifier.path);
+      return this.the_identifier.get_string();
     }
     public @Override void set(final string new_value) {
-      if (this.options instanceof make_catalog_option && this.the_identifier.path.size() > 1) {
-        this.the_identifier.the_resource_store.make_catalog(this.the_identifier.the_scheme, this.the_identifier.parent().path);
-      }
-      this.the_identifier.the_resource_store.write_string(this.the_identifier.the_scheme, this.the_identifier.path, new_value);
+      this.the_identifier.set_string(new_value, this.options);
+    }
+    public @Override string to_string() {
+      return this.the_identifier.to_string();
+    }
+  }
+  private static class json_data_resource implements resource<Object>, reference<Object> {
+    private final base_resource_identifier the_identifier;
+    private final @Nullable access_option options;
+    public json_data_resource(final base_resource_identifier the_identifier, final @Nullable access_option options) {
+      this.the_identifier = the_identifier;
+      this.options = options;
+    }
+    public @Override reference<Object> content() {
+      return this;
+    }
+    public @Override Object get() {
+      return new json_parser(unicode_handler.instance).parse(this.the_identifier.get_string());
+    }
+    public @Override void set(final Object new_data) {
+      final string the_string = new json_printer(unicode_handler.instance).print(new_data);
+      this.the_identifier.set_string(the_string, this.options);
     }
     public @Override string to_string() {
       return this.the_identifier.to_string();

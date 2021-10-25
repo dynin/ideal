@@ -12,18 +12,17 @@ import javax.annotation.Nullable;
 public class variable_construct extends base_construct {
   public final readonly_list<annotation_construct> annotations;
   public final @Nullable construct variable_type;
-  public final action_name name;
+  public final @Nullable action_name name;
   public final readonly_list<annotation_construct> post_annotations;
   public final @Nullable construct init;
   public @Override string to_string() {
     return utilities.describe(this, this.name);
   }
-  public variable_construct(final readonly_list<annotation_construct> annotations, final @Nullable construct variable_type, final action_name name, final readonly_list<annotation_construct> post_annotations, final @Nullable construct init, final origin generated_origin) {
+  public variable_construct(final readonly_list<annotation_construct> annotations, final @Nullable construct variable_type, final @Nullable action_name name, final readonly_list<annotation_construct> post_annotations, final @Nullable construct init, final origin generated_origin) {
     super(generated_origin);
     assert annotations != null;
     this.annotations = annotations;
     this.variable_type = variable_type;
-    assert name != null;
     this.name = name;
     assert post_annotations != null;
     this.post_annotations = post_annotations;

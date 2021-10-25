@@ -435,21 +435,17 @@ public class to_java_transformer extends base_transformer {
           }
         }
       } else {
-        if (should_use_wrapper_in_return(the_procedure)) {
+        if (return_type == unreachable_type()) {
+          ret = make_type(void_type(), the_origin);
+        } else if (is_object_type(return_type)) {
+          ret = make_object_type(the_origin);
+        } else if (should_use_wrapper_in_return(the_procedure)) {
           ret = make_type_with_mapping(the_procedure.get_return_type(), the_origin,
               mapping.MAP_TO_WRAPPER_TYPE);
           // Note: if Java return type is 'Void' (with the capital V),
           // then we may need to insert "return null" to keep javac happy.
         } else {
-          if (the_procedure.get_return_type() == unreachable_type()) {
-            ret = make_type(void_type(), the_origin);
-          } else {
-            if (is_object_type(the_procedure.get_return_type())) {
-              ret = make_object_type(the_origin);
-            } else {
-              ret = make_type(the_procedure.get_return_type(), the_origin);
-            }
-          }
+          ret = make_type(return_type, the_origin);
         }
       }
     }

@@ -11,7 +11,7 @@ public class debuggable extends Object implements stringable {
   public @Override string to_string() {
     return utilities.describe(this);
   }
-  public @Override final String toString() {
+  public final @Override String toString() {
     return utilities.s(this.to_string());
   }
 }

@@ -276,11 +276,8 @@ public class naming_strategy extends debuggable implements printer_assistant, im
         return the_variable_construct.name;
       } else {
         assert the_declaration != null;
-        // TODO: move short_name up to declaration
-        if (the_declaration instanceof variable_declaration) {
-          return ((variable_declaration) the_declaration).short_name();
-        } else if (the_declaration instanceof procedure_declaration) {
-          return ((procedure_declaration) the_declaration).short_name();
+        if (the_declaration instanceof named_declaration) {
+          return ((named_declaration) the_declaration).short_name();
         }
       }
     } else if (the_construct instanceof procedure_construct) {

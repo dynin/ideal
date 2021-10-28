@@ -49,7 +49,7 @@ public class base_value_action<T extends entity_wrapper> extends debuggable
   public final action combine(action from, origin the_origin) {
     if (the_value instanceof procedure_value) {
       procedure_value the_procedure_value = (procedure_value) the_value;
-      return the_procedure_value.bind_value(from, the_origin);
+      return the_procedure_value.bind_this_action(from, the_origin);
     } else {
       return this;
     }

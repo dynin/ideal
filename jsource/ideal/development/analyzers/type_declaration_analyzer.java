@@ -293,7 +293,9 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       return ok_signal.instance;
     }
 
-    if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL && has_parameters()) {
+    if (has_parameters() &&
+        (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL ||
+         pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE)) {
       for (int i = 0; i < parameters.size(); ++i) {
         analyze_and_ignore_errors(parameters.get(i), pass);
       }

@@ -17,7 +17,7 @@ import ideal.development.types.*;
 import ideal.development.flags.*;
 import ideal.development.notifications.*;
 
-class supertype_set extends debuggable implements readonly_displayable {
+public class supertype_set extends debuggable implements readonly_displayable {
 
   private static dictionary<type, supertype_set> supertype_sets =
       new hash_dictionary<type, supertype_set>(type_equivalence.instance);
@@ -45,6 +45,11 @@ class supertype_set extends debuggable implements readonly_displayable {
 
   public boolean contains(type element) {
     return members.contains(element);
+  }
+
+  // TODO: make public if you need to use this.
+  private static supertype_set make(type the_type) {
+    return make(the_type, base_analysis_context.actions);
   }
 
   public static supertype_set make(type the_type, action_table actions) {

@@ -119,6 +119,8 @@ public class type_parameter_analyzer extends declaration_analyzer
       get_context().add(new_master, special_name.TYPE_ALIAS, var_type.to_action(this));
 
       declaration_analysis_in_progress = false;
+    } else if (pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE) {
+      type_utilities.prepare(variable_type(), declaration_pass.TYPES_AND_PROMOTIONS);
     }
 
     return ok_signal.instance;

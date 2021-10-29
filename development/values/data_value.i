@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 interface data_value[any value value_type] {
-  implements abstract_value, value_wrapper[value_type], stringable;
+  extends abstract_value, value_wrapper[value_type], stringable;
 
   declaration or null get_declaration;
 }

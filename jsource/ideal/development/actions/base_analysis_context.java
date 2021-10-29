@@ -26,7 +26,7 @@ import ideal.development.notifications.*;
 
 public class base_analysis_context extends debuggable implements analysis_context {
 
-  private static action_table actions = new action_table();
+  static action_table actions = new action_table();
 
   private final base_semantics language;
   private graph<principal_type, origin> the_type_graph;

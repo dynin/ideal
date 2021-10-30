@@ -157,3 +157,26 @@ class X {
     println(get_string);
   }
 }
+class debuggable {
+  implements stringable;
+
+  protected debuggable() { }
+
+  override string to_string() {
+    return "tos";
+  }
+}
+
+abstract class xxx {
+  extends debuggable;
+
+  xxx(the string) {
+  }
+}
+
+class yyy {
+  extends xxx;
+  yyy(the string) {
+    super(the_string);
+  }
+}

@@ -10,7 +10,7 @@ interface procedure_value {
 
   action_name name;
   -- This is needed to resolve abstract_value/value_wrapper ambiguity...
-  --type type_bound;
+  override type type_bound;
   declaration or null get_declaration;
   boolean has_this_argument;
   boolean supports_parameters(action_parameters parameters, action_context context) pure;

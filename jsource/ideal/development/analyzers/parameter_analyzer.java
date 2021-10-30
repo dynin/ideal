@@ -88,6 +88,7 @@ public class parameter_analyzer extends single_pass_analyzer {
       return logical_operator.analyze();
     }
 
+    origin the_origin = this;
     list<action> param_actions = new base_list<action>();
     error_signal error = null;
     for (int i = 0; i < analyzable_parameters.size(); ++i) {
@@ -105,13 +106,13 @@ public class parameter_analyzer extends single_pass_analyzer {
     }
 
     if (error != null) {
-      return new error_signal(messages.error_in_parametrizable, error, this);
+      return new error_signal(messages.error_in_parametrizable, error, the_origin);
     }
     aparams = new action_parameters(param_actions);
 
     @Nullable error_signal main_error = find_error(main_analyzable);
     if (main_error != null) {
-      return new error_signal(messages.error_in_parametrizable, main_error, this);
+      return new error_signal(messages.error_in_parametrizable, main_error, the_origin);
     }
 
     action main_action = action_not_error(main_analyzable);
@@ -123,30 +124,36 @@ public class parameter_analyzer extends single_pass_analyzer {
 
       if (implicit_results.is_empty()) {
         return mismatch_reporter.signal_mismatch(main_action, aparams, action_origins(),
-            get_context(), this);
+            get_context(), the_origin);
       }
 
       if (implicit_results.size() > 1) {
         return mismatch_reporter.signal_not_matching(implicit_results, aparams, action_origins(),
-            get_context(), this);
+            get_context(), the_origin);
       }
 
       if (implicit_results.size() == 1) {
         action implicit_action = implicit_results.first().combine(main_action, main_analyzable);
         if (!analyzer_utilities.supports_parameters(implicit_action.result(), aparams,
             get_context())) {
+          if (false) {
+            System.out.println("R " + result_type);
+            System.out.println("SR " + supertype_set.make(result_type));
+            System.out.println("MA " + main_analyzable);
+            System.out.println("IA " + implicit_action);
+          }
           return mismatch_reporter.signal_mismatch(implicit_action, aparams, action_origins(),
-              get_context(), this);
+              get_context(), the_origin);
         }
         main_action = implicit_action;
       } else {
         return mismatch_reporter.signal_mismatch(main_action, aparams, action_origins(),
-            get_context(), this);
+            get_context(), the_origin);
       }
     }
 
     analysis_result result = analyzer_utilities.bind_parameters(main_action, aparams,
-        get_context(), this);
+        get_context(), the_origin);
 
     if (result instanceof action) {
       type result_type = ((action) result).result().type_bound();

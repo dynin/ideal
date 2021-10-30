@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-abstract class base_data_value[any value value_type] {
+class base_data_value[any value value_type] {
   implements data_value[value_type];
   extends debuggable;
 

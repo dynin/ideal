@@ -15,7 +15,7 @@ package values {
   implicit import ideal.development.names;
   implicit import ideal.development.flavors;
   implicit import ideal.development.declarations;
---  implicit import ideal.development.kinds;
+  implicit import ideal.development.kinds;
   implicit import ideal.development.types;
   implicit import ideal.development.jumps;
 
@@ -37,6 +37,7 @@ package values {
 --  interface list_value;
 --  interface procedure_with_this;
 --  interface returned_value;
---  interface singleton_value;
+--  class singleton_value;
 --  interface string_value;
+  foo : base_data_value.new(common_types.value_type);
 }

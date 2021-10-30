@@ -290,7 +290,7 @@ public class variable_analyzer extends declaration_analyzer
         for (int i = 0; i < shadowed_actions.size(); ++i) {
           action shadowed = shadowed_actions.get(i);
           if (! (shadowed instanceof type_action) && ! (shadowed instanceof error_signal)
-              && !annotations().has(general_modifier.override_modifier)
+              && !analyzer_utilities.has_overriden(this)
               && !is_private(shadowed)) {
             notification original = new base_notification(messages.shadowed_declaration,
                 shadowed.get_declaration());

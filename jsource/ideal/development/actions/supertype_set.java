@@ -48,7 +48,7 @@ public class supertype_set extends debuggable implements readonly_displayable {
   }
 
   // TODO: make public if you need to use this.
-  private static supertype_set make(type the_type) {
+  public static supertype_set make(type the_type) {
     return make(the_type, base_analysis_context.actions);
   }
 

@@ -16,7 +16,15 @@ public class flavor {
   public static final type_flavor mutable_flavor = new type_flavor_impl(new base_string("mutable"), flavor_profiles.mutable_profile, new base_immutable_list<type_flavor>(new ideal.machine.elements.array<type_flavor>(new type_flavor[]{ flavor.readonly_flavor, flavor.writeonly_flavor })));
   public static final type_flavor immutable_flavor = new type_flavor_impl(new base_string("immutable"), flavor_profiles.immutable_profile, new base_immutable_list<type_flavor>(new ideal.machine.elements.array<type_flavor>(new type_flavor[]{ flavor.readonly_flavor })));
   public static final type_flavor deeply_immutable_flavor = new type_flavor_impl(new base_string("deeply_immutable"), flavor_profiles.deeply_immutable_profile, new base_immutable_list<type_flavor>(new ideal.machine.elements.array<type_flavor>(new type_flavor[]{ flavor.immutable_flavor })));
-  public static final type_flavor raw_flavor = new type_flavor_impl(new base_string("raw"), flavor_profiles.mutable_profile, new base_immutable_list<type_flavor>(new ideal.machine.elements.array<type_flavor>(new type_flavor[]{ flavor.mutable_flavor })));
+
+  public static final type_flavor raw_flavor = new type_flavor_impl(new base_string("raw"),
+  flavor_profiles.mutable_profile,
+  new base_immutable_list<type_flavor>(
+    new ideal.machine.elements.array<type_flavor>(
+    new type_flavor[]{ flavor.mutable_flavor })));
+    // new type_flavor[]{ flavor.writeonly_flavor })));
+
+
   public static final immutable_list<type_flavor> all_flavors = new base_immutable_list<type_flavor>(new ideal.machine.elements.array<type_flavor>(new type_flavor[]{ flavor.nameonly_flavor, flavor.any_flavor, flavor.readonly_flavor, flavor.writeonly_flavor, flavor.mutable_flavor, flavor.raw_flavor, flavor.immutable_flavor, flavor.deeply_immutable_flavor }));
   public static final type_flavor DEFAULT_FLAVOR = flavor.mutable_flavor;
   public static final immutable_list<type_flavor> PRIMARY_FLAVORS = new base_immutable_list<type_flavor>(new ideal.machine.elements.array<type_flavor>(new type_flavor[]{ flavor.any_flavor, flavor.readonly_flavor, flavor.writeonly_flavor, flavor.mutable_flavor, flavor.raw_flavor, flavor.immutable_flavor, flavor.deeply_immutable_flavor }));

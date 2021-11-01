@@ -136,7 +136,7 @@ public class parameter_analyzer extends single_pass_analyzer {
         action implicit_action = implicit_results.first().combine(main_action, main_analyzable);
         if (!analyzer_utilities.supports_parameters(implicit_action.result(), aparams,
             get_context())) {
-          if (false) {
+          if (true) {
             System.out.println("R " + result_type);
             System.out.println("SR " + supertype_set.make(result_type));
             System.out.println("MA " + main_analyzable);

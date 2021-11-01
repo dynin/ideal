@@ -4,33 +4,23 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.declarations.*;
-import ideal.development.names.*;
-
-public class enum_value extends base_data_value implements identifier {
+class enum_value {
+  extends base_data_value;
+  implements identifier;
 
   private variable_declaration the_declaration;
-  private int ordinal;
+  private nonnegative ordinal;
 
-  public enum_value(variable_declaration the_declaration, int ordinal, type bound) {
+  enum_value(variable_declaration the_declaration, nonnegative ordinal, type bound) {
     super(bound);
     this.the_declaration = the_declaration;
     this.ordinal = ordinal;
-    assert the_declaration.short_name() instanceof simple_name;
+    assert the_declaration.short_name is simple_name;
   }
 
-  public simple_name short_name() {
-    return (simple_name) the_declaration.short_name();
-  }
+  var simple_name short_name => the_declaration.short_name !> simple_name;
 
-  public declaration get_declaration() {
-    return the_declaration;
-  }
+  declaration get_declaration => the_declaration;
 
-  public string to_string() {
-    return short_name().to_string();
-  }
+  override string to_string => short_name.to_string();
 }

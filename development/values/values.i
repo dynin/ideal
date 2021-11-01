@@ -31,7 +31,7 @@ package values {
 --  interface bound_procedure;
 --  interface common_values;
 --  interface composite_wrapper;
---  interface enum_value;
+  class enum_value;
 --  interface integer_value;
 --  interface list_context;
 --  interface list_value;
@@ -39,5 +39,5 @@ package values {
 --  interface returned_value;
 --  class singleton_value;
 --  interface string_value;
-  foo : base_data_value.new(common_types.value_type);
+--  foo : base_data_value.new(common_types.value_type);
 }

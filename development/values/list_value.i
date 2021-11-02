@@ -6,7 +6,7 @@
 
 class list_value {
   extends debuggable;
-  implements composite_wrapper[any list[value_wrapper]];
+  implements composite_wrapper;
 
   any list[value_wrapper] the_list;
   private type bound;

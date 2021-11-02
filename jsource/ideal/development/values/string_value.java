@@ -11,5 +11,6 @@ package ideal.development.values;
 import ideal.library.elements.*;
 import ideal.library.reflections.*;
 
-public interface string_value extends value_wrapper<string> {
+public interface string_value extends value_wrapper {
+  string unwrap();
 }

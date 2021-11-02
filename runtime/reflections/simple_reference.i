@@ -11,10 +11,10 @@ class simple_reference[any value value_type] {
 
   private type_id the_value_type;
   private type_id the_reference_type;
-  private var value_wrapper[value_type] or null the_value;
+  private var value_wrapper or null the_value;
 
   simple_reference(type_id the_value_type, type_id the_reference_type,
-      value_wrapper[value_type] or null the_value) {
+      value_wrapper or null the_value) {
     this.the_value_type = the_value_type;
     this.the_reference_type = the_reference_type;
     this.the_value = the_value;
@@ -28,18 +28,19 @@ class simple_reference[any value value_type] {
     return the_value_type;
   }
 
-  override void init(value_wrapper[value_type] new_value) {
+  override void init(value_wrapper new_value) {
     -- TODO: enforce that the type of new_value is a subtype of the_value_type.
     assert the_value is null;
     the_value = new_value;
   }
 
-  override value_wrapper[value_type] get() {
+  override value_wrapper get() {
     -- TODO: update null handling here; the_value should never be null.
-    return the_value !> value_wrapper[value_type];
+    assert the_value is_not null;
+    return the_value;
   }
 
-  override void set(value_wrapper[value_type] new_value) {
+  override void set(value_wrapper new_value) {
     -- TODO: enforce that the type of new_value is a subtype of the_value_type.
     the_value = new_value;
   }

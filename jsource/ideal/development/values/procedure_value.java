@@ -18,7 +18,7 @@ import ideal.development.elements.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 
-public interface procedure_value extends abstract_value, value_wrapper<procedure_value> {
+public interface procedure_value extends abstract_value, value_wrapper {
   action_name name();
   // This is needed to resolve abstract_value/value_wrapper ambiguity...
   type type_bound();

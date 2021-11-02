@@ -21,10 +21,10 @@ package reflections {
     type_id type_bound;
   }
 
-  interface value_wrapper[any value value_type] {
+  interface value_wrapper {
     extends entity_wrapper;
 
-    value_type unwrap() pure;
+    any value unwrap() pure;
   }
 
   interface reference_wrapper[any value value_type] {
@@ -32,9 +32,9 @@ package reflections {
 
     type_id value_type_bound deeply_immutable;
 
-    value_wrapper[value_type] get() pure;
-    void init(value_wrapper[value_type] the_value) writeonly;
-    void set(value_wrapper[value_type] the_value) writeonly;
+    value_wrapper get() pure;
+    void init(value_wrapper the_value) writeonly;
+    void set(value_wrapper the_value) writeonly;
   }
 
   interface variable_id {

@@ -11,10 +11,10 @@ class constant_reference[any value value_type] {
     implements reference_wrapper[value_type];
     extends debuggable;
 
-  private value_wrapper[value_type] the_value;
+  private value_wrapper the_value;
   private type_id the_reference_type;
 
-  constant_reference(value_wrapper[value_type] the_value, type_id the_reference_type) {
+  constant_reference(value_wrapper the_value, type_id the_reference_type) {
     this.the_value = the_value;
     this.the_reference_type = the_reference_type;
   }
@@ -27,15 +27,15 @@ class constant_reference[any value value_type] {
     return the_value.type_bound;
   }
 
-  override value_wrapper[value_type] get() {
+  override value_wrapper get() {
     return the_value;
   }
 
-  override void init(value_wrapper[value_type] new_value) {
+  override void init(value_wrapper new_value) {
     utilities.panic("Can't init a constant_reference");
   }
 
-  override void set(value_wrapper[value_type] new_value) {
+  override void set(value_wrapper new_value) {
     utilities.panic("Can't set a constant_reference");
   }
 

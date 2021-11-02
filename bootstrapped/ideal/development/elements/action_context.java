@@ -9,7 +9,7 @@ public interface action_context extends readonly_action_context, writeonly_actio
   readonly_list<action> lookup(type from, action_name name);
   void add(type from, action_name name, action the_action);
   void add_supertype(type subtype, type supertype);
-  readonly_list<action> resolve(type from, action_name name, origin pos);
+  readonly_list<action> resolve(type from, action_name name, origin the_origin);
   boolean can_promote(action from, type target_type);
   action to_value(action expression, origin the_origin);
   boolean is_subtype_of(abstract_value the_value, type the_type);

@@ -6,5 +6,5 @@ import ideal.library.elements.*;
 
 public interface readonly_reference_wrapper<value_type> extends readonly_entity_wrapper, any_reference_wrapper<value_type> {
   type_id value_type_bound();
-  value_wrapper<value_type> get();
+  value_wrapper get();
 }

@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 class singleton_value {
-  extends base_data_value[any value];
+  extends base_data_value;
 
   singleton_value(principal_type singleton_type) {
     super(singleton_type.get_flavored(flavor.deeply_immutable_flavor));
@@ -16,6 +16,7 @@ class singleton_value {
 
   override string to_string() {
     -- TODO: abstract_value cast is redundant
-    return (this .> abstract_value).type_bound ++ "." ++ common_names.instance_name;
+    -- return (this .> abstract_value).type_bound ++ "." ++ common_names.instance_name;
+    return this.type_bound ++ "." ++ common_names.instance_name;
   }
 }

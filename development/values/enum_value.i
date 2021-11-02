@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 class enum_value {
-  extends base_data_value[any value];
+  extends base_data_value;
   implements identifier;
 
   private variable_declaration the_declaration;

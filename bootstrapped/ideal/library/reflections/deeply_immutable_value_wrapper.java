@@ -4,4 +4,4 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_value_wrapper<value_type> extends deeply_immutable_entity_wrapper, immutable_value_wrapper<value_type> { }
+public interface deeply_immutable_value_wrapper extends deeply_immutable_entity_wrapper, immutable_value_wrapper { }

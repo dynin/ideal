@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 abstract class base_constant_value[deeply_immutable data value_type] {
-  extends base_data_value[value_type];
+  extends base_data_value;
 
   private value_type boxed;
 

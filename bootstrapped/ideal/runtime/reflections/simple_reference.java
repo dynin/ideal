@@ -11,8 +11,8 @@ import javax.annotation.Nullable;
 public class simple_reference<value_type> extends debuggable implements reference_wrapper<value_type> {
   private final type_id the_value_type;
   private final type_id the_reference_type;
-  private @Nullable value_wrapper<value_type> the_value;
-  public simple_reference(final type_id the_value_type, final type_id the_reference_type, final @Nullable value_wrapper<value_type> the_value) {
+  private @Nullable value_wrapper the_value;
+  public simple_reference(final type_id the_value_type, final type_id the_reference_type, final @Nullable value_wrapper the_value) {
     this.the_value_type = the_value_type;
     this.the_reference_type = the_reference_type;
     this.the_value = the_value;
@@ -23,14 +23,15 @@ public class simple_reference<value_type> extends debuggable implements referenc
   public @Override type_id value_type_bound() {
     return this.the_value_type;
   }
-  public @Override void init(final value_wrapper<value_type> new_value) {
+  public @Override void init(final value_wrapper new_value) {
     assert this.the_value == null;
     this.the_value = new_value;
   }
-  public @Override value_wrapper<value_type> get() {
-    return (value_wrapper<value_type>) this.the_value;
+  public @Override value_wrapper get() {
+    assert this.the_value != null;
+    return this.the_value;
   }
-  public @Override void set(final value_wrapper<value_type> new_value) {
+  public @Override void set(final value_wrapper new_value) {
     this.the_value = new_value;
   }
   public @Override string to_string() {

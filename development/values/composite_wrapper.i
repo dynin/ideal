@@ -4,6 +4,6 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-interface composite_wrapper[any composite_value value_type] {
-  extends value_wrapper[value_type], variable_context, stringable;
+interface composite_wrapper {
+  extends value_wrapper, variable_context, stringable;
 }

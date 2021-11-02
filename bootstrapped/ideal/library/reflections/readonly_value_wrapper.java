@@ -4,6 +4,6 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface readonly_value_wrapper<value_type> extends readonly_entity_wrapper, any_value_wrapper<value_type> {
-  value_type unwrap();
+public interface readonly_value_wrapper extends readonly_entity_wrapper, any_value_wrapper {
+  Object unwrap();
 }

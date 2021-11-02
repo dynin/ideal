@@ -12,5 +12,6 @@ class base_string_value {
     super(value, bound);
   }
 
-  override string constant_to_string => unwrap();
+  -- TODO: the cast is redundant
+  override string constant_to_string => (this .> string_value).unwrap();
 }

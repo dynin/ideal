@@ -5,5 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 interface string_value {
-  extends value_wrapper[string];
+  extends value_wrapper;
+
+  override string unwrap();
 }

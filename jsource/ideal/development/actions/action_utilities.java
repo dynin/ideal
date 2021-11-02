@@ -230,7 +230,8 @@ public class action_utilities {
     if (subtype_flavor == null && the_supertype instanceof principal_type) {
       for (int i = 0; i < supported_flavors.size(); ++i) {
         type_flavor the_flavor = supported_flavors.get(i);
-        if (type_utilities.get_flavor_profile(the_supertype.principal()).supports(the_flavor)) {
+        if (the_flavor != flavor.raw_flavor &&
+            type_utilities.get_flavor_profile(the_supertype.principal()).supports(the_flavor)) {
           add_supertype_and_promotion(the_subtype.get_flavored(the_flavor),
               the_supertype.get_flavored(the_flavor), the_context, the_origin);
         }

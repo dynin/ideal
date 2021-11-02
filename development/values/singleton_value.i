@@ -5,10 +5,10 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 class singleton_value {
-  extends base_data_value;
+  extends base_data_value[any value];
 
   singleton_value(principal_type singleton_type) {
-    --super(singleton_type.get_flavored(flavor.deeply_immutable_flavor));
+    super(singleton_type.get_flavored(flavor.deeply_immutable_flavor));
     if (singleton_type.get_kind != type_kinds.singleton_kind) {
       utilities.panic("Not a singleton type: " ++ singleton_type);
     }

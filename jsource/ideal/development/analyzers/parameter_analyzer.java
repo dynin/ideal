@@ -120,7 +120,7 @@ public class parameter_analyzer extends single_pass_analyzer {
       type result_type = main_action.result().type_bound();
       type_utilities.prepare(result_type, parameter_pass);
       readonly_list<action> implicit_results = get_context().resolve(result_type,
-          special_name.IMPLICIT_CALL, main_analyzable);
+          special_name.IMPLICIT_CALL, the_origin);
 
       if (implicit_results.is_empty()) {
         return mismatch_reporter.signal_mismatch(main_action, aparams, action_origins(),
@@ -136,12 +136,6 @@ public class parameter_analyzer extends single_pass_analyzer {
         action implicit_action = implicit_results.first().combine(main_action, main_analyzable);
         if (!analyzer_utilities.supports_parameters(implicit_action.result(), aparams,
             get_context())) {
-          if (true) {
-            System.out.println("R " + result_type);
-            System.out.println("SR " + supertype_set.make(result_type));
-            System.out.println("MA " + main_analyzable);
-            System.out.println("IA " + implicit_action);
-          }
           return mismatch_reporter.signal_mismatch(implicit_action, aparams, action_origins(),
               get_context(), the_origin);
         }

@@ -23,6 +23,8 @@ package values {
   class base_data_value;
   class base_value_action;
   class data_value_action;
+  class singleton_value;
+  class enum_value;
   interface procedure_value;
 --  interface base_composite_value;
 --  interface base_constant_value;
@@ -31,13 +33,10 @@ package values {
 --  interface bound_procedure;
 --  interface common_values;
 --  interface composite_wrapper;
-  class enum_value;
 --  interface integer_value;
 --  interface list_context;
 --  interface list_value;
 --  interface procedure_with_this;
 --  interface returned_value;
---  class singleton_value;
 --  interface string_value;
---  foo : base_data_value.new(common_types.value_type);
 }

@@ -4,32 +4,20 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.reflections.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
+abstract class base_constant_value[deeply_immutable data value_type] {
+  extends base_data_value[value_type];
 
-public abstract class base_constant_value<T /*extends deeply_immutable_data*/>
-    extends base_data_value<T> {
+  private value_type boxed;
 
-  private T boxed;
-
-  public base_constant_value(T boxed, type bound) {
+  base_constant_value(value_type boxed, type bound) {
     super(bound);
     assert boxed != null;
     this.boxed = boxed;
   }
 
-  @Override
-  public T unwrap() {
-    return boxed;
-  }
+  override value_type unwrap => boxed;
 
-  public abstract string constant_to_string();
+  var abstract string constant_to_string();
 
-  @Override
-  public string to_string() {
-    return utilities.describe(this, constant_to_string());
-  }
+  override string to_string => utilities.describe(this, constant_to_string);
 }

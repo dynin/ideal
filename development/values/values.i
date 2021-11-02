@@ -26,17 +26,17 @@ package values {
   class singleton_value;
   class enum_value;
   interface procedure_value;
+  class base_constant_value;
+  class integer_value;
+  interface string_value;
+  class base_string_value;
+--  interface composite_wrapper;
 --  interface base_composite_value;
---  interface base_constant_value;
 --  interface base_procedure;
---  interface base_string_value;
 --  interface bound_procedure;
 --  interface common_values;
---  interface composite_wrapper;
---  interface integer_value;
 --  interface list_context;
 --  interface list_value;
 --  interface procedure_with_this;
 --  interface returned_value;
---  interface string_value;
 }

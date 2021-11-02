@@ -4,18 +4,14 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
+class integer_value {
+  extends base_constant_value[integer];
 
-public class integer_value extends base_constant_value<Integer> {
-
-  public integer_value(int value, type bound) {
-    super(/*new base_integer(value)*/value, bound);
+  integer_value(integer value, type bound) {
+    super(value, bound);
   }
 
-  @Override
-  public string constant_to_string() {
-    return new base_string(unwrap().toString());
+  override string constant_to_string() {
+    return unwrap().to_string;
   }
 }

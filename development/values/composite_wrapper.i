@@ -4,12 +4,6 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.reflections.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.reflections.*;
-import ideal.development.elements.*;
-
-public interface composite_wrapper<T extends any_composite_value>
-    extends value_wrapper<T>, variable_context, stringable {
+interface composite_wrapper[any composite_value value_type] {
+  extends value_wrapper[value_type], variable_context, stringable;
 }

@@ -6,6 +6,7 @@
 
 class integer_value {
   extends base_constant_value[integer];
+  implements mutable value_wrapper;
 
   integer_value(integer value, type bound) {
     super(value, bound);

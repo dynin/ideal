@@ -39,6 +39,7 @@ namespace elements {
     static integer compute_hash_code(readonly value d);
     --static boolean data_equals(readonly value d1, readonly value d2);
     static boolean data_equals(readonly Object d1, readonly Object d2);
+    static string string_of(readonly value the_value);
     static string value_identifier(readonly value the_value);
     -- TODO: return unreachable
     static noreturn void do_panic(String message);

@@ -4,22 +4,14 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.reflections.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.reflections.*;
-import ideal.development.elements.*;
-import ideal.development.jumps.*;
+class returned_value {
+  extends jump_wrapper;
 
-public class returned_value extends jump_wrapper {
-  public entity_wrapper result;
+  entity_wrapper result;
 
-  public returned_value(entity_wrapper result) {
+  returned_value(entity_wrapper result) {
     this.result = result;
   }
 
-  @Override
-  public string to_string() {
-    return new base_string(new base_string("return value: "), result.to_string());
-  }
+  override string to_string => "return value: " ++ result;
 }

@@ -30,13 +30,13 @@ package values {
   class integer_value;
   interface string_value;
   class base_string_value;
---  interface composite_wrapper;
---  interface base_composite_value;
+  interface composite_wrapper;
+  class base_composite_value;
+  class list_context;
+  class list_value;
 --  interface base_procedure;
 --  interface bound_procedure;
---  interface common_values;
---  interface list_context;
---  interface list_value;
 --  interface procedure_with_this;
---  interface returned_value;
+  class returned_value;
+--  interface common_values;
 }

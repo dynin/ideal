@@ -4,46 +4,30 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.reflections.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.reflections.*;
-import ideal.development.elements.*;
-import ideal.development.declarations.*;
-
-public class base_composite_value extends debuggable implements composite_wrapper,
-    any_composite_value {
+class base_composite_value {
+  extends debuggable;
+  implements composite_wrapper, any composite_value;
 
   private final type bound;
-  private final dictionary<variable_id, value_wrapper> bindings;
+  private final dictionary[variable_id, value_wrapper] bindings;
 
-  public base_composite_value(type bound) {
+  base_composite_value(type bound) {
     this.bound = bound;
-    bindings = new hash_dictionary<variable_id, value_wrapper>();
+    bindings = hash_dictionary[variable_id, value_wrapper].new();
   }
 
-  @Override
-  public type type_bound() {
-    return bound;
+  override type type_bound => bound;
+
+  override any composite_value unwrap() => this;
+
+  override void put_var(variable_id key, value_wrapper value) => bindings.put(key, value);
+
+  override value_wrapper get_var(variable_id key) {
+    -- TODO: wrap null in value_wrapper?
+    result : bindings.get(key);
+    assert result is_not null;
+    return result;
   }
 
-  @Override
-  public any_composite_value unwrap() {
-    return this;
-  }
-
-  @Override
-  public void put_var(variable_id key, value_wrapper value) {
-    bindings.put(key, value);
-  }
-
-  @Override
-  public value_wrapper get_var(variable_id key) {
-    return bindings.get(key);
-  }
-
-  public string to_string() {
-    return new base_string("(composite)" + type_bound().to_string(), ":{",
-        bindings.toString(), "}");
-  }
+  string to_string => "(composite)" ++ type_bound ++ ":{" ++ utilities.string_of(bindings) ++ "}";
 }

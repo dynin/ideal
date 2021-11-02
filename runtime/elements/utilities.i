@@ -34,6 +34,10 @@ class utilities {
     return runtime_util.default_equivalence(first, second);
   }
 
+  static string string_of(readonly value the_value) {
+    return runtime_util.string_of(the_value);
+  }
+
   static open_bracket : "[";
   static close_bracket : "]";
   static colon : ": ";

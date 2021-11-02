@@ -46,6 +46,10 @@ public class runtime_util {
     return new base_string(name);
   }
 
+  public static string string_of(Object the_value) {
+    return new base_string(String.valueOf(the_value));
+  }
+
   public static string value_identifier(Object the_value) {
     return new base_string(short_class_name(the_value), "@",
         Integer.toHexString(System.identityHashCode(the_value)));

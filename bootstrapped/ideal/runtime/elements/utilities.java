@@ -25,6 +25,9 @@ public class utilities {
     }
     return runtime_util.default_equivalence.call(first, second);
   }
+  public static string string_of(final Object the_value) {
+    return runtime_util.string_of(the_value);
+  }
   public static final string open_bracket = new base_string("[");
   public static final string close_bracket = new base_string("]");
   public static final string colon = new base_string(": ");

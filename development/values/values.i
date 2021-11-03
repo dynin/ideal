@@ -21,12 +21,12 @@ package values {
   implicit import ideal.development.flags;
 
   interface data_value;
---  class base_data_value;
---  class base_value_action;
---  class data_value_action;
+  class base_data_value;
+  class base_value_action;
+  class data_value_action;
 --  class singleton_value;
 --  class enum_value;
---  interface procedure_value;
+  interface procedure_value;
 --  class base_constant_value;
 --  class integer_value;
 --  interface string_value;

@@ -18,5 +18,5 @@ class data_value_action[readonly data_value value_type] {
 
   override abstract_value result => get_value_action.the_value;
 
-  override declaration or null get_declaration => get_value_action.get_declaration;
+  override declaration or null get_declaration => get_value_action.the_value.get_declaration;
 }

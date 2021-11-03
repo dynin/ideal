@@ -21,8 +21,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.flags.*;
 
-public abstract class base_procedure extends base_data_value<procedure_value>
-    implements procedure_value {
+public abstract class base_procedure extends base_data_value implements procedure_value {
 
   private final action_name name;
   private @Nullable procedure_declaration the_declaration;

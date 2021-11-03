@@ -20,8 +20,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.jumps.*;
 
-public class procedure_with_this extends base_data_value<procedure_value>
-    implements procedure_value {
+public class procedure_with_this extends base_data_value implements procedure_value {
 
   private final procedure_value the_procedure;
   public final entity_wrapper this_entity;

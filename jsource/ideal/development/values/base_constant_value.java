@@ -15,7 +15,7 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 
 public abstract class base_constant_value<T /*extends deeply_immutable_data*/>
-    extends base_data_value<T> {
+    extends base_data_value {
 
   private T boxed;
 

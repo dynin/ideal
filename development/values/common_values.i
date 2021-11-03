@@ -4,81 +4,60 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.logs.*;
-import ideal.runtime.reflections.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.kinds.*;
-import ideal.development.types.*;
-import ideal.development.flavors.*;
-import ideal.development.declarations.*;
+namespace common_values {
+  private var action_context context;
 
-public class common_values {
-  private static singleton_value VOID_INSTANCE;
-  private static singleton_value MISSING_INSTANCE;
-  private static singleton_value UNDEFINED_INSTANCE;
+  private var singleton_value VOID_INSTANCE;
+  private var singleton_value MISSING_INSTANCE;
+  private var singleton_value UNDEFINED_INSTANCE;
 
-  private static enum_value FALSE_VALUE;
-  private static enum_value TRUE_VALUE;
+  private var enum_value or null FALSE_VALUE;
+  private var enum_value or null TRUE_VALUE;
 
-  public static boolean is_initialized() {
-    return VOID_INSTANCE != null;
+  common_values(action_context context) {
+    this.context = context;
+
+    VOID_INSTANCE = singleton_value.new(common_types.void_type);
+    MISSING_INSTANCE = singleton_value.new(common_types.missing_type);
+    UNDEFINED_INSTANCE = singleton_value.new(common_types.undefined_type);
   }
 
-  public static void initialize() {
-    VOID_INSTANCE = new singleton_value(common_types.void_type());
-    MISSING_INSTANCE = new singleton_value(common_types.missing_type());
-    UNDEFINED_INSTANCE = new singleton_value(common_types.undefined_type());
-  }
-
-  public static enum_value true_value() {
-    if (TRUE_VALUE == null) {
-      TRUE_VALUE = get_boolean_value("true");
+  var enum_value true_value() {
+    if (TRUE_VALUE is null) {
+      TRUE_VALUE = get_boolean_value(simple_name.make("true"));
     }
     return TRUE_VALUE;
   }
 
-  public static enum_value false_value() {
-    if (FALSE_VALUE == null) {
-      FALSE_VALUE = get_boolean_value("false");
+  var enum_value false_value() {
+    if (FALSE_VALUE is null) {
+      FALSE_VALUE = get_boolean_value(simple_name.make("false"));
     }
     return FALSE_VALUE;
   }
 
-  public static enum_value to_boolean_value(boolean the_value) {
-    return the_value ? true_value() : false_value();
+  enum_value to_boolean_value(boolean the_value) {
+    return the_value ? true_value : false_value;
   }
 
-  public static singleton_value void_instance() {
-    return VOID_INSTANCE;
+  var singleton_value void_instance => VOID_INSTANCE;
+
+  var singleton_value missing_instance => MISSING_INSTANCE;
+
+  var singleton_value undefined_instance => UNDEFINED_INSTANCE;
+
+  action nothing(the origin) => VOID_INSTANCE.to_action(the_origin);
+
+  boolean is_nothing(action the_action) {
+    return the_action is base_value_action &&
+           the_action.result.type_bound.principal == common_types.void_type;
   }
 
-  public static singleton_value missing_instance() {
-    return MISSING_INSTANCE;
-  }
-
-  public static singleton_value undefined_instance() {
-    return UNDEFINED_INSTANCE;
-  }
-
-  public static action nothing(origin the_origin) {
-    return VOID_INSTANCE.to_action(the_origin);
-  }
-
-  public static boolean is_nothing(action the_action) {
-    return the_action instanceof base_value_action &&
-           the_action.result().type_bound().principal() == common_types.void_type();
-  }
-
-  private static enum_value get_boolean_value(String sname) {
-    simple_name the_name = simple_name.make(new base_string(sname));
-    readonly_list<action> actions = ((action_context) common_types.get_context()).lookup(
-        common_types.boolean_type(), the_name);
-    assert actions.size() == 1;
-    abstract_value the_value = actions.first().result();
-    assert the_value instanceof enum_value;
-    return (enum_value) the_value;
+  private enum_value get_boolean_value(simple_name the_name) {
+    actions : context.lookup(common_types.boolean_type, the_name);
+    assert actions.size == 1;
+    the_value : actions.first.result;
+    assert the_value is enum_value;
+    return the_value;
   }
 }

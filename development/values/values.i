@@ -18,6 +18,8 @@ package values {
   implicit import ideal.development.kinds;
   implicit import ideal.development.types;
   implicit import ideal.development.jumps;
+  implicit import ideal.development.notifications;
+  implicit import ideal.development.flags;
 
   interface data_value;
   class base_data_value;
@@ -34,9 +36,9 @@ package values {
   class base_composite_value;
   class list_context;
   class list_value;
---  interface base_procedure;
---  interface bound_procedure;
---  interface procedure_with_this;
+  class base_procedure;
+  class bound_procedure;
+  class procedure_with_this;
   class returned_value;
 --  interface common_values;
 }

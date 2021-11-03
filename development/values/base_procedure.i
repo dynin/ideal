@@ -4,98 +4,72 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.reflections.*;
-import javax.annotation.Nullable;
-import ideal.runtime.elements.*;
-import ideal.runtime.logs.*;
-import ideal.runtime.reflections.*;
-import ideal.development.elements.*;
-import ideal.development.notifications.*;
-import ideal.development.types.*;
-import ideal.development.flavors.*;
-import ideal.development.declarations.*;
-import ideal.development.flags.*;
+abstract class base_procedure {
+  extends base_data_value;
+  implements procedure_value;
 
-public abstract class base_procedure extends base_data_value<procedure_value>
-    implements procedure_value {
+  private action_name the_action_name;
+  private var procedure_declaration or null the_declaration;
 
-  private final action_name name;
-  private @Nullable procedure_declaration the_declaration;
-
-  public base_procedure(action_name name, type procedure_type) {
+  base_procedure(the action_name, type procedure_type) {
     super(procedure_type);
-    this.name = name;
+    this.the_action_name = the_action_name;
   }
 
-  @Override
-  public action_name name() {
-    return name;
-  }
+  override action_name name => the_action_name;
 
-  @Override
-  public boolean has_this_argument() {
-    return false;
-  }
+  override boolean has_this_argument => false;
 
-  @Override
-  public procedure_value bind_this(entity_wrapper this_argument) {
-    if (has_this_argument()) {
-      return new procedure_with_this(this, this_argument);
+  override procedure_value bind_this(entity_wrapper this_argument) {
+    if (has_this_argument) {
+      return procedure_with_this.new(this, this_argument);
     } else {
       return this;
     }
   }
 
-  @Override
-  public action bind_this_action(action from, origin pos) {
-    if (has_this_argument()) {
-      return new procedure_with_this(this, from).to_action(pos);
+  override
+  action bind_this_action(action from, the origin) {
+    if (has_this_argument) {
+      return procedure_with_this.new(this, from).to_action(the_origin);
     } else {
-      return to_action(pos);
+      return to_action(the_origin);
     }
   }
 
-  public void set_declaration(procedure_declaration the_declaration) {
-    assert this.the_declaration == null;
+  void set_declaration(procedure_declaration the_declaration) {
+    assert this.the_declaration is null;
     this.the_declaration = the_declaration;
   }
 
-  @Override
-  public @Nullable declaration get_declaration() {
-    return the_declaration;
-  }
+  -- TODO redundant method
+  override type type_bound => (this .> base_data_value).type_bound;
 
-  protected final abstract_value return_value() {
-    return common_types.get_procedure_return(type_bound());
-  }
+  override declaration or null get_declaration => the_declaration;
 
-  protected boolean is_valid_procedure_arity(int arity) {
-    return common_types.is_valid_procedure_arity(type_bound(), arity);
-  }
+  protected var abstract_value return_value =>
+    common_types.get_procedure_return(type_bound);
 
-  protected type get_argument_type(int index) {
-    return common_types.get_procedure_argument(type_bound(), index).type_bound();
-  }
+  protected boolean is_valid_procedure_arity(nonnegative arity) =>
+    common_types.is_valid_procedure_arity(type_bound, arity);
 
-  @Override
-  public boolean is_parametrizable() {
-    return true;
-  }
+  protected type get_argument_type(nonnegative index) =>
+    common_types.get_procedure_argument(type_bound, index).type_bound;
 
-  @Override
-  public boolean supports_parameters(action_parameters parameters, action_context context) {
-    readonly_list<action> parameter_list = parameters.parameters;
-    if (!is_valid_procedure_arity(parameter_list.size())) {
+  override boolean is_parametrizable => true;
+
+  override boolean supports_parameters(action_parameters parameters, action_context context) {
+    parameter_list : parameters.parameters;
+    if (!is_valid_procedure_arity(parameter_list.size)) {
       return false;
     }
 
-    for (int i = 0; i < parameter_list.size(); ++i) {
-      action parameter = parameter_list.get(i);
-      if (parameter instanceof error_signal) {
+    for (index : base_range.new(0, parameter_list.size)) {
+      parameter : parameter_list[index];
+      if (parameter is error_signal) {
         return false;
       }
-      if (!context.can_promote(parameter, get_argument_type(i))) {
+      if (!context.can_promote(parameter, get_argument_type(index))) {
         return false;
       }
     }
@@ -103,43 +77,41 @@ public abstract class base_procedure extends base_data_value<procedure_value>
     return true;
   }
 
-  @Override
-  public analysis_result bind_parameters(action_parameters params, action_context context,
-      origin pos) {
+  override analysis_result bind_parameters(the action_parameters, action_context context,
+      the origin) {
 
-    readonly_list<action> aparams = params.parameters;
+    aparams : the_action_parameters.parameters;
     if (debug.DO_REDUNDANT_CHECKS) {
-      // This should never happen because of type checks done before bind_parameters is called
-      if (!is_valid_procedure_arity(aparams.size())) {
-        return new error_signal(new base_string("Arity mismatch"), pos);
+      -- This should never happen because of type checks done before bind_parameters is called
+      if (!is_valid_procedure_arity(aparams.size)) {
+        return error_signal.new("Arity mismatch", the_origin);
       }
     }
 
-    list<action> promoted_params = new base_list<action>();
+    promoted_params : base_list[action].new();
 
-    for (int i = 0; i < aparams.size(); ++i) {
-      action param = aparams.get(i);
-      if (param instanceof error_signal) {
+    for (index : base_range.new(0, aparams.size)) {
+      param : aparams[index];
+      if (param is error_signal) {
         return param;
       }
-      type target = get_argument_type(i);
-      if (context.can_promote(param, target)) {
-        promoted_params.append(context.promote(param, target, pos));
+      type_target : get_argument_type(index);
+      if (context.can_promote(param, type_target)) {
+        promoted_params.append(context.promote(param, type_target, the_origin));
       } else {
-        return notification_utilities.cant_promote(param.result(), target, pos);
+        return notification_utilities.cant_promote(param.result, type_target, the_origin);
       }
     }
 
-    return new bound_procedure(this, return_value(), new action_parameters(promoted_params), pos);
+    return bound_procedure.new(this, return_value, action_parameters.new(promoted_params),
+        the_origin);
   }
 
-  @Override
-  public abstract entity_wrapper execute(entity_wrapper this_argument,
-      readonly_list<entity_wrapper> args, execution_context the_execution_context);
+  override abstract entity_wrapper execute(entity_wrapper this_argument,
+      readonly list[entity_wrapper] args, the execution_context);
 
-  @Override
-  public string to_string() {
-    if (the_declaration != null) {
+  override string to_string() {
+    if (the_declaration is_not null) {
       return utilities.describe(this, the_declaration);
     } else {
       return utilities.describe(this, name);

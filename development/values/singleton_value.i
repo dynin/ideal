@@ -15,8 +15,6 @@ class singleton_value {
   }
 
   override string to_string() {
-    -- TODO: abstract_value cast is redundant
-    -- return (this .> abstract_value).type_bound ++ "." ++ common_names.instance_name;
     return this.type_bound ++ "." ++ common_names.instance_name;
   }
 }

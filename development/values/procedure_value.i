@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 interface procedure_value {
-  extends abstract_value;
+  extends abstract_value, value_wrapper;
 
   action_name name;
   -- This is needed to resolve abstract_value/value_wrapper ambiguity...

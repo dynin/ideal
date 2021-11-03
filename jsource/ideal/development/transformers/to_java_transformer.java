@@ -1277,6 +1277,10 @@ public class to_java_transformer extends base_transformer {
     assert is_procedure_reference(the_action);
     procedure_declaration the_procedure =
         (procedure_declaration) declaration_util.get_declaration(the_action);
+    if (the_procedure == null) {
+      // utilities.panic("A " + the_action);
+    }
+    assert the_procedure != null;
 
     @Nullable principal_type old_enclosing_type = enclosing_type;
     enclosing_type = the_procedure.get_procedure_type().principal();

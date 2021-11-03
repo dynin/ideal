@@ -15,5 +15,6 @@ package jumps {
 
   class jump_wrapper;
   class panic_value;
+  class returned_value;
   enum jump_category;
 }

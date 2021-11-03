@@ -28,8 +28,7 @@ abstract class base_procedure {
     }
   }
 
-  override
-  action bind_this_action(action from, the origin) {
+  override action bind_this_action(action from, the origin) {
     if (has_this_argument) {
       return procedure_with_this.new(this, from).to_action(the_origin);
     } else {

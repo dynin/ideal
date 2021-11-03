@@ -22,6 +22,8 @@ namespace common_values {
     UNDEFINED_INSTANCE = singleton_value.new(common_types.undefined_type);
   }
 
+  var boolean is_initialized => context is_not null;
+
   var enum_value true_value() {
     if (TRUE_VALUE is null) {
       TRUE_VALUE = get_boolean_value(simple_name.make("true"));

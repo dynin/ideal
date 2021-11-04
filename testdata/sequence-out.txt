@@ -25,24 +25,6 @@ testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
   implements readonly_data;
              ^^^^^^^^^^^^^
 testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
-  public sequence subsequence(integer begin) {
-                  ^^^^^^^^^^^
-testdata/sequence.i:105: Overloaded procedure declaration
-    public sequence subsequence(integer begin, integer end) {
-                    ^^^^^^^^^^^
-  testdata/sequence.i:96: Original declaration
-  public overload sequence(sequence ns1, element n2) {
-                           ---------^^^
-testdata/sequence.i:34: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
-  public overload sequence(element n1, sequence ns2) {
-                                       ---------^^^
-testdata/sequence.i:39: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
-    return result;
-    ^^^^^^--------
-testdata/sequence.i:103: Can't promote immutable reference[mutable sequence[sequence.element]] to mutable sequence
-    return subsequence(begin, size());
-           ^^^^^^^^^^^
-testdata/sequence.i:106: Ambiguous access
 import java.util.List;
 import java.util.ArrayList;
 implicit import ideal.concepts;

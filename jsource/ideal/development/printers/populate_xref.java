@@ -268,6 +268,10 @@ public class populate_xref extends construct_visitor<Void> implements value {
   @Override
   public Void process_type_declaration(type_declaration_construct c) {
     @Nullable analyzable the_declaration = the_xref_context.get_analyzable(c);
+    if (the_declaration == null) {
+      return null;
+    }
+
     if (!(the_declaration instanceof type_declaration)) {
       utilities.panic("Type declaration expected, got " +  the_declaration);
     }

@@ -25,24 +25,6 @@ testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
   implements readonly_data;
              ^^^^^^^^^^^^^
 testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
-  public sequence subsequence(integer begin) {
-                  ^^^^^^^^^^^
-testdata/sequence.i:105: Overloaded procedure declaration
-    public sequence subsequence(integer begin, integer end) {
-                    ^^^^^^^^^^^
-  testdata/sequence.i:96: Original declaration
-  public overload sequence(sequence ns1, element n2) {
-                           ---------^^^
-testdata/sequence.i:34: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
-  public overload sequence(element n1, sequence ns2) {
-                                       ---------^^^
-testdata/sequence.i:39: Argument #0: expected mutable sequence[sequence.element], found immutable reference[mutable sequence]
-    return result;
-    ^^^^^^--------
-testdata/sequence.i:103: Can't promote immutable reference[mutable sequence[sequence.element]] to mutable sequence
-    return subsequence(begin, size());
-           ^^^^^^^^^^^
-testdata/sequence.i:106: Ambiguous access
 <html>
   <head>
    <meta charset='UTF-8' />
@@ -82,238 +64,238 @@ testdata/sequence.i:106: Ambiguous access
        import <span id='ideal5'>ideal</span> &bull; <span id='semantics'>semantics</span> &bull; <span id='lookup-row'>lookup row</span>
       </div>
       <div class='type-declaration'>
-       public class <span class='type-declaration-name'><span id='sequence'>sequence</span></span>[<span id='readonly-data'>readonly data</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
+       public class <span class='type-declaration-name'>sequence</span>[readonly data <span class='var-declaration-name'>element</span>]
         <div class='indent'>
           <div>
            implements <span class='supertype-declaration-name'>readonly data</span>
           </div>
           <div>
-           private <span id='List2'>List</span> <span class='var-declaration-name'>list</span>
+           private List <span class='var-declaration-name'>list</span>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence2'>sequence</span></span>()
+           public overload <span class='procedure-declaration-name'>sequence</span>()
             <div class='indent'>
               <div>
-               <span class='var-declaration-name'>list</span> : <span id='ArrayList2'>ArrayList</span> &bull; new()
+               <span class='var-declaration-name'>list</span> : ArrayList &bull; new()
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence3'>sequence</span></span>(<span id='element2'>element</span> <span class='var-declaration-name'><span id='n1'>n1</span></span>)
-            <div class='indent'>
-              <div>
-               this()
-              </div>
-              <div>
-               <span id='append'>append</span>(<span id='n12'>n1</span>)
-              </div>
-            </div>
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence4'>sequence</span></span>(<span id='element3'>element</span> <span class='var-declaration-name'><span id='n13'>n1</span></span>, <span id='element4'>element</span> <span class='var-declaration-name'><span id='n2'>n2</span></span>)
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>)
             <div class='indent'>
               <div>
                this()
               </div>
               <div>
-               <span id='append2'>append</span>(<span id='n14'>n1</span>)
-              </div>
-              <div>
-               <span id='append3'>append</span>(<span id='n22'>n2</span>)
+               append(n1)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence5'>sequence</span></span>(<span id='sequence6'>sequence</span> <span class='var-declaration-name'><span id='ns1'>ns1</span></span>, <span id='element5'>element</span> <span class='var-declaration-name'><span id='n23'>n2</span></span>)
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>)
             <div class='indent'>
               <div>
                this()
               </div>
               <div>
-               <span id='append-all'>append all</span>(<span id='ns12'>ns1</span>)
+               append(n1)
               </div>
               <div>
-               <span id='append4'>append</span>(<span id='n24'>n2</span>)
+               append(n2)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence7'>sequence</span></span>(<span id='element6'>element</span> <span class='var-declaration-name'><span id='n15'>n1</span></span>, <span id='sequence8'>sequence</span> <span class='var-declaration-name'><span id='ns2'>ns2</span></span>)
+           public overload <span class='procedure-declaration-name'>sequence</span>(sequence <span class='var-declaration-name'>ns1</span>, element <span class='var-declaration-name'>n2</span>)
             <div class='indent'>
               <div>
                this()
               </div>
               <div>
-               <span id='append5'>append</span>(<span id='n16'>n1</span>)
+               append all(ns1)
               </div>
               <div>
-               <span id='append-all2'>append all</span>(<span id='ns22'>ns2</span>)
+               append(n2)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence9'>sequence</span></span>(<span id='element7'>element</span> <span class='var-declaration-name'><span id='n17'>n1</span></span>, <span id='element8'>element</span> <span class='var-declaration-name'><span id='n25'>n2</span></span>, <span id='element9'>element</span> <span class='var-declaration-name'><span id='n3'>n3</span></span>)
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, sequence <span class='var-declaration-name'>ns2</span>)
             <div class='indent'>
               <div>
                this()
               </div>
               <div>
-               <span id='append6'>append</span>(<span id='n18'>n1</span>)
+               append(n1)
               </div>
               <div>
-               <span id='append7'>append</span>(<span id='n26'>n2</span>)
-              </div>
-              <div>
-               <span id='append8'>append</span>(<span id='n32'>n3</span>)
+               append all(ns2)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence10'>sequence</span></span>(<span id='element10'>element</span> <span class='var-declaration-name'><span id='n19'>n1</span></span>, <span id='element11'>element</span> <span class='var-declaration-name'><span id='n27'>n2</span></span>, <span id='element12'>element</span> <span class='var-declaration-name'><span id='n33'>n3</span></span>, <span id='element13'>element</span> <span class='var-declaration-name'><span id='n4'>n4</span></span>)
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>)
             <div class='indent'>
               <div>
                this()
               </div>
               <div>
-               <span id='append9'>append</span>(<span id='n110'>n1</span>)
+               append(n1)
               </div>
               <div>
-               <span id='append10'>append</span>(<span id='n28'>n2</span>)
+               append(n2)
               </div>
               <div>
-               <span id='append11'>append</span>(<span id='n34'>n3</span>)
-              </div>
-              <div>
-               <span id='append12'>append</span>(<span id='n42'>n4</span>)
+               append(n3)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence11'>sequence</span></span>(<span id='element14'>element</span> <span class='var-declaration-name'><span id='n111'>n1</span></span>, <span id='element15'>element</span> <span class='var-declaration-name'><span id='n29'>n2</span></span>, <span id='element16'>element</span> <span class='var-declaration-name'><span id='n35'>n3</span></span>, <span id='element17'>element</span> <span class='var-declaration-name'><span id='n43'>n4</span></span>, <span id='element18'>element</span> <span class='var-declaration-name'><span id='n5'>n5</span></span>)
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>)
             <div class='indent'>
               <div>
                this()
               </div>
               <div>
-               <span id='append13'>append</span>(<span id='n112'>n1</span>)
+               append(n1)
               </div>
               <div>
-               <span id='append14'>append</span>(<span id='n210'>n2</span>)
+               append(n2)
               </div>
               <div>
-               <span id='append15'>append</span>(<span id='n36'>n3</span>)
+               append(n3)
               </div>
               <div>
-               <span id='append16'>append</span>(<span id='n44'>n4</span>)
-              </div>
-              <div>
-               <span id='append17'>append</span>(<span id='n52'>n5</span>)
+               append(n4)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence12'>sequence</span></span>(<span id='element19'>element</span> <span class='var-declaration-name'><span id='n113'>n1</span></span>, <span id='element20'>element</span> <span class='var-declaration-name'><span id='n211'>n2</span></span>, <span id='element21'>element</span> <span class='var-declaration-name'><span id='n37'>n3</span></span>, <span id='element22'>element</span> <span class='var-declaration-name'><span id='n45'>n4</span></span>, <span id='element23'>element</span> <span class='var-declaration-name'><span id='n53'>n5</span></span>, <span id='element24'>element</span> <span class='var-declaration-name'><span id='n6'>n6</span></span>)
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>)
             <div class='indent'>
               <div>
                this()
               </div>
               <div>
-               <span id='append18'>append</span>(<span id='n114'>n1</span>)
+               append(n1)
               </div>
               <div>
-               <span id='append19'>append</span>(<span id='n212'>n2</span>)
+               append(n2)
               </div>
               <div>
-               <span id='append20'>append</span>(<span id='n38'>n3</span>)
+               append(n3)
               </div>
               <div>
-               <span id='append21'>append</span>(<span id='n46'>n4</span>)
+               append(n4)
               </div>
               <div>
-               <span id='append22'>append</span>(<span id='n54'>n5</span>)
-              </div>
-              <div>
-               <span id='append23'>append</span>(<span id='n62'>n6</span>)
+               append(n5)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='integer'>integer</span> <span class='procedure-declaration-name'><span id='size'>size</span></span>()
+           public overload <span class='procedure-declaration-name'>sequence</span>(element <span class='var-declaration-name'>n1</span>, element <span class='var-declaration-name'>n2</span>, element <span class='var-declaration-name'>n3</span>, element <span class='var-declaration-name'>n4</span>, element <span class='var-declaration-name'>n5</span>, element <span class='var-declaration-name'>n6</span>)
             <div class='indent'>
               <div>
-               return <span id='list'>list</span> &bull; <span id='size2'>size</span>()
+               this()
+              </div>
+              <div>
+               append(n1)
+              </div>
+              <div>
+               append(n2)
+              </div>
+              <div>
+               append(n3)
+              </div>
+              <div>
+               append(n4)
+              </div>
+              <div>
+               append(n5)
+              </div>
+              <div>
+               append(n6)
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='boolean'>boolean</span> <span class='procedure-declaration-name'><span id='empty'>empty</span></span> =&gt; <span id='list2'>list</span> &bull; <span id='isEmpty'>isEmpty</span>()
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='boolean2'>boolean</span> <span class='procedure-declaration-name'><span id='is-not-empty'>is not empty</span></span> =&gt; !<span id='empty2'>empty</span>()
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='element25'>element</span> <span class='procedure-declaration-name'><span id='get'>get</span></span>(<span id='integer2'>integer</span> <span class='var-declaration-name'><span id='index'>index</span></span>)
+           public integer <span class='procedure-declaration-name'>size</span>()
             <div class='indent'>
               <div>
-               return <span id='list3'>list</span> &bull; <span id='get2'>get</span>(<span id='index2'>index</span>) !&gt; <span id='element26'>element</span>
+               return list &bull; size()
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='void'>void</span> <span class='procedure-declaration-name'><span id='append24'>append</span></span>(<span id='element27'>element</span> <span class='var-declaration-name'><span id='t'>t</span></span>)
+           public boolean <span class='procedure-declaration-name'>empty</span> =&gt; list &bull; isEmpty()
+          </div>
+          <div class='procedure-declaration'>
+           public boolean <span class='procedure-declaration-name'>is not empty</span> =&gt; !empty()
+          </div>
+          <div class='procedure-declaration'>
+           public element <span class='procedure-declaration-name'>get</span>(integer <span class='var-declaration-name'>index</span>)
             <div class='indent'>
               <div>
-               <span id='list4'>list</span> &bull; <span id='add'>add</span>(<span id='t2'>t</span>)
+               return list &bull; get(index) !&gt; element
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='append-all3'>append all</span></span>(<span id='sequence13'>sequence</span>[<span id='element28'>element</span>] <span class='var-declaration-name'><span id='s'>s</span></span>)
+           public void <span class='procedure-declaration-name'>append</span>(element <span class='var-declaration-name'>t</span>)
+            <div class='indent'>
+              <div>
+               list &bull; add(t)
+              </div>
+            </div>
+          </div>
+          <div class='procedure-declaration'>
+           public void <span class='procedure-declaration-name'>append all</span>(sequence[element] <span class='var-declaration-name'>s</span>)
             <div class='indent'>
              pass
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='sequence14'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence'>subsequence</span></span>(<span id='integer3'>integer</span> <span class='var-declaration-name'><span id='begin'>begin</span></span>, <span id='integer4'>integer</span> <span class='var-declaration-name'><span id='end'>end</span></span>)
+           public sequence <span class='procedure-declaration-name'>subsequence</span>(integer <span class='var-declaration-name'>begin</span>, integer <span class='var-declaration-name'>end</span>)
             <div class='indent'>
               <div>
-               assert <span id='begin2'>begin</span> &gt;= 0 &amp;&amp; <span id='end2'>end</span> &lt;= <span id='size3'>size</span>()
+               assert begin &gt;= 0 &amp;&amp; end &lt;= size()
               </div>
               <div>
-               <span class='var-declaration-name'><span id='result'>result</span></span> : <span id='sequence15'>sequence</span>[<span id='element29'>element</span>] &bull; new()
+               <span class='var-declaration-name'>result</span> : sequence[element] &bull; new()
               </div>
-             for var <span id='integer5'>integer</span> <span class='var-declaration-name'><span id='i'>i</span></span> : <span id='begin3'>begin</span>; <span id='i2'>i</span> &lt; <span id='end3'>end</span>; <span id='i3'>i</span> += 1
+             for var integer <span class='var-declaration-name'>i</span> : begin; i &lt; end; i += 1
               <div class='indent'>
                 <div>
-                 <span id='result2'>result</span> &bull; <span id='append25'>append</span>(<span id='get3'>get</span>(<span id='i4'>i</span>))
+                 result &bull; append(get(i))
                 </div>
               </div>
               <div>
-               return <span id='result3'>result</span>
+               return result
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='sequence16'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence2'>subsequence</span></span>(<span id='integer6'>integer</span> <span class='var-declaration-name'><span id='begin4'>begin</span></span>)
+           public sequence <span class='procedure-declaration-name'>subsequence</span>(integer <span class='var-declaration-name'>begin</span>)
             <div class='indent'>
               <div>
-               return <span id='subsequence3'>subsequence</span>(<span id='begin5'>begin</span>, <span id='size4'>size</span>())
+               return subsequence(begin, size())
               </div>
             </div>
           </div>
           <div class='procedure-declaration'>
-           public <span id='void3'>void</span> <span class='procedure-declaration-name'><span id='test'>test</span></span>()
+           public void <span class='procedure-declaration-name'>test</span>()
             <div class='indent'>
-             if <span id='true'>true</span>
+             if true
               <div class='indent'>
                 <div>
-                 <span id='test2'>test</span>()
+                 test()
                 </div>
               </div>
               else
               <div class='indent'>
                 <div>
-                 <span id='test3'>test</span>()
+                 test()
                 </div>
               </div>
             </div>
@@ -369,146 +351,7 @@ testdata/sequence.i:106: Ambiguous access
        import <span id='ideal5'>ideal</span> &bull; <span id='semantics'>semantics</span> &bull; <span id='lookup-row'>lookup row</span>
       </div>
       <div class='type-declaration'>
-       public class <span class='type-declaration-name'><span id='sequence'>sequence</span></span>[<span id='readonly-data'>readonly data</span> <span class='var-declaration-name'><span id='element'>element</span></span>]
-        <div class='xref-links'>
-         <span class='xref-name'>Declaration:</span> sequence
-        </div>
-        <div class='xref-links'>
-         <span class='xref-name'>Use:</span> sequence / sequence / sequence / sequence / sequence / sequence
-        </div>
-        <div class='indent'>
-          <div>
-          </div>
-          <div>
-           private <span id='List2'>List</span> <span class='var-declaration-name'>list</span>
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence2'>sequence</span></span>()
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence3'>sequence</span></span>(<span id='element2'>element</span> <span class='var-declaration-name'><span id='n1'>n1</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence4'>sequence</span></span>(<span id='element3'>element</span> <span class='var-declaration-name'><span id='n13'>n1</span></span>, <span id='element4'>element</span> <span class='var-declaration-name'><span id='n2'>n2</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence5'>sequence</span></span>(<span id='sequence6'>sequence</span> <span class='var-declaration-name'><span id='ns1'>ns1</span></span>, <span id='element5'>element</span> <span class='var-declaration-name'><span id='n23'>n2</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence7'>sequence</span></span>(<span id='element6'>element</span> <span class='var-declaration-name'><span id='n15'>n1</span></span>, <span id='sequence8'>sequence</span> <span class='var-declaration-name'><span id='ns2'>ns2</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence9'>sequence</span></span>(<span id='element7'>element</span> <span class='var-declaration-name'><span id='n17'>n1</span></span>, <span id='element8'>element</span> <span class='var-declaration-name'><span id='n25'>n2</span></span>, <span id='element9'>element</span> <span class='var-declaration-name'><span id='n3'>n3</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence10'>sequence</span></span>(<span id='element10'>element</span> <span class='var-declaration-name'><span id='n19'>n1</span></span>, <span id='element11'>element</span> <span class='var-declaration-name'><span id='n27'>n2</span></span>, <span id='element12'>element</span> <span class='var-declaration-name'><span id='n33'>n3</span></span>, <span id='element13'>element</span> <span class='var-declaration-name'><span id='n4'>n4</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence11'>sequence</span></span>(<span id='element14'>element</span> <span class='var-declaration-name'><span id='n111'>n1</span></span>, <span id='element15'>element</span> <span class='var-declaration-name'><span id='n29'>n2</span></span>, <span id='element16'>element</span> <span class='var-declaration-name'><span id='n35'>n3</span></span>, <span id='element17'>element</span> <span class='var-declaration-name'><span id='n43'>n4</span></span>, <span id='element18'>element</span> <span class='var-declaration-name'><span id='n5'>n5</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public overload <span class='procedure-declaration-name'><span id='sequence12'>sequence</span></span>(<span id='element19'>element</span> <span class='var-declaration-name'><span id='n113'>n1</span></span>, <span id='element20'>element</span> <span class='var-declaration-name'><span id='n211'>n2</span></span>, <span id='element21'>element</span> <span class='var-declaration-name'><span id='n37'>n3</span></span>, <span id='element22'>element</span> <span class='var-declaration-name'><span id='n45'>n4</span></span>, <span id='element23'>element</span> <span class='var-declaration-name'><span id='n53'>n5</span></span>, <span id='element24'>element</span> <span class='var-declaration-name'><span id='n6'>n6</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> constructor
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='integer'>integer</span> <span class='procedure-declaration-name'><span id='size'>size</span></span>()
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> size
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Use:</span> size / size
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='boolean'>boolean</span> <span class='procedure-declaration-name'><span id='empty'>empty</span></span>
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> empty
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Use:</span> empty
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='boolean2'>boolean</span> <span class='procedure-declaration-name'><span id='is-not-empty'>is not empty</span></span>
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> is not empty
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='element25'>element</span> <span class='procedure-declaration-name'><span id='get'>get</span></span>(<span id='integer2'>integer</span> <span class='var-declaration-name'><span id='index'>index</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> get
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Use:</span> get
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='void'>void</span> <span class='procedure-declaration-name'><span id='append24'>append</span></span>(<span id='element27'>element</span> <span class='var-declaration-name'><span id='t'>t</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> append
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Use:</span> append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append / append
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='void2'>void</span> <span class='procedure-declaration-name'><span id='append-all3'>append all</span></span>(<span id='sequence13'>sequence</span>[<span id='element28'>element</span>] <span class='var-declaration-name'><span id='s'>s</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> append all
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Use:</span> append all / append all
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='sequence14'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence'>subsequence</span></span>(<span id='integer3'>integer</span> <span class='var-declaration-name'><span id='begin'>begin</span></span>, <span id='integer4'>integer</span> <span class='var-declaration-name'><span id='end'>end</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> subsequence
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='sequence16'>sequence</span> <span class='procedure-declaration-name'><span id='subsequence2'>subsequence</span></span>(<span id='integer6'>integer</span> <span class='var-declaration-name'><span id='begin4'>begin</span></span>)
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> subsequence
-          </div>
-          <div class='procedure-declaration'>
-           public <span id='void3'>void</span> <span class='procedure-declaration-name'><span id='test'>test</span></span>()
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> test
-          </div>
-          <div class='xref-links'>
-           <span class='xref-name'>Use:</span> test / test
-          </div>
-        </div>
+       public class <span class='type-declaration-name'>sequence</span>[readonly data <span class='var-declaration-name'>element</span>]
       </div>
     </div>
     <table class='nav-table'>

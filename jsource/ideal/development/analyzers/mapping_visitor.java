@@ -39,6 +39,10 @@ public class mapping_visitor extends debuggable {
       put_analyzable((construct) the_origin, the_analyzable);
     }
 
+    if (the_analyzable.has_errors()) {
+      return;
+    }
+
     readonly_list<analyzable> children = the_analyzable.children();
 
     for (int i = 0; i < children.size(); ++i) {

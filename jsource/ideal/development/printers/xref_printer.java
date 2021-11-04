@@ -55,7 +55,7 @@ public class xref_printer extends base_printer {
     analyzable the_analyzable = the_xref_context().get_analyzable(the_construct);
 
     type_declaration the_declaration = (type_declaration) the_analyzable;
-    if (the_declaration.has_errors()) {
+    if (the_declaration == null || the_declaration.has_errors()) {
       return text_utilities.EMPTY_FRAGMENT;
     }
 

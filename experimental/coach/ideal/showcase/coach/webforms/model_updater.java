@@ -77,14 +77,14 @@ public class model_updater extends widget_visitor<Void> {
 
   @Override
   public Void visit_text_input(text_input the_text_input) {
-    reference_wrapper<string> model = the_text_input.model;
+    reference_wrapper model = the_text_input.model;
     model.set(state.get_schema().new_string(next_field_value()));
     return null;
   }
 
   @Override
   public Void visit_textarea_input(textarea_input the_textarea_input) {
-    reference_wrapper<string> model = the_textarea_input.model;
+    reference_wrapper model = the_textarea_input.model;
     model.set(state.get_schema().new_string(next_field_value()));
     return null;
   }

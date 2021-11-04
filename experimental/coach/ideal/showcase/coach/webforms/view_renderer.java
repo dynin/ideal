@@ -9,6 +9,7 @@
 package ideal.showcase.coach.webforms;
 
 import ideal.library.elements.*;
+import ideal.library.reflections.*;
 import javax.annotation.Nullable;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
@@ -77,14 +78,14 @@ public class view_renderer extends widget_visitor<String> {
   @Override
   public String visit_text_input(text_input the_text_input) {
     return "<input type=\"text\" name=\"" + id_generator.next_escaped_id() +
-        "\" value=\"" + escape_html(the_text_input.model.get().unwrap()) + "\" />\n";
+        "\" value=\"" + escape_html(the_text_input.model.get()) + "\" />\n";
   }
 
   @Override
   public String visit_textarea_input(textarea_input the_textarea_input) {
     return "<textarea rows=\"30\" cols=\"80\" name=\"" +
         id_generator.next_escaped_id() + "\">" +
-        escape_html(the_textarea_input.model.get().unwrap()) + "</textarea>\n";
+        escape_html(the_textarea_input.model.get()) + "</textarea>\n";
   }
 
   @Override
@@ -198,6 +199,10 @@ public class view_renderer extends widget_visitor<String> {
 
   public static String escape_html(string s) {
     return utilities.s(runtime_util.escape_markup(s));
+  }
+
+  public static String escape_html(value_wrapper vw) {
+    return escape_html((string) vw.unwrap());
   }
 
   public static String escape_html(String s) {

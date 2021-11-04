@@ -14,9 +14,9 @@ import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.reflections.*;
 public class textarea_input implements widget {
-  public final reference_wrapper<string> model;
+  public final reference_wrapper model;
 
-  public textarea_input(reference_wrapper<string> model) {
+  public textarea_input(reference_wrapper model) {
     this.model = model;
   }
 

@@ -26,13 +26,13 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 
 import javax.annotation.Nullable;
-public class data_value extends debuggable implements composite_wrapper {
+public class composite_data_value extends debuggable implements composite_wrapper {
   private final data_type type;
   private final datastore_state world;
   private final base_composite_value value;
   private @Nullable String cached_name;
 
-  data_value(data_type type, datastore_state world) {
+  composite_data_value(data_type type, datastore_state world) {
     this.type = type;
     this.world = world;
     this.value = new base_composite_value(type.value_type());

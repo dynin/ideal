@@ -65,12 +65,12 @@ public class marshaller {
     obj.add(SOURCE_VERSION.s(), to_json_string(the_schema.version));
     obj.add(VERSION_ID.s(), to_json_string(world.get_version_id()));
 
-    readonly_list<data_value> data_values = world.get_data().elements();
-    data_values = sorter.sort(data_values, data_ordering);
+    readonly_list<composite_data_value> composite_data_values = world.get_data().elements();
+    composite_data_values = sorter.sort(composite_data_values, data_ordering);
 
     JsonArray values = new JsonArray();
-    for (int i = 0; i < data_values.size(); ++i) {
-      values.add(to_json_full_state(data_values.get(i)));
+    for (int i = 0; i < composite_data_values.size(); ++i) {
+      values.add(to_json_full_state(composite_data_values.get(i)));
     }
     obj.add(DATA, values);
 
@@ -111,7 +111,7 @@ public class marshaller {
         if (dt == null) {
           continue;
         }
-        data_value dv = dt.new_value(world);
+        composite_data_value dv = dt.new_value(world);
         string_value id = from_json_string(val_object.get(DATA_ID));
         dv.put_var(the_schema.data_id_field(), id);
         world.do_add_data(dv);
@@ -123,7 +123,7 @@ public class marshaller {
       if (val instanceof JsonObject) {
         JsonObject val_object = (JsonObject) val;
         string_value id = from_json_string(val_object.get(DATA_ID));
-        data_value dv = world.get_data_by_id(id.unwrap());
+        composite_data_value dv = world.get_data_by_id(id.unwrap());
         if (dv != null) {
           read_from_json(dv, val_object, world);
         }
@@ -137,8 +137,8 @@ public class marshaller {
   }
 
   private JsonElement to_json_value(value_wrapper v) {
-    if (v instanceof data_value) {
-      return to_json_data((data_value) v);
+    if (v instanceof composite_data_value) {
+      return to_json_data((composite_data_value) v);
     } else if (v instanceof enum_value) {
       return to_json_enum((enum_value) v);
     } else if (v instanceof list_wrapper) {
@@ -156,7 +156,7 @@ public class marshaller {
     return new JsonPrimitive(utilities.s(s));
   }
 
-  private JsonPrimitive to_json_data(data_value dv) {
+  private JsonPrimitive to_json_data(composite_data_value dv) {
     return new JsonPrimitive(utilities.s(dv.get_data_id()));
   }
 
@@ -164,7 +164,7 @@ public class marshaller {
     return utilities.s(field.short_name().to_string());
   }
 
-  private JsonObject to_json_full_state(data_value dv) {
+  private JsonObject to_json_full_state(composite_data_value dv) {
     JsonObject obj = new JsonObject();
     obj.add(DATA_TYPE, to_json_string(dv.get_type().short_name().to_string()));
     obj.add(DATA_ID, new JsonPrimitive(utilities.s(dv.get_data_id())));
@@ -179,9 +179,9 @@ public class marshaller {
     return obj;
   }
 
-  private static final Comparator<data_value> data_ordering = new Comparator<data_value>() {
+  private static final Comparator<composite_data_value> data_ordering = new Comparator<composite_data_value>() {
     @Override
-    public int compare(data_value d1, data_value d2) {
+    public int compare(composite_data_value d1, composite_data_value d2) {
       // First order by type
       String t1 = utilities.s(d1.get_type().short_name().to_string());
       String t2 = utilities.s(d2.get_type().short_name().to_string());
@@ -231,11 +231,11 @@ public class marshaller {
     return the_schema.new_string(new base_string(((JsonPrimitive) element).getAsString()));
   }
 
-  private data_value from_json_ref(data_type dt, JsonElement element, datastore_state world) {
+  private composite_data_value from_json_ref(data_type dt, JsonElement element, datastore_state world) {
     if (element instanceof JsonNull) {
       return null;
     } else {
-      data_value result = world.get_data_by_id(new base_string(element.getAsString()));
+      composite_data_value result = world.get_data_by_id(new base_string(element.getAsString()));
       assert result != null;
       return result;
     }
@@ -256,7 +256,7 @@ public class marshaller {
     return the_type.get_values().get(0);
   }
 
-  private void read_from_json(data_value dv, JsonObject obj, datastore_state world) {
+  private void read_from_json(composite_data_value dv, JsonObject obj, datastore_state world) {
     readonly_list<field_reference> all_fields = dv.get_fields();
     for (int i = 0; i < all_fields.size(); ++i) {
       field_reference field = all_fields.get(i);

@@ -15,7 +15,7 @@ import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
-public class list_wrapper extends debuggable implements value_wrapper<list<value_wrapper>> {
+public class list_wrapper extends debuggable implements value_wrapper {
 
   private final list<value_wrapper> wrapped;
   private final type bound;

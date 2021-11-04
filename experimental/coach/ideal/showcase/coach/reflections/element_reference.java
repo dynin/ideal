@@ -26,7 +26,7 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 
 import javax.annotation.Nullable;
-public class element_reference extends debuggable implements reference_wrapper<any_value> {
+public class element_reference extends debuggable implements reference_wrapper {
 
   private final list_wrapper value;
   private final int index;
@@ -38,7 +38,7 @@ public class element_reference extends debuggable implements reference_wrapper<a
     this.element_type = get_datastore().get_schema().get_element_type(value.type_bound());
   }
 
-  public element_reference(value_wrapper<list<value_wrapper>> value, int index) {
+  public element_reference(value_wrapper value, int index) {
     this((list_wrapper) value, index);
   }
 

@@ -26,13 +26,13 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 
 import javax.annotation.Nullable;
-public class field_reference<V extends any_value> extends debuggable
-    implements reference_wrapper<V> {
+public class field_reference extends debuggable
+    implements reference_wrapper {
 
-  private final data_value the_value;
+  private final composite_data_value the_value;
   private final variable_id the_field;
 
-  public field_reference(data_value the_value, variable_id the_field) {
+  public field_reference(composite_data_value the_value, variable_id the_field) {
     this.the_value = the_value;
     this.the_field = the_field;
   }
@@ -52,22 +52,22 @@ public class field_reference<V extends any_value> extends debuggable
   }
 
   @Override
-  public void init(value_wrapper<V> new_value) {
+  public void init(value_wrapper new_value) {
     // TODO: check that field is not initialized.
     the_value.put_var(the_field, new_value);
   }
 
   @Override
-  public value_wrapper<V> get() {
+  public value_wrapper get() {
     value_wrapper result = the_value.get_var(the_field);
     if (result == null) {
       result = the_value.get_world().make_default_value(value_type_bound());
     }
-    return (value_wrapper<V>) result;
+    return result;
   }
 
   @Override
-  public void set(value_wrapper<V> new_value) {
+  public void set(value_wrapper new_value) {
     the_value.put_var(the_field, new_value);
   }
 

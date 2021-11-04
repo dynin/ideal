@@ -1,15 +1,11 @@
 #!/bin/sh
 
-FROM='library()'
-TO='common_types'
+FROM='procedure1_composite_data_value'
+TO='procedure1_data_value'
 
 #cd $HOME/Projects/ideal
 
-ALLFILES="`find library runtime machine development experimental showcase -name \*.i` \
-    `find jsource bootstrapped -name \*.java` \
-    jsource/ideal/*/*/*.cup \
-    testdata/* \
-    Makefile"
+ALLFILES="`find experimental -name \*.java`"
 
 for OLDFILE in $ALLFILES
 do

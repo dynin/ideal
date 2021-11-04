@@ -56,8 +56,8 @@ public class data_type implements readonly_data {
     return short_name;
   }
 
-  public data_value new_value(datastore_state world) {
-    return new data_value(this, world);
+  public composite_data_value new_value(datastore_state world) {
+    return new composite_data_value(this, world);
   }
 
   private @Nullable procedure_declaration lookup_method(simple_name method_name) {
@@ -86,7 +86,7 @@ public class data_type implements readonly_data {
     return null;
   }
 
-  private string execute_string_method(procedure_declaration method, data_value this_data_val) {
+  private string execute_string_method(procedure_declaration method, composite_data_value this_data_val) {
     entity_wrapper result = action_utilities.execute_procedure(method, this_data_val,
         new empty<entity_wrapper>(), schema.exec_context);
     if (result instanceof error_signal) {
@@ -98,7 +98,7 @@ public class data_type implements readonly_data {
     return ((string_value) result).unwrap();
   }
 
-  public string render_name(data_value dv) {
+  public string render_name(composite_data_value dv) {
     @Nullable variable_declaration name_field = lookup_field(datastore_schema.NAME);
     string_value the_name = null;
     if (name_field != null) {
@@ -124,7 +124,7 @@ public class data_type implements readonly_data {
     return lookup_method(datastore_schema.PUBLISH) != null;
   }
 
-  public String publish(data_value dv) {
+  public String publish(composite_data_value dv) {
     procedure_declaration method = lookup_method(datastore_schema.PUBLISH);
     assert method != null;
     return utilities.s(execute_string_method(method, dv));

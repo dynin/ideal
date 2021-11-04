@@ -11,13 +11,13 @@ package ideal.showcase.coach.common;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.showcase.coach.reflections.*;
-public class procedure1_data_value extends procedure1<data_value> {
+public class procedure1_data_value extends procedure1<composite_data_value> {
   public procedure1_data_value(String s) {
-    super(s, data_value.class);
+    super(s, composite_data_value.class);
   }
 
   @Override
-  protected string to_string(data_value the_value) {
+  protected string to_string(composite_data_value the_value) {
     return the_value.get_data_id();
   }
 }

@@ -36,10 +36,10 @@ public class select_input<T extends value_wrapper> implements widget {
     }
   }
 
-  public final reference_wrapper<T> model;
+  public final reference_wrapper model;
   public final readonly_list<option<T>> the_options;
 
-  public select_input(reference_wrapper<T> model, readonly_list<T> options,
+  public select_input(reference_wrapper model, readonly_list<T> options,
       option_displayer<T> displayer, boolean sort) {
     this.model = model;
 

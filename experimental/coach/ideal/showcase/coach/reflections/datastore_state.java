@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public class datastore_state extends debuggable {
   private final datastore_schema schema;
   private int next_id;
-  private final dictionary<string, data_value> data;
+  private final dictionary<string, composite_data_value> data;
   private @Nullable string source_version;
   private @Nullable string version_id;
   private static int instance_id;
@@ -38,12 +38,12 @@ public class datastore_state extends debuggable {
       @Nullable string version_id) {
     this.schema = schema;
     this.next_id = 0;
-    this.data = new hash_dictionary<string, data_value>();
+    this.data = new hash_dictionary<string, composite_data_value>();
     this.source_version = source_version;
     this.version_id = version_id;
   }
 
-  public readonly_collection<data_value> get_data() {
+  public readonly_collection<composite_data_value> get_data() {
     return data.values();
   }
 
@@ -76,7 +76,7 @@ public class datastore_state extends debuggable {
   }
 
   // Internal use only.
-  public void do_add_data(data_value d) {
+  public void do_add_data(composite_data_value d) {
     assert d != null;
     string id = d.get_data_id();
     assert id != null;
@@ -84,7 +84,7 @@ public class datastore_state extends debuggable {
     mark_modified();
   }
 
-  public void add_data(data_value d) {
+  public void add_data(composite_data_value d) {
     assert d != null;
     string id = get_next_id();
     d.put_var(schema.data_id_field(), schema.new_string(id));
@@ -92,9 +92,9 @@ public class datastore_state extends debuggable {
     mark_modified();
   }
 
-  public list<data_value> of_type(data_type dt) {
-    immutable_list<data_value> all_data = get_data().elements();
-    list<data_value> result = new base_list<data_value>();
+  public list<composite_data_value> of_type(data_type dt) {
+    immutable_list<composite_data_value> all_data = get_data().elements();
+    list<composite_data_value> result = new base_list<composite_data_value>();
     for (int i = 0; i < all_data.size(); ++i) {
       if (all_data.get(i).get_type() == dt) {
         result.append(all_data.get(i));
@@ -118,7 +118,7 @@ public class datastore_state extends debuggable {
     return schema;
   }
 
-  public data_value get_data_by_id(string s) {
+  public composite_data_value get_data_by_id(string s) {
     return data.get(s);
   }
 

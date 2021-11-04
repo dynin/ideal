@@ -95,14 +95,14 @@ public class request_handler extends base_handler {
     new model_updater(get_world(), request).update_model(the_widget);
   }
 
-  private @Nullable data_value get_current_value(data_type dt) {
-    dictionary<data_type, reference_wrapper<any_composite_value>> all_data_selectors =
-        new hash_dictionary<data_type, reference_wrapper<any_composite_value>>();
+  private @Nullable composite_data_value get_current_value(data_type dt) {
+    dictionary<data_type, reference_wrapper> all_data_selectors =
+        new hash_dictionary<data_type, reference_wrapper>();
     update_model(do_show_world(all_data_selectors));
 
-    reference_wrapper<any_composite_value> the_reference = all_data_selectors.get(dt);
+    reference_wrapper the_reference = all_data_selectors.get(dt);
     if (the_reference != null) {
-      return (data_value) the_reference.get();
+      return (composite_data_value) the_reference.get();
     } else {
       return null;
     }
@@ -175,7 +175,7 @@ public class request_handler extends base_handler {
   }
 
   private widget do_show_world(
-      @Nullable dictionary<data_type, reference_wrapper<any_composite_value>> value_selectors) {
+      @Nullable dictionary<data_type, reference_wrapper> value_selectors) {
     list<widget> rows = new base_list<widget>();
 
     readonly_list<data_type> all_data_types = get_schema().all_data_types();
@@ -185,15 +185,14 @@ public class request_handler extends base_handler {
 
       columns.append(new bold(to_display(dt.short_name()) + "s:"));
 
-      readonly_list<data_value> values = get_world().of_type(dt);
+      readonly_list<composite_data_value> values = get_world().of_type(dt);
       if (values.is_empty()) {
         columns.append(widget.EMPTY_WIDGET);
         columns.append(widget.EMPTY_WIDGET);
       } else {
         type_id value_type = dt.value_type();
-        reference_wrapper<any_composite_value> value_selector =
-            new simple_reference<any_composite_value>(value_type,
-                get_schema().get_mutable_reference(value_type), null);
+        reference_wrapper value_selector =
+            new simple_reference(value_type, get_schema().get_mutable_reference(value_type), null);
         if (value_selectors != null) {
           value_selectors.put(dt, value_selector);
         }
@@ -241,7 +240,7 @@ public class request_handler extends base_handler {
     return new text_content(resource_util.TEXT_PLAIN, marshal_world());
   }
 
-  private widget import_view(reference_wrapper<string> text) {
+  private widget import_view(reference_wrapper text) {
     list<widget> rows = new base_list<widget>();
 
     rows.append(new textarea_input(text));
@@ -250,24 +249,24 @@ public class request_handler extends base_handler {
     return new vbox(rows);
   }
 
-  private reference_wrapper<string> make_reference(@Nullable string value) {
+  private reference_wrapper make_reference(@Nullable string value) {
     type_id string_type = get_schema().immutable_string_type();
-    return new simple_reference<string>(string_type,
+    return new simple_reference(string_type,
         get_schema().get_mutable_reference(string_type),
         value != null ? get_schema().new_string(value) : null);
   }
 
   public widget import_page() {
-    reference_wrapper<string> text = make_reference(marshal_world());
+    reference_wrapper text = make_reference(marshal_world());
     return import_view(text);
   }
 
   public widget edit_source_page() {
-    reference_wrapper<string> source = make_reference(get_schema().source_content());
+    reference_wrapper source = make_reference(get_schema().source_content());
     return render_source(source, null);
   }
 
-  private widget render_source(reference_wrapper<string> source, @Nullable widget top) {
+  private widget render_source(reference_wrapper source, @Nullable widget top) {
     list<widget> rows = new base_list<widget>();
 
     if (top != null) {
@@ -281,19 +280,19 @@ public class request_handler extends base_handler {
   }
 
   public widget edit_source_action() {
-    reference_wrapper<string> source_ref = make_reference(null);
+    reference_wrapper source_ref = make_reference(null);
     update_model(render_source(source_ref, null));
 
     if (source_ref.get() == null) {
       return null;
     }
-    string new_source = source_ref.get().unwrap();
+    string new_source = (string) source_ref.get().unwrap();
 
     translation_result edit_result = translate_source(new_source);
     if (edit_result.is_success()) {
       return null;
     } else {
-      reference_wrapper<string> source = make_reference(new_source);
+      reference_wrapper source = make_reference(new_source);
       text_fragment error_messages = edit_result.get_error_messages();
       return render_source(source, new div("messages", new html_text(error_messages)));
     }
@@ -303,7 +302,7 @@ public class request_handler extends base_handler {
     state.reset_source();
   }
 
-  private widget render_edit_value_page(data_value dv, @Nullable String button_name,
+  private widget render_edit_value_page(composite_data_value dv, @Nullable String button_name,
       @Nullable procedure0arg button_action) {
     list<widget> rows = new base_list<widget>();
 
@@ -325,7 +324,7 @@ public class request_handler extends base_handler {
   }
 
   public Object edit_value_page(data_type dt) {
-    data_value dv = get_current_value(dt);
+    composite_data_value dv = get_current_value(dt);
     if (dv == null) {
       return new error_message("Not found item selection for " + dt.short_name());
     }
@@ -343,23 +342,23 @@ public class request_handler extends base_handler {
     type_id value_type = field.value_type_bound();
 
     if (value_type == get_schema().immutable_string_type()) {
-      return render_string_input((reference_wrapper<string>) field);
+      return render_string_input(field);
     } else if (get_schema().is_enum_type(value_type)) {
-      return render_enum_input((reference_wrapper<enum_value>) field);
+      return render_enum_input(field);
     } else if (get_schema().is_data_type(value_type)) {
-      return render_data_input((reference_wrapper<data_value>) field);
+      return render_data_input(field);
     } else if (get_schema().is_list_type(value_type)) {
-      return render_list_input((reference_wrapper<list<value_wrapper>>) field);
+      return render_list_input(field);
     } else {
       throw new RuntimeException("Uncrecognized type " + value_type);
     }
   }
 
-  public widget render_string_input(reference_wrapper<string> field) {
+  public widget render_string_input(reference_wrapper field) {
     return new text_input(field);
   }
 
-  public widget render_enum_input(reference_wrapper<enum_value> field) {
+  public widget render_enum_input(reference_wrapper field) {
     enum_type the_type = get_schema().get_enum_type(field.value_type_bound());
     return new select_input(field, the_type.get_values(), new enum_displayer(), false);
   }
@@ -371,16 +370,16 @@ public class request_handler extends base_handler {
     }
   }
 
-  public widget render_data_input(reference_wrapper<data_value> field) {
+  public widget render_data_input(reference_wrapper field) {
     data_type the_type = get_schema().get_data_type(field.value_type_bound());
-    list<data_value> values = get_world().of_type(the_type);
+    list<composite_data_value> values = get_world().of_type(the_type);
     values.append(null);
     return new select_input(field, values, new data_displayer(), true);
   }
 
-  public static class data_displayer implements option_displayer<data_value> {
+  public static class data_displayer implements option_displayer<composite_data_value> {
     @Override
-    public String display(@Nullable data_value value) {
+    public String display(@Nullable composite_data_value value) {
       if (value == null) {
         return "";
       } else {
@@ -389,7 +388,7 @@ public class request_handler extends base_handler {
     }
   }
 
-  public widget render_list_input(reference_wrapper<list<value_wrapper>> field) {
+  public widget render_list_input(reference_wrapper field) {
     list<widget> rows = new base_list<widget>();
 
     for (int i = 0; i < NUM_ROWS; ++i) {
@@ -401,7 +400,7 @@ public class request_handler extends base_handler {
 
   public void add_value_action(data_type type) {
     datastore_state world = get_world();
-    data_value new_value = type.new_value(world);
+    composite_data_value new_value = type.new_value(world);
     widget view = render_edit_value_page(new_value, null, null);
     update_model(view);
     world.add_data(new_value);
@@ -409,7 +408,7 @@ public class request_handler extends base_handler {
     update_world_state(world);
   }
 
-  public Object edit_value_action(data_value dv) {
+  public Object edit_value_action(composite_data_value dv) {
     if (update_collision()) {
       return new error_message("Editing item: version collision");
     }
@@ -422,7 +421,7 @@ public class request_handler extends base_handler {
   }
 
   public Object publish_action(data_type dt) {
-    data_value dv = get_current_value(dt);
+    composite_data_value dv = get_current_value(dt);
     if (dv == null) {
       return new error_message("Not found item selection for " + dt.short_name());
     }
@@ -430,14 +429,14 @@ public class request_handler extends base_handler {
   }
 
   public void import_action() {
-    reference_wrapper<string> text = make_reference(null);
+    reference_wrapper text = make_reference(null);
     update_model(import_view(text));
     if (text.get() == null) {
       return;
     }
 
     datastore_state new_state = get_marshaller().unmarshal_state(
-        json_data.parse(text.get().unwrap()));
+        json_data.parse((string) text.get().unwrap()));
 
     if (new_state != null) {
       replace_world_state(new_state);

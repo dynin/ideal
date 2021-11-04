@@ -25,12 +25,12 @@ public abstract class target_value extends base_procedure {
   }
 
   @Override
-  protected boolean is_valid_procedure_arity(int arity) {
+  protected boolean is_valid_procedure_arity(Integer arity) {
     return true;
   }
 
   @Override
-  protected final type get_argument_type(int index) {
+  protected final type get_argument_type(Integer index) {
     return common_types.any_type();
   }
 

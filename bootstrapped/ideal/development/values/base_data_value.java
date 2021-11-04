@@ -19,7 +19,7 @@ import ideal.development.flags.*;
 import javax.annotation.Nullable;
 
 public class base_data_value extends debuggable implements data_value {
-  private final type bound;
+  protected final type bound;
   public base_data_value(final type bound) {
     this.bound = bound;
   }

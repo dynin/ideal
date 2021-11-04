@@ -35,8 +35,8 @@ package values {
   class base_composite_value;
   class list_context;
   class list_value;
---  class base_procedure;
---  class bound_procedure;
---  class procedure_with_this;
+  class base_procedure;
+  class bound_procedure;
+  class procedure_with_this;
 --  namespace common_values;
 }

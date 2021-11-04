@@ -42,7 +42,7 @@ abstract class base_procedure {
   }
 
   -- TODO redundant method
-  override type type_bound => (this .> base_data_value).type_bound;
+  override type type_bound => bound;
 
   override declaration or null get_declaration => the_declaration;
 

@@ -33,12 +33,12 @@ public class info_fn extends base_procedure {
   }
 
   @Override
-  protected boolean is_valid_procedure_arity(int arity) {
+  protected boolean is_valid_procedure_arity(Integer arity) {
     return true;
   }
 
   @Override
-  protected final type get_argument_type(int index) {
+  protected final type get_argument_type(Integer index) {
     return string_helper.readonly_stringable();
   }
 

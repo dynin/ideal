@@ -8,7 +8,8 @@ class base_data_value {
   implements data_value;
   extends debuggable;
 
-  private type bound;
+  -- TODO: make private.
+  protected type bound;
 
   base_data_value(type bound) {
     this.bound = bound;

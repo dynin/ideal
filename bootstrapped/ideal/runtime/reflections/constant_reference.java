@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 
-public class constant_reference<value_type> extends debuggable implements reference_wrapper<value_type> {
+public class constant_reference extends debuggable implements reference_wrapper {
   private final value_wrapper the_value;
   private final type_id the_reference_type;
   public constant_reference(final value_wrapper the_value, final type_id the_reference_type) {

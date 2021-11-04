@@ -7,8 +7,8 @@
 --- A readonly reference that allows access to the value initialized at construction time.
 -- TODO: this should implement immutable_reference_wrapper,
 -- and statically detect invalid write access.
-class constant_reference[any value value_type] {
-    implements reference_wrapper[value_type];
+class constant_reference {
+    implements reference_wrapper;
     extends debuggable;
 
   private value_wrapper the_value;

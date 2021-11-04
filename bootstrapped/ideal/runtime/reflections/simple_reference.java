@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class simple_reference<value_type> extends debuggable implements reference_wrapper<value_type> {
+public class simple_reference extends debuggable implements reference_wrapper {
   private final type_id the_value_type;
   private final type_id the_reference_type;
   private @Nullable value_wrapper the_value;

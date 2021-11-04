@@ -72,7 +72,7 @@ public class proc_as_ref_action extends base_action implements chainable_action 
 
     type ref_type = common_types.get_reference(flavor.readonly_flavor,
         action_utilities.to_type(result.type_bound()));
-    return new constant_reference<any_value>((value_wrapper) result, ref_type);
+    return new constant_reference((value_wrapper) result, ref_type);
   }
 
   @Override

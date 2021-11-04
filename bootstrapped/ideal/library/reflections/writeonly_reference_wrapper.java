@@ -4,7 +4,7 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface writeonly_reference_wrapper<value_type> extends writeonly_entity_wrapper, any_reference_wrapper<value_type> {
+public interface writeonly_reference_wrapper extends writeonly_entity_wrapper, any_reference_wrapper {
   void init(value_wrapper the_value);
   void set(value_wrapper the_value);
 }

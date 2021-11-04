@@ -4,7 +4,7 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface readonly_reference_wrapper<value_type> extends readonly_entity_wrapper, any_reference_wrapper<value_type> {
+public interface readonly_reference_wrapper extends readonly_entity_wrapper, any_reference_wrapper {
   type_id value_type_bound();
   value_wrapper get();
 }

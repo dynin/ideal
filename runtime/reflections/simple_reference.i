@@ -5,8 +5,8 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 --- A simple reference that stores the value and exposes methods to read and update it.
-class simple_reference[any value value_type] {
-    implements reference_wrapper[value_type];
+class simple_reference {
+    implements reference_wrapper;
     extends debuggable;
 
   private type_id the_value_type;

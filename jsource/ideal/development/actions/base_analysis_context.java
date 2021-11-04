@@ -40,8 +40,7 @@ public class base_analysis_context extends debuggable implements analysis_contex
       new common_types(this);
     }
     if (!common_values.is_initialized()) {
-      //new common_values(this);
-      common_values.initialize();
+      new common_values(this);
     }
   }
 

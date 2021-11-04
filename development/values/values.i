@@ -38,5 +38,5 @@ package values {
   class base_procedure;
   class bound_procedure;
   class procedure_with_this;
---  namespace common_values;
+  namespace common_values;
 }

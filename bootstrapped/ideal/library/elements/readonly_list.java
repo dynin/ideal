@@ -10,4 +10,5 @@ public interface readonly_list<element> extends readonly_collection<element>, an
   immutable_list<element> slice(Integer begin, Integer end);
   immutable_list<element> frozen_copy();
   boolean has(predicate<element> the_predicate);
+  range indexes();
 }

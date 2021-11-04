@@ -94,7 +94,7 @@ public class base_string extends debuggable implements string {
     return the_writer.elements();
   }
   public @Override Integer size() {
-    return this.state.length();
+    return (Integer) this.state.length();
   }
   public @Override boolean is_empty() {
     return ideal.machine.elements.runtime_util.values_equal(this.state.length(), 0);
@@ -135,6 +135,9 @@ public class base_string extends debuggable implements string {
       }
     }
     return false;
+  }
+  public @Override range indexes() {
+    return new base_range(0, this.size());
   }
   public @Override boolean equals(final Object other) {
     return other instanceof base_string && this.state.equals(((base_string) ((base_string) other)).state);

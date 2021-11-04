@@ -63,7 +63,7 @@ abstract class base_procedure {
       return false;
     }
 
-    for (index : base_range.new(0, parameter_list.size)) {
+    for (index : parameter_list.indexes) {
       parameter : parameter_list[index];
       if (parameter is error_signal) {
         return false;
@@ -89,7 +89,7 @@ abstract class base_procedure {
 
     promoted_params : base_list[action].new();
 
-    for (index : base_range.new(0, aparams.size)) {
+    for (index : aparams.indexes) {
       param : aparams[index];
       if (param is error_signal) {
         return param;

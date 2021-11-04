@@ -178,4 +178,6 @@ class base_readonly_list[value element_type] {
 
     return false;
   }
+
+  implement range indexes => base_range.new(0, size);
 }

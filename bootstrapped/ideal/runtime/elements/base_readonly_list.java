@@ -137,4 +137,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
     }
     return false;
   }
+  public @Override range indexes() {
+    return new base_range(0, this.size());
+  }
 }

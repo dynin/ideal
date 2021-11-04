@@ -18,6 +18,10 @@ test_suite test_list {
     assert !slice.is_not_empty;
     assert slice.size == 0;
 
+    the range : strings.indexes;
+    assert the_range.begin == 0;
+    assert the_range.end == 0;
+
     -- TODO: test exception throwing on out-of-bounds
   }
 
@@ -27,6 +31,10 @@ test_suite test_list {
     assert !strings.is_empty;
     assert strings.is_not_empty;
     assert strings.size == 1;
+
+    the range : strings.indexes;
+    assert the_range.begin == 0;
+    assert the_range.end == 1;
 
     assert strings.first == "foo";
     assert strings.last == "foo";
@@ -95,6 +103,10 @@ test_suite test_list {
     assert strings.last == "bar";
     assert strings[0] == "foo";
     assert strings[1] == "bar";
+
+    the range : strings.indexes;
+    assert the_range.begin == 0;
+    assert the_range.end == 2;
 
     string removed : strings.remove_last();
 

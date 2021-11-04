@@ -50,4 +50,7 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
   public @Override boolean has(final predicate<element_type> the_predicate) {
     return false;
   }
+  public @Override range indexes() {
+    return new base_range(0, 0);
+  }
 }

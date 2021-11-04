@@ -25,6 +25,9 @@ public class test_range {
     assert ideal.machine.elements.runtime_util.values_equal(the_range.size(), 3);
     assert !the_range.is_empty();
     assert the_range.is_not_empty();
+    final range indexes = the_range.indexes();
+    assert ideal.machine.elements.runtime_util.values_equal(indexes.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(indexes.end(), 3);
     assert ideal.machine.elements.runtime_util.values_equal(the_range.first(), 5);
     assert ideal.machine.elements.runtime_util.values_equal(the_range.last(), 7);
     assert ideal.machine.elements.runtime_util.values_equal(the_range.get(0), 5);

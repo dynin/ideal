@@ -58,4 +58,7 @@ class empty[value element_type] {
   implement boolean has(predicate[element_type] the_predicate) pure {
     return false;
   }
+
+  -- TODO: private static cached_indexes : base_range.new(0, 0);
+  implement range indexes => base_range.new(0, 0);
 }

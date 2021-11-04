@@ -78,4 +78,11 @@ public class base_range implements range {
     }
     return false;
   }
+  public @Override range indexes() {
+    if (ideal.machine.elements.runtime_util.values_equal(this.the_begin, 0)) {
+      return this;
+    } else {
+      return new base_range(0, this.size());
+    }
+  }
 }

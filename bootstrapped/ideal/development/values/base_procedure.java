@@ -73,7 +73,7 @@ public abstract class base_procedure extends base_data_value implements procedur
       return false;
     }
     {
-      final readonly_list<Integer> index_list = new base_range(0, parameter_list.size());
+      final readonly_list<Integer> index_list = parameter_list.indexes();
       for (Integer index_index = 0; index_index < index_list.size(); index_index += 1) {
         final Integer index = index_list.get(index_index);
         final action parameter = parameter_list.get(index);
@@ -96,7 +96,7 @@ public abstract class base_procedure extends base_data_value implements procedur
     }
     final base_list<action> promoted_params = new base_list<action>();
     {
-      final readonly_list<Integer> index_list = new base_range(0, aparams.size());
+      final readonly_list<Integer> index_list = aparams.indexes();
       for (Integer index_index = 0; index_index < index_list.size(); index_index += 1) {
         final Integer index = index_list.get(index_index);
         final action param = aparams.get(index);

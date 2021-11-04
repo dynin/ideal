@@ -127,7 +127,7 @@ class base_string {
     return the_writer.elements();
   }
 
-  implement integer size => state.length();
+  implement nonnegative size => state.length() !> nonnegative;
 
   implement boolean is_empty => state.length() == 0;
 
@@ -177,6 +177,8 @@ class base_string {
 
     return false;
   }
+
+  implement range indexes => base_range.new(0, size);
 
   -- TODO: remove this once tests are rewritten.
   override boolean equals(Object other) {

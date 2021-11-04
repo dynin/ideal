@@ -35,6 +35,10 @@ test_suite test_range {
     assert !the_range.is_empty;
     assert the_range.is_not_empty;
 
+    indexes : the_range.indexes;
+    assert indexes.begin == 0;
+    assert indexes.end == 3;
+
     assert the_range.first == 5;
     assert the_range.last == 7;
 

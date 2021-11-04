@@ -59,4 +59,7 @@ class singleton_collection[readonly equality_comparable element_type] {
   implement boolean has(predicate[element_type] the_predicate) pure {
     return the_predicate(element);
   }
+
+  -- TODO: private static cached_indexes : base_range.new(0, 1);
+  implement range indexes => base_range.new(0, 1);
 }

@@ -329,6 +329,9 @@ package elements {
 
     --- Sort the list in place using the given sort order.
     void sort(the order[element]);
+
+    --- Range of indexes to this list, from 0 to |size|.
+    range indexes;
   }
 
   --- A half-open range of nonnegative integers.

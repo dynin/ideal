@@ -13,12 +13,18 @@ public class test_list {
     assert slice.is_empty();
     assert !slice.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(slice.size(), 0);
+    final range the_range = strings.indexes();
+    assert ideal.machine.elements.runtime_util.values_equal(the_range.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(the_range.end(), 0);
   }
   public void test_singleton_collection() {
     final singleton_collection<string> strings = new singleton_collection<string>(new base_string("foo"));
     assert !strings.is_empty();
     assert strings.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(strings.size(), 1);
+    final range the_range = strings.indexes();
+    assert ideal.machine.elements.runtime_util.values_equal(the_range.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(the_range.end(), 1);
     assert ideal.machine.elements.runtime_util.values_equal(strings.first(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("foo"));
     assert strings.contains(new base_string("foo"));
@@ -70,6 +76,9 @@ public class test_list {
     assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(1).get(), new base_string("bar"));
+    final range the_range = strings.indexes();
+    assert ideal.machine.elements.runtime_util.values_equal(the_range.begin(), 0);
+    assert ideal.machine.elements.runtime_util.values_equal(the_range.end(), 2);
     final string removed = strings.remove_last();
     assert ideal.machine.elements.runtime_util.values_equal(removed, new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.size(), 1);

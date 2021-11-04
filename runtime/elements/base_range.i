@@ -96,4 +96,12 @@ class base_range {
 
     return false;
   }
+
+  implement range indexes() {
+    if (the_begin == 0) {
+      return this;
+    } else {
+      return base_range.new(0, size);
+    }
+  }
 }

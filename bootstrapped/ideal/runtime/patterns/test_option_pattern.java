@@ -20,17 +20,17 @@ public class test_option_pattern {
   }
   public option_pattern<Character> make_pattern() {
     final pattern<Character> match_one_or_more_a = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_option_pattern.this.match_a(first);
       }
     }, false);
     final pattern<Character> match_zero_or_more_b = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_option_pattern.this.match_b(first);
       }
     }, true);
     final pattern<Character> match_one_or_more_c = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_option_pattern.this.match_c(first);
       }
     }, false);

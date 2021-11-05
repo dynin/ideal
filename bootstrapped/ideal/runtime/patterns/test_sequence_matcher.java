@@ -21,7 +21,7 @@ public class test_sequence_matcher {
   }
   public matcher<Character, string> make_matcher(final function1<Boolean, Character> the_predicate) {
     return new procedure_matcher<Character, string>(new repeat_element<Character>(the_predicate, false), new procedure1<string, readonly_list<Character>>() {
-      @Override public string call(readonly_list<Character> first) {
+      public @Override string call(readonly_list<Character> first) {
         return test_sequence_matcher.this.as_string(first);
       }
     });
@@ -40,20 +40,20 @@ public class test_sequence_matcher {
   }
   public void test_match_parse() {
     final list<pattern<Character>> patterns_list = new base_list<pattern<Character>>(this.make_matcher(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_sequence_matcher.this.match_a(first);
       }
     }), this.make_matcher(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_sequence_matcher.this.match_b(first);
       }
     }), this.make_matcher(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_sequence_matcher.this.match_c(first);
       }
     }));
     final sequence_matcher<Character, string> the_matcher = new sequence_matcher<Character, string>(patterns_list, new procedure1<string, readonly_list<Object>>() {
-      @Override public string call(readonly_list<Object> first) {
+      public @Override string call(readonly_list<Object> first) {
         return test_sequence_matcher.this.match_procedure(first);
       }
     });

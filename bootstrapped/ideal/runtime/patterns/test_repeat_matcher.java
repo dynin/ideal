@@ -36,7 +36,7 @@ public class test_repeat_matcher {
   }
   public pattern<Character> make_matcher(final function1<Boolean, Character> the_predicate) {
     return new procedure_matcher<Character, string>(new repeat_element<Character>(the_predicate, false), new procedure1<string, readonly_list<Character>>() {
-      @Override public string call(readonly_list<Character> first) {
+      public @Override string call(readonly_list<Character> first) {
         return test_repeat_matcher.this.as_string(first);
       }
     });
@@ -55,24 +55,24 @@ public class test_repeat_matcher {
   }
   public matcher<Character, string> make_pattern(final boolean do_match_empty) {
     final immutable_list<pattern<Character>> matcher_list = new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ this.make_matcher(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_matcher.this.match_a(first);
       }
     }), this.make_matcher(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_matcher.this.match_b(first);
       }
     }), this.make_matcher(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_matcher.this.match_c(first);
       }
     }) }));
     return new repeat_matcher<Character, string, string>(new sequence_matcher<Character, string>(matcher_list, new procedure1<string, readonly_list<Object>>() {
-      @Override public string call(readonly_list<Object> first) {
+      public @Override string call(readonly_list<Object> first) {
         return test_repeat_matcher.this.match_procedure(first);
       }
     }), do_match_empty, new procedure1<string, readonly_list<string>>() {
-      @Override public string call(readonly_list<string> first) {
+      public @Override string call(readonly_list<string> first) {
         return test_repeat_matcher.this.join_list(first);
       }
     });

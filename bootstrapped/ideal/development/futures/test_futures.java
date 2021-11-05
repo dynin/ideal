@@ -26,13 +26,13 @@ public class test_futures {
   public void test_future_observers() {
     final lifespan the_lifespan = new base_lifespan(null);
     final base_operation op0 = new base_operation(new procedure0<Void>() {
-      @Override public Void call() {
+      public @Override Void call() {
         test_futures.observe0();
         return null;
       }
     }, new base_string("observe0"));
     final base_operation op1 = new base_operation(new procedure0<Void>() {
-      @Override public Void call() {
+      public @Override Void call() {
         test_futures.observe1();
         return null;
       }

@@ -33,7 +33,7 @@ public class test_output_transformer {
   public void test_transformer() {
     final appender<string> the_appender = new appender<string>();
     final output_transformer<string, string> the_transformer = new output_transformer<string, string>(new function1<string, string>() {
-      @Override public string call(string first) {
+      public @Override string call(string first) {
         return test_output_transformer.test_transform(first);
       }
     }, the_appender);

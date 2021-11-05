@@ -17,9 +17,9 @@ import ideal.development.names.*;
 import ideal.machine.annotations.dont_display;
 
 public class text_origin extends debuggable implements deeply_immutable_data, origin, stringable {
-  public @dont_display final source_content source;
-  public @dont_display final Integer begin;
-  public @dont_display final Integer end;
+  public final @dont_display source_content source;
+  public final @dont_display Integer begin;
+  public final @dont_display Integer end;
   public text_origin(final source_content source, final Integer begin, final Integer end) {
     this.source = source;
     this.begin = begin;

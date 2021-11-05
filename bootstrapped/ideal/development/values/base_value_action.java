@@ -26,7 +26,7 @@ public class base_value_action<value_type extends readonly_entity_wrapper> exten
     this.the_origin = the_origin;
     this.the_value = the_value;
   }
-  public @Override final origin deeper_origin() {
+  public final @Override origin deeper_origin() {
     return this.the_origin;
   }
   public @Override abstract_value result() {
@@ -36,7 +36,7 @@ public class base_value_action<value_type extends readonly_entity_wrapper> exten
   public @Override boolean has_side_effects() {
     return false;
   }
-  public @Override final action combine(final action from, final origin the_origin) {
+  public final @Override action combine(final action from, final origin the_origin) {
     if (this.the_value instanceof procedure_value) {
       return ((procedure_value) this.the_value).bind_this_action(from, the_origin);
     } else {

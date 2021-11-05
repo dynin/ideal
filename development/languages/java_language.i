@@ -13,6 +13,8 @@ namespace java_language {
 
   static {
     modifiers_list : [
+        -- TODO: resurrect documentation_modifier?
+
         -- Supported access modifiers
         access_modifier.public_modifier,
         access_modifier.protected_modifier,
@@ -22,7 +24,6 @@ namespace java_language {
         static_modifier,
         final_modifier,
         abstract_modifier,
-        -- documentation_modifier,
         synchronized_modifier,
         volatile_modifier,
         transient_modifier,
@@ -42,6 +43,9 @@ namespace java_language {
     all_modifiers.append_all(annotations_list);
 
     supported_modifiers.add_all(all_modifiers);
+
+    -- Used by the import construct
+    all_modifiers.append(implicit_modifier);
     annotation_order = annotation_list_order.new(all_modifiers);
   }
 }

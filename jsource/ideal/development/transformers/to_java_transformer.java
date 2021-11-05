@@ -262,7 +262,7 @@ public class to_java_transformer extends base_transformer {
   /*** Sort annotations in place. */
   private readonly_list<annotation_construct> sort(list<annotation_construct> annotations) {
     if (annotations.size() >= 2) {
-      //annotations.sort(java_language.annotation_order);
+      annotations.sort(java_language.annotation_order);
     }
     return annotations;
   }

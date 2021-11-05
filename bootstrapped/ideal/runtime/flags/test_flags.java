@@ -20,7 +20,7 @@ public class test_flags {
   }
   public void test_flag_parse() {
     final test_flags.demo_flags the_demo_flags = new test_flags.demo_flags(new base_immutable_list<string>(new ideal.machine.elements.array<string>(new string[]{ new base_string("-arg-bool=true"), new base_string("-arg-string=str") })), new procedure1<Void, string>() {
-      @Override public Void call(string first) {
+      public @Override Void call(string first) {
         test_flags.this.error_reporter(first);
         return null;
       }
@@ -28,7 +28,7 @@ public class test_flags {
     assert the_demo_flags.ARG_BOOL == true;
     assert ideal.machine.elements.runtime_util.values_equal(the_demo_flags.ARG_STRING, new base_string("str"));
     final test_flags.demo_flags the_demo_flags2 = new test_flags.demo_flags(new base_immutable_list<string>(new ideal.machine.elements.array<string>(new string[]{ new base_string("-noargbool"), new base_string("-arg-string:bar") })), new procedure1<Void, string>() {
-      @Override public Void call(string first) {
+      public @Override Void call(string first) {
         test_flags.this.error_reporter(first);
         return null;
       }
@@ -42,14 +42,14 @@ public class test_flags {
   }
   public void test_failed_parse() {
     final test_flags.demo_flags the_demo_flags = new test_flags.demo_flags(new base_immutable_list<string>(new ideal.machine.elements.array<string>(new string[]{ new base_string("-foo") })), new procedure1<Void, string>() {
-      @Override public Void call(string first) {
+      public @Override Void call(string first) {
         test_flags.this.error_reporter(first);
         return null;
       }
     });
     assert ideal.machine.elements.runtime_util.values_equal(this.reported_message, new base_string("Unknown flag: foo"));
     final test_flags.demo_flags the_demo_flags2 = new test_flags.demo_flags(new base_immutable_list<string>(new ideal.machine.elements.array<string>(new string[]{ new base_string("-arg-bool"), new base_string("bar") })), new procedure1<Void, string>() {
-      @Override public Void call(string first) {
+      public @Override Void call(string first) {
         test_flags.this.error_reporter(first);
         return null;
       }

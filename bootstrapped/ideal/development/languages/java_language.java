@@ -23,6 +23,7 @@ public class java_language {
     all_modifiers.append_all(modifiers_list);
     all_modifiers.append_all(annotations_list);
     java_language.supported_modifiers.add_all(all_modifiers);
+    all_modifiers.append(general_modifier.implicit_modifier);
     java_language.annotation_order = new annotation_list_order(all_modifiers);
   }
 }

@@ -17,7 +17,7 @@ import ideal.machine.annotations.dont_display;
 
 public class parametrized_type extends base_principal_type {
   private final master_type master;
-  private @dont_display @Nullable type_parameters parameters;
+  private @Nullable @dont_display type_parameters parameters;
   public parametrized_type(final master_type master) {
     super(null, declaration_pass.NONE, null);
     this.master = master;

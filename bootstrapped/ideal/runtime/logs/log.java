@@ -16,8 +16,8 @@ public class log {
   private static text_fragment to_text(final log_message the_message) {
     return the_message.to_text();
   }
-  public final static output<log_message> log_output = new auto_sync_output<log_message>(new output_transformer<log_message, text_fragment>(new function1<text_fragment, log_message>() {
-    @Override public text_fragment call(log_message first) {
+  public static final output<log_message> log_output = new auto_sync_output<log_message>(new output_transformer<log_message, text_fragment>(new function1<text_fragment, log_message>() {
+    public @Override text_fragment call(log_message first) {
       return log.to_text(first);
     }
   }, new plain_formatter(standard_channels.stdout)));

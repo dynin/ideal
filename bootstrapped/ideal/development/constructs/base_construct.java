@@ -10,7 +10,7 @@ import ideal.development.names.*;
 import ideal.machine.annotations.dont_display;
 
 public abstract class base_construct extends debuggable implements construct {
-  private @dont_display final origin the_origin;
+  private final @dont_display origin the_origin;
   public base_construct(final origin the_origin) {
     assert the_origin != null;
     this.the_origin = the_origin;

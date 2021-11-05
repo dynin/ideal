@@ -14,7 +14,7 @@ public class test_predicate_pattern {
   }
   public void test_match() {
     final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_predicate_pattern.this.test_predicate(first);
       }
     });
@@ -24,7 +24,7 @@ public class test_predicate_pattern {
   }
   public void test_viable_prefix() {
     final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_predicate_pattern.this.test_predicate(first);
       }
     });
@@ -35,7 +35,7 @@ public class test_predicate_pattern {
   }
   public void test_match_prefix() {
     final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_predicate_pattern.this.test_predicate(first);
       }
     });
@@ -46,7 +46,7 @@ public class test_predicate_pattern {
   }
   public void test_find_first() {
     final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_predicate_pattern.this.test_predicate(first);
       }
     });
@@ -64,7 +64,7 @@ public class test_predicate_pattern {
   }
   public void test_find_last() {
     final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_predicate_pattern.this.test_predicate(first);
       }
     });
@@ -91,7 +91,7 @@ public class test_predicate_pattern {
   }
   public void test_split() {
     final predicate_pattern<Character> the_pattern = new predicate_pattern<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_predicate_pattern.this.test_predicate(first);
       }
     });

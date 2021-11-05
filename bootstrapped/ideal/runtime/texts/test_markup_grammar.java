@@ -155,7 +155,7 @@ public class test_markup_grammar {
   public void test_parse_errors() {
     final markup_grammar grammar = this.make_grammar();
     final markup_parser parser = new markup_parser(grammar, new procedure1<Void, string>() {
-      @Override public Void call(string first) {
+      public @Override Void call(string first) {
         test_markup_grammar.this.report_error(first);
         return null;
       }

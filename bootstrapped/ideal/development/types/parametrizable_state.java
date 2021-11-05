@@ -18,7 +18,7 @@ import ideal.machine.annotations.dont_display;
 
 public class parametrizable_state extends debuggable {
   private final master_type master;
-  private @dont_display final dictionary<type_parameters, parametrized_type> parametrized_types;
+  private final @dont_display dictionary<type_parameters, parametrized_type> parametrized_types;
   private @Nullable parametrized_type primary_type;
   private @Nullable immutable_list<variance_modifier> variances;
   public parametrizable_state(final master_type master) {

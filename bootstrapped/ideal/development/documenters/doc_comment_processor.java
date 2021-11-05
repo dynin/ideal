@@ -16,7 +16,7 @@ public class doc_comment_processor {
   public static @Nullable string saved_error;
   public static text_fragment parse(final string source) {
     final doc_parser parser = new doc_parser(doc_comment_processor.get_grammar(), new procedure1<Void, string>() {
-      @Override public Void call(string first) {
+      public @Override Void call(string first) {
         doc_comment_processor.report_error(first);
         return null;
       }

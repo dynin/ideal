@@ -18,7 +18,7 @@ import ideal.machine.annotations.dont_display;
 public abstract class base_principal_type extends base_type implements principal_type {
   protected @Nullable flavor_profile the_flavor_profile;
   protected declaration_pass last_pass;
-  private @dont_display @Nullable declaration the_declaration;
+  private @Nullable @dont_display declaration the_declaration;
   protected base_principal_type(final @Nullable flavor_profile the_flavor_profile, final declaration_pass last_pass, final @Nullable declaration the_declaration) {
     this.the_flavor_profile = the_flavor_profile;
     this.last_pass = last_pass;

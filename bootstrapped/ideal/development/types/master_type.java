@@ -19,7 +19,7 @@ public class master_type extends base_principal_type {
   private final action_name the_name;
   private final @Nullable principal_type parent;
   private final kind the_kind;
-  private @dont_display @Nullable type_declaration_context the_context;
+  private @Nullable @dont_display type_declaration_context the_context;
   private @Nullable parametrizable_state the_parametrizable_state;
   public master_type(final kind the_kind, final @Nullable flavor_profile the_flavor_profile, final action_name the_name, final principal_type parent, final type_declaration_context the_context, final @Nullable declaration the_declaration) {
     super(the_flavor_profile, declaration_pass.NONE, the_declaration);

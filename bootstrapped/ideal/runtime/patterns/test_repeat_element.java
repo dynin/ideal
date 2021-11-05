@@ -14,12 +14,12 @@ public class test_repeat_element {
   }
   public void test_match() {
     final repeat_element<Character> zero_or_more = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, true);
     final repeat_element<Character> one_or_more = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, false);
@@ -38,12 +38,12 @@ public class test_repeat_element {
   }
   public void test_viable_prefix() {
     final repeat_element<Character> zero_or_more = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, true);
     final repeat_element<Character> one_or_more = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, false);
@@ -60,12 +60,12 @@ public class test_repeat_element {
   }
   public void test_match_prefix() {
     final repeat_element<Character> zero_or_more = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, true);
     final repeat_element<Character> one_or_more = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, false);
@@ -86,7 +86,7 @@ public class test_repeat_element {
   }
   public void test_find_first() {
     final repeat_element<Character> the_pattern = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, false);
@@ -106,7 +106,7 @@ public class test_repeat_element {
     assert ideal.machine.elements.runtime_util.values_equal(match3.begin(), 5);
     assert ideal.machine.elements.runtime_util.values_equal(match3.end(), 8);
     final repeat_element<Character> the_pattern2 = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, true);
@@ -129,7 +129,7 @@ public class test_repeat_element {
   }
   public void test_find_last() {
     final repeat_element<Character> the_pattern = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, false);
@@ -154,7 +154,7 @@ public class test_repeat_element {
     assert ideal.machine.elements.runtime_util.values_equal(match4.begin(), 5);
     assert ideal.machine.elements.runtime_util.values_equal(match4.end(), 8);
     final repeat_element<Character> the_pattern2 = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, true);
@@ -177,7 +177,7 @@ public class test_repeat_element {
   }
   public void test_split() {
     final repeat_element<Character> the_pattern = new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_repeat_element.this.test_predicate(first);
       }
     }, false);

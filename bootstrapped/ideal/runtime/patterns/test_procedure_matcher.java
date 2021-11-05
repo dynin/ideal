@@ -17,11 +17,11 @@ public class test_procedure_matcher {
   }
   public matcher<Character, string> make_matcher() {
     return new procedure_matcher<Character, string>(new repeat_element<Character>(new function1<Boolean, Character>() {
-      @Override public Boolean call(Character first) {
+      public @Override Boolean call(Character first) {
         return test_procedure_matcher.this.test_predicate(first);
       }
     }, false), new procedure1<string, readonly_list<Character>>() {
-      @Override public string call(readonly_list<Character> first) {
+      public @Override string call(readonly_list<Character> first) {
         return test_procedure_matcher.this.as_string(first);
       }
     });

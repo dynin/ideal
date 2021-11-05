@@ -63,7 +63,7 @@ public class test_doc_grammar {
   public void test_parse_errors() {
     final doc_grammar grammar = this.make_grammar();
     final doc_parser parser = new doc_parser(grammar, new procedure1<Void, string>() {
-      @Override public Void call(string first) {
+      public @Override Void call(string first) {
         test_doc_grammar.this.report_error(first);
         return null;
       }

@@ -15,7 +15,7 @@ public class flavor_profiles {
     return flavor.nameonly_flavor;
   }
   public static final base_flavor_profile nameonly_profile = new base_flavor_profile(new base_string("nameonly_profile"), new function1<type_flavor, type_flavor>() {
-    @Override public type_flavor call(type_flavor first) {
+    public @Override type_flavor call(type_flavor first) {
       return flavor_profiles.nameonly_map(first);
     }
   });
@@ -23,7 +23,7 @@ public class flavor_profiles {
     return from;
   }
   public static final base_flavor_profile mutable_profile = new base_flavor_profile(new base_string("mutable_profile"), new function1<type_flavor, type_flavor>() {
-    @Override public type_flavor call(type_flavor first) {
+    public @Override type_flavor call(type_flavor first) {
       return flavor_profiles.mutable_map(first);
     }
   });
@@ -35,7 +35,7 @@ public class flavor_profiles {
     }
   }
   public static final base_flavor_profile shallow_mutable_profile = new base_flavor_profile(new base_string("shallow_mutable_profile"), new function1<type_flavor, type_flavor>() {
-    @Override public type_flavor call(type_flavor first) {
+    public @Override type_flavor call(type_flavor first) {
       return flavor_profiles.shallow_mutable_map(first);
     }
   });
@@ -47,7 +47,7 @@ public class flavor_profiles {
     }
   }
   public static final base_flavor_profile immutable_profile = new base_flavor_profile(new base_string("immutable_profile"), new function1<type_flavor, type_flavor>() {
-    @Override public type_flavor call(type_flavor first) {
+    public @Override type_flavor call(type_flavor first) {
       return flavor_profiles.immutable_map(first);
     }
   });
@@ -62,7 +62,7 @@ public class flavor_profiles {
     }
   }
   public static final base_flavor_profile deeply_immutable_profile = new base_flavor_profile(new base_string("deeply_immutable_profile"), new function1<type_flavor, type_flavor>() {
-    @Override public type_flavor call(type_flavor first) {
+    public @Override type_flavor call(type_flavor first) {
       return flavor_profiles.deeply_immutable_map(first);
     }
   });

@@ -30,7 +30,7 @@ public class doc_grammar extends markup_grammar {
   public @Override void update_matchers() {
     final pattern<Character> vbar = this.one_character('|');
     this.element.add_option(new sequence_matcher<Character, text_element>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ vbar, this.content, vbar })), new function1<text_element, readonly_list<Object>>() {
-      @Override public text_element call(readonly_list<Object> first) {
+      public @Override text_element call(readonly_list<Object> first) {
         return doc_grammar.this.match_vbar_element(first);
       }
     }));

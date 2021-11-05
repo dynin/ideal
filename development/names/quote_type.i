@@ -7,7 +7,10 @@
 class quote_type {
   extends punctuation_type;
 
-  overload quote_type(string name) {
-    super(name);
+  character quote_character;
+
+  quote_type(the character) {
+    super(utilities.string_of(the_character));
+    quote_character = the_character;
   }
 }

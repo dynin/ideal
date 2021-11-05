@@ -43,7 +43,7 @@ public class parser_util {
   */
 
   public static construct expr_or_ctor(list<annotation_construct> annotations, construct expression,
-      @Nullable construct body) {
+      @Nullable construct body, origin the_origin) {
     if (expression instanceof parameter_construct) {
       parameter_construct pc = (parameter_construct) expression;
       if (annotations.is_not_empty() || body != null || has_variables(pc.parameters)) {
@@ -51,9 +51,14 @@ public class parser_util {
         name_construct nc = (name_construct) pc.main;
         // TODO: origin...
         return new procedure_construct(annotations, null, nc.the_name, pc.parameters,
-            new empty<annotation_construct>(), body, expression.deeper_origin());
+            new empty<annotation_construct>(), body, the_origin);
       }
     }
+    if (body == null) {
+      return maybe_variable(annotations, expression, the_origin);
+    }
+    // TODO: raise error_signal instead of panicing
+    utilities.panic("Expression or constructor failure: " + expression);
     return expression;
   }
 

@@ -9,7 +9,9 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class quote_type extends punctuation_type {
-  public quote_type(final string name) {
-    super(name);
+  public final char quote_character;
+  public quote_type(final char the_character) {
+    super(utilities.string_of(the_character));
+    this.quote_character = the_character;
   }
 }

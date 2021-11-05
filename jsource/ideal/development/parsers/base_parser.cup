@@ -142,7 +142,7 @@ statement ::=
         |       annotations_opt:m block:b
                 {: RESULT = new block_construct(m, b.body, b); :}
         |       annotations_opt:m expression:t procedure_body:b
-                {: RESULT = parser_util.expr_or_ctor(m, t, b); :}
+                {: RESULT = parser_util.expr_or_ctor(m, t, b, new fragment_origin(t, t, b)); :}
         |       SEMICOLON:s
                 {: RESULT = new empty_construct(s); :}
         |       variable_declaration:d SEMICOLON:s

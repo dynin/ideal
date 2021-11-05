@@ -9,8 +9,8 @@ import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
 public class punctuation {
-  public static final quote_type SINGLE_QUOTE = new quote_type(new base_string("\'"));
-  public static final quote_type DOUBLE_QUOTE = new quote_type(new base_string("\""));
+  public static final quote_type SINGLE_QUOTE = new quote_type('\'');
+  public static final quote_type DOUBLE_QUOTE = new quote_type('\"');
   public static final punctuation_type HASH = new punctuation_type(new base_string("#"), base_symbols.HASH);
   public static final punctuation_type ELLIPSIS = new punctuation_type(new base_string("..."));
   public static final punctuation_type OPEN_PARENTHESIS = new punctuation_type(new base_string("("), base_symbols.OPEN_PARENTHESIS);

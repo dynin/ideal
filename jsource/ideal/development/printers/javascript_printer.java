@@ -18,6 +18,8 @@ import ideal.development.constructs.*;
 import ideal.development.literals.*;
 import ideal.development.values.*;
 import ideal.development.modifiers.*;
+import ideal.development.languages.javascript_language;
+
 public class javascript_printer extends base_printer {
 
   // TODO: define token
@@ -73,6 +75,6 @@ public class javascript_printer extends base_printer {
 
   @Override
   protected boolean is_modifier_supported(modifier_kind the_kind) {
-    return general_modifier.supported_by_javascript.contains(the_kind);
+    return javascript_language.supported_modifiers.contains(the_kind);
   }
 }

@@ -37,6 +37,7 @@ import ideal.development.values.*;
 import static ideal.development.values.common_values.*;
 import ideal.development.origins.*;
 import ideal.development.literals.*;
+import ideal.development.languages.java_language;
 
 public class to_java_transformer extends base_transformer {
 
@@ -138,7 +139,7 @@ public class to_java_transformer extends base_transformer {
 
     if (the_modifier_kind == implement_modifier) {
       return override_modifier;
-    } else if (general_modifier.supported_by_java.contains(the_modifier_kind)) {
+    } else if (java_language.supported_modifiers.contains(the_modifier_kind)) {
       return the_modifier_kind;
     } else {
       return null;
@@ -256,6 +257,14 @@ public class to_java_transformer extends base_transformer {
     } else {
       return the_name;
     }
+  }
+
+  /*** Sort annotations in place. */
+  private readonly_list<annotation_construct> sort(list<annotation_construct> annotations) {
+    if (annotations.size() >= 2) {
+      //annotations.sort(java_language.annotation_order);
+    }
+    return annotations;
   }
 
   private construct process_narrow_action(narrow_action the_narrow_action, construct expression,
@@ -456,7 +465,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     // Note: the flavor is always missing.
-    return new procedure_construct(annotations, ret, name, parameters,
+    return new procedure_construct(sort(annotations), ret, name, parameters,
         new empty<annotation_construct>(), body, the_origin);
   }
 
@@ -742,7 +751,7 @@ public class to_java_transformer extends base_transformer {
       }
       // TODO: add a private constructor
       return new type_declaration_construct(
-        annotations,
+        sort(annotations),
         class_kind,
         the_type_declaration.short_name(),
         null,
@@ -1044,7 +1053,7 @@ public class to_java_transformer extends base_transformer {
         flavored_name = make_name(type_name, declared_type, flavor);
       }
 
-      type_decls.append(new type_declaration_construct(annotations,
+      type_decls.append(new type_declaration_construct(sort(annotations),
           concrete_mode ? the_kind : interface_kind, flavored_name, type_parameters,
           flavored_body, the_origin));
     }
@@ -1080,7 +1089,7 @@ public class to_java_transformer extends base_transformer {
         return_type == immutable_nonnegative_type()) {
       return_type = java_library.int_type().get_flavored(deeply_immutable_flavor);
     }
-    return new procedure_construct(annotations,
+    return new procedure_construct(sort(annotations),
         make_type(return_type, the_origin),
         the_variable.short_name(),
         new empty<construct>(),
@@ -1098,7 +1107,7 @@ public class to_java_transformer extends base_transformer {
         false, the_origin);
   }
 
-  private Object make_procedure_declarations(readonly_list<annotation_construct> annotations,
+  private Object make_procedure_declarations(list<annotation_construct> annotations,
       type_declaration the_type_declaration) {
     action_name the_name = the_type_declaration.short_name();
     boolean is_function;
@@ -1119,7 +1128,7 @@ public class to_java_transformer extends base_transformer {
   }
 
   private type_declaration_construct make_procedure_construct(
-      readonly_list<annotation_construct> annotations,
+      list<annotation_construct> annotations,
       type_declaration the_type_declaration,
       boolean is_function, int arity) {
 
@@ -1180,8 +1189,8 @@ public class to_java_transformer extends base_transformer {
     }
 
     simple_name type_name = make_procedure_name(is_function, arity);
-    return new type_declaration_construct(annotations, interface_kind, type_name, type_parameters,
-        type_body, the_origin);
+    return new type_declaration_construct(sort(annotations), interface_kind, type_name,
+        type_parameters, type_body, the_origin);
   }
 
   private simple_name make_procedure_name(boolean is_function, int arity) {
@@ -1240,7 +1249,7 @@ public class to_java_transformer extends base_transformer {
 
     @Nullable construct init = the_variable.init_action() != null ?
         transform_and_maybe_rewrite(the_variable.init_action()) : null;
-    return new variable_construct(annotations, type, the_variable.short_name(),
+    return new variable_construct(sort(annotations), type, the_variable.short_name(),
         new empty<annotation_construct>(), init, the_origin);
   }
 
@@ -1290,7 +1299,7 @@ public class to_java_transformer extends base_transformer {
     construct with_parens = new parameter_construct(new_construct, new base_list<construct>(),
         grouping_type.PARENS, the_origin);
 
-    readonly_list<annotation_construct> annotations = new base_list<annotation_construct>(
+    list<annotation_construct> annotations = new base_list<annotation_construct>(
         new modifier_construct(override_modifier, the_origin),
         new modifier_construct(public_modifier, the_origin));
 
@@ -1320,7 +1329,7 @@ public class to_java_transformer extends base_transformer {
     }
 
     construct the_call = new procedure_construct(
-        annotations,
+        sort(annotations),
         make_type_with_mapping(the_procedure.get_return_type(), the_origin,
             mapping.MAP_TO_WRAPPER_TYPE),
         call_name,
@@ -1351,8 +1360,8 @@ public class to_java_transformer extends base_transformer {
     origin the_origin = the_block;
     readonly_list<construct> body = maybe_unwrap_block(transform_action_list(
         the_block.get_body_action()));
-    return new block_construct(to_annotations(the_block.annotations(),
-        annotation_category.BLOCK, true, the_origin), body, the_origin);
+    return new block_construct(sort(to_annotations(the_block.annotations(),
+        annotation_category.BLOCK, true, the_origin)), body, the_origin);
   }
 
   private boolean is_explicit_reference(action the_action) {
@@ -1665,7 +1674,7 @@ public class to_java_transformer extends base_transformer {
       }
     }
 
-    return new import_construct(annotations,
+    return new import_construct(sort(annotations),
         make_imported_type((principal_type) the_import.get_type(), the_origin), the_origin);
   }
 

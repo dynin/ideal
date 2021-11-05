@@ -24,4 +24,5 @@ namespace development {
   package types;
   package notifications;
   package values;
+  package languages;
 }

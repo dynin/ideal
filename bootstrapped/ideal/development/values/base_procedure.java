@@ -113,7 +113,7 @@ public abstract class base_procedure extends base_data_value implements procedur
     }
     return new bound_procedure(this, this.return_value(), new action_parameters(promoted_params), the_origin);
   }
-  public @Override abstract entity_wrapper execute(entity_wrapper this_argument, readonly_list<entity_wrapper> args, execution_context the_execution_context);
+  public abstract @Override entity_wrapper execute(entity_wrapper this_argument, readonly_list<entity_wrapper> args, execution_context the_execution_context);
   public @Override string to_string() {
     if (this.the_declaration != null) {
       return utilities.describe(this, this.the_declaration);

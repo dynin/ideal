@@ -18,6 +18,7 @@ import ideal.development.constructs.*;
 import ideal.development.values.*;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
+import ideal.development.languages.java_language;
 
 import javax.annotation.Nullable;
 public class java_printer extends base_printer {
@@ -169,7 +170,7 @@ public class java_printer extends base_printer {
 
   @Override
   protected boolean is_modifier_supported(modifier_kind the_kind) {
-    return general_modifier.supported_by_java.contains(the_kind);
+    return java_language.supported_modifiers.contains(the_kind);
   }
 
   @Override
@@ -185,7 +186,7 @@ public class java_printer extends base_printer {
 
   @Override
   protected text_fragment print_modifier_kind(modifier_kind the_kind) {
-    if (general_modifier.java_annotations.contains(the_kind)) {
+    if (java_language.supported_annotations.contains(the_kind)) {
       return print_annotation_kind(the_kind);
     } else {
       return print_simple_name(the_kind.name());

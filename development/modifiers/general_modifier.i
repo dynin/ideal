@@ -37,40 +37,4 @@ namespace general_modifier {
   modifier_kind transient_modifier : base_modifier_kind.new("transient");
   modifier_kind native_modifier : base_modifier_kind.new("native");
   modifier_kind nullable_modifier : base_modifier_kind.new("nullable");
-
-  set[modifier_kind] supported_by_java : hash_set[modifier_kind].new();
-  set[modifier_kind] java_annotations : hash_set[modifier_kind].new();
-  set[modifier_kind] supported_by_javascript : hash_set[modifier_kind].new();
-
-  static {
-    supported_by_java.add_all([
-        -- Supported access modifiers
-        access_modifier.public_modifier,
-        access_modifier.protected_modifier,
-        access_modifier.private_modifier,
-
-        -- Supported general modifiers
-        static_modifier,
-        final_modifier,
-        abstract_modifier,
-        -- documentation_modifier,
-        synchronized_modifier,
-        volatile_modifier,
-        transient_modifier,
-        native_modifier
-    ]);
-
-    java_annotations.add_all([
-        override_modifier,
-        nullable_modifier,
-        dont_display_modifier
-    ]);
-    supported_by_java.add_all(java_annotations);
-
-    supported_by_javascript.add_all([
-        var_modifier,
-        -- Hmmm...
-        -- documentation_modifier,
-    ]);
-  }
 }

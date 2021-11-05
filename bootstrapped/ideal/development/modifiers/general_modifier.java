@@ -30,13 +30,4 @@ public class general_modifier {
   public static final modifier_kind transient_modifier = new base_modifier_kind(new base_string("transient"));
   public static final modifier_kind native_modifier = new base_modifier_kind(new base_string("native"));
   public static final modifier_kind nullable_modifier = new base_modifier_kind(new base_string("nullable"));
-  public static final set<modifier_kind> supported_by_java = new hash_set<modifier_kind>();
-  public static final set<modifier_kind> java_annotations = new hash_set<modifier_kind>();
-  public static final set<modifier_kind> supported_by_javascript = new hash_set<modifier_kind>();
-  static {
-    general_modifier.supported_by_java.add_all(new base_immutable_list<modifier_kind>(new ideal.machine.elements.array<modifier_kind>(new modifier_kind[]{ access_modifier.public_modifier, access_modifier.protected_modifier, access_modifier.private_modifier, general_modifier.static_modifier, general_modifier.final_modifier, general_modifier.abstract_modifier, general_modifier.synchronized_modifier, general_modifier.volatile_modifier, general_modifier.transient_modifier, general_modifier.native_modifier })));
-    general_modifier.java_annotations.add_all(new base_immutable_list<modifier_kind>(new ideal.machine.elements.array<modifier_kind>(new modifier_kind[]{ general_modifier.override_modifier, general_modifier.nullable_modifier, general_modifier.dont_display_modifier })));
-    general_modifier.supported_by_java.add_all(general_modifier.java_annotations);
-    general_modifier.supported_by_javascript.add_all(new base_immutable_list<modifier_kind>(new ideal.machine.elements.array<modifier_kind>(new modifier_kind[]{ general_modifier.var_modifier })));
-  }
 }

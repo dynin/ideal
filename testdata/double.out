@@ -16,6 +16,7 @@
       the_literal: integer_literal {
         the_value: 1
         image: "1"
+        radix: 10
       }
     }
   }
@@ -28,6 +29,7 @@
       the_literal: integer_literal {
         the_value: 2
         image: "2"
+        radix: 10
       }
     }
   }
@@ -127,6 +129,7 @@
                 the_literal: integer_literal {
                   the_value: 5
                   image: "5"
+                  radix: 10
                 }
               }
             ]
@@ -202,6 +205,7 @@
         the_literal: integer_literal {
           the_value: 7
           image: "7"
+          radix: 10
         }
       }
       literal_construct {
@@ -220,6 +224,7 @@
             the_literal: integer_literal {
               the_value: 63
               image: "63"
+              radix: 10
             }
           }
         ]

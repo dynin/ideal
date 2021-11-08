@@ -169,14 +169,14 @@ public class json_parser {
       this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized digit: "), next));
       return start;
     }
-    final @Nullable Integer digit = this.the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+    final @Nullable Integer digit = this.the_character_handler.from_digit(next, radixes.DEFAULT_RADIX);
     assert digit >= 0;
     Integer result = digit;
     Integer index = start + 1;
     while (index < input.size() && this.the_character_handler.is_digit(input.get(index))) {
-      final @Nullable Integer next_digit = this.the_character_handler.from_digit(input.get(index), radix.DEFAULT_RADIX);
+      final @Nullable Integer next_digit = this.the_character_handler.from_digit(input.get(index), radixes.DEFAULT_RADIX);
       assert next_digit >= 0;
-      result = result * radix.DEFAULT_RADIX + next_digit;
+      result = result * radixes.DEFAULT_RADIX + next_digit;
       index += 1;
     }
     this.tokens.append(negate ? -result : result);

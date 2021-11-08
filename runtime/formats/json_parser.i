@@ -190,14 +190,14 @@ class json_parser {
       return start;
     }
 
-    digit : the_character_handler.from_digit(next, radix.DEFAULT_RADIX);
+    digit : the_character_handler.from_digit(next, radixes.DEFAULT_RADIX);
     assert digit is nonnegative;
     var nonnegative result : digit;
     var index : start + 1;
     while (index < input.size && the_character_handler.is_digit(input[index])) {
-      next_digit : the_character_handler.from_digit(input[index], radix.DEFAULT_RADIX);
+      next_digit : the_character_handler.from_digit(input[index], radixes.DEFAULT_RADIX);
       assert next_digit is nonnegative;
-      result = result * radix.DEFAULT_RADIX + next_digit;
+      result = result * radixes.DEFAULT_RADIX + next_digit;
       index += 1;
     }
 

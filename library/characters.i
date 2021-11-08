@@ -24,7 +24,7 @@ package characters {
     character from_code(nonnegative code);
   }
 
-  namespace radix {
+  namespace radixes {
     MINIMUM_RADIX : 2;
     --- Most humans have ten fingers.
     DEFAULT_RADIX : 10;

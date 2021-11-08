@@ -14,7 +14,7 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.origins.*;
 
-public class string_token_element<P extends deeply_immutable_data> implements scanner_element {
+public class string_token_element<P extends deeply_immutable_data> extends base_scanner_element {
   protected final punctuation_type the_punctuation;
   protected final token_type the_type;
   protected final P the_payload;

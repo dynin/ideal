@@ -9,7 +9,7 @@ class cool {
     sfield = 680;
   }
 }
-cool.sfield2 = 4242;
+cool.sfield2 = 0xFF;
 cool x : cool.new();
 println(cool.sfield);
 println(x.field);

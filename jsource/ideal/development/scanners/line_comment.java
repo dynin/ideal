@@ -16,8 +16,8 @@ import ideal.development.comments.*;
 import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
-public class line_comment implements scanner_element {
-  private comment_type type;
+public class line_comment extends base_scanner_element {
+  private final comment_type type;
   private final scanner_element start;
 
   public line_comment(punctuation_type start_punctuation, comment_type type) {

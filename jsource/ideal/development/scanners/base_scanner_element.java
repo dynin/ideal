@@ -9,10 +9,19 @@
 package ideal.development.scanners;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.development.origins.*;
 
-public interface scanner_element extends immutable_data {
-  void set_config(scanner_config the_scanner_config);
-  scan_state process(source_content source, int begin);
+public abstract class base_scanner_element implements scanner_element {
+  protected scanner_config config;
+
+  @Override
+  public void set_config(scanner_config the_scanner_config) {
+    config = the_scanner_config;
+  }
+
+  protected character_handler the_character_handler() {
+    return config.the_character_handler();
+  }
 }

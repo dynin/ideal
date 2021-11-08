@@ -4,7 +4,7 @@ package ideal.library.characters;
 
 import ideal.library.elements.*;
 
-public class radix {
+public class radixes {
   public static final Integer MINIMUM_RADIX = 2;
   public static final Integer DEFAULT_RADIX = 10;
   public static final Integer MAXIMUM_RADIX = 36;

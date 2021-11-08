@@ -1210,6 +1210,7 @@
                         the_literal: integer_literal {
                           the_value: 0
                           image: "0"
+                          radix: 10
                         }
                       }
                     ]
@@ -1308,6 +1309,7 @@
                     the_literal: integer_literal {
                       the_value: 1
                       image: "1"
+                      radix: 10
                     }
                   }
                 ]

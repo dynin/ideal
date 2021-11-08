@@ -14,7 +14,7 @@ import ideal.development.elements.*;
 import ideal.development.origins.*;
 import ideal.development.names.*;
 
-public class punctuation_element implements scanner_element {
+public class punctuation_element extends base_scanner_element {
   protected final punctuation_type the_punctuation;
 
   public punctuation_element(punctuation_type the_punctuation) {

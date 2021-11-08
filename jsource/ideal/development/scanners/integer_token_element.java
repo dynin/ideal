@@ -9,6 +9,7 @@
 package ideal.development.scanners;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
@@ -16,28 +17,41 @@ import ideal.development.literals.*;
 import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
-public class integer_token_element implements scanner_element {
+public class integer_token_element extends base_scanner_element {
   @Override
   public scan_state process(source_content source, int begin) {
     String input = utilities.s(source.content);
-    int end;
-    for (end = begin; end < input.length(); ++end) {
-      if (!Character.isDigit(input.charAt(end))) {
-        break;
-      }
-    }
-    if (end == begin) {
+    assert begin < input.length();
+    char first = input.charAt(begin);
+    if (!the_character_handler().is_digit(first)) {
       return null;
     }
+
+    int end = begin + 1;
+    int radix;
+    int value;
+    if (end < input.length() && the_character_handler().to_lower_case(input.charAt(end)) == 'x') {
+      radix = 16;
+      value = 0;
+      end += 1;
+    } else {
+      radix = radixes.DEFAULT_RADIX;
+      value = the_character_handler().from_digit(first, radix);
+    }
+
+    while (end < input.length()) {
+      char c = input.charAt(end);
+      Integer digit = the_character_handler().from_digit(c, radix);
+      if (digit == null) {
+        break;
+      }
+      value = value * radix + digit;
+      end += 1;
+    }
+
     String image = input.substring(begin, end);
     origin pos = source.make_origin(begin, end);
-    int value = 0;
-    try {
-      value = Integer.parseInt(image);
-    } catch (NumberFormatException e) {
-      new base_notification(messages.number_format_error, pos).report();
-    }
-    integer_literal int_literal = new integer_literal(value, new base_string(image));
+    integer_literal int_literal = new integer_literal(value, new base_string(image), radix);
     return new scan_state(
         new base_token<literal>(special_token_type.LITERAL, int_literal, pos), end, end);
   }

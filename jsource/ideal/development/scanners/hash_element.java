@@ -17,7 +17,7 @@ import ideal.development.literals.*;
 import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
-public class hash_element implements scanner_element {
+public class hash_element extends base_scanner_element {
   private final punctuation_type the_token_type;
   private final scanner_config config;
   private final char hash_character;

@@ -9,6 +9,7 @@
 package ideal.development.literals;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 
@@ -16,14 +17,16 @@ public class integer_literal extends debuggable implements literal<Integer> {
 
   private final int the_value;
   private final string image;
+  public final int radix;
 
-  public integer_literal(int the_value, string image) {
+  public integer_literal(int the_value, string image, int radix) {
     this.the_value = the_value;
     this.image = image;
+    this.radix = radix;
   }
 
   public integer_literal(int the_value) {
-    this(the_value, new base_string(String.valueOf(the_value)));
+    this(the_value, new base_string(String.valueOf(the_value)), radixes.DEFAULT_RADIX);
   }
 
   @Override

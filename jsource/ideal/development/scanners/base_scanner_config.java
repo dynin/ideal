@@ -9,7 +9,9 @@
 package ideal.development.scanners;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
+import ideal.machine.characters.*;
 import ideal.development.elements.*;
 import ideal.development.jumps.jump_category;
 import ideal.development.constructs.constraint_category;
@@ -24,8 +26,13 @@ public class base_scanner_config implements scanner_config {
   private list<scanner_element> elements = new base_list<scanner_element>();
 
   @Override
+  public character_handler the_character_handler() {
+    return unicode_handler.instance;
+  }
+
+  @Override
   public boolean is_whitespace(char c) {
-    return Character.isWhitespace(c);
+    return the_character_handler().is_whitespace(c);
   }
 
   @Override
@@ -60,6 +67,8 @@ public class base_scanner_config implements scanner_config {
   }
 
   public void add(scanner_element element) {
+    assert element instanceof base_scanner_element;
+    ((base_scanner_element) element).set_config(this);
     elements.append(element);
   }
 

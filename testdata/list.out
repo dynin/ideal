@@ -74,6 +74,7 @@
               the_literal: integer_literal {
                 the_value: 16
                 image: "16"
+                radix: 10
               }
             }
           }
@@ -330,6 +331,7 @@
                       the_literal: integer_literal {
                         the_value: 0
                         image: "0"
+                        radix: 10
                       }
                     }
                   ]
@@ -576,6 +578,7 @@
                         the_literal: integer_literal {
                           the_value: 2
                           image: "2"
+                          radix: 10
                         }
                       }
                     ]
@@ -662,6 +665,7 @@
                       the_literal: integer_literal {
                         the_value: 0
                         image: "0"
+                        radix: 10
                       }
                     }
                     name_construct {
@@ -671,6 +675,7 @@
                       the_literal: integer_literal {
                         the_value: 0
                         image: "0"
+                        radix: 10
                       }
                     }
                     name_construct {
@@ -786,6 +791,7 @@
                           the_literal: integer_literal {
                             the_value: 1
                             image: "1"
+                            radix: 10
                           }
                         }
                       ]
@@ -909,6 +915,7 @@
                       the_literal: integer_literal {
                         the_value: 0
                         image: "0"
+                        radix: 10
                       }
                     }
                     name_construct {
@@ -993,6 +1000,7 @@
                       the_literal: integer_literal {
                         the_value: 1
                         image: "1"
+                        radix: 10
                       }
                     }
                   ]
@@ -1450,6 +1458,7 @@
                       the_literal: integer_literal {
                         the_value: 0
                         image: "0"
+                        radix: 10
                       }
                     }
                     resolve_construct {
@@ -1462,6 +1471,7 @@
                       the_literal: integer_literal {
                         the_value: 0
                         image: "0"
+                        radix: 10
                       }
                     }
                     name_construct {
@@ -1686,6 +1696,7 @@
               the_literal: integer_literal {
                 the_value: 0
                 image: "0"
+                radix: 10
               }
             }
           ]
@@ -1721,6 +1732,7 @@
               the_literal: integer_literal {
                 the_value: 0
                 image: "0"
+                radix: 10
               }
             }
           ]
@@ -1765,6 +1777,7 @@
                     the_literal: integer_literal {
                       the_value: 0
                       image: "0"
+                      radix: 10
                     }
                   }
                 ]
@@ -1822,6 +1835,7 @@
                     the_literal: integer_literal {
                       the_value: 1
                       image: "1"
+                      radix: 10
                     }
                   }
                 ]
@@ -2119,6 +2133,7 @@
                         the_literal: integer_literal {
                           the_value: 0
                           image: "0"
+                          radix: 10
                         }
                       }
                     ]
@@ -2256,6 +2271,7 @@
                   the_literal: integer_literal {
                     the_value: 0
                     image: "0"
+                    radix: 10
                   }
                 }
                 name_construct {
@@ -2643,6 +2659,7 @@
                     the_literal: integer_literal {
                       the_value: 1
                       image: "1"
+                      radix: 10
                     }
                   }
                 ]
@@ -2709,6 +2726,7 @@
                   the_literal: integer_literal {
                     the_value: 0
                     image: "0"
+                    radix: 10
                   }
                 }
               }
@@ -2741,6 +2759,7 @@
                     the_literal: integer_literal {
                       the_value: 1
                       image: "1"
+                      radix: 10
                     }
                   }
                 ]
@@ -2774,6 +2793,7 @@
                               the_literal: integer_literal {
                                 the_value: 1
                                 image: "1"
+                                radix: 10
                               }
                             }
                           ]

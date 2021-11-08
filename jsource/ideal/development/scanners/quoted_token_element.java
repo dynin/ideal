@@ -17,7 +17,7 @@ import ideal.development.literals.*;
 import ideal.development.origins.*;
 import ideal.development.notifications.*;
 
-public class quoted_token_element implements scanner_element {
+public class quoted_token_element extends base_scanner_element {
   private final quote_type the_quote_type;
   private final char quote_character;
 

@@ -9,6 +9,7 @@
 package ideal.development.scanners;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.modifiers.*;
@@ -17,6 +18,7 @@ import ideal.development.origins.*;
 import javax.annotation.Nullable;
 
 public interface scanner_config {
+  character_handler the_character_handler();
   boolean is_whitespace(char c);
   boolean is_name_start(char c);
   boolean is_name_part(char c);

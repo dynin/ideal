@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class quoted_character {
+auto_constructor class quoted_character {
   implements deeply_immutable data, stringable;
 
   static ESCAPE : '\\';
@@ -13,15 +13,6 @@ class quoted_character {
   character name_character;
   character value_character;
   nonnegative ascii_code;
-
-  -- TODO: use auto_constructor
-  public quoted_character(string name, character name_character, character value_character,
-      nonnegative ascii_code) {
-    this.name = name;
-    this.name_character = name_character;
-    this.value_character = value_character;
-    this.ascii_code = ascii_code;
-  }
 
   -- TODO: cache
   var string with_escape => ESCAPE ++ name_character;

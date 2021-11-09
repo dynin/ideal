@@ -26,6 +26,9 @@ public class doc_comment_processor {
     return result;
   }
   private static @Nullable doc_grammar generated_get_grammar_cache;
+  private static doc_grammar generated_get_grammar_compute() {
+    return new doc_grammar(unicode_handler.instance);
+  }
   public static doc_grammar get_grammar() {
     @Nullable doc_grammar result = doc_comment_processor.generated_get_grammar_cache;
     if (result == null) {
@@ -33,9 +36,6 @@ public class doc_comment_processor {
       doc_comment_processor.generated_get_grammar_cache = result;
     }
     return result;
-  }
-  private static doc_grammar generated_get_grammar_compute() {
-    return new doc_grammar(unicode_handler.instance);
   }
   private static void report_error(final string error_message) {
     doc_comment_processor.saved_error = error_message;

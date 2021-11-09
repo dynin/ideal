@@ -12,14 +12,8 @@ public class quoted_character implements deeply_immutable_data, stringable {
   public final char name_character;
   public final char value_character;
   public final Integer ascii_code;
-  public quoted_character(final string name, final char name_character, final char value_character, final Integer ascii_code) {
-    this.name = name;
-    this.name_character = name_character;
-    this.value_character = value_character;
-    this.ascii_code = ascii_code;
-  }
   public string with_escape() {
-    return ideal.machine.elements.runtime_util.concatenate(quoted_character.ESCAPE, this.value_character);
+    return ideal.machine.elements.runtime_util.concatenate(quoted_character.ESCAPE, this.name_character);
   }
   public @Override string to_string() {
     return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate('<', this.name), '>');
@@ -31,5 +25,11 @@ public class quoted_character implements deeply_immutable_data, stringable {
     the_list.append_all(quoted_character.json_list);
     the_list.append(new quoted_character(new base_string("single quote"), '\'', '\'', 39));
     quoted_character.all_list = the_list;
+  }
+  public quoted_character(final string name, final char name_character, final char value_character, final Integer ascii_code) {
+    this.name = name;
+    this.name_character = name_character;
+    this.value_character = value_character;
+    this.ascii_code = ascii_code;
   }
 }

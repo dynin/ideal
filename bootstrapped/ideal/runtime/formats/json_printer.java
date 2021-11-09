@@ -42,20 +42,19 @@ public class json_printer {
       final readonly_list<Character> the_character_list = the_string;
       for (Integer the_character_index = 0; the_character_index < the_character_list.size(); the_character_index += 1) {
         final char the_character = the_character_list.get(the_character_index);
-        if (the_character == '\"' || the_character == '\\' || the_character == '/') {
-          result.write('\\');
-          result.write(the_character);
-        } else if (the_character == '\b') {
-          result.write_all(new base_string("\\b"));
-        } else if (the_character == '\f') {
-          result.write_all(new base_string("\\f"));
-        } else if (the_character == '\n') {
-          result.write_all(new base_string("\\n"));
-        } else if (the_character == '\r') {
-          result.write_all(new base_string("\\r"));
-        } else if (the_character == '\t') {
-          result.write_all(new base_string("\\t"));
-        } else {
+        boolean found = false;
+        {
+          final readonly_list<quoted_character> quoted_list = quoted_character.json_list;
+          for (Integer quoted_index = 0; quoted_index < quoted_list.size(); quoted_index += 1) {
+            final quoted_character quoted = quoted_list.get(quoted_index);
+            if (the_character == quoted.value_character) {
+              result.write_all(quoted.with_escape());
+              found = true;
+              break;
+            }
+          }
+        }
+        if (!found) {
           result.write(the_character);
         }
       }

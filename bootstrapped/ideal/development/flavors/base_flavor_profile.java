@@ -27,14 +27,6 @@ public class base_flavor_profile extends debuggable implements flavor_profile, r
     return this.map(flavor) == flavor;
   }
   private @Nullable immutable_list<type_flavor> generated_supported_flavors_cache;
-  public @Override immutable_list<type_flavor> supported_flavors() {
-    @Nullable immutable_list<type_flavor> result = this.generated_supported_flavors_cache;
-    if (result == null) {
-      result = this.generated_supported_flavors_compute();
-      this.generated_supported_flavors_cache = result;
-    }
-    return result;
-  }
   private immutable_list<type_flavor> generated_supported_flavors_compute() {
     final base_list<type_flavor> filtered_flavors = new base_list<type_flavor>();
     {
@@ -47,6 +39,14 @@ public class base_flavor_profile extends debuggable implements flavor_profile, r
       }
     }
     return filtered_flavors.frozen_copy();
+  }
+  public @Override immutable_list<type_flavor> supported_flavors() {
+    @Nullable immutable_list<type_flavor> result = this.generated_supported_flavors_cache;
+    if (result == null) {
+      result = this.generated_supported_flavors_compute();
+      this.generated_supported_flavors_cache = result;
+    }
+    return result;
   }
   public @Override string to_string() {
     return this.name;

@@ -67,28 +67,14 @@ class json_parser {
         if (next_in_input == '"') {
           tokens.append(result.elements());
           return index + 1;
-        } else if (next_in_input == '\\') {
+        } else if (next_in_input == quoted_character.ESCAPE) {
           if (index >= input.size) {
             report_error("Escape at the end of input");
             return index;
           }
           index += 1;
           escaped_character : input[index];
-          if (escaped_character == '"' ||
-              escaped_character == '\\' ||
-              escaped_character == '/') {
-            result.write(escaped_character);
-          } else if (escaped_character == 'b') {
-            result.write('\b');
-          } else if (escaped_character == 'f') {
-            result.write('\f');
-          } else if (escaped_character == 'n') {
-            result.write('\n');
-          } else if (escaped_character == 'r') {
-            result.write('\r');
-          } else if (escaped_character == 't') {
-            result.write('\t');
-          } else if (escaped_character == 'u') {
+          if (escaped_character == 'u') {
             if (index + 4 >= input.size) {
               report_error("Unicode escape at the end of input");
               return index;
@@ -100,8 +86,18 @@ class json_parser {
             result.write(the_character_handler.from_code(code));
             index += 4;
           } else {
-            report_error("Unrecognized escape character: " ++ escaped_character);
-            return index;
+            var found : false;
+            for (quoted : quoted_character.json_list) {
+              if (escaped_character == quoted.name_character) {
+                result.write(quoted.value_character);
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              report_error("Unrecognized escape character: " ++ escaped_character);
+              return index;
+            }
           }
         } else {
           result.write(next_in_input);

@@ -51,4 +51,13 @@ test_suite test_character_handler {
     assert the_character_handler.to_lower_case('x') == 'x';
     assert the_character_handler.to_lower_case('5') == '5';
   }
+
+  test_case test_quoted_character() {
+    the_character_handler : unicode_handler.instance;
+
+    for (the_quoted_character : quoted_character.all_list) {
+      assert the_character_handler.to_code(the_quoted_character.value_character) ==
+          the_quoted_character.ascii_code;
+    }
+  }
 }

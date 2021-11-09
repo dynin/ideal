@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.library.formats.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.characters.*;
 import ideal.machine.channels.string_writer;
 
 public class json_printer {

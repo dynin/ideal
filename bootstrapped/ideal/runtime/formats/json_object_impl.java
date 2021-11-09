@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.library.formats.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.characters.*;
 
 public class json_object_impl extends hash_dictionary<string, Object> implements json_object {
   public json_object_impl() { }

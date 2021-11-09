@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.library.formats.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.characters.*;
 import ideal.runtime.patterns.list_pattern;
 import ideal.machine.channels.string_writer;
 
@@ -65,26 +66,14 @@ public class json_parser {
         if (next_in_input == '\"') {
           this.tokens.append(result.elements());
           return index + 1;
-        } else if (next_in_input == '\\') {
+        } else if (next_in_input == quoted_character.ESCAPE) {
           if (index >= input.size()) {
             this.report_error(new base_string("Escape at the end of input"));
             return index;
           }
           index += 1;
           final char escaped_character = input.get(index);
-          if (escaped_character == '\"' || escaped_character == '\\' || escaped_character == '/') {
-            result.write(escaped_character);
-          } else if (escaped_character == 'b') {
-            result.write('\b');
-          } else if (escaped_character == 'f') {
-            result.write('\f');
-          } else if (escaped_character == 'n') {
-            result.write('\n');
-          } else if (escaped_character == 'r') {
-            result.write('\r');
-          } else if (escaped_character == 't') {
-            result.write('\t');
-          } else if (escaped_character == 'u') {
+          if (escaped_character == 'u') {
             if (index + 4 >= input.size()) {
               this.report_error(new base_string("Unicode escape at the end of input"));
               return index;
@@ -96,8 +85,22 @@ public class json_parser {
             result.write(this.the_character_handler.from_code(code));
             index += 4;
           } else {
-            this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized escape character: "), escaped_character));
-            return index;
+            boolean found = false;
+            {
+              final readonly_list<quoted_character> quoted_list = quoted_character.json_list;
+              for (Integer quoted_index = 0; quoted_index < quoted_list.size(); quoted_index += 1) {
+                final quoted_character quoted = quoted_list.get(quoted_index);
+                if (escaped_character == quoted.name_character) {
+                  result.write(quoted.value_character);
+                  found = true;
+                  break;
+                }
+              }
+            }
+            if (!found) {
+              this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized escape character: "), escaped_character));
+              return index;
+            }
           }
         } else {
           result.write(next_in_input);

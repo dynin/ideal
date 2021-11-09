@@ -9,6 +9,8 @@
 namespace characters {
   implicit import ideal.library.elements;
   implicit import ideal.library.characters;
+  implicit import ideal.runtime.elements;
 
+  class quoted_character;
   test_suite test_character_handler;
 }

@@ -52,6 +52,11 @@ public class unicode_handler implements character_handler {
   }
 
   @Override
+  public Integer to_code(char the_character) {
+    return (int) the_character;
+  }
+
+  @Override
   public char from_code(Integer code) {
     assert code >= 0 && code <= 0xFFFF;
     return (char) (int) code;

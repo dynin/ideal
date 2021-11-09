@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.library.formats.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.characters.*;
 
 public class json_array_impl extends base_list<Object> implements json_array {
   public json_array_impl() { }

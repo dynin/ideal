@@ -4,6 +4,7 @@ package ideal.runtime.characters;
 
 import ideal.library.elements.*;
 import ideal.library.characters.*;
+import ideal.runtime.elements.*;
 import ideal.machine.characters.unicode_handler;
 
 public class test_character_handler {
@@ -41,16 +42,29 @@ public class test_character_handler {
     assert the_character_handler.to_lower_case('x') == 'x';
     assert the_character_handler.to_lower_case('5') == '5';
   }
+  public void test_quoted_character() {
+    final unicode_handler the_character_handler = unicode_handler.instance;
+    {
+      final readonly_list<quoted_character> the_quoted_character_list = quoted_character.all_list;
+      for (Integer the_quoted_character_index = 0; the_quoted_character_index < the_quoted_character_list.size(); the_quoted_character_index += 1) {
+        final quoted_character the_quoted_character = the_quoted_character_list.get(the_quoted_character_index);
+        assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.to_code(the_quoted_character.value_character), the_quoted_character.ascii_code);
+      }
+    }
+  }
   public test_character_handler() { }
   public void run_all_tests() {
-    ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.predicate_test"));
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_character_handler.predicate_test"));
     this.predicate_test();
     ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.digit_test"));
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_character_handler.digit_test"));
     this.digit_test();
     ideal.machine.elements.runtime_util.end_test();
-    ideal.machine.elements.runtime_util.start_test(new ideal.runtime.elements.base_string("test_character_handler.conversion_test"));
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_character_handler.conversion_test"));
     this.conversion_test();
+    ideal.machine.elements.runtime_util.end_test();
+    ideal.machine.elements.runtime_util.start_test(new base_string("test_character_handler.test_quoted_character"));
+    this.test_quoted_character();
     ideal.machine.elements.runtime_util.end_test();
   }
 }

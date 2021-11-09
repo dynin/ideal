@@ -21,6 +21,7 @@ package characters {
 
     character to_lower_case(the character);
 
+    nonnegative to_code(the character);
     character from_code(nonnegative code);
   }
 

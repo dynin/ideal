@@ -42,22 +42,17 @@ class json_printer {
   private void print_string(string the_string, string_writer result) {
     result.write('"');
     for (the_character : the_string) {
-      if (the_character == '"' ||
-          the_character == '\\' ||
-          the_character == '/') {
-        result.write('\\');
-        result.write(the_character);
-      } else if (the_character == '\b') {
-        result.write_all("\\b");
-      } else if (the_character == '\f') {
-        result.write_all("\\f");
-      } else if (the_character == '\n') {
-        result.write_all("\\n");
-      } else if (the_character == '\r') {
-        result.write_all("\\r");
-      } else if (the_character == '\t') {
-        result.write_all("\\t");
-      } else {
+      -- TODO: optimize this: generate a switch?
+      var found : false;
+      for (quoted : quoted_character.json_list) {
+        if (the_character == quoted.value_character) {
+          result.write_all(quoted.with_escape);
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        -- TODO: optionally generate unicode escape for non-ASCII characters
         result.write(the_character);
       }
     }

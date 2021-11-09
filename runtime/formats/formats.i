@@ -12,6 +12,7 @@ namespace formats {
   implicit import ideal.library.characters;
   implicit import ideal.library.formats;
   implicit import ideal.runtime.elements;
+  implicit import ideal.runtime.characters;
 
   class json_array_impl;
   class json_object_impl;

@@ -839,8 +839,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   public text_fragment print_string_literal(string_literal the_literal) {
+    // TODO: handle fragments with escapes not supported by the language.
     return text_utilities.join(print_punctuation(the_literal.quote),
-        print_word(the_literal.with_escapes), print_punctuation(the_literal.quote));
+        print_word(the_literal.content_with_escapes()), print_punctuation(the_literal.quote));
   }
 
   @Override

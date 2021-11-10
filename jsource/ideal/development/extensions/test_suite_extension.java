@@ -82,7 +82,7 @@ public class test_suite_extension extends declaration_extension {
       simple_name test_case_name = (simple_name) the_procedure.short_name();
 
       string name_string = new base_string(type_name, ".", test_case_name.to_string());
-      literal name_literal = new quoted_literal(name_string, punctuation.DOUBLE_QUOTE);
+      literal name_literal = new string_literal(name_string, punctuation.DOUBLE_QUOTE);
       analyzable method_name = new literal_analyzer(name_literal, the_origin);
 
       analyzable start_call = new parameter_analyzer(

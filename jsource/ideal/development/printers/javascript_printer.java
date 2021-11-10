@@ -36,8 +36,8 @@ public class javascript_printer extends base_printer {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
     if (FUNCTIONS_IN_OBJECT) {
-      fragments.append(print_quoted_literal(
-          new quoted_literal(c.name.to_string(), punctuation.SINGLE_QUOTE)));
+      fragments.append(print_string_literal(
+          new string_literal(c.name.to_string(), punctuation.SINGLE_QUOTE)));
       fragments.append(print_space());
       fragments.append(print_word(punctuation.COLON));
       fragments.append(print_space());

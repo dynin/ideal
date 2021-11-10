@@ -47,16 +47,16 @@ public class literal_analyzer extends single_pass_analyzer {
       type bound = the_value >= 0 ? common_types.immutable_nonnegative_type() :
           common_types.immutable_integer_type();
       return new integer_value(the_value, bound).to_action(this);
-    } else if (the_literal instanceof quoted_literal) {
-      quoted_literal the_quoted_literal = (quoted_literal) the_literal;
-      string the_value = the_quoted_literal.the_value();
+    } else if (the_literal instanceof string_literal) {
+      string_literal the_string_literal = (string_literal) the_literal;
+      string the_value = the_string_literal.the_value();
       type bound;
-      if (the_quoted_literal.quote == punctuation.SINGLE_QUOTE) {
+      if (the_string_literal.quote == punctuation.SINGLE_QUOTE) {
         bound = common_types.immutable_character_type();
-      } else if (the_quoted_literal.quote == punctuation.DOUBLE_QUOTE) {
+      } else if (the_string_literal.quote == punctuation.DOUBLE_QUOTE) {
         bound = common_types.immutable_string_type();
       } else {
-        utilities.panic("Unrecognized quote type: " + the_quoted_literal.quote);
+        utilities.panic("Unrecognized quote type: " + the_string_literal.quote);
         return null;
       }
       return new base_string_value(the_value, bound).to_action(this);

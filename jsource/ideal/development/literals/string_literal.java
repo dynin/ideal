@@ -14,20 +14,20 @@ import ideal.runtime.characters.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
-public class quoted_literal extends debuggable implements literal<string> {
+public class string_literal extends debuggable implements literal<string> {
 
   private final string value;
   public final string with_escapes;
   public final quote_type quote;
 
-  public quoted_literal(string value, string with_escapes, quote_type quote) {
+  public string_literal(string value, string with_escapes, quote_type quote) {
     this.value = value;
     this.with_escapes = with_escapes;
     this.quote = quote;
   }
 
   // TODO: implement quoting framework.
-  public quoted_literal(string the_value, quote_type quote) {
+  public string_literal(string the_value, quote_type quote) {
     this.value = the_value;
     this.with_escapes = escape_string_literal(the_value);
     this.quote = quote;

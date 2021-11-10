@@ -1944,7 +1944,7 @@ public class to_java_transformer extends base_transformer {
       type the_type = the_value_action.result().type_bound();
       quote_type literal_type = (the_type == immutable_character_type()) ?
           punctuation.SINGLE_QUOTE : punctuation.DOUBLE_QUOTE;
-      construct result = new literal_construct(new quoted_literal(the_string_value.unwrap(),
+      construct result = new literal_construct(new string_literal(the_string_value.unwrap(),
           literal_type), the_origin);
       if (the_type == immutable_string_type()) {
         result = base_string_wrap(result, the_origin);

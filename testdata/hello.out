@@ -24,7 +24,7 @@
           }
           parameters: [
             literal_construct {
-              the_literal: quoted_literal {
+              the_literal: string_literal {
                 value: "Hello, world!"
                 with_escapes: "Hello, world!"
                 quote: "

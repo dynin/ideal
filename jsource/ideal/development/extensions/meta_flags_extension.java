@@ -124,7 +124,7 @@ public class meta_flags_extension extends declaration_extension {
       action_name name = variable.short_name();
       resolve_analyzer this_name = new resolve_analyzer(special_name.THIS, the_origin);
       resolve_analyzer lhs = new resolve_analyzer(this_name, name, the_origin);
-      literal the_literal = new quoted_literal(name.to_string(), punctuation.DOUBLE_QUOTE);
+      literal the_literal = new string_literal(name.to_string(), punctuation.DOUBLE_QUOTE);
       analyzable rhs = new parameter_analyzer(
           new resolve_analyzer(flag_utilities, flag_procedure_name, the_origin),
           new base_list<analyzable>(

@@ -209,7 +209,7 @@
         }
       }
       literal_construct {
-        the_literal: quoted_literal {
+        the_literal: string_literal {
           value: " "
           with_escapes: " "
           quote: "
@@ -245,7 +245,7 @@
             the_name: one
           }
           literal_construct {
-            the_literal: quoted_literal {
+            the_literal: string_literal {
               value: " "
               with_escapes: " "
               quote: "
@@ -266,7 +266,7 @@
             grouping: parens
           }
           literal_construct {
-            the_literal: quoted_literal {
+            the_literal: string_literal {
               value: " "
               with_escapes: " "
               quote: "

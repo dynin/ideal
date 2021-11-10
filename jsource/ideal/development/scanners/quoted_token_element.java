@@ -84,7 +84,7 @@ public class quoted_token_element extends base_scanner_element {
     String image = input.substring(begin, image_end);
     origin pos = source.make_origin(begin, image_end);
     string quoted = new base_string(input.substring(begin + 1, end));
-    quoted_literal string_literal = new quoted_literal(new base_string(value.toString()),
+    string_literal string_literal = new string_literal(new base_string(value.toString()),
         quoted, the_quote_type);
     return new scan_state(new base_token<literal>(special_token_type.LITERAL, string_literal, pos),
         begin + 1, image_end);

@@ -838,7 +838,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     return print_word(the_literal.the_value().toString());
   }
 
-  public text_fragment print_quoted_literal(quoted_literal the_literal) {
+  public text_fragment print_string_literal(string_literal the_literal) {
     return text_utilities.join(print_punctuation(the_literal.quote),
         print_word(the_literal.with_escapes), print_punctuation(the_literal.quote));
   }
@@ -849,8 +849,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     if (the_literal instanceof integer_literal) {
       return print_integer_literal((integer_literal) the_literal);
-    } else if (the_literal instanceof quoted_literal) {
-      return print_quoted_literal((quoted_literal) the_literal);
+    } else if (the_literal instanceof string_literal) {
+      return print_string_literal((string_literal) the_literal);
     } else {
       utilities.panic("unsupported literal " + the_literal);
       return null;

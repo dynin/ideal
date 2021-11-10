@@ -88,7 +88,7 @@ public class to_javascript_transformer {
 
   private static construct signal(error_signal e) {
     e.cause.report();
-    return new literal_construct(new quoted_literal(e.to_string(), punctuation.DOUBLE_QUOTE), e);
+    return new literal_construct(new string_literal(e.to_string(), punctuation.DOUBLE_QUOTE), e);
   }
 
   public @Nullable construct to_construct_or_null(@Nullable action the_action) {
@@ -284,7 +284,7 @@ public class to_javascript_transformer {
     } else {
       construct get_field = new resolve_construct(from, GET_FIELD, pos);
       string field_name = the_name.to_string();
-      construct field_value = new literal_construct(new quoted_literal(field_name,
+      construct field_value = new literal_construct(new string_literal(field_name,
           punctuation.SINGLE_QUOTE), pos);
       return new parameter_construct(get_field, new base_list<construct>(field_value),
           grouping_type.PARENS, pos);
@@ -385,7 +385,7 @@ public class to_javascript_transformer {
 
     if (the_value instanceof string_value) {
       return new literal_construct(
-          new quoted_literal(((string_value) the_value).unwrap(), punctuation.SINGLE_QUOTE), pos);
+          new string_literal(((string_value) the_value).unwrap(), punctuation.SINGLE_QUOTE), pos);
     } else if (the_value instanceof integer_value) {
       return new literal_construct(
           new integer_literal(((integer_value) the_value).unwrap()), pos);

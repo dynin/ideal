@@ -19,10 +19,10 @@ package characters {
 
     nonnegative or null from_digit(the character, nonnegative radix) pure;
 
-    character to_lower_case(the character);
+    character to_lower_case(the character) pure;
 
-    nonnegative to_code(the character);
-    character from_code(nonnegative code);
+    nonnegative to_code(the character) pure;
+    character from_code(nonnegative code) pure;
   }
 
   namespace radixes {

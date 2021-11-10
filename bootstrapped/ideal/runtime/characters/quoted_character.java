@@ -18,14 +18,18 @@ public class quoted_character implements deeply_immutable_data, stringable {
   public @Override string to_string() {
     return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate('<', this.name), '>');
   }
-  public static final readonly_list<quoted_character> json_list = new base_immutable_list<quoted_character>(new ideal.machine.elements.array<quoted_character>(new quoted_character[]{ new quoted_character(new base_string("backspace"), 'b', '\b', 8), new quoted_character(new base_string("formfeed"), 'f', '\f', 12), new quoted_character(new base_string("newline"), 'n', '\n', 10), new quoted_character(new base_string("carriage return"), 'r', '\r', 13), new quoted_character(new base_string("horizontal tab"), 't', '\t', 9), new quoted_character(new base_string("double quote"), '\"', '\"', 34), new quoted_character(new base_string("slash"), '/', '/', 47), new quoted_character(new base_string("backslash"), quoted_character.ESCAPE, quoted_character.ESCAPE, 92) }));
-  public static readonly_list<quoted_character> all_list;
-  static {
-    final base_list<quoted_character> the_list = new base_list<quoted_character>();
-    the_list.append_all(quoted_character.json_list);
-    the_list.append(new quoted_character(new base_string("single quote"), '\'', '\'', 39));
-    quoted_character.all_list = the_list;
-  }
+  public static final quoted_character backspace = new quoted_character(new base_string("backspace"), 'b', '\b', 8);
+  public static final quoted_character formfeed = new quoted_character(new base_string("formfeed"), 'f', '\f', 12);
+  public static final quoted_character newline = new quoted_character(new base_string("newline"), 'n', '\n', 10);
+  public static final quoted_character carriage_return = new quoted_character(new base_string("carriage return"), 'r', '\r', 13);
+  public static final quoted_character horizontal_tab = new quoted_character(new base_string("horizontal tab"), 't', '\t', 9);
+  public static final quoted_character single_quote = new quoted_character(new base_string("single quote"), '\'', '\'', 39);
+  public static final quoted_character double_quote = new quoted_character(new base_string("double quote"), '\"', '\"', 34);
+  public static final quoted_character slash = new quoted_character(new base_string("slash"), '/', '/', 47);
+  public static final quoted_character backslash = new quoted_character(new base_string("backslash"), quoted_character.ESCAPE, quoted_character.ESCAPE, 92);
+  public static final readonly_list<quoted_character> all_list = new base_immutable_list<quoted_character>(new ideal.machine.elements.array<quoted_character>(new quoted_character[]{ quoted_character.backspace, quoted_character.formfeed, quoted_character.newline, quoted_character.carriage_return, quoted_character.horizontal_tab, quoted_character.single_quote, quoted_character.double_quote, quoted_character.slash, quoted_character.backslash }));
+  public static final readonly_list<quoted_character> json_list = new base_immutable_list<quoted_character>(new ideal.machine.elements.array<quoted_character>(new quoted_character[]{ quoted_character.backspace, quoted_character.formfeed, quoted_character.newline, quoted_character.carriage_return, quoted_character.horizontal_tab, quoted_character.double_quote, quoted_character.slash, quoted_character.backslash }));
+  public static final readonly_list<quoted_character> java_list = new base_immutable_list<quoted_character>(new ideal.machine.elements.array<quoted_character>(new quoted_character[]{ quoted_character.backspace, quoted_character.formfeed, quoted_character.newline, quoted_character.carriage_return, quoted_character.horizontal_tab, quoted_character.single_quote, quoted_character.double_quote, quoted_character.backslash }));
   public quoted_character(final string name, final char name_character, final char value_character, final Integer ascii_code) {
     this.name = name;
     this.name_character = name_character;

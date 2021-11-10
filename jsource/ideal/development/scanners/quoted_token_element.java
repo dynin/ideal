@@ -10,6 +10,7 @@ package ideal.development.scanners;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.characters.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
@@ -20,8 +21,6 @@ import ideal.development.notifications.*;
 public class quoted_token_element extends base_scanner_element {
   private final quote_type the_quote_type;
   private final char quote_character;
-
-  private static final char ESCAPE = '\\';
 
   public quoted_token_element(quote_type the_quote_type) {
     this.the_quote_type = the_quote_type;
@@ -40,42 +39,33 @@ public class quoted_token_element extends base_scanner_element {
     StringBuilder value = new StringBuilder();
     int end;
     for (end = begin + 1; end < input.length(); ++end) {
-      char c = input.charAt(end);
-      if (c == quote_character) {
+      char the_character = input.charAt(end);
+      if (the_character == quote_character) {
         break;
       }
-      if (c == ESCAPE) {
+      if (the_character == quoted_character.ESCAPE) {
         // Support other escape chars.
         // Make efficient when there are no escapes.
         ++end;
         assert end < input.length();
-        c = input.charAt(end);
-        switch (c) {
-          case 'n':
-            c = '\n';
+        the_character = input.charAt(end);
+
+        boolean found = false;
+        readonly_list<quoted_character> quoted_list = quoted_character.java_list;
+        for (int quoted_index = 0; quoted_index < quoted_list.size(); quoted_index += 1) {
+          quoted_character quoted = quoted_list.get(quoted_index);
+          if (the_character == quoted.name_character) {
+            the_character = quoted.value_character;
+            found = true;
             break;
-          case 'b':
-            c = '\b';
-            break;
-          case 'f':
-            c = '\f';
-            break;
-          case 'r':
-            c = '\r';
-            break;
-          case 't':
-            c = '\t';
-            break;
-          case '\'':
-          case '"':
-          case '\\':
-            break;
-          default:
-            // TODO: convert to an error
-            throw new RuntimeException("Unknown quoted char " + c);
+          }
+        }
+        if (!found) {
+          // TODO: convert to an error
+          throw new RuntimeException("Unknown quoted char " + the_character);
         }
       }
-      value.append(c);
+      value.append(the_character);
     }
     int image_end;
     if (end == input.length()) {

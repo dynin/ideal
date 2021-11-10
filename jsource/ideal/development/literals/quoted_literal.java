@@ -10,6 +10,7 @@ package ideal.development.literals;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.characters.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
@@ -47,35 +48,19 @@ public class quoted_literal extends debuggable implements literal<string> {
     StringBuilder result = new StringBuilder();
     String input = utilities.s(s);
     for (int i = 0; i < input.length(); ++i) {
-      char c = input.charAt(i);
-      switch (c) {
-        case '\\' :
-          result.append("\\\\");
+      char the_character = input.charAt(i);
+      boolean found = false;
+      readonly_list<quoted_character> quoted_list = quoted_character.java_list;
+      for (int quoted_index = 0; quoted_index < quoted_list.size(); quoted_index += 1) {
+        quoted_character quoted = quoted_list.get(quoted_index);
+        if (the_character == quoted.value_character) {
+          result.append(quoted.with_escape());
+          found = true;
           break;
-        case '\'' :
-          result.append("\\'");
-          break;
-        case '\"' :
-          result.append("\\\"");
-          break;
-        case '\b' :
-          result.append("\\b");
-          break;
-        case '\f' :
-          result.append("\\f");
-          break;
-        case '\n' :
-          result.append("\\n");
-          break;
-        case '\r' :
-          result.append("\\r");
-          break;
-        case '\t' :
-          result.append("\\t");
-          break;
-        default:
-          result.append(c);
-          break;
+        }
+      }
+      if (!found) {
+        result.append(the_character);
       }
     }
     return new base_string(result.toString());

@@ -25,4 +25,5 @@ namespace development {
   package notifications;
   package values;
   package languages;
+  package literals;
 }

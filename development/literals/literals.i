@@ -17,6 +17,6 @@ package literals {
   class literal_fragment;
   class string_fragment;
   class quoted_fragment;
-  --class string_literal;
-  --class integer_literal;
+  class string_literal;
+  class integer_literal;
 }

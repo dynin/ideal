@@ -25,8 +25,12 @@
           parameters: [
             literal_construct {
               the_literal: string_literal {
-                value: "Hello, world!"
-                with_escapes: "Hello, world!"
+                string_value: "Hello, world!"
+                content: [
+                  string_fragment {
+                    the_string: "Hello, world!"
+                  }
+                ]
                 quote: "
               }
             }

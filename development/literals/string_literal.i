@@ -4,72 +4,58 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.characters.*;
-import ideal.machine.channels.string_writer;
-import ideal.development.elements.*;
-import ideal.development.names.*;
+class string_literal {
+  extends debuggable;
+  implements literal[string];
 
-public class string_literal extends debuggable implements literal<string> {
+  string string_value;
+  immutable list[literal_fragment] content;
+  quote_type quote;
 
-  private final string value;
-  public final immutable_list<literal_fragment> content;
-  public final quote_type quote;
-
-  public string_literal(string value, immutable_list<literal_fragment> content,
+  overload string_literal(string string_value, immutable list[literal_fragment] content,
       quote_type quote) {
-    this.value = value;
+    this.string_value = string_value;
     this.content = content;
     this.quote = quote;
   }
 
-  public string_literal(string value, quote_type quote) {
-    this.value = value;
-    this.content = escape_content(value);
+  overload string_literal(string string_value, quote_type quote) {
+    this.string_value = string_value;
+    this.content = escape_content(string_value);
     this.quote = quote;
   }
 
-  @Override
-  public string the_value() {
-    return value;
-  }
+  override string the_value => string_value;
 
-  // TODO: cache result
-  public string content_with_escapes() {
-    string_writer the_string_writer = new string_writer();
-    for (int i = 0; i < content.size(); ++i) {
-      the_string_writer.write_all(content.get(i).to_string());
+  -- TODO: cache result
+  string content_with_escapes() {
+    the_string_writer : string_writer.new();
+    for (fragment : content) {
+      the_string_writer.write_all(fragment.to_string);
     }
     return the_string_writer.elements();
   }
 
-  @Override
-  public string to_string() {
-    return content_with_escapes();
-  }
+  override string to_string => content_with_escapes();
 
-  // TODO: this is a temporary workaround until a quoting framework is developed
-  private static immutable_list<literal_fragment> escape_content(string input) {
-    list<literal_fragment> result = new base_list<literal_fragment>();
-    int start_index = 0;
-    for (int index = 0; index < input.size(); ++index) {
-      char the_character = input.get(index);
-      readonly_list<quoted_character> quoted_list = quoted_character.java_list;
-      for (int quoted_index = 0; quoted_index < quoted_list.size(); quoted_index += 1) {
-        quoted_character quoted = quoted_list.get(quoted_index);
+  private static immutable list[literal_fragment] escape_content(string input) {
+    result : base_list[literal_fragment].new();
+    var nonnegative start_index : 0;
+    for (index : input.indexes) {
+      the_character : input[index];
+      for (quoted : quoted_character.java_list) {
         if (the_character == quoted.value_character) {
           if (start_index < index) {
-            result.append(new string_fragment(input.slice(start_index, index)));
+            result.append(string_fragment.new(input.slice(start_index, index)));
           }
-          result.append(new quoted_fragment(quoted));
+          result.append(quoted_fragment.new(quoted));
           start_index = index + 1;
           break;
         }
       }
     }
-    if (start_index < input.size()) {
-      result.append(new string_fragment(input.skip(start_index)));
+    if (start_index < input.size) {
+      result.append(string_fragment.new(input.skip(start_index)));
     }
     return result.frozen_copy();
   }

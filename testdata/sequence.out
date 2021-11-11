@@ -1208,7 +1208,7 @@
                       }
                       literal_construct {
                         the_literal: integer_literal {
-                          the_value: 0
+                          integer_value: 0
                           image: "0"
                           radix: 10
                         }
@@ -1307,7 +1307,7 @@
                   }
                   literal_construct {
                     the_literal: integer_literal {
-                      the_value: 1
+                      integer_value: 1
                       image: "1"
                       radix: 10
                     }

@@ -72,7 +72,7 @@
             post_annotations: [ ]
             init: literal_construct {
               the_literal: integer_literal {
-                the_value: 16
+                integer_value: 16
                 image: "16"
                 radix: 10
               }
@@ -329,7 +329,7 @@
                     }
                     literal_construct {
                       the_literal: integer_literal {
-                        the_value: 0
+                        integer_value: 0
                         image: "0"
                         radix: 10
                       }
@@ -576,7 +576,7 @@
                       }
                       literal_construct {
                         the_literal: integer_literal {
-                          the_value: 2
+                          integer_value: 2
                           image: "2"
                           radix: 10
                         }
@@ -663,7 +663,7 @@
                   parameters: [
                     literal_construct {
                       the_literal: integer_literal {
-                        the_value: 0
+                        integer_value: 0
                         image: "0"
                         radix: 10
                       }
@@ -673,7 +673,7 @@
                     }
                     literal_construct {
                       the_literal: integer_literal {
-                        the_value: 0
+                        integer_value: 0
                         image: "0"
                         radix: 10
                       }
@@ -789,7 +789,7 @@
                         }
                         literal_construct {
                           the_literal: integer_literal {
-                            the_value: 1
+                            integer_value: 1
                             image: "1"
                             radix: 10
                           }
@@ -913,7 +913,7 @@
                   parameters: [
                     literal_construct {
                       the_literal: integer_literal {
-                        the_value: 0
+                        integer_value: 0
                         image: "0"
                         radix: 10
                       }
@@ -998,7 +998,7 @@
                     }
                     literal_construct {
                       the_literal: integer_literal {
-                        the_value: 1
+                        integer_value: 1
                         image: "1"
                         radix: 10
                       }
@@ -1456,7 +1456,7 @@
                   parameters: [
                     literal_construct {
                       the_literal: integer_literal {
-                        the_value: 0
+                        integer_value: 0
                         image: "0"
                         radix: 10
                       }
@@ -1469,7 +1469,7 @@
                     }
                     literal_construct {
                       the_literal: integer_literal {
-                        the_value: 0
+                        integer_value: 0
                         image: "0"
                         radix: 10
                       }
@@ -1694,7 +1694,7 @@
             }
             literal_construct {
               the_literal: integer_literal {
-                the_value: 0
+                integer_value: 0
                 image: "0"
                 radix: 10
               }
@@ -1730,7 +1730,7 @@
             }
             literal_construct {
               the_literal: integer_literal {
-                the_value: 0
+                integer_value: 0
                 image: "0"
                 radix: 10
               }
@@ -1775,7 +1775,7 @@
                 parameters: [
                   literal_construct {
                     the_literal: integer_literal {
-                      the_value: 0
+                      integer_value: 0
                       image: "0"
                       radix: 10
                     }
@@ -1833,7 +1833,7 @@
                   }
                   literal_construct {
                     the_literal: integer_literal {
-                      the_value: 1
+                      integer_value: 1
                       image: "1"
                       radix: 10
                     }
@@ -2131,7 +2131,7 @@
                       }
                       literal_construct {
                         the_literal: integer_literal {
-                          the_value: 0
+                          integer_value: 0
                           image: "0"
                           radix: 10
                         }
@@ -2269,7 +2269,7 @@
                 }
                 literal_construct {
                   the_literal: integer_literal {
-                    the_value: 0
+                    integer_value: 0
                     image: "0"
                     radix: 10
                   }
@@ -2657,7 +2657,7 @@
                   }
                   literal_construct {
                     the_literal: integer_literal {
-                      the_value: 1
+                      integer_value: 1
                       image: "1"
                       radix: 10
                     }
@@ -2724,7 +2724,7 @@
                 post_annotations: [ ]
                 init: literal_construct {
                   the_literal: integer_literal {
-                    the_value: 0
+                    integer_value: 0
                     image: "0"
                     radix: 10
                   }
@@ -2757,7 +2757,7 @@
                   }
                   literal_construct {
                     the_literal: integer_literal {
-                      the_value: 1
+                      integer_value: 1
                       image: "1"
                       radix: 10
                     }
@@ -2791,7 +2791,7 @@
                             }
                             literal_construct {
                               the_literal: integer_literal {
-                                the_value: 1
+                                integer_value: 1
                                 image: "1"
                                 radix: 10
                               }

@@ -22,7 +22,7 @@ class text_origin {
 
   implement origin deeper_origin => source;
 
-  string image => source.content.slice(begin, end);
+  var string image => source.content.slice(begin, end);
 
   implement string to_string => "(" ++ begin ++ "-" ++ end ++ ")";
 }

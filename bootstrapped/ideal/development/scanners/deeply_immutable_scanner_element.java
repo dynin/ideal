@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
+import ideal.runtime.patterns.*;
 import ideal.runtime.logs.*;
 import ideal.machine.characters.*;
 import ideal.machine.channels.string_writer;
@@ -19,4 +20,4 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
-public interface deeply_immutable_scanner_element extends scanner_element { }
+public interface deeply_immutable_scanner_element extends deeply_immutable_data, immutable_scanner_element { }

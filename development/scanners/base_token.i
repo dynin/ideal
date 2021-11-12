@@ -4,47 +4,32 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import javax.annotation.Nullable;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.origins.*;
+class base_token[deeply_immutable data payload_type] {
+  extends debuggable;
+  implements token;
 
-public class base_token<P extends deeply_immutable_data> extends debuggable implements token {
+  private token_type the_type;
+  private payload_type the_payload;
+  private the origin;
 
-  private final token_type type;
-  private final P the_payload;
-  private final origin pos;
-
-  public base_token(token_type type, P the_payload, origin pos) {
-    assert the_payload != null;
-    this.type = type;
+  base_token(token_type the_type, payload_type the_payload, the origin) {
+    verify the_payload is_not null;
+    this.the_type = the_type;
     this.the_payload = the_payload;
-    this.pos = pos;
+    this.the_origin = the_origin;
   }
 
-  @Override
-  public origin deeper_origin() {
-    return pos;
-  }
+  override origin deeper_origin => the_origin;
 
-  @Override
-  public token_type type() {
-    return type;
-  }
+  override token_type type => the_type;
 
-  @Override
-  public P payload() {
-    return the_payload;
-  }
+  override payload_type payload => the_payload;
 
-  @Override
-  public string to_string() {
-    // TODO: display origin? "@" pos.to_string().s());
-    if (pos instanceof text_origin) {
-      return new base_string(type.to_string(), ":\"", ((text_origin) pos).image());
+  override string to_string() {
+    if (the_origin is text_origin) {
+      return the_type ++ ":\"" ++ the_origin.image;
     } else {
-      return new base_string("[", type.to_string(), "]");
+      return "[" ++ the_type ++ "]";
     }
   }
 }

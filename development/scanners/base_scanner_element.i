@@ -4,20 +4,19 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.characters.*;
-import ideal.runtime.elements.*;
-import ideal.development.origins.*;
+abstract class base_scanner_element {
+  implements scanner_element;
 
-public abstract class base_scanner_element implements scanner_element {
-  protected scanner_config config;
+  private var the scanner_config;
 
-  @Override
-  public void set_config(scanner_config the_scanner_config) {
-    config = the_scanner_config;
+  override void set_config(the scanner_config) {
+    this.the_scanner_config = the_scanner_config;
   }
 
-  protected character_handler the_character_handler() {
-    return config.the_character_handler();
+  protected var scanner_config config() {
+    assert the_scanner_config is_not null;
+    return the_scanner_config;
   }
+
+  protected var character_handler the_character_handler => config.the_character_handler;
 }

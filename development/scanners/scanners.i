@@ -10,6 +10,7 @@ package scanners {
   implicit import ideal.library.characters;
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.characters;
+  implicit import ideal.runtime.patterns;
   implicit import ideal.runtime.logs;
   implicit import ideal.machine.characters;
   import ideal.machine.channels.string_writer;
@@ -26,15 +27,15 @@ package scanners {
   interface scanner_config;
   interface scanner_element;
   class scan_state;
---  interface base_scanner_config;
---  interface base_scanner_element;
---  interface base_token;
---  interface documenter_filter;
---  interface hash_element;
---  interface integer_token_element;
---  interface line_comment;
---  interface punctuation_element;
---  interface quoted_token_element;
---  interface scanner_engine;
---  interface string_token_element;
+  class base_scanner_element;
+  class base_token;
+  class hash_element;
+--  class base_scanner_config;
+--  class documenter_filter;
+--  class integer_token_element;
+--  class line_comment;
+--  class punctuation_element;
+--  class quoted_token_element;
+--  class scanner_engine;
+--  class string_token_element;
 }

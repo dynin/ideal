@@ -4,58 +4,48 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.logs.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.literals.*;
-import ideal.development.origins.*;
-import ideal.development.notifications.*;
+class hash_element {
+  extends base_scanner_element;
 
-public class hash_element extends base_scanner_element {
-  private final punctuation_type the_token_type;
-  private final scanner_config config;
-  private final char hash_character;
+  private punctuation_type the_token_type;
+  private character hash_character;
 
-  private static String ID_PREFIX = "id:";
+  private static ID_PREFIX : list_pattern[character].new("id:");
 
-  public hash_element(punctuation_type the_token_type, scanner_config config) {
+  hash_element(punctuation_type the_token_type) {
     this.the_token_type = the_token_type;
-    this.config = config;
-    string name = this.the_token_type.name();
-    assert name.size() == 1;
-    hash_character = name.first();
+    name : the_token_type.name;
+    assert name.size == 1;
+    hash_character = name.first;
   }
 
-  @Override
-  public scan_state process(source_content source, int begin) {
-    String input = utilities.s(source.content);
-    if (input.charAt(begin) != hash_character) {
-      return null;
+  override scan_state or null process(source_content source, nonnegative begin) {
+    input : source.content;
+    if (input[begin] != hash_character) {
+      return missing.instance;
     }
-    int end = begin + 1;
 
-    if (input.substring(end).startsWith(ID_PREFIX)) {
-      int id_begin = end + ID_PREFIX.length();
-      if (input.length() > id_begin && config.is_name_start(input.charAt(id_begin))) {
-        int id_end = id_begin + 1;
-        for (; id_end < input.length(); ++id_end) {
-          if (!config.is_name_part(input.charAt(id_end))) {
+    end : begin + 1;
+    match : ID_PREFIX.match_prefix(input.skip(end));
+
+    if (match is_not null) {
+      identifier_begin : end + match;
+      if (input.size > identifier_begin && config.is_name_start(input[identifier_begin])) {
+        var identifier_end : identifier_begin + 1;
+        for (; identifier_end < input.size; identifier_end += 1) {
+          if (!config.is_name_part(input[identifier_end])) {
             break;
           }
         }
-        origin pos = source.make_origin(begin, id_end);
-        string image = source.content.slice(id_begin, id_end);
-        simple_name token_as_name = simple_name.make(image);
-        return new scan_state(new base_token<simple_name>(
-            special_token_type.SIMPLE_NAME, token_as_name, pos), id_end, id_end);
+        the origin : source.make_origin(begin, identifier_end);
+        token_as_name : simple_name.make(source.content.slice(identifier_begin, identifier_end));
+        return scan_state.new(base_token[simple_name].new(special_token_type.SIMPLE_NAME,
+            token_as_name, the_origin), identifier_end, identifier_end);
       }
     }
 
-    origin pos = source.make_origin(begin, end);
-    String image = input.substring(begin, end);
-    return new scan_state(
-        new base_token<string>(the_token_type, new base_string(image), pos), end, end);
+    the origin : source.make_origin(begin, end);
+    image : input.slice(begin, end);
+    return scan_state.new(base_token[string].new(the_token_type, image, the_origin), end, end);
   }
 }

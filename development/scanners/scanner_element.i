@@ -5,8 +5,8 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 interface scanner_element {
-  extends immutable data;
+  extends data;
 
   void set_config(the scanner_config);
-  scan_state process(source_content source, nonnegative begin);
+  scan_state or null process(source_content source, nonnegative begin);
 }

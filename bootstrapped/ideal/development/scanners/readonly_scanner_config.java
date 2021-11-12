@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
+import ideal.runtime.patterns.*;
 import ideal.runtime.logs.*;
 import ideal.machine.characters.*;
 import ideal.machine.channels.string_writer;

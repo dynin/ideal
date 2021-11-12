@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
+import ideal.runtime.patterns.*;
 import ideal.runtime.logs.*;
 import ideal.machine.characters.*;
 import ideal.machine.channels.string_writer;
@@ -19,7 +20,9 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
-public interface scanner_element extends immutable_data {
+import javax.annotation.Nullable;
+
+public interface scanner_element extends data, readonly_scanner_element, writeonly_scanner_element {
   void set_config(scanner_config the_scanner_config);
-  scan_state process(source_content source, Integer begin);
+  @Nullable scan_state process(source_content source, Integer begin);
 }

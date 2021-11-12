@@ -26,4 +26,5 @@ namespace development {
   package values;
   package languages;
   package literals;
+  package scanners;
 }

@@ -1,12 +1,8 @@
-/*
- * Copyright 2014-2021 The Ideal Authors. All rights reserved.
- *
- * Use of this source code is governed by a BSD-style
- * license that can be found in the LICENSE file or at
- * https://developers.google.com/open-source/licenses/bsd
- */
-
-package ideal.development.scanners;
+-- Copyright 2014-2021 The Ideal Authors. All rights reserved.
+--
+-- Use of this source code is governed by a BSD-style
+-- license that can be found in the LICENSE file or at
+-- https://developers.google.com/open-source/licenses/bsd
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
@@ -26,7 +22,7 @@ public class string_token_element<P extends deeply_immutable_data> extends base_
   }
 
   @Override
-  public scan_state process(source_content source, Integer begin) {
+  public scan_state process(source_content source, int begin) {
     String input = utilities.s(source.content);
     if (!input.substring(begin).startsWith(utilities.s(the_punctuation.name()))) {
       return null;

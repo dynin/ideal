@@ -277,7 +277,7 @@ bbackup:
 
 reboot:
 	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
-	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(BOOTSTRAPPED_DIR)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_librun -output=$(BOOTSTRAPPED_DIR)
 
 generate_texts: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_texts

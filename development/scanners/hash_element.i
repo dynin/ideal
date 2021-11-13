@@ -10,7 +10,7 @@ class hash_element {
   private punctuation_type the_token_type;
   private character hash_character;
 
-  private static ID_PREFIX : list_pattern[character].new("id:");
+  private static ID_PATTERN : list_pattern[character].new("id:");
 
   hash_element(punctuation_type the_token_type) {
     this.the_token_type = the_token_type;
@@ -26,11 +26,11 @@ class hash_element {
     }
 
     end : begin + 1;
-    match : ID_PREFIX.match_prefix(input.skip(end));
+    match : ID_PATTERN.match_prefix(input.skip(end));
 
     if (match is_not null) {
       identifier_begin : end + match;
-      if (input.size > identifier_begin && config.is_name_start(input[identifier_begin])) {
+      if (identifier_begin < input.size && config.is_name_start(input[identifier_begin])) {
         var identifier_end : identifier_begin + 1;
         for (; identifier_end < input.size; identifier_end += 1) {
           if (!config.is_name_part(input[identifier_end])) {

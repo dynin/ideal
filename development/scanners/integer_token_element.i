@@ -4,51 +4,44 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.characters.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.literals.*;
-import ideal.development.origins.*;
-import ideal.development.notifications.*;
+class integer_token_element {
+  extends base_scanner_element;
 
-public class integer_token_element extends base_scanner_element {
-  @Override
-  public scan_state process(source_content source, int begin) {
-    String input = utilities.s(source.content);
-    assert begin < input.length();
-    char first = input.charAt(begin);
-    if (!the_character_handler().is_digit(first)) {
-      return null;
+  override scan_state or null process(source_content source, nonnegative begin) {
+    input : source.content;
+    assert begin < input.size;
+    first : input[begin];
+    if (!the_character_handler.is_digit(first)) {
+      return missing.instance;
     }
 
-    int end = begin + 1;
-    int radix;
-    int value;
-    if (end < input.length() && the_character_handler().to_lower_case(input.charAt(end)) == 'x') {
+    var nonnegative end : begin + 1;
+    var nonnegative radix;
+    var nonnegative value;
+    if (end < input.size && the_character_handler.to_lower_case(input[end]) == 'x') {
       radix = 16;
       value = 0;
       end += 1;
     } else {
       radix = radixes.DEFAULT_RADIX;
-      value = the_character_handler().from_digit(first, radix);
+      digit : the_character_handler.from_digit(first, radix);
+      assert digit is nonnegative;
+      value = digit;
     }
 
-    while (end < input.length()) {
-      char c = input.charAt(end);
-      Integer digit = the_character_handler().from_digit(c, radix);
-      if (digit == null) {
+    while (end < input.size) {
+      digit : the_character_handler.from_digit(input[end], radix);
+      if (digit is null) {
         break;
       }
       value = value * radix + digit;
       end += 1;
     }
 
-    String image = input.substring(begin, end);
-    origin pos = source.make_origin(begin, end);
-    integer_literal int_literal = new integer_literal(value, new base_string(image), radix);
-    return new scan_state(
-        new base_token<literal>(special_token_type.LITERAL, int_literal, pos), end, end);
+    image : input.slice(begin, end);
+    the origin : source.make_origin(begin, end);
+    int_literal : integer_literal.new(value, image, radix);
+    return scan_state.new(base_token[literal[integer]].new(special_token_type.LITERAL,
+        int_literal, the_origin), end, end);
   }
 }

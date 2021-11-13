@@ -8,6 +8,7 @@
 package scanners {
   implicit import ideal.library.elements;
   implicit import ideal.library.characters;
+  implicit import ideal.library.patterns;
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.characters;
   implicit import ideal.runtime.patterns;
@@ -30,11 +31,11 @@ package scanners {
   class base_scanner_element;
   class base_token;
   class hash_element;
+  class line_comment;
+  class punctuation_element;
+  class integer_token_element;
 --  class base_scanner_config;
 --  class documenter_filter;
---  class integer_token_element;
---  class line_comment;
---  class punctuation_element;
 --  class quoted_token_element;
 --  class scanner_engine;
 --  class string_token_element;

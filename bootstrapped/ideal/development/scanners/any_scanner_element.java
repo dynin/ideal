@@ -4,6 +4,7 @@ package ideal.development.scanners;
 
 import ideal.library.elements.*;
 import ideal.library.characters.*;
+import ideal.library.patterns.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
 import ideal.runtime.patterns.*;

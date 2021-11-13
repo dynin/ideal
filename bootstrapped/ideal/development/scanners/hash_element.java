@@ -4,6 +4,7 @@ package ideal.development.scanners;
 
 import ideal.library.elements.*;
 import ideal.library.characters.*;
+import ideal.library.patterns.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
 import ideal.runtime.patterns.*;
@@ -25,7 +26,7 @@ import javax.annotation.Nullable;
 public class hash_element extends base_scanner_element {
   private final punctuation_type the_token_type;
   private final char hash_character;
-  private static final list_pattern<Character> ID_PREFIX = new list_pattern<Character>(new base_string("id:"));
+  private static final list_pattern<Character> ID_PATTERN = new list_pattern<Character>(new base_string("id:"));
   public hash_element(final punctuation_type the_token_type) {
     this.the_token_type = the_token_type;
     final string name = the_token_type.name();
@@ -38,10 +39,10 @@ public class hash_element extends base_scanner_element {
       return null;
     }
     final Integer end = begin + 1;
-    final @Nullable Integer match = hash_element.ID_PREFIX.match_prefix(input.skip(end));
+    final @Nullable Integer match = hash_element.ID_PATTERN.match_prefix(input.skip(end));
     if (match != null) {
       final Integer identifier_begin = end + match;
-      if (input.size() > identifier_begin && this.config().is_name_start(input.get(identifier_begin))) {
+      if (identifier_begin < input.size() && this.config().is_name_start(input.get(identifier_begin))) {
         Integer identifier_end = identifier_begin + 1;
         for (; identifier_end < input.size(); identifier_end += 1) {
           if (!this.config().is_name_part(input.get(identifier_end))) {

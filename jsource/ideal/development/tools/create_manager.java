@@ -140,7 +140,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   public list<construct> parse(source_content source) {
-    readonly_list<token> tokens = scanner.scan(source);
+    readonly_list<token> tokens = (readonly_list<token>) (readonly_list) scanner.scan(source);
 
     tokens = documenter_filter.transform(tokens);
 

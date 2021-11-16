@@ -4,137 +4,126 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.library.characters.*;
-import ideal.runtime.elements.*;
-import ideal.machine.characters.*;
-import ideal.development.elements.*;
-import ideal.development.jumps.jump_category;
-import ideal.development.constructs.constraint_category;
-import ideal.development.names.*;
-import ideal.development.origins.*;
-import javax.annotation.Nullable;
+class base_scanner_config {
+  implements scanner_config;
 
-public class base_scanner_config implements scanner_config {
-  private dictionary<simple_name, token_matcher> keyword_dictionary =
-      new hash_dictionary<simple_name, token_matcher>();
+  private keyword_dictionary : hash_dictionary[simple_name, token_matcher].new();
+  private elements_list : base_list[scanner_element].new();
 
-  private list<scanner_element> elements = new base_list<scanner_element>();
+  override character_handler the_character_handler => unicode_handler.instance;
 
-  @Override
-  public character_handler the_character_handler() {
-    return unicode_handler.instance;
+  override boolean is_whitespace(the character) {
+    return the_character_handler.is_whitespace(the_character);
   }
 
-  @Override
-  public boolean is_whitespace(char c) {
-    return the_character_handler().is_whitespace(c);
+  override boolean is_name_start(the character) {
+    return the_character_handler.is_letter(the_character) || the_character == '_';
   }
 
-  @Override
-  public boolean is_name_start(char c) {
-    return Character.isJavaIdentifierStart(c);
+  override boolean is_name_part(the character) {
+    return the_character_handler.is_letter_or_digit(the_character) || the_character == '_';
   }
 
-  @Override
-  public boolean is_name_part(char c) {
-    return Character.isJavaIdentifierPart(c);
+  override readonly list[scanner_element] elements => elements_list;
+
+  readonly list[token[deeply_immutable data]] scan(source_content source) {
+    return scanner_engine.new(this).scan(source);
   }
 
-  @Override
-  public readonly_list<scanner_element> elements() {
-    return elements;
-  }
-
-  public readonly_list<token> scan(source_content source) {
-    return new scanner_engine(this).scan(source);
-  }
-
-  @Override
-  public token process_token(token the_token) {
-    if (the_token.type() == special_token_type.SIMPLE_NAME) {
-      simple_name the_name = ((token<simple_name>) the_token).payload();
-      token_matcher matcher = keyword_dictionary.get(the_name);
-      if (matcher != null) {
-        return matcher.process(the_token.deeper_origin());
+  override token[deeply_immutable data] process_token(token[deeply_immutable data] the_token) {
+    if (the_token.type == special_token_type.SIMPLE_NAME) {
+      the_name : (the_token !> token[simple_name]).payload;
+      matcher : keyword_dictionary.get(the_name);
+      if (matcher is_not null) {
+        the_origin : the_token.deeper_origin;
+        assert the_origin is_not null;
+        return matcher.process(the_origin);
       }
     }
     return the_token;
   }
 
-  public void add(scanner_element element) {
-    assert element instanceof base_scanner_element;
-    ((base_scanner_element) element).set_config(this);
-    elements.append(element);
+  void add(scanner_element element) {
+    assert element is base_scanner_element;
+    element.set_config(this);
+    elements_list.append(element);
   }
 
-  private void add_keyword(simple_name name, token_matcher matcher) {
-    token_matcher old = keyword_dictionary.put(name, matcher);
-    assert old == null;
+  private void do_add_keyword(simple_name name, token_matcher matcher) {
+    old : keyword_dictionary.put(name, matcher);
+    assert old is null;
   }
 
-  public void add_keyword(keyword the_keyword) {
-    add_keyword(simple_name.make(the_keyword.name()),
-        new token_matcher<keyword>(the_keyword, the_keyword));
+  void add_keyword(the keyword) {
+    do_add_keyword(simple_name.make(the_keyword.name),
+        base_token_matcher[keyword].new(the_keyword, the_keyword));
   }
 
-  public void add_punctuation(punctuation_type the_punctuation_type) {
-    add(new punctuation_element(the_punctuation_type));
+  void add_punctuation(the punctuation_type) {
+    add(punctuation_element.new(the_punctuation_type));
   }
 
-  public void add_special(special_name the_special_name, token_type the_token_type) {
-    add_keyword(simple_name.make(the_token_type.name()),
-        new token_matcher<special_name>(special_token_type.SPECIAL_NAME, the_special_name));
+  void add_special(the special_name, the token_type) {
+    do_add_keyword(simple_name.make(the_token_type.name),
+        base_token_matcher[special_name].new(special_token_type.SPECIAL_NAME, the_special_name));
   }
 
-  public void add_kind(kind kind) {
-    add_keyword(kind.name(), new token_matcher<kind>(special_token_type.KIND, kind));
+  void add_kind(the kind) {
+    do_add_keyword(the_kind.name, base_token_matcher[kind].new(special_token_type.KIND, the_kind));
   }
 
-  public void add_subtype_tag(subtype_tag tag) {
-    add_keyword(tag.name(),
-        new token_matcher<subtype_tag>(special_token_type.SUBTYPE_TAG, tag));
+  void add_subtype_tag(subtype_tag tag) {
+    do_add_keyword(tag.name,
+        base_token_matcher[subtype_tag].new(special_token_type.SUBTYPE_TAG, tag));
   }
 
-  public void add_modifier(modifier_kind modifier) {
-    add_keyword(modifier.name(),
-        new token_matcher<modifier_kind>(special_token_type.MODIFIER_KIND, modifier));
+  void add_modifier(modifier_kind modifier) {
+    do_add_keyword(modifier.name,
+        base_token_matcher[modifier_kind].new(special_token_type.MODIFIER_KIND, modifier));
   }
 
-  public void add_flavor(type_flavor flavor) {
-    add_keyword(flavor.name(), new token_matcher<type_flavor>(special_token_type.FLAVOR, flavor));
+  void add_flavor(type_flavor flavor) {
+    do_add_keyword(flavor.name,
+        base_token_matcher[type_flavor].new(special_token_type.FLAVOR, flavor));
   }
 
-  public void add_jump(jump_category jump) {
-    add_keyword(jump.jump_name(), new token_matcher<jump_category>(special_token_type.JUMP, jump));
+  void add_jump(jump_category jump) {
+    do_add_keyword(jump.jump_name, base_token_matcher[jump_category].new(special_token_type.JUMP,
+        jump));
   }
 
-  public void add_constraint(constraint_category constraint) {
-    add_keyword(constraint.constraint_name(),
-        new token_matcher<constraint_category>(special_token_type.CONSTRAINT, constraint));
+  void add_constraint(constraint_category constraint) {
+    do_add_keyword(constraint.constraint_name,
+        base_token_matcher[constraint_category].new(special_token_type.CONSTRAINT, constraint));
   }
 
-  @Override
-  public void add_reserved(string reserved_word, @Nullable keyword the_keyword) {
-    simple_name name = simple_name.make(reserved_word);
-    if (the_keyword == null) {
+  override void add_reserved(string reserved_word, var keyword or null the_keyword) {
+    name : simple_name.make(reserved_word);
+    if (the_keyword is null) {
       the_keyword = keywords.RESERVED;
     }
-    add_keyword(name, new token_matcher<keyword>(keywords.RESERVED, the_keyword));
+    do_add_keyword(name, base_token_matcher[keyword].new(keywords.RESERVED, the_keyword));
   }
 
-  private static class token_matcher<P extends deeply_immutable_data> {
-    private token_type type;
-    private P payload;
+  private interface token_matcher {
+    token[deeply_immutable data] process(the origin);
+  }
 
-    public token_matcher(token_type type, P payload) {
-      assert payload != null;
-      this.type = type;
+  private static class base_token_matcher[deeply_immutable data payload_type] {
+    implements token_matcher;
+
+    private token_type the_token_type;
+    private payload_type payload;
+
+    base_token_matcher(token_type the_token_type, payload_type payload) {
+      verify payload is_not null;
+      this.the_token_type = the_token_type;
       this.payload = payload;
     }
 
-    public token<P> process(origin pos) {
-      return new base_token<P>(type, payload, pos);
+    override token[deeply_immutable data] process(the origin) {
+      return base_token[payload_type].new(the_token_type, payload, the_origin) !>
+          token[deeply_immutable data];
     }
   }
 }

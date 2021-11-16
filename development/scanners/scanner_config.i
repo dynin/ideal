@@ -11,7 +11,7 @@ interface scanner_config {
   boolean is_name_part(the character) pure;
   readonly list[scanner_element] elements;
 
-  token process_token(the token) pure;
+  token[deeply_immutable data] process_token(the token[deeply_immutable data]) pure;
 
   void add_keyword(the keyword);
   void add_punctuation(the punctuation_type);
@@ -22,5 +22,5 @@ interface scanner_config {
   void add_flavor(the type_flavor);
   void add_reserved(string reserved_word, keyword or null the_keyword);
 
-  readonly list[token] scan(source_content source);
+  readonly list[token[deeply_immutable data]] scan(source_content source);
 }

@@ -32,5 +32,5 @@ public interface scanner_config extends readonly_scanner_config, writeonly_scann
   void add_modifier(modifier_kind the_modifier_kind);
   void add_flavor(type_flavor the_type_flavor);
   void add_reserved(string reserved_word, @Nullable keyword the_keyword);
-  readonly_list<token> scan(source_content source);
+  readonly_list<token<Object>> scan(source_content source);
 }

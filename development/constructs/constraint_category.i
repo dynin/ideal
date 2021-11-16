@@ -16,9 +16,7 @@ enum constraint_category {
     this.name_string = name_string;
   }
 
-  simple_name constraint_name() {
-    return simple_name.make(name_string);
-  }
+  var simple_name constraint_name => simple_name.make(name_string);
 
   override string to_string() => name_string;
 }

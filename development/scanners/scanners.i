@@ -36,7 +36,7 @@ package scanners {
   class integer_token_element;
   class string_token_element;
   class quoted_token_element;
---  class base_scanner_config;
+  class scanner_engine;
+  class base_scanner_config;
 --  class documenter_filter;
---  class scanner_engine;
 }

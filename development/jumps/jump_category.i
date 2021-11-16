@@ -17,9 +17,7 @@ enum jump_category {
     this.name_string = name_string;
   }
 
-  simple_name jump_name() {
-    return simple_name.make(name_string);
-  }
+  var simple_name jump_name => simple_name.make(name_string);
 
   override string to_string => name_string;
 }

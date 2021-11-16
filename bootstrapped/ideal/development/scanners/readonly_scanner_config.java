@@ -27,5 +27,5 @@ public interface readonly_scanner_config extends any_scanner_config {
   boolean is_name_start(char the_character);
   boolean is_name_part(char the_character);
   readonly_list<scanner_element> elements();
-  token process_token(token the_token);
+  token<Object> process_token(token<Object> the_token);
 }

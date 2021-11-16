@@ -41,7 +41,7 @@ class integer_token_element {
     image : input.slice(begin, end);
     the origin : source.make_origin(begin, end);
     int_literal : integer_literal.new(value, image, radix);
-    return scan_state.new(base_token[literal[integer]].new(special_token_type.LITERAL,
+    return scan_state.new(base_token[integer_literal].new(special_token_type.LITERAL,
         int_literal, the_origin), end, end);
   }
 }

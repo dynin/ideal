@@ -4,95 +4,76 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.runtime.characters.*;
-import ideal.runtime.logs.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.literals.*;
-import ideal.development.origins.*;
-import ideal.development.notifications.*;
+class quoted_token_element {
+  extends base_scanner_element;
 
-public class quoted_token_element extends base_scanner_element {
-  private final quote_type the_quote_type;
+  private quote_type the_quote_type;
 
-  public quoted_token_element(quote_type the_quote_type) {
+  quoted_token_element(quote_type the_quote_type) {
     this.the_quote_type = the_quote_type;
   }
 
-  private char quote_character() {
-    return the_quote_type.quote_character;
-  }
+  private var character quote_character => the_quote_type.quote_character;
 
-  // TODO: FIX ESCAPING!!!
-  @Override
-  public scan_state process(source_content source, int begin) {
-    string input = source.content;
-    if (input.get(begin) != quote_character()) {
-      return null;
+  override scan_state or null process(source_content source, nonnegative begin) {
+    string input : source.content;
+    if (input[begin] != quote_character) {
+      return missing.instance;
     }
-    list<literal_fragment> result = new base_list<literal_fragment>();
-    StringBuilder value = new StringBuilder();
-    int start_index = begin + 1;
-    int index = start_index;
-    for (; index < input.size(); ++index) {
-      char the_character = input.get(index);
-      if (the_character == quote_character()) {
+    result : base_list[literal_fragment].new();
+    value : string_writer.new();
+    var start_index : begin + 1;
+    var index : start_index;
+    for (; index < input.size; index += 1) {
+      var the character : input[index];
+      if (the_character == quote_character) {
         break;
       }
-      // Make efficient when there are no escapes.
+      -- Make efficient when there are no escapes.
       if (the_character == quoted_character.ESCAPE) {
         if (start_index < index) {
-          result.append(new string_fragment(input.slice(start_index, index)));
+          result.append(string_fragment.new(input.slice(start_index, index)));
         }
-        ++index;
-        // TODO: handle escape at the end of file.
-        assert index < input.size();
-        the_character = input.get(index);
+        index += 1;
+        -- TODO: handle escape at the end of file.
+        assert index < input.size;
+        the_character = input[index];
 
-        boolean found = false;
-        // Support other escape chars.
-        readonly_list<quoted_character> quoted_list = quoted_character.java_list;
-        for (int quoted_index = 0; quoted_index < quoted_list.size(); quoted_index += 1) {
-          quoted_character quoted = quoted_list.get(quoted_index);
+        var found : false;
+        -- Support other escape chars, such as code escapes
+        for (quoted : quoted_character.java_list) {
           if (the_character == quoted.name_character) {
             the_character = quoted.value_character;
-            result.append(new quoted_fragment(quoted));
+            result.append(quoted_fragment.new(quoted));
             start_index = index + 1;
             found = true;
             break;
           }
         }
         if (!found) {
-          // TODO: convert to an error
-          throw new RuntimeException("Unknown quoted char " + the_character);
+          -- TODO: convert to an error
+          utilities.panic("Unknown quoted char " ++ the_character);
         }
       }
-      value.append(the_character);
+      value.write(the_character);
     }
     if (start_index < index) {
-      result.append(new string_fragment(input.slice(start_index, index)));
+      result.append(string_fragment.new(input.slice(start_index, index)));
     }
-    int image_end;
-    if (index == input.size()) {
-      origin start_pos = source.make_origin(begin, begin + 1);
-      origin eof_pos = source.make_origin(index, index);
-      notification open_message = new base_notification(
-          messages.opening_quote, start_pos);
-      list<notification> subnotifications =
-          new base_list<notification>(open_message);
-      new base_notification(messages.quote_not_found, eof_pos, subnotifications).report();
-
+    var nonnegative image_end;
+    if (index == input.size) {
+      start_origin : source.make_origin(begin, begin + 1);
+      eof_origin : source.make_origin(index, index);
+      notification open_message : base_notification.new(messages.opening_quote, start_origin);
+      base_notification.new(messages.quote_not_found, eof_origin, [ open_message, ]).report();
       image_end = index;
     } else {
       image_end = index + 1;
     }
-    origin pos = source.make_origin(begin, image_end);
-    // TODO: retire value from string_literal constructor.
-    string_literal string_literal = new string_literal(new base_string(value.toString()),
-        result.frozen_copy(), the_quote_type);
-    return new scan_state(new base_token<literal>(special_token_type.LITERAL, string_literal, pos),
-        begin + 1, image_end);
+    the origin : source.make_origin(begin, image_end);
+    -- TODO: retire value from string_literal constructor.
+    the string_literal : string_literal.new(value.elements(), result.frozen_copy(), the_quote_type);
+    return scan_state.new(base_token[string_literal].new(special_token_type.LITERAL,
+        the_string_literal, the_origin), begin + 1, image_end);
   }
 }

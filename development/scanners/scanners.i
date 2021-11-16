@@ -34,9 +34,9 @@ package scanners {
   class line_comment;
   class punctuation_element;
   class integer_token_element;
+  class string_token_element;
+  class quoted_token_element;
 --  class base_scanner_config;
 --  class documenter_filter;
---  class quoted_token_element;
 --  class scanner_engine;
---  class string_token_element;
 }

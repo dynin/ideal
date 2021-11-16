@@ -4,31 +4,31 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.origins.*;
+class string_token_element[deeply_immutable data payload_type] {
+  extends base_scanner_element;
 
-public class string_token_element<P extends deeply_immutable_data> extends base_scanner_element {
-  protected final punctuation_type the_punctuation;
-  protected final token_type the_type;
-  protected final P the_payload;
+  protected punctuation_type the_punctuation;
+  protected token_type the_type;
+  protected payload_type the_payload;
+  protected pattern[character] punctuation_pattern;
 
-  public string_token_element(punctuation_type the_punctuation, token_type the_type, P the_payload) {
+  string_token_element(punctuation_type the_punctuation, token_type the_type,
+      payload_type the_payload) {
     this.the_punctuation = the_punctuation;
     this.the_type = the_type;
     this.the_payload = the_payload;
+    this.punctuation_pattern = list_pattern[character].new(the_punctuation.name);
   }
 
-  @Override
-  public scan_state process(source_content source, int begin) {
-    String input = utilities.s(source.content);
-    if (!input.substring(begin).startsWith(utilities.s(the_punctuation.name()))) {
-      return null;
+  override scan_state or null process(source_content source, nonnegative begin) {
+    input : source.content;
+    match : punctuation_pattern.match_prefix(input.skip(begin));
+    if (match is null) {
+      return missing.instance;
     }
-    int end = begin + the_punctuation.name().size();
-    origin pos = source.make_origin(begin, end);
-    return new scan_state(new base_token<P>(the_type, the_payload, pos), end, end);
+    end : begin + match;
+    the_origin : source.make_origin(begin, end);
+    return scan_state.new(
+        base_token[payload_type].new(the_type, the_payload, the_origin), end, end);
   }
 }

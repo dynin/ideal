@@ -29,8 +29,7 @@ class scanner_engine {
         -- TODO: handle newlines specially.
         the_token : base_token[comment].new(special_token_type.COMMENT,
             comment.new(comment_type.WHITESPACE, image, image), the_origin);
-        -- TODO : the cast is redundant!
-        tokens.append(the_token !> token[deeply_immutable data]);
+        tokens.append(the_token);
         begin = end;
       } else if (config.is_name_start(the_character)) {
         var end : begin + 1;
@@ -44,8 +43,7 @@ class scanner_engine {
         token_as_name : simple_name.make(image);
         the_token : base_token[simple_name].new(special_token_type.SIMPLE_NAME,
             token_as_name, the_origin);
-        -- TODO : the cast is redundant!
-        tokens.append(config.process_token(the_token !> token[deeply_immutable data]));
+        tokens.append(config.process_token(the_token));
         begin = end;
       } else {
         var scan_state or null next : missing.instance;
@@ -65,8 +63,7 @@ class scanner_engine {
         }
 
         if (next is_not null) {
-          -- TODO : the cast is redundant!
-          tokens.append(next.token !> token[deeply_immutable data]);
+          tokens.append(next.token);
           begin = next.end;
           continue;
         }

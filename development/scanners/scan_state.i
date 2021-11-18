@@ -7,7 +7,7 @@
 auto_constructor class scan_state {
   implements deeply_immutable data;
 
-  token token;
+  token[deeply_immutable data] token;
   nonnegative prefix_end;
   nonnegative end;
 

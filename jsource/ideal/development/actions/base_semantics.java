@@ -218,8 +218,7 @@ public class base_semantics implements language_settings {
 
     @Nullable type supertype = find_supertype(actions, subtype, target);
     if (supertype != null) {
-      return new stub_action(subtype);
-      //return new promotion_action(target, true);
+      return new promotion_action(target, true);
     }
 
     // Anything can be promoted to the 'void' value.
@@ -345,6 +344,10 @@ public class base_semantics implements language_settings {
           special_name.TYPE_ALIAS);
       if (aliases.size() == 1 && aliases.first().result() == supertype_type) {
         //log.debug("ALIAS " +  subtype_value + " SUPER: " + supertype_value);
+        return true;
+      }
+    } else if (variance == variance_modifier.covariant_modifier) {
+      if (is_subtype_of(actions, subtype_value, supertype_type)) {
         return true;
       }
     } else if (variance == variance_modifier.combivariant_modifier) {

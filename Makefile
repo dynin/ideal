@@ -238,6 +238,12 @@ run_briefing: $(IDEAL_TARGET)
                  $(SCRATCH_DIR)/ideal/showcase/*java
 	$(JAVA) ideal.showcase.briefing
 
+testtoken: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_token \
+            -output=$(SCRATCH_DIR)
+	$(JAVAC) $(BOOTSTRAPPED_DIR)/ideal/library/*/*java \
+                 $(SCRATCH_DIR)/ideal/showcase/token.java
+
 xreftest: $(IDEAL_TARGET) $(XREFTEST)
 	$(CREATE) -pretty-print -input=$(XREFTEST)
 

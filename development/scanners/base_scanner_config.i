@@ -122,8 +122,7 @@ class base_scanner_config {
     }
 
     override token[deeply_immutable data] process(the origin) {
-      return base_token[payload_type].new(the_token_type, payload, the_origin) !>
-          token[deeply_immutable data];
+      return base_token[payload_type].new(the_token_type, payload, the_origin);
     }
   }
 }

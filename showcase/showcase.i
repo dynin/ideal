@@ -8,5 +8,5 @@ namespace showcase {
   implicit import ideal.library.elements;
 
   program briefing;
-  --class tests;
+  class token;
 }

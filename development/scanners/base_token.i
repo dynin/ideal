@@ -4,9 +4,9 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-class base_token[deeply_immutable data payload_type] {
+class base_token[covariant deeply_immutable data payload_type] {
   extends debuggable;
-  implements token;
+  implements token[payload_type];
 
   private token_type the_type;
   private payload_type the_payload;

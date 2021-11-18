@@ -10,7 +10,7 @@
 --- <p>
 --- Scanners generate a list of tokens.
 --- </p>
-interface token[deeply_immutable data payload_type] {
+interface token[covariant deeply_immutable data payload_type] {
   extends deeply_immutable data, mutable origin, stringable;
 
   token_type type;

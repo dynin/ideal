@@ -494,7 +494,8 @@ public class to_java_transformer extends base_transformer {
     switch (mapping_strategy) {
       case MAP_TO_PRIMITIVE_TYPE:
         if (principal == void_type()) {
-          break;
+          return new name_construct(make_name(get_simple_name(principal), principal, the_flavor),
+              the_origin);
         } else if (principal == boolean_type()) {
           principal = java_library.boolean_type();
           break;
@@ -1572,8 +1573,7 @@ public class to_java_transformer extends base_transformer {
       // do not work. Rather than trying to figure out when exactly double casts
       // are necessary with generic types, we always introduce double casts.
       // There shouldn't be semantic problems with it, just minor overhead.
-      master_type the_master = ((parametrized_type) type_principal).get_master();
-      type intermediate_type = the_master.get_flavored(the_type.get_flavor());
+      type intermediate_type = java_library.object_type();
       transformed_expression = new operator_construct(operator.HARD_CAST,
         new base_list<construct>(transformed_expression, make_type(intermediate_type, the_origin)),
             the_origin);
@@ -2159,21 +2159,33 @@ public class to_java_transformer extends base_transformer {
     return new name_construct(the_name, the_origin);
   }
 
+  private boolean is_parametrized_type(type the_type) {
+    principal_type principal = the_type.principal();
+    if (principal instanceof parametrized_type) {
+      return !is_reference_type(principal);
+    } else {
+      return false;
+    }
+  }
+
   private construct process_promotion_action(action from_action,
       promotion_action the_promotion_action, origin the_origin) {
     type action_type = from_action.result().type_bound();
     type promotion_type = the_promotion_action.the_type;
+    assert action_type != promotion_type;
     if (false && the_promotion_action.is_supertype &&
-        is_list_type(action_type) &&
-        is_list_type(promotion_type) &&
-        get_list_parameter(action_type) != get_list_parameter(promotion_type)) {
-      //System.out.println("68A " + action_type);
-      //System.out.println("68B " + promotion_type);
-      return in_parens(transform_cast(from_action, the_promotion_action.the_type, operator.SOFT_CAST,
-          the_origin), the_origin);
+        is_parametrized_type(action_type) &&
+        is_parametrized_type(promotion_type)) {
+        // get_list_parameter(action_type) != get_list_parameter(promotion_type)) {
+      return in_parens(transform_cast(from_action, promotion_type, operator.SOFT_CAST, the_origin),
+          the_origin);
     }
 
-    return process_action(from_action, the_origin);
+    if (is_procedure_reference(from_action)) {
+      return make_procedure_class(from_action, the_origin);
+    } else {
+      return process_action(from_action, the_origin);
+    }
   }
 
   private construct process_dispatch_action(action from_action,

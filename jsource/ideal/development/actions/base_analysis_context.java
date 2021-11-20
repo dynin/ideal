@@ -168,6 +168,10 @@ public class base_analysis_context extends debuggable implements analysis_contex
     @Nullable action result = find_promotion(from, target, constraints);
 
     if (result != null) {
+      // TODO: refactor to avoid using any_type here.
+      if (result.result().type_bound() != target && target != common_types.any_type()) {
+        utilities.panic("Promotion error: target " + target + ", got " + result.result());
+      }
       return result.combine(from, pos);
     } else {
       error_signal signal = action_utilities.cant_promote(from.result(), target, pos);

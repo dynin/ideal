@@ -79,6 +79,7 @@ public class chain_action extends base_action {
 
   @Override
   public string to_string() {
-    return utilities.describe(this, new base_string(first + " . " + second));
+    //return utilities.describe(this, new base_string(first + " . " + second));
+    return new base_string(first + " . " + second);
   }
 }

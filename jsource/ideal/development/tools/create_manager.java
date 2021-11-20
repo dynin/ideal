@@ -129,7 +129,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     master_type result = new master_type(type_kinds.block_kind, flavor_profiles.nameonly_profile,
         new special_name(name, new base_string("create_manager")), root, context, null);
     // TODO: create a declaration and call result.process_declaration();
-    action_utilities.add_promotion(context, result, root, false, root_origin);
+    action_utilities.add_promotion(context, result, root, root_origin);
     return result;
   }
 
@@ -161,7 +161,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     if (load_library) {
       bootstrap_ideal_namespace();
-      action_utilities.add_promotion(bootstrap_context, root, elements, false, root_origin);
+      action_utilities.add_promotion(bootstrap_context, root, elements, root_origin);
       test_library.init(bootstrap_context, root);
     }
   }

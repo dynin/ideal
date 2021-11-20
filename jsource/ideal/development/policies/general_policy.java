@@ -130,7 +130,7 @@ public class general_policy extends base_policy {
         type_flavor default_flavor = new_type.get_flavor_profile().default_flavor();
         type flavored_type = new_type.get_flavored(default_flavor);
         context.add(flavored_type, special_name.IMPLICIT_CALL,
-            new promotion_action(flavored_type, false, pos));
+            new promotion_action(flavored_type, pos));
       } else if (the_kind == singleton_kind) {
         context.add(new_type, common_names.instance_name,
             new singleton_value(new_type).to_action(pos));

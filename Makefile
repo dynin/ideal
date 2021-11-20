@@ -242,7 +242,7 @@ testtoken: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_token \
             -output=$(SCRATCH_DIR)
 	$(JAVAC) $(BOOTSTRAPPED_DIR)/ideal/library/*/*java \
-                 $(SCRATCH_DIR)/ideal/showcase/token.java
+                 $(SCRATCH_DIR)/ideal/showcase/*.java
 
 xreftest: $(IDEAL_TARGET) $(XREFTEST)
 	$(CREATE) -pretty-print -input=$(XREFTEST)

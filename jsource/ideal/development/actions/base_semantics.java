@@ -218,13 +218,13 @@ public class base_semantics implements language_settings {
 
     @Nullable type supertype = find_supertype(actions, subtype, target);
     if (supertype != null) {
-      return new promotion_action(target, true);
+      return new promotion_action(target, origin_utilities.no_origin);
     }
 
     // Anything can be promoted to the 'void' value.
     if (target == common_types.immutable_void_type()) {
       return new chain_action(new stub_action(subtype),
-          new promotion_action(target, false, origin_utilities.no_origin),
+          new promotion_action(target, origin_utilities.no_origin),
           origin_utilities.no_origin);
     }
 
@@ -240,8 +240,13 @@ public class base_semantics implements language_settings {
     list<type_and_action> candidates = new base_list<type_and_action>();
     for (int i = 0; i < promotions_list.size(); ++i) {
       dictionary.entry<type, type_and_action> entry = promotions_list.get(i);
-      if (is_subtype_of(actions, entry.key(), target)) {
+      if (entry.key() == target) {
         candidates.append(entry.value());
+      } else if (is_subtype_of(actions, entry.key(), target)) {
+        candidates.append(new type_and_action(entry.key(),
+            new chain_action(entry.value().get_action(),
+                new promotion_action(target, origin_utilities.no_origin),
+                origin_utilities.no_origin)));
       }
     }
     readonly_list<action> best = select_best(actions, candidates);

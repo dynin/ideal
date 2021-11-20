@@ -2159,6 +2159,23 @@ public class to_java_transformer extends base_transformer {
     return new name_construct(the_name, the_origin);
   }
 
+  private boolean equal_parameters(parametrized_type first, parametrized_type second) {
+    immutable_list<abstract_value> params1 = first.get_parameters().the_list;
+    immutable_list<abstract_value> params2 = second.get_parameters().the_list;
+
+    if (params1.size() != params2.size()) {
+      return false;
+    }
+
+    for (int i = 0; i < params1.size(); ++i) {
+      if (params1.get(i) != params2.get(i)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   private boolean is_parametrized_type(type the_type) {
     principal_type principal = the_type.principal();
     if (principal instanceof parametrized_type) {
@@ -2170,22 +2187,23 @@ public class to_java_transformer extends base_transformer {
 
   private construct process_promotion_action(action from_action,
       promotion_action the_promotion_action, origin the_origin) {
+    if (is_procedure_reference(from_action)) {
+      return make_procedure_class(from_action, the_origin);
+    }
+
     type action_type = from_action.result().type_bound();
     type promotion_type = the_promotion_action.the_type;
     assert action_type != promotion_type;
-    if (false && the_promotion_action.is_supertype &&
-        is_parametrized_type(action_type) &&
-        is_parametrized_type(promotion_type)) {
-        // get_list_parameter(action_type) != get_list_parameter(promotion_type)) {
-      return in_parens(transform_cast(from_action, promotion_type, operator.SOFT_CAST, the_origin),
-          the_origin);
+
+    if (is_parametrized_type(action_type) &&
+        is_parametrized_type(promotion_type) &&
+        !equal_parameters((parametrized_type) action_type.principal(),
+                          (parametrized_type) promotion_type.principal())) {
+      return in_parens(transform_cast(from_action, promotion_type, operator.SOFT_CAST,
+          the_origin), the_origin);
     }
 
-    if (is_procedure_reference(from_action)) {
-      return make_procedure_class(from_action, the_origin);
-    } else {
-      return process_action(from_action, the_origin);
-    }
+    return process_action(from_action, the_origin);
   }
 
   private construct process_dispatch_action(action from_action,

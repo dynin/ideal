@@ -22,16 +22,10 @@ import javax.annotation.Nullable;
 
 public class promotion_action extends base_action implements chainable_action {
   public final type the_type;
-  public final boolean is_supertype;
 
-  public promotion_action(type the_type, boolean is_supertype, origin the_origin) {
+  public promotion_action(type the_type, origin the_origin) {
     super(the_origin);
     this.the_type = the_type;
-    this.is_supertype = is_supertype;
-  }
-
-  public promotion_action(type the_type, boolean is_supertype) {
-    this(the_type, is_supertype, origin_utilities.no_origin);
   }
 
   @Override
@@ -52,10 +46,7 @@ public class promotion_action extends base_action implements chainable_action {
 
     if (from instanceof chain_action &&
            ((chain_action) from).second instanceof promotion_action) {
-      promotion_action candidate = (promotion_action) ((chain_action) from).second;
-      if (is_supertype == candidate.is_supertype) {
-        from = ((chain_action) from).first;
-      }
+      from = ((chain_action) from).first;
     }
 
     // TODO: verify that from.result() is a subtype of the_type
@@ -81,11 +72,6 @@ public class promotion_action extends base_action implements chainable_action {
 
   @Override
   public @Nullable declaration get_declaration() {
-  /*
-    if (is_supertype) {
-      return the_type.principal().get_declaration();
-    }*/
-
     return null;
   }
 

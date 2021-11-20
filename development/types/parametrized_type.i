@@ -36,7 +36,7 @@ class parametrized_type {
 
   implement action_name short_name => master.short_name();
 
-  implement principal_type or null get_parent() => master.get_parent;
+  implement principal_type or null get_parent => master.get_parent;
 
   implement protected type_declaration_context get_context() => master.get_context();
 

@@ -9,4 +9,5 @@ namespace showcase {
 
   program briefing;
   class token;
+  class base_token;
 }

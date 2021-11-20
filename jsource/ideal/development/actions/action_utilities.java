@@ -86,12 +86,11 @@ public class action_utilities {
     return result;
   }
 
-  public static void add_promotion(action_context context, type from, type to,
-      boolean is_supertype, origin pos) {
+  public static void add_promotion(action_context context, type from, type to, origin pos) {
     if (to instanceof principal_type) {
       context.add(from, special_name.PROMOTION, to.to_action(pos));
     } else {
-      context.add(from, special_name.PROMOTION, new promotion_action(to, is_supertype, pos));
+      context.add(from, special_name.PROMOTION, new promotion_action(to, pos));
     }
   }
 
@@ -251,6 +250,6 @@ public class action_utilities {
     assert !(to instanceof principal_type);
 
     context.add_supertype(from, to);
-    add_promotion(context, from, to, true, the_origin);
+    add_promotion(context, from, to, the_origin);
   }
 }

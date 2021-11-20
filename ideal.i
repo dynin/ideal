@@ -46,7 +46,7 @@ target generate_development: generate_java(ideal.development);
 
 target generate_showcase: generate_java(ideal.showcase);
 
-target generate_token: generate_java(ideal.showcase.token);
+target generate_token: generate_java(ideal.showcase.token, ideal.showcase.base_token);
 
 target generate_cache: generate_java(ideal.development.flavors.base_flavor_profile);
 

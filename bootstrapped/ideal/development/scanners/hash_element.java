@@ -51,11 +51,11 @@ public class hash_element extends base_scanner_element {
         }
         final origin the_origin = source.make_origin(begin, identifier_end);
         final simple_name token_as_name = simple_name.make(source.content.slice(identifier_begin, identifier_end));
-        return new scan_state(new base_token<simple_name>(special_token_type.SIMPLE_NAME, token_as_name, the_origin), identifier_end, identifier_end);
+        return new scan_state(((token<Object>) (Object) new base_token<simple_name>(special_token_type.SIMPLE_NAME, token_as_name, the_origin)), identifier_end, identifier_end);
       }
     }
     final origin the_origin = source.make_origin(begin, end);
     final string image = input.slice(begin, end);
-    return new scan_state(new base_token<string>(this.the_token_type, image, the_origin), end, end);
+    return new scan_state(((token<Object>) (Object) new base_token<string>(this.the_token_type, image, the_origin)), end, end);
   }
 }

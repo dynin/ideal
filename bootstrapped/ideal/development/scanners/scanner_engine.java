@@ -43,7 +43,7 @@ public class scanner_engine {
         final origin the_origin = source.make_origin(begin, end);
         final string image = input.slice(begin, end);
         final base_token<comment> the_token = new base_token<comment>(special_token_type.COMMENT, new comment(comment_type.WHITESPACE, image, image), the_origin);
-        tokens.append((token<Object>) (token) the_token);
+        tokens.append(((token<Object>) (Object) the_token));
         begin = end;
       } else if (this.config.is_name_start(the_character)) {
         Integer end = begin + 1;
@@ -56,7 +56,7 @@ public class scanner_engine {
         final string image = input.slice(begin, end);
         final simple_name token_as_name = simple_name.make(image);
         final base_token<simple_name> the_token = new base_token<simple_name>(special_token_type.SIMPLE_NAME, token_as_name, the_origin);
-        tokens.append(this.config.process_token((token<Object>) (token) the_token));
+        tokens.append(this.config.process_token(((token<Object>) (Object) the_token)));
         begin = end;
       } else {
         @Nullable scan_state next = null;
@@ -79,7 +79,7 @@ public class scanner_engine {
           }
         }
         if (next != null) {
-          tokens.append((token<Object>) next.token);
+          tokens.append(next.token);
           begin = next.end;
           continue;
         }

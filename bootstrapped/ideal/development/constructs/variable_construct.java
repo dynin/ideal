@@ -30,10 +30,10 @@ public class variable_construct extends base_construct {
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
-    generated_result.append_all((readonly_list<construct>) (readonly_list) this.annotations);
+    generated_result.append_all((readonly_list<construct>) (Object) this.annotations);
     if (this.variable_type != null)
       generated_result.append((construct) this.variable_type);
-    generated_result.append_all((readonly_list<construct>) (readonly_list) this.post_annotations);
+    generated_result.append_all((readonly_list<construct>) (Object) this.post_annotations);
     if (this.init != null)
       generated_result.append((construct) this.init);
     return generated_result;

@@ -46,7 +46,7 @@ public class base_scanner_config implements scanner_config {
   }
   public @Override token<Object> process_token(final token<Object> the_token) {
     if (the_token.type() == special_token_type.SIMPLE_NAME) {
-      final simple_name the_name = ((token<simple_name>) (token) the_token).payload();
+      final simple_name the_name = ((token<simple_name>) (Object) the_token).payload();
       final @Nullable base_scanner_config.token_matcher matcher = this.keyword_dictionary.get(the_name);
       if (matcher != null) {
         final @Nullable origin the_origin = the_token.deeper_origin();
@@ -116,7 +116,7 @@ public class base_scanner_config implements scanner_config {
       this.payload = payload;
     }
     public @Override token<Object> process(final origin the_origin) {
-      return (token<Object>) (token) new base_token<payload_type>(this.the_token_type, this.payload, the_origin);
+      return ((token<Object>) (Object) new base_token<payload_type>(this.the_token_type, this.payload, the_origin));
     }
   }
   public base_scanner_config() { }

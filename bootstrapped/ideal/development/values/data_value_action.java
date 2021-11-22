@@ -23,7 +23,7 @@ public class data_value_action<value_type extends readonly_data_value> extends b
     super(the_value, the_origin);
   }
   private base_value_action<data_value> get_value_action() {
-    return (base_value_action<data_value>) (base_value_action) this;
+    return (base_value_action<data_value>) (Object) this;
   }
   public @Override abstract_value result() {
     return this.get_value_action().the_value;

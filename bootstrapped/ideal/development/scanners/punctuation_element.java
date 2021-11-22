@@ -39,6 +39,6 @@ public class punctuation_element extends base_scanner_element {
     final Integer end = begin + match;
     final origin the_origin = source.make_origin(begin, end);
     final string image = input.slice(begin, end);
-    return new scan_state(new base_token<string>(this.the_punctuation, image, the_origin), end, end);
+    return new scan_state(((token<Object>) (Object) new base_token<string>(this.the_punctuation, image, the_origin)), end, end);
   }
 }

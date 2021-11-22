@@ -42,6 +42,6 @@ public class string_token_element<payload_type> extends base_scanner_element {
     }
     final Integer end = begin + match;
     final origin the_origin = source.make_origin(begin, end);
-    return new scan_state(new base_token<payload_type>(this.the_type, this.the_payload, the_origin), end, end);
+    return new scan_state(((token<Object>) (Object) new base_token<payload_type>(this.the_type, this.the_payload, the_origin)), end, end);
   }
 }

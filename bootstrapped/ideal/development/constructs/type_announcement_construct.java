@@ -25,7 +25,7 @@ public class type_announcement_construct extends base_construct {
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
-    generated_result.append_all((readonly_list<construct>) (readonly_list) this.annotations);
+    generated_result.append_all((readonly_list<construct>) (Object) this.annotations);
     return generated_result;
   }
 }

@@ -55,7 +55,7 @@ public class integer_token_element extends base_scanner_element {
     final string image = input.slice(begin, end);
     final origin the_origin = source.make_origin(begin, end);
     final integer_literal int_literal = new integer_literal(value, image, radix);
-    return new scan_state(new base_token<integer_literal>(special_token_type.LITERAL, int_literal, the_origin), end, end);
+    return new scan_state(((token<Object>) (Object) new base_token<integer_literal>(special_token_type.LITERAL, int_literal, the_origin)), end, end);
   }
   public integer_token_element() { }
 }

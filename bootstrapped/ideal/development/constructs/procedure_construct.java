@@ -33,12 +33,12 @@ public class procedure_construct extends base_construct {
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
-    generated_result.append_all((readonly_list<construct>) (readonly_list) this.annotations);
+    generated_result.append_all((readonly_list<construct>) (Object) this.annotations);
     if (this.ret != null)
       generated_result.append((construct) this.ret);
     if (this.parameters != null)
-      generated_result.append_all((readonly_list<construct>) (readonly_list) this.parameters);
-    generated_result.append_all((readonly_list<construct>) (readonly_list) this.post_annotations);
+      generated_result.append_all((readonly_list<construct>) (Object) this.parameters);
+    generated_result.append_all((readonly_list<construct>) (Object) this.post_annotations);
     if (this.body != null)
       generated_result.append((construct) this.body);
     return generated_result;

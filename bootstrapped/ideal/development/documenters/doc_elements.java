@@ -15,5 +15,5 @@ public class doc_elements {
   public static final base_element_id C = new base_element_id(doc_elements.DOC_NS, new base_string("c"));
   public static final base_element_id J = new base_element_id(doc_elements.DOC_NS, new base_string("j"));
   public static final base_element_id CPP = new base_element_id(doc_elements.DOC_NS, new base_string("cpp"));
-  public static final immutable_list<element_id> HTML_ELEMENTS = (immutable_list<element_id>) (immutable_list) new base_immutable_list<base_element_id>(new ideal.machine.elements.array<base_element_id>(new base_element_id[]{ doc_elements.CODE, doc_elements.C, doc_elements.J, doc_elements.CPP }));
+  public static final immutable_list<element_id> HTML_ELEMENTS = (immutable_list<element_id>) (Object) new base_immutable_list<base_element_id>(new ideal.machine.elements.array<base_element_id>(new base_element_id[]{ doc_elements.CODE, doc_elements.C, doc_elements.J, doc_elements.CPP }));
 }

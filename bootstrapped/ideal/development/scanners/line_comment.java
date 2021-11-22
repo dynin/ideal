@@ -47,6 +47,6 @@ public class line_comment extends base_scanner_element {
     final string content = input.slice(result.end, end);
     final origin the_origin = source.make_origin(begin, end);
     final base_token<comment> comment = new base_token<comment>(special_token_type.COMMENT, new comment(this.the_comment_type, content, image), the_origin);
-    return new scan_state(comment, result.end, end);
+    return new scan_state(((token<Object>) (Object) comment), result.end, end);
   }
 }

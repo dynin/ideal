@@ -88,6 +88,6 @@ public class quoted_token_element extends base_scanner_element {
     }
     final origin the_origin = source.make_origin(begin, image_end);
     final string_literal the_string_literal = new string_literal(value.elements(), result.frozen_copy(), this.the_quote_type);
-    return new scan_state(new base_token<string_literal>(special_token_type.LITERAL, the_string_literal, the_origin), begin + 1, image_end);
+    return new scan_state(((token<Object>) (Object) new base_token<string_literal>(special_token_type.LITERAL, the_string_literal, the_origin)), begin + 1, image_end);
   }
 }

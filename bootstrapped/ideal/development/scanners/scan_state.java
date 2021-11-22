@@ -22,7 +22,7 @@ import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
 public class scan_state implements deeply_immutable_data {
-  public final token token;
+  public final token<Object> token;
   public final Integer prefix_end;
   public final Integer end;
   public Integer compare_to(final scan_state other) {
@@ -32,7 +32,7 @@ public class scan_state implements deeply_immutable_data {
     }
     return result;
   }
-  public scan_state(final token token, final Integer prefix_end, final Integer end) {
+  public scan_state(final token<Object> token, final Integer prefix_end, final Integer end) {
     this.token = token;
     this.prefix_end = prefix_end;
     this.end = end;

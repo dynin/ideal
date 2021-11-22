@@ -31,7 +31,7 @@ public class list_value extends debuggable implements composite_wrapper {
   }
   public @Override value_wrapper get_var(final variable_id key) {
     if (key.short_name() == common_names.size_name) {
-      return new integer_value(((readonly_list<value_wrapper>) (readonly_list) this.the_list).size(), common_types.immutable_nonnegative_type());
+      return new integer_value(((readonly_list<value_wrapper>) (Object) this.the_list).size(), common_types.immutable_nonnegative_type());
     }
     {
       utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Failing list_value.get_var() for "), key));

@@ -21,7 +21,7 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
-public class base_token<payload_type> extends debuggable implements token {
+public class base_token<payload_type> extends debuggable implements token<payload_type> {
   private final token_type the_type;
   private final payload_type the_payload;
   private final origin the_origin;

@@ -123,7 +123,7 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
     final Integer hash = this.equivalence.hash(key);
     final @Nullable base_hash_set.hash_cell<element_type> bucket = this.state.the_buckets.at(this.state.bucket_index(hash)).get();
     for (@Nullable base_hash_set.hash_cell<element_type> entry = bucket; entry != null; entry = entry.next) {
-      if (ideal.machine.elements.runtime_util.values_equal(hash, entry.the_hash) && this.equivalence.call(key, entry.the_value)) {
+      if (ideal.machine.elements.runtime_util.values_equal(hash, entry.the_hash) && ((function2<Boolean, element_type, element_type>) (Object) this.equivalence).call(key, entry.the_value)) {
         return true;
       }
     }

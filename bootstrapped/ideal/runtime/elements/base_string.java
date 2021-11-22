@@ -130,7 +130,7 @@ public class base_string extends debuggable implements string {
   }
   public @Override boolean has(final predicate<Character> the_predicate) {
     for (Integer index = 0; index < this.state.length(); index += 1) {
-      if (the_predicate.call(this.state.charAt(index))) {
+      if (((function1<Boolean, Character>) (Object) the_predicate).call(this.state.charAt(index))) {
         return true;
       }
     }

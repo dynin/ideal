@@ -19,7 +19,7 @@ public class procedure_matcher<element_type, result_type> implements validatable
     ((validatable) this.the_pattern).validate();
   }
   public @Override Boolean call(final readonly_list<element_type> the_list) {
-    return this.the_pattern.call(the_list);
+    return ((function1<Boolean, readonly_list<element_type>>) (Object) this.the_pattern).call(the_list);
   }
   public @Override boolean is_viable_prefix(final readonly_list<element_type> the_list) {
     return this.the_pattern.is_viable_prefix(the_list);

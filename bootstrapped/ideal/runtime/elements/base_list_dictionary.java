@@ -84,7 +84,7 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
   public @Override @Nullable value_type get(final key_type key) {
     assert key != null;
     for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
-      if (this.equivalence.call(key, entry.key())) {
+      if (((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
         return entry.value();
       }
     }
@@ -93,14 +93,14 @@ public abstract class base_list_dictionary<key_type, value_type> implements read
   public @Override boolean contains_key(final key_type key) {
     assert key != null;
     for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
-      if (this.equivalence.call(key, entry.key())) {
+      if (((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
         return true;
       }
     }
     return false;
   }
   public @Override immutable_set<key_type> keys() {
-    final set<key_type> result = new hash_set<key_type>((equivalence_with_hash<key_type>) (equivalence_with_hash) this.equivalence);
+    final set<key_type> result = new hash_set<key_type>((equivalence_with_hash<key_type>) (Object) this.equivalence);
     for (@Nullable base_list_dictionary.entry_cell<key_type, value_type> entry = this.entries; entry != null; entry = entry.next) {
       result.add(entry.key());
     }

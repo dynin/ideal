@@ -10,17 +10,17 @@ import javax.annotation.Nullable;
 
 public class option_matcher<element_type, result_type> extends option_pattern<element_type> implements matcher<element_type, result_type> {
   public option_matcher(final readonly_collection<matcher<element_type, result_type>> matchers) {
-    super((readonly_collection<pattern<element_type>>) (readonly_collection) matchers);
+    super((readonly_collection<pattern<element_type>>) (Object) matchers);
   }
   public void add_matcher(final matcher<element_type, result_type> the_matcher) {
-    this.add_option(the_matcher);
+    ((option_pattern<element_type>) (Object) this).add_option(((pattern<element_type>) (Object) the_matcher));
   }
   public @Override @Nullable result_type parse(final readonly_list<element_type> the_list) {
     {
-      final readonly_list<pattern<element_type>> option_list = this.options;
+      final readonly_list<pattern<element_type>> option_list = ((option_pattern<element_type>) (Object) this).options;
       for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
-        if (option.call(the_list)) {
+        if (((function1<Boolean, readonly_list<element_type>>) (Object) option).call(the_list)) {
           if (option instanceof matcher) {
             final matcher<element_type, Object> the_matcher = (matcher<element_type, Object>) ((matcher) option);
             return (result_type) the_matcher.parse(the_list);

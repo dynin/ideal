@@ -41,13 +41,13 @@ public class test_option_matcher {
       }
     }) }));
     final option_matcher<Character, string> the_matcher = new option_matcher<Character, string>(matchers);
-    the_matcher.validate();
-    assert the_matcher.call(new base_string("a"));
-    assert the_matcher.call(new base_string("Bbb"));
-    assert the_matcher.call(new base_string("Cccc"));
-    assert !the_matcher.call(new base_string("abc"));
-    assert !the_matcher.call(new base_string("aabb"));
-    assert !the_matcher.call(new base_string("aaca"));
+    ((option_pattern<Character>) (Object) the_matcher).validate();
+    assert ((option_pattern<Character>) (Object) the_matcher).call(new base_string("a"));
+    assert ((option_pattern<Character>) (Object) the_matcher).call(new base_string("Bbb"));
+    assert ((option_pattern<Character>) (Object) the_matcher).call(new base_string("Cccc"));
+    assert !((option_pattern<Character>) (Object) the_matcher).call(new base_string("abc"));
+    assert !((option_pattern<Character>) (Object) the_matcher).call(new base_string("aabb"));
+    assert !((option_pattern<Character>) (Object) the_matcher).call(new base_string("aaca"));
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("aaa")), new base_string("*aaa"));
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("Bbb")), new base_string("*Bbb"));
     assert ideal.machine.elements.runtime_util.values_equal(the_matcher.parse(new base_string("CCCccc")), new base_string("*CCCccc"));

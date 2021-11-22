@@ -16,11 +16,11 @@ public class log {
   private static text_fragment to_text(final log_message the_message) {
     return the_message.to_text();
   }
-  public static final output<log_message> log_output = new auto_sync_output<log_message>(new output_transformer<log_message, text_fragment>(new function1<text_fragment, log_message>() {
+  public static final output<log_message> log_output = new auto_sync_output<log_message>(((output<log_message>) (Object) new output_transformer<log_message, text_fragment>(new function1<text_fragment, log_message>() {
     public @Override text_fragment call(log_message first) {
       return log.to_text(first);
     }
-  }, new plain_formatter(standard_channels.stdout)));
+  }, new plain_formatter(standard_channels.stdout))));
   public static void debug(final String the_string) {
     log.log_output.write(new simple_message(log_level.DEBUG, new base_string(the_string)));
   }

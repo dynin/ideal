@@ -116,6 +116,14 @@ public class test_list {
     assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(1).get(), new base_string("bar"));
+    strings.set(1, new base_string("xyzzy"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.size(), 2);
+    assert !strings.is_empty();
+    assert strings.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(strings.first(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("xyzzy"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(strings.at(1).get(), new base_string("xyzzy"));
   }
   public void test_list_remove() {
     final base_list<string> strings = new base_list<string>();

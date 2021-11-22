@@ -50,7 +50,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
       return;
     }
     while (true) {
-      if (runtime_util.values_equal(hash, entry.the_hash) && this.equivalence.call(the_value, entry.the_value)) {
+      if (runtime_util.values_equal(hash, entry.the_hash) && ((function2<Boolean, element_type, element_type>) (Object) this.equivalence).call(the_value, entry.the_value)) {
         return;
       }
       final @Nullable base_hash_set.hash_cell<element_type> next = entry.next;
@@ -71,7 +71,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
     if (entry == null) {
       return false;
     }
-    if (runtime_util.values_equal(hash, entry.the_hash) && this.equivalence.call(the_element, entry.the_value)) {
+    if (runtime_util.values_equal(hash, entry.the_hash) && ((function2<Boolean, element_type, element_type>) (Object) this.equivalence).call(the_element, entry.the_value)) {
       this.state.the_buckets.set(index, entry.next);
       this.decrement_size();
       return true;
@@ -81,7 +81,7 @@ public class hash_set<element_type> extends base_hash_set<element_type> implemen
       if (next == null) {
         return false;
       }
-      if (runtime_util.values_equal(hash, next.the_hash) && this.equivalence.call(the_element, next.the_value)) {
+      if (runtime_util.values_equal(hash, next.the_hash) && ((function2<Boolean, element_type, element_type>) (Object) this.equivalence).call(the_element, next.the_value)) {
         entry.next = next.next;
         this.decrement_size();
         return true;

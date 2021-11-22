@@ -33,9 +33,9 @@ public class test_hash_dictionary {
     final immutable_dictionary<string, string> dict3 = dict2.frozen_copy();
     dict2.put(new base_string("key3"), new base_string("baz"));
     assert ideal.machine.elements.runtime_util.values_equal(dict2.size(), 3);
-    assert ideal.machine.elements.runtime_util.values_equal(dict3.size(), 2);
-    assert !dict3.is_empty();
-    assert dict3.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(((readonly_collection<dictionary.entry<string, string>>) (Object) dict3).size(), 2);
+    assert !((readonly_collection<dictionary.entry<string, string>>) (Object) dict3).is_empty();
+    assert ((readonly_collection<dictionary.entry<string, string>>) (Object) dict3).is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key")), new base_string("new_value"));
     assert ideal.machine.elements.runtime_util.values_equal(dict3.get(new base_string("key2")), new base_string("bar"));
     assert dict3.get(new base_string("notfound")) == null;
@@ -49,9 +49,9 @@ public class test_hash_dictionary {
     final hash_dictionary<string, string> dict2 = new hash_dictionary<string, string>();
     dict2.put(new base_string("key"), new base_string("value"));
     final immutable_dictionary<string, string> dict2i = dict2.frozen_copy();
-    assert ideal.machine.elements.runtime_util.values_equal(dict2i.size(), 1);
-    assert !dict2i.is_empty();
-    assert dict2i.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(((readonly_collection<dictionary.entry<string, string>>) (Object) dict2i).size(), 1);
+    assert !((readonly_collection<dictionary.entry<string, string>>) (Object) dict2i).is_empty();
+    assert ((readonly_collection<dictionary.entry<string, string>>) (Object) dict2i).is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(dict2i.get(new base_string("key")), new base_string("value"));
     assert dict2i.get(new base_string("notfound")) == null;
   }
@@ -64,7 +64,7 @@ public class test_hash_dictionary {
         assert ideal.machine.elements.runtime_util.values_equal(dict.get(ideal.machine.elements.runtime_util.concatenate(new base_string("k"), i)), ideal.machine.elements.runtime_util.concatenate(new base_string("v"), i));
       }
       final immutable_dictionary<string, string> dict_copy = dict.frozen_copy();
-      assert ideal.machine.elements.runtime_util.values_equal(dict_copy.size(), max + 1);
+      assert ideal.machine.elements.runtime_util.values_equal(((readonly_collection<dictionary.entry<string, string>>) (Object) dict_copy).size(), max + 1);
       for (Integer i = 0; i <= max; i += 1) {
         assert ideal.machine.elements.runtime_util.values_equal(dict_copy.get(ideal.machine.elements.runtime_util.concatenate(new base_string("k"), i)), ideal.machine.elements.runtime_util.concatenate(new base_string("v"), i));
       }

@@ -136,7 +136,7 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
     assert key != null;
     final Integer hash = this.equivalence.hash(key);
     for (@Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = this.bucket(hash); entry != null; entry = entry.next) {
-      if (ideal.machine.elements.runtime_util.values_equal(hash, entry.the_key_hash) && this.equivalence.call(key, entry.key())) {
+      if (ideal.machine.elements.runtime_util.values_equal(hash, entry.the_key_hash) && ((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
         return entry.value();
       }
     }
@@ -146,7 +146,7 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
     assert key != null;
     final Integer hash = this.equivalence.hash(key);
     for (@Nullable base_hash_dictionary.hash_cell<key_type, value_type> entry = this.bucket(hash); entry != null; entry = entry.next) {
-      if (ideal.machine.elements.runtime_util.values_equal(hash, entry.the_key_hash) && this.equivalence.call(key, entry.key())) {
+      if (ideal.machine.elements.runtime_util.values_equal(hash, entry.the_key_hash) && ((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
         return true;
       }
     }

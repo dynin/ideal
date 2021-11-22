@@ -108,6 +108,11 @@ class base_list[value element_type] {
     return writable_state().the_elements[index];
   }
 
+  implement void set(nonnegative index, element_type value) {
+    assert index < state.size;
+    writable_state().the_elements[index] = value;
+  }
+
   -- TODO: handle write refs
   -- writeonly reference[element_type] implicit at(nonnegative index)
 

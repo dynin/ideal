@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 
 public class flags_utilities {
   public static final singleton_pattern<Character> dash_pattern = new singleton_pattern<Character>('-');
-  public static final option_pattern<Character> separator_pattern = new option_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) (pattern) new singleton_pattern<Character>('='), new singleton_pattern<Character>(':') })));
+  public static final option_pattern<Character> separator_pattern = new option_pattern<Character>(new base_immutable_list<pattern<Character>>(new ideal.machine.elements.array<pattern<Character>>(new pattern[]{ (pattern<Character>) (Object) new singleton_pattern<Character>('='), new singleton_pattern<Character>(':') })));
   public static dictionary<string, string> parse_flags(final readonly_list<string> arguments, final procedure1<Void, string> error_reporter) {
     final hash_dictionary<string, string> arg_dictionary = new hash_dictionary<string, string>();
     Integer index;
@@ -80,7 +80,7 @@ public class flags_utilities {
     }
   }
   public static void finish(final dictionary<string, string> arg_dictionary, final procedure1<Void, string> error_reporter) {
-    if (arg_dictionary.is_not_empty()) {
+    if (((readonly_collection<dictionary.entry<string, string>>) (Object) arg_dictionary).is_not_empty()) {
       error_reporter.call(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown flag: "), arg_dictionary.keys().elements().first()));
     }
   }

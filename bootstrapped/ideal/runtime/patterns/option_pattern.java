@@ -29,7 +29,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
       for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
         ((validatable) option).validate();
-        assert !option.call(new empty<element_type>());
+        assert !((function1<Boolean, readonly_list<element_type>>) (Object) option).call(new empty<element_type>());
       }
     }
   }
@@ -38,7 +38,7 @@ public class option_pattern<element_type> extends base_pattern<element_type> {
       final readonly_list<pattern<element_type>> option_list = this.options;
       for (Integer option_index = 0; option_index < option_list.size(); option_index += 1) {
         final pattern<element_type> option = option_list.get(option_index);
-        if (option.call(the_list)) {
+        if (((function1<Boolean, readonly_list<element_type>>) (Object) option).call(the_list)) {
           return true;
         }
       }

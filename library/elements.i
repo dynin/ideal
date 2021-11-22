@@ -283,6 +283,7 @@ package elements {
     --- Read the list's element for the specified index.
     implicit readonly reference[element] get(nonnegative index) pure;
     implicit mutable reference[element] at(nonnegative index) mutable pure;
+    void set(nonnegative index, element value) writeonly;
     -- TODO: handle writeonly refs
     not_yet_implemented implicit writeonly reference[element] set(nonnegative index) writeonly pure;
 

@@ -57,7 +57,7 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
         return null;
       }
       final immutable_list<immutable_list<Character>> components = base_resource_catalog.path_separator.split(name.skip(scheme_range.end()));
-      return new base_resource_identifier(this.the_resource_store, candidate_scheme, (immutable_list<string>) (immutable_list) components.frozen_copy());
+      return new base_resource_identifier(this.the_resource_store, candidate_scheme, (immutable_list<string>) (Object) components.frozen_copy());
     }
     final immutable_list<immutable_list<Character>> components = base_resource_catalog.path_separator.split(name);
     boolean absolute = false;

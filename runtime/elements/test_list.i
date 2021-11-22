@@ -155,6 +155,15 @@ test_suite test_list {
     assert strings.last == "bar";
     assert strings[0] == "foo";
     assert strings[1] == "bar";
+
+    strings[1] = "xyzzy";
+    assert strings.size == 2;
+    assert !strings.is_empty;
+    assert strings.is_not_empty;
+    assert strings.first == "foo";
+    assert strings.last == "xyzzy";
+    assert strings[0] == "foo";
+    assert strings[1] == "xyzzy";
   }
 
   test_case test_list_remove() {

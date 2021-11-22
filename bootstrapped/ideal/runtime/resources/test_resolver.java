@@ -119,7 +119,7 @@ public class test_resolver {
     final @Nullable dictionary<string, resource_identifier> content = directory.content().get();
     assert content != null;
     {
-      final readonly_list<dictionary.entry<string, resource_identifier>> file_list = content.elements();
+      final readonly_list<dictionary.entry<string, resource_identifier>> file_list = ((readonly_collection<dictionary.entry<string, resource_identifier>>) (Object) content).elements();
       for (Integer file_index = 0; file_index < file_list.size(); file_index += 1) {
         final dictionary.entry<string, resource_identifier> file = file_list.get(file_index);
         final string name = file.key();

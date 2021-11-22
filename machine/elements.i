@@ -21,7 +21,7 @@ namespace elements {
     implicit mutable reference[element] at(nonnegative index) mutable pure;
     not_yet_implemented implicit writeonly reference[element]
         at(nonnegative index) writeonly pure;
-    --implicit mutable reference[element] set(nonnegative index) mutable pure;
+    void set(nonnegative index, element value) writeonly;
 
     void move(nonnegative source, nonnegative destination, nonnegative length);
     void copy(nonnegative source_begin,

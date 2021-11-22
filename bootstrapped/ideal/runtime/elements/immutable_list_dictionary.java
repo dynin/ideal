@@ -10,10 +10,10 @@ public class immutable_list_dictionary<key_type, value_type> extends base_list_d
     super(equivalence);
   }
   public immutable_list_dictionary() {
-    super((equivalence_relation<key_type>) (equivalence_relation) runtime_util.default_equivalence);
+    super((equivalence_relation<key_type>) (Object) runtime_util.default_equivalence);
   }
   public immutable_list_dictionary(final key_type the_key, final value_type the_value) {
-    super(the_key, the_value, (equivalence_relation<key_type>) (equivalence_relation) runtime_util.default_equivalence);
+    super(the_key, the_value, (equivalence_relation<key_type>) (Object) runtime_util.default_equivalence);
   }
   public immutable_list_dictionary(final base_list_dictionary<key_type, value_type> original) {
     super(original);

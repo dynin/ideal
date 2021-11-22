@@ -59,7 +59,7 @@ public class base_graph<vertice_type, edge_type> extends debuggable implements g
     return adjacent_vertices.frozen_copy();
   }
   public @Override boolean introduces_cycle(final vertice_type from, final vertice_type to) {
-    if (this.equivalence.call(from, to)) {
+    if (((function2<Boolean, vertice_type, vertice_type>) (Object) this.equivalence).call(from, to)) {
       return true;
     }
     final list<vertice_type> considered = new base_list<vertice_type>(from, to);
@@ -75,7 +75,7 @@ public class base_graph<vertice_type, edge_type> extends debuggable implements g
           for (Integer target_vertice_index = 0; target_vertice_index < target_vertice_list.size(); target_vertice_index += 1) {
             final vertice_type target_vertice = target_vertice_list.get(target_vertice_index);
             if (visited.contains(target_vertice)) {
-              if (this.equivalence.call(target_vertice, from)) {
+              if (((function2<Boolean, vertice_type, vertice_type>) (Object) this.equivalence).call(target_vertice, from)) {
                 return true;
               }
             } else {

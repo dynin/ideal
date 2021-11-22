@@ -223,9 +223,7 @@ public class base_semantics implements language_settings {
 
     // Anything can be promoted to the 'void' value.
     if (target == common_types.immutable_void_type()) {
-      return new chain_action(new stub_action(subtype),
-          new promotion_action(target, origin_utilities.no_origin),
-          origin_utilities.no_origin);
+      return new promotion_action(target, origin_utilities.no_origin);
     }
 
     promotion_set promotions = promotion_set.make(subtype, actions);

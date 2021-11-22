@@ -12,10 +12,10 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
     super(equivalence);
   }
   public list_dictionary() {
-    super((equivalence_relation<key_type>) (equivalence_relation) runtime_util.default_equivalence);
+    super((equivalence_relation<key_type>) (Object) runtime_util.default_equivalence);
   }
   public list_dictionary(final key_type the_key, final value_type the_value) {
-    super(the_key, the_value, (equivalence_relation<key_type>) (equivalence_relation) runtime_util.default_equivalence);
+    super(the_key, the_value, (equivalence_relation<key_type>) (Object) runtime_util.default_equivalence);
   }
   public @Override immutable_dictionary<key_type, value_type> frozen_copy() {
     return new immutable_list_dictionary<key_type, value_type>(this);
@@ -32,7 +32,7 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
       return null;
     }
     while (true) {
-      if (this.equivalence.call(key, entry.key())) {
+      if (((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
         final value_type old_value = entry.value();
         entry.set_value(value);
         return old_value;
@@ -52,7 +52,7 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
     if (entry == null) {
       return null;
     }
-    if (this.equivalence.call(key, entry.key())) {
+    if (((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
       final value_type old_value = entry.value();
       this.entries = entry.next;
       final Integer new_size = this.the_size - 1;
@@ -65,7 +65,7 @@ public class list_dictionary<key_type, value_type> extends base_list_dictionary<
       if (next_entry == null) {
         return null;
       }
-      if (this.equivalence.call(key, next_entry.key())) {
+      if (((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, next_entry.key())) {
         final value_type old_value = next_entry.value();
         entry.next = next_entry.next;
         final Integer new_size = this.the_size - 1;

@@ -10,4 +10,8 @@ class token[covariant deeply_immutable data payload_type] {
     token[deeply_immutable data] v : arg;
     --new_scan_state(arg);
   }
+
+  void test_list(list[string] strings) {
+    strings[5] = "bar";
+  }
 }

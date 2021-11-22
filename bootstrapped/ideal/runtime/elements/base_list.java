@@ -84,6 +84,10 @@ public class base_list<element_type> extends base_readonly_list<element_type> im
     assert index < this.state.size;
     return this.writable_state().the_elements.at(index);
   }
+  public @Override void set(final Integer index, final element_type value) {
+    assert index < this.state.size;
+    this.writable_state().the_elements.set(index, value);
+  }
   public @Override element_type remove_last() {
     assert this.is_not_empty();
     final Integer last_index = this.size() - 1;

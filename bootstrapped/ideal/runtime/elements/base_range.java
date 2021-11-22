@@ -72,7 +72,7 @@ public class base_range implements range {
   }
   public @Override boolean has(final predicate<Integer> the_predicate) {
     for (Integer value = this.the_begin; value < this.the_end; value += 1) {
-      if (the_predicate.call(value)) {
+      if (((function1<Boolean, Integer>) (Object) the_predicate).call(value)) {
         return true;
       }
     }

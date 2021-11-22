@@ -20,7 +20,7 @@ public class test_json_printer {
     final string json1 = printer.print(68);
     assert ideal.machine.elements.runtime_util.values_equal(json1, new base_string("68"));
     final json_array array = new json_array_impl();
-    array.append_all((readonly_list<Object>) (readonly_list) new base_immutable_list<Integer>(new ideal.machine.elements.array<Integer>(new Integer[]{ 42, 68 })));
+    array.append_all((readonly_list<Object>) (Object) ((readonly_list<Object>) (Object) new base_immutable_list<Integer>(new ideal.machine.elements.array<Integer>(new Integer[]{ 42, 68 }))));
     final string json2 = printer.print(array);
     assert ideal.machine.elements.runtime_util.values_equal(json2, new base_string("[42, 68]"));
     final string json3 = printer.print(null);

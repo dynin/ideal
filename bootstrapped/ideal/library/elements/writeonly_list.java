@@ -2,4 +2,6 @@
 
 package ideal.library.elements;
 
-public interface writeonly_list<element> extends writeonly_collection<element>, any_list<element> { }
+public interface writeonly_list<element> extends writeonly_collection<element>, any_list<element> {
+  void set(Integer index, element value);
+}

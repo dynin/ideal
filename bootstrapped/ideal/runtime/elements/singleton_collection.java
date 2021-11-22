@@ -57,7 +57,7 @@ public class singleton_collection<element_type> implements immutable_list<elemen
     return this;
   }
   public @Override boolean has(final predicate<element_type> the_predicate) {
-    return the_predicate.call(this.element);
+    return ((function1<Boolean, element_type>) (Object) the_predicate).call(this.element);
   }
   public @Override range indexes() {
     return new base_range(0, 1);

@@ -23,7 +23,7 @@ public class utilities {
     if (first_null || second_null) {
       return false;
     }
-    return runtime_util.default_equivalence.call(first, second);
+    return ((function2<Boolean, Object, Object>) (Object) runtime_util.default_equivalence).call(first, second);
   }
   public static string string_of(final Object the_value) {
     return runtime_util.string_of(the_value);

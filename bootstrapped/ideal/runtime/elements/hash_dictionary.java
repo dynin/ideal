@@ -12,7 +12,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
     super(equivalence);
   }
   public hash_dictionary() {
-    super((equivalence_with_hash<key_type>) (equivalence_with_hash) runtime_util.default_equivalence);
+    super((equivalence_with_hash<key_type>) (Object) runtime_util.default_equivalence);
   }
   private void copy_on_write() {
     if (!this.state.writable) {
@@ -36,7 +36,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
       return null;
     }
     while (true) {
-      if (runtime_util.values_equal(hash, entry.the_key_hash) && this.equivalence.call(key, entry.key())) {
+      if (runtime_util.values_equal(hash, entry.the_key_hash) && ((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
         final value_type old_value = entry.value();
         entry.set_value(value);
         return old_value;
@@ -59,7 +59,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
     if (entry == null) {
       return null;
     }
-    if (runtime_util.values_equal(hash, entry.the_key_hash) && this.equivalence.call(key, entry.key())) {
+    if (runtime_util.values_equal(hash, entry.the_key_hash) && ((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, entry.key())) {
       final value_type old_value = entry.value();
       this.state.the_buckets.set(index, entry.next);
       final Integer new_size = this.state.size - 1;
@@ -72,7 +72,7 @@ public class hash_dictionary<key_type, value_type> extends base_hash_dictionary<
       if (next_entry == null) {
         return null;
       }
-      if (runtime_util.values_equal(hash, next_entry.the_key_hash) && this.equivalence.call(key, next_entry.key())) {
+      if (runtime_util.values_equal(hash, next_entry.the_key_hash) && ((function2<Boolean, key_type, key_type>) (Object) this.equivalence).call(key, next_entry.key())) {
         final value_type old_value = next_entry.value();
         entry.next = next_entry.next;
         final Integer new_size = this.state.size - 1;

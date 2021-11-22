@@ -35,11 +35,11 @@ public class test_repeat_matcher {
     return result;
   }
   public pattern<Character> make_matcher(final function1<Boolean, Character> the_predicate) {
-    return new procedure_matcher<Character, string>(new repeat_element<Character>(the_predicate, false), new procedure1<string, readonly_list<Character>>() {
+    return ((pattern<Character>) (Object) new procedure_matcher<Character, string>(new repeat_element<Character>(the_predicate, false), new procedure1<string, readonly_list<Character>>() {
       public @Override string call(readonly_list<Character> first) {
         return test_repeat_matcher.this.as_string(first);
       }
-    });
+    }));
   }
   public string match_procedure(final readonly_list<Object> the_list) {
     string result = new base_string("");
@@ -67,7 +67,7 @@ public class test_repeat_matcher {
         return test_repeat_matcher.this.match_c(first);
       }
     }) }));
-    return new repeat_matcher<Character, string, string>(new sequence_matcher<Character, string>(matcher_list, new procedure1<string, readonly_list<Object>>() {
+    return ((matcher<Character, string>) (Object) new repeat_matcher<Character, string, string>(new sequence_matcher<Character, string>(matcher_list, new procedure1<string, readonly_list<Object>>() {
       public @Override string call(readonly_list<Object> first) {
         return test_repeat_matcher.this.match_procedure(first);
       }
@@ -75,18 +75,18 @@ public class test_repeat_matcher {
       public @Override string call(readonly_list<string> first) {
         return test_repeat_matcher.this.join_list(first);
       }
-    });
+    }));
   }
   public void test_match() {
     final matcher<Character, string> the_matcher = this.make_pattern(true);
-    assert the_matcher.call(new base_string("abc"));
-    assert the_matcher.call(new base_string("AbCabc"));
-    assert the_matcher.call(new base_string("AaaBbCccABC"));
-    assert the_matcher.call(new base_string("AaaBbCccABCabc"));
-    assert the_matcher.call(new base_string("AaaBBBCcc"));
-    assert !the_matcher.call(new base_string("bac"));
-    assert !the_matcher.call(new base_string("aabb"));
-    assert !the_matcher.call(new base_string("aaca"));
+    assert ((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("abc"));
+    assert ((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("AbCabc"));
+    assert ((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("AaaBbCccABC"));
+    assert ((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("AaaBbCccABCabc"));
+    assert ((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("AaaBBBCcc"));
+    assert !((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("bac"));
+    assert !((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("aabb"));
+    assert !((function1<Boolean, readonly_list<Character>>) (Object) the_matcher).call(new base_string("aaca"));
   }
   public void test_parse() {
     final matcher<Character, string> the_matcher = this.make_pattern(true);

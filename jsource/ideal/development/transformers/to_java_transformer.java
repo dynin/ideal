@@ -1455,6 +1455,9 @@ public class to_java_transformer extends base_transformer {
     // TODO: handle other assignment operators.
     if (the_operator == operator.ASSIGN) {
       action lhs = arguments.get(0);
+      if (is_promotion_action(lhs)) {
+        lhs = unwrap_promotion(lhs);
+      }
       construct rhs = transform_and_maybe_rewrite(arguments.get(1));
       if (lhs instanceof bound_procedure) {
         bound_procedure lhs2 = (bound_procedure) lhs;

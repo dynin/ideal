@@ -26,7 +26,7 @@ public class test_elements {
   public void test_base_element() {
     final text_element element = new base_element(text_library.P);
     assert element.get_id() == text_library.P;
-    assert element.attributes().is_empty();
+    assert ((readonly_collection<dictionary.entry<attribute_id, attribute_fragment>>) (Object) element.attributes()).is_empty();
     assert element.children() == null;
   }
   public void test_make_element() {
@@ -36,7 +36,7 @@ public class test_elements {
     final text_element element = text_utilities.make_element(text_library.BODY, nodes);
     assert element instanceof base_element;
     assert ((base_element) element).get_id() == text_library.BODY;
-    assert ((base_element) element).attributes().is_empty();
+    assert ((readonly_collection<dictionary.entry<attribute_id, attribute_fragment>>) (Object) ((base_element) element).attributes()).is_empty();
     final @Nullable text_fragment children = ((base_element) element).children();
     assert children instanceof list_text_node;
     final immutable_list<text_node> child_nodes = ((list_text_node) children).nodes();
@@ -44,7 +44,7 @@ public class test_elements {
     final text_node child0 = child_nodes.first();
     assert child0 instanceof base_element;
     assert ((base_element) child0).get_id() == text_library.P;
-    assert ((base_element) child0).attributes().is_empty();
+    assert ((readonly_collection<dictionary.entry<attribute_id, attribute_fragment>>) (Object) ((base_element) child0).attributes()).is_empty();
     assert ((base_element) child0).children() == null;
     final text_node child1 = child_nodes.get(1);
     assert child1 instanceof string;

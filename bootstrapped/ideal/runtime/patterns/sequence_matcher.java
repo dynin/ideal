@@ -18,8 +18,8 @@ public class sequence_matcher<element_type, result_type> extends sequence_patter
     final base_list<Object> matches = new base_list<Object>();
     Integer index = 0;
     Integer prefix = 0;
-    while (index < this.patterns_list.size()) {
-      final pattern<element_type> pattern_element = this.patterns_list.get(index);
+    while (index < ((sequence_pattern<element_type>) (Object) this).patterns_list.size()) {
+      final pattern<element_type> pattern_element = ((sequence_pattern<element_type>) (Object) this).patterns_list.get(index);
       final @Nullable Integer match = pattern_element.match_prefix(the_list.skip(prefix));
       assert match != null;
       if (pattern_element instanceof matcher) {

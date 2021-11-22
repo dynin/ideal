@@ -35,7 +35,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
         new_size = reserve_size;
       }
       final array<element_type> new_elements = new array<element_type>(new_size);
-      this.the_elements.copy(0, new_elements, 0, this.size);
+      this.the_elements.copy(0, ((array<Object>) (Object) new_elements), 0, this.size);
       this.the_elements = new_elements;
     }
     public void insert_all(final Integer index, final readonly_list<element_type> new_elements) {
@@ -48,8 +48,8 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
       assert this.writable;
       final Integer extra_size = new_elements.size();
       this.reserve_and_move(index, extra_size);
-      final array<element_type> new_elements_array = ((base_readonly_list<element_type>) (base_readonly_list) new_elements).state.the_elements;
-      new_elements_array.copy(0, this.the_elements, index, extra_size);
+      final array<element_type> new_elements_array = ((base_readonly_list<element_type>) (Object) new_elements).state.the_elements;
+      new_elements_array.copy(0, ((array<Object>) (Object) this.the_elements), index, extra_size);
     }
     public void insert(final Integer index, final element_type element) {
       assert this.writable;
@@ -76,7 +76,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
     }
     public base_readonly_list.list_state<element_type> copy() {
       final base_readonly_list.list_state<element_type> new_state = new base_readonly_list.list_state<element_type>(this.size);
-      this.the_elements.copy(0, new_state.the_elements, 0, this.size);
+      this.the_elements.copy(0, ((array<Object>) (Object) new_state.the_elements), 0, this.size);
       new_state.size = this.size;
       return new_state;
     }
@@ -123,7 +123,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
     assert length >= 0;
     final base_readonly_list.list_state<element_type> slice_state = new base_readonly_list.list_state<element_type>(length);
     slice_state.size = length;
-    this.state.the_elements.copy(begin, slice_state.the_elements, 0, length);
+    this.state.the_elements.copy(begin, ((array<Object>) (Object) slice_state.the_elements), 0, length);
     return new base_immutable_list<element_type>(slice_state);
   }
   public @Override immutable_list<element_type> skip(final Integer count) {
@@ -131,7 +131,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
   }
   public @Override boolean has(final predicate<element_type> the_predicate) {
     for (Integer index = 0; index < this.state.size; index += 1) {
-      if (the_predicate.call(this.state.the_elements.at(index).get())) {
+      if (((function1<Boolean, element_type>) (Object) the_predicate).call(this.state.the_elements.at(index).get())) {
         return true;
       }
     }

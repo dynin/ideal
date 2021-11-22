@@ -106,7 +106,7 @@ public class markup_formatter extends text_formatter {
     this.write_string(markup_formatter.CLOSE_SELF_CLOSING_TAG);
   }
   private void write_tag_attributes(final readonly_dictionary<attribute_id, attribute_fragment> attributes) {
-    final readonly_list<dictionary.entry<attribute_id, attribute_fragment>> attribute_list = attributes.elements();
+    final readonly_list<dictionary.entry<attribute_id, attribute_fragment>> attribute_list = ((readonly_collection<dictionary.entry<attribute_id, attribute_fragment>>) (Object) attributes).elements();
     for (Integer attribute_index = 0; attribute_index < attribute_list.size(); attribute_index += 1) {
       final dictionary.entry<attribute_id, attribute_fragment> attribute = attribute_list.get(attribute_index);
       this.write_string(markup_formatter.ATTRIBUTE_SEPARATOR);

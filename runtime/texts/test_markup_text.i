@@ -14,7 +14,7 @@ test_suite test_markup_text {
 
     the_formatter.write(base_element.new(text_library.P, "foo"));
 
-    assert "<p>\n foo\n</p>\n" == the_writer.elements();
+    assert "<p>\n foo\n</p>\n" == the_writer.elements;
   }
 
   test_case test_quoted() {
@@ -23,7 +23,7 @@ test_suite test_markup_text {
 
     the_formatter.write("AT&T <etc.> q1:' q2:\"");
 
-    assert "AT&amp;T &lt;etc.&gt; q1:&apos; q2:&quot;" == the_writer.elements();
+    assert "AT&amp;T &lt;etc.&gt; q1:&apos; q2:&quot;" == the_writer.elements;
   }
 
   test_case test_writer_indent() {
@@ -33,7 +33,7 @@ test_suite test_markup_text {
     the_formatter.write(base_element.new(text_library.P, "foo"));
     the_formatter.write(base_element.new(text_library.INDENT, "bar"));
 
-    assert "<p>\n foo\n</p>\n<indent>\n bar\n</indent>\n" == the_writer.elements();
+    assert "<p>\n foo\n</p>\n<indent>\n bar\n</indent>\n" == the_writer.elements;
   }
 
   test_case test_attribute() {
@@ -42,7 +42,7 @@ test_suite test_markup_text {
 
     the_formatter.write(base_element.new(text_library.P, text_library.NAME, "foo", "bar"));
 
-    assert "<p name='foo'>\n bar\n</p>\n" == the_writer.elements();
+    assert "<p name='foo'>\n bar\n</p>\n" == the_writer.elements;
   }
 
   test_case test_self_closing_tag() {
@@ -54,7 +54,7 @@ test_suite test_markup_text {
         missing.instance));
     the_formatter.write("bar\n");
 
-    assert "foo<br clear='all' />\nbar\n" == the_writer.elements();
+    assert "foo<br clear='all' />\nbar\n" == the_writer.elements;
   }
 
   test_case test_writer_fragment() {
@@ -67,6 +67,6 @@ test_suite test_markup_text {
     the_formatter.write(the_entity);
     the_formatter.write("two");
 
-    assert "one&middot;two" == the_writer.elements();
+    assert "one&middot;two" == the_writer.elements;
   }
 }

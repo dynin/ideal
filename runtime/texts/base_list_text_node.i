@@ -34,6 +34,6 @@ class base_list_text_node {
     for (node : the_nodes) {
       the_writer.write_all(node.to_string);
     }
-    return the_writer.elements();
+    return the_writer.elements;
   }
 }

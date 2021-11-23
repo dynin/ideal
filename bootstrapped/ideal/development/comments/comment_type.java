@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 
-public enum comment_type implements deeply_immutable_data {
+public enum comment_type implements deeply_immutable_data, reference_equality {
   NEWLINE(false),
   WHITESPACE(false),
   LINE_COMMENT(false),

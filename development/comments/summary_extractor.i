@@ -50,7 +50,7 @@ class summary_extractor {
       }
     }
 
-    return result.elements();
+    return result.elements;
   }
 
   protected override string process_element(text_element element) {

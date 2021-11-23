@@ -55,7 +55,7 @@ namespace flags_utilities {
         result.write(unicode_handler.instance.to_lower_case(c));
       }
     }
-    return result.elements();
+    return result.elements;
   }
 
   boolean boolean_flag(dictionary[string, string] arg_dictionary, string name) {

@@ -65,7 +65,7 @@ class base_value_printer {
         }
         the_writer.write_all(name.to_string());
       }
-      return the_writer.elements();
+      return the_writer.elements;
     }
   }
 
@@ -92,6 +92,6 @@ class base_value_printer {
     }
     the_writer.write(']');
 
-    return the_writer.elements();
+    return the_writer.elements;
   }
 }

@@ -39,6 +39,6 @@ class type_parameters {
     }
 
     the_writer.write_all("]");
-    return the_writer.elements();
+    return the_writer.elements;
   }
 }

@@ -4,73 +4,66 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-import ideal.library.elements.*;
-import ideal.runtime.elements.*;
-import ideal.machine.channels.string_writer;
-import ideal.development.elements.*;
-import ideal.development.names.*;
-import ideal.development.comments.*;
-import ideal.development.notifications.*;
+namespace documenter_filter {
 
-public class documenter_filter {
+  readonly list[token[deeply_immutable data]] transform(
+      readonly list[token[deeply_immutable data]] tokens) {
 
-  private documenter_filter() { }
-
-  public static readonly_list<token> transform(readonly_list<token> tokens) {
-    list<token> result = new base_list<token>();
-    int index = 0;
-    while (index < tokens.size()) {
-      token next_token = tokens.get(index);
-      if (next_token.type() == special_token_type.COMMENT) {
-        token<comment> the_comment = (token<comment>) next_token;
-        if (the_comment.payload().type.is_doc) {
+    result : base_list[token[deeply_immutable data]].new();
+    var nonnegative index : 0;
+    while (index < tokens.size) {
+      next_token : tokens[index];
+      if (next_token.type == special_token_type.COMMENT) {
+        the_comment : next_token !> token[comment];
+        if (the_comment.payload.type.is_doc) {
           index = handle_doc_comment(tokens, index, result, the_comment);
         } else {
-          ++index;
+          index += 1;
         }
       } else {
-        if (next_token.type() == keywords.RESERVED) {
-          new base_notification(messages.reserved_word, next_token).report();
-          keyword the_keyword = ((token<keyword>) next_token).payload();
+        if (next_token.type == keywords.RESERVED) {
+          base_notification.new(messages.reserved_word, next_token).report();
+          the_keyword : (next_token !> token[keyword]).payload;
           if (the_keyword != keywords.RESERVED) {
-            result.append(new base_token<keyword>(the_keyword, the_keyword, next_token));
+            result.append(base_token[keyword].new(the_keyword, the_keyword, next_token));
           }
         } else {
           result.append(next_token);
         }
-        ++index;
+        index += 1;
       }
     }
     return result;
   }
 
-  private static int handle_doc_comment(readonly_list<token> tokens, int index, list<token> result,
-      origin pos) {
-    string_writer content = new string_writer();
+  private nonnegative handle_doc_comment(readonly list[token[deeply_immutable data]] tokens,
+      var nonnegative index, list[token[deeply_immutable data]] result, var the origin) {
 
-    while (index < tokens.size()) {
-      token next_token = tokens.get(index);
-      if (next_token.type() != special_token_type.COMMENT) {
+    content : string_writer.new();
+
+    while (index < tokens.size) {
+      next_token : tokens[index];
+      if (next_token.type != special_token_type.COMMENT) {
         break;
       }
 
-      token<comment> the_comment = (token<comment>) next_token;
-      if (the_comment.payload().type.is_doc) {
-        content.write_all(the_comment.payload().content);
-        if (pos == null) {
-          pos = the_comment;
+      the_comment : next_token !> token[comment];
+      if (the_comment.payload.type.is_doc) {
+        content.write_all(the_comment.payload.content);
+        if (the_origin is null) {
+          the_origin = the_comment;
         }
-        ++index;
-      } else if (the_comment.payload().type == comment_type.WHITESPACE) {
-        ++index;
+        index += 1;
+      } else if (the_comment.payload.type == comment_type.WHITESPACE) {
+        index += 1;
       } else {
         break;
       }
     }
 
-    string doc = content.elements();
-    result.append(new base_token<comment>(special_token_type.COMMENT,
-        new comment(comment_type.BLOCK_DOC_COMMENT, doc, doc), pos));
+    doc_content : content.elements;
+    result.append(base_token[comment].new(special_token_type.COMMENT,
+        comment.new(comment_type.BLOCK_DOC_COMMENT, doc_content, doc_content), the_origin));
 
     return index;
   }

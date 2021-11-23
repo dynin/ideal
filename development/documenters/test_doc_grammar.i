@@ -113,6 +113,6 @@ test_suite test_doc_grammar {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer, "", false);
     the_formatter.write(the_text_fragment);
-    return the_writer.elements() == expected;
+    return the_writer.elements == expected;
   }
 }

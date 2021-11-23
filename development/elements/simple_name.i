@@ -41,7 +41,7 @@ class simple_name {
           the_writer.write(the_underscore);
         }
       }
-      return the_writer.elements();
+      return the_writer.elements;
     }
   }
 

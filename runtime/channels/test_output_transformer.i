@@ -17,14 +17,14 @@ test_suite test_output_transformer {
     the_appender.write("bar");
     the_appender.write("baz");
 
-    elements : the_appender.elements();
+    elements : the_appender.elements;
     assert elements.size == 3;
     assert elements[0] == "foo";
     assert elements[1] == "bar";
     assert elements[2] == "baz";
 
     the_appender.write_all(elements);
-    more_elements : the_appender.elements();
+    more_elements : the_appender.elements;
     assert more_elements.size == 6;
     assert more_elements[0] == "foo";
     assert more_elements[1] == "bar";
@@ -42,7 +42,7 @@ test_suite test_output_transformer {
     the_transformer.write("bar");
     the_transformer.write("baz");
 
-    elements : the_appender.elements();
+    elements : the_appender.elements;
     assert elements.size == 3;
 
     assert elements[0] == "+foo!";

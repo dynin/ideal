@@ -65,7 +65,7 @@ class json_parser {
       while (index < input.size) {
         next_in_input : input[index];
         if (next_in_input == '"') {
-          tokens.append(result.elements());
+          tokens.append(result.elements);
           return index + 1;
         } else if (next_in_input == quoted_character.ESCAPE) {
           if (index >= input.size) {

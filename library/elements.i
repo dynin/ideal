@@ -251,19 +251,19 @@ package elements {
     subtypes composite_value;
 
     --- The number of elements in the collection.
-    nonnegative size readonly;
+    nonnegative size;
 
     --- Specifies whether the collection has zero elements.
-    boolean is_empty readonly;
+    boolean is_empty;
 
     --- Specifies whether the collection has more than zero elements.
     --- Shortcut for |!is_empty|.
-    boolean is_not_empty readonly;
+    boolean is_not_empty;
 
     --- Enumerates elements in some collection-defined order.
     --- This method returns a snapshot of the collection state, so subsequent mutations
     --- of the collection do not cause changes in the returned list.
-    immutable list[element] elements readonly;
+    immutable list[element] elements;
 
     --- Check whether the collection has at least one element that satisfies the predicate.
     not_yet_implemented boolean has(the predicate[element]) pure;
@@ -289,11 +289,11 @@ package elements {
 
     --- Access the first element of the list.
     --- Assumes the list is not empty.
-    element first readonly;
+    element first;
 
     --- Access the last element of the list.
     --- Assumes the list is not empty.
-    element last readonly;
+    element last;
 
     void append(the element);
     void append_all(the readonly list[element]);

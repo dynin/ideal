@@ -32,7 +32,7 @@ test_suite test_display {
 
     the_formatter.write(runtime_util.display(data_object));
 
-    assert "my_data {\n  foo: \"aaa\"\n  bar: \"bbb\"\n  baz: 68\n}\n" == the_writer.elements();
+    assert "my_data {\n  foo: \"aaa\"\n  bar: \"bbb\"\n  baz: 68\n}\n" == the_writer.elements;
   }
 
   -- TODO: use datatype here
@@ -58,6 +58,6 @@ test_suite test_display {
 
     the_formatter.write(runtime_util.display(data_object));
 
-    assert "my_data2 {\n  foo: \"aaa\"\n}\n" == the_writer.elements();
+    assert "my_data2 {\n  foo: \"aaa\"\n}\n" == the_writer.elements;
   }
 }

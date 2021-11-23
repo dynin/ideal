@@ -17,9 +17,9 @@ namespace channels {
     -- TODO: use constructor.
     public string_writer();
 
-    -- TODO: this should be a variable.
-    nonnegative size();
-    string elements() pure;
+    var nonnegative size();
+    var string elements();
+
     void clear();
   }
 

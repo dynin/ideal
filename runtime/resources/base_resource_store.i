@@ -46,7 +46,7 @@ abstract class base_resource_store {
       result.write_all(path[i]);
     }
 
-    return result.elements();
+    return result.elements;
   }
 
   public resource_catalog top() {

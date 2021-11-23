@@ -19,7 +19,7 @@ test_suite test_plain_text {
 
     the_formatter.write(base_element.new(text_library.P, FOO));
 
-    assert "foo\n" == the_writer.elements();
+    assert "foo\n" == the_writer.elements;
   }
 
   test_case test_writer_indent0() {
@@ -29,7 +29,7 @@ test_suite test_plain_text {
     the_formatter.write(base_element.new(text_library.P, FOO));
     the_formatter.write(base_element.new(text_library.INDENT, BAR));
 
-    assert "foo\n  bar\n" == the_writer.elements();
+    assert "foo\n  bar\n" == the_writer.elements;
   }
 
   test_case test_writer_indent1() {
@@ -43,7 +43,7 @@ test_suite test_plain_text {
         base_list_text_node.make(bar, baz)));
     the_formatter.write(base_element.new(text_library.P, WYZZY));
 
-    assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements();
+    assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements;
   }
 
   test_case test_writer_indent2() {
@@ -54,7 +54,7 @@ test_suite test_plain_text {
     the_formatter.write(base_element.new(text_library.INDENT, "bar\nbaz"));
     the_formatter.write(base_element.new(text_library.P, WYZZY));
 
-    assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements();
+    assert "foo\n  bar\n  baz\nwyzzy\n" == the_writer.elements;
   }
 
   test_case test_self_closing_tag() {
@@ -66,7 +66,7 @@ test_suite test_plain_text {
         text_library.CLEAR, "all", missing.instance));
     the_formatter.write("bar\n");
 
-    assert "foo\nbar\n" == the_writer.elements();
+    assert "foo\nbar\n" == the_writer.elements;
   }
 
   test_case test_writer_fragment() {
@@ -79,7 +79,7 @@ test_suite test_plain_text {
     the_formatter.write(fragment);
     the_formatter.write("two");
 
-    assert "one*two" == the_writer.elements();
+    assert "one*two" == the_writer.elements;
   }
 
   test_case test_underline_tag() {
@@ -95,7 +95,7 @@ test_suite test_plain_text {
     the_formatter.write(" bar");
     the_formatter.write(base_element.new(text_library.BR, missing.instance));
 
-    assert "hello world\n      ^^^^^\nfoo bar\n^^^\n" == the_writer.elements();
+    assert "hello world\n      ^^^^^\nfoo bar\n^^^\n" == the_writer.elements;
   }
 
   test_case test_underline2_tag() {
@@ -111,7 +111,7 @@ test_suite test_plain_text {
     the_formatter.write(" bar");
     the_formatter.write(base_element.new(text_library.BR, missing.instance));
 
-    assert "hello world\n      -----\nfoo bar\n---\n" == the_writer.elements();
+    assert "hello world\n      -----\nfoo bar\n---\n" == the_writer.elements;
   }
 
   test_case test_two_underlines() {
@@ -126,7 +126,7 @@ test_suite test_plain_text {
     the_formatter.write(text_utilities.join("foo ", mid, " bar"));
     the_formatter.write(base_element.new(text_library.BR, missing.instance));
 
-    assert "foo start hi end bar\n    ------^^----\n" == the_writer.elements();
+    assert "foo start hi end bar\n    ------^^----\n" == the_writer.elements;
   }
 
   test_case test_blank_line() {
@@ -137,6 +137,6 @@ test_suite test_plain_text {
     the_formatter.write(base_element.new(text_library.BR));
     the_formatter.write(base_element.new(text_library.DIV, "bar"));
 
-    assert "foo\n\nbar\n" == the_writer.elements();
+    assert "foo\n\nbar\n" == the_writer.elements;
   }
 }

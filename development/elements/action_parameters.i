@@ -33,6 +33,6 @@ class action_parameters {
       }
     }
     the_writer.write(']');
-    return the_writer.elements();
+    return the_writer.elements;
   }
 }

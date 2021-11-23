@@ -16,7 +16,7 @@ test_suite test_origin_printer {
 
     out.write(origin_printer.render_text_origin(the_origin, missing.instance, missing.instance));
 
-    assert the_writer.elements() == output;
+    assert the_writer.elements == output;
   }
 
   test_case test_show_origins() {

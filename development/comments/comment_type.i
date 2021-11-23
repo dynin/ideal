@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 enum comment_type {
-  implements deeply_immutable data;
+  implements deeply_immutable data, reference_equality;
 
   NEWLINE(false);
   WHITESPACE(false);

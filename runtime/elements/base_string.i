@@ -124,7 +124,7 @@ class base_string {
   static string from_list(readonly list[character] chars) {
     the_writer : string_writer.new();
     the_writer.write_all(chars);
-    return the_writer.elements();
+    return the_writer.elements;
   }
 
   implement nonnegative size => state.length() !> nonnegative;
@@ -147,13 +147,9 @@ class base_string {
     return state.charAt(index);
   }
 
-  implement immutable list[character] elements() {
-    return this;
-  }
+  implement immutable list[character] elements => this;
 
-  implement immutable list[character] frozen_copy() {
-    return this;
-  }
+  implement immutable list[character] frozen_copy => this;
 
   implement string skip(nonnegative count) {
     return base_string.new(state.substring(count));

@@ -17,7 +17,7 @@ class json_printer {
   string print(readonly json_data the_json_data) {
     result : string_writer.new();
     print_data(the_json_data, result);
-    return result.elements();
+    return result.elements;
   }
 
   private void print_data(readonly json_data the_json_data, string_writer result) {

@@ -77,8 +77,8 @@ class plain_formatter {
   override void do_write_newline() {
     super.do_write_newline();
     -- TODO: this should be a variable.
-    if (carets.size() > 0) {
-      the_output.write_all(carets.elements());
+    if (carets.size > 0) {
+      the_output.write_all(carets.elements);
       carets.clear();
       the_output.write(NEWLINE);
     }
@@ -96,7 +96,7 @@ class plain_formatter {
     if (underline_stack.is_not_empty) {
       -- TODO: this should be a variable.
       -- TODO: use repeat
-      while (carets.size() < chars_written) {
+      while (carets.size < chars_written) {
         carets.write(SPACE);
       }
       last_underline_index : underline_stack.size - 1;

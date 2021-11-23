@@ -36,6 +36,6 @@ class base_list_attribute_fragment {
     for (node : the_fragments) {
       the_writer.write_all(node.to_string);
     }
-    return the_writer.elements();
+    return the_writer.elements;
   }
 }

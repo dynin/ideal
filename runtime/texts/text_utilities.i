@@ -149,14 +149,14 @@ namespace text_utilities {
     the_writer : string_writer.new();
     formatter : plain_formatter.new(the_writer);
     formatter.write(text);
-    return the_writer.elements();
+    return the_writer.elements;
   }
 
   string to_markup_string(text_fragment text) {
     the_writer : string_writer.new();
     formatter : markup_formatter.new(the_writer);
     formatter.write(text);
-    return the_writer.elements();
+    return the_writer.elements;
   }
 
   text_element make_element(element_id id, readonly list[text_node] children) {

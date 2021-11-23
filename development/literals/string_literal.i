@@ -33,7 +33,7 @@ class string_literal {
     for (fragment : content) {
       the_string_writer.write_all(fragment.to_string);
     }
-    return the_string_writer.elements();
+    return the_string_writer.elements;
   }
 
   override string to_string => content_with_escapes();

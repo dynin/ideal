@@ -223,6 +223,6 @@ test_suite test_markup_grammar {
     the_writer : string_writer.new();
     the_formatter : markup_formatter.new(the_writer, "", false);
     the_formatter.write(the_text_element);
-    return the_writer.elements() == expected;
+    return the_writer.elements == expected;
   }
 }

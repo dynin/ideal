@@ -37,7 +37,7 @@ class appender[any value value_type] {
     active = false;
   }
 
-  immutable list[value_type] elements() {
+  var immutable list[value_type] elements() {
     return the_list.elements;
   }
 

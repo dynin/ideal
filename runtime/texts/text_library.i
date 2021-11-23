@@ -81,19 +81,19 @@ public namespace text_library {
     HR, DL, DT, DD,
     -- TODO: include U2?
     -- TODO: the cast should be redundant; use deeply_immutable
-  ] !> immutable list[element_id];
+  ];
 
   immutable list[attribute_id] HTML_ATTRIBUTES : [
     ID, NAME, CONTENT, CHARSET, CLEAR, CLASS, STYLE, HREF, REL, TYPE
     -- TODO: the cast should be redundant; use deeply_immutable
-  ] !> immutable list[attribute_id];
+  ];
 
   immutable list[special_text] HTML_ENTITIES : [
     AMP, LT, GT, APOS, QUOT,
     BULL, MIDDOT, MDASH, NBSP, THINSP,
     LARR, UARR, RARR, DARR
     -- TODO: the cast should be redundant; use deeply_immutable
-  ] !> immutable list[special_text];
+  ];
 
   FRAGMENT_SEPARATOR : "#";
 

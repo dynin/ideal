@@ -326,6 +326,10 @@ bootstrap_development bootdev devboot: $(IDEAL_TARGET)
 	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_development -output=$(BOOTSTRAPPED_DIR)
 
+bootstrap_all allboot: $(IDEAL_TARGET)
+	tar cfz tmp/bb-`date "+%H-%M-%S"`.tgz $(BOOTSTRAPPED_DIR) $(JSOURCE_DIR)
+	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_all -output=$(BOOTSTRAPPED_DIR)
+
 print_declarations: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=print_declarations
 

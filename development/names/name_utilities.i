@@ -44,7 +44,7 @@ namespace name_utilities {
         index += 1;
       }
 
-      segments.append(the_writer.elements());
+      segments.append(the_writer.elements);
     }
 
     if (segments.is_not_empty) {

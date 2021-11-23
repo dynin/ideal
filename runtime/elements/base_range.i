@@ -75,7 +75,7 @@ class base_range {
     return base_range.new(new_begin, new_end);
   }
 
-  implement immutable list[nonnegative] reverse() {
+  implement immutable list[nonnegative] reversed() immutable {
     -- TODO: implement reverse_range.
     result : base_list[nonnegative].new();
     for (var value : the_end - 1; value >= the_begin; value -= 1) {
@@ -84,7 +84,7 @@ class base_range {
       assert nonnegative_value is nonnegative;
       result.append(nonnegative_value);
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 
   implement boolean has(predicate[nonnegative] the_predicate) pure {

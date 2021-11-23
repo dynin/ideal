@@ -47,7 +47,7 @@ test_suite test_range {
     assert the_range[2] == 7;
 
     assert the_range.elements == the_range;
-    assert the_range.frozen_copy() == the_range;
+    assert the_range.frozen_copy == the_range;
 
     the_slice : the_range.skip(1);
     assert the_slice.size == 2;
@@ -62,7 +62,7 @@ test_suite test_range {
     assert the_slice2.begin == 6;
     assert the_slice2.end == 6;
 
-    reversed : the_range.reverse();
+    reversed : the_range.reversed();
     assert reversed.size == 3;
     assert !reversed.is_empty;
     assert reversed.is_not_empty;

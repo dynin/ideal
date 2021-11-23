@@ -44,7 +44,7 @@ public class empty<element_type> implements immutable_list<element_type>, immuta
     assert ideal.machine.elements.runtime_util.values_equal(begin, 0) && ideal.machine.elements.runtime_util.values_equal(end, 0);
     return this;
   }
-  public @Override immutable_list<element_type> reverse() {
+  public @Override immutable_list<element_type> reversed() {
     return this;
   }
   public @Override boolean has(final predicate<element_type> the_predicate) {

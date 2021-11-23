@@ -12,7 +12,7 @@ class sequence_pattern[readonly value element_type] {
   private mutable_var boolean validated;
 
   sequence_pattern(readonly list[pattern[element_type]] patterns_list) {
-    this.patterns_list = patterns_list.frozen_copy();
+    this.patterns_list = patterns_list.frozen_copy;
   }
 
   implement void validate() {

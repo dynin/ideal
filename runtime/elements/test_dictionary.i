@@ -37,7 +37,7 @@ test_suite test_dictionary {
     assert dict2.get("key2") == "bar";
     assert dict2.get("notfound") is null;
 
-    dict3 : dict2.frozen_copy();
+    dict3 : dict2.frozen_copy;
     dict2.put("key3", "baz");
     assert dict2.size == 3;
     assert dict3.size == 2;

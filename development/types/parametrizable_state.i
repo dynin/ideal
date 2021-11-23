@@ -71,7 +71,7 @@ class parametrizable_state {
 
   void set_variances(readonly list[variance_modifier] variances) {
     assert this.variances is null;
-    this.variances = variances.frozen_copy();
+    this.variances = variances.frozen_copy;
   }
 
   variance_modifier get_variance(nonnegative parameter_index) {

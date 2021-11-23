@@ -72,7 +72,7 @@ class quoted_token_element {
     }
     the origin : source.make_origin(begin, image_end);
     -- TODO: retire value from string_literal constructor.
-    the string_literal : string_literal.new(value.elements, result.frozen_copy(), the_quote_type);
+    the string_literal : string_literal.new(value.elements, result.frozen_copy, the_quote_type);
     return scan_state.new(base_token[string_literal].new(special_token_type.LITERAL,
         the_string_literal, the_origin), begin + 1, image_end);
   }

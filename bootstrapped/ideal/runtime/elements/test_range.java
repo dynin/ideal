@@ -46,7 +46,7 @@ public class test_range {
     assert the_slice2.is_empty();
     assert ideal.machine.elements.runtime_util.values_equal(the_slice2.begin(), 6);
     assert ideal.machine.elements.runtime_util.values_equal(the_slice2.end(), 6);
-    final immutable_list<Integer> reversed = the_range.reverse();
+    final immutable_list<Integer> reversed = the_range.reversed();
     assert ideal.machine.elements.runtime_util.values_equal(reversed.size(), 3);
     assert !reversed.is_empty();
     assert reversed.is_not_empty();

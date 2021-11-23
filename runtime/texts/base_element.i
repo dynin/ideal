@@ -17,7 +17,7 @@ class base_element {
       readonly dictionary[attribute_id, attribute_fragment] attributes,
       text_fragment or null children) {
     this.id = id;
-    this.the_attributes = attributes.frozen_copy();
+    this.the_attributes = attributes.frozen_copy;
     this.the_children = children;
   }
 

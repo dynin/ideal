@@ -12,7 +12,7 @@ class repeat_sequence_pattern[readonly value element_type] {
 
   repeat_sequence_pattern(readonly list[pattern[element_type]] patterns_list) {
     assert patterns_list.is_not_empty;
-    this.patterns_list = patterns_list.frozen_copy();
+    this.patterns_list = patterns_list.frozen_copy;
   }
 
   implement implicit boolean call(readonly list[element_type] the_list) {

@@ -168,7 +168,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
         result.append(base_dictionary_entry[key_type, value_type].new(entry));
       }
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 
   implement immutable dictionary[key_type, value_type] frozen_copy() {
@@ -213,7 +213,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
         result.add(entry.key);
       }
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 
   implement readonly collection[value_type] values() {
@@ -223,7 +223,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
         result.append(entry.value);
       }
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 
   private string debug_display() {

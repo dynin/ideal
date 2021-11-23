@@ -51,7 +51,7 @@ class empty[value element_type] {
     return this;
   }
 
-  implement immutable list[element_type] reverse() {
+  implement immutable list[element_type] reversed() immutable {
     return this;
   }
 

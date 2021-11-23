@@ -41,7 +41,7 @@ namespace text_utilities {
   immutable list[text_node] make_singleton(text_node element) {
     the_list : base_list[text_node].new();
     the_list.append(element);
-    return the_list.frozen_copy();
+    return the_list.frozen_copy;
   }
 
   immutable list[text_node] to_list(text_fragment or null fragment) {

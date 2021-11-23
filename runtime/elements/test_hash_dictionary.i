@@ -39,7 +39,7 @@ test_suite test_hash_dictionary {
     assert dict2.get("key2") == "bar";
     assert dict2.get("notfound") is null;
 
-    dict3 : dict2.frozen_copy();
+    dict3 : dict2.frozen_copy;
     dict2.put("key3", "baz");
     assert dict2.size == 3;
     assert dict3.size == 2;
@@ -59,7 +59,7 @@ test_suite test_hash_dictionary {
   test_case test_immutable_dictionary() {
     dict2 : hash_dictionary[string, string].new();
     dict2.put("key", "value");
-    dict2i : dict2.frozen_copy();
+    dict2i : dict2.frozen_copy;
 
     assert dict2i.size == 1;
     assert !dict2i.is_empty;
@@ -77,7 +77,7 @@ test_suite test_hash_dictionary {
         assert dict.get("k" ++ i) == "v" ++ i;
       }
 
-      dict_copy : dict.frozen_copy();
+      dict_copy : dict.frozen_copy;
       assert dict_copy.size == max + 1;
       for (var nonnegative i : 0; i <= max; i += 1) {
         assert dict_copy.get("k" ++ i) == "v" ++ i;

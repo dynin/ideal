@@ -14,7 +14,7 @@ class base_list_attribute_fragment {
   private immutable list[attribute_fragment] the_fragments;
 
   public base_list_attribute_fragment(readonly list[attribute_fragment] the_fragments) {
-    this.the_fragments = the_fragments.frozen_copy();
+    this.the_fragments = the_fragments.frozen_copy;
   }
 
   public overload static list_attribute_fragment make(attribute_fragment first,

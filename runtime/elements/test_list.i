@@ -46,7 +46,7 @@ test_suite test_list {
     assert strings_elements.size == 1;
     assert strings_elements[0] == "foo";
 
-    strings_copy : strings.frozen_copy();
+    strings_copy : strings.frozen_copy;
     assert strings_copy.size == 1;
     assert strings_copy[0] == "foo";
 
@@ -71,10 +71,10 @@ test_suite test_list {
     assert slice01.size == 1;
     assert slice01[0] == "foo";
 
-    strings.reverse();
-    assert strings.is_not_empty;
-    assert strings.size == 1;
-    assert strings[0] == "foo";
+    reversed : strings.reversed();
+    assert reversed.is_not_empty;
+    assert reversed.size == 1;
+    assert reversed[0] == "foo";
 
     -- TODO: test exception throwing on out-of-bounds
   }
@@ -103,6 +103,15 @@ test_suite test_list {
     assert strings.last == "bar";
     assert strings[0] == "foo";
     assert strings[1] == "bar";
+
+    reversed : strings.frozen_copy.reversed();
+    assert reversed.size == 2;
+    assert !reversed.is_empty;
+    assert reversed.is_not_empty;
+    assert reversed.first == "bar";
+    assert reversed.last == "foo";
+    assert reversed[0] == "bar";
+    assert reversed[1] == "foo";
 
     the range : strings.indexes;
     assert the_range.begin == 0;

@@ -262,6 +262,13 @@ public class analyzer_utilities {
     assert the_variable.get_category() == variable_category.INSTANCE;
     readonly_list<action> actions = the_context.lookup(
         the_variable.declared_in_type().get_flavored(dispatch_flavor), the_variable.short_name());
+    if (false) {
+      if (actions.size() != 1) {
+        for (int i = 0; i < actions.size(); ++i) {
+          System.out.println("H " + actions.get(i));
+        }
+      }
+    }
     assert actions.size() == 1;
     return (dispatch_action) actions.first();
   }

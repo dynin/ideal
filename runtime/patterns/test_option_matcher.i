@@ -19,7 +19,7 @@ test_suite test_option_matcher {
   }
 
   private string as_string(readonly list[character] char_list) {
-    return "*" ++ (char_list.frozen_copy() !> string);
+    return "*" ++ (char_list.frozen_copy !> string);
   }
 
   matcher[character, string] make_matcher(function[boolean, character] the_predicate) {

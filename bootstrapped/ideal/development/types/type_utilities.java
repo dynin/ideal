@@ -26,7 +26,7 @@ public class type_utilities {
       }
       the_type = the_type.get_parent();
     }
-    return names.frozen_copy().reverse();
+    return names.frozen_copy().reversed();
   }
   public static type make_union(final readonly_list<abstract_value> parameters) {
     return union_type.make_union(new type_parameters(parameters));

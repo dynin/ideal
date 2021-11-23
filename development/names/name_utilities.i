@@ -23,7 +23,7 @@ namespace name_utilities {
     segments.append_all(first.segments);
     segments.append_all(second.segments);
 
-    return simple_name.make_from_segments(segments.frozen_copy());
+    return simple_name.make_from_segments(segments.frozen_copy);
   }
 
   -- TODO: convert into a pattern matcher
@@ -48,7 +48,7 @@ namespace name_utilities {
     }
 
     if (segments.is_not_empty) {
-      return simple_name.make_from_segments(segments.frozen_copy());
+      return simple_name.make_from_segments(segments.frozen_copy);
     } else {
       utilities.panic("Can't parse name " ++ name);
     }

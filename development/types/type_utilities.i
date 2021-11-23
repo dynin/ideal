@@ -20,7 +20,7 @@ namespace type_utilities {
       the_type = the_type.get_parent;
     }
 
-    return names.frozen_copy().reverse();
+    return names.frozen_copy.reversed();
   }
 
   type make_union(readonly list[abstract_value] parameters) {

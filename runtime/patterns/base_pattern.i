@@ -28,6 +28,6 @@ abstract class base_pattern[readonly value element_type] {
       }
     }
 
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 }

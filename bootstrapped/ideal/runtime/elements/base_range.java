@@ -61,7 +61,7 @@ public class base_range implements range {
     assert new_begin <= new_end;
     return new base_range(new_begin, new_end);
   }
-  public @Override immutable_list<Integer> reverse() {
+  public @Override immutable_list<Integer> reversed() {
     final base_list<Integer> result = new base_list<Integer>();
     for (Integer value = this.the_end - 1; value >= this.the_begin; value -= 1) {
       final Integer nonnegative_value = value;

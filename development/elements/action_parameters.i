@@ -17,7 +17,7 @@ class action_parameters {
   immutable list[action] parameters;
 
   action_parameters(readonly list[action] parameters) {
-    this.parameters = parameters.frozen_copy();
+    this.parameters = parameters.frozen_copy;
   }
 
   var nonnegative arity => parameters.size;

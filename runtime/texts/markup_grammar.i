@@ -172,7 +172,7 @@ class markup_grammar {
   }
 
   string as_string_procedure(readonly list[character] the_character_list) pure {
-    return the_character_list.frozen_copy() !> string;
+    return the_character_list.frozen_copy !> string;
   }
 
   matcher[character, string] as_string(pattern[character] the_pattern) pure {

@@ -39,7 +39,7 @@ test_suite test_hash_set {
     assert set2.contains("value2");
     assert !set2.contains("notfound");
 
-    set3 : set2.frozen_copy();
+    set3 : set2.frozen_copy;
     set2.add("value3");
     assert set2.size == 3;
     assert set3.size == 2;
@@ -90,7 +90,7 @@ test_suite test_hash_set {
         assert set.contains("v" ++ i);
       }
 
-      set_copy : set.frozen_copy();
+      set_copy : set.frozen_copy;
       assert set_copy.size == max + 1;
       for (var nonnegative i : 0; i <= max; i += 1) {
         assert set_copy.contains("v" ++ i);

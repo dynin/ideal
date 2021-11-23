@@ -30,6 +30,6 @@ namespace annotation_library {
     modifier_set : hash_set[modifier_kind].new();
     modifier_set.add_all(the_modifiers);
     return base_annotation_set.new(the_access_modifier, missing.instance,
-          modifier_set.frozen_copy(), missing.instance, empty[origin].new());
+          modifier_set.frozen_copy, missing.instance, empty[origin].new());
   }
 }

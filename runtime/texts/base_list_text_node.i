@@ -14,7 +14,7 @@ class base_list_text_node {
   private immutable list[text_node] the_nodes;
 
   public base_list_text_node(readonly list[text_node] the_nodes) {
-    this.the_nodes = the_nodes.frozen_copy();
+    this.the_nodes = the_nodes.frozen_copy;
   }
 
   public overload static list_text_node make(text_node first, text_node second) {

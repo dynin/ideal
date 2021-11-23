@@ -53,7 +53,7 @@ public class singleton_collection<element_type> implements immutable_list<elemen
       return this;
     }
   }
-  public @Override immutable_list<element_type> reverse() {
+  public @Override immutable_list<element_type> reversed() {
     return this;
   }
   public @Override boolean has(final predicate<element_type> the_predicate) {

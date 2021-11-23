@@ -33,7 +33,7 @@ class base_flavor_profile {
         filtered_flavors.append(the_flavor);
       }
     }
-    return filtered_flavors.frozen_copy();
+    return filtered_flavors.frozen_copy;
   }
 
   override string to_string => name;

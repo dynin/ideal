@@ -54,7 +54,7 @@ class singleton_collection[readonly equality_comparable element_type] {
     }
   }
 
-  implement immutable list[element_type] reverse => this;
+  implement immutable list[element_type] reversed => this;
 
   implement boolean has(predicate[element_type] the_predicate) pure {
     return the_predicate(element);

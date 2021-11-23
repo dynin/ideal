@@ -57,6 +57,6 @@ class string_literal {
     if (start_index < input.size) {
       result.append(string_fragment.new(input.skip(start_index)));
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 }

@@ -318,11 +318,11 @@ package elements {
     -- TODO: readonly reverse() should return readonly view.
     not_yet_implemented readonly list[element] reverse() pure;
     --- Returns an immutable list with the order of the elements reversed.
-    immutable list[element] reverse() immutable pure;
+    immutable list[element] reversed() immutable pure;
 
     --- Returns an immutable copy of this list.
     -- TODO: this should be in composite_value
-    immutable list[element] frozen_copy() pure;
+    immutable list[element] frozen_copy;
 
     --- Check whether the list has at least one element that satisfies the predicate.
     -- TODO: implement this for all collections.
@@ -364,7 +364,7 @@ package elements {
 
     -- TODO: this should be in data
     not_yet_implemented set[element] copy() pure;
-    immutable set[element] frozen_copy() pure;
+    immutable set[element] frozen_copy;
   }
 
   --- A finite set of elements with an explicit ordering.
@@ -380,7 +380,7 @@ package elements {
     void append_all(the readonly list[element]);
     void prepend(the element);
 
-    immutable ordered_set[element] frozen_copy() pure;
+    immutable ordered_set[element] frozen_copy;
 
     -- TODO: Declare remaining methods.
   }
@@ -442,7 +442,7 @@ package elements {
 
     readonly collection[value_type] values() pure;
 
-    immutable dictionary[key_type, value_type] frozen_copy() pure;
+    immutable dictionary[key_type, value_type] frozen_copy;
   }
 
   --- Values of this type can be compared for equality using

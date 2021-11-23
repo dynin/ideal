@@ -15,7 +15,7 @@ class type_parameters {
   immutable list[abstract_value] the_list;
 
   type_parameters(readonly list[abstract_value] the_list) {
-    this.the_list = the_list.frozen_copy();
+    this.the_list = the_list.frozen_copy;
   }
 
   override string to_string() {

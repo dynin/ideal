@@ -71,7 +71,7 @@ class simple_name {
     for (segment : segments_list) {
       segments.append(base_string.from_list(segment));
     }
-    return make_from_segments(segments.frozen_copy());
+    return make_from_segments(segments.frozen_copy);
   }
 
   public overload static simple_name make(string name) {

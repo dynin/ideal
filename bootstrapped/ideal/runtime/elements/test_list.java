@@ -52,10 +52,10 @@ public class test_list {
     assert slice01.is_not_empty();
     assert ideal.machine.elements.runtime_util.values_equal(slice01.size(), 1);
     assert ideal.machine.elements.runtime_util.values_equal(slice01.get(0), new base_string("foo"));
-    strings.reverse();
-    assert strings.is_not_empty();
-    assert ideal.machine.elements.runtime_util.values_equal(strings.size(), 1);
-    assert ideal.machine.elements.runtime_util.values_equal(strings.get(0), new base_string("foo"));
+    final immutable_list<string> reversed = strings.reversed();
+    assert reversed.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(reversed.size(), 1);
+    assert ideal.machine.elements.runtime_util.values_equal(reversed.get(0), new base_string("foo"));
   }
   public void test_simple_list() {
     final base_list<string> strings = new base_list<string>();
@@ -76,6 +76,14 @@ public class test_list {
     assert ideal.machine.elements.runtime_util.values_equal(strings.last(), new base_string("bar"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(0).get(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(strings.at(1).get(), new base_string("bar"));
+    final immutable_list<string> reversed = strings.frozen_copy().reversed();
+    assert ideal.machine.elements.runtime_util.values_equal(reversed.size(), 2);
+    assert !reversed.is_empty();
+    assert reversed.is_not_empty();
+    assert ideal.machine.elements.runtime_util.values_equal(reversed.first(), new base_string("bar"));
+    assert ideal.machine.elements.runtime_util.values_equal(reversed.last(), new base_string("foo"));
+    assert ideal.machine.elements.runtime_util.values_equal(reversed.get(0), new base_string("bar"));
+    assert ideal.machine.elements.runtime_util.values_equal(reversed.get(1), new base_string("foo"));
     final range the_range = strings.indexes();
     assert ideal.machine.elements.runtime_util.values_equal(the_range.begin(), 0);
     assert ideal.machine.elements.runtime_util.values_equal(the_range.end(), 2);

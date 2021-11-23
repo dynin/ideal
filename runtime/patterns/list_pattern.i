@@ -11,7 +11,7 @@ class list_pattern[readonly equality_comparable element_type] {
   immutable list[element_type] element_list;
 
   list_pattern(readonly list[element_type] element_list) {
-    this.element_list = element_list.frozen_copy();
+    this.element_list = element_list.frozen_copy;
   }
 
   implement implicit boolean call(readonly list[element_type] the_list) {

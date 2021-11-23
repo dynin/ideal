@@ -70,7 +70,7 @@ class base_resource_catalog {
       components : path_separator.split(name.skip(scheme_range.end));
       -- TODO: cast is redundant
       return base_resource_identifier.new(the_resource_store, candidate_scheme,
-          components.frozen_copy() !> immutable list[string]);
+          components.frozen_copy !> immutable list[string]);
     }
 
     -- TODO: we need to support other path separators for other platforms, such as \ on Windows.
@@ -125,7 +125,7 @@ class base_resource_catalog {
       result.append(resource_util.CURRENT_CATALOG);
     }
 
-    return base_resource_identifier.new(the_resource_store, the_scheme, result.frozen_copy());
+    return base_resource_identifier.new(the_resource_store, the_scheme, result.frozen_copy);
   }
 
   overload implement resource_identifier resolve(string name, extension or null the_extension) {

@@ -64,7 +64,7 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
     for (edge : edge_set.elements) {
       adjacent_vertices.add(edge.to);
     }
-    return adjacent_vertices.frozen_copy();
+    return adjacent_vertices.frozen_copy;
   }
 
   override boolean introduces_cycle(vertice_type from, vertice_type to) pure {

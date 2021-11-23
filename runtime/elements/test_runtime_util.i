@@ -62,7 +62,7 @@ test_suite test_runtime_util {
     the_list : base_list[readonly data].new();
     the_list.append(first);
     the_list.append(second);
-    return the_list.frozen_copy();
+    return the_list.frozen_copy;
   }
 
   test_case test_list_equals() {

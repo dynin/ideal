@@ -23,19 +23,19 @@ class base_immutable_list[value element_type] {
     return this;
   }
 
-  implement immutable list[element_type] reverse() {
+  implement immutable list[element_type] reversed() immutable {
     if (size <= 1) {
       return this;
     }
 
-    reversed : list_state[element_type].new(size);
+    reversed_state : list_state[element_type].new(size);
     for (var nonnegative i : 0; i < size; i += 1) {
       new_index : size - 1 - i;
       assert new_index is nonnegative;
-      reversed.the_elements[new_index] = state.the_elements[i];
+      reversed_state.the_elements[new_index] = state.the_elements[i];
     }
-    reversed.size = size;
+    reversed_state.size = size;
 
-    return base_immutable_list[element_type].new(reversed);
+    return base_immutable_list[element_type].new(reversed_state);
   }
 }

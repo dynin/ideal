@@ -19,7 +19,7 @@ class type_flavor_impl {
       readonly list[type_flavor] declared_superflavors) {
     this.the_name = simple_name.make(the_name);
     this.profile = profile;
-    this.superflavors = declared_superflavors.frozen_copy();
+    this.superflavors = declared_superflavors.frozen_copy;
   }
 
   override simple_name name => the_name;

@@ -12,7 +12,7 @@ test_suite test_procedure_matcher {
 
   private string as_string(readonly list[character] char_list) {
     -- TODO: redundant cast.
-    return char_list.frozen_copy() !> string;
+    return char_list.frozen_copy !> string;
   }
 
   matcher[character, string] make_matcher() {

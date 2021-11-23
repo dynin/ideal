@@ -159,7 +159,7 @@ class base_string {
     return base_string.new(state.substring(begin, end));
   }
 
-  implement string reverse() {
+  implement string reversed() immutable {
     -- There is no String.reverse() in Java.  Yeah.
     return base_string.new(StringBuilder.new(state).reverse().toString());
   }

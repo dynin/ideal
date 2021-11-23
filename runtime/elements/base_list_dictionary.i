@@ -98,7 +98,7 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
     for (var entry : entries; entry is_not null; entry = entry.next) {
       result.append(base_dictionary_entry[key_type, value_type].new(entry));
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 
   implement value_type or null get(key_type key) {
@@ -129,7 +129,7 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
     for (var entry : entries; entry is_not null; entry = entry.next) {
       result.add(entry.key);
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 
   implement readonly collection[value_type] values() {
@@ -137,6 +137,6 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
     for (var entry : entries; entry is_not null; entry = entry.next) {
       result.append(entry.value);
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 }

@@ -125,7 +125,7 @@ public class base_string extends debuggable implements string {
   public @Override string slice(final Integer begin, final Integer end) {
     return new base_string(this.state.substring(begin, end));
   }
-  public @Override string reverse() {
+  public @Override string reversed() {
     return new base_string(new StringBuilder(this.state).reverse().toString());
   }
   public @Override boolean has(final predicate<Character> the_predicate) {

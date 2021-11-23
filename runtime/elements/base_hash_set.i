@@ -150,7 +150,7 @@ public abstract class base_hash_set[readonly value element_type] {
         result.append(entry.the_value);
       }
     }
-    return result.frozen_copy();
+    return result.frozen_copy;
   }
 
   implement immutable set[element_type] frozen_copy() {

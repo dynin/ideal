@@ -149,7 +149,7 @@ class base_readonly_list[value element_type] {
     return state.the_elements[index];
   }
 
-  implement immutable list[element_type] elements => frozen_copy();
+  implement immutable list[element_type] elements => frozen_copy;
 
   implement immutable list[element_type] frozen_copy() {
     return base_immutable_list[element_type].new(state);

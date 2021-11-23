@@ -38,5 +38,5 @@ package scanners {
   class quoted_token_element;
   class scanner_engine;
   class base_scanner_config;
---  namespace documenter_filter;
+  namespace documenter_filter;
 }

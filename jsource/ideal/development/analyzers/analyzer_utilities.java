@@ -150,12 +150,10 @@ public class analyzer_utilities {
     if (is_overloaded(the_procedure)) {
       if (the_overloaded_procedure != null) {
         the_overloaded_procedure.add(the_executor);
-      } else {
+      } else if (!is_explicit) {
         the_overloaded_procedure = new overloaded_procedure(the_executor);
         action the_action = the_overloaded_procedure.to_action(the_origin);
-        if (!is_explicit) {
-          the_context.add(target_type, the_procedure.short_name(), the_action);
-        }
+        the_context.add(target_type, the_procedure.short_name(), the_action);
       }
       return executor_action;
     }

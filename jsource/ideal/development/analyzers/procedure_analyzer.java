@@ -291,6 +291,18 @@ public class procedure_analyzer extends declaration_analyzer
       }
     }
 
+    if (false) {
+      if (result.is_empty() && is_pure()) {
+        if (!annotations().has(general_modifier.var_modifier) &&
+            !annotations().has(general_modifier.explicit_modifier)) {
+          // TODO: change var modifier to implicit
+          // TODO: generate a warning.
+          new base_notification(
+              new base_string("Pure 0-argument procedure without 'var' modifier"), this).report();
+        }
+      }
+    }
+
     parameter_variables = result;
     return arg_error;
   }

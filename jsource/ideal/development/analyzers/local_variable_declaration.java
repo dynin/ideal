@@ -95,6 +95,11 @@ public class local_variable_declaration extends single_pass_analyzer
   }
 
   @Override
+  public type_flavor get_flavor() {
+    return flavor.nameonly_flavor;
+  }
+
+  @Override
   public type value_type() {
     return var_type;
   }

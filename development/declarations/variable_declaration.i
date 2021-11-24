@@ -13,6 +13,7 @@ interface variable_declaration {
   override action_name short_name;
   override principal_type declared_in_type;
   --- Get (flavored) variable type.
+  type_flavor get_flavor;
   override type value_type;
   override type reference_type;
   boolean declared_as_reference;

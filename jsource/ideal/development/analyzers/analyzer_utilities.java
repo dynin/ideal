@@ -255,13 +255,12 @@ public class analyzer_utilities {
     return reference_flavor == immutable_flavor || reference_flavor == deeply_immutable_flavor;
   }
 
-  private static final type_flavor dispatch_flavor = readonly_flavor;
-
   private static dispatch_action get_readonly_action(variable_declaration the_variable,
       action_context the_context) {
     assert the_variable.get_category() == variable_category.INSTANCE;
     readonly_list<action> actions = the_context.lookup(
-        the_variable.declared_in_type().get_flavored(dispatch_flavor), the_variable.short_name());
+        the_variable.declared_in_type().get_flavored(the_variable.get_flavor()),
+        the_variable.short_name());
     if (false) {
       if (actions.size() != 1) {
         for (int i = 0; i < actions.size(); ++i) {
@@ -281,9 +280,9 @@ public class analyzer_utilities {
     boolean is_mutable_var = the_variable.annotations().has(general_modifier.mutable_var_modifier);
 
     // All instance variables can be read
-    type flavored_from = parent_type.get_flavored(dispatch_flavor);
-    instance_variable primary_action = new instance_variable(the_variable, is_mutable_var ?
-        mutable_flavor : dispatch_flavor);
+    type flavored_from = parent_type.get_flavored(readonly_flavor);
+    instance_variable primary_action = new instance_variable(the_variable,
+        the_variable.get_flavor());
     dispatch_action the_dispatch = new dispatch_action(primary_action, flavored_from);
     the_context.add(flavored_from, the_name, the_dispatch);
 

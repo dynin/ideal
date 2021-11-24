@@ -36,6 +36,7 @@ public class variable_analyzer extends declaration_analyzer
   private final @Nullable readonly_list<annotation_construct> post_annotations;
   private final @Nullable analyzable init;
   private @Nullable variable_category category;
+  private @Nullable type_flavor the_flavor;
   private @Nullable type var_value_type;
   private @Nullable type var_reference_type;
   private variable_action the_variable_action;
@@ -88,6 +89,12 @@ public class variable_analyzer extends declaration_analyzer
     }
     assert category != null;
     return category;
+  }
+
+  @Override
+  public type_flavor get_flavor() {
+    assert the_flavor != null;
+    return the_flavor;
   }
 
   /** Get (flavored) variable type. */
@@ -314,19 +321,28 @@ public class variable_analyzer extends declaration_analyzer
     if (!declared_as_reference) {
       // TODO: detect and use deeply_immutable.
       reference_flavor = is_immutable() ? flavor.immutable_flavor : flavor.mutable_flavor;
+    } else {
+      if (false) {
+        new base_notification(new base_string("flavor"), this, null,
+                notification_level.INFORMATIONAL).report();
+      }
     }
+
     var_reference_type = common_types.get_reference(reference_flavor, var_value_type);
 
     if (get_category() == variable_category.INSTANCE) {
+      boolean is_mutable_var = annotations().has(general_modifier.mutable_var_modifier);
+      the_flavor = is_mutable_var ? mutable_flavor : readonly_flavor;
       the_variable_action = analyzer_utilities.add_instance_variable(this, get_context());
     } else {
+      the_flavor = nameonly_flavor;
       if (get_category() == variable_category.LOCAL) {
         the_variable_action = new local_variable(this, reference_flavor);
       } else {
         assert get_category() == variable_category.STATIC;
         the_variable_action = new static_variable(this, reference_flavor);
       }
-      add_var_action(nameonly_flavor, the_variable_action);
+      get_context().add(declared_in_type(), short_name(), the_variable_action);
     }
 
     return ok_signal.instance;
@@ -340,11 +356,6 @@ public class variable_analyzer extends declaration_analyzer
   private error_signal report_error(error_signal signal) {
     add_error(parent(), short_name(), signal);
     return signal;
-  }
-
-  private void add_var_action(type_flavor flavor, variable_action var_action) {
-    type flavored_from = declared_in_type().get_flavored(flavor);
-    get_context().add(flavored_from, short_name(), var_action);
   }
 
   public @Nullable action get_init_action() {

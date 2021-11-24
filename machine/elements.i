@@ -15,7 +15,7 @@ namespace elements {
     -- TODO: use constructor.
     array(integer length);
 
-    nonnegative size readonly;
+    nonnegative size;
 
     implicit element get(nonnegative index) pure;
     implicit mutable reference[element] at(nonnegative index) mutable pure;

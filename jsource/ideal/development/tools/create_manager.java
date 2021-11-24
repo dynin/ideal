@@ -50,7 +50,7 @@ public class create_manager implements target_manager, type_bootstrapper {
   public final analysis_context bootstrap_context;
   public final origin root_origin;
   private final common_scanner scanner;
-  private output_counter<notification> notifications;
+  private notification_output notifications;
   private @Nullable resource_catalog output_catalog;
 
   public create_manager(resource_catalog top_catalog) {
@@ -93,13 +93,13 @@ public class create_manager implements target_manager, type_bootstrapper {
   }
 
   public void set_notification_handler(output<notification> handler) {
-    notifications = new output_counter<notification>(handler);
+    notifications = new notification_output(handler);
     notification_context.set(notifications);
   }
 
   @Override
   public boolean has_errors() {
-    return notifications.get_count() > 0;
+    return notifications.has_errors();
   }
 
   @Override

@@ -19,12 +19,14 @@ package notifications {
   implicit import ideal.development.types;
   import ideal.development.jumps.panic_value;
 
+  enum notification_level;
   class base_notification;
   interface signal;
   class ok_signal;
   class error_signal;
   class error_action;
   namespace messages;
+  class notification_output;
   namespace notification_context;
   namespace notification_utilities;
 }

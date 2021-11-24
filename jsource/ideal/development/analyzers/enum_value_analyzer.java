@@ -65,6 +65,11 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   }
 
   @Override
+  public type_flavor get_flavor() {
+    return flavor.nameonly_flavor;
+  }
+
+  @Override
   public type value_type() {
     return declared_in_type().get_flavored(flavor.deeply_immutable_flavor);
   }

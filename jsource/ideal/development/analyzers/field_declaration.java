@@ -89,6 +89,11 @@ public class field_declaration extends single_pass_analyzer
   }
 
   @Override
+  public type_flavor get_flavor() {
+    return declared_in_flavor;
+  }
+
+  @Override
   public type value_type() {
     return var_type;
   }

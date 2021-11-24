@@ -9,20 +9,28 @@ class base_notification {
 
   private string the_message;
   private origin the_origin;
+  public the notification_level;
   private readonly list[notification] or null the_secondary;
 
-  overload base_notification(string the_message, origin the_origin,
-      readonly list[notification] or null the_secondary) {
-    assert the_message is_not null;
-    assert the_origin is_not null;
+  overload base_notification(string the_message, the origin,
+      readonly list[notification] or null the_secondary, the notification_level) {
+    verify the_message is_not null;
+    verify the_origin is_not null;
+    verify the_notification_level is_not null;
     this.the_message = the_message;
     this.the_origin = the_origin;
     this.the_secondary = (the_secondary is_not null && the_secondary.is_not_empty) ?
         the_secondary : missing.instance;
+    this.the_notification_level = the_notification_level;
+  }
+
+  overload base_notification(string the_message, origin the_origin,
+      readonly list[notification] or null the_secondary) {
+    this(the_message, the_origin, the_secondary, notification_level.ERROR);
   }
 
   overload base_notification(string the_message, origin the_origin) {
-    this(the_message, the_origin, missing.instance);
+    this(the_message, the_origin, missing.instance, notification_level.ERROR);
   }
 
   override string message => the_message;
@@ -31,8 +39,7 @@ class base_notification {
 
   override readonly list[notification] or null secondary => the_secondary;
 
-  -- TODO: support warnings, etc.
-  override log_level level => log_level.ERROR;
+  override log_level level => the_notification_level.the_log_level;
 
   override string to_string => the_message;
 

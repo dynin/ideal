@@ -20,16 +20,22 @@ import javax.annotation.Nullable;
 public class base_notification implements notification {
   private final string the_message;
   private final origin the_origin;
+  public final notification_level the_notification_level;
   private final @Nullable readonly_list<notification> the_secondary;
-  public base_notification(final string the_message, final origin the_origin, final @Nullable readonly_list<notification> the_secondary) {
+  public base_notification(final string the_message, final origin the_origin, final @Nullable readonly_list<notification> the_secondary, final notification_level the_notification_level) {
     assert the_message != null;
     assert the_origin != null;
+    assert the_notification_level != null;
     this.the_message = the_message;
     this.the_origin = the_origin;
     this.the_secondary = (the_secondary != null && the_secondary.is_not_empty()) ? the_secondary : null;
+    this.the_notification_level = the_notification_level;
+  }
+  public base_notification(final string the_message, final origin the_origin, final @Nullable readonly_list<notification> the_secondary) {
+    this(the_message, the_origin, the_secondary, notification_level.ERROR);
   }
   public base_notification(final string the_message, final origin the_origin) {
-    this(the_message, the_origin, null);
+    this(the_message, the_origin, null, notification_level.ERROR);
   }
   public @Override string message() {
     return this.the_message;
@@ -41,7 +47,7 @@ public class base_notification implements notification {
     return this.the_secondary;
   }
   public @Override log_level level() {
-    return log_level.ERROR;
+    return this.the_notification_level.the_log_level;
   }
   public @Override string to_string() {
     return this.the_message;

@@ -413,7 +413,7 @@ package elements {
   interface stringable {
     subtypes value;
 
-    string to_string readonly;
+    string to_string;
   }
 
   --- A finite associative collection.

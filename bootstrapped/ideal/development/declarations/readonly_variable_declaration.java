@@ -20,6 +20,7 @@ public interface readonly_variable_declaration extends readonly_named_declaratio
   annotation_set annotations();
   action_name short_name();
   principal_type declared_in_type();
+  type_flavor get_flavor();
   type value_type();
   type reference_type();
   boolean declared_as_reference();

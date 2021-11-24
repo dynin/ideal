@@ -111,6 +111,11 @@ public class specialized_variable extends debuggable implements variable_declara
   }
 
   @Override
+  public type_flavor get_flavor() {
+    return main.get_flavor();
+  }
+
+  @Override
   public type value_type() {
     return value_type;
   }

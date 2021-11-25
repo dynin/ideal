@@ -277,7 +277,6 @@ public class analyzer_utilities {
     assert the_variable.get_category() == variable_category.INSTANCE;
     principal_type parent_type = the_variable.declared_in_type();
     action_name the_name = the_variable.short_name();
-    boolean is_mutable_var = the_variable.annotations().has(general_modifier.mutable_var_modifier);
 
     // All instance variables can be read
     type flavored_from = parent_type.get_flavored(readonly_flavor);

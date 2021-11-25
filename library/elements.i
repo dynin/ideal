@@ -425,8 +425,8 @@ package elements {
       subtypes value;
 
       -- TODO: replace with references
-      key_type key immutable;
-      value_type value readonly;
+      key_type key;
+      value_type value;
     }
 
     -- TODO: value_type or null

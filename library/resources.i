@@ -15,7 +15,7 @@ package resources {
     -- TODO: properties type; name differently
     -- dictionary[identifier, deeply_immutable data] metadata();
 
-    content_type content mutable;
+    reference[content_type] content;
   }
 
   interface resource_identifier {
@@ -51,6 +51,6 @@ package resources {
   interface extension {
     extends deeply_immutable data, stringable;
 
-    string dot_name deeply_immutable;
+    string dot_name;
   }
 }

@@ -8,7 +8,8 @@
 package operators {
   implicit import ideal.library.elements;
 
-  any value assign(any value lvalue mutable, any value rvalue);
+  -- TODO: use writable reference.
+  any value assign(any entity lvalue, any value rvalue);
 
   -- NOTE: fix types.
   any value soft_cast(any value the_value, entity the_type) pure;
@@ -46,12 +47,12 @@ package operators {
   string concatenate(readonly stringable first,
       readonly stringable second) pure;
 
-  overload integer add_assign(integer lvalue mutable, integer rvalue);
-  overload nonnegative add_assign(nonnegative lvalue mutable, nonnegative rvalue);
+  overload integer add_assign(reference[integer] lvalue, integer rvalue);
+  overload nonnegative add_assign(reference[nonnegative] lvalue, nonnegative rvalue);
 
-  integer subtract_assign(integer lvalue mutable, integer rvalue);
-  integer multiply_assign(integer lvalue mutable, integer rvalue);
-  string concatenate_assign(string lvalue mutable, string tail);
+  integer subtract_assign(reference[integer] lvalue, integer rvalue);
+  integer multiply_assign(reference[integer] lvalue, integer rvalue);
+  string concatenate_assign(reference[string] lvalue, string tail);
 
   -- TODO: range operator: a..b
 }

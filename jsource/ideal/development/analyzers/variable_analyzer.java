@@ -36,6 +36,7 @@ public class variable_analyzer extends declaration_analyzer
   private final @Nullable readonly_list<annotation_construct> post_annotations;
   private final @Nullable analyzable init;
   private @Nullable variable_category category;
+  private @Nullable type_flavor reference_flavor;
   private @Nullable type_flavor the_flavor;
   private @Nullable type var_value_type;
   private @Nullable type var_reference_type;
@@ -248,12 +249,14 @@ public class variable_analyzer extends declaration_analyzer
   }
 
   private signal process_declaration() {
+    origin the_origin = this;
     // TODO: handle init
     if (variable_type != null) {
       add_dependence(variable_type, null, declaration_pass.TYPES_AND_PROMOTIONS);
 
       if (has_analysis_errors(variable_type)) {
-        return report_error(new error_signal(messages.error_in_var_type, variable_type, this));
+        return report_error(new error_signal(messages.error_in_var_type, variable_type,
+            the_origin));
       }
 
       action expected_type = action_not_error(variable_type);
@@ -266,7 +269,7 @@ public class variable_analyzer extends declaration_analyzer
     } else {
       if (init != null) {
         if (has_analysis_errors(init)) {
-          return report_error(new error_signal(messages.error_in_initializer, init, this));
+          return report_error(new error_signal(messages.error_in_initializer, init, the_origin));
         }
         set_init();
         var_value_type = init_action.result().type_bound();
@@ -279,7 +282,7 @@ public class variable_analyzer extends declaration_analyzer
       readonly_list<declaration> overriden = analyzer_utilities.do_find_overriden(this);
       if (overriden.is_empty()) {
         return new error_signal(new base_string("Can't find overriden for '" +
-            short_name() + "' in " + declared_in_type()), this);
+            short_name() + "' in " + declared_in_type()), the_origin);
       }
     } else {
       // TODO: check that override/implement modifiers are not present on
@@ -292,40 +295,41 @@ public class variable_analyzer extends declaration_analyzer
     // TODO: add a feature/flag to toggle it.
     if (true) {
       readonly_list<action> shadowed_actions = get_context().resolve(
-          declared_in_type().get_flavored(flavor.mutable_flavor), short_name(), this);
+          declared_in_type().get_flavored(flavor.mutable_flavor), short_name(), the_origin);
       if (shadowed_actions.size() > 0) {
         for (int i = 0; i < shadowed_actions.size(); ++i) {
           action shadowed = shadowed_actions.get(i);
-          if (! (shadowed instanceof type_action) && ! (shadowed instanceof error_signal)
-              && !analyzer_utilities.has_overriden(this)
-              && !is_private(shadowed)) {
+          if (!(shadowed instanceof type_action) &&
+              !(shadowed instanceof error_signal) &&
+              !analyzer_utilities.has_overriden(this) &&
+              !is_private(shadowed)) {
             notification original = new base_notification(messages.shadowed_declaration,
                 shadowed.get_declaration());
-            new base_notification(new base_string("Variable shadows another declaration"), this,
-                new base_list<notification>(original)).report();
+            new base_notification(new base_string("Variable shadows another declaration"),
+                the_origin, new base_list<notification>(original)).report();
           }
         }
       }
     }
 
     assert var_value_type != common_types.error_type();
-    if (common_types.is_reference_type(var_value_type)) {
-      return report_error(new error_signal(
-          new base_string("Reference type not allowed in the variable declaration"),
-          variable_type != null ? variable_type : this));
-    }
-
-    var_value_type = analyzer_utilities.handle_default_flavor(var_value_type);
-    @Nullable type_flavor reference_flavor = process_flavor(post_annotations);
-    declared_as_reference = reference_flavor != null;
-    if (!declared_as_reference) {
+    declared_as_reference = common_types.is_reference_type(var_value_type);
+    if (declared_as_reference) {
+      reference_flavor = var_value_type.get_flavor();
+      if (reference_flavor == flavor.nameonly_flavor) {
+        reference_flavor = flavor.mutable_flavor;
+      }
+      var_value_type = common_types.get_reference_parameter(var_value_type);
+    } else {
+      var_value_type = analyzer_utilities.handle_default_flavor(var_value_type);
       // TODO: detect and use deeply_immutable.
       reference_flavor = is_immutable() ? flavor.immutable_flavor : flavor.mutable_flavor;
-    } else {
-      if (false) {
-        new base_notification(new base_string("flavor"), this, null,
-                notification_level.INFORMATIONAL).report();
-      }
+    }
+
+    // TODO: set the_flavor from post_annotations.
+    if (process_flavor(post_annotations) != null) {
+      new base_notification(new base_string("flavor"), the_origin, null,
+              notification_level.INFORMATIONAL).report();
     }
 
     var_reference_type = common_types.get_reference(reference_flavor, var_value_type);
@@ -402,9 +406,12 @@ public class variable_analyzer extends declaration_analyzer
 
     type new_value_type = new_value_action.result().type_bound();
     assert new_value_type != common_types.error_type();
+    if (common_types.is_reference_type(new_value_type)) {
+      new_value_type = common_types.get_reference_parameter(new_value_type);
+    }
     new_value_type = analyzer_utilities.handle_default_flavor(new_value_type);
 
-    type_flavor reference_flavor = var_reference_type.get_flavor();
+    assert reference_flavor != null;
     type new_reference_type = common_types.get_reference(reference_flavor, new_value_type);
 
     specialized_variable new_variable = new specialized_variable(this, new_parent, new_value_type,

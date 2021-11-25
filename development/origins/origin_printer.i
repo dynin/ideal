@@ -30,7 +30,6 @@ namespace origin_printer {
         }
       } else if (the_origin is source_content) {
         -- TODO: is there a better way to handle this?
-        -- TODO: redundant cast.
         return "";
       } else if (the_origin is null) {
         utilities.panic("Can't display origin");

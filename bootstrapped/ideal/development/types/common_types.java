@@ -185,6 +185,7 @@ public class common_types {
     return common_types.missing_type().get_flavored(flavor.deeply_immutable_flavor);
   }
   public static type get_reference(final type_flavor flavor, final type value_type) {
+    assert !common_types.is_reference_type(value_type);
     return common_types.REFERENCE_TYPE.bind_parameters(new type_parameters(new base_immutable_list<abstract_value>(new ideal.machine.elements.array<abstract_value>(new abstract_value[]{ (abstract_value) value_type })))).get_flavored(flavor);
   }
   public static boolean is_reference_type(final type the_type) {

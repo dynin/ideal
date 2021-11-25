@@ -58,8 +58,9 @@ class base_notification {
     -- TODO: do not hardcode style.
     MESSAGE_CLASS : "message";
     -- TODO: casts are redundant.
-    primary : text_utilities.join(origin_printer.show_origin(the_origin),
-        base_element.new(text_library.DIV, text_library.CLASS, MESSAGE_CLASS, full_message));
+    primary : text_utilities.join(
+        base_element.new(text_library.DIV, text_library.CLASS, MESSAGE_CLASS, full_message),
+        origin_printer.show_origin(the_origin));
 
     if (the_secondary is_not null) {
       var text_fragment secondaries_text : text_utilities.EMPTY_FRAGMENT;

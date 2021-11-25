@@ -12,8 +12,9 @@ interface variable_declaration {
   annotation_set annotations;
   override action_name short_name;
   override principal_type declared_in_type;
-  --- Get (flavored) variable type.
+  --- Which flavor of |declared_in_type| to use.
   type_flavor get_flavor;
+  --- Get (flavored) variable type.
   override type value_type;
   override type reference_type;
   boolean declared_as_reference;

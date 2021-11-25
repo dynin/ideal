@@ -167,6 +167,8 @@ namespace common_types {
   var type immutable_missing_type => missing_type.get_flavored(flavor.deeply_immutable_flavor);
 
   type get_reference(type_flavor flavor, type value_type) {
+    -- TODO: signal error without panicing
+    assert !is_reference_type(value_type);
     -- TODO: cast is redundant, needed by to_java_transformer.
     return REFERENCE_TYPE.bind_parameters(type_parameters.new([ value_type .> abstract_value, ])).
         get_flavored(flavor);

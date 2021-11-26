@@ -1454,33 +1454,33 @@
 ============ TARGET_DECL
 ============ TYPE_DECL
 ============ IMPORT_AND_TYPE_VAR_DECL
+testdata/sequence.i:7: Lookup failed: no java in <root>
 import java.util.List;
        ^^^^
-testdata/sequence.i:7: Lookup failed: no java in <root>
+testdata/sequence.i:8: Lookup failed: no java in <root>
 import java.util.ArrayList;
        ^^^^
-testdata/sequence.i:8: Lookup failed: no java in <root>
+testdata/sequence.i:11: Lookup failed: no concepts in ideal
 implicit import ideal.concepts;
                 -----^--------
-testdata/sequence.i:11: Lookup failed: no concepts in ideal
+testdata/sequence.i:12: Lookup failed: no constructs in ideal
 implicit import ideal.constructs;
                 -----^----------
-testdata/sequence.i:12: Lookup failed: no constructs in ideal
+testdata/sequence.i:13: Lookup failed: no concepts in ideal
 import ideal.concepts.type;
        -----^--------
-testdata/sequence.i:13: Lookup failed: no concepts in ideal
+testdata/sequence.i:14: Lookup failed: no scanners in ideal
 import ideal.scanners.scanner_element;
        -----^--------
-testdata/sequence.i:14: Lookup failed: no scanners in ideal
+testdata/sequence.i:15: Lookup failed: no semantics in ideal
 import ideal.semantics.lookup_row;
        -----^---------
-testdata/sequence.i:15: Lookup failed: no semantics in ideal
+testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
 public class sequence[readonly_data element] {
                       ^^^^^^^^^^^^^
-testdata/sequence.i:17: Lookup failed: no readonly_data in sequence
+testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
   implements readonly_data;
              ^^^^^^^^^^^^^
-testdata/sequence.i:18: Lookup failed: no readonly_data in sequence
 ============ SUPERTYPE_DECL
 ============ PREPARE_METHOD_AND_VARIABLE
 ============ METHOD_AND_VARIABLE_DECL

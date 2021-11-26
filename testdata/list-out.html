@@ -360,7 +360,7 @@
                 This method returns a snapshot of the collection state, so subsequent mutations
                 of the collection do not cause changes in the returned list.
               </div>
-             implement immutable <span id='list3'>list</span>[<span id='element-type19'>element type</span>] <span class='procedure-declaration-name'><span id='elements2'>elements</span></span>() =&gt; <span id='frozen-copy'>frozen copy</span>()
+             implement immutable <span id='list3'>list</span>[<span id='element-type19'>element type</span>] <span class='procedure-declaration-name'><span id='elements2'>elements</span></span>() =&gt; <span id='frozen-copy'>frozen copy</span>
             </div>
             <div class='procedure-declaration'>
               <div class='documentation'>
@@ -476,7 +476,7 @@
             <div class='documentation'>
               Returns an immutable list with the order of the elements reversed.
             </div>
-           implement immutable <span id='list9'>list</span>[<span id='element-type33'>element type</span>] <span class='procedure-declaration-name'><span id='reverse'>reverse</span></span>()
+           implement immutable <span id='list9'>list</span>[<span id='element-type33'>element type</span>] <span class='procedure-declaration-name'><span id='reversed'>reversed</span></span>()
             <div class='indent'>
              if <span id='size31'>size</span> &lt;= 1
               <div class='indent'>
@@ -485,7 +485,7 @@
                 </div>
               </div>
               <div>
-               <span class='var-declaration-name'><span id='reversed'>reversed</span></span> : <span id='list-state13'>list state</span>[<span id='element-type34'>element type</span>] &bull; new(<span id='size32'>size</span>)
+               <span class='var-declaration-name'><span id='reversed-state'>reversed state</span></span> : <span id='list-state13'>list state</span>[<span id='element-type34'>element type</span>] &bull; new(<span id='size32'>size</span>)
               </div>
              for var <span id='nonnegative19'>nonnegative</span> <span class='var-declaration-name'><span id='i'>i</span></span> : 0; <span id='i2'>i</span> &lt; <span id='size33'>size</span>; <span id='i3'>i</span> += 1
               <div class='indent'>
@@ -496,14 +496,14 @@
                  assert <span id='new-index2'>new index</span> is <span id='nonnegative20'>nonnegative</span>
                 </div>
                 <div>
-                 <span id='reversed2'>reversed</span> &bull; <span id='the-elements21'>the elements</span>[<span id='new-index3'>new index</span>] = <span id='state22'>state</span> &bull; <span id='the-elements22'>the elements</span>[<span id='i5'>i</span>]
+                 <span id='reversed-state2'>reversed state</span> &bull; <span id='the-elements21'>the elements</span>[<span id='new-index3'>new index</span>] = <span id='state22'>state</span> &bull; <span id='the-elements22'>the elements</span>[<span id='i5'>i</span>]
                 </div>
               </div>
               <div>
-               <span id='reversed3'>reversed</span> &bull; <span id='size35'>size</span> = <span id='size36'>size</span>
+               <span id='reversed-state3'>reversed state</span> &bull; <span id='size35'>size</span> = <span id='size36'>size</span>
               </div>
               <div>
-               return <span id='base-immutable-list6'>base immutable list</span>[<span id='element-type35'>element type</span>] &bull; new(<span id='reversed4'>reversed</span>)
+               return <span id='base-immutable-list6'>base immutable list</span>[<span id='element-type35'>element type</span>] &bull; new(<span id='reversed-state4'>reversed state</span>)
               </div>
             </div>
           </div>
@@ -852,10 +852,13 @@
              <span class='xref-name'>Declaration:</span> frozen copy
             </div>
             <div class='xref-links'>
-             <span class='xref-name'>Direct overrides:</span> list
+             <span class='xref-name'>Direct overrides:</span> frozen copy
             </div>
             <div class='xref-links'>
              <span class='xref-name'>Directly overriden by:</span> base immutable list
+            </div>
+            <div class='xref-links'>
+             <span class='xref-name'>Use:</span> frozen copy
             </div>
             <div class='procedure-declaration'>
               <div class='documentation'>
@@ -942,16 +945,16 @@
            <span class='xref-name'>Declaration:</span> frozen copy
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Direct overrides:</span> base readonly list / list
+           <span class='xref-name'>Direct overrides:</span> base readonly list / frozen copy
           </div>
           <div class='procedure-declaration'>
             <div class='documentation'>
               Returns an immutable list with the order of the elements reversed.
             </div>
-           implement immutable <span id='list9'>list</span>[<span id='element-type33'>element type</span>] <span class='procedure-declaration-name'><span id='reverse'>reverse</span></span>()
+           implement immutable <span id='list9'>list</span>[<span id='element-type33'>element type</span>] <span class='procedure-declaration-name'><span id='reversed'>reversed</span></span>()
           </div>
           <div class='xref-links'>
-           <span class='xref-name'>Declaration:</span> reverse
+           <span class='xref-name'>Declaration:</span> reversed
           </div>
           <div class='xref-links'>
            <span class='xref-name'>Direct overrides:</span> list

@@ -1,6 +1,6 @@
+testdata/hello.i:8: Lookup failed: no inform in main
   inform("Hello, world!");
   ^^^^^^
-testdata/hello.i:8: Lookup failed: no inform in main
 void main() {
   inform("Hello, world!");
 }

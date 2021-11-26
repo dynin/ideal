@@ -295,7 +295,7 @@ public class variable_analyzer extends declaration_analyzer
     // TODO: add a feature/flag to toggle it.
     if (true) {
       readonly_list<action> shadowed_actions = get_context().resolve(
-          declared_in_type().get_flavored(flavor.mutable_flavor), short_name(), the_origin);
+          declared_in_type().get_flavored(mutable_flavor), short_name(), the_origin);
       if (shadowed_actions.size() > 0) {
         for (int i = 0; i < shadowed_actions.size(); ++i) {
           action shadowed = shadowed_actions.get(i);
@@ -316,30 +316,35 @@ public class variable_analyzer extends declaration_analyzer
     declared_as_reference = common_types.is_reference_type(var_value_type);
     if (declared_as_reference) {
       reference_flavor = var_value_type.get_flavor();
-      if (reference_flavor == flavor.nameonly_flavor) {
-        reference_flavor = flavor.mutable_flavor;
+      if (reference_flavor == nameonly_flavor) {
+        reference_flavor = mutable_flavor;
       }
       var_value_type = common_types.get_reference_parameter(var_value_type);
     } else {
       var_value_type = analyzer_utilities.handle_default_flavor(var_value_type);
       // TODO: detect and use deeply_immutable.
-      reference_flavor = is_immutable() ? flavor.immutable_flavor : flavor.mutable_flavor;
-    }
-
-    // TODO: set the_flavor from post_annotations.
-    if (process_flavor(post_annotations) != null) {
-      new base_notification(new base_string("flavor"), the_origin, null,
-              notification_level.INFORMATIONAL).report();
+      reference_flavor = is_variable() ? mutable_flavor : immutable_flavor;
     }
 
     var_reference_type = common_types.get_reference(reference_flavor, var_value_type);
 
     if (get_category() == variable_category.INSTANCE) {
       boolean is_mutable_var = annotations().has(general_modifier.mutable_var_modifier);
-      the_flavor = is_mutable_var ? mutable_flavor : readonly_flavor;
+      the_flavor = process_flavor(post_annotations);
+      if (the_flavor == null) {
+        if (declared_as_reference) {
+          the_flavor = is_variable() ? mutable_flavor : readonly_flavor;
+        } else {
+          the_flavor = is_mutable_var ? mutable_flavor : readonly_flavor;
+        }
+      }
       the_variable_action = analyzer_utilities.add_instance_variable(this, get_context());
     } else {
       the_flavor = nameonly_flavor;
+      if (process_flavor(post_annotations) != null) {
+        new base_notification(new base_string("Unexpected flavor postannotation"),
+            the_origin).report();
+      }
       if (get_category() == variable_category.LOCAL) {
         the_variable_action = new local_variable(this, reference_flavor);
       } else {
@@ -352,9 +357,9 @@ public class variable_analyzer extends declaration_analyzer
     return ok_signal.instance;
   }
 
-  private boolean is_immutable() {
-    return !annotations().has(general_modifier.var_modifier) &&
-           !annotations().has(general_modifier.mutable_var_modifier);
+  private boolean is_variable() {
+    return annotations().has(general_modifier.var_modifier) ||
+           annotations().has(general_modifier.mutable_var_modifier);
   }
 
   private error_signal report_error(error_signal signal) {

@@ -39,7 +39,7 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
   }
 
   override readonly set[vertice_type] vertices() {
-    return all_edges.keys();
+    return all_edges.keys;
   }
 
   override void add_edge(vertice_type from, vertice_type to, edge_type the_source) {

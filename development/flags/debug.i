@@ -20,6 +20,7 @@ namespace debug {
   var boolean NOT_FOUND : false;
   var action_name TRACE_NAME : simple_name.make("foo_bar_baz"); -- special_name.IMPLICIT;
   var boolean IN_PROGRESS_DECLARATION : false;
+  var boolean MISC_TRACE : false;
 
   void initialize(create_flags flags) {
     PROGRESS = flags.DEBUG_PROGRESS;

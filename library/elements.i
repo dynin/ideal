@@ -434,11 +434,11 @@ package elements {
     value_type or null put(key_type key, value_type value);
     value_type or null remove(key_type key);
 
-    -- TODO: should we use keys().contains instead?
+    -- TODO: should we use keys.contains instead?
     boolean contains_key(key_type key) pure;
 
-    readonly set[key_type] keys() pure;
-    immutable set[key_type] keys() immutable pure;
+    readonly set[key_type] keys;
+    immutable set[key_type] keys immutable;
 
     readonly collection[value_type] values() pure;
 

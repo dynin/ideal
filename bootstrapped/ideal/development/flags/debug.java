@@ -20,6 +20,7 @@ public class debug {
   public static boolean NOT_FOUND = false;
   public static action_name TRACE_NAME = simple_name.make(new ideal.runtime.elements.base_string("foo_bar_baz"));
   public static boolean IN_PROGRESS_DECLARATION = false;
+  public static boolean MISC_TRACE = false;
   public static void initialize(final create_flags flags) {
     debug.PROGRESS = flags.DEBUG_PROGRESS;
     debug.ACTIONS = flags.DEBUG_ACTIONS;

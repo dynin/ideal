@@ -911,10 +911,7 @@ public class to_java_transformer extends base_transformer {
           flavored_bodies.get(profile.default_flavor()).append(var_construct);
         } else {
           procedure_construct proc_decl = var_to_proc(var_decl);
-          type_flavor target_flavor = var_decl.reference_type().get_flavor();
-          if (is_readonly_flavor(target_flavor)) {
-            target_flavor = readonly_flavor;
-          }
+          type_flavor target_flavor = var_decl.get_flavor();
           flavored_bodies.get(profile.map(target_flavor)).append(proc_decl);
         }
       } else if (decl instanceof type_declaration) {

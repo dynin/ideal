@@ -261,13 +261,16 @@ public class analyzer_utilities {
     readonly_list<action> actions = the_context.lookup(
         the_variable.declared_in_type().get_flavored(the_variable.get_flavor()),
         the_variable.short_name());
-    if (false) {
+    if (debug.MISC_TRACE) {
       if (actions.size() != 1) {
+        System.out.println("F " + the_variable.get_flavor() +
+            " DT " + the_variable.declared_in_type());
         for (int i = 0; i < actions.size(); ++i) {
           System.out.println("H " + actions.get(i));
         }
       }
     }
+    // TODO: report error instead of panicing
     assert actions.size() == 1;
     return (dispatch_action) actions.first();
   }
@@ -279,7 +282,7 @@ public class analyzer_utilities {
     action_name the_name = the_variable.short_name();
 
     // All instance variables can be read
-    type flavored_from = parent_type.get_flavored(readonly_flavor);
+    type flavored_from = parent_type.get_flavored(the_variable.get_flavor());
     instance_variable primary_action = new instance_variable(the_variable,
         the_variable.get_flavor());
     dispatch_action the_dispatch = new dispatch_action(primary_action, flavored_from);

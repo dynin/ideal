@@ -13,6 +13,5 @@ interface flavor_profile {
   type_flavor default_flavor;
   boolean supports(type_flavor flavor) pure;
   type_flavor map(type_flavor from) pure;
-  -- TODO: make this a variable
-  immutable list[type_flavor] supported_flavors() pure;
+  immutable list[type_flavor] supported_flavors;
 }

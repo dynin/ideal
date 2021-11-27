@@ -290,10 +290,14 @@ public class to_java_transformer extends base_transformer {
     }
   }
 
+  private boolean is_abstract_variable(variable_declaration the_variable_declaration) {
+    return the_variable_declaration.annotations().has(abstract_modifier);
+  }
+
   private boolean should_call_as_procedure(declaration the_declaration) {
     if (the_declaration instanceof variable_declaration) {
       variable_declaration the_variable = (variable_declaration) the_declaration;
-      if (has_override(the_variable.annotations())) {
+      if (is_abstract_variable(the_variable) || has_override(the_variable.annotations())) {
         return true;
       }
       kind parent_kind = the_variable.declared_in_type().get_kind();
@@ -903,11 +907,12 @@ public class to_java_transformer extends base_transformer {
             process_enum_value((enum_value_analyzer) decl));
       } else if (decl instanceof variable_declaration) {
         variable_declaration var_decl = (variable_declaration) decl;
-        @Nullable variable_construct var_construct = (variable_construct) transform(decl);
-        if (var_construct == null) {
-          continue;
-        }
-        if (concrete_mode || var_decl.annotations().has(static_modifier)) {
+        assert var_decl != null;
+        boolean generate_variable = var_decl.annotations().has(static_modifier) ||
+            (concrete_mode && !is_abstract_variable(var_decl));
+        if (generate_variable) {
+          variable_construct var_construct = (variable_construct) transform(decl);
+          assert var_construct != null;
           flavored_bodies.get(profile.default_flavor()).append(var_construct);
         } else {
           procedure_construct proc_decl = var_to_proc(var_decl);
@@ -1071,11 +1076,17 @@ public class to_java_transformer extends base_transformer {
     type return_type = analyzer_utilities.is_readonly_flavor(
         the_variable.reference_type().get_flavor()) ?
             the_variable.value_type() : the_variable.reference_type();
-    // TODO: should we inherit attotaions from the_variable?
+    // TODO: should we inherit annotaions from the_variable?
     list<annotation_construct> annotations = new base_list<annotation_construct>();
+    if (is_abstract_variable(the_variable)) {
+      annotations.append(new modifier_construct(abstract_modifier, the_origin));
+    }
     if (type_utilities.is_union(return_type)) {
       annotations.append(make_nullable(the_origin));
       // make_type() strips null from union type
+    }
+    if (is_object_type(return_type)) {
+      return_type = java_library.object_type();
     }
     // This is a hack to get gregorian_month to work.
     if (the_variable.short_name() == ORDINAL_NAME &&

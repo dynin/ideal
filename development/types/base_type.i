@@ -30,15 +30,15 @@ abstract class base_type {
     return flavored;
   }
 
-  protected abstract type_declaration_context get_context() pure;
+  protected abstract type_declaration_context declaration_context;
 
   abstract string describe(type_format format);
 
   implement boolean is_parametrizable() {
-    return get_context().is_parametrizable(this);
+    return declaration_context.is_parametrizable(this);
   }
 
   implement boolean is_subtype_of(type the_supertype) {
-    return get_context().is_subtype_of(this, the_supertype);
+    return declaration_context.is_subtype_of(this, the_supertype);
   }
 }

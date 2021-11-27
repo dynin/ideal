@@ -47,7 +47,7 @@ public class master_type extends base_principal_type {
   public @Override action_name short_name() {
     return this.the_name;
   }
-  protected @Override type_declaration_context get_context() {
+  protected @Override type_declaration_context declaration_context() {
     assert this.the_context != null;
     return this.the_context;
   }

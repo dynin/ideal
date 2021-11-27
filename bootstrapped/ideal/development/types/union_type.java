@@ -86,7 +86,7 @@ public class union_type extends base_principal_type {
       type_utilities.prepare(the_parameter, pass);
     }
   }
-  protected @Override type_declaration_context get_context() {
+  protected @Override type_declaration_context declaration_context() {
     assert union_type.the_context instanceof type_declaration_context;
     return union_type.the_context;
   }

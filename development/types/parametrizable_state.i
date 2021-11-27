@@ -28,8 +28,9 @@ class parametrizable_state {
       result = make_parametrized();
       parametrized_types.put(parameters, result);
       result.set_parameters(parameters);
+      -- TODO: move inside conditional
+      the_type_graph : master.declaration_context.type_graph;
       if (primary_type is_not null) {
-        the_type_graph : master.get_context().type_graph;
         -- TODO: do not panic but report a diagnostic
         assert !the_type_graph.introduces_cycle(result, primary_type);
         the_type_graph.add_edge(result, primary_type, type_utilities.PRIMARY_TYPE_ORIGIN);

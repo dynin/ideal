@@ -34,8 +34,8 @@ public class parametrizable_state extends debuggable {
       result = this.make_parametrized();
       this.parametrized_types.put(parameters, result);
       result.set_parameters(parameters);
+      final ideal.library.graphs.graph<principal_type, origin> the_type_graph = this.master.declaration_context().type_graph();
       if (this.primary_type != null) {
-        final ideal.library.graphs.graph<principal_type, origin> the_type_graph = this.master.get_context().type_graph();
         assert !the_type_graph.introduces_cycle(result, this.primary_type);
         the_type_graph.add_edge(result, this.primary_type, type_utilities.PRIMARY_TYPE_ORIGIN);
       } else {

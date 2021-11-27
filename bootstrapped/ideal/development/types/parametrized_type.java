@@ -48,8 +48,8 @@ public class parametrized_type extends base_principal_type {
   public @Override @Nullable principal_type get_parent() {
     return this.master.get_parent();
   }
-  protected @Override type_declaration_context get_context() {
-    return this.master.get_context();
+  protected @Override type_declaration_context declaration_context() {
+    return this.master.declaration_context();
   }
   public void set_parameters(final type_parameters parameters) {
     assert this.parameters == null;

@@ -8,5 +8,5 @@
 interface construct {
   extends data, origin;
 
-  readonly list[construct] children() pure;
+  readonly list[construct] children;
 }

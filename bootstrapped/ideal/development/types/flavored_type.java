@@ -39,8 +39,8 @@ public class flavored_type extends base_type {
   public @Override type_flavor get_flavor() {
     return this.the_type_flavor;
   }
-  protected @Override type_declaration_context get_context() {
-    return this.main_type.get_context();
+  protected @Override type_declaration_context declaration_context() {
+    return this.main_type.declaration_context();
   }
   public @Override string describe(final type_format format) {
     return ideal.machine.elements.runtime_util.concatenate(ideal.machine.elements.runtime_util.concatenate(this.the_type_flavor.to_string(), new base_string(" ")), this.main_type.describe(format));

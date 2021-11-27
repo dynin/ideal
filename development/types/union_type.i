@@ -81,7 +81,7 @@ class union_type {
     }
   }
 
-  implement protected type_declaration_context get_context() {
+  implement protected type_declaration_context declaration_context() {
     assert the_context is type_declaration_context;
     return the_context;
   }

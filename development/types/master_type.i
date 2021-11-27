@@ -40,7 +40,7 @@ class master_type {
 
   implement action_name short_name => the_name;
 
-  implement protected type_declaration_context get_context() {
+  implement protected type_declaration_context declaration_context() {
     assert the_context is_not null;
     return the_context;
   }

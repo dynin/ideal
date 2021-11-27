@@ -94,7 +94,7 @@ abstract class base_principal_type {
 
   protected void do_declare_actual(declaration_pass pass) {
     assert pass != declaration_pass.NONE;
-    the_context : get_context();
+    the_context : declaration_context;
     assert the_context is_not null;
     the_context.declare_type(this, pass);
   }

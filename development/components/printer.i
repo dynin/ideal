@@ -10,7 +10,7 @@ interface printer {
   extends value;
 
   text_fragment print(construct c) pure;
-  text_fragment print_space() pure;
+  text_fragment print_space;
   text_fragment print_simple_name(simple_name name) pure;
   text_fragment print_line(text_fragment fragment) pure;
   text_fragment print_word(token_type word) pure;

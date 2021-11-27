@@ -95,7 +95,7 @@ public abstract class base_principal_type extends base_type implements principal
   }
   protected void do_declare_actual(final declaration_pass pass) {
     assert pass != declaration_pass.NONE;
-    final type_declaration_context the_context = this.get_context();
+    final type_declaration_context the_context = this.declaration_context();
     assert the_context != null;
     the_context.declare_type(this, pass);
   }

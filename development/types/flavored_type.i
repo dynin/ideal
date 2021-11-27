@@ -33,7 +33,8 @@ class flavored_type {
 
   implement type_flavor get_flavor => the_type_flavor;
 
-  implement protected type_declaration_context get_context => main_type.get_context();
+  implement protected type_declaration_context declaration_context =>
+      main_type.declaration_context;
 
   implement string describe(type_format format) {
     return the_type_flavor.to_string ++ " " ++ main_type.describe(format);

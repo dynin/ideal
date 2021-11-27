@@ -24,7 +24,7 @@ class base_resource_identifier {
     this.path = path;
   }
 
-  override base_resource_identifier parent() {
+  implement base_resource_identifier parent() {
     parent_path_size : path.size - 1;
     if (parent_path_size is nonnegative) {
       parent_path : path.slice(0, parent_path_size);
@@ -46,7 +46,7 @@ class base_resource_identifier {
     }
   }
 
-  override boolean exists() {
+  implement boolean exists() {
     return the_resource_store.exists(the_scheme, path);
   }
 
@@ -72,7 +72,7 @@ class base_resource_identifier {
 
   private void set_string(string new_value, access_option or null options) {
     if (options is make_catalog_option && path.size > 1) {
-      the_resource_store.make_catalog(the_scheme, parent().path);
+      the_resource_store.make_catalog(the_scheme, parent.path);
     }
     the_resource_store.write_string(the_scheme, path, new_value);
   }

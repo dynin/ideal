@@ -47,7 +47,7 @@ class base_resource_catalog {
     utilities.panic("can't set a catalog");
   }
 
-  override resource_identifier get_id() {
+  implement resource_identifier id() {
     return base_resource_identifier.new(the_resource_store, the_scheme, path);
   }
 
@@ -136,5 +136,5 @@ class base_resource_catalog {
     }
   }
 
-  override string to_string => get_id().to_string;
+  override string to_string => id.to_string;
 }

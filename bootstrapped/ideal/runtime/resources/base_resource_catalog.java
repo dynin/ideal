@@ -42,7 +42,7 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
   public @Override void set(final @Nullable dictionary<string, resource_identifier> new_value) {
     utilities.panic(new base_string("can\'t set a catalog"));
   }
-  public @Override resource_identifier get_id() {
+  public @Override resource_identifier id() {
     return new base_resource_identifier(this.the_resource_store, this.the_scheme, this.path);
   }
   public @Override resource_identifier resolve(final string name) {
@@ -109,6 +109,6 @@ public class base_resource_catalog implements resource_catalog, reference<dictio
     }
   }
   public @Override string to_string() {
-    return this.get_id().to_string();
+    return this.id().to_string();
   }
 }

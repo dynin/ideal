@@ -42,8 +42,8 @@ test_suite test_resolver {
   static ROOT : test_store.new(resource_util.ROOT_CATALOG, false).top();
 
   test_case test_file_catalogs() {
-    assert CURRENT.get_id().to_string == ".";
-    assert ROOT.get_id().to_string == "/";
+    assert CURRENT.id.to_string == ".";
+    assert ROOT.id.to_string == "/";
   }
 
   test_case test_simple_resolve() {
@@ -68,7 +68,7 @@ test_suite test_resolver {
     assert dog.to_string == "dog";
 
     cat2 : dog.access_catalog();
-    assert cat2.get_id().to_string == "dog";
+    assert cat2.id.to_string == "dog";
 
     dog2 : cat2.resolve("Yoshka");
     assert dog2.to_string == "dog/Yoshka";
@@ -81,7 +81,7 @@ test_suite test_resolver {
     assert dog.to_string == "/dog";
 
     cat2 : dog.access_catalog();
-    assert cat2.get_id().to_string == "/dog";
+    assert cat2.id.to_string == "/dog";
 
     dog2 : cat2.resolve("Yoshka");
     assert dog2.to_string == "/dog/Yoshka";
@@ -94,7 +94,7 @@ test_suite test_resolver {
     assert bar.to_string == "/bar";
 
     foo = bar.access_catalog();
-    assert foo.get_id().to_string == "/bar";
+    assert foo.id.to_string == "/bar";
 
     bar = foo.resolve("baz");
     assert bar.to_string == "/bar/baz";
@@ -136,16 +136,16 @@ test_suite test_resolver {
 
     assert "foo/bar/baz" == bar.to_string;
 
-    bar = bar.parent();
+    bar = bar.parent;
     assert "foo/bar" == bar.to_string;
 
-    bar = bar.parent();
+    bar = bar.parent;
     assert "foo" == bar.to_string;
 
-    bar = bar.parent();
+    bar = bar.parent;
     assert "." == bar.to_string;
 
-    bar = bar.parent();
+    bar = bar.parent;
     assert "." == bar.to_string;
   }
 

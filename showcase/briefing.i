@@ -279,7 +279,7 @@ program briefing {
     result : hash_set[item_id].new();
 
     all_items_json : day_catalog.resolve(ALL_ITEMS_JSON);
-    if (all_items_json.exists()) {
+    if (all_items_json.exists) {
       log.info("Reading " ++ all_items_json);
       all_items : hacker_news.id_list(all_items_json);
       result.add_all(all_items);
@@ -413,7 +413,7 @@ program briefing {
     header_fragments.append(" digest");
     header_fragments.append(NBSP);
     header_fragments.append(NBSP);
-    if (day != first || output_catalog.resolve(day_page_file(previous(day))).exists()) {
+    if (day != first || output_catalog.resolve(day_page_file(previous(day))).exists) {
       header_fragments.append(text_utilities.make_html_link(LARR,
           day_page_url(previous(day), day)));
       header_fragments.append(" ");

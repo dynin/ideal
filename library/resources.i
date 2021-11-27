@@ -26,10 +26,10 @@ package resources {
     string or null host;
 
     -- TODO: make into an immutable reference?
-    resource_identifier parent() pure;
+    resource_identifier parent;
 
     -- TODO: make into a readonly reference?
-    boolean exists() pure;
+    boolean exists;
 
     resource[string] access_string(access_option or null options);
     resource[readonly json_data] access_json_data(access_option or null options);
@@ -43,7 +43,7 @@ package resources {
   interface resource_catalog {
     extends resource[dictionary[string, resource_identifier] or null];
 
-    resource_identifier get_id() pure;
+    resource_identifier id pure;
     overload resource_identifier resolve(string name) pure;
     overload resource_identifier resolve(string name, extension ext) pure;
   }

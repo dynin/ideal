@@ -6,5 +6,5 @@
 
 --- Pattern base class that can be validated.
 interface validatable {
-  void validate() pure;
+  void validate();
 }

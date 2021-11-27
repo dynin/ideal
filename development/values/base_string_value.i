@@ -13,5 +13,5 @@ class base_string_value {
   }
 
   -- TODO: the cast is redundant
-  override string constant_to_string => (this .> string_value).unwrap();
+  override string constant_to_string => (this .> string_value).unwrap;
 }

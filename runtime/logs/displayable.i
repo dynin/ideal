@@ -9,5 +9,6 @@
 interface displayable {
   implements value;
 
-  string display() pure;
+  -- TODO: return text_fragment instead.
+  string display;
 }

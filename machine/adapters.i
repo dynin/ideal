@@ -40,30 +40,30 @@ namespace adapters {
       class Object {
         extends value;
 
-        public boolean equals(readonly Object other) pure;
-        public integer hashCode() pure;
-        public String toString();
+        boolean equals(readonly Object other) pure;
+        int hashCode;
+        String toString();
       }
 
       class String {
         extends Object;
         implements deeply_immutable data, stringable;
 
-        public integer length();
-        public overload String substring(integer begin);
-        public overload String substring(integer begin, integer end);
-        public char charAt(integer index);
+        integer length();
+        overload String substring(integer begin);
+        overload String substring(integer begin, integer end);
+        char charAt(integer index);
 
-        public overload static String valueOf(int value);
-        public overload static String valueOf(char value);
+        overload static String valueOf(int value);
+        overload static String valueOf(char value);
       }
 
       class StringBuilder {
         extends Object;
 
-        public StringBuilder(String s);
+        StringBuilder(String s);
 
-        public StringBuilder reverse();
+        StringBuilder reverse();
       }
     }
   }

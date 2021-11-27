@@ -24,7 +24,7 @@ package reflections {
   interface value_wrapper {
     extends entity_wrapper;
 
-    any value unwrap() pure;
+    any value unwrap;
   }
 
   interface reference_wrapper {
@@ -32,7 +32,7 @@ package reflections {
 
     type_id value_type_bound;
 
-    value_wrapper get() pure;
+    value_wrapper get pure;
     void init(value_wrapper the_value) writeonly;
     void set(value_wrapper the_value) writeonly;
   }

@@ -71,7 +71,7 @@ test_suite test_list {
     assert slice01.size == 1;
     assert slice01[0] == "foo";
 
-    reversed : strings.reversed();
+    reversed : strings.reversed;
     assert reversed.is_not_empty;
     assert reversed.size == 1;
     assert reversed[0] == "foo";
@@ -104,7 +104,7 @@ test_suite test_list {
     assert strings[0] == "foo";
     assert strings[1] == "bar";
 
-    reversed : strings.frozen_copy.reversed();
+    reversed : strings.frozen_copy.reversed;
     assert reversed.size == 2;
     assert !reversed.is_empty;
     assert reversed.is_not_empty;

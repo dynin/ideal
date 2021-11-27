@@ -62,7 +62,7 @@ test_suite test_range {
     assert the_slice2.begin == 6;
     assert the_slice2.end == 6;
 
-    reversed : the_range.reversed();
+    reversed : the_range.reversed;
     assert reversed.size == 3;
     assert !reversed.is_empty;
     assert reversed.is_not_empty;

@@ -318,7 +318,7 @@ package elements {
     -- TODO: readonly reverse() should return readonly view.
     not_yet_implemented readonly list[element] reverse() pure;
     --- Returns an immutable list with the order of the elements reversed.
-    immutable list[element] reversed() immutable pure;
+    immutable list[element] reversed immutable;
 
     --- Returns an immutable copy of this list.
     -- TODO: this should be in composite_value
@@ -440,7 +440,7 @@ package elements {
     readonly set[key_type] keys;
     immutable set[key_type] keys immutable;
 
-    readonly collection[value_type] values() pure;
+    readonly collection[value_type] values;
 
     immutable dictionary[key_type, value_type] frozen_copy;
   }

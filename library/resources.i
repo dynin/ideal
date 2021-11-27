@@ -15,7 +15,7 @@ package resources {
     -- TODO: properties type; name differently
     -- dictionary[identifier, deeply_immutable data] metadata();
 
-    reference[content_type] content;
+    var reference[content_type] content;
   }
 
   interface resource_identifier {

@@ -110,6 +110,12 @@ public class analyzer_utilities {
     return null;
   }
 
+  public static boolean is_readonly_flavor(type_flavor the_flavor) {
+    return the_flavor == readonly_flavor ||
+           the_flavor == immutable_flavor ||
+           the_flavor == deeply_immutable_flavor;
+  }
+
   public static boolean is_readonly_reference(type the_type) {
     return common_types.is_reference_type(the_type) &&
            the_type.get_flavor() == readonly_flavor;
@@ -167,9 +173,11 @@ public class analyzer_utilities {
       for (int i = 0; i < overriden.size(); ++i) {
         if (overriden.get(i) instanceof variable_declaration) {
           variable_declaration super_var = (variable_declaration) overriden.get(i);
-          dispatch_action the_dispatch = get_readonly_action(super_var, the_context);
-          if (!the_dispatch.handles_type(target_type)) {
-            the_dispatch.add_handler(target_type, new proc_as_ref_action(the_procedure));
+          if (is_readonly_flavor(super_var.get_flavor())) {
+            dispatch_action the_dispatch = get_readonly_action(super_var, the_context);
+            if (!the_dispatch.handles_type(target_type)) {
+              the_dispatch.add_handler(target_type, new proc_as_ref_action(the_procedure));
+            }
           }
         }
       }
@@ -258,19 +266,11 @@ public class analyzer_utilities {
   private static dispatch_action get_readonly_action(variable_declaration the_variable,
       action_context the_context) {
     assert the_variable.get_category() == variable_category.INSTANCE;
+    assert is_readonly_flavor(the_variable.get_flavor());
     readonly_list<action> actions = the_context.lookup(
         the_variable.declared_in_type().get_flavored(the_variable.get_flavor()),
         the_variable.short_name());
-    if (debug.MISC_TRACE) {
-      if (actions.size() != 1) {
-        System.out.println("F " + the_variable.get_flavor() +
-            " DT " + the_variable.declared_in_type());
-        for (int i = 0; i < actions.size(); ++i) {
-          System.out.println("H " + actions.get(i));
-        }
-      }
-    }
-    // TODO: report error instead of panicing
+    // TODO: report error instead of panicing?
     assert actions.size() == 1;
     return (dispatch_action) actions.first();
   }
@@ -281,20 +281,26 @@ public class analyzer_utilities {
     principal_type parent_type = the_variable.declared_in_type();
     action_name the_name = the_variable.short_name();
 
-    // All instance variables can be read
-    type flavored_from = parent_type.get_flavored(the_variable.get_flavor());
     instance_variable primary_action = new instance_variable(the_variable,
         the_variable.get_flavor());
-    dispatch_action the_dispatch = new dispatch_action(primary_action, flavored_from);
-    the_context.add(flavored_from, the_name, the_dispatch);
 
-    if (the_variable.reference_type().get_flavor() == mutable_flavor &&
-        parent_type.get_flavor_profile() == flavor_profiles.mutable_profile) {
+    boolean add_mutable = the_variable.reference_type().get_flavor() == mutable_flavor &&
+        parent_type.get_flavor_profile() == flavor_profiles.mutable_profile;
+    boolean add_readonly = !add_mutable || is_readonly_flavor(the_variable.get_flavor());
+    boolean add_raw = parent_type.get_kind().supports_constructors();
+
+    if (add_readonly) {
+      type flavored_from = parent_type.get_flavored(the_variable.get_flavor());
+      dispatch_action the_dispatch = new dispatch_action(primary_action, flavored_from);
+      the_context.add(flavored_from, the_name, the_dispatch);
+    }
+
+    if (add_mutable) {
       the_context.add(parent_type.get_flavored(mutable_flavor), the_name,
           new instance_variable(the_variable, mutable_flavor));
     }
 
-    if (parent_type.get_kind().supports_constructors()) {
+    if (add_raw) {
       the_context.add(parent_type.get_flavored(raw_flavor), the_name,
           new instance_variable(the_variable, mutable_flavor));
     }

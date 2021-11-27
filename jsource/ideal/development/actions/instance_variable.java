@@ -29,9 +29,6 @@ public class instance_variable extends variable_action implements chainable_acti
 
   public instance_variable(variable_declaration the_declaration, type_flavor reference_flavor) {
     super(the_declaration, reference_flavor, the_declaration);
-    if (debug.MISC_TRACE && the_declaration.short_name().toString().equals("content")) {
-      utilities.stack("content " + this);
-    }
   }
 
   @Override

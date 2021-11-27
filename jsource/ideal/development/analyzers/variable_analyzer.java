@@ -337,6 +337,9 @@ public class variable_analyzer extends declaration_analyzer
         } else {
           the_flavor = is_mutable_var ? mutable_flavor : readonly_flavor;
         }
+      } else {
+        // TODO: signal an error
+        assert the_flavor != writeonly_flavor;
       }
       the_variable_action = analyzer_utilities.add_instance_variable(this, get_context());
     } else {

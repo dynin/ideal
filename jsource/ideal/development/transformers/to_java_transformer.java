@@ -1061,12 +1061,6 @@ public class to_java_transformer extends base_transformer {
     return type_decls;
   }
 
-  private static boolean is_readonly_flavor(type_flavor the_flavor) {
-    return the_flavor == readonly_flavor ||
-           the_flavor == immutable_flavor ||
-           the_flavor == deeply_immutable_flavor;
-  }
-
   private static boolean is_concrete_kind(kind the_kind) {
     return the_kind == class_kind || the_kind == enum_kind || the_kind == test_suite_kind ||
         the_kind == program_kind;
@@ -1074,8 +1068,9 @@ public class to_java_transformer extends base_transformer {
 
   private procedure_construct var_to_proc(variable_declaration the_variable) {
     origin the_origin = the_variable;
-    type return_type = is_readonly_flavor(the_variable.reference_type().get_flavor()) ?
-        the_variable.value_type() : the_variable.reference_type();
+    type return_type = analyzer_utilities.is_readonly_flavor(
+        the_variable.reference_type().get_flavor()) ?
+            the_variable.value_type() : the_variable.reference_type();
     // TODO: should we inherit attotaions from the_variable?
     list<annotation_construct> annotations = new base_list<annotation_construct>();
     if (type_utilities.is_union(return_type)) {

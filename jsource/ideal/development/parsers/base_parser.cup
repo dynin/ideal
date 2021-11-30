@@ -68,6 +68,9 @@ terminal token<keyword>  IMPORT;
 terminal token<string>  HASH;
 terminal token<keyword>  USE, TARGET;
 terminal token<keyword>  PLEASE;
+/* Terminals for meta-grammar */
+terminal token<keyword>  GRAMMAR, TERMINAL, NONTERMINAL;
+terminal token<string>  COLON_COLON_EQUALS;
 
 /* Non terminals */
 non terminal list<construct>  compilation_unit;
@@ -102,6 +105,15 @@ non terminal sexpression_construct  sexpression;
 non terminal name_construct sexpression_atom;
 non terminal construct  sexpression_element;
 non terminal list<construct>  sexpression_elements;
+
+/* Non-terminals for meta-grammar */
+non terminal construct  grammar_declaration;
+non terminal list<construct>  grammar_statements_opt;
+non terminal construct  grammar_statement, terminal_statement, nonterminal_statement;
+non terminal list<name_construct> name_list, name_list_tail;
+non terminal construct  production_statement, term_lists, term_lists_tail;
+non terminal list<name_construct> term_list_opt;
+non terminal name_construct term;
 
 /* Precedences */
 precedence left ELSE;
@@ -161,6 +173,8 @@ statement ::=
                 {: RESULT = new use_construct(n, new fragment_origin(u, u, s)); :}
         |       TARGET:t name:n COLON:c expression:e SEMICOLON:s
                 {: RESULT = new target_construct(n, e, new fragment_origin(t, t, s)); :}
+        |       grammar_declaration:d
+                {: RESULT = d; :}
         ;
 
 type_declaration ::=
@@ -475,4 +489,65 @@ sexpression_atom ::=
                 {: RESULT = n; :}
         |       FOR:t
                 {: RESULT = new name_construct(keywords.FOR.keyword_name(), t); :}
+        ;
+
+grammar_declaration ::=
+                GRAMMAR:g OPEN_BRACE:ob grammar_statements_opt:st CLOSE_BRACE:cb
+        ;
+
+grammar_statements_opt ::=
+                grammar_statement:hd grammar_statements_opt:tl
+                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
+        |       /* epsilon */
+                {: RESULT = new base_list<construct>(); :}
+        ;
+
+grammar_statement ::=
+                terminal_statement:s
+                {: RESULT = s; :}
+        |       nonterminal_statement:s
+                {: RESULT = s; :}
+        |       production_statement:s
+                {: RESULT = s; :}
+        ;
+
+terminal_statement ::=
+                TERMINAL expression name_list SEMICOLON
+        ;
+
+nonterminal_statement ::=
+                NONTERMINAL expression name_list SEMICOLON
+        ;
+
+name_list ::=
+                SIMPLE_NAME name_list_tail
+        ;
+
+name_list_tail ::=
+                COMMA SIMPLE_NAME name_list_tail
+        |       /* epsilon */
+        ;
+
+production_statement ::=
+                SIMPLE_NAME COLON_COLON_EQUALS term_lists SEMICOLON
+        ;
+
+term_lists ::=
+                term_list_opt term_lists_tail
+        ;
+
+term_lists_tail ::=
+                VERTICAL_BAR term_list_opt term_lists_tail
+        |       /* epsilon */
+        ;
+
+term_list_opt ::=
+                term:hd term_list_opt:tl
+                {: RESULT = new base_list<name_construct>(hd); RESULT.append_all(tl); :}
+        |       /* epsilon */
+                {: RESULT = new base_list<name_construct>(); :}
+        ;
+
+term ::=
+                SIMPLE_NAME
         ;

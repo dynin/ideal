@@ -17,6 +17,7 @@ namespace base_symbols {
   integer EXCLAMATION_MARK_EQUALS : 33;
   integer SEMICOLON : 12;
   integer IS : 27;
+  integer GRAMMAR : 65;
   integer USE : 62;
   integer OR : 39;
   integer COMMA : 9;
@@ -40,6 +41,7 @@ namespace base_symbols {
   integer MODIFIER_KIND : 53;
   integer OPEN_BRACE : 6;
   integer CLOSE_BRACKET : 5;
+  integer NONTERMINAL : 67;
   integer TARGET : 63;
   integer OPEN_BRACKET : 4;
   integer EXCLAMATION_GREATER_THAN : 30;
@@ -59,11 +61,13 @@ namespace base_symbols {
   integer EQUALS_EQUALS : 32;
   integer CLOSE_PARENTHESIS : 3;
   integer CLOSE_BRACE : 7;
+  integer TERMINAL : 66;
   integer SIMPLE_NAME : 51;
   integer ASTERISK_EQUALS : 43;
   integer EXCLAMATION_MARK : 16;
   integer GREATER_THAN_EQUALS : 25;
   integer LESS_THAN : 22;
   integer LESS_THAN_EQUALS : 24;
+  integer COLON_COLON_EQUALS : 68;
   integer QUESTION_MARK_GREATER_THAN : 31;
 }

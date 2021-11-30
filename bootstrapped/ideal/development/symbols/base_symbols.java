@@ -21,6 +21,7 @@ public class base_symbols {
   public static final Integer EXCLAMATION_MARK_EQUALS = 33;
   public static final Integer SEMICOLON = 12;
   public static final Integer IS = 27;
+  public static final Integer GRAMMAR = 65;
   public static final Integer USE = 62;
   public static final Integer OR = 39;
   public static final Integer COMMA = 9;
@@ -44,6 +45,7 @@ public class base_symbols {
   public static final Integer MODIFIER_KIND = 53;
   public static final Integer OPEN_BRACE = 6;
   public static final Integer CLOSE_BRACKET = 5;
+  public static final Integer NONTERMINAL = 67;
   public static final Integer TARGET = 63;
   public static final Integer OPEN_BRACKET = 4;
   public static final Integer EXCLAMATION_GREATER_THAN = 30;
@@ -63,11 +65,13 @@ public class base_symbols {
   public static final Integer EQUALS_EQUALS = 32;
   public static final Integer CLOSE_PARENTHESIS = 3;
   public static final Integer CLOSE_BRACE = 7;
+  public static final Integer TERMINAL = 66;
   public static final Integer SIMPLE_NAME = 51;
   public static final Integer ASTERISK_EQUALS = 43;
   public static final Integer EXCLAMATION_MARK = 16;
   public static final Integer GREATER_THAN_EQUALS = 25;
   public static final Integer LESS_THAN = 22;
   public static final Integer LESS_THAN_EQUALS = 24;
+  public static final Integer COLON_COLON_EQUALS = 68;
   public static final Integer QUESTION_MARK_GREATER_THAN = 31;
 }

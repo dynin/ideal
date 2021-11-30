@@ -493,6 +493,7 @@ sexpression_atom ::=
 
 grammar_declaration ::=
                 GRAMMAR:g OPEN_BRACE:ob grammar_statements_opt:st CLOSE_BRACE:cb
+                {: RESULT = new empty_construct(g); :}
         ;
 
 grammar_statements_opt ::=

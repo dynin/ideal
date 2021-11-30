@@ -180,3 +180,9 @@ class yyy {
     super(the_string);
   }
 }
+
+grammar {
+  terminal string foo, bar;
+  nonterminal string foobar;
+  foobar ::= foo bar;
+}

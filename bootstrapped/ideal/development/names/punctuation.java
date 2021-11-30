@@ -54,4 +54,5 @@ public class punctuation {
   public static final punctuation_type MINUS_EQUALS = new punctuation_type(new base_string("-="), base_symbols.MINUS_EQUALS);
   public static final punctuation_type ASTERISK_EQUALS = new punctuation_type(new base_string("*="), base_symbols.ASTERISK_EQUALS);
   public static final punctuation_type MINUS_MINUS_MINUS = new punctuation_type(new base_string("---"));
+  public static final punctuation_type COLON_COLON_EQUALS = new punctuation_type(new base_string("::="), base_symbols.COLON_COLON_EQUALS);
 }

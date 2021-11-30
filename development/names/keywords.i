@@ -30,4 +30,9 @@ namespace keywords {
   TARGET : keyword.new("target", base_symbols.TARGET);
 
   PLEASE : keyword.new("please", base_symbols.PLEASE);
+
+  -- For meta-grammar
+  GRAMMAR : keyword.new("grammar", base_symbols.GRAMMAR);
+  TERMINAL : keyword.new("terminal", base_symbols.TERMINAL);
+  NONTERMINAL : keyword.new("nonterminal", base_symbols.NONTERMINAL);
 }

@@ -60,4 +60,7 @@ namespace punctuation {
   ASTERISK_EQUALS : punctuation_type.new("*=", base_symbols.ASTERISK_EQUALS);
 
   MINUS_MINUS_MINUS : punctuation_type.new("---");
+
+  -- For meta-grammar
+  COLON_COLON_EQUALS : punctuation_type.new("::=", base_symbols.COLON_COLON_EQUALS);
 }

@@ -40,6 +40,7 @@ import ideal.development.transformers.*;
 import ideal.development.origins.*;
 import ideal.development.policies.*;
 import ideal.development.comments.*;
+import ideal.development.grammars.*;
 import ideal.development.targets.*;
 
 public class create_manager implements target_manager, type_bootstrapper {
@@ -63,6 +64,7 @@ public class create_manager implements target_manager, type_bootstrapper {
     root_origin = origin_utilities.builtin_origin; // TODO: use resource id as origin
     scanner = new common_scanner();
     scanner.add_kinds(language.all_kinds());
+    new grammar_scanner().register_tokens(scanner);
     set_notification_handler((output<notification>) (output) log.log_output);
   }
 

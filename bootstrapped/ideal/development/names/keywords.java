@@ -26,4 +26,7 @@ public class keywords {
   public static final keyword USE = new keyword(new base_string("use"), base_symbols.USE);
   public static final keyword TARGET = new keyword(new base_string("target"), base_symbols.TARGET);
   public static final keyword PLEASE = new keyword(new base_string("please"), base_symbols.PLEASE);
+  public static final keyword GRAMMAR = new keyword(new base_string("grammar"), base_symbols.GRAMMAR);
+  public static final keyword TERMINAL = new keyword(new base_string("terminal"), base_symbols.TERMINAL);
+  public static final keyword NONTERMINAL = new keyword(new base_string("nonterminal"), base_symbols.NONTERMINAL);
 }

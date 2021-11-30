@@ -142,6 +142,7 @@ DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/extensions/*.java \
     $(JSOURCE_DIR)/ideal/development/targets/*.java \
     $(JSOURCE_DIR)/ideal/development/parsers/*.java \
+    $(JSOURCE_DIR)/ideal/development/grammars/*.java \
     $(JSOURCE_DIR)/ideal/development/tools/*.java
 
 default: print_elements

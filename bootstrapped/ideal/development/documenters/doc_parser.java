@@ -10,10 +10,10 @@ import ideal.runtime.texts.*;
 import ideal.library.channels.output;
 
 public class doc_parser extends markup_parser {
-  public doc_parser(final doc_grammar grammar, final procedure1<Void, string> error_reporter) {
-    super(grammar, error_reporter);
+  public doc_parser(final doc_grammar the_doc_grammar, final procedure1<Void, string> error_reporter) {
+    super(the_doc_grammar, error_reporter);
   }
   public text_fragment parse_content(final string text) {
-    return ((doc_grammar) this.grammar).parse_content(text, this);
+    return ((doc_grammar) this.the_markup_grammar).parse_content(text, this);
   }
 }

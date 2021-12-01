@@ -16,8 +16,8 @@ test_suite test_doc_grammar {
   }
 
   test_case test_simple_parse() {
-    grammar : make_grammar();
-    content_matcher : grammar.content;
+    the_grammar : make_grammar();
+    content_matcher : the_grammar.content;
 
     assert content_matcher("<html>foo</html>");
     assert content_matcher("  <html>foo</html>  ");
@@ -87,8 +87,8 @@ test_suite test_doc_grammar {
   }
 
   test_case test_parse_errors() {
-    grammar : make_grammar();
-    parser : doc_parser.new(grammar, report_error);
+    the_grammar : make_grammar();
+    parser : doc_parser.new(the_grammar, report_error);
 
     assert matches_with_error(parser.parse_content("<html>&bug;</html>"), "<html>&_error_;</html>",
         "Unrecognized entity: bug");

@@ -14,12 +14,12 @@ import ideal.machine.channels.string_writer;
 public class test_markup_grammar {
   public string error_message;
   public markup_grammar make_grammar() {
-    final markup_grammar grammar = new markup_grammar(unicode_handler.instance);
-    grammar.add_elements(text_library.HTML_ELEMENTS);
-    grammar.add_attributes(text_library.HTML_ATTRIBUTES);
-    grammar.add_entities(text_library.HTML_ENTITIES);
-    grammar.complete();
-    return grammar;
+    final markup_grammar the_markup_grammar = new markup_grammar(unicode_handler.instance);
+    the_markup_grammar.add_elements(text_library.HTML_ELEMENTS);
+    the_markup_grammar.add_attributes(text_library.HTML_ATTRIBUTES);
+    the_markup_grammar.add_entities(text_library.HTML_ENTITIES);
+    the_markup_grammar.complete();
+    return the_markup_grammar;
   }
   public void test_entity_ref() {
     final ideal.library.patterns.matcher<Character, special_text> entity_ref = this.make_grammar().entity_ref;
@@ -37,27 +37,27 @@ public class test_markup_grammar {
     assert entity_ref.parse(new base_string("&nbsp;")) == text_library.NBSP;
   }
   public void test_attribute_value() {
-    final markup_grammar grammar = this.make_grammar();
-    final ideal.library.patterns.matcher<Character, string> quot_attr_value = grammar.quot_attr_value;
+    final markup_grammar the_grammar = this.make_grammar();
+    final ideal.library.patterns.matcher<Character, string> quot_attr_value = the_grammar.quot_attr_value;
     assert ((function1<Boolean, readonly_list<Character>>) (Object) quot_attr_value).call(new base_string("foo"));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) quot_attr_value).call(new base_string("*bar*"));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) quot_attr_value).call(new base_string("\'baz\'"));
     assert !((function1<Boolean, readonly_list<Character>>) (Object) quot_attr_value).call(new base_string("&lt;"));
     assert !((function1<Boolean, readonly_list<Character>>) (Object) quot_attr_value).call(new base_string("\"a"));
-    final ideal.library.patterns.matcher<Character, string> apos_attr_value = grammar.apos_attr_value;
+    final ideal.library.patterns.matcher<Character, string> apos_attr_value = the_grammar.apos_attr_value;
     assert ((function1<Boolean, readonly_list<Character>>) (Object) apos_attr_value).call(new base_string("foo"));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) apos_attr_value).call(new base_string("*bar*"));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) apos_attr_value).call(new base_string("\"baz\""));
     assert !((function1<Boolean, readonly_list<Character>>) (Object) apos_attr_value).call(new base_string("&lt;"));
     assert !((function1<Boolean, readonly_list<Character>>) (Object) apos_attr_value).call(new base_string("\'a"));
-    final ideal.library.patterns.matcher<Character, attribute_fragment> attribute_value_in_quot = grammar.attribute_value_in_quot;
+    final ideal.library.patterns.matcher<Character, attribute_fragment> attribute_value_in_quot = the_grammar.attribute_value_in_quot;
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"\"")).to_string(), new base_string(""));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"foo\"")).to_string(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"&lt;\"")).to_string(), new base_string("&lt;"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"foo&lt;bar\"")).to_string(), new base_string("foo&lt;bar"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"&quot;-&apos;\"")).to_string(), new base_string("&quot;-&apos;"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_quot.parse(new base_string("\"&lt;foo&gt;bar\'baz\"")).to_string(), new base_string("&lt;foo&gt;bar\'baz"));
-    final ideal.library.patterns.matcher<Character, attribute_fragment> attribute_value_in_apos = grammar.attribute_value_in_apos;
+    final ideal.library.patterns.matcher<Character, attribute_fragment> attribute_value_in_apos = the_grammar.attribute_value_in_apos;
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'\'")).to_string(), new base_string(""));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'foo\'")).to_string(), new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(attribute_value_in_apos.parse(new base_string("\'&lt;\'")).to_string(), new base_string("&lt;"));
@@ -115,8 +115,8 @@ public class test_markup_grammar {
     assert !((function1<Boolean, readonly_list<Character>>) (Object) content).call(new base_string("<bar>"));
   }
   public void test_simple_parse() {
-    final markup_grammar grammar = this.make_grammar();
-    final ideal.library.patterns.matcher<Character, text_element> document_matcher = grammar.document_matcher;
+    final markup_grammar the_grammar = this.make_grammar();
+    final ideal.library.patterns.matcher<Character, text_element> document_matcher = the_grammar.document_matcher;
     assert ((function1<Boolean, readonly_list<Character>>) (Object) document_matcher).call(new base_string("<html>foo</html>"));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) document_matcher).call(new base_string("  <html>foo</html>  "));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) document_matcher).call(new base_string("  <html  >foo</html  >  "));
@@ -153,8 +153,8 @@ public class test_markup_grammar {
     assert this.matches(document_matcher.parse(new base_string("<html><p class = \'***\' id=\"baz\">foo</p></html>")), new base_string("<html><p class=\'***\' id=\'baz\'>foo</p></html>"));
   }
   public void test_parse_errors() {
-    final markup_grammar grammar = this.make_grammar();
-    final markup_parser parser = new markup_parser(grammar, new procedure1<Void, string>() {
+    final markup_grammar the_grammar = this.make_grammar();
+    final markup_parser parser = new markup_parser(the_grammar, new procedure1<Void, string>() {
       public @Override Void call(string first) {
         test_markup_grammar.this.report_error(first);
         return null;

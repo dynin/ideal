@@ -8,11 +8,11 @@
 class doc_parser {
   extends markup_parser;
 
-  doc_parser(doc_grammar grammar, procedure[void, string] error_reporter) {
-    super(grammar, error_reporter);
+  doc_parser(the doc_grammar, procedure[void, string] error_reporter) {
+    super(the_doc_grammar, error_reporter);
   }
 
   text_fragment parse_content(string text) {
-    return (grammar !> doc_grammar).parse_content(text, this);
+    return (the_markup_grammar !> doc_grammar).parse_content(text, this);
   }
 }

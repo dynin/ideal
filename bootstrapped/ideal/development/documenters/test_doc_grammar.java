@@ -18,8 +18,8 @@ public class test_doc_grammar {
     return new doc_grammar(unicode_handler.instance);
   }
   public void test_simple_parse() {
-    final doc_grammar grammar = this.make_grammar();
-    final ideal.library.patterns.matcher<Character, text_fragment> content_matcher = grammar.content;
+    final doc_grammar the_grammar = this.make_grammar();
+    final ideal.library.patterns.matcher<Character, text_fragment> content_matcher = the_grammar.content;
     assert ((function1<Boolean, readonly_list<Character>>) (Object) content_matcher).call(new base_string("<html>foo</html>"));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) content_matcher).call(new base_string("  <html>foo</html>  "));
     assert ((function1<Boolean, readonly_list<Character>>) (Object) content_matcher).call(new base_string("  <html  >foo</html  >  "));
@@ -61,8 +61,8 @@ public class test_doc_grammar {
     assert this.matches(content_matcher.parse(new base_string("<c><p class = \'value\">==\' id=\"foo\'\">foo</p></c> |bar| ")), new base_string("<c><p class=\'value&quot;&gt;==\' id=\'foo&apos;\'>foo</p></c> <code>bar</code> "));
   }
   public void test_parse_errors() {
-    final doc_grammar grammar = this.make_grammar();
-    final doc_parser parser = new doc_parser(grammar, new procedure1<Void, string>() {
+    final doc_grammar the_grammar = this.make_grammar();
+    final doc_parser parser = new doc_parser(the_grammar, new procedure1<Void, string>() {
       public @Override Void call(string first) {
         test_doc_grammar.this.report_error(first);
         return null;

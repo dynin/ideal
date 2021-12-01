@@ -12,12 +12,12 @@ test_suite test_markup_grammar {
   var string error_message;
 
   markup_grammar make_grammar() {
-    grammar : markup_grammar.new(unicode_handler.instance);
-    grammar.add_elements(text_library.HTML_ELEMENTS);
-    grammar.add_attributes(text_library.HTML_ATTRIBUTES);
-    grammar.add_entities(text_library.HTML_ENTITIES);
-    grammar.complete();
-    return grammar;
+    the markup_grammar : markup_grammar.new(unicode_handler.instance);
+    the_markup_grammar.add_elements(text_library.HTML_ELEMENTS);
+    the_markup_grammar.add_attributes(text_library.HTML_ATTRIBUTES);
+    the_markup_grammar.add_entities(text_library.HTML_ENTITIES);
+    the_markup_grammar.complete();
+    return the_markup_grammar;
   }
 
   test_case test_entity_ref() {
@@ -39,8 +39,8 @@ test_suite test_markup_grammar {
   }
 
   test_case test_attribute_value() {
-    grammar : make_grammar();
-    quot_attr_value : grammar.quot_attr_value;
+    the_grammar : make_grammar();
+    quot_attr_value : the_grammar.quot_attr_value;
 
     assert quot_attr_value("foo");
     assert quot_attr_value("*bar*");
@@ -48,7 +48,7 @@ test_suite test_markup_grammar {
     assert !quot_attr_value("&lt;");
     assert !quot_attr_value("\"a");
 
-    apos_attr_value : grammar.apos_attr_value;
+    apos_attr_value : the_grammar.apos_attr_value;
 
     assert apos_attr_value("foo");
     assert apos_attr_value("*bar*");
@@ -56,7 +56,7 @@ test_suite test_markup_grammar {
     assert !apos_attr_value("&lt;");
     assert !apos_attr_value("'a");
 
-    attribute_value_in_quot : grammar.attribute_value_in_quot;
+    attribute_value_in_quot : the_grammar.attribute_value_in_quot;
 
     assert attribute_value_in_quot.parse("\"\"").to_string == "";
     assert attribute_value_in_quot.parse("\"foo\"").to_string == "foo";
@@ -66,7 +66,7 @@ test_suite test_markup_grammar {
     assert attribute_value_in_quot.parse("\"&lt;foo&gt;bar'baz\"").to_string ==
         "&lt;foo&gt;bar'baz";
 
-    attribute_value_in_apos : grammar.attribute_value_in_apos;
+    attribute_value_in_apos : the_grammar.attribute_value_in_apos;
 
     assert attribute_value_in_apos.parse("''").to_string == "";
     assert attribute_value_in_apos.parse("'foo'").to_string == "foo";
@@ -138,8 +138,8 @@ test_suite test_markup_grammar {
   }
 
   test_case test_simple_parse() {
-    grammar : make_grammar();
-    document_matcher : grammar.document_matcher;
+    the_grammar : make_grammar();
+    document_matcher : the_grammar.document_matcher;
 
     assert document_matcher("<html>foo</html>");
     assert document_matcher("  <html>foo</html>  ");
@@ -197,8 +197,8 @@ test_suite test_markup_grammar {
   }
 
   test_case test_parse_errors() {
-    grammar : make_grammar();
-    parser : markup_parser.new(grammar, report_error);
+    the_grammar : make_grammar();
+    parser : markup_parser.new(the_grammar, report_error);
 
     assert matches_with_error(parser.parse("<html>&bug;</html>"), "<html>&_error_;</html>",
         "Unrecognized entity: bug");

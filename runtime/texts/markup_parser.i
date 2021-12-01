@@ -6,11 +6,11 @@
 
 --- An object encapsulating markup parser functionality.
 class markup_parser {
-  markup_grammar grammar;
+  the markup_grammar;
   procedure[void, string] error_reporter;
 
-  markup_parser(markup_grammar grammar, procedure[void, string] error_reporter) {
-    this.grammar = grammar;
+  markup_parser(the markup_grammar, procedure[void, string] error_reporter) {
+    this.the_markup_grammar = the_markup_grammar;
     this.error_reporter = error_reporter;
   }
 
@@ -20,6 +20,6 @@ class markup_parser {
   }
 
   text_element parse(string text) {
-    return grammar.parse(text, this);
+    return the_markup_grammar.parse(text, this);
   }
 }

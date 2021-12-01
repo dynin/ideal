@@ -9,16 +9,16 @@ import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 
 public class markup_parser {
-  public final markup_grammar grammar;
+  public final markup_grammar the_markup_grammar;
   public final procedure1<Void, string> error_reporter;
-  public markup_parser(final markup_grammar grammar, final procedure1<Void, string> error_reporter) {
-    this.grammar = grammar;
+  public markup_parser(final markup_grammar the_markup_grammar, final procedure1<Void, string> error_reporter) {
+    this.the_markup_grammar = the_markup_grammar;
     this.error_reporter = error_reporter;
   }
   public void report_error(final string error_message) {
     this.error_reporter.call(error_message);
   }
   public text_element parse(final string text) {
-    return this.grammar.parse(text, this);
+    return this.the_markup_grammar.parse(text, this);
   }
 }

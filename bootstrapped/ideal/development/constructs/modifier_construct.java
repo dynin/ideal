@@ -25,6 +25,8 @@ public class modifier_construct extends base_construct implements annotation_con
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
+    if (this.parameters != null)
+      generated_result.append((list_construct) this.parameters);
     return generated_result;
   }
 }

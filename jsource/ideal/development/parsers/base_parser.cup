@@ -110,8 +110,10 @@ non terminal list<construct>  sexpression_elements;
 /* Non-terminals for meta-grammar */
 non terminal construct  grammar_declaration;
 non terminal list<construct>  grammar_statements_opt;
-non terminal construct  grammar_statement, terminal_statement, nonterminal_statement;
-non terminal list<name_construct> name_list, name_list_tail;
+non terminal construct  grammar_statement;
+non terminal terminal_construct  terminal_statement;
+non terminal nonterminal_construct  nonterminal_statement;
+non terminal list<term_construct> name_list, name_list_tail;
 non terminal production_construct  production_statement;
 non terminal list<readonly_list<term_construct>> term_lists, term_lists_tail;
 non terminal list<term_construct> term_list_opt;
@@ -515,26 +517,32 @@ grammar_statement ::=
         ;
 
 terminal_statement ::=
-                TERMINAL expression name_list SEMICOLON
+                TERMINAL:t expression:type name_list:names SEMICOLON:s
+                {: RESULT = new terminal_construct(type, names, new fragment_origin(t, t, s)); :}
         ;
 
 nonterminal_statement ::=
-                NONTERMINAL expression name_list SEMICOLON
+                NONTERMINAL:nt expression:type name_list:names SEMICOLON:s
+                {: RESULT = new nonterminal_construct(type, names,
+                      new fragment_origin(nt, nt, s)); :}
         ;
 
 name_list ::=
-                SIMPLE_NAME name_list_tail
+                term:hd name_list_tail:tl
+                {: RESULT = new base_list<term_construct>(hd); RESULT.append_all(tl); :}
         ;
 
 name_list_tail ::=
-                COMMA SIMPLE_NAME name_list_tail
+                COMMA term:hd name_list_tail:tl
+                {: RESULT = new base_list<term_construct>(hd); RESULT.append_all(tl); :}
         |       /* epsilon */
+                {: RESULT = new base_list<term_construct>(); :}
         ;
 
 production_statement ::=
-                SIMPLE_NAME:n COLON_COLON_EQUALS term_lists:t SEMICOLON:s
-                {: RESULT = new production_construct(n.payload(), t,
-                    new fragment_origin(n, n, s)); :}
+                term:t COLON_COLON_EQUALS term_lists:tl SEMICOLON:s
+                {: RESULT = new production_construct(t, tl,
+                    new fragment_origin(t, t, s)); :}
         ;
 
 term_lists ::=

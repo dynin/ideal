@@ -13,6 +13,8 @@ package grammars {
   implicit import ideal.development.scanners;
 
   class grammar_scanner;
+  class terminal_construct;
+  class nonterminal_construct;
   class term_construct;
   class production_construct;
 }

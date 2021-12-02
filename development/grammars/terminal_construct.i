@@ -4,11 +4,11 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-meta_construct class production_construct {
+meta_construct class terminal_construct {
   implements stringable;
 
-  term_construct the_name;
-  readonly list[readonly list[term_construct]] term_lists;
+  construct the_type;
+  readonly list[term_construct] the_names;
 
-  override string to_string => utilities.describe(this, the_name);
+  override string to_string => utilities.describe(this, the_names.first);
 }

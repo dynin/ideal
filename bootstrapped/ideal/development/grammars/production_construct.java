@@ -10,12 +10,12 @@ import ideal.development.constructs.*;
 import ideal.development.scanners.*;
 
 public class production_construct extends base_construct implements stringable {
-  public final simple_name the_name;
+  public final term_construct the_name;
   public final readonly_list<readonly_list<term_construct>> term_lists;
   public @Override string to_string() {
     return utilities.describe(this, this.the_name);
   }
-  public production_construct(final simple_name the_name, final readonly_list<readonly_list<term_construct>> term_lists, final origin generated_origin) {
+  public production_construct(final term_construct the_name, final readonly_list<readonly_list<term_construct>> term_lists, final origin generated_origin) {
     super(generated_origin);
     assert the_name != null;
     this.the_name = the_name;
@@ -24,7 +24,7 @@ public class production_construct extends base_construct implements stringable {
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
-    generated_result.append_all((readonly_list<construct>) (Object) this.term_lists);
+    generated_result.append(this.the_name);
     return generated_result;
   }
 }

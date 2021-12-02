@@ -153,7 +153,7 @@ public class meta_construct_extension extends declaration_extension {
         removed_null = value_type;
       }
 
-      if (removed_null.principal() == construct_type) {
+      if (removed_null.principal().is_subtype_of(construct_type)) {
         procedure_name = APPEND_NAME;
         if (union_field) {
           field_access = new parameter_analyzer(
@@ -163,7 +163,7 @@ public class meta_construct_extension extends declaration_extension {
         }
       } else {
         principal_type list_element_type = element_type(removed_null);
-        if (list_element_type == null) {
+        if (list_element_type == null || !list_element_type.is_subtype_of(construct_type)) {
           continue;
         }
 

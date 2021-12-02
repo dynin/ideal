@@ -1000,6 +1000,7 @@
             the_operator_type: prefix
             name: !
             alpha_name: logical_not
+            the_precedence: UNARY
           }
           arguments: [
             parameter_construct {
@@ -1044,6 +1045,7 @@
                   the_operator_type: infix
                   name: !>
                   alpha_name: hard_cast
+                  the_precedence: RELATIONAL
                 }
                 arguments: [
                   parameter_construct {
@@ -1194,6 +1196,7 @@
                   the_operator_type: infix
                   name: &&
                   alpha_name: logical_and
+                  the_precedence: LOGICAL_AND
                 }
                 arguments: [
                   operator_construct {
@@ -1201,6 +1204,7 @@
                       the_operator_type: infix
                       name: >=
                       alpha_name: greater_equal
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       name_construct {
@@ -1220,6 +1224,7 @@
                       the_operator_type: infix
                       name: <=
                       alpha_name: less_equal
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       name_construct {
@@ -1285,6 +1290,7 @@
                   the_operator_type: infix
                   name: <
                   alpha_name: less
+                  the_precedence: RELATIONAL
                 }
                 arguments: [
                   name_construct {
@@ -1300,6 +1306,7 @@
                   the_operator_type: infix
                   name: +=
                   alpha_name: add_assign
+                  the_precedence: ASSIGNMENT
                 }
                 arguments: [
                   name_construct {

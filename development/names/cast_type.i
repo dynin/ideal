@@ -8,7 +8,8 @@
 class cast_type {
   extends operator;
 
+  -- TODO: precedence other that relational
   protected cast_type(token_type name, string alpha_name) {
-    super(operator_type.INFIX, name, alpha_name);
+    super(operator_type.INFIX, name, alpha_name, precedence.RELATIONAL);
   }
 }

@@ -271,6 +271,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -286,6 +287,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -322,6 +324,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -439,6 +442,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -454,6 +458,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -469,6 +474,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -527,6 +533,7 @@
                       the_operator_type: infix
                       name: >=
                       alpha_name: greater_equal
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       resolve_construct {
@@ -566,6 +573,7 @@
                       the_operator_type: infix
                       name: *
                       alpha_name: multiply
+                      the_precedence: MULTIPLICATIVE
                     }
                     arguments: [
                       resolve_construct {
@@ -590,6 +598,7 @@
                       the_operator_type: infix
                       name: <
                       alpha_name: less
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       name_construct {
@@ -608,6 +617,7 @@
                           the_operator_type: infix
                           name: =
                           alpha_name: assign
+                          the_precedence: ASSIGNMENT
                         }
                         arguments: [
                           name_construct {
@@ -689,6 +699,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -779,6 +790,7 @@
                         the_operator_type: infix
                         name: ==
                         alpha_name: equal_to
+                        the_precedence: EQUALITY
                       }
                       arguments: [
                         resolve_construct {
@@ -876,6 +888,7 @@
                               the_operator_type: infix
                               name: !>
                               alpha_name: hard_cast
+                              the_precedence: RELATIONAL
                             }
                             arguments: [
                               name_construct {
@@ -1011,6 +1024,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     parameter_construct {
@@ -1091,6 +1105,7 @@
                         the_operator_type: infix
                         name: +
                         alpha_name: add
+                        the_precedence: ADDITIVE
                       }
                       arguments: [
                         name_construct {
@@ -1110,6 +1125,7 @@
                       the_operator_type: infix
                       name: <
                       alpha_name: less
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       name_construct {
@@ -1133,6 +1149,7 @@
                             the_operator_type: infix
                             name: -
                             alpha_name: subtract
+                            the_precedence: ADDITIVE
                           }
                           arguments: [
                             name_construct {
@@ -1155,6 +1172,7 @@
                             the_operator_type: infix
                             name: is
                             alpha_name: is_operator
+                            the_precedence: RELATIONAL
                           }
                           arguments: [
                             name_construct {
@@ -1182,6 +1200,7 @@
                               the_operator_type: infix
                               name: +
                               alpha_name: add
+                              the_precedence: ADDITIVE
                             }
                             arguments: [
                               name_construct {
@@ -1208,6 +1227,7 @@
                     the_operator_type: infix
                     name: +=
                     alpha_name: add_assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -1257,6 +1277,7 @@
                       the_operator_type: infix
                       name: <
                       alpha_name: less
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       operator_construct {
@@ -1264,6 +1285,7 @@
                           the_operator_type: infix
                           name: +
                           alpha_name: add
+                          the_precedence: ADDITIVE
                         }
                         arguments: [
                           name_construct {
@@ -1295,6 +1317,7 @@
                               the_operator_type: infix
                               name: +
                               alpha_name: add
+                              the_precedence: ADDITIVE
                             }
                             arguments: [
                               name_construct {
@@ -1329,6 +1352,7 @@
                       the_operator_type: infix
                       name: -
                       alpha_name: subtract
+                      the_precedence: ADDITIVE
                     }
                     arguments: [
                       name_construct {
@@ -1351,6 +1375,7 @@
                       the_operator_type: infix
                       name: is
                       alpha_name: is_operator
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       name_construct {
@@ -1367,6 +1392,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     name_construct {
@@ -1485,6 +1511,7 @@
                     the_operator_type: infix
                     name: =
                     alpha_name: assign
+                    the_precedence: ASSIGNMENT
                   }
                   arguments: [
                     resolve_construct {
@@ -1557,6 +1584,7 @@
                 the_operator_type: infix
                 name: =
                 alpha_name: assign
+                the_precedence: ASSIGNMENT
               }
               arguments: [
                 name_construct {
@@ -1628,6 +1656,7 @@
                 the_operator_type: infix
                 name: =
                 alpha_name: assign
+                the_precedence: ASSIGNMENT
               }
               arguments: [
                 resolve_construct {
@@ -1684,6 +1713,7 @@
             the_operator_type: infix
             name: ==
             alpha_name: equal_to
+            the_precedence: EQUALITY
           }
           arguments: [
             resolve_construct {
@@ -1720,6 +1750,7 @@
             the_operator_type: infix
             name: !=
             alpha_name: not_equal_to
+            the_precedence: EQUALITY
           }
           arguments: [
             resolve_construct {
@@ -1823,6 +1854,7 @@
                   the_operator_type: infix
                   name: -
                   alpha_name: subtract
+                  the_precedence: ADDITIVE
                 }
                 arguments: [
                   resolve_construct {
@@ -1852,6 +1884,7 @@
                   the_operator_type: infix
                   name: is
                   alpha_name: is_operator
+                  the_precedence: RELATIONAL
                 }
                 arguments: [
                   name_construct {
@@ -1939,6 +1972,7 @@
                   the_operator_type: infix
                   name: <
                   alpha_name: less
+                  the_precedence: RELATIONAL
                 }
                 arguments: [
                   name_construct {
@@ -2113,6 +2147,7 @@
                   the_operator_type: infix
                   name: &&
                   alpha_name: logical_and
+                  the_precedence: LOGICAL_AND
                 }
                 arguments: [
                   operator_construct {
@@ -2120,6 +2155,7 @@
                       the_operator_type: infix
                       name: >=
                       alpha_name: greater_equal
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       name_construct {
@@ -2139,6 +2175,7 @@
                       the_operator_type: infix
                       name: <=
                       alpha_name: less_equal
+                      the_precedence: RELATIONAL
                     }
                     arguments: [
                       name_construct {
@@ -2162,6 +2199,7 @@
                   the_operator_type: infix
                   name: -
                   alpha_name: subtract
+                  the_precedence: ADDITIVE
                 }
                 arguments: [
                   name_construct {
@@ -2184,6 +2222,7 @@
                   the_operator_type: infix
                   name: is
                   alpha_name: is_operator
+                  the_precedence: RELATIONAL
                 }
                 arguments: [
                   name_construct {
@@ -2230,6 +2269,7 @@
                 the_operator_type: infix
                 name: =
                 alpha_name: assign
+                the_precedence: ASSIGNMENT
               }
               arguments: [
                 resolve_construct {
@@ -2487,6 +2527,7 @@
                 the_operator_type: infix
                 name: =
                 alpha_name: assign
+                the_precedence: ASSIGNMENT
               }
               arguments: [
                 resolve_construct {
@@ -2646,6 +2687,7 @@
                   the_operator_type: infix
                   name: <=
                   alpha_name: less_equal
+                  the_precedence: RELATIONAL
                 }
                 arguments: [
                   name_construct {
@@ -2731,6 +2773,7 @@
                   the_operator_type: infix
                   name: <
                   alpha_name: less
+                  the_precedence: RELATIONAL
                 }
                 arguments: [
                   name_construct {
@@ -2746,6 +2789,7 @@
                   the_operator_type: infix
                   name: +=
                   alpha_name: add_assign
+                  the_precedence: ASSIGNMENT
                 }
                 arguments: [
                   name_construct {
@@ -2773,6 +2817,7 @@
                         the_operator_type: infix
                         name: -
                         alpha_name: subtract
+                        the_precedence: ADDITIVE
                       }
                       arguments: [
                         operator_construct {
@@ -2780,6 +2825,7 @@
                             the_operator_type: infix
                             name: -
                             alpha_name: subtract
+                            the_precedence: ADDITIVE
                           }
                           arguments: [
                             name_construct {
@@ -2811,6 +2857,7 @@
                         the_operator_type: infix
                         name: is
                         alpha_name: is_operator
+                        the_precedence: RELATIONAL
                       }
                       arguments: [
                         name_construct {
@@ -2827,6 +2874,7 @@
                       the_operator_type: infix
                       name: =
                       alpha_name: assign
+                      the_precedence: ASSIGNMENT
                     }
                     arguments: [
                       parameter_construct {
@@ -2867,6 +2915,7 @@
                 the_operator_type: infix
                 name: =
                 alpha_name: assign
+                the_precedence: ASSIGNMENT
               }
               arguments: [
                 resolve_construct {

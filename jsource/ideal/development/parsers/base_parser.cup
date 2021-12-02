@@ -420,11 +420,11 @@ expression ::=  name:n
         |       expression:e1 IS_NOT:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.IS_NOT_OPERATOR); :}
         |       expression:e1 AMPERSAND:op expression:e2
-                {: RESULT = parser_util.make_op(e1, op, e2, operator.BIT_AND); :}
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.BITWISE_AND); :}
         |       expression:e1 CARET:op expression:e2
-                {: RESULT = parser_util.make_op(e1, op, e2, operator.XOR); :}
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.BITWISE_XOR); :}
         |       expression:e1 VERTICAL_BAR:op expression:e2
-                {: RESULT = parser_util.make_op(e1, op, e2, operator.BIT_OR); :}
+                {: RESULT = parser_util.make_op(e1, op, e2, operator.BITWISE_OR); :}
         |       expression:e1 AMPERSAND_AMPERSAND:op expression:e2
                 {: RESULT = parser_util.make_op(e1, op, e2, operator.LOGICAL_AND); :}
         |       expression:e1 VERTICAL_BAR_VERTICAL_BAR:op expression:e2

@@ -10,6 +10,6 @@ import ideal.development.symbols.base_symbols;
 
 public class cast_type extends operator {
   protected cast_type(final token_type name, final string alpha_name) {
-    super(operator_type.INFIX, name, alpha_name);
+    super(operator_type.INFIX, name, alpha_name, precedence.RELATIONAL);
   }
 }

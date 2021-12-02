@@ -17,6 +17,7 @@ package names {
   class quote_type;
   namespace special_token_type;
   class operator_type;
+  enum precedence;
   namespace punctuation;
   class operator;
   class cast_type;

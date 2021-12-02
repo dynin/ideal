@@ -1,0 +1,27 @@
+Quotes:
+Ambitious plan
+Design to stop
+For humans to read
+No obvious error
+Invent future
+
+Good design is obvious. Great design is transparent.
+— Joe Sparano
+
+A designer knows he has achieved perfection not when there is nothing left to add,
+but when there is nothing left to take away.
+
+— Antoine de Saint Exupéry
+
+“Programs must be written for people to read, and only incidentally for machines to execute.”
+-- Harold Abelson,
+
+There are two ways of constructing a software design:
+One way is to make it so simple that there are obviously no deficiencies
+and the other way is to make it so complicated that there are no obvious deficiencies.
+
+— C.A.R. Hoare, The 1980 ACM Turing Award Lecture
+
+A notation is important for what it leaves out.
+
+— Joseph Stoy

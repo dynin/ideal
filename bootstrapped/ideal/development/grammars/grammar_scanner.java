@@ -6,6 +6,7 @@ import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
+import ideal.development.constructs.*;
 import ideal.development.scanners.*;
 
 public class grammar_scanner {

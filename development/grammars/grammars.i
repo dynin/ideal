@@ -9,7 +9,10 @@ package grammars {
   implicit import ideal.runtime.elements;
   implicit import ideal.development.elements;
   implicit import ideal.development.names;
+  implicit import ideal.development.constructs;
   implicit import ideal.development.scanners;
 
   class grammar_scanner;
+  class term_construct;
+  class production_construct;
 }

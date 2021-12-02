@@ -21,6 +21,7 @@ import ideal.development.names.*;
 import ideal.development.modifiers.*;
 import ideal.development.parsers.*;
 import ideal.development.extensions.*;
+import ideal.development.grammars.*;
 import ideal.development.targets.*;
 import ideal.development.templates.*;
 import ideal.development.origins.*;
@@ -111,9 +112,10 @@ non terminal construct  grammar_declaration;
 non terminal list<construct>  grammar_statements_opt;
 non terminal construct  grammar_statement, terminal_statement, nonterminal_statement;
 non terminal list<name_construct> name_list, name_list_tail;
-non terminal construct  production_statement, term_lists, term_lists_tail;
-non terminal list<name_construct> term_list_opt;
-non terminal name_construct term;
+non terminal production_construct  production_statement;
+non terminal list<readonly_list<term_construct>> term_lists, term_lists_tail;
+non terminal list<term_construct> term_list_opt;
+non terminal term_construct term;
 
 /* Precedences */
 precedence left ELSE;
@@ -530,25 +532,33 @@ name_list_tail ::=
         ;
 
 production_statement ::=
-                SIMPLE_NAME COLON_COLON_EQUALS term_lists SEMICOLON
+                SIMPLE_NAME:n COLON_COLON_EQUALS term_lists:t SEMICOLON:s
+                {: RESULT = new production_construct(n.payload(), t,
+                    new fragment_origin(n, n, s)); :}
         ;
 
 term_lists ::=
-                term_list_opt term_lists_tail
+                term_list_opt:hd term_lists_tail:tl
+                {: RESULT = new base_list<readonly_list<term_construct>>(hd);
+                   RESULT.append_all(tl); :}
         ;
 
 term_lists_tail ::=
-                VERTICAL_BAR term_list_opt term_lists_tail
+                VERTICAL_BAR:vb term_list_opt:hd term_lists_tail:tl
+                {: RESULT = new base_list<readonly_list<term_construct>>(hd);
+                   RESULT.append_all(tl); :}
         |       /* epsilon */
+                {: RESULT = new base_list<readonly_list<term_construct>>(); :}
         ;
 
 term_list_opt ::=
                 term:hd term_list_opt:tl
-                {: RESULT = new base_list<name_construct>(hd); RESULT.append_all(tl); :}
+                {: RESULT = new base_list<term_construct>(hd); RESULT.append_all(tl); :}
         |       /* epsilon */
-                {: RESULT = new base_list<name_construct>(); :}
+                {: RESULT = new base_list<term_construct>(); :}
         ;
 
 term ::=
-                SIMPLE_NAME
+                SIMPLE_NAME:n
+                {: RESULT = new term_construct(n.payload(), n); :}
         ;

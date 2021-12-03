@@ -40,4 +40,7 @@ package constructs {
   class type_announcement_construct;
   class type_declaration_construct;
   class variable_construct;
+  class switch_construct;
+  class case_clause_construct;
+  class case_construct;
 }

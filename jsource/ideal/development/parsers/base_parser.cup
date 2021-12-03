@@ -115,9 +115,11 @@ non terminal terminal_construct  terminal_statement;
 non terminal nonterminal_construct  nonterminal_statement;
 non terminal list<term_construct> name_list, name_list_tail;
 non terminal production_construct  production_statement;
-non terminal list<readonly_list<term_construct>> term_lists, term_lists_tail;
-non terminal list<term_construct> term_list_opt;
 non terminal term_construct term;
+non terminal rule_construct rule;
+non terminal construct action_opt;
+non terminal list<rule_construct> rule_lists, rule_lists_tail;
+non terminal list<term_construct> term_list_opt;
 
 /* Precedences */
 precedence left ELSE;
@@ -540,23 +542,38 @@ name_list_tail ::=
         ;
 
 production_statement ::=
-                term:t COLON_COLON_EQUALS term_lists:tl SEMICOLON:s
+                term:t COLON_COLON_EQUALS rule_lists:tl SEMICOLON:s
                 {: RESULT = new production_construct(t, tl,
                     new fragment_origin(t, t, s)); :}
         ;
 
-term_lists ::=
-                term_list_opt:hd term_lists_tail:tl
-                {: RESULT = new base_list<readonly_list<term_construct>>(hd);
-                   RESULT.append_all(tl); :}
+term ::=
+                SIMPLE_NAME:n
+                {: RESULT = new term_construct(n.payload(), n); :}
         ;
 
-term_lists_tail ::=
-                VERTICAL_BAR:vb term_list_opt:hd term_lists_tail:tl
-                {: RESULT = new base_list<readonly_list<term_construct>>(hd);
-                   RESULT.append_all(tl); :}
+rule ::=
+                term_list_opt:t action_opt:a
+                {: RESULT = new rule_construct(t, a, origin_utilities.no_origin); :}
+        ;
+
+action_opt ::=
+                block:b
+                {: RESULT = b; :}
         |       /* epsilon */
-                {: RESULT = new base_list<readonly_list<term_construct>>(); :}
+                {: RESULT = null; :}
+        ;
+
+rule_lists ::=
+                rule:hd rule_lists_tail:tl
+                {: RESULT = new base_list<rule_construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+rule_lists_tail ::=
+                VERTICAL_BAR:vb rule:hd rule_lists_tail:tl
+                {: RESULT = new base_list<rule_construct>(hd); RESULT.append_all(tl); :}
+        |       /* epsilon */
+                {: RESULT = new base_list<rule_construct>(); :}
         ;
 
 term_list_opt ::=
@@ -564,9 +581,4 @@ term_list_opt ::=
                 {: RESULT = new base_list<term_construct>(hd); RESULT.append_all(tl); :}
         |       /* epsilon */
                 {: RESULT = new base_list<term_construct>(); :}
-        ;
-
-term ::=
-                SIMPLE_NAME:n
-                {: RESULT = new term_construct(n.payload(), n); :}
         ;

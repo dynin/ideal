@@ -184,5 +184,7 @@ class yyy {
 grammar {
   terminal string foo, bar;
   nonterminal string foobar;
-  foobar ::= foo bar;
+  foobar ::= foo bar { action; }
+             | bar { action2; }
+             ;
 }

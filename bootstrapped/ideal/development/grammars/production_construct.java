@@ -11,20 +11,21 @@ import ideal.development.scanners.*;
 
 public class production_construct extends base_construct implements stringable {
   public final term_construct the_name;
-  public final readonly_list<readonly_list<term_construct>> term_lists;
+  public final readonly_list<rule_construct> rules;
   public @Override string to_string() {
     return utilities.describe(this, this.the_name);
   }
-  public production_construct(final term_construct the_name, final readonly_list<readonly_list<term_construct>> term_lists, final origin generated_origin) {
+  public production_construct(final term_construct the_name, final readonly_list<rule_construct> rules, final origin generated_origin) {
     super(generated_origin);
     assert the_name != null;
     this.the_name = the_name;
-    assert term_lists != null;
-    this.term_lists = term_lists;
+    assert rules != null;
+    this.rules = rules;
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
     generated_result.append(this.the_name);
+    generated_result.append_all((readonly_list<construct>) (Object) this.rules);
     return generated_result;
   }
 }

@@ -4,11 +4,8 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-meta_construct class production_construct {
-  implements stringable;
+meta_construct class rule_construct {
 
-  term_construct the_name;
-  readonly list[rule_construct] rules;
-
-  override string to_string => utilities.describe(this, the_name);
+  readonly list[term_construct] terms;
+  construct or null actions;
 }

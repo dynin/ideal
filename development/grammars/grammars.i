@@ -16,5 +16,6 @@ package grammars {
   class terminal_construct;
   class nonterminal_construct;
   class term_construct;
+  class rule_construct;
   class production_construct;
 }

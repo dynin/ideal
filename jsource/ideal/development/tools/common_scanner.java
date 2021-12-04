@@ -106,6 +106,10 @@ public class common_scanner extends base_scanner_config {
 
     add_keyword(keywords.IMPORT);
 
+    add_keyword(keywords.SWITCH);
+    add_keyword(keywords.CASE);
+    add_keyword(keywords.DEFAULT);
+
     add_keyword(keywords.USE);
     add_keyword(keywords.TARGET);
 

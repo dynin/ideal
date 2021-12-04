@@ -23,6 +23,9 @@ public class keywords {
   public static final keyword WHILE = new keyword(new base_string("while"), base_symbols.WHILE);
   public static final keyword FOR = new keyword(new base_string("for"), base_symbols.FOR);
   public static final keyword IMPORT = new keyword(new base_string("import"), base_symbols.IMPORT);
+  public static final keyword SWITCH = new keyword(new base_string("switch"), base_symbols.SWITCH);
+  public static final keyword CASE = new keyword(new base_string("case"), base_symbols.CASE);
+  public static final keyword DEFAULT = new keyword(new base_string("default"), base_symbols.DEFAULT);
   public static final keyword USE = new keyword(new base_string("use"), base_symbols.USE);
   public static final keyword TARGET = new keyword(new base_string("target"), base_symbols.TARGET);
   public static final keyword PLEASE = new keyword(new base_string("please"), base_symbols.PLEASE);

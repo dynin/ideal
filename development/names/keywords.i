@@ -26,6 +26,11 @@ namespace keywords {
   WHILE : keyword.new("while", base_symbols.WHILE);
   FOR : keyword.new("for", base_symbols.FOR);
   IMPORT : keyword.new("import", base_symbols.IMPORT);
+
+  SWITCH : keyword.new("switch", base_symbols.SWITCH);
+  CASE : keyword.new("case", base_symbols.CASE);
+  DEFAULT : keyword.new("default", base_symbols.DEFAULT);
+
   USE : keyword.new("use", base_symbols.USE);
   TARGET : keyword.new("target", base_symbols.TARGET);
 

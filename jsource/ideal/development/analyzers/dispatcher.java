@@ -170,6 +170,13 @@ public class dispatcher extends construct_visitor<analyzable> {
     return new jump_analyzer(the_jump);
   }
 
+  @Override
+  public analyzable process_switch(switch_construct the_switch) {
+    // TODO: implement analysis
+    // return new switch_analyzer(the_switch);
+    return base_analyzable_action.nothing(the_switch);
+  }
+
   private @Nullable analyzable handle_extension(declaration_analyzer the_declaration,
       readonly_list<annotation_construct> annotations) {
 

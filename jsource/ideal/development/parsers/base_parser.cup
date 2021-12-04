@@ -64,6 +64,7 @@ terminal token<subtype_tag>  SUBTYPE_TAG;
 terminal token<jump_category>  JUMP;
 terminal token<constraint_category>  CONSTRAINT;
 terminal token<keyword>  IMPORT;
+terminal token<keyword>  SWITCH, CASE, DEFAULT;
 // Temporary.
 //terminal token<keyword>  TEMPLATE;
 terminal token<string>  HASH;
@@ -75,7 +76,7 @@ terminal token<string>  COLON_COLON_EQUALS;
 
 /* Non terminals */
 non terminal list<construct>  compilation_unit;
-non terminal list<construct>  statements_opt;
+non terminal list<construct>  statements, statements_opt;
 non terminal construct  expression;
 non terminal construct  statement;
 non terminal type_declaration_construct  type_declaration;
@@ -84,7 +85,7 @@ non terminal name_construct name;
 non terminal literal_construct  literal_value;
 non terminal list<construct>  types;
 non terminal construct  expression_opt;
-non terminal construct  condition_in_parens;
+non terminal construct  expression_in_parens;
 non terminal block_construct  block;
 non terminal construct  procedure_body;
 non terminal construct  variable_or_expression_opt;
@@ -99,6 +100,11 @@ non terminal list_construct  parameters;
 non terminal list_construct  parameters_opt;
 non terminal list_construct  parameter_list_opt;
 non terminal construct  parameter;
+
+non terminal list<case_clause_construct>  case_clauses, case_clauses_opt;
+non terminal case_clause_construct  case_clause;
+non terminal list<case_construct>  case_expressions, case_expressions_opt;
+non terminal case_construct  case_expression;
 
 /* Grammar for s-expression language */
 non terminal construct  template;
@@ -152,6 +158,11 @@ statements_opt ::=
                 {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
         |       /* epsilon */
                 {: RESULT = new base_list<construct>(); :}
+        ;
+
+statements ::=
+                statement:hd statements_opt:tl
+                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
         ;
 
 statement ::=
@@ -249,15 +260,15 @@ block_statement ::=
         |       CONSTRAINT:c expression:e SEMICOLON:s
                 {: RESULT = new constraint_construct(
                     c.payload(), e, new fragment_origin(c, c, s)); :}
-        |       IF:i condition_in_parens:c statement:t
+        |       IF:i expression_in_parens:c statement:t
                 {: RESULT = new conditional_construct(c, t, null, true,
                                            new fragment_origin(i, i, t)); :}
-        |       IF:i condition_in_parens:c statement:t ELSE statement:e
+        |       IF:i expression_in_parens:c statement:t ELSE statement:e
                 {: RESULT = new conditional_construct(c, t, e, true,
                                            new fragment_origin(i, i, e)); :}
         |       LOOP:p statement:st
                 {: RESULT = new loop_construct(st, new fragment_origin(p, p, st)); :}
-        |       WHILE:w condition_in_parens:c statement:t
+        |       WHILE:w expression_in_parens:c statement:t
                 {: RESULT = new while_construct(c, t, new fragment_origin(w, w, t)); :}
         |       FOR:f OPEN_PARENTHESIS variable_or_expression_opt:i SEMICOLON:s
                       expression_opt:c SEMICOLON expression_opt:u CLOSE_PARENTHESIS
@@ -265,8 +276,46 @@ block_statement ::=
                 {: RESULT = new for_construct(i, c, u, st, new fragment_origin(f, f, st)); :}
         |       FOR:f OPEN_PARENTHESIS variable_declaration:v CLOSE_PARENTHESIS statement:st
                 {: RESULT = new list_iteration_construct(v, st, new fragment_origin(f, f, st)); :}
+        |       SWITCH:s expression_in_parens:e OPEN_BRACE:ob case_clauses:cc CLOSE_BRACE:cb
+                {: RESULT = new switch_construct(cc, new fragment_origin(s, s, cb)); :}
         |       PLEASE:p statement:st
                 {: RESULT = new please_construct(st, new fragment_origin(p, p, st)); :}
+        ;
+
+case_clauses ::=
+                case_clause:hd case_clauses_opt:tl
+                {: RESULT = new base_list<case_clause_construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+case_clauses_opt ::=
+                case_clause:hd case_clauses_opt:tl
+                {: RESULT = new base_list<case_clause_construct>(hd); RESULT.append_all(tl); :}
+        |       /* epsilon */
+                {: RESULT = new base_list<case_clause_construct>(); :}
+        ;
+
+case_clause ::=
+                case_expressions:ce statements:st
+                {: RESULT = new case_clause_construct(ce, st, parser_util.empty_origin); :}
+        ;
+
+case_expressions ::=
+                case_expression:hd case_expressions_opt:tl
+                {: RESULT = new base_list<case_construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+case_expressions_opt ::=
+                case_expression:hd case_expressions_opt:tl
+                {: RESULT = new base_list<case_construct>(hd); RESULT.append_all(tl); :}
+        |       /* epsilon */
+                {: RESULT = new base_list<case_construct>(); :}
+        ;
+
+case_expression ::=
+                CASE:ca expression:e COLON:co
+                {: RESULT = new case_construct(e, new fragment_origin(ca, ca, co)); :}
+        |       DEFAULT:d COLON:co
+                {: RESULT = new case_construct(null, new fragment_origin(d, d, co)); :}
         ;
 
 variable_or_expression_opt ::=
@@ -311,7 +360,7 @@ expression_opt ::=
                 {: RESULT = new empty_construct(parser_util.empty_origin); :}
         ;
 
-condition_in_parens ::=
+expression_in_parens ::=
                 OPEN_PARENTHESIS:op expression:e CLOSE_PARENTHESIS:cp
                 {: RESULT = e; :}
         ;
@@ -554,7 +603,7 @@ term ::=
 
 rule ::=
                 term_list_opt:t action_opt:a
-                {: RESULT = new rule_construct(t, a, origin_utilities.no_origin); :}
+                {: RESULT = new rule_construct(t, a, parser_util.empty_origin); :}
         ;
 
 action_opt ::=

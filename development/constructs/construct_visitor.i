@@ -100,6 +100,10 @@ abstract class construct_visitor[any value return_value] {
       return process_jump(c);
     }
 
+    if (c is switch_construct) {
+      return process_switch(c);
+    }
+
     if (c is null) {
       utilities.panic("null construct in visitor");
     }
@@ -196,6 +200,10 @@ abstract class construct_visitor[any value return_value] {
   }
 
   return_value process_jump(jump_construct c) {
+    return process_default(c);
+  }
+
+  return_value process_switch(switch_construct c) {
     return process_default(c);
   }
 }

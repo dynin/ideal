@@ -179,6 +179,18 @@ class yyy {
   yyy(the string) {
     super(the_string);
   }
+  nonnegative switch_test() {
+    the_value : 68;
+    switch (the_value) {
+      case x:
+      case 2:
+      case 4:
+        return 42;
+      case 3:
+      default:
+        return 68;
+    }
+  }
 }
 
 grammar {

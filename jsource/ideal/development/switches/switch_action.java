@@ -12,6 +12,7 @@ import ideal.library.elements.*;
 import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.reflections.*;
+import ideal.machine.elements.*;
 import ideal.development.elements.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
@@ -68,8 +69,39 @@ public class switch_action extends base_action {
 
   @Override
   public entity_wrapper execute(entity_wrapper from_entity, execution_context exec_context) {
-    utilities.panic("switch_action.execute() not implemented");
-    return null;
+    assert from_entity instanceof null_wrapper;
+
+    entity_wrapper expression_result = expression.execute(null_wrapper.instance, exec_context);
+    if (expression_result instanceof jump_wrapper) {
+      return expression_result;
+    }
+
+    Object expression_value = ((value_wrapper) expression_result).unwrap();
+    @Nullable Integer clause_index = null;
+    boolean done = false;
+    for (int i = 0; i < clauses.size(); ++i) {
+      case_clause_action clause = clauses.get(i);
+      for (int j = 0; j < clause.case_values.size(); ++j) {
+        if (runtime_util.data_equals(expression_value, clause.case_values.get(j).unwrap())) {
+          clause_index = i;
+          done = true;
+          break;
+        }
+      }
+      if (done) {
+        break;
+      }
+      if (clause.is_default) {
+        clause_index = i;
+      }
+    }
+
+    if (clause_index != null) {
+      // TODO: handle fallthrough
+      return clauses.get(clause_index).body.execute(null_wrapper.instance, exec_context);
+    } else {
+      return common_values.void_instance();
+    }
   }
 
   @Override

@@ -158,7 +158,7 @@ public class runtime_util {
     return result;
   }
 
-  public static boolean data_equals(readonly_value d1, Object d2) {
+  public static boolean data_equals(Object d1, Object d2) {
     if (d1 == d2) {
       return true;
     }
@@ -180,6 +180,10 @@ public class runtime_util {
       readonly_has_equivalence e1 = (readonly_has_equivalence) d1;
       readonly_has_equivalence e2 = (readonly_has_equivalence) d2;
       return e1.equivalence().call(e1, e2);
+    }
+
+    if (d1 instanceof Integer) {
+      return d1.equals(d2);
     }
 
     if (d1 instanceof immutable_list) {

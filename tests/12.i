@@ -179,18 +179,23 @@ class yyy {
   yyy(the string) {
     super(the_string);
   }
-  nonnegative switch_test() {
-    integer switch_value : 68;
-    switch (switch_value) {
-      case 2:
-      case 4:
-        return 42;
-      case 3:
-      default:
-        return 68;
-    }
+}
+
+nonnegative switch_test(nonnegative switch_value) {
+  switch (switch_value) {
+    case 2:
+    case 4:
+      return 42;
+    case 3:
+    default:
+      return 68;
   }
 }
+
+println(" 2 => ", switch_test(2));
+println(" 3 => ", switch_test(3));
+println(" 4 => ", switch_test(4));
+println(" 5 => ", switch_test(5));
 
 grammar {
   terminal string foo, bar;

@@ -277,7 +277,7 @@ block_statement ::=
         |       FOR:f OPEN_PARENTHESIS variable_declaration:v CLOSE_PARENTHESIS statement:st
                 {: RESULT = new list_iteration_construct(v, st, new fragment_origin(f, f, st)); :}
         |       SWITCH:s expression_in_parens:e OPEN_BRACE:ob case_clauses:cc CLOSE_BRACE:cb
-                {: RESULT = new switch_construct(cc, new fragment_origin(s, s, cb)); :}
+                {: RESULT = new switch_construct(e, cc, new fragment_origin(s, s, cb)); :}
         |       PLEASE:p statement:st
                 {: RESULT = new please_construct(st, new fragment_origin(p, p, st)); :}
         ;

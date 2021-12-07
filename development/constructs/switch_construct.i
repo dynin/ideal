@@ -5,5 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 meta_construct class switch_construct {
+  construct expression;
   readonly list[case_clause_construct] clauses;
 }

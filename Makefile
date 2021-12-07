@@ -137,6 +137,7 @@ DEVELOPMENT_JAVA = \
     $(JSOURCE_DIR)/ideal/development/policies/*.java \
     $(JSOURCE_DIR)/ideal/development/functions/*.java \
     $(JSOURCE_DIR)/ideal/development/analyzers/*.java \
+    $(JSOURCE_DIR)/ideal/development/switches/*.java \
     $(JSOURCE_DIR)/ideal/development/templates/*.java \
     $(JSOURCE_DIR)/ideal/development/transformers/*.java \
     $(JSOURCE_DIR)/ideal/development/printers/*.java \

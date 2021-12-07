@@ -16,6 +16,7 @@ import ideal.development.kinds.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
 import ideal.development.types.*;
+import ideal.development.switches.switch_analyzer;
 import ideal.development.extensions.grouping_analyzer;
 import ideal.development.extensions.test_suite_extension;
 import javax.annotation.Nullable;
@@ -172,9 +173,7 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_switch(switch_construct the_switch) {
-    // TODO: implement analysis
-    // return new switch_analyzer(the_switch);
-    return base_analyzable_action.nothing(the_switch);
+    return new switch_analyzer(the_switch);
   }
 
   private @Nullable analyzable handle_extension(declaration_analyzer the_declaration,

@@ -180,9 +180,8 @@ class yyy {
     super(the_string);
   }
   nonnegative switch_test() {
-    the_value : 68;
-    switch (the_value) {
-      case x:
+    integer switch_value : 68;
+    switch (switch_value) {
       case 2:
       case 4:
         return 42;

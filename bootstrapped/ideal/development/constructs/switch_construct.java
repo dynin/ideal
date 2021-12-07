@@ -8,14 +8,18 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 
 public class switch_construct extends base_construct {
+  public final construct expression;
   public final readonly_list<case_clause_construct> clauses;
-  public switch_construct(final readonly_list<case_clause_construct> clauses, final origin generated_origin) {
+  public switch_construct(final construct expression, final readonly_list<case_clause_construct> clauses, final origin generated_origin) {
     super(generated_origin);
+    assert expression != null;
+    this.expression = expression;
     assert clauses != null;
     this.clauses = clauses;
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
+    generated_result.append(this.expression);
     generated_result.append_all((readonly_list<construct>) (Object) this.clauses);
     return generated_result;
   }

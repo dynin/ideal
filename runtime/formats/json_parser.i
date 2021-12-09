@@ -112,13 +112,22 @@ class json_parser {
       return scan_number(input, start, false);
     }
 
-    if (next == '-') {
-      if (index < input.size) {
-        return scan_number(input, index, true);
-      } else {
-        report_error("Minus at the end of input");
-        return index;
-      }
+    -- TODO: handle json tokens (below) in the switch
+    switch (next) {
+      case '-':
+        if (index < input.size) {
+          return scan_number(input, index, true);
+        } else {
+          report_error("Minus at the end of input");
+          return index;
+        }
+      case 't':
+        return scan_symbol(input, start, "true", true);
+      case 'f':
+        return scan_symbol(input, start, "false", false);
+      case 'n':
+        -- TODO: use native_null or another flavor of null other than missing
+        return scan_symbol(input, start, "null", missing.instance);
     }
 
     -- TODO: iterate over json_tokens
@@ -150,19 +159,6 @@ class json_parser {
     if (next == json_token.COLON.the_character) {
       tokens.append(json_token.COLON);
       return index;
-    }
-
-    if (next == 't') {
-      return scan_symbol(input, start, "true", true);
-    }
-
-    if (next == 'f') {
-      return scan_symbol(input, start, "false", false);
-    }
-
-    if (next == 'n') {
-      -- TODO: use native_null or another flavor of null other than missing
-      return scan_symbol(input, start, "null", missing.instance);
     }
 
     report_error("Unrecognized character in a string: " ++ next);

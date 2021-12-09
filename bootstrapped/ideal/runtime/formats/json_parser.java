@@ -113,13 +113,20 @@ public class json_parser {
     if (this.the_character_handler.is_digit(next)) {
       return this.scan_number(input, start, false);
     }
-    if (next == '-') {
-      if (index < input.size()) {
-        return this.scan_number(input, index, true);
-      } else {
-        this.report_error(new base_string("Minus at the end of input"));
-        return index;
-      }
+    switch (next) {
+      case '-':
+        if (index < input.size()) {
+          return this.scan_number(input, index, true);
+        } else {
+          this.report_error(new base_string("Minus at the end of input"));
+          return index;
+        }
+      case 't':
+        return this.scan_symbol(input, start, new base_string("true"), true);
+      case 'f':
+        return this.scan_symbol(input, start, new base_string("false"), false);
+      case 'n':
+        return this.scan_symbol(input, start, new base_string("null"), null);
     }
     if (next == json_token.OPEN_BRACE.the_character) {
       this.tokens.append(json_token.OPEN_BRACE);
@@ -144,15 +151,6 @@ public class json_parser {
     if (next == json_token.COLON.the_character) {
       this.tokens.append(json_token.COLON);
       return index;
-    }
-    if (next == 't') {
-      return this.scan_symbol(input, start, new base_string("true"), true);
-    }
-    if (next == 'f') {
-      return this.scan_symbol(input, start, new base_string("false"), false);
-    }
-    if (next == 'n') {
-      return this.scan_symbol(input, start, new base_string("null"), null);
     }
     this.report_error(ideal.machine.elements.runtime_util.concatenate(new base_string("Unrecognized character in a string: "), next));
     return index;

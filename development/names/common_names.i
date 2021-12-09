@@ -42,29 +42,23 @@ namespace common_names {
   private first : simple_name.make("first");
   private second : simple_name.make("second");
   private third : simple_name.make("third");
+  private fourth : simple_name.make("fourth");
+  private fifth : simple_name.make("fifth");
 
   simple_name make_numbered_name(nonnegative index) pure {
-    if (index == 0) {
-      return first;
-    } else if (index == 1) {
-      return second;
-    } else if (index == 2) {
-      return third;
-    } else {
-      utilities.panic("Don't know how to count up to " ++ index);
+    switch (index) {
+      case 0:
+        return first;
+      case 1:
+        return second;
+      case 2:
+        return third;
+      case 3:
+        return fourth;
+      case 4:
+        return fifth;
+      default:
+        return simple_name.make("number" ++ (index + 1));
     }
   }
--- TODO: implement switch
---    switch (index) {
---      case 0:
---        return FIRST;
---      case 1:
---        return SECOND;
---      case 2:
---        return THIRD;
---      default:
---        utilities.panic("Don't know how to count up to " + index);
---        return null;
---    }
---  }
 }

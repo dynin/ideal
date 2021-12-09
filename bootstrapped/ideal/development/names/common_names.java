@@ -41,16 +41,22 @@ public class common_names {
   private static final simple_name first = simple_name.make(new base_string("first"));
   private static final simple_name second = simple_name.make(new base_string("second"));
   private static final simple_name third = simple_name.make(new base_string("third"));
+  private static final simple_name fourth = simple_name.make(new base_string("fourth"));
+  private static final simple_name fifth = simple_name.make(new base_string("fifth"));
   public static simple_name make_numbered_name(final Integer index) {
-    if (ideal.machine.elements.runtime_util.values_equal(index, 0)) {
-      return common_names.first;
-    } else if (ideal.machine.elements.runtime_util.values_equal(index, 1)) {
-      return common_names.second;
-    } else if (ideal.machine.elements.runtime_util.values_equal(index, 2)) {
-      return common_names.third;
-    } else {
-      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Don\'t know how to count up to "), index));
-      return null;
+    switch (index) {
+      case 0:
+        return common_names.first;
+      case 1:
+        return common_names.second;
+      case 2:
+        return common_names.third;
+      case 3:
+        return common_names.fourth;
+      case 4:
+        return common_names.fifth;
+      default:
+        return simple_name.make(ideal.machine.elements.runtime_util.concatenate(new base_string("number"), (index + 1)));
     }
   }
 }

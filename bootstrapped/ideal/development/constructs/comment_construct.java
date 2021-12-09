@@ -20,15 +20,18 @@ public class comment_construct extends base_construct implements annotation_cons
     if (this.the_text_fragment == null) {
       this.the_text_fragment = doc_comment_processor.parse(this.the_comment.content);
     }
-    if (the_section == documentation_section.ALL) {
-      return this.the_text_fragment;
-    } else if (the_section == documentation_section.SUMMARY) {
-      final text_fragment text = this.the_text_fragment;
-      assert text != null;
-      return summary_extractor.get_summary(text);
-    } else {
-      utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown section: "), the_section));
-      return null;
+    switch (the_section) {
+      case ALL:
+        return this.the_text_fragment;
+      case SUMMARY:
+        final text_fragment text = this.the_text_fragment;
+        assert text != null;
+        return summary_extractor.get_summary(text);
+      default:
+        {
+          utilities.panic(ideal.machine.elements.runtime_util.concatenate(new base_string("Unknown section: "), the_section));
+          return null;
+        }
     }
   }
   public comment_construct(final comment the_comment, final @Nullable text_fragment the_text_fragment, final origin generated_origin) {

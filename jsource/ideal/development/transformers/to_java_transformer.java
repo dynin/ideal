@@ -1703,12 +1703,21 @@ public class to_java_transformer extends base_transformer {
       list<case_construct> cases = new base_list<case_construct>();
       for (int j = 0; j < the_clause_action.case_values.size(); ++j) {
         data_value the_value = the_clause_action.case_values.get(j);
-        cases.append(new case_construct(process_data_value(the_value, the_origin), the_origin));
+        construct value_construct;
+        if (the_value instanceof enum_value) {
+          // an enum switch case label must be the unqualified name of an enumeration constant
+          enum_value the_enum_value = (enum_value) the_value;
+          value_construct = new name_construct(the_enum_value.short_name(), the_origin);
+        } else {
+          value_construct = process_data_value(the_value, the_origin);
+        }
+        cases.append(new case_construct(value_construct, the_origin));
       }
       if (the_clause_action.is_default) {
         cases.append(new case_construct(null, the_origin));
       }
-      list<construct> body = new base_list<construct>(transform_action(the_clause_action.body));
+      list<construct> body = new base_list<construct>();
+      transform_and_append(the_clause_action.body, body);
       clauses.append(new case_clause_construct(cases, body, the_origin));
     }
 

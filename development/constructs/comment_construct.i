@@ -20,15 +20,15 @@ meta_construct class comment_construct {
       the_text_fragment = doc_comment_processor.parse(the_comment.content);
     }
 
-    -- TODO: revert to switch
-    if (the_section == documentation_section.ALL) {
-      return the_text_fragment;
-    } else if (the_section == documentation_section.SUMMARY) {
-      text : the_text_fragment;
-      assert text is_not null;
-      return summary_extractor.get_summary(text);
-    } else {
-      utilities.panic("Unknown section: " ++ the_section);
+    switch (the_section) {
+      case ALL:
+        return the_text_fragment;
+      case SUMMARY:
+        text : the_text_fragment;
+        assert text is_not null;
+        return summary_extractor.get_summary(text);
+      default:
+        utilities.panic("Unknown section: " ++ the_section);
     }
   }
 }

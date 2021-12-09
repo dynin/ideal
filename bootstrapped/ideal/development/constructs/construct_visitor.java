@@ -81,6 +81,12 @@ public abstract class construct_visitor<return_value> implements value {
     if (c instanceof switch_construct) {
       return this.process_switch(((switch_construct) c));
     }
+    if (c instanceof case_clause_construct) {
+      return this.process_case_clause(((case_clause_construct) c));
+    }
+    if (c instanceof case_construct) {
+      return this.process_case(((case_construct) c));
+    }
     if (c == null) {
       utilities.panic(new base_string("null construct in visitor"));
       return null;
@@ -159,6 +165,12 @@ public abstract class construct_visitor<return_value> implements value {
     return this.process_default(c);
   }
   public return_value process_switch(final switch_construct c) {
+    return this.process_default(c);
+  }
+  public return_value process_case_clause(final case_clause_construct c) {
+    return this.process_default(c);
+  }
+  public return_value process_case(final case_construct c) {
     return this.process_default(c);
   }
   public construct_visitor() { }

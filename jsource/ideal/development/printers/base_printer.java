@@ -93,8 +93,12 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     return print_word(punct);
   }
 
-  protected text_fragment print_block(readonly_list<construct> constructs, boolean prepend_space,
-      boolean end_line) {
+  public text_fragment print_indented(text_fragment the_text_fragment) {
+    return new base_element(text_library.INDENT, the_text_fragment);
+  }
+
+  protected text_fragment print_block(readonly_list<? extends construct> constructs,
+      boolean prepend_space, boolean end_line) {
     assert constructs != null;
     @Nullable text_fragment statements = constructs.is_empty() ?  null :
         print_statements(constructs);
@@ -114,7 +118,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       if (statements == null) {
         fragments.append(print_space());
       } else {
-        fragments.append(new base_element(text_library.INDENT, statements));
+        fragments.append(print_indented(statements));
         if (end_line) {
           close_brace = print_line(close_brace);
         }
@@ -123,9 +127,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       return text_utilities.join(fragments);
     } else {
       if (statements == null) {
-        return new base_element(text_library.INDENT, print_pass());
+        return print_indented(print_pass());
       } else {
-        return new base_element(text_library.INDENT, statements);
+        return print_indented(statements);
       }
     }
   }
@@ -165,6 +169,9 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
            c instanceof procedure_construct ||
            c instanceof block_construct ||
            c instanceof loop_construct ||
+           c instanceof switch_construct ||
+           c instanceof case_clause_construct ||
+           c instanceof case_construct ||
            (c instanceof conditional_construct &&
              ((conditional_construct) c).is_statement);
   }
@@ -389,7 +396,7 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
       block_construct bc = (block_construct) c;
       return print_block(bc.body, true, end_line);
     } else {
-      return new base_element(text_library.INDENT, print_statement(c));
+      return print_indented(print_statement(c));
     }
   }
 
@@ -866,6 +873,47 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     fragments.append(print_indented_statement(c.body));
 
     return text_utilities.join(fragments);
+  }
+
+  @Override
+  public text_fragment process_switch(switch_construct c) {
+    list<text_fragment> fragments = new base_list<text_fragment>();
+
+    fragments.append(print_word(keywords.SWITCH));
+    fragments.append(print_space());
+    fragments.append(print_grouping_in_statement(print(c.expression)));
+    fragments.append(print_block(c.clauses, true, true));
+
+    return text_utilities.join(fragments);
+  }
+
+  public text_fragment process_case_clause(case_clause_construct c) {
+    // TODO: move to case_clause_construct constructor
+    assert c.cases.is_not_empty();
+    assert c.body.is_not_empty();
+
+    list<text_fragment> fragments = new base_list<text_fragment>();
+
+    fragments.append(print_statements(c.cases));
+    fragments.append(print_indented(print_statements(c.body)));
+
+    return text_utilities.join(fragments);
+  }
+
+  public text_fragment process_case(case_construct c) {
+    list<text_fragment> fragments = new base_list<text_fragment>();
+
+    if (c.case_value != null) {
+      fragments.append(print_word(keywords.CASE));
+      fragments.append(print_space());
+      fragments.append(print(c.case_value));
+    } else {
+      fragments.append(print_word(keywords.DEFAULT));
+    }
+
+    fragments.append(print_punctuation(punctuation.COLON));
+
+    return print_line(text_utilities.join(fragments));
   }
 
   @Override

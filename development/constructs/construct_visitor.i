@@ -104,6 +104,14 @@ abstract class construct_visitor[any value return_value] {
       return process_switch(c);
     }
 
+    if (c is case_clause_construct) {
+      return process_case_clause(c);
+    }
+
+    if (c is case_construct) {
+      return process_case(c);
+    }
+
     if (c is null) {
       utilities.panic("null construct in visitor");
     }
@@ -204,6 +212,14 @@ abstract class construct_visitor[any value return_value] {
   }
 
   return_value process_switch(switch_construct c) {
+    return process_default(c);
+  }
+
+  return_value process_case_clause(case_clause_construct c) {
+    return process_default(c);
+  }
+
+  return_value process_case(case_construct c) {
     return process_default(c);
   }
 }

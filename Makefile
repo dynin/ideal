@@ -201,7 +201,7 @@ generate_cache: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(ONE)
 
 12: $(IDEAL_TARGET) $(ONETWO)
-	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(ONETWO)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -generate -input=$(ONETWO)
 
 list: $(IDEAL_TARGET) $(TEST_LIST)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(TEST_LIST)

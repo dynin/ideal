@@ -96,6 +96,7 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
         get_context(), the_origin);
     type the_type = expression_action.result().type_bound();
 
+    // TODO: detect duplicate values
     list<case_clause_action> clause_actions = new base_list<case_clause_action>();
     for (int i = 0; i < clauses.size(); ++i) {
       case_clause the_clause = clauses.get(i);
@@ -122,6 +123,9 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
         return new error_signal(new base_string("Error in switch body"), the_clause.body,
             the_origin);
       }
+      // TODO: handle breaks
+      // TODO: handle variables in body
+      // TODO: handle non-terminating bodies
       action body = action_not_error(the_clause.body);
       case_clause_action the_case_clause_action = new case_clause_action(values,
           the_clause.is_default, body);

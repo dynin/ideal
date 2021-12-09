@@ -24,6 +24,7 @@ import static ideal.development.flavors.flavor.*;
 import ideal.development.names.*;
 import static ideal.development.names.common_names.*;
 import ideal.development.kinds.*;
+import ideal.development.jumps.*;
 import static ideal.development.kinds.type_kinds.*;
 import static ideal.development.kinds.subtype_tags.*;
 import ideal.development.types.*;
@@ -38,6 +39,8 @@ import static ideal.development.values.common_values.*;
 import ideal.development.origins.*;
 import ideal.development.literals.*;
 import ideal.development.languages.java_language;
+import ideal.development.switches.*;
+import ideal.development.switches.switch_action.case_clause_action;
 
 public class to_java_transformer extends base_transformer {
 
@@ -1691,6 +1694,27 @@ public class to_java_transformer extends base_transformer {
         the_origin);
   }
 
+  public construct process_switch_action(switch_action the_switch_action, origin the_origin) {
+    construct expression = transform_action(the_switch_action.expression);
+
+    list<case_clause_construct> clauses = new base_list<case_clause_construct>();
+    for (int i = 0; i < the_switch_action.clauses.size(); ++i) {
+      case_clause_action the_clause_action = the_switch_action.clauses.get(i);
+      list<case_construct> cases = new base_list<case_construct>();
+      for (int j = 0; j < the_clause_action.case_values.size(); ++j) {
+        data_value the_value = the_clause_action.case_values.get(j);
+        cases.append(new case_construct(process_data_value(the_value, the_origin), the_origin));
+      }
+      if (the_clause_action.is_default) {
+        cases.append(new case_construct(null, the_origin));
+      }
+      list<construct> body = new base_list<construct>(transform_action(the_clause_action.body));
+      clauses.append(new case_clause_construct(cases, body, the_origin));
+    }
+
+    return new switch_construct(expression, clauses, the_origin);
+  }
+
   public construct process_return_action(return_action the_return) {
     origin the_origin = the_return;
 
@@ -1782,9 +1806,14 @@ public class to_java_transformer extends base_transformer {
   }
 
   public construct process_list_action(list_action the_list_action) {
-    utilities.panic("list_action: " + the_list_action);
     origin the_origin = the_list_action;
-    return new block_construct(transform_parameters(the_list_action.elements()), the_origin);
+    if (the_list_action.elements().size() == 1) {
+      return transform_action(the_list_action.elements().first());
+    } else {
+      // TODO: handle this.
+      utilities.panic("list_action: " + the_list_action);
+      return new block_construct(transform_parameters(the_list_action.elements()), the_origin);
+    }
   }
 
   public construct process_constraint_action(constraint_action the_constraint_action) {
@@ -1923,9 +1952,18 @@ public class to_java_transformer extends base_transformer {
   }
 
   public construct process_value_action(base_value_action the_value_action) {
-    //System.out.println("PV: " + the_value);
     origin the_origin = the_value_action;
     Object the_value = the_value_action.the_value;
+
+    if (the_value instanceof jump_wrapper) {
+      loop_jump_wrapper the_loop_jump_wrapper = (loop_jump_wrapper) the_value;
+      return new jump_construct(the_loop_jump_wrapper.the_jump_category, the_origin);
+    }
+
+    return process_data_value((data_value) the_value, the_origin);
+  }
+
+  public construct process_data_value(data_value the_value, origin the_origin) {
     if (the_value instanceof singleton_value) {
       principal_type singleton_type = ((singleton_value) the_value).type_bound().principal();
       // Convert missing.instance to null literal
@@ -1947,7 +1985,7 @@ public class to_java_transformer extends base_transformer {
       }
     } else if (the_value instanceof string_value) {
       string_value the_string_value = (string_value) the_value;
-      type the_type = the_value_action.result().type_bound();
+      type the_type = the_value.type_bound();
       quote_type literal_type = (the_type == immutable_character_type()) ?
           punctuation.SINGLE_QUOTE : punctuation.DOUBLE_QUOTE;
       construct result = new literal_construct(new string_literal(the_string_value.unwrap(),
@@ -1959,14 +1997,13 @@ public class to_java_transformer extends base_transformer {
     } else if (the_value instanceof base_procedure) {
       base_procedure the_procedure = (base_procedure) the_value;
       action_name the_name = map_name(the_procedure.name());
-      procedure_declaration the_procedure_declaration =
-          (procedure_declaration) the_procedure.get_declaration();
-      if (the_procedure_declaration == null) {
-        return new name_construct(the_name, the_origin);
-      } else {
+      declaration the_declaration = the_procedure.get_declaration();
+      if (the_declaration instanceof procedure_declaration) {
         return new resolve_construct(
-            make_type(the_procedure_declaration.declared_in_type(), the_origin),
+            make_type(((procedure_declaration) the_declaration).declared_in_type(), the_origin),
             the_name, the_origin);
+      } else {
+        return new name_construct(the_name, the_origin);
       }
     } else if (the_value instanceof procedure_with_this) {
       procedure_with_this the_procedure_with_this = (procedure_with_this) the_value;
@@ -1980,9 +2017,6 @@ public class to_java_transformer extends base_transformer {
       } else {
         return new resolve_construct(this_construct, map_name(the_action_name), the_origin);
       }
-    } else if (the_value instanceof loop_jump_wrapper) {
-      loop_jump_wrapper the_loop_jump_wrapper = (loop_jump_wrapper) the_value;
-      return new jump_construct(the_loop_jump_wrapper.the_jump_category, the_origin);
     }
 
     utilities.panic("processing value " + the_value.getClass() + ": " + the_value);
@@ -2136,6 +2170,10 @@ public class to_java_transformer extends base_transformer {
 
     if (the_action instanceof loop_action) {
       return process_loop_action((loop_action) the_action);
+    }
+
+    if (the_action instanceof switch_action) {
+      return process_switch_action((switch_action) the_action, the_origin);
     }
 
     utilities.panic("processing action " + the_action.getClass() + ": " + the_action);

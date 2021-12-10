@@ -8,7 +8,7 @@ meta_construct class terminal_construct {
   implements stringable;
 
   construct the_type;
-  readonly list[term_construct] the_names;
+  readonly list[name_construct] the_names;
 
   override string to_string => utilities.describe(this, the_names.first);
 }

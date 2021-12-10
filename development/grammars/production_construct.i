@@ -7,7 +7,7 @@
 meta_construct class production_construct {
   implements stringable;
 
-  term_construct the_name;
+  name_construct the_name;
   readonly list[rule_construct] rules;
 
   override string to_string => utilities.describe(this, the_name);

@@ -201,8 +201,11 @@ println(" 5 => ", testns.switch_test(5));
 
 grammar {
   terminal string foo, bar;
-  nonterminal string foobar;
+  nonterminal string foobar, foobaz;
   foobar ::= foo bar { action; }
              | bar { action2; }
+             ;
+  foobaz ::= foo bar+ { action; }
+             | bar* { action2; }
              ;
 }

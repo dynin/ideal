@@ -15,6 +15,7 @@ package grammars {
   class grammar_scanner;
   class terminal_construct;
   class nonterminal_construct;
+  enum term_repeat;
   class term_construct;
   class rule_construct;
   class production_construct;

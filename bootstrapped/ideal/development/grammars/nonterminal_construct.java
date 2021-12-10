@@ -11,11 +11,11 @@ import ideal.development.scanners.*;
 
 public class nonterminal_construct extends base_construct implements stringable {
   public final construct the_type;
-  public final readonly_list<term_construct> the_names;
+  public final readonly_list<name_construct> the_names;
   public @Override string to_string() {
     return utilities.describe(this, this.the_names.first());
   }
-  public nonterminal_construct(final construct the_type, final readonly_list<term_construct> the_names, final origin generated_origin) {
+  public nonterminal_construct(final construct the_type, final readonly_list<name_construct> the_names, final origin generated_origin) {
     super(generated_origin);
     assert the_type != null;
     this.the_type = the_type;

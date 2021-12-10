@@ -9,18 +9,28 @@ import ideal.development.names.*;
 import ideal.development.constructs.*;
 import ideal.development.scanners.*;
 
+import javax.annotation.Nullable;
+
 public class term_construct extends base_construct implements stringable {
-  public final simple_name the_name;
+  public final name_construct the_name;
+  public final @Nullable name_construct variable_name;
+  public final term_repeat repeat;
   public @Override string to_string() {
     return utilities.describe(this, this.the_name);
   }
-  public term_construct(final simple_name the_name, final origin generated_origin) {
+  public term_construct(final name_construct the_name, final @Nullable name_construct variable_name, final term_repeat repeat, final origin generated_origin) {
     super(generated_origin);
     assert the_name != null;
     this.the_name = the_name;
+    this.variable_name = variable_name;
+    assert repeat != null;
+    this.repeat = repeat;
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
+    generated_result.append(this.the_name);
+    if (this.variable_name != null)
+      generated_result.append((name_construct) this.variable_name);
     return generated_result;
   }
 }

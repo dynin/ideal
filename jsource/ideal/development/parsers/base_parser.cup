@@ -119,12 +119,14 @@ non terminal list<construct>  grammar_statements_opt;
 non terminal construct  grammar_statement;
 non terminal terminal_construct  terminal_statement;
 non terminal nonterminal_construct  nonterminal_statement;
-non terminal list<term_construct> name_list, name_list_tail;
+non terminal list<name_construct> name_list, name_list_tail;
 non terminal production_construct  production_statement;
-non terminal term_construct term;
+non terminal name_construct term_name;
 non terminal rule_construct rule;
 non terminal construct action_opt;
 non terminal list<rule_construct> rule_lists, rule_lists_tail;
+non terminal term_construct term;
+non terminal name_construct variable_name_opt;
 non terminal list<term_construct> term_list_opt;
 
 /* Precedences */
@@ -579,26 +581,26 @@ nonterminal_statement ::=
         ;
 
 name_list ::=
-                term:hd name_list_tail:tl
-                {: RESULT = new base_list<term_construct>(hd); RESULT.append_all(tl); :}
+                term_name:hd name_list_tail:tl
+                {: RESULT = new base_list<name_construct>(hd); RESULT.append_all(tl); :}
         ;
 
 name_list_tail ::=
-                COMMA term:hd name_list_tail:tl
-                {: RESULT = new base_list<term_construct>(hd); RESULT.append_all(tl); :}
+                COMMA term_name:hd name_list_tail:tl
+                {: RESULT = new base_list<name_construct>(hd); RESULT.append_all(tl); :}
         |       /* epsilon */
-                {: RESULT = new base_list<term_construct>(); :}
+                {: RESULT = new base_list<name_construct>(); :}
         ;
 
 production_statement ::=
-                term:t COLON_COLON_EQUALS rule_lists:tl SEMICOLON:s
+                term_name:t COLON_COLON_EQUALS rule_lists:tl SEMICOLON:s
                 {: RESULT = new production_construct(t, tl,
                     new fragment_origin(t, t, s)); :}
         ;
 
-term ::=
+term_name ::=
                 SIMPLE_NAME:n
-                {: RESULT = new term_construct(n.payload(), n); :}
+                {: RESULT = new name_construct(n.payload(), n); :}
         ;
 
 rule ::=
@@ -623,6 +625,25 @@ rule_lists_tail ::=
                 {: RESULT = new base_list<rule_construct>(hd); RESULT.append_all(tl); :}
         |       /* epsilon */
                 {: RESULT = new base_list<rule_construct>(); :}
+        ;
+
+term ::=
+                term_name:n variable_name_opt:vn
+                {: RESULT = new term_construct(n, vn, term_repeat.NO_REPEAT,
+                    new fragment_origin(n, n, vn)); :}
+        |       term_name:n variable_name_opt:vn ASTERISK:a
+                {: RESULT = new term_construct(n, vn, term_repeat.ZERO_OR_MORE,
+                    new fragment_origin(n, n, a)); :}
+        |       term_name:n variable_name_opt:vn PLUS:p
+                {: RESULT = new term_construct(n, vn, term_repeat.ONE_OR_MORE,
+                    new fragment_origin(n, n, p)); :}
+        ;
+
+variable_name_opt ::=
+                COLON term_name:n
+                {: RESULT = n; :}
+        |       /* epsilon */
+                {: RESULT = null; :}
         ;
 
 term_list_opt ::=

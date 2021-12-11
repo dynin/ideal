@@ -203,6 +203,9 @@ generate_cache: $(IDEAL_TARGET)
 12: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(ONETWO)
 
+testgrammar: $(IDEAL_TARGET)
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=testdata/markup_grammar.i
+
 list: $(IDEAL_TARGET) $(TEST_LIST)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(TEST_LIST)
 

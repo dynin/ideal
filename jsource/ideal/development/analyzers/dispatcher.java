@@ -176,6 +176,11 @@ public class dispatcher extends construct_visitor<analyzable> {
     return new switch_analyzer(the_switch);
   }
 
+  @Override
+  public analyzable process_grammar(grammar_construct the_grammar) {
+    return base_analyzable_action.nothing(the_grammar);
+  }
+
   private @Nullable analyzable handle_extension(declaration_analyzer the_declaration,
       readonly_list<annotation_construct> annotations) {
 

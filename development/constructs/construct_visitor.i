@@ -112,6 +112,10 @@ abstract class construct_visitor[any value return_value] {
       return process_case(c);
     }
 
+    if (c is grammar_construct) {
+      return process_grammar(c);
+    }
+
     if (c is null) {
       utilities.panic("null construct in visitor");
     }
@@ -220,6 +224,10 @@ abstract class construct_visitor[any value return_value] {
   }
 
   return_value process_case(case_construct c) {
+    return process_default(c);
+  }
+
+  return_value process_grammar(grammar_construct c) {
     return process_default(c);
   }
 }

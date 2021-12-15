@@ -114,7 +114,7 @@ non terminal construct  sexpression_element;
 non terminal list<construct>  sexpression_elements;
 
 /* Non-terminals for meta-grammar */
-non terminal construct  grammar_declaration;
+non terminal grammar_construct  grammar_declaration;
 non terminal list<construct>  grammar_statements_opt;
 non terminal construct  grammar_statement;
 non terminal terminal_construct  terminal_statement;
@@ -549,8 +549,10 @@ sexpression_atom ::=
         ;
 
 grammar_declaration ::=
-                GRAMMAR:g OPEN_BRACE:ob grammar_statements_opt:st CLOSE_BRACE:cb
-                {: RESULT = new empty_construct(g); :}
+                annotations_opt:m GRAMMAR:g name:n
+                    OPEN_BRACE:ob grammar_statements_opt:st CLOSE_BRACE:cb
+                {: RESULT = new grammar_construct(m, n.the_name, st,
+                    new fragment_origin(g, n, cb)); :}
         ;
 
 grammar_statements_opt ::=

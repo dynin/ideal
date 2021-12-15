@@ -4,10 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
-enum term_repeat {
-  extends deeply_immutable data, stringable;
+meta_construct class grammar_construct {
+  readonly list[annotation_construct] annotations;
+  action_name name;
+  readonly list[construct] body;
 
-  NO_REPEAT;
-  ZERO_OR_MORE;
-  ONE_OR_MORE;
+  override string to_string => utilities.describe(this, name);
 }

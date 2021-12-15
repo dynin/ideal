@@ -4,10 +4,10 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
--- The grammar for a subset of XML.
---
--- Used https://cs.lmu.edu/~ray/notes/xmlgrammar/ as a reference.
-grammar {
+--- The grammar for a subset of XML.
+---
+--- Used https://cs.lmu.edu/~ray/notes/xmlgrammar/ as a reference.
+grammar markup_grammar {
   terminal character lt, gt, slash, amp, semicolon, quot, apos, eq;
   terminal character underscore, colon, dot, minus;
   terminal character whitespace, letter, etc;

@@ -199,7 +199,7 @@ println(" 3 => ", testns.switch_test(3));
 println(" 4 => ", testns.switch_test(4));
 println(" 5 => ", testns.switch_test(5));
 
-grammar {
+grammar test_grammar {
   terminal string foo, bar;
   nonterminal string foobar, foobaz;
   foobar ::= foo bar { action; }

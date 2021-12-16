@@ -178,7 +178,7 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_grammar(grammar_construct the_grammar) {
-    return base_analyzable_action.nothing(the_grammar);
+    return new grammar_analyzer(the_grammar);
   }
 
   private @Nullable analyzable handle_extension(declaration_analyzer the_declaration,

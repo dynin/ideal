@@ -208,11 +208,19 @@ public class procedure_analyzer extends declaration_analyzer
 
       assert category == null;
       if (return_analyzable == null) {
-        category = procedure_category.CONSTRUCTOR;
-      } else if (is_static_declaration()) {
-        category = procedure_category.STATIC;
-      } else {
-        category = procedure_category.METHOD;
+        if (short_name() == declared_in_type().short_name()) {
+          category = procedure_category.CONSTRUCTOR;
+        } else {
+          set_return(common_types.void_type());
+        }
+      }
+
+      if (category == null) {
+        if (is_static_declaration()) {
+          category = procedure_category.STATIC;
+        } else {
+          category = procedure_category.METHOD;
+        }
       }
 
       if (original_body != null) {

@@ -52,10 +52,6 @@ public class test_case_extension extends declaration_extension {
     assert pass == analysis_pass.PREPARE_METHOD_AND_VARIABLE;
     origin the_origin = this;
 
-    if (!the_procedure.has_return()) {
-      the_procedure.set_return(common_types.void_type());
-    }
-
     if (the_procedure.declared_in_type().get_kind() != type_kinds.test_suite_kind) {
       return new error_signal(new base_string("Test case must be part of a test suite"), this);
     }

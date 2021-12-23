@@ -9,6 +9,16 @@ import ideal.development.names.*;
 
 public class enum_util {
   public static boolean can_be_enum_value(final construct the_construct) {
-    return the_construct instanceof name_construct || the_construct instanceof parameter_construct;
+    if (the_construct instanceof name_construct || the_construct instanceof parameter_construct) {
+      return true;
+    }
+    if (the_construct instanceof variable_construct) {
+      final variable_construct the_variable_construct = ((variable_construct) the_construct);
+      if (the_variable_construct.annotations.is_empty() && the_variable_construct.variable_type == null && the_variable_construct.name != null && the_variable_construct.post_annotations.is_empty() && the_variable_construct.init instanceof parameter_construct) {
+        final construct main_initializer = ((parameter_construct) the_variable_construct.init).main;
+        return main_initializer instanceof name_construct && ((name_construct) main_initializer).the_name == special_name.NEW;
+      }
+    }
+    return false;
   }
 }

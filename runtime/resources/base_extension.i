@@ -8,13 +8,13 @@
 enum base_extension {
   implements extension;
 
-  HTML("html");
-  IDEAL_SOURCE("i");
-  CSS("css");
-  TEXT("txt");
-  JAVA_SOURCE("java");
-  JAVASCRIPT_SOURCE("js");
-  JSON("json");
+  HTML: new("html");
+  IDEAL_SOURCE: new("i");
+  CSS: new("css");
+  TEXT: new("txt");
+  JAVA_SOURCE: new("java");
+  JAVASCRIPT_SOURCE: new("js");
+  JSON: new("json");
 
   private string the_dot_name;
 

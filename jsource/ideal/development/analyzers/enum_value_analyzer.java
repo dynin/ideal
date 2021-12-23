@@ -27,8 +27,9 @@ import ideal.development.declarations.*;
 
 public class enum_value_analyzer extends declaration_analyzer implements variable_declaration {
 
-  private final name_construct the_name_construct;
+  private final action_name the_name;
   private final @Nullable readonly_list<construct> parameters;
+  private final origin the_name_origin;
   private final int ordinal;
   private @Nullable parameter_analyzer constructor_call;
   private @Nullable action_parameters the_action_parameters;
@@ -37,21 +38,30 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     super(the_construct);
     assert enum_util.can_be_enum_value(the_construct);
     if (the_construct instanceof name_construct) {
-      the_name_construct = (name_construct) the_construct;
+      the_name = ((name_construct) the_construct).the_name;
       parameters = null;
+      the_name_origin = the_construct;
+    } else if (the_construct instanceof variable_construct) {
+      variable_construct the_variable_construct = (variable_construct) the_construct;
+      the_name = the_variable_construct.name;
+      parameter_construct the_parameter_construct =
+          (parameter_construct) the_variable_construct.init;
+      parameters = the_parameter_construct.parameters;
+      the_name_origin = the_parameter_construct;
     } else {
       parameter_construct the_parameter_construct = (parameter_construct) the_construct;
       // TODO: do not panic, report an error here.
-      the_name_construct = (name_construct) the_parameter_construct.main;
+      the_name = ((name_construct) the_parameter_construct.main).the_name;
       // TODO: check for empty parameters...
       parameters = the_parameter_construct.parameters;
+      the_name_origin = the_parameter_construct.main;
     }
     this.ordinal = ordinal;
   }
 
   @Override
   public action_name short_name() {
-    return the_name_construct.the_name;
+    return the_name;
   }
 
   @Override
@@ -127,7 +137,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       analyzable allocate = new base_analyzable_action(
           new allocate_action(declared_in_type(), pos));
       analyzable ctor_expression = new resolve_analyzer(allocate, special_name.IMPLICIT_CALL,
-          the_name_construct);
+          the_name_origin);
       readonly_list<analyzable> the_constructor_parameters = make_list(parameters);
       constructor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters, pos);
       if (!has_analysis_errors(constructor_call, pass)) {

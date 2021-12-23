@@ -7,8 +7,8 @@
 enum constraint_category {
   implements deeply_immutable data, stringable;
 
-  ASSERT_CONSTRAINT("assert");
-  VERIFY_CONSTRAINT("verify");
+  ASSERT_CONSTRAINT: new("assert");
+  VERIFY_CONSTRAINT: new("verify");
 
   private final string name_string;
 

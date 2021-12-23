@@ -7,12 +7,12 @@
 enum comment_type {
   implements deeply_immutable data, reference_equality;
 
-  NEWLINE(false);
-  WHITESPACE(false);
-  LINE_COMMENT(false);
-  BLOCK_COMMENT(false);
-  LINE_DOC_COMMENT(true);
-  BLOCK_DOC_COMMENT(true);
+  NEWLINE: new(false);
+  WHITESPACE: new(false);
+  LINE_COMMENT: new(false);
+  BLOCK_COMMENT: new(false);
+  LINE_DOC_COMMENT: new(true);
+  BLOCK_DOC_COMMENT: new(true);
 
   final boolean is_doc;
 

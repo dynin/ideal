@@ -7,18 +7,18 @@
 enum base_gregorian_month {
   implements gregorian_month, reference_equality;
 
-  JANUARY(31, 31);
-  FEBRUARY(28, 29);
-  MARCH(31, 31);
-  APRIL(30, 30);
-  MAY(31, 31);
-  JUNE(30, 30);
-  JULY(31, 31);
-  AUGUST(31, 31);
-  SEPTEMBER(30, 30);
-  OCTOBER(31, 31);
-  NOVEMBER(30, 30);
-  DECEMBER(31, 31);
+  JANUARY: new(31, 31);
+  FEBRUARY: new(28, 29);
+  MARCH: new(31, 31);
+  APRIL: new(30, 30);
+  MAY: new(31, 31);
+  JUNE: new(30, 30);
+  JULY: new(31, 31);
+  AUGUST: new(31, 31);
+  SEPTEMBER: new(30, 30);
+  OCTOBER: new(31, 31);
+  NOVEMBER: new(30, 30);
+  DECEMBER: new(31, 31);
 
   nonnegative the_min_days;
   nonnegative the_max_days;

@@ -7,8 +7,8 @@
 enum jump_category {
   implements deeply_immutable data, stringable;
 
-  BREAK_JUMP("break");
-  CONTINUE_JUMP("continue");
+  BREAK_JUMP: new("break");
+  CONTINUE_JUMP: new("continue");
   -- TODO: GOTO_JUMP etc...
 
   private final string name_string;

@@ -7,9 +7,9 @@
 enum notification_level {
   implements deeply_immutable data, reference_equality;
 
-  ERROR(log_level.ERROR);
-  WARNING(log_level.WARNING);
-  INFORMATIONAL(log_level.INFORMATIONAL);
+  ERROR: new(log_level.ERROR);
+  WARNING: new(log_level.WARNING);
+  INFORMATIONAL: new(log_level.INFORMATIONAL);
 
   the log_level;
 

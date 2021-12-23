@@ -56,6 +56,11 @@ class new_type {
   overload new_type(string val) => field = val;
   string get_state() => "state: " ++ field;
 }
+enum test_enum {
+  foobarbaz : new("foo");
+  test_enum(string val) { }
+}
+
 println(new_type.new("hey!").get_state());
 elements : [ 42, 68, 18 ];
 println("size: " ++ elements.size);

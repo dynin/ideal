@@ -140,6 +140,10 @@ public class java_printer extends base_printer {
     return text_utilities.join(fragments);
   }
 
+  public static boolean can_be_java_enum_value(construct the_construct) {
+    return the_construct instanceof name_construct || the_construct instanceof parameter_construct;
+  }
+
   @Override
   protected text_fragment print_type_body(type_declaration_construct the_declaration) {
     readonly_list<construct> constructs = the_declaration.body;
@@ -149,7 +153,7 @@ public class java_printer extends base_printer {
     for (int i = 0; i < constructs.size(); ++i) {
       construct the_construct = constructs.get(i);
       if (!(the_construct instanceof supertype_construct)) {
-        if (enum_util.can_be_enum_value(the_construct)) {
+        if (can_be_java_enum_value(the_construct)) {
           enum_values.append(the_construct);
         } else {
           filtered_body.append(the_construct);

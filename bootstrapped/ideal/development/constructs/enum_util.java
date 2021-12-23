@@ -9,7 +9,7 @@ import ideal.development.names.*;
 
 public class enum_util {
   public static boolean can_be_enum_value(final construct the_construct) {
-    if (the_construct instanceof name_construct || the_construct instanceof parameter_construct) {
+    if (the_construct instanceof name_construct) {
       return true;
     }
     if (the_construct instanceof variable_construct) {

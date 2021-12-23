@@ -203,7 +203,6 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
   }
 
   protected text_fragment print_enum_value(construct the_construct, boolean last_value) {
-    assert enum_util.can_be_enum_value(the_construct);
     list<text_fragment> fragments = new base_list<text_fragment>();
     if (the_construct instanceof name_construct) {
       fragments.append(styles.wrap(styles.var_declaration_name_style,

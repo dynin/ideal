@@ -6,7 +6,7 @@
 
 namespace enum_util {
   boolean can_be_enum_value(construct the_construct) {
-    if (the_construct is name_construct || the_construct is parameter_construct) {
+    if (the_construct is name_construct) {
       return true;
     }
 

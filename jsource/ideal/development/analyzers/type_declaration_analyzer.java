@@ -169,6 +169,8 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         } else {
           new base_notification(messages.value_declaration, the_construct).report();
         }
+      } else if (the_construct instanceof parameter_construct) {
+        utilities.panic("parameter_construct");
       } else if (the_construct instanceof supertype_construct) {
         // TODO: clean up.
         body_list.append_all(new dispatcher().make_supertype_list(

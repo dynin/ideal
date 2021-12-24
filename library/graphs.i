@@ -14,7 +14,7 @@ package graphs {
 
     readonly set[vertice_type] vertices;
 
-    void add_edge(vertice_type from, vertice_type to, edge_type the_source);
+    add_edge(vertice_type from, vertice_type to, edge_type the_source);
     immutable set[vertice_type] adjacent(vertice_type from) pure;
     boolean introduces_cycle(vertice_type from, vertice_type to) pure;
   }

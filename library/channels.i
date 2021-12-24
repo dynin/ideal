@@ -11,10 +11,10 @@ package channels {
   interface closeable {
     extends value;
     not_yet_implemented readonly boolean is_closed;
-    void close();
-    -- void close(task callback);
-    -- void add_on_close(task callback);
-    -- void remove_on_close(task callback);
+    close();
+    -- close(task callback);
+    -- add_on_close(task callback);
+    -- remove_on_close(task callback);
   }
 
   interface syncable {
@@ -29,9 +29,9 @@ package channels {
     --  wan_sync;
     --  /*  world?... */
     --}
-    -- void sync(sync_type type: default_sync);
-    --void sync(sync_type type, task callback);
-    void sync();
+    -- sync(sync_type type: default_sync);
+    --sync(sync_type type, task callback);
+    sync();
   }
 
   interface input[covariant value element] {
@@ -41,15 +41,15 @@ package channels {
     -- TODO: use 'positive max' instead of nonnegative
     immutable list[element] read(nonnegative max);
     -- onread(task[immutable list[data]);
-    -- void skip(nonnegative howmany);
+    -- skip(nonnegative howmany);
   }
 
   interface output[contravariant value element]  {
     extends closeable, syncable;
     not_yet_implemented readonly boolean is_available;
     not_yet_implemented readonly nonnegative available;
-    void write(element e);
-    void write_all(readonly list[element] c);
-    -- void send(input[data] copy, task done);
+    write(element e);
+    write_all(readonly list[element] c);
+    -- send(input[data] copy, task done);
   }
 }

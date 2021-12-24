@@ -170,7 +170,18 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
           new base_notification(messages.value_declaration, the_construct).report();
         }
       } else if (the_construct instanceof parameter_construct) {
-        utilities.panic("parameter_construct");
+        parameter_construct the_parameter_construct = (parameter_construct) the_construct;
+        // TODO: do not throw exception if main is not name_construct
+        action_name the_name = ((name_construct) the_parameter_construct.main).the_name;
+        procedure_construct the_procedure_construct = new procedure_construct(
+            new empty<annotation_construct>(),
+            null,
+            the_name,
+            the_parameter_construct.parameters,
+            new empty<annotation_construct>(),
+            null,
+            the_parameter_construct);
+        body_list.append(make(the_procedure_construct));
       } else if (the_construct instanceof supertype_construct) {
         // TODO: clean up.
         body_list.append_all(new dispatcher().make_supertype_list(

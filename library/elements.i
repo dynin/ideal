@@ -271,7 +271,7 @@ package elements {
     not_yet_implemented readonly collection[element] filter(the predicate[element]) pure;
     not_yet_implemented readonly list[element] order_by(the order[element]) pure;
     not_yet_implemented immutable collection[element] filter(the predicate[element]) immutable pure;
-    not_yet_implemented void remove(the predicate[element]);
+    not_yet_implemented remove(the predicate[element]);
 
     void clear() writeonly;
   }
@@ -295,13 +295,13 @@ package elements {
     --- Assumes the list is not empty.
     element last;
 
-    void append(the element);
-    void append_all(the readonly list[element]);
-    void prepend(the element);
+    append(the element);
+    append_all(the readonly list[element]);
+    prepend(the element);
 
-    not_yet_implemented void prepend_all(the readonly list[element]);
-    not_yet_implemented void insert(nonnegative index, the element);
-    not_yet_implemented void insert_all(nonnegative index, the readonly list[element]);
+    not_yet_implemented prepend_all(the readonly list[element]);
+    not_yet_implemented insert(nonnegative index, the element);
+    not_yet_implemented insert_all(nonnegative index, the readonly list[element]);
     not_yet_implemented element remove_at(nonnegative index);
 
     element remove_last();
@@ -329,7 +329,7 @@ package elements {
     boolean has(the predicate[element]) pure;
 
     --- Sort the list in place using the given sort order.
-    void sort(the order[element]);
+    sort(the order[element]);
 
     --- Range of indexes to this list, from 0 to |size|.
     range indexes;
@@ -358,8 +358,8 @@ package elements {
 
     boolean contains(the element) pure;
 
-    void add(the element);
-    void add_all(the readonly collection[element]);
+    add(the element);
+    add_all(the readonly collection[element]);
     boolean remove(the element);
 
     -- TODO: this should be in data
@@ -376,9 +376,9 @@ package elements {
     immutable subtypes immutable list[element], immutable set[element];
     deeply_immutable subtypes deeply_immutable list[element], deeply_immutable set[element];
 
-    void append(the element);
-    void append_all(the readonly list[element]);
-    void prepend(the element);
+    append(the element);
+    append_all(the readonly list[element]);
+    prepend(the element);
 
     immutable ordered_set[element] frozen_copy;
 

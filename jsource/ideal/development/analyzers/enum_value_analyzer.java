@@ -49,12 +49,11 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       parameters = the_parameter_construct.parameters;
       the_name_origin = the_parameter_construct;
     } else {
-      parameter_construct the_parameter_construct = (parameter_construct) the_construct;
-      // TODO: do not panic, report an error here.
-      the_name = ((name_construct) the_parameter_construct.main).the_name;
-      // TODO: check for empty parameters...
-      parameters = the_parameter_construct.parameters;
-      the_name_origin = the_parameter_construct.main;
+      utilities.panic("Unrecognized enum value declaration: " + the_construct);
+      // Too silence javac
+      the_name = null;
+      parameters = null;
+      the_name_origin = null;
     }
     this.ordinal = ordinal;
   }

@@ -21,14 +21,14 @@ namespace elements {
     implicit mutable reference[element] at(nonnegative index) mutable pure;
     not_yet_implemented implicit writeonly reference[element]
         at(nonnegative index) writeonly pure;
-    void set(nonnegative index, element value) writeonly;
+    set(nonnegative index, element value) writeonly;
 
-    void move(nonnegative source, nonnegative destination, nonnegative length);
-    void copy(nonnegative source_begin,
+    move(nonnegative source, nonnegative destination, nonnegative length);
+    copy(nonnegative source_begin,
           array[any value] destination, nonnegative destination_begin,
           nonnegative length);
-    void sort(order[element] the_order, nonnegative begin, nonnegative length);
-    void scrub(nonnegative index, nonnegative length); -- writeonly;
+    sort(order[element] the_order, nonnegative begin, nonnegative length);
+    scrub(nonnegative index, nonnegative length); -- writeonly;
   }
 
   class runtime_util {
@@ -42,12 +42,12 @@ namespace elements {
     static string string_of(readonly value the_value);
     static string value_identifier(readonly value the_value);
     -- TODO: return unreachable
-    static noreturn void do_panic(String message);
-    static void do_stack(String message);
+    static noreturn do_panic(String message);
+    static do_stack(String message);
     static string escape_markup(string the_string);
 
-    static void start_test(string name);
-    static void end_test();
+    static start_test(string name);
+    static end_test();
 
     static text_fragment display(readonly value obj);
 

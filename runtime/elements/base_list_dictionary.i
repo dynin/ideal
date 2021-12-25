@@ -36,7 +36,7 @@ public abstract class base_list_dictionary[readonly value key_type, value value_
       return the_value;
     }
 
-    protected void set_value(value_type new_value) {
+    protected set_value(value_type new_value) {
       this.the_value = new_value;
     }
   }

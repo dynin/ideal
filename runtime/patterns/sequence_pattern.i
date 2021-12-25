@@ -15,7 +15,7 @@ class sequence_pattern[readonly value element_type] {
     this.patterns_list = patterns_list.frozen_copy;
   }
 
-  implement void validate() {
+  implement validate() {
     if (validated) {
       return;
     }

@@ -43,7 +43,7 @@ class base_resource_catalog {
     return result;
   }
 
-  override void set(dictionary[string, resource_identifier] or null new_value) {
+  override set(dictionary[string, resource_identifier] or null new_value) {
     utilities.panic("can't set a catalog");
   }
 

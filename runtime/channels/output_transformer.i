@@ -17,13 +17,13 @@ class output_transformer[any value source_type, any value destination_type] {
     this.the_output = the_output;
   }
 
-  override void write(source_type value) {
+  override write(source_type value) {
     the_output.write(the_function(value));
   }
 
   -- Note: the contract for write_all() specifies that the values are written as a block
   -- even in the precense of multiple concurrent writers.
-  override void write_all(readonly list[source_type] values) {
+  override write_all(readonly list[source_type] values) {
     -- TODO: use list.map()
     transformed_values : base_list[destination_type].new();
     for (value : values) {
@@ -32,11 +32,11 @@ class output_transformer[any value source_type, any value destination_type] {
     the_output.write_all(transformed_values);
   }
 
-  override void sync() {
+  override sync() {
     the_output.sync();
   }
 
-  override void close() {
+  override close() {
     the_output.close();
   }
 }

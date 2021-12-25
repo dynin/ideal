@@ -13,7 +13,7 @@ class list_context {
     this.the_list = the_list;
   }
 
-  override void put_var(variable_id key, value_wrapper value) {
+  override put_var(variable_id key, value_wrapper value) {
     utilities.panic("list_context.put_var() for " ++ key);
   }
 

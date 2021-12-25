@@ -42,7 +42,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
       return the_value;
     }
 
-    protected void set_value(value_type new_value) {
+    protected set_value(value_type new_value) {
       this.the_value = new_value;
     }
   }
@@ -76,7 +76,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
       this(parameters.default_size);
     }
 
-    protected void clear() {
+    protected clear() {
       if (size != 0) {
         the_buckets = array[hash_cell[key_type, value_type] or null].new(parameters.default_size);
         size = 0;
@@ -84,7 +84,7 @@ public abstract class base_hash_dictionary[readonly value key_type, value value_
     }
 
     --- Make sure the array is of at least the specified size.
-    void reserve(nonnegative reserve_size) {
+    reserve(nonnegative reserve_size) {
       if (the_buckets.size >= reserve_size) {
         return;
       }

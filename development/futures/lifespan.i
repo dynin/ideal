@@ -22,7 +22,7 @@ interface lifespan {
   -- Zone get zone;
 
   --- Add a resource to this lifespan's resource collection.
-  void add_resource(disposable resource);
+  add_resource(disposable resource);
 
   --- Create a sublifespan with this lifespan as a parent.
   lifespan make_sub_span();

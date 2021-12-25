@@ -20,7 +20,7 @@ class base_composite_value {
 
   override any composite_value unwrap() => this;
 
-  override void put_var(variable_id key, value_wrapper value) => bindings.put(key, value);
+  override put_var(variable_id key, value_wrapper value) => bindings.put(key, value);
 
   override value_wrapper get_var(variable_id key) {
     -- TODO: wrap null in value_wrapper?

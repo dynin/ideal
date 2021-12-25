@@ -45,7 +45,7 @@ class base_notification {
 
   override text_fragment to_text => render_text(true);
 
-  override void report => notification_context.get().write(this);
+  override report => notification_context.get().write(this);
 
   override text_fragment render_text(boolean prefix_with_source) {
     var string full_message;

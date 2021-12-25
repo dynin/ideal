@@ -21,11 +21,11 @@ test_suite test_futures {
   static var nonnegative count0 : 0;
   static var nonnegative count1 : 0;
 
-  static void observe0() {
+  static observe0() {
     count0 += 1;
   }
 
-  static void observe1() {
+  static observe1() {
     count1 += 1;
   }
 

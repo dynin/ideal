@@ -24,10 +24,10 @@ test_suite test_resolver {
       return "test";
     }
 
-    override void write_string(string scheme, immutable list[string] path, string new_value) {
+    override write_string(string scheme, immutable list[string] path, string new_value) {
     }
 
-    override void make_catalog(string scheme, immutable list[string] path) {
+    override make_catalog(string scheme, immutable list[string] path) {
     }
 
     override readonly set[string] or null read_catalog(string scheme,

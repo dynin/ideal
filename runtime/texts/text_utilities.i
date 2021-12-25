@@ -122,7 +122,7 @@ namespace text_utilities {
     return base_list_attribute_fragment.new(result_fragments);
   }
 
-  private void append(list[text_node] nodes, text_fragment fragment) {
+  private append(list[text_node] nodes, text_fragment fragment) {
     if (fragment is string) {
       if (fragment.is_empty) {
         return;

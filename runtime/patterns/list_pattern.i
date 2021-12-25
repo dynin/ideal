@@ -54,6 +54,6 @@ class list_pattern[readonly equality_comparable element_type] {
     return missing.instance;
   }
 
-  implement void validate() {
+  implement validate() {
   }
 }

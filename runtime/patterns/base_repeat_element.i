@@ -112,6 +112,6 @@ abstract class base_repeat_element[readonly value element_type] {
     return missing.instance;
   }
 
-  implement void validate() {
+  implement validate() {
   }
 }

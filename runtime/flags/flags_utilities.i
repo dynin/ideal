@@ -94,7 +94,7 @@ namespace flags_utilities {
     }
   }
 
-  void finish(dictionary[string, string] arg_dictionary, procedure[void, string] error_reporter) {
+  finish(dictionary[string, string] arg_dictionary, procedure[void, string] error_reporter) {
     if (arg_dictionary.is_not_empty) {
       error_reporter("Unknown flag: " ++ arg_dictionary.keys.elements.first);
     }

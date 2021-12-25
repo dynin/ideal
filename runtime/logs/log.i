@@ -22,16 +22,16 @@ namespace log {
               plain_formatter.new(standard_channels.stdout)));
 
   -- TODO: do not use Java String.
-  void debug(String the_string) {
+  debug(String the_string) {
     log_output.write(simple_message.new(log_level.DEBUG, base_string.new(the_string)));
   }
 
-  void info(string the_string) {
+  info(string the_string) {
     log_output.write(simple_message.new(log_level.INFORMATIONAL, the_string));
   }
 
   -- TODO: do not use Java String.
-  void error(String the_string) {
+  error(String the_string) {
     log_output.write(simple_message.new(log_level.ERROR, base_string.new(the_string)));
   }
 }

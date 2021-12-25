@@ -28,11 +28,11 @@ class plain_formatter {
     this(the_output, DEFAULT_INDENT);
   }
 
-  override void process_string(string s) {
+  override process_string(string s) {
     write_string(s);
   }
 
-  override void process_element(text_element element) {
+  override process_element(text_element element) {
     if (text_utilities.is_block(element)) {
       if (!first || element.get_id == text_library.BR) {
         write_newline();
@@ -70,11 +70,11 @@ class plain_formatter {
     }
   }
 
-  override void process_special(special_text t) {
+  override process_special(special_text t) {
     write_string(t.to_plain_text);
   }
 
-  override void do_write_newline() {
+  override do_write_newline() {
     super.do_write_newline();
     -- TODO: this should be a variable.
     if (carets.size > 0) {
@@ -85,13 +85,13 @@ class plain_formatter {
     chars_written = 0;
   }
 
-  override void do_write_indent() {
+  override do_write_indent() {
     super.do_write_indent();
     chars_written += spaces.size * indent;
   }
 
   -- TODO: string should work here.
-  override void do_write_string(readonly list[character] the_string) {
+  override do_write_string(readonly list[character] the_string) {
     super.do_write_string(the_string);
     if (underline_stack.is_not_empty) {
       -- TODO: this should be a variable.

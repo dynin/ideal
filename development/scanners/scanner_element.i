@@ -7,6 +7,6 @@
 interface scanner_element {
   extends data;
 
-  void set_config(the scanner_config);
+  set_config(the scanner_config);
   scan_state or null process(source_content source, nonnegative begin);
 }

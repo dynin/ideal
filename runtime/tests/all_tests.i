@@ -6,11 +6,11 @@
 
 --- Main entry point for running runtime unittests.
 namespace all_tests {
-  void run_all_tests() {
+  run_all_tests() {
     run_all_runtime_tests();
   }
 
-  void run_all_runtime_tests() {
+  run_all_runtime_tests() {
     test_array.new().run_all_tests();
     test_runtime_util.new().run_all_tests();
     test_string_writer.new().run_all_tests();

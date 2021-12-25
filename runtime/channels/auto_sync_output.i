@@ -14,21 +14,21 @@ class auto_sync_output[any value value_type] {
     this.the_output = the_output;
   }
 
-  implement void write(value_type value) {
+  implement write(value_type value) {
     the_output.write(value);
     the_output.sync();
   }
 
-  implement void write_all(readonly list[value_type] values) {
+  implement write_all(readonly list[value_type] values) {
     the_output.write_all(values);
     the_output.sync();
   }
 
-  implement void sync() {
+  implement sync() {
     the_output.sync();
   }
 
-  implement void close() {
+  implement close() {
     the_output.close();
   }
 }

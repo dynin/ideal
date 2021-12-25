@@ -29,7 +29,7 @@ public class list_dictionary[readonly value key_type, value value_type] {
     return immutable_list_dictionary[key_type, value_type].new(this);
   }
 
-  implement void clear() {
+  implement clear() {
     the_size = 0;
     entries = missing.instance;
   }

@@ -35,7 +35,7 @@ class list_value {
     utilities.panic("Failing list_value.get_var() for " ++ key);
   }
 
-  override void put_var(variable_id key, value_wrapper value) {
+  override put_var(variable_id key, value_wrapper value) {
     utilities.panic("Failing list_value.put_var() for " ++ key);
   }
 }

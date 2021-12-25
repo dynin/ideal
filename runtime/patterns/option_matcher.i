@@ -14,7 +14,7 @@ class option_matcher[readonly value element_type, covariant any value result_typ
     super(matchers !> readonly collection[pattern[element_type]]);
   }
 
-  void add_matcher(matcher[element_type, result_type] the_matcher) {
+  add_matcher(matcher[element_type, result_type] the_matcher) {
     add_option(the_matcher);
   }
 

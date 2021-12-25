@@ -37,11 +37,11 @@ class markup_formatter {
     this(out, DEFAULT_INDENT, true);
   }
 
-  override void process_string(string s) {
+  override process_string(string s) {
     write_escaped(s);
   }
 
-  override void process_element(text_element element) {
+  override process_element(text_element element) {
     is_block : write_newlines && text_utilities.is_block(element);
 
     attributes : element.attributes;
@@ -85,21 +85,21 @@ class markup_formatter {
     }
   }
 
-  private void do_indent() {
+  private do_indent() {
     indent += 1;
   }
 
-  private void do_unindent() {
+  private do_unindent() {
     new_indent : indent - 1;
     assert new_indent is nonnegative;
     indent = new_indent;
   }
 
-  override void process_special(special_text t) {
+  override process_special(special_text t) {
     write_string(t.to_markup);
   }
 
-  private void write_start_tag(text_element element,
+  private write_start_tag(text_element element,
       readonly dictionary[attribute_id, attribute_fragment] attributes) {
     write_string(OPEN_START_TAG);
     write_escaped(element.get_id.short_name);
@@ -107,13 +107,13 @@ class markup_formatter {
     write_string(CLOSE_TAG);
   }
 
-  private void write_end_tag(text_element element) {
+  private write_end_tag(text_element element) {
     write_string(OPEN_END_TAG);
     write_escaped(element.get_id.short_name);
     write_string(CLOSE_TAG);
   }
 
-  private void write_self_closing_tag(text_element element,
+  private write_self_closing_tag(text_element element,
       readonly dictionary[attribute_id, attribute_fragment] attributes) {
     write_string(OPEN_START_TAG);
     write_escaped(element.get_id.short_name);
@@ -121,7 +121,7 @@ class markup_formatter {
     write_string(CLOSE_SELF_CLOSING_TAG);
   }
 
-  private void write_tag_attributes(
+  private write_tag_attributes(
       readonly dictionary[attribute_id, attribute_fragment] attributes) {
     for (attribute : attributes.elements) {
       write_string(ATTRIBUTE_SEPARATOR);
@@ -132,7 +132,7 @@ class markup_formatter {
     }
   }
 
-  private void write_escaped(string s) {
+  private write_escaped(string s) {
     -- TODO: move escape code here...
     write_string(runtime_util.escape_markup(s));
   }

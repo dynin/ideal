@@ -70,7 +70,7 @@ class base_resource_identifier {
     return the_resource_store.read_string(the_scheme, path);
   }
 
-  private void set_string(string new_value, access_option or null options) {
+  private set_string(string new_value, access_option or null options) {
     if (options is make_catalog_option && path.size > 1) {
       the_resource_store.make_catalog(the_scheme, parent.path);
     }
@@ -96,7 +96,7 @@ class base_resource_identifier {
       return the_identifier.get_string();
     }
 
-    override void set(string new_value) {
+    override set(string new_value) {
       the_identifier.set_string(new_value, options);
     }
 
@@ -123,7 +123,7 @@ class base_resource_identifier {
       return json_parser.new(unicode_handler.instance).parse(the_identifier.get_string());
     }
 
-    override void set(readonly json_data new_data) {
+    override set(readonly json_data new_data) {
       the string : json_printer.new(unicode_handler.instance).print(new_data);
       the_identifier.set_string(the_string, options);
     }

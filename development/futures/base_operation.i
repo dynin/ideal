@@ -16,11 +16,11 @@ class base_operation {
     this.name = name;
   }
 
-  implement void schedule() {
+  implement schedule() {
     event_queue.schedule(this);
   }
 
-  void execute() {
+  execute() {
     callback();
   }
 

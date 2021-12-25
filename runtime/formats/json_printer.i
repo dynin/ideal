@@ -20,7 +20,7 @@ class json_printer {
     return result.elements;
   }
 
-  private void print_data(readonly json_data the_json_data, string_writer result) {
+  private print_data(readonly json_data the_json_data, string_writer result) {
     if (the_json_data is string) {
       print_string(the_json_data, result);
     } else if (the_json_data is integer) {
@@ -39,7 +39,7 @@ class json_printer {
     }
   }
 
-  private void print_string(string the_string, string_writer result) {
+  private print_string(string the_string, string_writer result) {
     result.write('"');
     for (the_character : the_string) {
       -- TODO: optimize this: generate a switch?
@@ -59,11 +59,11 @@ class json_printer {
     result.write('"');
   }
 
-  private void print_integer(integer the_integer, string_writer result) {
+  private print_integer(integer the_integer, string_writer result) {
     result.write_all(the_integer.to_string);
   }
 
-  private void print_array(readonly json_array the_array, string_writer result) {
+  private print_array(readonly json_array the_array, string_writer result) {
     result.write(json_token.OPEN_BRACKET.the_character);
     var start : true;
     -- TODO: implement list.join()
@@ -79,7 +79,7 @@ class json_printer {
     result.write(json_token.CLOSE_BRACKET.the_character);
   }
 
-  private void print_object(readonly json_object the_object, string_writer result) {
+  private print_object(readonly json_object the_object, string_writer result) {
     result.write(json_token.OPEN_BRACE.the_character);
     var start : true;
     for (element : the_object.elements) {
@@ -97,7 +97,7 @@ class json_printer {
     result.write(json_token.CLOSE_BRACE.the_character);
   }
 
-  private void print_boolean(boolean the_boolean, string_writer result) {
+  private print_boolean(boolean the_boolean, string_writer result) {
     -- TODO: use the_boolean.to_string
     result.write_all(the_boolean ++ "");
   }

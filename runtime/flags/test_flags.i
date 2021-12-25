@@ -23,7 +23,7 @@ test_suite test_flags {
 
   var string reported_message;
 
-  private void error_reporter(string message) {
+  private error_reporter(string message) {
     reported_message = message;
   }
 

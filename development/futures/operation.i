@@ -9,5 +9,5 @@ interface operation {
   implements data, stringable;
 
   --- Schedule this operation for execution.
-  void schedule();
+  schedule();
 }

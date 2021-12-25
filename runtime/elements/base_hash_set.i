@@ -58,7 +58,7 @@ public abstract class base_hash_set[readonly value element_type] {
       this(parameters.default_size);
     }
 
-    protected void clear() {
+    protected clear() {
       if (size != 0) {
         the_buckets = array[hash_cell[element_type] or null].new(parameters.default_size);
         size = 0;
@@ -66,7 +66,7 @@ public abstract class base_hash_set[readonly value element_type] {
     }
 
     --- Make sure the array is of at least the specified size.
-    void reserve(nonnegative reserve_size) {
+    reserve(nonnegative reserve_size) {
       if (the_buckets.size >= reserve_size) {
         return;
       }

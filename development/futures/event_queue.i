@@ -10,11 +10,11 @@ namespace event_queue {
 
   boolean is_empty => pending.is_empty;
 
-  void schedule(base_operation the_operation) {
+  schedule(base_operation the_operation) {
     pending.append(the_operation);
   }
 
-  void process() {
+  process() {
     -- TODO: drop explicit call
     while (!is_empty()) {
       next : pending.remove_at(0);

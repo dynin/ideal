@@ -10,11 +10,11 @@ abstract class resource_manager {
 
   set[disposable] resources : hash_set[disposable].new();
 
-  override void add_resource(disposable resource) {
+  override add_resource(disposable resource) {
     resources.add(resource);
   }
 
-  override void dispose() {
+  override dispose() {
     for (resource : resources.elements) {
       resource.dispose();
     }

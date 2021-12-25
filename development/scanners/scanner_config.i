@@ -13,14 +13,14 @@ interface scanner_config {
 
   token[deeply_immutable data] process_token(the token[deeply_immutable data]) pure;
 
-  void add_keyword(the keyword);
-  void add_punctuation(the punctuation_type);
-  void add_special(the special_name, token_type the_token_type);
-  void add_kind(the kind);
-  void add_subtype_tag(the subtype_tag);
-  void add_modifier(the modifier_kind);
-  void add_flavor(the type_flavor);
-  void add_reserved(string reserved_word, keyword or null the_keyword);
+  add_keyword(the keyword);
+  add_punctuation(the punctuation_type);
+  add_special(the special_name, token_type the_token_type);
+  add_kind(the kind);
+  add_subtype_tag(the subtype_tag);
+  add_modifier(the modifier_kind);
+  add_flavor(the type_flavor);
+  add_reserved(string reserved_word, keyword or null the_keyword);
 
   readonly list[token[deeply_immutable data]] scan(source_content source);
 }

@@ -20,25 +20,25 @@ public class hash_set[readonly value element_type] {
     super(runtime_util.default_equivalence !> any value !> equivalence_with_hash[element_type]);
   }
 
-  private void copy_on_write() {
+  private copy_on_write() {
     if (!state.writable) {
       state = state.copy();
       assert state.writable;
     }
   }
 
-  implement void clear() {
+  implement clear() {
     copy_on_write();
     state.clear();
   }
 
-  implement void add(element_type the_value) {
+  implement add(element_type the_value) {
     copy_on_write();
     state.reserve(size + 1);
     do_add(the_value);
   }
 
-  implement void add_all(readonly collection[element_type] the_collection) {
+  implement add_all(readonly collection[element_type] the_collection) {
     -- TODO: reintroduce the reference equality check
     --if (the_collection == this) {
     --  return;
@@ -52,7 +52,7 @@ public class hash_set[readonly value element_type] {
     }
   }
 
-  private void do_add(element_type the_value) {
+  private do_add(element_type the_value) {
     hash : equivalence.hash(the_value);
     index : state.bucket_index(hash);
     var entry : state.the_buckets[index];
@@ -109,7 +109,7 @@ public class hash_set[readonly value element_type] {
     }
   }
 
-  private void decrement_size() {
+  private decrement_size() {
     new_size : state.size - 1;
     assert new_size is nonnegative;
     state.size = new_size;

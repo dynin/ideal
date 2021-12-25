@@ -22,7 +22,7 @@ namespace resource_util {
   HTTPS_SCHEME : "https";
 
   -- TODO: return status.
-  void copy(resource_identifier source, resource_identifier destination) {
+  copy(resource_identifier source, resource_identifier destination) {
     -- TODO: use bytes; fixed buffer size; handle errors.
     content : source.access_string(missing.instance).content;
     destination.access_string(missing.instance).content = content;

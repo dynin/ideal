@@ -76,7 +76,7 @@ class base_list[value element_type] {
     append_all(the_list);
   }
 
-  implement void clear() {
+  implement clear() {
     if (is_not_empty) {
       state = list_state[element_type].new();
     }
@@ -90,15 +90,15 @@ class base_list[value element_type] {
     return state;
   }
 
-  implement void append(element_type element) {
+  implement append(element_type element) {
     writable_state().insert(size, element);
   }
 
-  implement void append_all(readonly list[element_type] new_elements) {
+  implement append_all(readonly list[element_type] new_elements) {
     writable_state().insert_all(size, new_elements);
   }
 
-  implement void prepend(element_type element) {
+  implement prepend(element_type element) {
     writable_state().insert(0, element);
   }
 
@@ -108,7 +108,7 @@ class base_list[value element_type] {
     return writable_state().the_elements[index];
   }
 
-  implement void set(nonnegative index, element_type value) {
+  implement set(nonnegative index, element_type value) {
     assert index < state.size;
     writable_state().the_elements[index] = value;
   }
@@ -141,7 +141,7 @@ class base_list[value element_type] {
     return result;
   }
 
-  implement void sort(order[element_type] the_order) {
+  implement sort(order[element_type] the_order) {
     new_state : writable_state();
     new_state.the_elements.sort(the_order, 0, new_state.size);
   }

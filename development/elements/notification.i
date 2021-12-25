@@ -16,7 +16,7 @@ interface notification {
   readonly list[notification] secondary;
   -- TODO: pass a render_context that contains styles?
   text_fragment render_text(boolean prefix_with_source);
-  void report();
+  report();
 
   -- TODO: importance/severity level.
   -- TODO: move from string to text.

@@ -50,7 +50,7 @@ class base_readonly_list[value element_type] {
     }
 
     --- Make sure the array is of at least the specified size.
-    void reserve(nonnegative reserve_size) {
+    reserve(nonnegative reserve_size) {
       if (the_elements.size >= reserve_size) {
         return;
       }
@@ -65,7 +65,7 @@ class base_readonly_list[value element_type] {
     }
 
     --- Insert elements at the specified index.
-    void insert_all(nonnegative index, readonly list[element_type] new_elements) {
+    insert_all(nonnegative index, readonly list[element_type] new_elements) {
       if (new_elements.is_empty) {
         return;
       } else if (new_elements.size == 1) {
@@ -81,14 +81,14 @@ class base_readonly_list[value element_type] {
     }
 
     --- Insert an element at the specified index.
-    void insert(nonnegative index, element_type element) {
+    insert(nonnegative index, element_type element) {
       assert writable;
       reserve_and_move(index, 1);
       the_elements[index] = element;
     }
 
     --- Helper method used to create space in the middle of an array.
-    private void reserve_and_move(nonnegative index, nonnegative extra_size) {
+    private reserve_and_move(nonnegative index, nonnegative extra_size) {
       reserve(size + extra_size);
       if (index < size) {
         tail_size : size - index;
@@ -98,7 +98,7 @@ class base_readonly_list[value element_type] {
       size += extra_size;
     }
 
-    void clear(nonnegative begin, nonnegative length) {
+    clear(nonnegative begin, nonnegative length) {
       if (begin + length < size) {
         the_elements.move(begin + length, begin, length);
       }

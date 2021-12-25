@@ -20,7 +20,7 @@ namespace channels {
     var nonnegative size();
     var string elements();
 
-    void clear();
+    clear();
   }
 
   namespace standard_channels {

@@ -4,7 +4,7 @@
 -- license that can be found in the LICENSE file or at
 -- https://developers.google.com/open-source/licenses/bsd
 
---- Namespace used to avoid conflicts in |element_id|s and |attrubite_id|s.
+--- Namespace used to aconflicts in |element_id|s and |attrubite_id|s.
 class base_namespace {
   extends debuggable;
   implements text_namespace;

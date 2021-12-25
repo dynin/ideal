@@ -6,12 +6,12 @@
 
 --- Main entry point for running unittests.
 namespace all_tests {
-  void run_all_tests() {
+  run_all_tests() {
     ideal.runtime.tests.all_tests.run_all_runtime_tests();
     run_all_development_tests();
   }
 
-  void run_all_development_tests() {
+  run_all_development_tests() {
     test_names.new().run_all_tests();
 
     test_origin_printer.new().run_all_tests();

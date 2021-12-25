@@ -16,11 +16,11 @@ class option_pattern[readonly value element_type] {
     this.options.append_all(options.elements);
   }
 
-  void add_option(pattern[element_type] option) {
+  add_option(pattern[element_type] option) {
     options.append(option);
   }
 
-  implement void validate() {
+  implement validate() {
     if (validated) {
       return;
     }

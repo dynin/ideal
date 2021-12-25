@@ -32,7 +32,7 @@ class doc_grammar {
     return base_element.new(doc_elements.CODE, text_content);
   }
 
-  override void update_matchers() {
+  override update_matchers() {
     vbar : one_character('|');
 
     element.add_option(sequence_matcher[character, text_element].new(

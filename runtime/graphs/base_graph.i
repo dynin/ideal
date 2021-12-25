@@ -42,7 +42,7 @@ class base_graph[readonly data vertice_type, readonly data edge_type] {
     return all_edges.keys;
   }
 
-  override void add_edge(vertice_type from, vertice_type to, edge_type the_source) {
+  override add_edge(vertice_type from, vertice_type to, edge_type the_source) {
     new_edge : edge[vertice_type, edge_type].new(from, to, the_source);
     outgoing_edges : all_edges.get(from);
     if (outgoing_edges is_not null) {

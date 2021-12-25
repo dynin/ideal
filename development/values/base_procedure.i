@@ -36,7 +36,7 @@ abstract class base_procedure {
     }
   }
 
-  void set_declaration(procedure_declaration the_declaration) {
+  set_declaration(procedure_declaration the_declaration) {
     assert this.the_declaration is null;
     this.the_declaration = the_declaration;
   }

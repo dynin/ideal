@@ -31,11 +31,11 @@ class constant_reference {
     return the_value;
   }
 
-  override void init(value_wrapper new_value) {
+  override init(value_wrapper new_value) {
     utilities.panic("Can't init a constant_reference");
   }
 
-  override void set(value_wrapper new_value) {
+  override set(value_wrapper new_value) {
     utilities.panic("Can't set a constant_reference");
   }
 

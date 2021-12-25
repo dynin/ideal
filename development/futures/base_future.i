@@ -23,7 +23,7 @@ class base_future[covariant value element] {
       this.observer = observer;
     }
 
-    void dispose() {
+    dispose() {
       the_future.observers.remove(observer);
     }
   }
@@ -41,7 +41,7 @@ class base_future[covariant value element] {
 
   implement boolean is_done => the_value is_not null;
 
-  void set(element the_value) {
+  set(element the_value) {
     assert !is_done;
     this.the_value = the_value;
 
@@ -52,7 +52,7 @@ class base_future[covariant value element] {
     }
   }
 
-  implement void observe(operation observer, lifespan the_lifespan) {
+  implement observe(operation observer, lifespan the_lifespan) {
     if (is_done) {
       return;
     }

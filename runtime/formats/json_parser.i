@@ -27,7 +27,7 @@ class json_parser {
 
   boolean has_error => error is_not null;
 
-  private void tokenize(string input) {
+  private tokenize(string input) {
     tokens.clear();
     var nonnegative start : 0;
     while (start < input.size && error is null) {
@@ -308,7 +308,7 @@ class json_parser {
     return parse_error("No closing bracket in array");
   }
 
-  private void report_error(string message) {
+  private report_error(string message) {
     error = message;
   }
 

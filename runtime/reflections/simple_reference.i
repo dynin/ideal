@@ -28,7 +28,7 @@ class simple_reference {
     return the_value_type;
   }
 
-  override void init(value_wrapper new_value) {
+  override init(value_wrapper new_value) {
     -- TODO: enforce that the type of new_value is a subtype of the_value_type.
     assert the_value is null;
     the_value = new_value;
@@ -40,7 +40,7 @@ class simple_reference {
     return the_value;
   }
 
-  override void set(value_wrapper new_value) {
+  override set(value_wrapper new_value) {
     -- TODO: enforce that the type of new_value is a subtype of the_value_type.
     the_value = new_value;
   }

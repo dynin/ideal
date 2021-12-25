@@ -17,6 +17,6 @@ interface type_declaration {
   readonly list[type_parameter_declaration] or null get_parameters;
   readonly list[declaration] get_signature;
   -- TODO: this may be a misleading name for this method, rename.
-  void process_declaration(declaration_pass pass);
+  process_declaration(declaration_pass pass);
   future[analysis_result] process_type(declaration_pass pass);
 }

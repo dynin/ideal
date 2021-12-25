@@ -12,7 +12,7 @@ namespace notification_context {
     return logger;
   }
 
-  void set(output[notification] new_logger) {
+  set(output[notification] new_logger) {
     logger = new_logger;
   }
 }

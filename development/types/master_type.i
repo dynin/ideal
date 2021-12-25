@@ -45,14 +45,14 @@ class master_type {
     return the_context;
   }
 
-  protected void set_context(type_declaration_context the_context) {
+  protected set_context(type_declaration_context the_context) {
     assert this.the_context is null;
     this.the_context = the_context;
   }
 
   boolean has_parametrizable_state => the_parametrizable_state is_not null;
 
-  void make_parametrizable() {
+  make_parametrizable() {
     assert the_parametrizable_state is null;
     the_parametrizable_state = parametrizable_state.new(this);
   }

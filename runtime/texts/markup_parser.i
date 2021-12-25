@@ -15,7 +15,7 @@ class markup_parser {
   }
 
   -- TODO: pass along error position.
-  void report_error(string error_message) {
+  report_error(string error_message) {
     error_reporter(error_message);
   }
 

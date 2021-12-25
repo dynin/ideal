@@ -17,7 +17,7 @@ class procedure_matcher[readonly value element_type, any value result_type] {
     this.parser = parser;
   }
 
-  implement void validate() {
+  implement validate() {
     (the_pattern !> validatable).validate();
   }
 

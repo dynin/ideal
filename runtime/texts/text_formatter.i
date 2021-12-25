@@ -26,41 +26,41 @@ abstract class text_formatter {
     first = true;
   }
 
-  override void write(text_fragment fragment) {
+  override write(text_fragment fragment) {
     process(fragment);
   }
 
-  override void write_all(readonly list[text_fragment] fragments) {
+  override write_all(readonly list[text_fragment] fragments) {
     for (fragment : fragments) {
       process(fragment);
     }
   }
 
-  override void sync() {
+  override sync() {
     the_output.sync();
   }
 
-  override void close() {
+  override close() {
     the_output.close();
   }
 
-  override abstract void process_string(string s);
+  override abstract process_string(string s);
 
-  override abstract void process_element(text_element element);
+  override abstract process_element(text_element element);
 
-  override abstract void process_special(special_text t);
+  override abstract process_special(special_text t);
 
-  override void process_nodes(list_text_node nodes) {
+  override process_nodes(list_text_node nodes) {
     -- TODO: this cast should be redundant.
     write_all(nodes.nodes !> readonly list[text_fragment]);
   }
 
-  override void process_attributes(list_attribute_fragment fragments) {
+  override process_attributes(list_attribute_fragment fragments) {
     -- TODO: this cast should be redundant.
     write_all(fragments.fragments !> readonly list[text_fragment]);
   }
 
-  protected void write_string(string the_string) {
+  protected write_string(string the_string) {
     var nonnegative index : 0;
     while (index < the_string.size) {
       if (first) {
@@ -80,17 +80,17 @@ abstract class text_formatter {
     }
   }
 
-  protected void write_newline() {
+  protected write_newline() {
     do_write_newline();
     first = true;
     the_output.sync();
   }
 
-  protected void do_write_newline() {
+  protected do_write_newline() {
     the_output.write(NEWLINE);
   }
 
-  protected void do_write_indent() {
+  protected do_write_indent() {
     for (var nonnegative i : 0; i < indent; i += 1) {
       the_output.write_all(spaces);
     }
@@ -98,7 +98,7 @@ abstract class text_formatter {
   }
 
   -- TODO: string should work here.
-  protected void do_write_string(readonly list[character] s) {
+  protected do_write_string(readonly list[character] s) {
     the_output.write_all(s);
   }
 }

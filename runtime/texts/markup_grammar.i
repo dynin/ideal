@@ -36,7 +36,7 @@ class markup_grammar {
 
   private boolean is_completed => document_matcher is_not null;
 
-  public void add_elements(readonly collection[element_id] new_element_ids) {
+  public add_elements(readonly collection[element_id] new_element_ids) {
     assert !is_completed();
     for (the_element_id : new_element_ids.elements) {
       assert !element_ids.contains_key(the_element_id.short_name);
@@ -44,7 +44,7 @@ class markup_grammar {
     }
   }
 
-  public void add_attributes(readonly collection[attribute_id] new_attribute_ids) {
+  public add_attributes(readonly collection[attribute_id] new_attribute_ids) {
     assert !is_completed();
     for (the_attribute_id : new_attribute_ids.elements) {
       assert !attribute_ids.contains_key(the_attribute_id.short_name);
@@ -52,7 +52,7 @@ class markup_grammar {
     }
   }
 
-  public void add_entities(readonly collection[special_text] new_entities) {
+  public add_entities(readonly collection[special_text] new_entities) {
     assert !is_completed();
     for (the_entity : new_entities.elements) {
       assert !entities.contains_key(the_entity.name);
@@ -60,7 +60,7 @@ class markup_grammar {
     }
   }
 
-  public void complete() {
+  public complete() {
     assert !is_completed();
     document_matcher = document();
   }
@@ -317,7 +317,7 @@ class markup_grammar {
     return result;
   }
 
-  void update_matchers() {
+  update_matchers() {
   }
 
   text_element parse(string text, markup_parser parser) {

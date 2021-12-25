@@ -18,7 +18,7 @@ class notification_output {
 
   var boolean has_errors => error_flag;
 
-  private void set_error(the notification) {
+  private set_error(the notification) {
     if (!error_flag) {
       if (the_notification is base_notification) {
         error_flag = the_notification.the_notification_level == notification_level.ERROR;
@@ -26,12 +26,12 @@ class notification_output {
     }
   }
 
-  override void write(notification value) {
+  override write(notification value) {
     set_error(value);
     the_output.write(value);
   }
 
-  override void write_all(readonly list[notification] values) {
+  override write_all(readonly list[notification] values) {
     for (the_notification : values) {
       set_error(the_notification);
     }
@@ -39,12 +39,12 @@ class notification_output {
   }
 
   -- TODO: factor out so this can be reused.
-  override void sync() {
+  override sync() {
     the_output.sync();
   }
 
   -- TODO: factor out so this can be reused.
-  override void close() {
+  override close() {
     the_output.close();
   }
 }

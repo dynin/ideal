@@ -58,7 +58,7 @@ class parametrizable_state {
     return parametrized_types.get(parameters);
   }
 
-  void bind_parametrized(parametrized_type parametrized, type_parameters parameters) {
+  bind_parametrized(parametrized_type parametrized, type_parameters parameters) {
     assert parametrized.get_master == this.master;
     assert !parametrized.parameters_defined();
     assert is_special || primary_type == parametrized;
@@ -70,7 +70,7 @@ class parametrizable_state {
     parametrized_types.put(parameters, parametrized);
   }
 
-  void set_variances(readonly list[variance_modifier] variances) {
+  set_variances(readonly list[variance_modifier] variances) {
     assert this.variances is null;
     this.variances = variances.frozen_copy;
   }

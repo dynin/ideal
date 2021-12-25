@@ -40,7 +40,7 @@ class parametrized_type {
 
   implement protected type_declaration_context declaration_context => master.declaration_context;
 
-  void set_parameters(type_parameters parameters) {
+  set_parameters(type_parameters parameters) {
     assert this.parameters is null;
     if (parameters.the_list.is_empty) {
       utilities.panic("Attempt to parametrize " ++ this ++ " with empty parameters");

@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 class grammar_scanner {
-  void register_tokens(the scanner_config) {
+  register_tokens(the scanner_config) {
     the_scanner_config.add_punctuation(punctuation.COLON_COLON_EQUALS);
 
     the_scanner_config.add_keyword(keywords.GRAMMAR);

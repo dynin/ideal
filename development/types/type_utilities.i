@@ -55,7 +55,7 @@ namespace type_utilities {
     return the_principal.get_flavor_profile;
   }
 
-  void prepare(abstract_value the_value, declaration_pass pass) {
+  prepare(abstract_value the_value, declaration_pass pass) {
     (the_value.type_bound.principal !> base_principal_type).process_declaration(pass);
   }
 }

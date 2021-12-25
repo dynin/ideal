@@ -20,14 +20,14 @@ public class hash_dictionary[readonly value key_type, value value_type] {
     super(runtime_util.default_equivalence !> equivalence_with_hash[key_type]);
   }
 
-  private void copy_on_write() {
+  private copy_on_write() {
     if (!state.writable) {
       state = state.copy();
       assert state.writable;
     }
   }
 
-  implement void clear() {
+  implement clear() {
     copy_on_write();
     state.clear();
   }

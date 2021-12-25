@@ -22,7 +22,7 @@ namespace debug {
   var boolean IN_PROGRESS_DECLARATION : false;
   var boolean MISC_TRACE : false;
 
-  void initialize(create_flags flags) {
+  initialize(create_flags flags) {
     PROGRESS = flags.DEBUG_PROGRESS;
     ACTIONS = flags.DEBUG_ACTIONS;
     CURE_UNDECLARED = flags.CURE_UNDECLARED;

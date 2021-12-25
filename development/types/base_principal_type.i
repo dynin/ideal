@@ -43,7 +43,7 @@ abstract class base_principal_type {
     return do_get_flavored(this, profile.map(flavor));
   }
 
-  void set_flavor_profile(flavor_profile the_flavor_profile) {
+  set_flavor_profile(flavor_profile the_flavor_profile) {
     assert this.the_flavor_profile is null;
     for (flavor : flavor.all_flavors) {
       if (!the_flavor_profile.supports(flavor)) {
@@ -59,14 +59,14 @@ abstract class base_principal_type {
 
   implement final declaration or null get_declaration => the_declaration;
 
-  void set_declaration(declaration the_declaration) {
+  set_declaration(declaration the_declaration) {
     -- TODO: implement assert message
     assert this.the_declaration is null; -- : "Already declared " + this;
     verify the_declaration is_not null;
     this.the_declaration = the_declaration;
   }
 
-  void process_declaration(declaration_pass pass) {
+  process_declaration(declaration_pass pass) {
     if (pass.is_before(last_pass) || pass == last_pass) {
       return;
     }
@@ -86,13 +86,13 @@ abstract class base_principal_type {
     }
   }
 
-  protected final void do_declare(declaration_pass pass) {
+  protected final do_declare(declaration_pass pass) {
     assert pass.ordinal == last_pass.ordinal + 1;
     last_pass = pass;
     do_declare_actual(pass);
   }
 
-  protected void do_declare_actual(declaration_pass pass) {
+  protected do_declare_actual(declaration_pass pass) {
     assert pass != declaration_pass.NONE;
     the_context : declaration_context;
     assert the_context is_not null;

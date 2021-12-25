@@ -18,7 +18,7 @@ class repeat_pattern[readonly value element_type] {
     -- TODO: assert the_pattern doesn't match an empty list
   }
 
-  implement void validate() {
+  implement validate() {
     (the_pattern !> validatable).validate();
   }
 

@@ -20,7 +20,7 @@ class doc_comment_processor {
     return doc_grammar.new(unicode_handler.instance);
   }
 
-  private static void report_error(string error_message) {
+  private static report_error(string error_message) {
     saved_error = error_message;
   }
 }

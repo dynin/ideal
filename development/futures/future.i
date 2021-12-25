@@ -8,5 +8,5 @@
 interface future[covariant value element] {
   boolean is_done;
   element or null value;
-  void observe(operation observer, lifespan the_lifespan);
+  observe(operation observer, lifespan the_lifespan);
 }

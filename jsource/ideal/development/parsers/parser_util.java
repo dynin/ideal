@@ -63,7 +63,14 @@ public class parser_util {
 
   public static construct expr_or_proc(list<annotation_construct> annotations, construct expression,
       list<annotation_construct> post_annotations, @Nullable construct body, origin the_origin) {
-    if (expression instanceof parameter_construct) {
+
+    if (expression instanceof name_construct) {
+      name_construct the_name_construct = (name_construct) expression;
+      if (body != null) {
+        return new procedure_construct(annotations, null, the_name_construct.the_name,
+            null, post_annotations, body, the_origin);
+      }
+    } else if (expression instanceof parameter_construct) {
       parameter_construct pc = (parameter_construct) expression;
       if (annotations.is_not_empty() || post_annotations.is_not_empty() || body != null ||
           has_variables(pc.parameters)) {
@@ -74,12 +81,13 @@ public class parser_util {
             post_annotations, body, the_origin);
       }
     }
-    if (body == null) {
-      return maybe_variable(annotations, expression, post_annotations, the_origin);
+
+    if (body != null) {
+      new base_notification(new base_string("Can't recognize procedure"), the_origin).report();
+      return new empty_construct(the_origin);
     }
-    // TODO: raise error_signal instead of panicing
-    utilities.panic("Expression or constructor failure: " + expression);
-    return expression;
+
+    return maybe_variable(annotations, expression, post_annotations, the_origin);
   }
 
   // TODO: rewrite with list methods..

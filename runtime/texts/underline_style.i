@@ -20,7 +20,7 @@ class underline_style {
     this.display_character = display_character;
   }
 
-  private static void register(underline_style style) {
+  private static register(underline_style style) {
     all_styles.put(style.style_id, style);
   }
 

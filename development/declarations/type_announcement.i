@@ -17,5 +17,5 @@ interface type_announcement {
   readonly list[declaration] external_declarations;
   --- Load resource associated with the type (typically a type_declaration,
   --- but can also be HTML content.)
-  void load_resource();
+  load_resource();
 }

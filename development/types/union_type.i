@@ -75,7 +75,7 @@ class union_type {
     return result;
   }
 
-  implement protected void do_declare_actual(declaration_pass pass) {
+  implement protected do_declare_actual(declaration_pass pass) {
     for (the_parameter : parameters.the_list) {
       type_utilities.prepare(the_parameter, pass);
     }
@@ -86,7 +86,7 @@ class union_type {
     return the_context;
   }
 
-  static void set_context(type_declaration_context the_context) {
+  static set_context(type_declaration_context the_context) {
     assert union_type.the_context is null;
     union_type.the_context = the_context;
   }

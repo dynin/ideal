@@ -20,20 +20,20 @@ class appender[any value value_type] {
     this(base_list[value_type].new());
   }
 
-  override void write(value_type element) {
+  override write(value_type element) {
     assert active;
     the_list.append(element);
   }
 
-  override void write_all(readonly list[value_type] elements) {
+  override write_all(readonly list[value_type] elements) {
     assert active;
     the_list.append_all(elements);
   }
 
-  override void sync() {
+  override sync() {
   }
 
-  override void close() {
+  override close() {
     active = false;
   }
 
@@ -41,7 +41,7 @@ class appender[any value value_type] {
     return the_list.elements;
   }
 
-  void clear() {
+  clear() {
     the_list.clear();
   }
 }

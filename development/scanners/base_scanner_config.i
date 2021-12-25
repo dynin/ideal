@@ -43,61 +43,61 @@ class base_scanner_config {
     return the_token;
   }
 
-  void add(scanner_element element) {
+  add(scanner_element element) {
     assert element is base_scanner_element;
     element.set_config(this);
     elements_list.append(element);
   }
 
-  private void do_add_keyword(simple_name name, token_matcher matcher) {
+  private do_add_keyword(simple_name name, token_matcher matcher) {
     old : keyword_dictionary.put(name, matcher);
     assert old is null;
   }
 
-  void add_keyword(the keyword) {
+  add_keyword(the keyword) {
     do_add_keyword(simple_name.make(the_keyword.name),
         base_token_matcher[keyword].new(the_keyword, the_keyword));
   }
 
-  void add_punctuation(the punctuation_type) {
+  add_punctuation(the punctuation_type) {
     add(punctuation_element.new(the_punctuation_type));
   }
 
-  void add_special(the special_name, the token_type) {
+  add_special(the special_name, the token_type) {
     do_add_keyword(simple_name.make(the_token_type.name),
         base_token_matcher[special_name].new(special_token_type.SPECIAL_NAME, the_special_name));
   }
 
-  void add_kind(the kind) {
+  add_kind(the kind) {
     do_add_keyword(the_kind.name, base_token_matcher[kind].new(special_token_type.KIND, the_kind));
   }
 
-  void add_subtype_tag(subtype_tag tag) {
+  add_subtype_tag(subtype_tag tag) {
     do_add_keyword(tag.name,
         base_token_matcher[subtype_tag].new(special_token_type.SUBTYPE_TAG, tag));
   }
 
-  void add_modifier(modifier_kind modifier) {
+  add_modifier(modifier_kind modifier) {
     do_add_keyword(modifier.name,
         base_token_matcher[modifier_kind].new(special_token_type.MODIFIER_KIND, modifier));
   }
 
-  void add_flavor(type_flavor flavor) {
+  add_flavor(type_flavor flavor) {
     do_add_keyword(flavor.name,
         base_token_matcher[type_flavor].new(special_token_type.FLAVOR, flavor));
   }
 
-  void add_jump(jump_category jump) {
+  add_jump(jump_category jump) {
     do_add_keyword(jump.jump_name, base_token_matcher[jump_category].new(special_token_type.JUMP,
         jump));
   }
 
-  void add_constraint(constraint_category constraint) {
+  add_constraint(constraint_category constraint) {
     do_add_keyword(constraint.constraint_name,
         base_token_matcher[constraint_category].new(special_token_type.CONSTRAINT, constraint));
   }
 
-  override void add_reserved(string reserved_word, var keyword or null the_keyword) {
+  override add_reserved(string reserved_word, var keyword or null the_keyword) {
     name : simple_name.make(reserved_word);
     if (the_keyword is null) {
       the_keyword = keywords.RESERVED;

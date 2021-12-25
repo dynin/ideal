@@ -210,7 +210,7 @@ test_suite test_markup_grammar {
         "<html><a>Hello!</a></html>", "Mismatched element name: start a, end b");
   }
 
-  private void report_error(string error_message) {
+  private report_error(string error_message) {
     this.error_message = error_message;
   }
 

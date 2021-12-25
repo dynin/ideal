@@ -55,15 +55,15 @@ class utilities {
     }
   }
 
-  static overload noreturn void panic(string message) {
+  static overload noreturn panic(string message) {
     runtime_util.do_panic(s(message));
   }
 
-  static overload noreturn void panic(String message) {
+  static overload noreturn panic(String message) {
     runtime_util.do_panic(message);
   }
 
-  static void stack(String message) {
+  static stack(String message) {
     runtime_util.do_stack(message);
   }
 }

@@ -12,9 +12,9 @@ interface action_context {
 
   readonly list[action] lookup(type from, action_name name);
 
-  void add(type from, action_name name, the action);
+  add(type from, action_name name, the action);
 
-  void add_supertype(type subtype, type supertype);
+  add_supertype(type subtype, type supertype);
 
   readonly list[action] resolve(type from, action_name name, the origin);
 

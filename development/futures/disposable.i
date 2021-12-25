@@ -13,5 +13,5 @@ interface disposable {
   --- Dispose of resources associated with this object.
   --- The dispose method should cleanup event listeners, resources, and any other allocations.
   --- It is safe to call this method more than once.
-  void dispose();
+  dispose();
 }

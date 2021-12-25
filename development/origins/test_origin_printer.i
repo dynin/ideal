@@ -8,7 +8,7 @@
 test_suite test_origin_printer {
   import ideal.machine.channels.string_writer;
 
-  void show_origin_helper(string input, nonnegative begin, nonnegative end, string output) {
+  show_origin_helper(string input, nonnegative begin, nonnegative end, string output) {
     source : source_content.new(simple_name.make("foo"), input);
     the_origin : source.make_origin(begin, end) !> text_origin;
     the_writer : string_writer.new();

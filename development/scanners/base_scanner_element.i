@@ -9,7 +9,7 @@ abstract class base_scanner_element {
 
   private var the scanner_config;
 
-  override void set_config(the scanner_config) {
+  override set_config(the scanner_config) {
     this.the_scanner_config = the_scanner_config;
   }
 

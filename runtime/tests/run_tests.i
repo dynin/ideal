@@ -6,7 +6,7 @@
 
 --- Driver program for running runtime unittests.
 program run_tests {
-  void start() {
+  start() {
     all_tests.run_all_tests();
   }
 }

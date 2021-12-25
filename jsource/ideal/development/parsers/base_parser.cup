@@ -95,6 +95,7 @@ non terminal procedure_construct  procedure_declaration;
 non terminal construct  block_statement;
 non terminal annotation_construct  annotation, post_annotation;
 non terminal list<annotation_construct>  annotations_opt, post_annotations_opt;
+non terminal list<annotation_construct>  post_annotations_opt2;
 
 non terminal list_construct  parameters;
 non terminal list_construct  parameters_opt;
@@ -172,8 +173,8 @@ statement ::=
                 {: RESULT = s; :}
         |       annotations_opt:m block:b
                 {: RESULT = new block_construct(m, b.body, b); :}
-        |       annotations_opt:m expression:t procedure_body:b
-                {: RESULT = parser_util.expr_or_ctor(m, t, b, new fragment_origin(t, t, b)); :}
+        |       annotations_opt:m expression:t post_annotations_opt2:pm procedure_body:b
+                {: RESULT = parser_util.expr_or_proc(m, t, pm, b, new fragment_origin(t, t, b)); :}
         |       SEMICOLON:s
                 {: RESULT = new empty_construct(s); :}
         |       variable_declaration:d SEMICOLON:s
@@ -322,7 +323,8 @@ case_expression ::=
 
 variable_or_expression_opt ::=
                 annotations_opt:m expression_opt:e
-                {: RESULT = parser_util.maybe_variable(m, e, e); :}
+                {: RESULT = parser_util.maybe_variable(m, e,
+                    new empty<annotation_construct>(), e); :}
         |       variable_declaration:v
                 {: RESULT = v; :}
         ;
@@ -353,6 +355,15 @@ post_annotations_opt ::=
                 {: RESULT = new base_list<annotation_construct>(); :}
         |       post_annotation:hd post_annotations_opt:tl
                 {: RESULT = new base_list<annotation_construct>(hd); RESULT.append_all(tl); :}
+        ;
+
+// TODO: merge with post_annotations_opt
+post_annotations_opt2 ::=
+                /* epsilon */
+                {: RESULT = new base_list<annotation_construct>(); :}
+        |       FLAVOR:f
+                {: RESULT = new base_list<annotation_construct>(
+                      new modifier_construct(f.payload(), f)); :}
         ;
 
 expression_opt ::=
@@ -407,7 +418,8 @@ parameter_list_opt ::=
 
 parameter ::=
                 annotations_opt:m expression:e
-                {: RESULT = parser_util.maybe_variable(m, e, e); :}
+                {: RESULT = parser_util.maybe_variable(m, e,
+                    new empty<annotation_construct>(), e); :}
         |       annotations_opt:m expression:t name:n post_annotations_opt:pm COLON expression:e
                 {: RESULT = new variable_construct(m, t, n.the_name, pm, e,
                     new fragment_origin(t, n, e)); :}

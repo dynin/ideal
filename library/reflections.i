@@ -33,8 +33,8 @@ package reflections {
     type_id value_type_bound;
 
     value_wrapper get pure;
-    void init(value_wrapper the_value) writeonly;
-    void set(value_wrapper the_value) writeonly;
+    init(value_wrapper the_value) writeonly;
+    set(value_wrapper the_value) writeonly;
   }
 
   interface variable_id {

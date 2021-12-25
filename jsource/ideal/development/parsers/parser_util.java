@@ -25,10 +25,11 @@ public class parser_util {
   public static origin empty_origin = new special_origin(new base_string("empty"));
 
   public static construct maybe_variable(readonly_list<annotation_construct> annotations,
-      construct expression, origin the_origin) {
-    if (annotations.is_not_empty()) {
+      construct expression, readonly_list<annotation_construct> post_annotations,
+      origin the_origin) {
+    if (annotations.is_not_empty() || post_annotations.is_not_empty()) {
       return new variable_construct(annotations, expression, null,
-          new empty<annotation_construct>(), null, the_origin);
+          post_annotations, null, the_origin);
     } else {
       return expression;
     }
@@ -42,20 +43,39 @@ public class parser_util {
   }
   */
 
-  public static construct expr_or_ctor(list<annotation_construct> annotations, construct expression,
-      @Nullable construct body, origin the_origin) {
+  /*
+  public static construct expr_or_ctor2(list<annotation_construct> annotations, name_construct name,
+      list_construct parameters, @Nullable construct body, origin the_origin) {
+    if (annotations.is_not_empty() || body != null || has_variables(parameters.the_elements)) {
+      // TODO: origin...
+      return new procedure_construct(annotations, null, name.the_name, parameters.the_elements,
+          new empty<annotation_construct>(), body, the_origin);
+    }
+    if (body == null) {
+      return maybe_variable(annotations, new parameter_construct(name, parameters.the_elements,
+          parameters.grouping, the_origin), the_origin);
+    }
+    // TODO: raise error_signal instead of panicing
+    utilities.panic("Expression or constructor failure: " + name);
+    return null;
+  }
+  */
+
+  public static construct expr_or_proc(list<annotation_construct> annotations, construct expression,
+      list<annotation_construct> post_annotations, @Nullable construct body, origin the_origin) {
     if (expression instanceof parameter_construct) {
       parameter_construct pc = (parameter_construct) expression;
-      if (annotations.is_not_empty() || body != null || has_variables(pc.parameters)) {
+      if (annotations.is_not_empty() || post_annotations.is_not_empty() || body != null ||
+          has_variables(pc.parameters)) {
         // TODO: notify user instead of failing cast
         name_construct nc = (name_construct) pc.main;
         // TODO: origin...
         return new procedure_construct(annotations, null, nc.the_name, pc.parameters,
-            new empty<annotation_construct>(), body, the_origin);
+            post_annotations, body, the_origin);
       }
     }
     if (body == null) {
-      return maybe_variable(annotations, expression, the_origin);
+      return maybe_variable(annotations, expression, post_annotations, the_origin);
     }
     // TODO: raise error_signal instead of panicing
     utilities.panic("Expression or constructor failure: " + expression);

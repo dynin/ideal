@@ -52,7 +52,7 @@ package elements {
     subtypes entity;
 
     explicit value_type get() pure;
-    explicit void set(value_type new_value) writeonly;
+    explicit set(value_type new_value) writeonly;
   }
 
   --- <div>Data is a value that can be fully represented by bits.
@@ -273,7 +273,7 @@ package elements {
     not_yet_implemented immutable collection[element] filter(the predicate[element]) immutable pure;
     not_yet_implemented remove(the predicate[element]);
 
-    void clear() writeonly;
+    clear() writeonly;
   }
 
   --- A finite sequence of elements.
@@ -283,7 +283,7 @@ package elements {
     --- Read the list's element for the specified index.
     implicit readonly reference[element] get(nonnegative index) pure;
     implicit mutable reference[element] at(nonnegative index) mutable pure;
-    void set(nonnegative index, element value) writeonly;
+    set(nonnegative index, element value) writeonly;
     -- TODO: handle writeonly refs
     not_yet_implemented implicit writeonly reference[element] set(nonnegative index) writeonly pure;
 

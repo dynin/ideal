@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.graphs.graph;
 
-public interface any_action_context { }
+public interface any_action_context extends any_value { }

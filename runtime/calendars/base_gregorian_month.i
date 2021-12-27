@@ -5,7 +5,7 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 enum base_gregorian_month {
-  implements gregorian_month, reference_equality;
+  implements gregorian_month;
 
   JANUARY: new(31, 31);
   FEBRUARY: new(28, 29);

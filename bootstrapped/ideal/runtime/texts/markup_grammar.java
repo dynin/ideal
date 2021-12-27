@@ -12,7 +12,7 @@ import ideal.runtime.patterns.*;
 
 import javax.annotation.Nullable;
 
-public class markup_grammar {
+public class markup_grammar implements value {
   public final character_handler the_character_handler;
   public final dictionary<string, element_id> element_ids;
   public final dictionary<string, attribute_id> attribute_ids;

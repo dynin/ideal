@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class test_singleton_pattern {
+public class test_singleton_pattern implements value {
   public void test_match() {
     final singleton_pattern<Character> the_pattern = new singleton_pattern<Character>('x');
     assert the_pattern.call(new base_string("x"));

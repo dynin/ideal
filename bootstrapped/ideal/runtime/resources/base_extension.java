@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 
-public enum base_extension implements extension {
+public enum base_extension implements extension, enum_data {
   HTML(new base_string("html")),
   IDEAL_SOURCE(new base_string("i")),
   CSS(new base_string("css")),

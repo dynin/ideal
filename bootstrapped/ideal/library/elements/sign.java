@@ -2,7 +2,7 @@
 
 package ideal.library.elements;
 
-public enum sign implements deeply_immutable_data, comparable, stringable {
+public enum sign implements comparable, enum_data {
   less,
   equal,
   greater;

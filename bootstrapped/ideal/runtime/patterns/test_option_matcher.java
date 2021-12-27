@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.patterns.*;
 import ideal.runtime.elements.*;
 
-public class test_option_matcher {
+public class test_option_matcher implements value {
   private boolean match_a(final char c) {
     return c == 'a' || c == 'A';
   }

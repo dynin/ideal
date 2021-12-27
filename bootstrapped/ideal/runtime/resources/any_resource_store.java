@@ -6,4 +6,4 @@ import ideal.library.elements.*;
 import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 
-public interface any_resource_store { }
+public interface any_resource_store extends any_value { }

@@ -7,7 +7,7 @@ import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.machine.characters.unicode_handler;
 
-public class test_character_handler {
+public class test_character_handler implements value {
   public void predicate_test() {
     final unicode_handler the_character_handler = unicode_handler.instance;
     assert the_character_handler.is_letter('x');

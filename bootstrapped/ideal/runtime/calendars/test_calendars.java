@@ -7,7 +7,7 @@ import ideal.library.calendars.*;
 import ideal.runtime.elements.*;
 import ideal.machine.calendars.calendar_utilities.*;
 
-public class test_calendars {
+public class test_calendars implements value {
   public void test_months() {
     final gregorian_month jan = ideal.machine.calendars.calendar_utilities.month_of(0);
     assert ideal.machine.elements.runtime_util.values_equal(jan.ordinal(), 0);

@@ -4,4 +4,4 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface any_variable_context { }
+public interface any_variable_context extends any_value { }

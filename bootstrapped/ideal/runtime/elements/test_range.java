@@ -4,7 +4,7 @@ package ideal.runtime.elements;
 
 import ideal.library.elements.*;
 
-public class test_range {
+public class test_range implements value {
   public void test_empty() {
     final base_range the_range = new base_range(68, 68);
     assert the_range.is_empty();

@@ -23,7 +23,7 @@ import ideal.development.jumps.jump_category;
 
 import javax.annotation.Nullable;
 
-public class scanner_engine {
+public class scanner_engine implements value {
   private final scanner_config config;
   public scanner_engine(final scanner_config config) {
     this.config = config;

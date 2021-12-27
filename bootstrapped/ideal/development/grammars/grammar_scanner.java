@@ -9,7 +9,7 @@ import ideal.development.names.*;
 import ideal.development.constructs.*;
 import ideal.development.scanners.*;
 
-public class grammar_scanner {
+public class grammar_scanner implements value {
   public void register_tokens(final scanner_config the_scanner_config) {
     the_scanner_config.add_punctuation(punctuation.COLON_COLON_EQUALS);
     the_scanner_config.add_keyword(keywords.GRAMMAR);

@@ -9,7 +9,7 @@ import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 import ideal.machine.channels.string_writer;
 
-public class test_plain_text {
+public class test_plain_text implements value {
   public static final string FOO = new base_string("foo");
   public static final string BAR = new base_string("bar");
   public static final string BAZ = new base_string("baz");

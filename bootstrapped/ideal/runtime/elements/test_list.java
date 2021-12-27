@@ -4,7 +4,7 @@ package ideal.runtime.elements;
 
 import ideal.library.elements.*;
 
-public class test_list {
+public class test_list implements value {
   public void test_empty() {
     final empty<string> strings = new empty<string>();
     assert strings.is_empty();

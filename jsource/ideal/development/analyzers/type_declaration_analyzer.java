@@ -353,7 +353,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
         the_parametrizable_state.set_variances(variances);
       }
 
-      maybe_add_default_supertype();
+      maybe_add_implicit_supertype();
     }
 
     if (body != null) {
@@ -451,22 +451,27 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     }
   }
 
-  private void maybe_add_default_supertype() {
-    if (!has_supertype_declarations() &&
+  private void maybe_add_implicit_supertype() {
+    principal_type implicit_supertype;
+    if (get_kind() == type_kinds.enum_kind) {
+      implicit_supertype = common_types.enum_data_type();
+    } else if (!has_supertype_declarations() &&
         !get_kind().is_namespace() &&
         result_type != common_types.entity_type() &&
         result_type != common_types.value_type()) {
-      origin the_origin = this;
-      readonly_list<annotation_construct> super_annotations =
-          new base_list<annotation_construct>(new modifier_construct(
-              general_modifier.synthetic_modifier, the_origin));
       // TODO: move default supertype to language_settings
-      principal_type default_supertype = common_types.value_type();
-
-      assert body != null;
-      append_to_body(new supertype_analyzer(super_annotations, null, subtype_tags.subtypes_tag,
-          default_supertype, the_origin));
+      implicit_supertype = common_types.value_type();
+    } else {
+      return;
     }
+
+    origin the_origin = this;
+    readonly_list<annotation_construct> super_annotations =
+        new base_list<annotation_construct>(new modifier_construct(
+            general_modifier.synthetic_modifier, the_origin));
+    assert body != null;
+    append_to_body(new supertype_analyzer(super_annotations, null, subtype_tags.subtypes_tag,
+        implicit_supertype, the_origin));
 
     /*
     if (false && get_kind() == type_kinds.procedure_kind &&

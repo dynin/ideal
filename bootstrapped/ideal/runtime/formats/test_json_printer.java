@@ -9,7 +9,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
 import ideal.machine.characters.unicode_handler;
 
-public class test_json_printer {
+public class test_json_printer implements value {
   private json_printer make_printer() {
     return new json_printer(unicode_handler.instance);
   }

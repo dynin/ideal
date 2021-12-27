@@ -5,7 +5,7 @@ package ideal.library.messages;
 import ideal.library.elements.*;
 import ideal.library.texts.*;
 
-public enum log_level {
+public enum log_level implements enum_data {
   EMERGENCY,
   ALERT,
   CRITICAL,

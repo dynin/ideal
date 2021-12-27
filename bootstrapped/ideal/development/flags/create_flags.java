@@ -7,7 +7,7 @@ import ideal.development.elements.*;
 
 import javax.annotation.Nullable;
 
-public class create_flags {
+public class create_flags implements value {
   public final @Nullable string top;
   public final @Nullable string input;
   public final @Nullable string output;

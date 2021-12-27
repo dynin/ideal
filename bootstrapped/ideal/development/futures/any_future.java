@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface any_future<element> { }
+public interface any_future<element> extends any_value { }

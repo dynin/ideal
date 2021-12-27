@@ -21,7 +21,7 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
-public interface readonly_scanner_config extends any_scanner_config {
+public interface readonly_scanner_config extends readonly_value, any_scanner_config {
   character_handler the_character_handler();
   boolean is_whitespace(char the_character);
   boolean is_name_start(char the_character);

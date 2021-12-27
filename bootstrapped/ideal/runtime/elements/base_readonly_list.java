@@ -9,7 +9,7 @@ public class base_readonly_list<element_type> implements readonly_list<element_t
   public static class parameters {
     public static final Integer default_size = 16;
   }
-  protected static class list_state<element_type> {
+  protected static class list_state<element_type> implements value {
     public boolean writable;
     public array<element_type> the_elements;
     public Integer size;

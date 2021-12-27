@@ -99,14 +99,14 @@ public class base_scanner_config implements scanner_config {
     }
     this.do_add_keyword(name, new base_scanner_config.base_token_matcher<keyword>(keywords.RESERVED, the_keyword));
   }
-  private static interface any_token_matcher { }
-  private static interface readonly_token_matcher extends any_token_matcher { }
-  private static interface writeonly_token_matcher extends any_token_matcher { }
-  private static interface token_matcher extends readonly_token_matcher, writeonly_token_matcher {
+  private static interface any_token_matcher extends any_value { }
+  private static interface readonly_token_matcher extends readonly_value, any_token_matcher { }
+  private static interface writeonly_token_matcher extends writeonly_value, any_token_matcher { }
+  private static interface token_matcher extends value, readonly_token_matcher, writeonly_token_matcher {
     token<Object> process(origin the_origin);
   }
-  private static interface immutable_token_matcher extends readonly_token_matcher { }
-  private static interface deeply_immutable_token_matcher extends immutable_token_matcher { }
+  private static interface immutable_token_matcher extends immutable_value, readonly_token_matcher { }
+  private static interface deeply_immutable_token_matcher extends deeply_immutable_value, immutable_token_matcher { }
   private static class base_token_matcher<payload_type> implements base_scanner_config.token_matcher {
     private final token_type the_token_type;
     private final payload_type payload;

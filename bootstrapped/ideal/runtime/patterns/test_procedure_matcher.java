@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class test_procedure_matcher {
+public class test_procedure_matcher implements value {
   private boolean test_predicate(final char c) {
     return c == 'a' || c == 'b' || c == 'c';
   }

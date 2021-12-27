@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.graphs.graph;
 
-public interface immutable_action_context extends readonly_action_context { }
+public interface immutable_action_context extends immutable_value, readonly_action_context { }

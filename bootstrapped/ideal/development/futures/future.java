@@ -5,6 +5,6 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface future<element> extends readonly_future<element>, writeonly_future<element> {
+public interface future<element> extends value, readonly_future<element>, writeonly_future<element> {
   void observe(operation observer, lifespan the_lifespan);
 }

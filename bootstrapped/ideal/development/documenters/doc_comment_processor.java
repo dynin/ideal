@@ -12,7 +12,7 @@ import ideal.machine.characters.unicode_handler;
 
 import javax.annotation.Nullable;
 
-public class doc_comment_processor {
+public class doc_comment_processor implements value {
   public static @Nullable string saved_error;
   public static text_fragment parse(final string source) {
     final doc_parser parser = new doc_parser(doc_comment_processor.get_grammar(), new procedure1<Void, string>() {

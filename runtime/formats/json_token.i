@@ -6,9 +6,6 @@
 
 --- JSON tokens that are produced by the tokenizer.
 enum json_token {
-  extends deeply_immutable data;
-  implements deeply_immutable reference_equality, stringable;
-
   OPEN_BRACE: new('{');
   CLOSE_BRACE: new('}');
   OPEN_BRACKET: new('[');

@@ -9,7 +9,7 @@ import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 import ideal.machine.channels.string_writer;
 
-public class test_markup_text {
+public class test_markup_text implements value {
   public void test_writer_trivial() {
     final string_writer the_writer = new string_writer();
     final markup_formatter the_formatter = new markup_formatter(the_writer);

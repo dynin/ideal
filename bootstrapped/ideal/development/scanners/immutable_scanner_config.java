@@ -21,4 +21,4 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
-public interface immutable_scanner_config extends readonly_scanner_config { }
+public interface immutable_scanner_config extends immutable_value, readonly_scanner_config { }

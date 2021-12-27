@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.graphs.*;
 import ideal.runtime.elements.*;
 
-public class test_graph {
+public class test_graph implements value {
   public void basic_test() {
     final base_graph<string, string> the_graph = new base_graph<string, string>();
     assert the_graph.adjacent(new base_string("foo")).is_empty();

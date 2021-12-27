@@ -5,4 +5,4 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.graphs.graph;
 
-public interface deeply_immutable_action_context extends immutable_action_context { }
+public interface deeply_immutable_action_context extends deeply_immutable_value, immutable_action_context { }

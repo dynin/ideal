@@ -5,7 +5,7 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 import ideal.machine.elements.runtime_util;
 
-public class test_runtime_util {
+public class test_runtime_util implements value {
   private static class test1 implements data, equality_comparable {
     public test1(final Integer i, final string s) {
       this.i = i;

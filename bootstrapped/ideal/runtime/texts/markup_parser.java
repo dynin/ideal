@@ -8,7 +8,7 @@ import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 
-public class markup_parser {
+public class markup_parser implements value {
   public final markup_grammar the_markup_grammar;
   public final procedure1<Void, string> error_reporter;
   public markup_parser(final markup_grammar the_markup_grammar, final procedure1<Void, string> error_reporter) {

@@ -29,6 +29,7 @@ namespace common_types {
   private var principal_type DATA_TYPE;
   private var principal_type INTEGER_TYPE;
   private var principal_type NONNEGATIVE_TYPE;
+  private var principal_type ENUM_DATA_TYPE;
   private var principal_type BOOLEAN_TYPE;
   private var principal_type CHARACTER_TYPE;
   private var principal_type STRING_TYPE;
@@ -65,6 +66,7 @@ namespace common_types {
     ENTITY_TYPE = get_type(entity_name, concept_kind, mutable_profile);
     VALUE_TYPE = get_type(value_name, concept_kind, mutable_profile);
     DATA_TYPE = get_type(data_name, concept_kind, mutable_profile);
+    ENUM_DATA_TYPE = get_type(enum_data_name, interface_kind, deeply_immutable_profile);
     BOOLEAN_TYPE = get_type(boolean_name, enum_kind, deeply_immutable_profile);
     CHARACTER_TYPE = get_type(character_name, datatype_kind, deeply_immutable_profile);
     INTEGER_TYPE = get_type(integer_name, datatype_kind, deeply_immutable_profile);
@@ -105,6 +107,8 @@ namespace common_types {
   var principal_type value_type => VALUE_TYPE;
 
   var principal_type data_type => DATA_TYPE;
+
+  var principal_type enum_data_type => ENUM_DATA_TYPE;
 
   var principal_type boolean_type => BOOLEAN_TYPE;
 

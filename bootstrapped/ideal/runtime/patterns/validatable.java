@@ -6,6 +6,6 @@ import ideal.library.elements.*;
 import ideal.library.patterns.*;
 import ideal.runtime.elements.*;
 
-public interface validatable extends readonly_validatable, writeonly_validatable {
+public interface validatable extends value, readonly_validatable, writeonly_validatable {
   void validate();
 }

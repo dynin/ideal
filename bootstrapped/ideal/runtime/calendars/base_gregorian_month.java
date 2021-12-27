@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.calendars.*;
 import ideal.runtime.elements.*;
 
-public enum base_gregorian_month implements gregorian_month, reference_equality {
+public enum base_gregorian_month implements gregorian_month, enum_data {
   JANUARY(31, 31),
   FEBRUARY(28, 29),
   MARCH(31, 31),

@@ -17,6 +17,7 @@ namespace common_names {
   value_name : simple_name.make("value");
   void_name : simple_name.make("void");
   data_name : simple_name.make("data");
+  enum_data_name : simple_name.make("enum_data");
   boolean_name : simple_name.make("boolean");
   character_name : simple_name.make("character");
   integer_name : simple_name.make("integer");

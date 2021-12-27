@@ -4,7 +4,7 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface language_settings extends readonly_language_settings, writeonly_language_settings {
+public interface language_settings extends value, readonly_language_settings, writeonly_language_settings {
   access_modifier get_default_type_access(kind the_kind);
   access_modifier get_default_variable_access(kind the_kind);
   access_modifier get_default_procedure_access(kind the_kind);

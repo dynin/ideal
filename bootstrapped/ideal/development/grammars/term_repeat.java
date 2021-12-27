@@ -9,7 +9,7 @@ import ideal.development.names.*;
 import ideal.development.constructs.*;
 import ideal.development.scanners.*;
 
-public enum term_repeat implements deeply_immutable_data, stringable {
+public enum term_repeat implements enum_data {
   NO_REPEAT,
   ZERO_OR_MORE,
   ONE_OR_MORE;

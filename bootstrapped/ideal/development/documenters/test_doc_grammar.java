@@ -12,7 +12,7 @@ import ideal.runtime.texts.text_library.*;
 import ideal.machine.characters.unicode_handler;
 import ideal.machine.channels.string_writer;
 
-public class test_doc_grammar {
+public class test_doc_grammar implements value {
   public string error_message;
   public doc_grammar make_grammar() {
     return new doc_grammar(unicode_handler.instance);

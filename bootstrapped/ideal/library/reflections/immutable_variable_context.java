@@ -4,4 +4,4 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface immutable_variable_context extends readonly_variable_context { }
+public interface immutable_variable_context extends immutable_value, readonly_variable_context { }

@@ -5,7 +5,7 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 import ideal.machine.channels.string_writer;
 
-public class test_string_writer {
+public class test_string_writer implements value {
   public void basic_test() {
     final string_writer the_writer = new string_writer();
     assert ideal.machine.elements.runtime_util.values_equal(the_writer.size(), 0);

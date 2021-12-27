@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface readonly_language_settings extends any_language_settings { }
+public interface readonly_language_settings extends readonly_value, any_language_settings { }

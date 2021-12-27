@@ -5,8 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 enum constraint_category {
-  implements deeply_immutable data, stringable;
-
   ASSERT_CONSTRAINT: new("assert");
   VERIFY_CONSTRAINT: new("verify");
 

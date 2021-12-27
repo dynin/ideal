@@ -6,8 +6,7 @@
 
 --- Precedences of operators used in the ideal type system.
 enum precedence {
-  implements deeply_immutable data, reference_equality;
-  implements stringable, displayable;
+  implements displayable;
 
   POSTFIX;
   UNARY;

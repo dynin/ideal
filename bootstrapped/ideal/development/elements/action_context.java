@@ -5,7 +5,7 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.graphs.graph;
 
-public interface action_context extends readonly_action_context, writeonly_action_context {
+public interface action_context extends value, readonly_action_context, writeonly_action_context {
   readonly_list<action> lookup(type from, action_name name);
   void add(type from, action_name name, action the_action);
   void add_supertype(type subtype, type supertype);

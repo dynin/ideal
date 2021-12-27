@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class test_option_pattern {
+public class test_option_pattern implements value {
   private boolean match_a(final char c) {
     return c == 'a' || c == 'A';
   }

@@ -12,7 +12,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.kinds.*;
 
-public enum type_format implements deeply_immutable_data, reference_equality, stringable {
+public enum type_format implements enum_data {
   SHORT,
   ONE_PARENT,
   TWO_PARENTS,

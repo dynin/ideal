@@ -114,6 +114,13 @@ package elements {
     not_yet_implemented static equivalence_relation[equality_comparable] natural_equality;
   }
 
+  --- All enum datatypes subtype |enum_data|.
+  interface enum_data {
+    subtypes deeply_immutable data;
+    subtypes reference_equality;
+    subtypes stringable;
+  }
+
   --- <div>A type that has two values: |true| and |false|.
   --- Logical operators |and|, |or|, |not|, |xor| are defined
   --- on the type.  Note that |and| and |or| operators
@@ -122,19 +129,13 @@ package elements {
   --- evaluated, as is the case when the first operand to |and| is |false|.</div>
   --- <j>Equivalent to Java's boolean type.</j>
   enum boolean {
-    subtypes deeply_immutable data;
-    subtypes equality_comparable;
-    subtypes stringable;
-
-    true;
     false;
+    true;
   }
 
   --- Sign of a number, or result of a comparison.
   enum sign {
-    subtypes deeply_immutable data;
     subtypes comparable;
-    subtypes stringable;
 
     less;
     equal;

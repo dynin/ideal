@@ -7,8 +7,6 @@
 --- A category associated with a variable, such as instance field, static field,
 --- loval variable, or an wnum value declaration.
 enum variable_category {
-  extends deeply_immutable data;
-
   LOCAL;
   INSTANCE;
   STATIC;

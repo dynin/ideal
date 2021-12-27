@@ -7,7 +7,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public interface readonly_future<element> extends any_future<element> {
+public interface readonly_future<element> extends readonly_value, any_future<element> {
   boolean is_done();
   @Nullable element value();
 }

@@ -6,7 +6,7 @@
 
 --- Declaration pass for types.
 enum declaration_pass {
-  implements deeply_immutable data, stringable, reference_equality, readonly displayable;
+  implements readonly displayable;
 
   NONE;
   FLAVOR_PROFILE;

@@ -5,7 +5,7 @@ package ideal.runtime.elements;
 import ideal.library.elements.*;
 import ideal.machine.elements.array;
 
-public class test_array {
+public class test_array implements value {
   public void test_creation() {
     final array<string> the_array = new array<string>(10);
     assert ideal.machine.elements.runtime_util.values_equal(the_array.size, 10);

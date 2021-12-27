@@ -8,7 +8,7 @@ import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 
-public abstract class text_visitor<result_type> {
+public abstract class text_visitor<result_type> implements value {
   public result_type process(final text_fragment fragment) {
     if (fragment instanceof string) {
       return this.process_string(((string) fragment));

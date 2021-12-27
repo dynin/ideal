@@ -4,4 +4,4 @@ package ideal.library.reflections;
 
 import ideal.library.elements.*;
 
-public interface variable_context extends readonly_variable_context, writeonly_variable_context { }
+public interface variable_context extends value, readonly_variable_context, writeonly_variable_context { }

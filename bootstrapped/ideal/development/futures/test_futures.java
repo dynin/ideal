@@ -5,7 +5,7 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public class test_futures {
+public class test_futures implements value {
   public void test_simple_futures() {
     final base_future<string> future0 = new base_future<string>(new base_string("foo"));
     assert ideal.machine.elements.runtime_util.values_equal(future0.value(), new base_string("foo"));

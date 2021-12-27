@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class test_list_pattern {
+public class test_list_pattern implements value {
   public void test_match() {
     final list_pattern<Character> the_pattern = new list_pattern<Character>(new base_string("abc"));
     assert the_pattern.call(new base_string("abc"));

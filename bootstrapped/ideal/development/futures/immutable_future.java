@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface immutable_future<element> extends readonly_future<element> { }
+public interface immutable_future<element> extends immutable_value, readonly_future<element> { }

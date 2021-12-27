@@ -4,7 +4,7 @@ package ideal.runtime.elements;
 
 import ideal.library.elements.*;
 
-public class test_dictionary {
+public class test_dictionary implements value {
   public void test_mutable_dictionary() {
     final list_dictionary<string, string> dict = new list_dictionary<string, string>();
     assert dict.is_empty();

@@ -6,4 +6,4 @@ import ideal.library.elements.*;
 import ideal.library.patterns.*;
 import ideal.runtime.elements.*;
 
-public interface immutable_validatable extends readonly_validatable { }
+public interface immutable_validatable extends immutable_value, readonly_validatable { }

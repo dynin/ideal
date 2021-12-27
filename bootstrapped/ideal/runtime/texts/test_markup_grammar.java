@@ -11,7 +11,7 @@ import ideal.runtime.texts.text_library.*;
 import ideal.machine.characters.unicode_handler;
 import ideal.machine.channels.string_writer;
 
-public class test_markup_grammar {
+public class test_markup_grammar implements value {
   public string error_message;
   public markup_grammar make_grammar() {
     final markup_grammar the_markup_grammar = new markup_grammar(unicode_handler.instance);

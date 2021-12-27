@@ -5,8 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 enum jump_category {
-  implements deeply_immutable data, stringable;
-
   BREAK_JUMP: new("break");
   CONTINUE_JUMP: new("continue");
   -- TODO: GOTO_JUMP etc...

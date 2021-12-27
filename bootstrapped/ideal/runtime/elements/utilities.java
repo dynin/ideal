@@ -8,7 +8,7 @@ import ideal.machine.elements.runtime_util;
 
 import javax.annotation.Nullable;
 
-public class utilities {
+public class utilities implements value {
   private utilities() { }
   public static String s(final string the_string) {
     return base_string.unbox(the_string);

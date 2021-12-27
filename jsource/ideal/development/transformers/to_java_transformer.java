@@ -832,10 +832,6 @@ public class to_java_transformer extends base_transformer {
       declaration decl = body.get(i);
       if (decl instanceof supertype_declaration) {
         supertype_declaration supertype_decl = (supertype_declaration) decl;
-        // TODO: retire this when there is no need to match legacy output
-        if (supertype_decl.annotations().has(synthetic_modifier)) {
-          continue;
-        }
         type supertype = supertype_decl.get_supertype();
         kind supertype_kind = supertype.principal().get_kind();
         if (concrete_mode) {

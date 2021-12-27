@@ -15,7 +15,7 @@ import ideal.runtime.graphs.*;
 import ideal.runtime.logs.*;
 import ideal.runtime.flags.*;
 
-public class run_tests {
+public class run_tests implements value {
   public void start() {
     all_tests.run_all_tests();
   }

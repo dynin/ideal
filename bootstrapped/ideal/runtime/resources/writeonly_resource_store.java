@@ -6,4 +6,4 @@ import ideal.library.elements.*;
 import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 
-public interface writeonly_resource_store extends any_resource_store { }
+public interface writeonly_resource_store extends writeonly_value, any_resource_store { }

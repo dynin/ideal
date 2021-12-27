@@ -4,7 +4,7 @@ package ideal.runtime.elements;
 
 import ideal.library.elements.*;
 
-public class test_hash_dictionary {
+public class test_hash_dictionary implements value {
   public void test_mutable_dictionary() {
     final hash_dictionary<string, string> dict = new hash_dictionary<string, string>();
     assert dict.is_empty();

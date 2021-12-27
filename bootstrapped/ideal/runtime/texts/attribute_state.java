@@ -8,7 +8,7 @@ import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 import ideal.library.channels.output;
 
-public class attribute_state {
+public class attribute_state implements value {
   public final attribute_id id;
   public final attribute_fragment value;
   public attribute_state(final attribute_id id, final attribute_fragment value) {

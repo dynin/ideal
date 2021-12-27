@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class test_predicate_pattern {
+public class test_predicate_pattern implements value {
   private boolean test_predicate(final char c) {
     return c == 'a' || c == 'b' || c == 'c';
   }

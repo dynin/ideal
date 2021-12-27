@@ -5,8 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 enum type_format {
-  implements deeply_immutable data, reference_equality, stringable;
-
   SHORT;
   ONE_PARENT;
   TWO_PARENTS;

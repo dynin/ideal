@@ -6,8 +6,6 @@
 
 --- A category of a given procedure: method, constructor, or static method.
 enum procedure_category {
-  extends deeply_immutable data;
-
   CONSTRUCTOR;
   METHOD;
   STATIC;

@@ -9,7 +9,7 @@ import ideal.machine.resources.*;
 
 import javax.annotation.Nullable;
 
-public class test_resolver {
+public class test_resolver implements value {
   public static class test_store extends base_resource_store {
     public test_store(final string path_prefix, final boolean is_current) {
       super(path_prefix, is_current, is_current);

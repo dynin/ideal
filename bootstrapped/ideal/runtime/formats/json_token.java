@@ -8,7 +8,7 @@ import ideal.library.formats.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
 
-public enum json_token implements deeply_immutable_data, deeply_immutable_reference_equality, stringable {
+public enum json_token implements enum_data {
   OPEN_BRACE('{'),
   CLOSE_BRACE('}'),
   OPEN_BRACKET('['),

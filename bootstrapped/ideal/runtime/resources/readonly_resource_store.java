@@ -8,7 +8,7 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public interface readonly_resource_store extends any_resource_store {
+public interface readonly_resource_store extends readonly_value, any_resource_store {
   boolean allow_up();
   string build_name(string scheme, immutable_list<string> path);
   boolean exists(string scheme, immutable_list<string> path);

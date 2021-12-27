@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.channels.*;
 import ideal.runtime.elements.*;
 
-public class test_output_transformer {
+public class test_output_transformer implements value {
   public static string test_transform(final string source) {
     return new base_string(new base_string("+"), source, new base_string("!"));
   }

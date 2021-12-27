@@ -4,7 +4,7 @@ package ideal.runtime.elements;
 
 import ideal.library.elements.*;
 
-public class test_hash_set {
+public class test_hash_set implements value {
   public void test_mutable_set() {
     final hash_set<string> set = new hash_set<string>();
     assert set.is_empty();

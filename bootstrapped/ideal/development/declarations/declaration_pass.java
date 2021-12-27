@@ -13,7 +13,7 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public enum declaration_pass implements deeply_immutable_data, stringable, reference_equality, readonly_displayable {
+public enum declaration_pass implements readonly_displayable, enum_data {
   NONE,
   FLAVOR_PROFILE,
   TYPES_AND_PROMOTIONS,

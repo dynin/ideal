@@ -9,7 +9,7 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.types.common_types;
 
-public enum jump_category implements deeply_immutable_data, stringable {
+public enum jump_category implements enum_data {
   BREAK_JUMP(new base_string("break")),
   CONTINUE_JUMP(new base_string("continue"));
   private final string name_string;

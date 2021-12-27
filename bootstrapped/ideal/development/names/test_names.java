@@ -8,7 +8,7 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
-public class test_names {
+public class test_names implements value {
   public void test_simple_names() {
     final simple_name foo = simple_name.make(new base_string("foo"));
     final simple_name bar = simple_name.make(new base_string("bar"));

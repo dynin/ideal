@@ -9,7 +9,7 @@ import ideal.runtime.elements.*;
 import ideal.runtime.characters.*;
 import ideal.machine.channels.string_writer;
 
-public class json_printer {
+public class json_printer implements value {
   public final character_handler the_character_handler;
   public json_printer(final character_handler the_character_handler) {
     this.the_character_handler = the_character_handler;

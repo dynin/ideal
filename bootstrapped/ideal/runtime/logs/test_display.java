@@ -13,7 +13,7 @@ import ideal.machine.channels.string_writer;
 import javax.annotation.Nullable;
 import ideal.machine.annotations.dont_display;
 
-public class test_display {
+public class test_display implements value {
   public static class my_data implements data {
     public final string foo;
     public final string bar;

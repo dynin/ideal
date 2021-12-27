@@ -15,7 +15,7 @@ import ideal.development.origins.*;
 import ideal.development.types.*;
 import ideal.development.jumps.panic_value;
 
-public enum notification_level implements deeply_immutable_data, reference_equality {
+public enum notification_level implements enum_data {
   ERROR(log_level.ERROR),
   WARNING(log_level.WARNING),
   INFORMATIONAL(log_level.INFORMATIONAL);

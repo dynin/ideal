@@ -5,7 +5,7 @@ package ideal.development.elements;
 import ideal.library.elements.*;
 import ideal.library.graphs.graph;
 
-public interface readonly_action_context extends any_action_context {
+public interface readonly_action_context extends readonly_value, any_action_context {
   language_settings settings();
   graph<principal_type, origin> type_graph();
 }

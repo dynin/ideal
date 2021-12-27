@@ -15,7 +15,7 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.machine.channels.string_writer;
 
-public class test_origin_printer {
+public class test_origin_printer implements value {
   public void show_origin_helper(final string input, final Integer begin, final Integer end, final string output) {
     final source_content source = new source_content(simple_name.make(new base_string("foo")), input);
     final text_origin the_origin = (text_origin) source.make_origin(begin, end);

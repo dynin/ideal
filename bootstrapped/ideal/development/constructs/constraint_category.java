@@ -7,7 +7,7 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
-public enum constraint_category implements deeply_immutable_data, stringable {
+public enum constraint_category implements enum_data {
   ASSERT_CONSTRAINT(new base_string("assert")),
   VERIFY_CONSTRAINT(new base_string("verify"));
   private final string name_string;

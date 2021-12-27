@@ -18,6 +18,7 @@ public class common_names {
   public static final simple_name value_name = simple_name.make(new base_string("value"));
   public static final simple_name void_name = simple_name.make(new base_string("void"));
   public static final simple_name data_name = simple_name.make(new base_string("data"));
+  public static final simple_name enum_data_name = simple_name.make(new base_string("enum_data"));
   public static final simple_name boolean_name = simple_name.make(new base_string("boolean"));
   public static final simple_name character_name = simple_name.make(new base_string("character"));
   public static final simple_name integer_name = simple_name.make(new base_string("integer"));

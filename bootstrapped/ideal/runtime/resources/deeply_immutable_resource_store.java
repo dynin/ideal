@@ -6,4 +6,4 @@ import ideal.library.elements.*;
 import ideal.library.resources.*;
 import ideal.runtime.elements.*;
 
-public interface deeply_immutable_resource_store extends immutable_resource_store { }
+public interface deeply_immutable_resource_store extends deeply_immutable_value, immutable_resource_store { }

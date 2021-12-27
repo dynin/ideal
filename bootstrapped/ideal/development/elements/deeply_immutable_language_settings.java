@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface deeply_immutable_language_settings extends immutable_language_settings { }
+public interface deeply_immutable_language_settings extends deeply_immutable_value, immutable_language_settings { }

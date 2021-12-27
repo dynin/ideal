@@ -11,7 +11,7 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
   public static class parameters {
     public static final Integer default_size = 16;
   }
-  protected static class hash_cell<element_type> {
+  protected static class hash_cell<element_type> implements value {
     protected final element_type the_value;
     protected final Integer the_hash;
     protected @Nullable base_hash_set.hash_cell<element_type> next;
@@ -24,7 +24,7 @@ public abstract class base_hash_set<element_type> implements readonly_set<elemen
       this(the_value, the_hash, null);
     }
   }
-  protected static class set_state<element_type> {
+  protected static class set_state<element_type> implements value {
     public boolean writable;
     public array<base_hash_set.hash_cell<element_type>> the_buckets;
     public Integer size;

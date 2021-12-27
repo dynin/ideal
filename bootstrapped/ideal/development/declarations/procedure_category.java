@@ -13,7 +13,7 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public enum procedure_category implements deeply_immutable_data {
+public enum procedure_category implements enum_data {
   CONSTRUCTOR,
   METHOD,
   STATIC;

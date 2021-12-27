@@ -6,7 +6,7 @@ import ideal.library.elements.*;
 import ideal.library.texts.*;
 import ideal.runtime.elements.*;
 
-public enum documentation_section implements deeply_immutable_data, reference_equality, stringable {
+public enum documentation_section implements enum_data {
   ALL,
   SUMMARY;
   public string to_string() {

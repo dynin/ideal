@@ -23,7 +23,7 @@ import ideal.development.jumps.jump_category;
 
 import javax.annotation.Nullable;
 
-public interface scanner_config extends readonly_scanner_config, writeonly_scanner_config {
+public interface scanner_config extends value, readonly_scanner_config, writeonly_scanner_config {
   void add_keyword(keyword the_keyword);
   void add_punctuation(punctuation_type the_punctuation_type);
   void add_special(special_name the_special_name, token_type the_token_type);

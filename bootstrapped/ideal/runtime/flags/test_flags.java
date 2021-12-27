@@ -7,8 +7,8 @@ import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
-public class test_flags {
-  public static class demo_flags {
+public class test_flags implements value {
+  public static class demo_flags implements value {
     public final boolean ARG_BOOL;
     public final @Nullable string ARG_STRING;
     public demo_flags(final readonly_list<string> arguments, final procedure1<Void, string> error_reporter) {

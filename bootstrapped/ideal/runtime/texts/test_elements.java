@@ -10,7 +10,7 @@ import ideal.library.channels.output;
 
 import javax.annotation.Nullable;
 
-public class test_elements {
+public class test_elements implements value {
   public void test_namespace_id() {
     assert ideal.machine.elements.runtime_util.values_equal(text_library.HTML_NS.short_name(), new base_string("html"));
     assert ideal.machine.elements.runtime_util.values_equal(text_library.HTML_NS.to_string(), new base_string("html"));

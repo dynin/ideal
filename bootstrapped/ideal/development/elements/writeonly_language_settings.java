@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface writeonly_language_settings extends any_language_settings { }
+public interface writeonly_language_settings extends writeonly_value, any_language_settings { }

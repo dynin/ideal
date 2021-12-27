@@ -35,7 +35,7 @@ public abstract class base_hash_dictionary<key_type, value_type> implements read
       this.the_value = new_value;
     }
   }
-  protected static class dictionary_state<key_type, value_type> {
+  protected static class dictionary_state<key_type, value_type> implements value {
     public boolean writable;
     public array<base_hash_dictionary.hash_cell<key_type, value_type>> the_buckets;
     public Integer size;

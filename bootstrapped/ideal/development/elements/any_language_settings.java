@@ -4,4 +4,4 @@ package ideal.development.elements;
 
 import ideal.library.elements.*;
 
-public interface any_language_settings { }
+public interface any_language_settings extends any_value { }

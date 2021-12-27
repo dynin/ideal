@@ -5,8 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 enum notification_level {
-  implements deeply_immutable data, reference_equality;
-
   ERROR: new(log_level.ERROR);
   WARNING: new(log_level.WARNING);
   INFORMATIONAL: new(log_level.INFORMATIONAL);

@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface deeply_immutable_future<element> extends immutable_future<element> { }
+public interface deeply_immutable_future<element> extends deeply_immutable_value, immutable_future<element> { }

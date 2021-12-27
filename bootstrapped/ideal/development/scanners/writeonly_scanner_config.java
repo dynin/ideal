@@ -21,4 +21,4 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
-public interface writeonly_scanner_config extends any_scanner_config { }
+public interface writeonly_scanner_config extends writeonly_value, any_scanner_config { }

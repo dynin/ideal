@@ -5,4 +5,4 @@ package ideal.development.futures;
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
 
-public interface writeonly_future<element> extends any_future<element> { }
+public interface writeonly_future<element> extends writeonly_value, any_future<element> { }

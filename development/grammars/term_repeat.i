@@ -5,8 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 enum term_repeat {
-  extends deeply_immutable data, stringable;
-
   NO_REPEAT;
   ZERO_OR_MORE;
   ONE_OR_MORE;

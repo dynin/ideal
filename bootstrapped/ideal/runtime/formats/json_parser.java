@@ -12,8 +12,8 @@ import ideal.machine.channels.string_writer;
 
 import javax.annotation.Nullable;
 
-public class json_parser {
-  public static class parse_result {
+public class json_parser implements value {
+  public static class parse_result implements value {
     public final Object the_json_data;
     public final Integer end_index;
     public parse_result(final Object the_json_data, final Integer end_index) {

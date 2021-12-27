@@ -13,7 +13,7 @@ import ideal.development.comments.*;
 import ideal.development.modifiers.*;
 import ideal.development.comments.documentation;
 
-public enum variable_category implements deeply_immutable_data {
+public enum variable_category implements enum_data {
   LOCAL,
   INSTANCE,
   STATIC,

@@ -33,6 +33,7 @@ public class common_types {
   private static principal_type DATA_TYPE;
   private static principal_type INTEGER_TYPE;
   private static principal_type NONNEGATIVE_TYPE;
+  private static principal_type ENUM_DATA_TYPE;
   private static principal_type BOOLEAN_TYPE;
   private static principal_type CHARACTER_TYPE;
   private static principal_type STRING_TYPE;
@@ -62,6 +63,7 @@ public class common_types {
     common_types.ENTITY_TYPE = common_types.get_type(common_names.entity_name, type_kinds.concept_kind, flavor_profiles.mutable_profile);
     common_types.VALUE_TYPE = common_types.get_type(common_names.value_name, type_kinds.concept_kind, flavor_profiles.mutable_profile);
     common_types.DATA_TYPE = common_types.get_type(common_names.data_name, type_kinds.concept_kind, flavor_profiles.mutable_profile);
+    common_types.ENUM_DATA_TYPE = common_types.get_type(common_names.enum_data_name, type_kinds.interface_kind, flavor_profiles.deeply_immutable_profile);
     common_types.BOOLEAN_TYPE = common_types.get_type(common_names.boolean_name, type_kinds.enum_kind, flavor_profiles.deeply_immutable_profile);
     common_types.CHARACTER_TYPE = common_types.get_type(common_names.character_name, type_kinds.datatype_kind, flavor_profiles.deeply_immutable_profile);
     common_types.INTEGER_TYPE = common_types.get_type(common_names.integer_name, type_kinds.datatype_kind, flavor_profiles.deeply_immutable_profile);
@@ -110,6 +112,9 @@ public class common_types {
   }
   public static principal_type data_type() {
     return common_types.DATA_TYPE;
+  }
+  public static principal_type enum_data_type() {
+    return common_types.ENUM_DATA_TYPE;
   }
   public static principal_type boolean_type() {
     return common_types.BOOLEAN_TYPE;

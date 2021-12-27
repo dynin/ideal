@@ -8,7 +8,7 @@ import ideal.runtime.logs.*;
 import ideal.development.elements.*;
 import ideal.development.symbols.base_symbols;
 
-public enum precedence implements deeply_immutable_data, reference_equality, stringable, displayable {
+public enum precedence implements displayable, enum_data {
   POSTFIX,
   UNARY,
   MULTIPLICATIVE,

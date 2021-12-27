@@ -21,4 +21,4 @@ import ideal.development.modifiers.*;
 import ideal.development.constructs.constraint_category;
 import ideal.development.jumps.jump_category;
 
-public interface deeply_immutable_scanner_config extends immutable_scanner_config { }
+public interface deeply_immutable_scanner_config extends deeply_immutable_value, immutable_scanner_config { }

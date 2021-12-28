@@ -23,6 +23,12 @@ JSR305_VERSION=3.0.2
 curl -O ${MAVEN2}/com/google/code/findbugs/jsr305/${JSR305_VERSION}/jsr305-${JSR305_VERSION}.jar
 echo
 
+echo Fetching ANTLR via https://www.antlr.org/
+ANTLR_VERSION=4.9.2
+ANTLR_JAR=antlr-${ANTLR_VERSION}-complete.jar
+curl -O https://www.antlr.org/download/${ANTLR_JAR}
+echo
+
 echo Fetching JavaCUP via http://www2.cs.tum.edu/projects/cup/
 JAVACUP_VERSION=11b-20151001
 JAVACUP_TGZ=java-cup-bin-${JAVACUP_VERSION}.tar.gz

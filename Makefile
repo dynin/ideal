@@ -17,13 +17,15 @@ JAVADOC_DIR = $(BUILD_DIR)/javadoc
 PRETTY_DIR = $(BUILD_DIR)/pretty
 SITE_DIR = $(BUILD_DIR)/theideal.org
 SCRATCH_DIR = $(BUILD_DIR)/scratch
+GRAMMAR_DIR = $(BUILD_DIR)/grammar
 
 MKDIR = mkdir -p
 
 JSR305_JAR = $(THIRD_PARTY_DIR)/jsr305-3.0.2.jar
 JAVACUP_JAR = $(THIRD_PARTY_DIR)/java-cup-11b.jar
+ANTLR_JAR = $(THIRD_PARTY_DIR)/antlr-4.9.2-complete.jar
 
-THIRD_PARTY_JARS = $(JSR305_JAR):$(JAVACUP_JAR)
+THIRD_PARTY_JARS = $(JSR305_JAR):$(JAVACUP_JAR):$(ANTLR_JAR)
 
 JSOURCE_DIR = jsource
 BOOTSTRAPPED_DIR = bootstrapped
@@ -204,7 +206,7 @@ generate_cache: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(ONETWO)
 
 testgrammar: $(IDEAL_TARGET)
-	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=testdata/markup_grammar.i
+	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=experimental/grammars/markup_grammar.i
 
 list: $(IDEAL_TARGET) $(TEST_LIST)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -debug-constructs -input=$(TEST_LIST)
@@ -311,6 +313,13 @@ test_reflections: $(IDEAL_TARGET) rm-scratch
 
 bootstrap_reflections: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=generate_reflections -output=$(BOOTSTRAPPED_DIR)
+
+### ANTLR invocation
+
+testantlr:
+	bin/antlr -o $(GRAMMAR_DIR) experimental/grammars/test.g4
+	$(JAVAC) $(GRAMMAR_DIR)/experimental/grammars/*.java
+	bin/grun test prog -gui < experimental/grammars/test.in
 
 ### Development
 

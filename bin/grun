@@ -1,0 +1,4 @@
+#!/bin/sh
+. `dirname $0`/env.sh
+
+${JAVA} org.antlr.v4.gui.TestRig "$@"

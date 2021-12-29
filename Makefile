@@ -50,6 +50,9 @@ PARSER2SRC_DIR = ../../../../..
 JAVACUP = $(PARSER2SRC_DIR)/$(JDK_DIR)/bin/java \
         -classpath $(PARSER2SRC_DIR)/$(JAVACUP_JAR) java_cup.Main
 
+ANTLR = bin/antlr
+GRUN = bin/grun
+
 BOOTSTRAPPED_TARGET = $(TARGETS_DIR)/bootstrapped
 LIBRARY_TARGET = $(TARGETS_DIR)/library
 DEVELOPMENT_TARGET = $(TARGETS_DIR)/development
@@ -317,9 +320,9 @@ bootstrap_reflections: $(IDEAL_TARGET)
 ### ANTLR invocation
 
 testantlr:
-	bin/antlr -o $(GRAMMAR_DIR) experimental/grammars/test.g4
+	$(ANTLR) -o $(GRAMMAR_DIR) experimental/grammars/metagrammar.g4
 	$(JAVAC) $(GRAMMAR_DIR)/experimental/grammars/*.java
-	bin/grun test prog -gui < experimental/grammars/test.in
+	$(GRUN) metagrammar grammar_declaration -gui < experimental/grammars/markup_grammar.i
 
 ### Development
 

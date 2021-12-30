@@ -3,10 +3,11 @@
 package ideal.development.names;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.symbols.base_symbols;
+import ideal.machine.characters.unicode_handler;
 
 public class special_name extends debuggable implements action_name {
   public static final special_name ROOT = new special_name(new base_string("root"));

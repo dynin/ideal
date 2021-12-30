@@ -41,6 +41,15 @@ public class test_character_handler implements value {
     assert the_character_handler.to_lower_case('X') == 'x';
     assert the_character_handler.to_lower_case('x') == 'x';
     assert the_character_handler.to_lower_case('5') == '5';
+    assert the_character_handler.to_upper_case('X') == 'X';
+    assert the_character_handler.to_upper_case('x') == 'X';
+    assert the_character_handler.to_upper_case('5') == '5';
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.to_lower_case_all(new base_string("X")), new base_string("x"));
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.to_lower_case_all(new base_string("FOO68")), new base_string("foo68"));
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.to_lower_case_all(new base_string("Foo Bar Baz")), new base_string("foo bar baz"));
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.to_upper_case_all(new base_string("x")), new base_string("X"));
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.to_upper_case_all(new base_string("foo68")), new base_string("FOO68"));
+    assert ideal.machine.elements.runtime_util.values_equal(the_character_handler.to_upper_case_all(new base_string("Foo Bar Baz")), new base_string("FOO BAR BAZ"));
   }
   public void test_quoted_character() {
     final unicode_handler the_character_handler = unicode_handler.instance;

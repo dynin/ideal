@@ -8,7 +8,9 @@
 
 package ideal.machine.characters;
 
+import ideal.library.elements.*;
 import ideal.library.characters.*;
+import ideal.runtime.elements.*;
 
 import javax.annotation.Nullable;
 
@@ -49,6 +51,25 @@ public class unicode_handler implements character_handler {
   @Override
   public char to_lower_case(char c) {
     return Character.toLowerCase(c);
+  }
+
+  @Override
+  public char to_upper_case(char c) {
+    return Character.toUpperCase(c);
+  }
+
+  @Override
+  public string to_lower_case_all(string the_string) {
+    String s = utilities.s(the_string);
+    String s_lower = s.toLowerCase();
+    return s == s_lower ? the_string : new base_string(s_lower);
+  }
+
+  @Override
+  public string to_upper_case_all(string the_string) {
+    String s = utilities.s(the_string);
+    String s_upper = s.toUpperCase();
+    return s == s_upper ? the_string : new base_string(s_upper);
   }
 
   @Override

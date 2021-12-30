@@ -7,11 +7,7 @@
 class punctuation_type {
   extends base_token_type;
 
-  overload punctuation_type(string name, integer base_symbol) {
-    super(name, base_symbol);
-  }
-
-  overload punctuation_type(string name) {
-    super(name);
+  punctuation_type(string name, string the_symbol_identifier) {
+    super(name, the_symbol_identifier);
   }
 }

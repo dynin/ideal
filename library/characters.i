@@ -20,6 +20,10 @@ package characters {
     nonnegative or null from_digit(the character, nonnegative radix) pure;
 
     character to_lower_case(the character) pure;
+    character to_upper_case(the character) pure;
+
+    string to_lower_case_all(the string) pure;
+    string to_upper_case_all(the string) pure;
 
     nonnegative to_code(the character) pure;
     character from_code(nonnegative code) pure;

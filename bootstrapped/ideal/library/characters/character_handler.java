@@ -14,6 +14,9 @@ public interface character_handler extends deeply_immutable_data {
   boolean is_digit(char the_character);
   @Nullable Integer from_digit(char the_character, Integer radix);
   char to_lower_case(char the_character);
+  char to_upper_case(char the_character);
+  string to_lower_case_all(string the_string);
+  string to_upper_case_all(string the_string);
   Integer to_code(char the_character);
   char from_code(Integer code);
 }

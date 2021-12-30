@@ -3,6 +3,7 @@
 package ideal.development.symbols;
 
 import ideal.library.elements.*;
+import ideal.runtime.elements.*;
 
 public class base_symbols {
   public static final Integer MINUS_EQUALS = 42;

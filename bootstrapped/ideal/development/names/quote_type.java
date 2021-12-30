@@ -3,15 +3,16 @@
 package ideal.development.names;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.symbols.base_symbols;
+import ideal.machine.characters.unicode_handler;
 
 public class quote_type extends punctuation_type {
   public final char quote_character;
-  public quote_type(final char the_character) {
-    super(utilities.string_of(the_character));
+  public quote_type(final char the_character, final string the_symbol_identifier) {
+    super(utilities.string_of(the_character), the_symbol_identifier);
     this.quote_character = the_character;
   }
 }

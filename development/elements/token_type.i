@@ -11,7 +11,9 @@
 interface token_type {
   extends identifier, reference_equality;
 
+  --- Human-readable name.
   string name;
-  -- TODO: we can retire this once we stop using javacup. 
-  integer symbol;
+
+  --- Identifier used in grammar declarations.
+  string symbol_identifier;
 }

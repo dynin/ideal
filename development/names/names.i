@@ -7,10 +7,11 @@
 --- Names (identifiers, operators, keywords...) used in the ideal system.
 package names {
   implicit import ideal.library.elements;
+  implicit import ideal.library.characters;
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.logs;
   implicit import ideal.development.elements;
-  import ideal.development.symbols.base_symbols;
+  import ideal.machine.characters.unicode_handler;
 
   class base_token_type;
   class punctuation_type;

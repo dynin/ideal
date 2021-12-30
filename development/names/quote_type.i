@@ -9,8 +9,8 @@ class quote_type {
 
   character quote_character;
 
-  quote_type(the character) {
-    super(utilities.string_of(the_character));
+  quote_type(the character, string the_symbol_identifier) {
+    super(utilities.string_of(the_character), the_symbol_identifier);
     quote_character = the_character;
   }
 }

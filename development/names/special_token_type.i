@@ -5,20 +5,20 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 namespace special_token_type {
-  SIMPLE_NAME : base_token_type.new("<simple-name>", base_symbols.SIMPLE_NAME);
-  SPECIAL_NAME : base_token_type.new("<special-name>", base_symbols.SPECIAL_NAME);
+  SIMPLE_NAME : base_token_type.new("<simple-name>", "SIMPLE_NAME");
+  SPECIAL_NAME : base_token_type.new("<special-name>", "SPECIAL_NAME");
 
-  KIND : base_token_type.new("<kind>", base_symbols.KIND);
-  MODIFIER_KIND : base_token_type.new("<modifier-kind>", base_symbols.MODIFIER_KIND);
-  SUBTYPE_TAG : base_token_type.new("<subtype-tag>", base_symbols.SUBTYPE_TAG);
-  FLAVOR : base_token_type.new("<flavor>", base_symbols.FLAVOR);
-  JUMP : base_token_type.new("<jump>", base_symbols.JUMP);
+  KIND : base_token_type.new("<kind>", "KIND");
+  MODIFIER_KIND : base_token_type.new("<modifier-kind>", "MODIFIER_KIND");
+  SUBTYPE_TAG : base_token_type.new("<subtype-tag>", "SUBTYPE_TAG");
+  FLAVOR : base_token_type.new("<flavor>", "FLAVOR");
+  JUMP : base_token_type.new("<jump>", "JUMP");
 
-  CONSTRAINT : base_token_type.new("<constraint>", base_symbols.CONSTRAINT);
+  CONSTRAINT : base_token_type.new("<constraint>", "CONSTRAINT");
 
-  LITERAL : base_token_type.new("<literal>", base_symbols.LITERAL);
+  LITERAL : base_token_type.new("<literal>", "LITERAL");
 
-  COMMENT : base_token_type.new("<comment>", base_symbols.COMMENT);
+  COMMENT : base_token_type.new("<comment>", "COMMENT");
 
-  --TEMPLATE : base_token_type.new("<template>", base_symbols.TEMPLATE);
+  --TEMPLATE : base_token_type.new("<template>", "TEMPLATE");
 }

@@ -3,17 +3,15 @@
 package ideal.development.names;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.symbols.base_symbols;
+import ideal.machine.characters.unicode_handler;
 
 public class keyword extends base_token_type {
-  public keyword(final string name, final Integer the_symbol) {
-    super(name, the_symbol);
-  }
   public keyword(final string name) {
-    super(name);
+    super(name, unicode_handler.instance.to_upper_case_all(name));
   }
   public simple_name keyword_name() {
     return simple_name.make(this.name());

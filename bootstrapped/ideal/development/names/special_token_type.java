@@ -3,20 +3,21 @@
 package ideal.development.names;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.symbols.base_symbols;
+import ideal.machine.characters.unicode_handler;
 
 public class special_token_type {
-  public static final base_token_type SIMPLE_NAME = new base_token_type(new base_string("<simple-name>"), base_symbols.SIMPLE_NAME);
-  public static final base_token_type SPECIAL_NAME = new base_token_type(new base_string("<special-name>"), base_symbols.SPECIAL_NAME);
-  public static final base_token_type KIND = new base_token_type(new base_string("<kind>"), base_symbols.KIND);
-  public static final base_token_type MODIFIER_KIND = new base_token_type(new base_string("<modifier-kind>"), base_symbols.MODIFIER_KIND);
-  public static final base_token_type SUBTYPE_TAG = new base_token_type(new base_string("<subtype-tag>"), base_symbols.SUBTYPE_TAG);
-  public static final base_token_type FLAVOR = new base_token_type(new base_string("<flavor>"), base_symbols.FLAVOR);
-  public static final base_token_type JUMP = new base_token_type(new base_string("<jump>"), base_symbols.JUMP);
-  public static final base_token_type CONSTRAINT = new base_token_type(new base_string("<constraint>"), base_symbols.CONSTRAINT);
-  public static final base_token_type LITERAL = new base_token_type(new base_string("<literal>"), base_symbols.LITERAL);
-  public static final base_token_type COMMENT = new base_token_type(new base_string("<comment>"), base_symbols.COMMENT);
+  public static final base_token_type SIMPLE_NAME = new base_token_type(new base_string("<simple-name>"), new base_string("SIMPLE_NAME"));
+  public static final base_token_type SPECIAL_NAME = new base_token_type(new base_string("<special-name>"), new base_string("SPECIAL_NAME"));
+  public static final base_token_type KIND = new base_token_type(new base_string("<kind>"), new base_string("KIND"));
+  public static final base_token_type MODIFIER_KIND = new base_token_type(new base_string("<modifier-kind>"), new base_string("MODIFIER_KIND"));
+  public static final base_token_type SUBTYPE_TAG = new base_token_type(new base_string("<subtype-tag>"), new base_string("SUBTYPE_TAG"));
+  public static final base_token_type FLAVOR = new base_token_type(new base_string("<flavor>"), new base_string("FLAVOR"));
+  public static final base_token_type JUMP = new base_token_type(new base_string("<jump>"), new base_string("JUMP"));
+  public static final base_token_type CONSTRAINT = new base_token_type(new base_string("<constraint>"), new base_string("CONSTRAINT"));
+  public static final base_token_type LITERAL = new base_token_type(new base_string("<literal>"), new base_string("LITERAL"));
+  public static final base_token_type COMMENT = new base_token_type(new base_string("<comment>"), new base_string("COMMENT"));
 }

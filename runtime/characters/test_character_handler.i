@@ -50,6 +50,18 @@ test_suite test_character_handler {
     assert the_character_handler.to_lower_case('X') == 'x';
     assert the_character_handler.to_lower_case('x') == 'x';
     assert the_character_handler.to_lower_case('5') == '5';
+
+    assert the_character_handler.to_upper_case('X') == 'X';
+    assert the_character_handler.to_upper_case('x') == 'X';
+    assert the_character_handler.to_upper_case('5') == '5';
+
+    assert the_character_handler.to_lower_case_all("X") == "x";
+    assert the_character_handler.to_lower_case_all("FOO68") == "foo68";
+    assert the_character_handler.to_lower_case_all("Foo Bar Baz") == "foo bar baz";
+
+    assert the_character_handler.to_upper_case_all("x") == "X";
+    assert the_character_handler.to_upper_case_all("foo68") == "FOO68";
+    assert the_character_handler.to_upper_case_all("Foo Bar Baz") == "FOO BAR BAZ";
   }
 
   test_case test_quoted_character() {

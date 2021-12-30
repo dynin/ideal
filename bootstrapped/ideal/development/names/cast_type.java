@@ -3,10 +3,11 @@
 package ideal.development.names;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.symbols.base_symbols;
+import ideal.machine.characters.unicode_handler;
 
 public class cast_type extends operator {
   protected cast_type(final token_type name, final string alpha_name) {

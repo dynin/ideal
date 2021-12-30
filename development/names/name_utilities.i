@@ -5,7 +5,6 @@
 -- https://developers.google.com/open-source/licenses/bsd
 
 implicit import ideal.library.characters;
-implicit import ideal.machine.characters;
 import ideal.machine.channels.string_writer;
 
 namespace name_utilities {

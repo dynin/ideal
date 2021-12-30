@@ -3,16 +3,14 @@
 package ideal.development.names;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.symbols.base_symbols;
+import ideal.machine.characters.unicode_handler;
 
 public class punctuation_type extends base_token_type {
-  public punctuation_type(final string name, final Integer base_symbol) {
-    super(name, base_symbol);
-  }
-  public punctuation_type(final string name) {
-    super(name);
+  public punctuation_type(final string name, final string the_symbol_identifier) {
+    super(name, the_symbol_identifier);
   }
 }

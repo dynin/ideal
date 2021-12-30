@@ -3,12 +3,12 @@
 package ideal.development.names;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.symbols.base_symbols;
+import ideal.machine.characters.unicode_handler;
 import ideal.library.characters.*;
-import ideal.machine.characters.*;
 import ideal.machine.channels.string_writer;
 
 public class name_utilities {

@@ -8,12 +8,8 @@
 class keyword {
   extends base_token_type;
 
-  overload keyword(string name, integer the_symbol) {
-    super(name, the_symbol);
-  }
-
-  overload keyword(string name) {
-    super(name);
+  keyword(string name) {
+    super(name, unicode_handler.instance.to_upper_case_all(name));
   }
 
   simple_name keyword_name => simple_name.make(name);

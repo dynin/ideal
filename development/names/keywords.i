@@ -12,32 +12,32 @@ namespace keywords {
   SUPER : keyword.new("super");
   NEW : keyword.new("new");
 
-  OR : keyword.new("or", base_symbols.OR);
+  OR : keyword.new("or");
 
-  IS : keyword.new("is", base_symbols.IS);
-  IS_NOT : keyword.new("is_not", base_symbols.IS_NOT);
+  IS : keyword.new("is");
+  IS_NOT : keyword.new("is_not");
 
-  RETURN : keyword.new("return", base_symbols.RETURN);
-  IF : keyword.new("if", base_symbols.IF);
-  ELSE : keyword.new("else", base_symbols.ELSE);
+  RETURN : keyword.new("return");
+  IF : keyword.new("if");
+  ELSE : keyword.new("else");
 
-  LOOP : keyword.new("loop", base_symbols.LOOP);
+  LOOP : keyword.new("loop");
 
-  WHILE : keyword.new("while", base_symbols.WHILE);
-  FOR : keyword.new("for", base_symbols.FOR);
-  IMPORT : keyword.new("import", base_symbols.IMPORT);
+  WHILE : keyword.new("while");
+  FOR : keyword.new("for");
+  IMPORT : keyword.new("import");
 
-  SWITCH : keyword.new("switch", base_symbols.SWITCH);
-  CASE : keyword.new("case", base_symbols.CASE);
-  DEFAULT : keyword.new("default", base_symbols.DEFAULT);
+  SWITCH : keyword.new("switch");
+  CASE : keyword.new("case");
+  DEFAULT : keyword.new("default");
 
-  USE : keyword.new("use", base_symbols.USE);
-  TARGET : keyword.new("target", base_symbols.TARGET);
+  USE : keyword.new("use");
+  TARGET : keyword.new("target");
 
-  PLEASE : keyword.new("please", base_symbols.PLEASE);
+  PLEASE : keyword.new("please");
 
   -- For meta-grammar
-  GRAMMAR : keyword.new("grammar", base_symbols.GRAMMAR);
-  TERMINAL : keyword.new("terminal", base_symbols.TERMINAL);
-  NONTERMINAL : keyword.new("nonterminal", base_symbols.NONTERMINAL);
+  GRAMMAR : keyword.new("grammar");
+  TERMINAL : keyword.new("terminal");
+  NONTERMINAL : keyword.new("nonterminal");
 }

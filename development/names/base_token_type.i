@@ -9,22 +9,18 @@ class base_token_type {
   implements token_type, readonly displayable;
   extends debuggable;
 
-  private final string the_name;
-  dont_display private final integer the_symbol;
+  private string the_name;
+  dont_display private string the_symbol_identifier;
 
-  overload base_token_type(string name, integer the_symbol) {
+  base_token_type(string name, string the_symbol_identifier) {
     assert name.is_not_empty;
     this.the_name = name;
-    this.the_symbol = the_symbol;
-  }
-
-  overload base_token_type(string name) {
-    this(name, -1);
+    this.the_symbol_identifier = the_symbol_identifier;
   }
 
   override string name => the_name;
 
-  override integer symbol => the_symbol;
+  override string symbol_identifier => the_symbol_identifier;
 
   override string to_string => "\"" ++ the_name ++ "\"";
 

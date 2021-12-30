@@ -9,6 +9,5 @@ package symbols {
   implicit import ideal.library.elements;
   implicit import ideal.runtime.elements;
 
-  namespace base_symbols;
   namespace base_symbols_map;
 }

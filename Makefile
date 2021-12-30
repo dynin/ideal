@@ -432,9 +432,6 @@ $(BASEPARSER_TARGET): $(PARSER_CUP)
 	      -parser base_parser \
 	      -symbols base_symbols \
 	      $(PARSER2SRC_DIR)/$(PARSER_CUP)
-	bin/process-base-symbols.sh \
-            < $(PARSER_DIR)/base_symbols.java \
-            > development/symbols/base_symbols.i
 	bin/process-base-symbols-map.sh \
             < $(PARSER_DIR)/base_symbols.java \
             > development/symbols/base_symbols_map.i

@@ -1,8 +1,8 @@
--- Copyright 2014-2021 The Ideal Authors. All rights reserved.
+-- Copyright 2014-2022 The Ideal Authors. All rights reserved.
 --
 -- Use of this source code is governed by a BSD-style
 -- license that can be found in the LICENSE file or at
--- https://developers.google.com/open-source/licenses/bsd
+-- https://theideal.org/license/
 
 --- Output channel adapter that counts the elements that pass through it.
 class output_counter[any value value_type] {

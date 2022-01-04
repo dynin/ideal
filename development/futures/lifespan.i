@@ -1,8 +1,8 @@
--- Copyright 2014-2021 The Ideal Authors. All rights reserved.
+-- Copyright 2014-2022 The Ideal Authors. All rights reserved.
 --
 -- Use of this source code is governed by a BSD-style
 -- license that can be found in the LICENSE file or at
--- https://developers.google.com/open-source/licenses/bsd
+-- https://theideal.org/license/
 
 --- A Lifespan is an object that manages a collection of disposable resources.
 --- When a lifespan is disposed, all its children are disposed as well.

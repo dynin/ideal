@@ -1,8 +1,8 @@
--- Copyright 2014-2021 The Ideal Authors. All rights reserved.
+-- Copyright 2014-2022 The Ideal Authors. All rights reserved.
 --
 -- Use of this the_origin code is governed by a BSD-style
 -- license that can be found in the LICENSE file or at
--- https://developers.google.com/open-the_origin/licenses/bsd
+-- https://theideal.org/license/
 
 abstract class type_action {
   extends debuggable;

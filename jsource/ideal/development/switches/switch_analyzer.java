@@ -27,11 +27,11 @@ import ideal.development.switches.switch_action.case_clause_action;
 public class switch_analyzer extends single_pass_analyzer implements declaration {
 
   class case_clause {
-    public final readonly_list<analyzable> case_values;
+    public final list<analyzable> case_values;
     public final boolean is_default;
     public final analyzable body;
 
-    public case_clause(readonly_list<analyzable> case_values, boolean is_default, analyzable body) {
+    public case_clause(list<analyzable> case_values, boolean is_default, analyzable body) {
       this.case_values = case_values;
       this.is_default = is_default;
       this.body = body;
@@ -111,6 +111,7 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
                 base_analyzable_action.from(the_type.principal(), the_origin),
                 the_resolve_analyzer.short_name(),
                 the_resolve_analyzer.deeper_origin());
+            the_clause.case_values.set(j, the_analyzable);
           }
         }
         if (has_analysis_errors(the_analyzable)) {

@@ -401,4 +401,19 @@ public class populate_xref extends construct_visitor<Void> implements value {
     assert fragment != null;
     the_naming_strategy.add_fragment_alias(the_construct, fragment);
   }
+
+  @Override
+  public Void process_switch(switch_construct c) {
+    return process_default(c);
+  }
+
+  @Override
+  public Void process_case_clause(case_clause_construct c) {
+    return process_default(c);
+  }
+
+  @Override
+  public Void process_case(case_construct c) {
+    return process_default(c);
+  }
 }

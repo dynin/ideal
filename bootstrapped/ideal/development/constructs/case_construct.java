@@ -11,6 +11,9 @@ import javax.annotation.Nullable;
 
 public class case_construct extends base_construct {
   public final @Nullable construct case_value;
+  public @Override string to_string() {
+    return utilities.describe(this, this.case_value);
+  }
   public case_construct(final @Nullable construct case_value, final origin generated_origin) {
     super(generated_origin);
     this.case_value = case_value;

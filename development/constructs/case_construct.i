@@ -7,4 +7,6 @@
 meta_construct class case_construct {
   -- The value associated with this case statement, or null for default.
   construct or null case_value;
+
+  override string to_string => utilities.describe(this, case_value);
 }

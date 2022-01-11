@@ -74,6 +74,11 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     }
   }
 
+  public modifier_construct extension_modifier() {
+    assert the_modifier != null;
+    return the_modifier;
+  }
+
   public declaration_analyzer get_declaration() {
     assert the_declaration != null;
     return the_declaration;
@@ -105,11 +110,16 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
 
   @Override
   public readonly_list<analyzable> children() {
+    list<analyzable> result = new base_list<analyzable>();
     if (expanded != null) {
-      return (immutable_list<analyzable>) (immutable_list) expanded;
+      result.append_all((immutable_list<analyzable>) (immutable_list) expanded);
     } else {
-      return new base_list<analyzable>(get_declaration());
+      result.append(get_declaration());
     }
+    if (analyzable_parameters != null) {
+      result.append_all(analyzable_parameters);
+    }
+    return result;
   }
 
   protected final signal do_multi_pass_analysis(analysis_pass pass) {

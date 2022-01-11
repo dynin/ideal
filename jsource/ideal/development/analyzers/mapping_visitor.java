@@ -39,6 +39,14 @@ public class mapping_visitor extends debuggable {
       put_analyzable((construct) the_origin, the_analyzable);
     }
 
+    if (the_analyzable instanceof procedure_analyzer) {
+      origin the_origin2 = the_origin.deeper_origin();
+      if (the_origin2 instanceof parameter_construct) {
+        put_analyzable((construct) the_origin2, the_analyzable);
+        put_analyzable(((parameter_construct) the_origin2).main, the_analyzable);
+      }
+    }
+
     if (the_analyzable.has_errors()) {
       return;
     }
@@ -59,6 +67,7 @@ public class mapping_visitor extends debuggable {
       declaration the_declaration = the_extension.get_declaration();
       origin declaration_origin = the_declaration.deeper_origin();
       if (declaration_origin instanceof construct) {
+        deep_map(the_extension.extension_modifier(), the_declaration);
         deep_map((construct) declaration_origin, the_declaration);
       }
     }
@@ -100,6 +109,13 @@ public class mapping_visitor extends debuggable {
 
   private void deep_map(construct the_construct, analyzable the_analyzable) {
     if (mapping.get(the_construct) != null) {
+      // TODO: this is used for the_extension.extension_modifier(). Clean it up.
+      readonly_list<construct> children = the_construct.children();
+      for (int i = 0; i < children.size(); ++i) {
+        if (mapping.get(children.get(i)) == null) {
+          deep_map(children.get(i), the_analyzable);
+        }
+      }
       return;
     }
 

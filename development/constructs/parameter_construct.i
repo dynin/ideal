@@ -8,4 +8,6 @@ meta_construct class parameter_construct {
   construct main;
   readonly list[construct] parameters;
   grouping_type grouping;
+
+  override string to_string => utilities.describe(this, main);
 }

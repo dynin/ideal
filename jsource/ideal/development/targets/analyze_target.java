@@ -62,7 +62,9 @@ public class analyze_target extends type_processor_target {
     }
 
     // TODO: only do this in verbose mode
-    log.info(new base_string(base_value_printer.instance.print_type(the_type), " looking good."));
+    new base_notification(
+          new base_string(base_value_printer.instance.print_type(the_type), " looking good."),
+          the_declaration, null, notification_level.INFORMATIONAL).report();
   }
 
   private void ensure_is_analyzed(construct the_construct) {

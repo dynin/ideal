@@ -11,6 +11,9 @@ public class parameter_construct extends base_construct {
   public final construct main;
   public final readonly_list<construct> parameters;
   public final grouping_type grouping;
+  public @Override string to_string() {
+    return utilities.describe(this, this.main);
+  }
   public parameter_construct(final construct main, final readonly_list<construct> parameters, final grouping_type grouping, final origin generated_origin) {
     super(generated_origin);
     assert main != null;

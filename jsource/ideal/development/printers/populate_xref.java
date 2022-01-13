@@ -324,19 +324,22 @@ public class populate_xref extends construct_visitor<Void> implements value {
     for (int i = 0; i < signature.size(); ++i) {
       declaration member = signature.get(i);
       if (member instanceof supertype_declaration && !member.has_errors()) {
-        type super_type = ((supertype_declaration) member).get_supertype();
-        master_type super_master = to_master(super_type);
-        if (visited_types.contains(super_master)) {
-          continue;
+        readonly_list<type> super_types = ((supertype_declaration) member).super_types();
+        for (int j = 0; j < super_types.size(); ++j) {
+          type super_type = super_types.get(j);
+          master_type super_master = to_master(super_type);
+          if (visited_types.contains(super_master)) {
+            continue;
+          }
+          visited_types.add(super_master);
+          type_declaration super_declaration = declaration_util.to_type_declaration(
+              super_master.get_declaration());
+          assert super_declaration != null;
+          action super_action = super_type.to_action(super_declaration);
+          the_xref_context.add_action(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE,
+              super_action);
+          add_supertypes(documenting_declaration, super_declaration, visited_types);
         }
-        visited_types.add(super_master);
-        type_declaration super_declaration = declaration_util.to_type_declaration(
-            super_master.get_declaration());
-        assert super_declaration != null;
-        action super_action = super_type.to_action(super_declaration);
-        the_xref_context.add_action(documenting_declaration, xref_mode.INDIRECT_SUPERTYPE,
-            super_action);
-        add_supertypes(documenting_declaration, super_declaration, visited_types);
       }
     }
   }

@@ -101,8 +101,9 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
       if (false && !has_errors()) {
         type_utilities.prepare(declared_in_type(), declaration_pass.FLAVOR_PROFILE);
+        assert the_supertype != null;
         action_utilities.process_super_flavors(declared_in_type(),
-            subtype_flavor(), get_supertype(), the_origin, get_context());
+            subtype_flavor(), the_supertype, the_origin, get_context());
       }
     }
 
@@ -110,9 +111,9 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   }
 
   @Override
-  public type get_supertype() {
+  public readonly_list<type> super_types() {
     assert the_supertype != null;
-    return the_supertype;
+    return new base_list<type>(the_supertype);
   }
 
   @Override

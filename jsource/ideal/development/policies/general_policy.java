@@ -148,10 +148,13 @@ public class general_policy extends base_policy {
     if (the_supertype_declaration.has_errors()) {
       return;
     }
-    type the_supertype = the_supertype_declaration.get_supertype();
-    action_utilities.process_super_flavors(new_type,
-        the_supertype_declaration.subtype_flavor(),
-        the_supertype, the_supertype_declaration, context);
+    readonly_list<type> super_types = the_supertype_declaration.super_types();
+    for (int i = 0; i < super_types.size(); ++i) {
+      type the_supertype = super_types.get(i);
+      action_utilities.process_super_flavors(new_type,
+          the_supertype_declaration.subtype_flavor(),
+          the_supertype, the_supertype_declaration, context);
+    }
   }
 
   private specialization_context make_specialization_context(parametrized_type new_type,

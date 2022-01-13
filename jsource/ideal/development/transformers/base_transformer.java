@@ -230,9 +230,14 @@ public class base_transformer extends declaration_visitor<Object> {
   public construct process_supertype(supertype_declaration the_supertype) {
     origin the_origin = the_supertype;
     // TODO: add annotation support
+    readonly_list<type> super_types = the_supertype.super_types();
+    list<construct> super_constructs = new base_list<construct>();
+    for (int i = 0; i < super_types.size(); ++i) {
+      type the_super_type = super_types.get(i);
+      super_constructs.append(make_type(the_super_type, the_origin));
+    }
     return new supertype_construct(new empty<annotation_construct>(),
-        the_supertype.subtype_flavor(), the_supertype.tag(),
-        new base_list<construct>(make_type(the_supertype.get_supertype(), the_origin)), the_origin);
+        the_supertype.subtype_flavor(), the_supertype.tag(), super_constructs, the_origin);
   }
 
   public construct process_target(target_declaration the_target) {

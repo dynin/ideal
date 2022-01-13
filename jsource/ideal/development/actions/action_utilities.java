@@ -79,7 +79,7 @@ public class action_utilities {
       if (d instanceof supertype_declaration) {
         supertype_declaration the_supertype_declaration = (supertype_declaration) d;
         if (!the_supertype_declaration.has_errors()) {
-          result.append(the_supertype_declaration.get_supertype());
+          result.append_all(the_supertype_declaration.super_types());
         }
       }
     }
@@ -206,15 +206,20 @@ public class action_utilities {
   }
 
   public static @Nullable flavor_profile get_profile(supertype_declaration the_supertype) {
-    type the_type = the_supertype.get_supertype();
-    type_utilities.prepare(the_type, declaration_pass.FLAVOR_PROFILE);
+    flavor_profile the_profile = null;
+    readonly_list<type> super_types = the_supertype.super_types();
+    for (int i = 0; i < super_types.size(); ++i) {
+      type the_type = super_types.get(i);
+      type_utilities.prepare(the_type, declaration_pass.FLAVOR_PROFILE);
 
-    if (!the_type.principal().has_flavor_profile()) {
-      return null;
-    }
-    flavor_profile the_profile = the_type.principal().get_flavor_profile();
-    if (the_type.get_flavor() != flavor.nameonly_flavor) {
-      the_profile = flavor_profiles.combine(the_profile, the_type.get_flavor().get_profile());
+      if (!the_type.principal().has_flavor_profile()) {
+        return null;
+      }
+      flavor_profile new_profile = the_type.principal().get_flavor_profile();
+      if (the_type.get_flavor() != flavor.nameonly_flavor) {
+        new_profile = flavor_profiles.combine(new_profile, the_type.get_flavor().get_profile());
+      }
+      the_profile = flavor_profiles.combine(the_profile, new_profile);
     }
     return the_profile;
   }

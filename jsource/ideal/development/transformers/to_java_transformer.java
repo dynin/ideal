@@ -832,56 +832,59 @@ public class to_java_transformer extends base_transformer {
       declaration decl = body.get(i);
       if (decl instanceof supertype_declaration) {
         supertype_declaration supertype_decl = (supertype_declaration) decl;
-        type supertype = supertype_decl.get_supertype();
-        kind supertype_kind = supertype.principal().get_kind();
-        if (concrete_mode) {
-          // TODO: use NO_MAPPING here.
-          construct transformed_supertype = make_type_with_mapping(
-              supertype_decl.get_supertype(), the_origin, mapping.MAP_PRESERVE_ALIAS);
-          if (supertype_kind == class_kind) {
-            if (superclass != null) {
-              // TODO: do not panic!
-              utilities.panic("Oh no. Two superclasses!");
-            }
-            superclass = transformed_supertype;
-          } else {
-            list<construct> supertype_list = supertype_lists.get(profile.default_flavor());
-            assert supertype_list != null;
-            supertype_list.append(transformed_supertype);
-          }
-        } else {
-          origin the_origin2 = supertype_decl;
-          if (supertype_decl.subtype_flavor() == null &&
-              supertype instanceof principal_type) {
-            immutable_list<type_flavor> type_flavors = flavored_bodies.keys().elements();
-            for (int k = 0; k < type_flavors.size(); ++k) {
-              type_flavor flavor = type_flavors.get(k);
-              flavor_profile supertype_profile = supertype.principal().get_flavor_profile();
-              // TODO: iterate over supertype_lists?
-              if (supertype_profile.supports(flavor)) {
-                construct flavored_supertype;
-                if (flavor == supertype_profile.default_flavor()) {
-                  flavored_supertype = make_type_with_mapping(supertype_decl.get_supertype(),
-                      the_origin2, mapping.MAP_PRESERVE_ALIAS);
-                } else {
-                  flavored_supertype = make_type_with_mapping(supertype.get_flavored(flavor),
-                      the_origin2, mapping.MAP_PRESERVE_ALIAS);
-                }
-                list<construct> supertype_list = supertype_lists.get(flavor);
-                assert supertype_list != null;
-                supertype_list.append(flavored_supertype);
+        readonly_list<type> super_types = supertype_decl.super_types();
+        for (int j = 0; j < super_types.size(); ++j) {
+          type supertype = super_types.get(j);
+          kind supertype_kind = supertype.principal().get_kind();
+          if (concrete_mode) {
+            // TODO: use NO_MAPPING here.
+            construct transformed_supertype = make_type_with_mapping(
+                supertype, the_origin, mapping.MAP_PRESERVE_ALIAS);
+            if (supertype_kind == class_kind) {
+              if (superclass != null) {
+                // TODO: do not panic!
+                utilities.panic("Oh no. Two superclasses!");
               }
+              superclass = transformed_supertype;
+            } else {
+              list<construct> supertype_list = supertype_lists.get(profile.default_flavor());
+              assert supertype_list != null;
+              supertype_list.append(transformed_supertype);
             }
           } else {
-            type_flavor subtype_flavor = supertype_decl.subtype_flavor();
-            if (subtype_flavor == null) {
-              subtype_flavor = supertype.get_flavor();
+            origin the_origin2 = supertype_decl;
+            if (supertype_decl.subtype_flavor() == null &&
+                supertype instanceof principal_type) {
+              immutable_list<type_flavor> type_flavors = flavored_bodies.keys().elements();
+              for (int k = 0; k < type_flavors.size(); ++k) {
+                type_flavor flavor = type_flavors.get(k);
+                flavor_profile supertype_profile = supertype.principal().get_flavor_profile();
+                // TODO: iterate over supertype_lists?
+                if (supertype_profile.supports(flavor)) {
+                  construct flavored_supertype;
+                  if (flavor == supertype_profile.default_flavor()) {
+                    flavored_supertype = make_type_with_mapping(supertype,
+                        the_origin2, mapping.MAP_PRESERVE_ALIAS);
+                  } else {
+                    flavored_supertype = make_type_with_mapping(supertype.get_flavored(flavor),
+                        the_origin2, mapping.MAP_PRESERVE_ALIAS);
+                  }
+                  list<construct> supertype_list = supertype_lists.get(flavor);
+                  assert supertype_list != null;
+                  supertype_list.append(flavored_supertype);
+                }
+              }
+            } else {
+              type_flavor subtype_flavor = supertype_decl.subtype_flavor();
+              if (subtype_flavor == null) {
+                subtype_flavor = supertype.get_flavor();
+              }
+              construct flavored_supertype = make_type_with_mapping(supertype,
+                  the_origin2, mapping.MAP_PRESERVE_ALIAS);
+              list<construct> supertype_list = supertype_lists.get(profile.map(subtype_flavor));
+              assert supertype_list != null;
+              supertype_list.append(flavored_supertype);
             }
-            construct flavored_supertype = make_type_with_mapping(supertype_decl.get_supertype(),
-                the_origin2, mapping.MAP_PRESERVE_ALIAS);
-            list<construct> supertype_list = supertype_lists.get(profile.map(subtype_flavor));
-            assert supertype_list != null;
-            supertype_list.append(flavored_supertype);
           }
         }
       } else if (decl instanceof procedure_declaration) {
@@ -1175,9 +1178,12 @@ public class to_java_transformer extends base_transformer {
       declaration decl = body.get(i);
       if (decl instanceof supertype_declaration) {
         supertype_declaration supertype_decl = (supertype_declaration) decl;
-        type supertype = supertype_decl.get_supertype();
-        if (supertype.principal().get_kind() != procedure_kind) {
-          extends_types.append(make_type(supertype_decl.get_supertype(), the_origin));
+        readonly_list<type> super_types = supertype_decl.super_types();
+        for (int j = 0; j < super_types.size(); ++j) {
+          type supertype = super_types.get(j);
+          if (supertype.principal().get_kind() != procedure_kind) {
+            extends_types.append(make_type(supertype, the_origin));
+          }
         }
       }
     }

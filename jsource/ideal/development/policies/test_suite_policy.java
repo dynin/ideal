@@ -6,61 +6,60 @@
  * https://theideal.org/license/
  */
 
-package ideal.development.extensions;
+package ideal.development.policies;
 
 import ideal.library.elements.*;
 import javax.annotation.Nullable;
 import ideal.runtime.elements.*;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.actions.*;
-import ideal.development.constructs.*;
-import ideal.development.notifications.*;
 import ideal.development.names.*;
+import ideal.development.kinds.*;
+import static ideal.development.kinds.type_kinds.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
-import ideal.development.declarations.*;
+import static ideal.development.flavors.flavor.*;
+import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
+import ideal.development.origins.*;
+import ideal.development.declarations.*;
+import ideal.development.flags.*;
+import ideal.development.actions.*;
 import ideal.development.analyzers.*;
 import ideal.development.literals.*;
+import ideal.development.extensions.*;
 
 /**
  * Automatically generate run_all_tests() method.
  */
-public class test_suite_extension extends declaration_extension {
+public class test_suite_policy extends general_policy {
 
-  public static final test_suite_extension instance = new test_suite_extension();
+  public static final test_suite_policy instance = new test_suite_policy();
 
   private static final simple_name RUN_ALL_TESTS_NAME = simple_name.make("run_all_tests");
   private static final simple_name START_TEST_NAME = simple_name.make("start_test");
   private static final simple_name END_TEST_NAME = simple_name.make("end_test");
 
-  /**
-   * The name of the extension, which is used as the modifier in the ideal source code.
-   */
-  public test_suite_extension() {
-    super("test_suite");
-  }
-
   @Override
-  protected signal process_type_declaration(type_declaration_analyzer the_type_declaration,
-      analysis_pass pass) {
-    signal result = analyze(the_type_declaration, pass);
+  public void process_member_declaration(type_declaration the_type_declaration,
+      action_context context) {
+    origin the_origin = the_type_declaration;
+    assert the_type_declaration instanceof type_declaration_analyzer;
+    type_declaration_analyzer the_type_declaration_analyzer =
+        (type_declaration_analyzer) the_type_declaration;
 
-    if (result instanceof ok_signal && pass == analysis_pass.METHOD_AND_VARIABLE_DECL) {
-      if (!has_test_cases(the_type_declaration)) {
-        return new error_signal(new base_string("No test cases in a test suite"), this);
-      }
-
-      the_type_declaration.append_to_body(generate_run_all_tests(the_type_declaration));
+    if (!has_test_cases(the_type_declaration_analyzer)) {
+      new base_notification(new base_string("No test cases in a test suite"), the_origin).report();
+      return;
     }
 
-    return result;
+    the_type_declaration_analyzer.append_to_body(
+        generate_run_all_tests(the_type_declaration_analyzer, context, the_origin));
   }
 
-  public procedure_analyzer generate_run_all_tests(type_declaration_analyzer the_type_declaration) {
-    origin the_origin = this;
-    principal_type runtime_util_type = action_utilities.lookup_type(get_context(),
+  public procedure_analyzer generate_run_all_tests(type_declaration_analyzer the_type_declaration,
+      action_context context, origin the_origin) {
+    principal_type runtime_util_type = action_utilities.lookup_type(context,
         new base_string("ideal.machine.elements.runtime_util"));
     analyzable runtime_util = base_analyzable_action.from(runtime_util_type, the_origin);
     // construct start_construct = new resolve_construct(runtime_util_name, START_TEST, the_origin);

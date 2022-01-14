@@ -135,11 +135,16 @@ public class general_policy extends base_policy {
         context.add(new_type, common_names.instance_name,
             new singleton_value(new_type).to_action(pos));
       }
+      process_member_declaration(the_type_declaration, context);
     } else {
       utilities.panic("Unknown declaration pass: " + pass);
     }
 
     return ok_signal.instance;
+  }
+
+  public void process_member_declaration(type_declaration the_type_declaration,
+      action_context context) {
   }
 
   @Override

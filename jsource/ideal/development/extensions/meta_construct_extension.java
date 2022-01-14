@@ -43,7 +43,6 @@ public class meta_construct_extension extends declaration_extension {
   private static simple_name ORIGIN_NAME = simple_name.make("origin");
   private static simple_name CHILDREN_NAME = simple_name.make("children");
   private static simple_name RESULT_NAME = simple_name.make("result");
-  private static simple_name BASE_CONSTRUCT_NAME = simple_name.make("base_construct");
   private static simple_name BASE_LIST_NAME = simple_name.make("base_list");
   private static simple_name APPEND_NAME = simple_name.make("append");
   private static simple_name APPEND_ALL_NAME = simple_name.make("append_all");
@@ -76,9 +75,11 @@ public class meta_construct_extension extends declaration_extension {
 
   public void append_supertype(type_declaration_analyzer the_type_declaration) {
     origin the_origin = this;
-    resolve_analyzer base_construct_name = new resolve_analyzer(BASE_CONSTRUCT_NAME, the_origin);
-    supertype_analyzer supertype = new supertype_analyzer(null, subtype_tags.extends_tag,
-        base_construct_name, the_origin);
+    // TODO: move name to above
+    principal_type base_construct_type = action_utilities.lookup_type(get_context(),
+        new base_string("ideal.development.constructs.base_construct"));
+    supertype_analyzer supertype = new supertype_analyzer(new empty<annotation_construct>(),
+        null, subtype_tags.extends_tag, base_construct_type, the_origin);
     the_type_declaration.append_to_body(supertype);
   }
 
@@ -102,6 +103,7 @@ public class meta_construct_extension extends declaration_extension {
     children_statements.append(result_var);
 
     // TODO: factor this into cacheable methods.
+    // TODO: use action_utilities.lookup_type()
     principal_type null_type = null_type();
     principal_type development_type = lookup(ideal_namespace(), DEVELOPMENT_NAME);
     principal_type elements_type = lookup(development_type, ELEMENTS_NAME);

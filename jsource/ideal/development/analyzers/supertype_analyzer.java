@@ -27,16 +27,24 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   private final readonly_list<annotation_construct> annotations;
   private final @Nullable type_flavor subtype_flavor;
   private final subtype_tag tag;
-  private final analyzable the_analyzable;
-  private @Nullable type the_supertype;
+  private final readonly_list<analyzable> super_analyzables;
+  private @Nullable readonly_list<type> super_types;
+
+  public supertype_analyzer(supertype_construct the_supertype_construct) {
+    super(the_supertype_construct);
+    this.annotations = the_supertype_construct.annotations;
+    this.subtype_flavor = the_supertype_construct.subtype_flavor;
+    this.tag = the_supertype_construct.tag;
+    this.super_analyzables = make_list(the_supertype_construct.type_constructs);
+  }
 
   public supertype_analyzer(@Nullable type_flavor subtype_flavor, subtype_tag tag,
-      analyzable the_analyzable, origin the_origin) {
+      readonly_list<analyzable> super_analyzables, origin the_origin) {
     super(the_origin);
     this.annotations = new empty<annotation_construct>();
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
-    this.the_analyzable = the_analyzable;
+    this.super_analyzables = super_analyzables;
   }
 
   public supertype_analyzer(readonly_list<annotation_construct> annotations,
@@ -45,7 +53,8 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
     this.annotations = annotations;
     this.subtype_flavor = subtype_flavor;
     this.tag = tag;
-    this.the_analyzable = base_analyzable_action.from(the_type, the_origin);
+    this.super_analyzables = new base_list<analyzable>(
+        base_analyzable_action.from(the_type, the_origin));
   }
 
   @Override
@@ -62,7 +71,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
   public readonly_list<analyzable> children() {
     list<analyzable> result = new base_list<analyzable>();
     result.append(annotations());
-    result.append(the_analyzable);
+    result.append_all(super_analyzables);
     return result;
   }
 
@@ -72,38 +81,37 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
     if (pass == analysis_pass.IMPORT_AND_TYPE_VAR_DECL) {
       process_annotations(annotations, access_modifier.public_modifier);
-      add_dependence(the_analyzable, declared_in_type(), declaration_pass.NONE);
-
+      for (int i = 0; i < super_analyzables.size(); ++i) {
+        add_dependence(super_analyzables.get(i), declared_in_type(), declaration_pass.NONE);
+      }
     } else if (pass == analysis_pass.SUPERTYPE_DECL) {
+      assert super_types == null;
 
-      assert the_supertype == null;
+      list<type> analyzed_types = new base_list<type>();
+      super_types = analyzed_types;
+      for (int i = 0; i < super_analyzables.size(); ++i) {
+        analyzable super_analyzable = super_analyzables.get(i);
 
-      // TODO: detect loops in inheritance hierarchy; move to base_semantics
-      error_signal error = find_error(the_analyzable);
-      if (error != null) {
-        return new error_signal(messages.error_in_supertype, error, source);
-      }
+        // TODO: detect loops in inheritance hierarchy; move to base_semantics
+        error_signal error = find_error(super_analyzable);
+        if (error != null) {
+          return new error_signal(messages.error_in_supertype, error, source);
+        }
 
-      action supertype_action = action_not_error(the_analyzable);
-      if (! (supertype_action instanceof type_action)) {
-        return new error_signal(messages.type_expected, the_analyzable);
-      }
+        action supertype_action = action_not_error(super_analyzable);
+        if (! (supertype_action instanceof type_action)) {
+          return new error_signal(messages.type_expected, super_analyzable);
+        }
 
-      the_supertype = ((type_action) supertype_action).get_type();
+        type the_supertype = ((type_action) supertype_action).get_type();
+        analyzed_types.append(the_supertype);
 
-      get_context().add_supertype(declared_in_type(), the_supertype);
+        get_context().add_supertype(declared_in_type(), the_supertype);
 
-      // Note that promotion is from parent, not declared_in_type.
-      // The reason for this is to allow accessing static symbols from the subtype.
-      get_context().add(parent(), special_name.PROMOTION,
-          the_supertype.principal().to_action(the_origin));
-    } else if (pass == analysis_pass.BODY_CHECK) {
-
-      if (false && !has_errors()) {
-        type_utilities.prepare(declared_in_type(), declaration_pass.FLAVOR_PROFILE);
-        assert the_supertype != null;
-        action_utilities.process_super_flavors(declared_in_type(),
-            subtype_flavor(), the_supertype, the_origin, get_context());
+        // Note that promotion is from parent, not declared_in_type.
+        // The reason for this is to allow accessing static symbols from the subtype.
+        get_context().add(parent(), special_name.PROMOTION,
+            the_supertype.principal().to_action(the_origin));
       }
     }
 
@@ -112,15 +120,20 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
   @Override
   public readonly_list<type> super_types() {
-    assert the_supertype != null;
-    return new base_list<type>(the_supertype);
+    assert super_types != null;
+    return super_types;
   }
 
   @Override
   public supertype_analyzer specialize(specialization_context context, principal_type new_parent) {
     assert new_parent != declared_in_type();
-    analyzable specialized = the_analyzable.specialize(context, new_parent);
-    supertype_analyzer result = new supertype_analyzer(subtype_flavor, tag, specialized, this);
+    list<analyzable> specialized_supertypes = new base_list<analyzable>();
+    for (int i = 0; i < super_analyzables.size(); ++i) {
+      analyzable super_analyzable = super_analyzables.get(i);
+      specialized_supertypes.append(super_analyzable.specialize(context, new_parent));
+    }
+    supertype_analyzer result = new supertype_analyzer(subtype_flavor, tag, specialized_supertypes,
+        this);
     result.set_context(new_parent, get_context());
     result.multi_pass_analysis(analysis_pass.SUPERTYPE_DECL);
     return result;
@@ -128,6 +141,6 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
 
   @Override
   public string to_string() {
-    return utilities.describe(this, the_analyzable);
+    return utilities.describe(this, super_analyzables.first());
   }
 }

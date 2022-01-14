@@ -112,26 +112,7 @@ public class dispatcher extends construct_visitor<analyzable> {
 
   @Override
   public analyzable process_supertype(supertype_construct source) {
-    if (source.type_constructs.size() == 1) {
-      return new supertype_analyzer(source.subtype_flavor, source.tag,
-          process(source.type_constructs.first()), source);
-    } else {
-      return new list_analyzer(make_supertype_list(source, source), true, source);
-    }
-  }
-
-  public readonly_list<analyzable> make_supertype_list(
-      supertype_construct the_supertype_construct, origin source) {
-    list<analyzable> result = new base_list<analyzable>();
-    readonly_list<construct> supertypes = the_supertype_construct.type_constructs;
-
-    for (int i = 0; i < supertypes.size(); ++i) {
-      construct supertype = supertypes.get(i);
-      result.append(new supertype_analyzer(the_supertype_construct.subtype_flavor,
-          the_supertype_construct.tag, process(supertype), source));
-    }
-
-    return result;
+    return new supertype_analyzer(source);
   }
 
   @Override

@@ -182,10 +182,6 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
             null,
             the_parameter_construct);
         body_list.append(make(the_procedure_construct));
-      } else if (the_construct instanceof supertype_construct) {
-        // TODO: clean up.
-        body_list.append_all(new dispatcher().make_supertype_list(
-            (supertype_construct) the_construct, the_construct));
       } else {
         body_list.append(make(the_construct));
       }

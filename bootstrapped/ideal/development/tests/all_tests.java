@@ -4,7 +4,6 @@ package ideal.development.tests;
 
 import ideal.library.elements.*;
 import ideal.development.names.*;
-import ideal.development.futures.*;
 import ideal.development.origins.*;
 import ideal.development.documenters.*;
 
@@ -16,7 +15,6 @@ public class all_tests {
   public static void run_all_development_tests() {
     new test_names().run_all_tests();
     new test_origin_printer().run_all_tests();
-    new test_futures().run_all_tests();
     new test_doc_grammar().run_all_tests();
   }
 }

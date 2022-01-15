@@ -16,7 +16,6 @@ import ideal.development.declarations.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.values.*;
-import ideal.development.futures.*;
 import ideal.development.actions.*;
 import javax.annotation.Nullable;
 
@@ -94,12 +93,6 @@ public class specialized_type_declaration extends debuggable implements type_dec
   @Override
   public analyzable specialize(specialization_context context, principal_type new_parent) {
     return this;
-  }
-
-  @Override
-  public future<analysis_result> process_type(declaration_pass pass) {
-    process_declaration(pass);
-    return new base_future<analysis_result>(common_values.nothing(this));
   }
 
   @Override

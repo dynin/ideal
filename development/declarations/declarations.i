@@ -11,7 +11,6 @@ package declarations {
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.logs;
   implicit import ideal.development.elements;
-  implicit import ideal.development.futures;
   implicit import ideal.development.names;
   implicit import ideal.development.comments;
   implicit import ideal.development.modifiers;

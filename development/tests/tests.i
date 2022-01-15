@@ -8,7 +8,6 @@
 package tests {
   implicit import ideal.library.elements;
   implicit import ideal.development.names;
-  implicit import ideal.development.futures;
   implicit import ideal.development.origins;
   implicit import ideal.development.documenters;
 

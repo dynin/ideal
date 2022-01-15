@@ -16,7 +16,7 @@ namespace all_tests {
 
     test_origin_printer.new().run_all_tests();
 
-    test_futures.new().run_all_tests();
+    -- test_futures.new().run_all_tests();
 
     test_doc_grammar.new().run_all_tests();
   }

@@ -13,7 +13,6 @@ import ideal.runtime.elements.*;
 import javax.annotation.Nullable;
 import ideal.runtime.logs.*;
 import ideal.development.elements.*;
-import ideal.development.futures.*;
 import ideal.development.actions.*;
 import ideal.development.constructs.*;
 import ideal.development.notifications.*;
@@ -129,12 +128,6 @@ public class type_parameter_analyzer extends declaration_analyzer
   @Override
   public type_declaration master_declaration() {
     return this;
-  }
-
-  @Override
-  public future<analysis_result> process_type(declaration_pass pass) {
-    process_declaration(pass);
-    return new base_future<analysis_result>(common_values.nothing(this));
   }
 
   @Override

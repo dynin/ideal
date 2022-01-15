@@ -74,7 +74,7 @@ public class return_analyzer extends single_pass_analyzer {
       return_type = common_types.get_reference_parameter(return_type);
     }
 
-    return_expr = action_not_error(the_expression);
+    return_expr = the_expression.analyze().to_action();
     type_utilities.prepare(return_expr.result(), declaration_pass.METHODS_AND_VARIABLES);
 
     if (!get_context().can_promote(return_expr, return_type)) {

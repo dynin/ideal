@@ -55,7 +55,7 @@ public class supertype_of_extension extends declaration_extension {
         return new error_signal(messages.error_in_parametrizable, type_analyzable, this);
       }
 
-      action the_type_action = action_not_error(type_analyzable);
+      action the_type_action = type_analyzable.analyze().to_action();
       if (!(the_type_action instanceof type_action)) {
         return new error_signal(messages.type_expected, this);
       }

@@ -95,7 +95,8 @@ public class resolve_analyzer extends single_pass_analyzer {
       if (has_analysis_errors(from)) {
         return new error_signal(messages.error_in_source, from, the_origin);
       }
-      from_action = analyzer_utilities.to_value(action_not_error(from), get_context(), the_origin);
+      from_action = analyzer_utilities.to_value(from.analyze().to_action(), get_context(),
+          the_origin);
       from_type = from_action.result().type_bound();
     } else {
       assert the_name != null;

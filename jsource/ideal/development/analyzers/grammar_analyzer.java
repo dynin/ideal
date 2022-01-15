@@ -124,7 +124,7 @@ public class grammar_analyzer extends declaration_analyzer<grammar_construct>
       return null;
     }
 
-    action action_type = action_not_error(symbol_type);
+    action action_type = symbol_type.analyze().to_action();
 
     if (action_type instanceof type_action) {
       return ((type_action) action_type).get_type();

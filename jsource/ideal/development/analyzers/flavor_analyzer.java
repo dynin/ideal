@@ -54,7 +54,7 @@ public class flavor_analyzer extends single_pass_analyzer {
       return new error_signal(messages.error_in_flavored_type, expr_error, this);
     }
 
-    action expr_action = action_not_error(expression);
+    action expr_action = expression.analyze().to_action();
 
     // TODO: does this handle all cases?
     if (! (expr_action instanceof type_action)) {

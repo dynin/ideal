@@ -52,6 +52,6 @@ public abstract class extension_analyzer extends single_pass_analyzer {
       return error;
     }
 
-    return new extension_action(action_not_error(expanded), this);
+    return new extension_action(expanded.analyze().to_action(), this);
   }
 }

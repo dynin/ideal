@@ -62,7 +62,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
         return result;
       }
 
-      action the_action = action_not_error(type_analyzable);
+      action the_action = type_analyzable.analyze().to_action();
       if (! (the_action instanceof type_action)) {
         // TODO: add an action?
         return new error_signal(messages.type_expected, type_analyzable);
@@ -89,7 +89,7 @@ public class import_analyzer extends declaration_analyzer<import_construct>
   @Override
   public type get_type() {
     if (!has_analysis_errors(type_analyzable)) {
-      action the_action = action_not_error(type_analyzable);
+      action the_action = type_analyzable.analyze().to_action();
       if (the_action instanceof type_action) {
         return ((type_action) the_action).get_type();
       }

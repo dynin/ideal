@@ -84,7 +84,7 @@ public class block_analyzer extends declaration_analyzer<origin>
       return new error_signal(messages.error_in_block, body, this);
     }
 
-    body_action = action_not_error(body);
+    body_action = body.analyze().to_action();
 
     return ok_signal.instance;
   }

@@ -58,7 +58,8 @@ public class list_initializer_analyzer extends single_pass_analyzer {
         }
         continue;
       }
-      action the_action = analyzer_utilities.to_value(action_not_error(param), get_context(), this);
+      action the_action = analyzer_utilities.to_value(param.analyze().to_action(), get_context(),
+          this);
       if (result_action == null) {
         result_action = the_action;
       } else {

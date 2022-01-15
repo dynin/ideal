@@ -167,18 +167,6 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     }
   }
 
-  protected action action_not_error(analyzable the_analyzable) {
-    init_context(the_analyzable);
-    analysis_result result = the_analyzable.analyze();
-    assert !(result instanceof error_signal);
-    if (result instanceof action_plus_constraints) {
-      return ((action_plus_constraints) result).the_action;
-    } else {
-      assert result instanceof action;
-      return (action) result;
-    }
-  }
-
   protected void handle_error(error_signal the_error_signal) {
     the_error_signal.report_not_cascading();
   }

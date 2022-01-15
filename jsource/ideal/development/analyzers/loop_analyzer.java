@@ -67,7 +67,7 @@ public class loop_analyzer extends single_pass_analyzer implements declaration {
       return new error_signal(messages.error_in_block, body, this);
     }
 
-    the_loop_action.set_body(action_not_error(body));
+    the_loop_action.set_body(body.analyze().to_action());
 
     return the_loop_action;
   }

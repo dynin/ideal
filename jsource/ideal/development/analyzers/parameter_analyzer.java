@@ -99,7 +99,7 @@ public class parameter_analyzer extends single_pass_analyzer {
           error = arg_error;
         }
       } else {
-        action the_action = action_not_error(param);
+        action the_action = param.analyze().to_action();
         type_utilities.prepare(the_action.result(), parameter_pass);
         param_actions.append(the_action);
       }
@@ -115,7 +115,7 @@ public class parameter_analyzer extends single_pass_analyzer {
       return new error_signal(messages.error_in_parametrizable, main_error, the_origin);
     }
 
-    action main_action = action_not_error(main_analyzable);
+    action main_action = main_analyzable.analyze().to_action();
     if (!analyzer_utilities.supports_parameters(main_action.result(), aparams, get_context())) {
       type result_type = main_action.result().type_bound();
       type_utilities.prepare(result_type, parameter_pass);

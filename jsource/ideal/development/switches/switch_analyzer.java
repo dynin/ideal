@@ -92,7 +92,7 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
           the_origin);
     }
 
-    action expression_action = analyzer_utilities.to_value(action_not_error(expression),
+    action expression_action = analyzer_utilities.to_value(expression.analyze().to_action(),
         get_context(), the_origin);
     type the_type = expression_action.result().type_bound();
     boolean is_enum = the_type.principal().get_kind() == type_kinds.enum_kind;
@@ -118,7 +118,7 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
           return new error_signal(new base_string("Error in switch expression"), the_analyzable,
               the_origin);
         }
-        action the_action = action_not_error(the_analyzable);
+        action the_action = the_analyzable.analyze().to_action();
         if (!get_context().can_promote(the_action, the_type)) {
           return action_utilities.cant_promote(the_action.result(), the_type, the_origin);
         }
@@ -137,7 +137,7 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
       // TODO: handle breaks
       // TODO: handle variables in body
       // TODO: handle non-terminating bodies
-      action body = action_not_error(the_clause.body);
+      action body = the_clause.body.analyze().to_action();
       if (body.result().type_bound() != common_types.unreachable_type()) {
         return new error_signal(new base_string("TODO: handle fallthrough in switch"), body);
       }

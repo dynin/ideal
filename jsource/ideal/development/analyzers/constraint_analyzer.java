@@ -47,7 +47,7 @@ public class constraint_analyzer extends single_pass_analyzer {
     analysis_result the_result = expression.analyze();
 
     origin the_origin = this;
-    action the_action = new constraint_action(action_not_error(expression), the_origin);
+    action the_action = new constraint_action(the_result.to_action(), the_origin);
 
     if (the_result instanceof action_plus_constraints) {
       immutable_list<constraint> expression_constraints =

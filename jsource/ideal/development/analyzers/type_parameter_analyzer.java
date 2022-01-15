@@ -170,7 +170,7 @@ public class type_parameter_analyzer extends declaration_analyzer
       return new error_signal(messages.error_in_var_type, error, parameter_analyzable);
     }
 
-    action the_action = action_not_error(parameter_analyzable);
+    action the_action = parameter_analyzable.analyze().to_action();
 
     if (! (the_action instanceof type_action)) {
       return new error_signal(messages.type_expected, parameter_analyzable);

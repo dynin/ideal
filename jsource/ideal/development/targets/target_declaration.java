@@ -62,7 +62,7 @@ public class target_declaration extends declaration_analyzer<target_construct> {
         return new error_signal(new base_string("Error in target expression"), expression, this);
       }
 
-      target_action = action_not_error(expression);
+      target_action = expression.analyze().to_action();
     }
 
     return ok_signal.instance;

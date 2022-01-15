@@ -99,7 +99,7 @@ public class supertype_analyzer extends declaration_analyzer implements supertyp
           return new error_signal(messages.error_in_supertype, error, source);
         }
 
-        action supertype_action = action_not_error(super_analyzable);
+        action supertype_action = super_analyzable.analyze().to_action();
         if (! (supertype_action instanceof type_action)) {
           return new error_signal(messages.type_expected, super_analyzable);
         }

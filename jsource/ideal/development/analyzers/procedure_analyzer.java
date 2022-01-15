@@ -181,7 +181,7 @@ public class procedure_analyzer extends declaration_analyzer
     if (has_analysis_errors(body)) {
       return null;
     }
-    return action_not_error(body);
+    return body.analyze().to_action();
   }
 
   @Override
@@ -425,7 +425,7 @@ public class procedure_analyzer extends declaration_analyzer
             return_error, return_analyzable);
       }
 
-      action return_action = action_not_error(return_analyzable);
+      action return_action = return_analyzable.analyze().to_action();
       if (! (return_action instanceof type_action)) {
         return new error_signal(messages.type_expected, return_analyzable);
       }

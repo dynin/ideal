@@ -202,7 +202,7 @@ public class variable_analyzer extends declaration_analyzer
         if (has_analysis_errors(init)) {
           return report_error(new error_signal(messages.error_in_initializer, init, this));
         }
-        set_init();
+        set_intitializer_action();
         if (!get_context().can_promote(init_action, value_type())) {
           return action_utilities.cant_promote(init_action.result(), value_type(), this);
         }
@@ -229,10 +229,11 @@ public class variable_analyzer extends declaration_analyzer
     return null;
   }
 
-  private void set_init() {
+  private void set_intitializer_action() {
     assert init != null;
     origin the_origin = init;
-    init_action = analyzer_utilities.to_value(action_not_error(init), get_context(), the_origin);
+    init_action = analyzer_utilities.to_value(init.analyze().to_action(), get_context(),
+        the_origin);
   }
 
   private boolean is_private(action the_action) {
@@ -259,7 +260,7 @@ public class variable_analyzer extends declaration_analyzer
             the_origin));
       }
 
-      action expected_type = action_not_error(variable_type);
+      action expected_type = variable_type.analyze().to_action();
 
       if (expected_type instanceof type_action) {
         var_value_type = ((type_action) expected_type).get_type();
@@ -271,7 +272,7 @@ public class variable_analyzer extends declaration_analyzer
         if (has_analysis_errors(init)) {
           return report_error(new error_signal(messages.error_in_initializer, init, the_origin));
         }
-        set_init();
+        set_intitializer_action();
         var_value_type = init_action.result().type_bound();
       } else {
         return report_error(new error_signal(messages.var_type_missing, source));

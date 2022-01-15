@@ -224,7 +224,7 @@ public class list_analyzer extends multi_pass_analyzer implements declaration {
           error = new error_signal(messages.error_in_list, element, this);
         }
       } else if (is_last_pass) {
-        actions.append(action_not_error(element));
+        actions.append(element.analyze().to_action());
       }
     }
 

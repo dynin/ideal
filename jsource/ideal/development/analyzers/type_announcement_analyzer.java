@@ -22,6 +22,7 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class type_announcement_analyzer extends declaration_analyzer<type_announcement_construct>
     implements type_announcement {

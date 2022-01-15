@@ -7,6 +7,7 @@ import ideal.library.reflections.*;
 import ideal.runtime.elements.*;
 import ideal.runtime.reflections.*;
 import ideal.development.elements.*;
+import ideal.development.origins.*;
 import ideal.development.names.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
@@ -35,6 +36,9 @@ public class bound_procedure extends debuggable implements action, stringable {
   }
   public @Override origin deeper_origin() {
     return this.the_origin;
+  }
+  public @Override action to_action() {
+    return this;
   }
   public @Override abstract_value result() {
     return this.return_value;

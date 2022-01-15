@@ -23,6 +23,7 @@ import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.kinds.*;
 import ideal.development.analyzers.*;
+import ideal.development.values.*;
 
 /**
  * Added to |string_text_node| to mark it as a supertype of string.

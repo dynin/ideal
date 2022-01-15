@@ -21,6 +21,7 @@ import ideal.development.flavors.*;
 import ideal.development.notifications.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class block_analyzer extends declaration_analyzer<origin>
     implements block_declaration {

@@ -7,4 +7,6 @@
 --- The result of semantic analysis, typically an |action|. 
 interface analysis_result {
   extends origin, readonly data;
+
+  action to_action;
 }

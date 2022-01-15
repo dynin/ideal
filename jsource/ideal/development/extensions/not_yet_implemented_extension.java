@@ -22,6 +22,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.analyzers.*;
+import ideal.development.values.*;
 
 /**
  * Marks a procedure or a variable as "not yet implemented", meaning it's excluded

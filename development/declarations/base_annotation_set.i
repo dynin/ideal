@@ -15,18 +15,18 @@ auto_constructor class base_annotation_set {
   private documentation or null the_documentation2;
   private immutable list[origin] the_origins;
 
-  override access_modifier access_level => the_access_level;
+  implement access_modifier access_level => the_access_level;
 
-  override variance_modifier or null variance => the_variance;
+  implement variance_modifier or null variance => the_variance;
 
-  override boolean has(modifier_kind the_kind) {
+  implement boolean has(modifier_kind the_kind) {
     verify the_kind is_not null;
     return the_modifiers.contains(the_kind);
   }
 
-  override documentation or null the_documentation => the_documentation2;
+  implement documentation or null the_documentation => the_documentation2;
 
-  override origin or null deeper_origin() {
+  implement origin or null deeper_origin() {
     -- TODO: update this.
     if (the_origins.is_empty) {
       return missing.instance;
@@ -35,17 +35,22 @@ auto_constructor class base_annotation_set {
     }
   }
 
+  -- TODO: drop this once annotation_set doesn't implement analysis_result.
+  implement action to_action() {
+    utilities.panic("base_annotation_set.to_action not implemented");
+  }
+
   immutable list[origin] origins => the_origins;
 
   readonly list[modifier_kind] modifiers => the_modifiers.elements;
 
-  override readonly list[analyzable] children => empty[analyzable].new();
+  implement readonly list[analyzable] children => empty[analyzable].new();
 
-  override boolean has_errors => false;
+  implement boolean has_errors => false;
 
-  override base_annotation_set analyze => this;
+  implement base_annotation_set analyze => this;
 
-  override base_annotation_set specialize(specialization_context context,
+  implement base_annotation_set specialize(specialization_context context,
       principal_type new_parent) => this;
 
   base_annotation_set update_documentation(documentation or null new_documentation) {

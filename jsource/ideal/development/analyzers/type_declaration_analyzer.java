@@ -580,7 +580,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
       analyzable the_analyzable = body.get(i);
       if (the_analyzable instanceof variable_analyzer &&
           ((variable_analyzer) the_analyzable).get_category() == variable_category.STATIC) {
-        subactions.append(analyzer_utilities.to_action(the_analyzable));
+        subactions.append(the_analyzable.analyze().to_action());
       }
     }
 

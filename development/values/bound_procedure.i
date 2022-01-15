@@ -28,13 +28,15 @@ class bound_procedure {
     this(the_procedure_value.to_action(the_origin), return_value, parameters, the_origin);
   }
 
-  override origin deeper_origin => the_origin;
+  implement origin deeper_origin => the_origin;
 
-  override abstract_value result => return_value;
+  implement action to_action => this;
 
-  override declaration or null get_declaration => the_procedure_action.get_declaration;
+  implement abstract_value result => return_value;
 
-  override boolean has_side_effects() {
+  implement declaration or null get_declaration => the_procedure_action.get_declaration;
+
+  implement boolean has_side_effects() {
     if (the_procedure_action.has_side_effects) {
       return true;
     }
@@ -56,11 +58,11 @@ class bound_procedure {
     return false;
   }
 
-  override action combine(action from, origin new_origin) =>
+  implement action combine(action from, origin new_origin) =>
     bound_procedure.new(the_procedure_action.combine(from, new_origin), return_value,
         parameters, new_origin);
 
-  override entity_wrapper execute(entity_wrapper from_entity, the execution_context) {
+  implement entity_wrapper execute(entity_wrapper from_entity, the execution_context) {
     the_entity : the_procedure_action.execute(from_entity, the_execution_context);
     if (the_entity is jump_wrapper) {
       return the_entity;
@@ -84,5 +86,5 @@ class bound_procedure {
     return the_procedure_value.execute(from_entity, concrete_values, the_execution_context);
   }
 
-  override string to_string => utilities.describe(this, the_procedure_action);
+  implement string to_string => utilities.describe(this, the_procedure_action);
 }

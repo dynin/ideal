@@ -40,6 +40,10 @@ public class base_annotation_set extends debuggable implements annotation_set {
       return this.the_origins.first();
     }
   }
+  public @Override action to_action() {
+    utilities.panic(new base_string("base_annotation_set.to_action not implemented"));
+    return null;
+  }
   public immutable_list<origin> origins() {
     return this.the_origins;
   }

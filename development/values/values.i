@@ -11,6 +11,7 @@ package values {
   implicit import ideal.runtime.elements;
   implicit import ideal.runtime.reflections;
   implicit import ideal.development.elements;
+  implicit import ideal.development.origins;
   implicit import ideal.development.names;
   implicit import ideal.development.flavors;
   implicit import ideal.development.declarations;
@@ -38,5 +39,6 @@ package values {
   class base_procedure;
   class bound_procedure;
   class procedure_with_this;
+  class ok_signal;
   namespace common_values;
 }

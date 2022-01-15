@@ -397,11 +397,10 @@ public class variable_analyzer extends declaration_analyzer
     // TODO: signal errors instead of asserts.
     action new_value_action;
     if (variable_type != null) {
-      new_value_action = analyzer_utilities.to_action(
-          variable_type.specialize(new_context, new_parent));
+      new_value_action = variable_type.specialize(new_context, new_parent).analyze().to_action();
     } else {
       assert init != null;
-      new_value_action = analyzer_utilities.to_action(init.specialize(new_context, new_parent));
+      new_value_action = init.specialize(new_context, new_parent).analyze().to_action();
     }
 
     // TODO: handle errors better.

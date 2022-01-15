@@ -657,7 +657,7 @@ public class procedure_analyzer extends declaration_analyzer
     } else {
       // TODO: what if return_analyzable is null?
       analyzable return_specialized = return_analyzable.specialize(new_context, new_inside);
-      abstract_value return_value = analyzer_utilities.to_action(return_specialized).result();
+      abstract_value return_value = return_specialized.analyze().to_action().result();
       if (return_value instanceof error_signal) {
         new_return_type = return_value.type_bound();
       } else {

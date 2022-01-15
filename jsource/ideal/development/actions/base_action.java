@@ -30,6 +30,11 @@ public abstract class base_action extends debuggable implements action {
   }
 
   @Override
+  public action to_action() {
+    return this;
+  }
+
+  @Override
   public action combine(action from, origin the_origin) {
     return this;
   }

@@ -22,6 +22,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.analyzers.*;
+import ideal.development.values.*;
 import static ideal.development.declarations.annotation_library.*;
 
 /**

@@ -29,13 +29,15 @@ class error_signal {
     this.is_cascading = true;
   }
 
-  override origin deeper_origin => cause.origin;
+  implement origin deeper_origin => cause.origin;
 
-  override boolean has_errors => true;
+  implement boolean has_errors => true;
 
-  override error_signal analyze => this;
+  implement error_signal analyze => this;
 
-  override readonly list[analyzable] children => empty[analyzable].new();
+  implement readonly list[analyzable] children => empty[analyzable].new();
+
+  implement action to_action => error_action.new(this);
 
   report_not_cascading() {
     if (!is_cascading) {
@@ -43,8 +45,8 @@ class error_signal {
     }
   }
 
-  override analyzable specialize(specialization_context context,
+  implement analyzable specialize(specialization_context context,
       principal_type new_parent) => this;
 
-  override string to_string => cause.to_string;
+  implement string to_string => cause.to_string;
 }

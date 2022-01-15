@@ -20,6 +20,7 @@ import ideal.development.notifications.*;
 import ideal.development.declarations.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
+import ideal.development.values.*;
 
 /**
  * Analyze a sequence (list) of actions.  Unlike |block_analyzer|, no frame is created.

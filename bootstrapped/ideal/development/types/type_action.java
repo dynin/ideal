@@ -27,6 +27,9 @@ public abstract class type_action extends debuggable implements action {
   public final @Override origin deeper_origin() {
     return this.the_origin;
   }
+  public @Override action to_action() {
+    return this;
+  }
   public @Override @Nullable declaration get_declaration() {
     return this.get_type().principal().get_declaration();
   }

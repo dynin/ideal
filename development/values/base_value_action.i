@@ -18,17 +18,19 @@ class base_value_action[readonly entity_wrapper value_type] {
     this.the_value = the_value;
   }
 
-  override final origin deeper_origin => the_origin;
+  implement final origin deeper_origin => the_origin;
 
-  override abstract_value result() {
+  implement abstract_value result() {
     -- TODO: the variable is redundant
     readonly entity_wrapper v : the_value;
     return v.type_bound !> type;
   }
 
-  override boolean has_side_effects => false;
+  implement action to_action => this;
 
-  override final action combine(action from, origin the_origin) {
+  implement boolean has_side_effects => false;
+
+  implement final action combine(action from, origin the_origin) {
     if (the_value is procedure_value) {
       return the_value.bind_this_action(from, the_origin);
     } else {
@@ -36,7 +38,7 @@ class base_value_action[readonly entity_wrapper value_type] {
     }
   }
 
-  override entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
+  implement entity_wrapper execute(entity_wrapper from_entity, execution_context context) {
     if (from_entity is jump_wrapper) {
       return from_entity;
     }
@@ -45,7 +47,7 @@ class base_value_action[readonly entity_wrapper value_type] {
     return the_value !> entity_wrapper;
   }
 
-  override declaration or null get_declaration => missing.instance;
+  implement declaration or null get_declaration => missing.instance;
 
-  override string to_string => utilities.describe(this, the_value);
+  implement string to_string => utilities.describe(this, the_value);
 }

@@ -21,6 +21,7 @@ import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
+import ideal.development.values.*;
 
 public abstract class multi_pass_analyzer<C extends origin> extends base_analyzer<C> {
 

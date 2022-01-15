@@ -23,8 +23,7 @@ import ideal.development.origins.*;
 import ideal.development.declarations.*;
 import ideal.development.flags.*;
 import ideal.development.actions.*;
-
-import ideal.development.values.singleton_value;
+import ideal.development.values.*;
 
 public class base_policy implements type_policy {
 

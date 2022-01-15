@@ -406,20 +406,6 @@ public class analyzer_utilities {
     return false;
   }
 
-  public static action to_action(analyzable the_analyzable) {
-    analysis_result result = the_analyzable.analyze();
-    if (result instanceof action) {
-      return (action) result;
-    } else if (result instanceof action_plus_constraints) {
-      return ((action_plus_constraints) result).the_action;
-    } else if (result instanceof error_signal) {
-      return new error_action((error_signal) result);
-    } else {
-      utilities.panic("Unrecognized analyzable: " + the_analyzable);
-      return null;
-    }
-  }
-
   public static @Nullable type unify(action first, action second, action_context the_context) {
     type first_type = first.result().type_bound();
     type second_type = second.result().type_bound();

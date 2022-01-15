@@ -150,11 +150,11 @@ public class to_java_transformer extends base_transformer {
   }
 
   protected construct transform_analyzable(analyzable the_analyzable) {
-    return transform_action(analyzer_utilities.to_action(the_analyzable));
+    return transform_action(the_analyzable.analyze().to_action());
   }
 
   protected construct transform_analyzable_or_null(analyzable the_analyzable, origin the_origin) {
-    action the_action = analyzer_utilities.to_action(the_analyzable);
+    action the_action = the_analyzable.analyze().to_action();
     if (is_nothing(the_action)) {
       return new empty_construct(the_origin);
     } else {

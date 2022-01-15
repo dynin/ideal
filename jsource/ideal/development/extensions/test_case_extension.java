@@ -23,6 +23,7 @@ import ideal.development.flavors.*;
 import ideal.development.declarations.*;
 import ideal.development.modifiers.*;
 import ideal.development.analyzers.*;
+import ideal.development.values.*;
 
 /**
  * Mark a procedure as a test case.

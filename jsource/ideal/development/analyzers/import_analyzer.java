@@ -19,6 +19,7 @@ import ideal.development.notifications.*;
 import ideal.development.names.*;
 import ideal.development.types.*;
 import ideal.development.modifiers.*;
+import ideal.development.values.*;
 
 public class import_analyzer extends declaration_analyzer<import_construct>
     implements import_declaration {

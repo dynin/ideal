@@ -43,6 +43,9 @@ public class error_signal extends debuggable implements deeply_immutable_data, s
   public @Override readonly_list<analyzable> children() {
     return new empty<analyzable>();
   }
+  public @Override action to_action() {
+    return new error_action(this);
+  }
   public void report_not_cascading() {
     if (!this.is_cascading) {
       this.cause.report();

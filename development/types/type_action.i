@@ -22,6 +22,8 @@ abstract class type_action {
 
   implement final origin deeper_origin => the_origin;
 
+  implement action to_action => this;
+
   implement declaration or null get_declaration => get_type().principal.get_declaration;
 
   implement boolean has_side_effects => false;

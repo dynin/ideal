@@ -22,7 +22,6 @@ package notifications {
   enum notification_level;
   class base_notification;
   interface signal;
-  class ok_signal;
   class error_signal;
   class error_action;
   namespace messages;

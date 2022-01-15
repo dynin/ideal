@@ -21,6 +21,7 @@ import ideal.development.modifiers.*;
 import ideal.development.types.*;
 import ideal.development.flavors.*;
 import ideal.development.declarations.*;
+import ideal.development.values.*;
 
 public class supertype_analyzer extends declaration_analyzer implements supertype_declaration {
 

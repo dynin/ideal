@@ -11,7 +11,9 @@ class ok_signal {
 
   static ok_signal instance : ok_signal.new();
 
-  override origin deeper_origin => origin_utilities.no_origin;
+  implement origin deeper_origin => origin_utilities.no_origin;
 
-  override string to_string => "ok";
+  implement action to_action => common_values.nothing(this);
+
+  implement string to_string => "ok";
 }

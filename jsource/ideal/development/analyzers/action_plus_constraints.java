@@ -37,6 +37,11 @@ public class action_plus_constraints extends debuggable implements analysis_resu
   }
 
   @Override
+  public action to_action() {
+    return the_action;
+  }
+
+  @Override
   public string to_string() {
     return utilities.describe(this, the_action);
   }

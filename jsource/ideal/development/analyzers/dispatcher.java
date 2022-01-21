@@ -177,7 +177,12 @@ public class dispatcher extends construct_visitor<analyzable> {
     }
 
     if (the_extension_kind != null) {
-      return the_extension_kind.make_extension(the_declaration, the_modifier_construct);
+      base_construct the_base_construct = (base_construct) the_declaration.deeper_origin();
+      assert the_base_construct.the_analyzable == the_declaration;
+      declaration_extension the_declaration_extension =
+          the_extension_kind.make_extension(the_declaration, the_modifier_construct);
+      the_base_construct.the_analyzable = the_declaration_extension;
+      return the_declaration_extension;
     } else {
       return the_declaration;
     }

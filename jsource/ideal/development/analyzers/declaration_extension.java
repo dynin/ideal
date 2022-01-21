@@ -122,6 +122,22 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
     return result;
   }
 
+  public readonly_list<construct> construct_children() {
+    if (expanded != null) {
+      list<construct> result = new base_list<construct>();
+      result.append(the_modifier);
+      for (int i = 0; i < expanded.size(); ++i) {
+        declaration the_declaration = expanded.get(i);
+        if (the_declaration.deeper_origin() != this) {
+          result.append((construct) the_declaration.deeper_origin());
+        }
+      }
+      return result;
+    } else {
+      return ((construct) get_declaration().deeper_origin()).children();
+    }
+  }
+
   protected final signal do_multi_pass_analysis(analysis_pass pass) {
     if (pass == analysis_pass.TYPE_DECL) {
       if (the_modifier.parameters != null) {

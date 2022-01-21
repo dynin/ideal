@@ -66,19 +66,23 @@ public class analyze_target extends type_processor_target {
 
   private void ensure_is_analyzed(construct the_construct) {
     @Nullable analyzable the_analyzable = ((base_construct) the_construct).the_analyzable;
+
     if (the_analyzable == null) {
-      if (the_construct instanceof empty_construct ||
-          the_construct instanceof modifier_construct ||
-          the_construct instanceof comment_construct) {
-        // ok, pass
-      } else {
+      if (!(the_construct instanceof empty_construct) &&
+          !(the_construct instanceof modifier_construct) &&
+          !(the_construct instanceof comment_construct)) {
         new base_notification(
             new base_string("Not analyzed " + the_construct), the_construct).report();
+        return;
       }
-      return;
     }
 
-    readonly_list<construct> children = the_construct.children();
+    readonly_list<construct> children;
+    if (the_analyzable instanceof declaration_extension) {
+      children = ((declaration_extension) the_analyzable).construct_children();
+    } else {
+      children = the_construct.children();
+    }
     for (int i = 0; i < children.size(); ++i) {
       ensure_is_analyzed(children.get(i));
     }

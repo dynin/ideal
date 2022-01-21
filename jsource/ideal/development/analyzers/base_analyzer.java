@@ -24,6 +24,7 @@ import ideal.development.flavors.*;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.declarations.*;
+import ideal.development.origins.*;
 import ideal.development.comments.*;
 
 public abstract class base_analyzer<C extends origin> extends debuggable implements analyzable {
@@ -43,6 +44,18 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
     this.parent = parent;
     this.context = context;
     this.source = source;
+
+    if (source instanceof base_construct) {
+      base_construct the_base_construct = (base_construct) source;
+      assert the_base_construct.the_analyzable == null;
+      the_base_construct.the_analyzable = this;
+    } else if (source instanceof analyzable ||
+               source instanceof source_content ||
+               source == analyzer_utilities.UNINITIALIZED_POSITION) {
+      return;
+    } else {
+      utilities.panic("Unrecognized source: " + source);
+    }
   }
 
   protected base_analyzer(C source) {

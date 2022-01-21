@@ -7,15 +7,17 @@ import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
 
+import javax.annotation.Nullable;
 import ideal.machine.annotations.dont_display;
 
 public abstract class base_construct extends debuggable implements construct {
   private final @dont_display origin the_origin;
+  public @Nullable @dont_display analyzable the_analyzable;
   public base_construct(final origin the_origin) {
     assert the_origin != null;
     this.the_origin = the_origin;
   }
-  public origin deeper_origin() {
+  public @Override origin deeper_origin() {
     return this.the_origin;
   }
 }

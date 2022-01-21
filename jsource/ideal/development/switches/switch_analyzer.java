@@ -110,7 +110,7 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
             the_analyzable = new resolve_analyzer(
                 base_analyzable_action.from(the_type.principal(), the_origin),
                 the_resolve_analyzer.short_name(),
-                the_resolve_analyzer.deeper_origin());
+                the_resolve_analyzer);
             the_clause.case_values.set(j, the_analyzable);
           }
         }

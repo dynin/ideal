@@ -33,7 +33,6 @@ import javax.annotation.Nullable;
 public class analyze_target extends type_processor_target {
 
   action_context the_context;
-  mapping_visitor mapping;
 
   public analyze_target(simple_name the_name, target_manager the_manager) {
     super(the_name, the_manager);
@@ -42,7 +41,6 @@ public class analyze_target extends type_processor_target {
   @Override
   public void setup(action_context the_context) {
     this.the_context = the_context;
-    this.mapping = new mapping_visitor();
   }
 
   @Override
@@ -54,7 +52,6 @@ public class analyze_target extends type_processor_target {
       return;
     }
 
-    mapping.visit(the_declaration);
     ensure_is_analyzed((construct) the_declaration.deeper_origin());
 
     if (the_manager.has_errors()) {
@@ -68,15 +65,17 @@ public class analyze_target extends type_processor_target {
   }
 
   private void ensure_is_analyzed(construct the_construct) {
-    @Nullable analyzable the_analyzable = mapping.get_analyzable(the_construct);
+    @Nullable analyzable the_analyzable = ((base_construct) the_construct).the_analyzable;
     if (the_analyzable == null) {
-      if (! (the_construct instanceof empty_construct)) {
+      if (the_construct instanceof empty_construct ||
+          the_construct instanceof modifier_construct ||
+          the_construct instanceof comment_construct) {
+        // ok, pass
+      } else {
         new base_notification(
             new base_string("Not analyzed " + the_construct), the_construct).report();
       }
       return;
-    } else if (the_analyzable.deeper_origin() != the_construct) {
-      // TODO: enforce 1:1 mapping...
     }
 
     readonly_list<construct> children = the_construct.children();

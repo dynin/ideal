@@ -184,7 +184,7 @@ public class list_iteration_analyzer extends extension_analyzer implements decla
     if (body instanceof block_analyzer) {
       block_analyzer the_block_analyzer = (block_analyzer) body;
       body_list.append(the_block_analyzer.get_body());
-      body_origin = the_block_analyzer.source;
+      body_origin = the_block_analyzer;
     } else {
       body_list.append(body);
       body_origin = the_origin;

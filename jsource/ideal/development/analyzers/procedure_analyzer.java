@@ -255,7 +255,7 @@ public class procedure_analyzer extends declaration_analyzer
         origin body_origin = this;
         if (original_body instanceof block_analyzer) {
           analyzable inside_body = ((block_analyzer) original_body).get_body();
-          body_origin = original_body.deeper_origin();
+          body_origin = original_body;
           if (inside_body instanceof list_analyzer) {
             body_statements = ((list_analyzer) inside_body).elements();
           } else {
@@ -745,12 +745,10 @@ public class procedure_analyzer extends declaration_analyzer
           @Nullable special_name mapped_name = map_constructor_name(main_name);
           if (mapped_name != null) {
             calls_this_constructor = mapped_name == special_name.THIS_CONSTRUCTOR;
-            resolve_analyzer ctor_name = new resolve_analyzer(mapped_name,
-                main_name.deeper_origin());
+            resolve_analyzer ctor_name = new resolve_analyzer(mapped_name, main_name);
             readonly_list<analyzable> ctor_params =
                 ((parameter_analyzer) first).analyzable_parameters;
-            analyzable ctor_call = new parameter_analyzer(ctor_name, ctor_params,
-                first.deeper_origin());
+            analyzable ctor_call = new parameter_analyzer(ctor_name, ctor_params, first);
             list<analyzable> result = new base_list<analyzable>();
             result.append(ctor_call);
             result.append_all(body.skip(1));

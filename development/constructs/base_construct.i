@@ -9,6 +9,7 @@ abstract class base_construct {
   implements construct;
 
   private dont_display origin the_origin;
+  dont_display var analyzable or null the_analyzable;
 
   --public abstract readonly_list<construct> children();
 
@@ -17,5 +18,5 @@ abstract class base_construct {
     this.the_origin = the_origin;
   }
 
-  origin deeper_origin() => the_origin;
+  override origin deeper_origin() => the_origin;
 }

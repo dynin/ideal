@@ -53,14 +53,14 @@ public class switch_analyzer extends single_pass_analyzer implements declaration
       list<analyzable> case_values = new base_list<analyzable>();
       boolean is_default = false;
       for (int j = 0; j < the_construct.cases.size(); ++j) {
-        case_construct the_case_construct = the_construct.cases.get(j);
-        if (the_case_construct.case_value != null) {
-          case_values.append(make(the_case_construct.case_value));
-        } else {
+        construct the_case_construct = the_construct.cases.get(j);
+        if (the_case_construct instanceof empty_construct) {
           is_default = true;
+        } else {
+          case_values.append(make(the_case_construct));
         }
       }
-      analyzable body = new list_analyzer(make_list(the_construct.body), this);
+      analyzable body = new list_analyzer(make_list(the_construct.body), the_construct);
       clauses.append(new case_clause(case_values, is_default, body));
     }
   }

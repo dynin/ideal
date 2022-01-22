@@ -104,8 +104,8 @@ non terminal construct  parameter;
 
 non terminal list<case_clause_construct>  case_clauses, case_clauses_opt;
 non terminal case_clause_construct  case_clause;
-non terminal list<case_construct>  case_expressions, case_expressions_opt;
-non terminal case_construct  case_expression;
+non terminal list<construct>  case_expressions, case_expressions_opt;
+non terminal construct  case_expression;
 
 /* Grammar for s-expression language */
 non terminal construct  template;
@@ -301,26 +301,26 @@ case_clauses_opt ::=
 
 case_clause ::=
                 case_expressions:ce statements:st
-                {: RESULT = new case_clause_construct(ce, st, parser_util.empty_origin); :}
+                {: RESULT = new case_clause_construct(ce, st, ce.first()); :}
         ;
 
 case_expressions ::=
                 case_expression:hd case_expressions_opt:tl
-                {: RESULT = new base_list<case_construct>(hd); RESULT.append_all(tl); :}
+                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
         ;
 
 case_expressions_opt ::=
                 case_expression:hd case_expressions_opt:tl
-                {: RESULT = new base_list<case_construct>(hd); RESULT.append_all(tl); :}
+                {: RESULT = new base_list<construct>(hd); RESULT.append_all(tl); :}
         |       /* epsilon */
-                {: RESULT = new base_list<case_construct>(); :}
+                {: RESULT = new base_list<construct>(); :}
         ;
 
 case_expression ::=
                 CASE:ca expression:e COLON:co
-                {: RESULT = new case_construct(e, new fragment_origin(ca, ca, co)); :}
+                {: RESULT = e; :}
         |       DEFAULT:d COLON:co
-                {: RESULT = new case_construct(null, new fragment_origin(d, d, co)); :}
+                {: RESULT = new empty_construct(new fragment_origin(d, d, co)); :}
         ;
 
 variable_or_expression_opt ::=

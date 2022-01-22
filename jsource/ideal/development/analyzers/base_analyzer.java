@@ -47,7 +47,9 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
 
     if (source instanceof base_construct) {
       base_construct the_base_construct = (base_construct) source;
-      assert the_base_construct.the_analyzable == null;
+      if (the_base_construct.the_analyzable != null) {
+        utilities.panic("Duplicate source for " + source);
+      }
       the_base_construct.the_analyzable = this;
     } else if (source instanceof analyzable ||
                source instanceof source_content ||

@@ -42,6 +42,5 @@ package constructs {
   class variable_construct;
   class switch_construct;
   class case_clause_construct;
-  class case_construct;
   class grammar_construct;
 }

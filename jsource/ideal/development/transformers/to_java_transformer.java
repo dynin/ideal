@@ -1702,7 +1702,7 @@ public class to_java_transformer extends base_transformer {
     list<case_clause_construct> clauses = new base_list<case_clause_construct>();
     for (int i = 0; i < the_switch_action.clauses.size(); ++i) {
       case_clause_action the_clause_action = the_switch_action.clauses.get(i);
-      list<case_construct> cases = new base_list<case_construct>();
+      list<construct> cases = new base_list<construct>();
       for (int j = 0; j < the_clause_action.case_values.size(); ++j) {
         data_value the_value = the_clause_action.case_values.get(j);
         construct value_construct;
@@ -1713,10 +1713,10 @@ public class to_java_transformer extends base_transformer {
         } else {
           value_construct = process_data_value(the_value, the_origin);
         }
-        cases.append(new case_construct(value_construct, the_origin));
+        cases.append(value_construct);
       }
       if (the_clause_action.is_default) {
-        cases.append(new case_construct(null, the_origin));
+        cases.append(new empty_construct(the_origin));
       }
       list<construct> body = new base_list<construct>();
       transform_and_append(the_clause_action.body, body);

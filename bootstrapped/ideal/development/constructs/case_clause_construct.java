@@ -8,9 +8,9 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 
 public class case_clause_construct extends base_construct {
-  public final readonly_list<case_construct> cases;
+  public final readonly_list<construct> cases;
   public final readonly_list<construct> body;
-  public case_clause_construct(final readonly_list<case_construct> cases, final readonly_list<construct> body, final origin generated_origin) {
+  public case_clause_construct(final readonly_list<construct> cases, final readonly_list<construct> body, final origin generated_origin) {
     super(generated_origin);
     assert cases != null;
     this.cases = cases;
@@ -19,7 +19,7 @@ public class case_clause_construct extends base_construct {
   }
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
-    generated_result.append_all((readonly_list<construct>) (Object) this.cases);
+    generated_result.append_all(this.cases);
     generated_result.append_all(this.body);
     return generated_result;
   }

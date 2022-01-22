@@ -5,6 +5,6 @@
 -- https://theideal.org/license/
 
 meta_construct class case_clause_construct {
-  readonly list[case_construct] cases;
+  readonly list[construct] cases;
   readonly list[construct] body;
 }

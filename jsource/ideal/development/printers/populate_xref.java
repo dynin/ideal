@@ -414,9 +414,4 @@ public class populate_xref extends construct_visitor<Void> implements value {
   public Void process_case_clause(case_clause_construct c) {
     return process_default(c);
   }
-
-  @Override
-  public Void process_case(case_construct c) {
-    return process_default(c);
-  }
 }

@@ -171,7 +171,6 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
            c instanceof loop_construct ||
            c instanceof switch_construct ||
            c instanceof case_clause_construct ||
-           c instanceof case_construct ||
            (c instanceof conditional_construct &&
              ((conditional_construct) c).is_statement);
   }
@@ -894,19 +893,28 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
 
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    fragments.append(print_statements(c.cases));
+    fragments.append(print_cases(c.cases));
     fragments.append(print_indented(print_statements(c.body)));
 
     return text_utilities.join(fragments);
   }
 
-  public text_fragment process_case(case_construct c) {
+  public text_fragment print_cases(readonly_list<construct> case_values) {
+    list<text_fragment> fragments = new base_list<text_fragment>();
+    for (int i = 0; i < case_values.size(); ++i) {
+      construct the_case_value = case_values.get(i);
+      fragments.append(print_case(the_case_value));
+    }
+    return text_utilities.join(fragments);
+  }
+
+  public text_fragment print_case(construct c) {
     list<text_fragment> fragments = new base_list<text_fragment>();
 
-    if (c.case_value != null) {
+    if (!(c instanceof empty_construct)) {
       fragments.append(print_word(keywords.CASE));
       fragments.append(print_space());
-      fragments.append(print(c.case_value));
+      fragments.append(print(c));
     } else {
       fragments.append(print_word(keywords.DEFAULT));
     }

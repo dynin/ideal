@@ -84,9 +84,6 @@ public abstract class construct_visitor<return_value> implements value {
     if (c instanceof case_clause_construct) {
       return this.process_case_clause(((case_clause_construct) c));
     }
-    if (c instanceof case_construct) {
-      return this.process_case(((case_construct) c));
-    }
     if (c instanceof grammar_construct) {
       return this.process_grammar(((grammar_construct) c));
     }
@@ -171,9 +168,6 @@ public abstract class construct_visitor<return_value> implements value {
     return this.process_default(c);
   }
   public return_value process_case_clause(final case_clause_construct c) {
-    return this.process_default(c);
-  }
-  public return_value process_case(final case_construct c) {
     return this.process_default(c);
   }
   public return_value process_grammar(final grammar_construct c) {

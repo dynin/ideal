@@ -688,7 +688,7 @@ public class to_java_transformer extends base_transformer {
     annotations.append(new modifier_construct(static_modifier, the_origin));
   }
 
-  private readonly_list<construct> transform_static(readonly_list<declaration> declarations) {
+  private list<construct> transform_static(readonly_list<declaration> declarations) {
     list<construct> result = new base_list<construct>();
     for (int i = 0; i < declarations.size(); ++i) {
       declaration decl = declarations.get(i);

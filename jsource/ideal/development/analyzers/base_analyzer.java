@@ -51,7 +51,7 @@ public abstract class base_analyzer<C extends origin> extends debuggable impleme
       the_base_construct.the_analyzable = this;
     } else if (source instanceof analyzable ||
                source instanceof source_content ||
-               source == analyzer_utilities.UNINITIALIZED_POSITION) {
+               source instanceof special_origin) {
       return;
     } else {
       utilities.panic("Unrecognized source: " + source);

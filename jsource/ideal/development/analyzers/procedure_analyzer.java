@@ -70,33 +70,6 @@ public class procedure_analyzer extends declaration_analyzer
     }
   }
 
-  /*
-  public procedure_analyzer(readonly_list<annotation_construct> annotations,
-      @Nullable construct ret,
-      action_name name,
-      @Nullable readonly_list<construct> parameters,
-      readonly_list<annotation_construct> post_annotations,
-      @Nullable construct body,
-      origin the_origin) {
-    super(the_origin);
-    this.annotations = annotations;
-    if (ret != null) {
-      this.return_analyzable = make(ret);
-    } else {
-      this.return_analyzable = null;
-    }
-
-    this.original_name = (simple_name) name;
-    this.parameters = parameters;
-    this.post_annotations = post_annotations;
-    if (body != null) {
-      original_body = make(body);
-    } else {
-      original_body = null;
-    }
-  }
-  */
-
   public procedure_analyzer(annotation_set annotations, @Nullable analyzable return_analyzable,
       simple_name original_name, readonly_list<variable_declaration> parameter_variables,
       @Nullable analyzable original_body, origin the_origin) {

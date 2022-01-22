@@ -9,7 +9,7 @@ meta_construct class type_declaration_construct {
   kind kind;
   action_name name;
   readonly list[construct] or null parameters;
-  readonly list[construct] body;
+  list[construct] body;
 
   var boolean has_parameters => parameters is_not null;
 

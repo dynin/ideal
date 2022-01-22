@@ -215,10 +215,12 @@ procedure_declaration ::=
                 annotations_opt:m expression:t name:n parameters:p post_annotations_opt:pm
                     procedure_body:b
                 {: RESULT = new procedure_construct(m, t, n.the_name,
-                    parser_util.procedure_parameters(p), pm, b, n); :}
+                    parser_util.procedure_parameters(p), pm, b,
+                    new fragment_origin(t, n, b)); :}
         |       annotations_opt:m expression:t name:n post_annotations_opt:pm
                     EQUALS_GREATER_THAN:egt expression:e SEMICOLON:s
-                {: RESULT = new procedure_construct(m, t, n.the_name, null, pm, e, n); :}
+                {: RESULT = new procedure_construct(m, t, n.the_name, null, pm, e,
+                    new fragment_origin(t, n, s)); :}
         ;
 
 variable_declaration ::=

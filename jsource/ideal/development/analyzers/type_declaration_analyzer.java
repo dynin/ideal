@@ -156,7 +156,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
     return false;
   }
 
-  private list<analyzable> make_body_list(readonly_list<construct> constructs) {
+  private list<analyzable> make_body_list(list<construct> constructs) {
     list<analyzable> body_list = new base_list<analyzable>();
     int enum_value_ordinal = 0;
     for (int i = 0; i < constructs.size(); ++i) {
@@ -180,6 +180,7 @@ public class type_declaration_analyzer extends declaration_analyzer<type_declara
             new empty<annotation_construct>(),
             null,
             the_parameter_construct);
+        constructs.set(i, the_procedure_construct);
         body_list.append(make(the_procedure_construct));
       } else {
         body_list.append(make(the_construct));

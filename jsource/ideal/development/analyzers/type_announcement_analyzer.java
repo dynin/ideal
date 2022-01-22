@@ -185,7 +185,7 @@ public class type_announcement_analyzer extends declaration_analyzer<type_announ
         the_kind(),
         short_name(),
         null,
-        new empty<construct>(),
+        new base_list<construct>(),
         this);
   }
 

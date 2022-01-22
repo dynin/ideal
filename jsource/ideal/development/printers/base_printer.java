@@ -651,7 +651,8 @@ public class base_printer extends construct_visitor<text_fragment> implements pr
     text_fragment result = print_modifier_kind(c.the_kind);
 
     if (c.parameters != null) {
-      result = text_utilities.join(result, process_list(c.parameters));
+      assert c.paramaters_grouping != null;
+      result = text_utilities.join(result, print_params(c.parameters, c.paramaters_grouping));
     }
 
     return result;

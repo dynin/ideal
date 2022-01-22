@@ -144,7 +144,7 @@ public class declaration_extension extends multi_pass_analyzer implements syntax
         if (!supports_parameters()) {
           return new error_signal(new base_string("Extension doesn't support parameters"), this);
         }
-        analyzable_parameters = make_list(the_modifier.parameters.the_elements);
+        analyzable_parameters = make_list(the_modifier.parameters);
       }
     }
 

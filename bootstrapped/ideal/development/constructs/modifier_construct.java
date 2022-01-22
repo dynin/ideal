@@ -11,14 +11,19 @@ import javax.annotation.Nullable;
 
 public class modifier_construct extends base_construct implements annotation_construct {
   public final modifier_kind the_kind;
-  public final @Nullable list_construct parameters;
-  public modifier_construct(final modifier_kind the_kind, final @Nullable list_construct parameters, final origin the_origin) {
+  public final @Nullable readonly_list<construct> parameters;
+  public final @Nullable grouping_type paramaters_grouping;
+  public modifier_construct(final modifier_kind the_kind, final @Nullable readonly_list<construct> parameters, final @Nullable grouping_type paramaters_grouping, final origin the_origin) {
     super(the_origin);
     this.the_kind = the_kind;
     this.parameters = parameters;
+    this.paramaters_grouping = paramaters_grouping;
+  }
+  public modifier_construct(final modifier_kind the_kind, final @Nullable list_construct parameters, final origin the_origin) {
+    this(the_kind, parameters != null ? parameters.the_elements : (readonly_list<construct>) null, parameters != null ? parameters.grouping : (grouping_type) null, the_origin);
   }
   public modifier_construct(final modifier_kind the_kind, final origin the_origin) {
-    this(the_kind, null, the_origin);
+    this(the_kind, null, null, the_origin);
   }
   public @Override string to_string() {
     return utilities.describe(this, this.the_kind);
@@ -26,7 +31,7 @@ public class modifier_construct extends base_construct implements annotation_con
   public @Override readonly_list<construct> children() {
     final base_list<construct> generated_result = new base_list<construct>();
     if (this.parameters != null)
-      generated_result.append((list_construct) this.parameters);
+      generated_result.append_all((readonly_list<construct>) (Object) this.parameters);
     return generated_result;
   }
 }

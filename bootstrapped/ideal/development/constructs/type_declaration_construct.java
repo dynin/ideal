@@ -14,14 +14,14 @@ public class type_declaration_construct extends base_construct {
   public final kind kind;
   public final action_name name;
   public final @Nullable readonly_list<construct> parameters;
-  public final readonly_list<construct> body;
+  public final list<construct> body;
   public boolean has_parameters() {
     return this.parameters != null;
   }
   public @Override string to_string() {
     return utilities.describe(this, this.name);
   }
-  public type_declaration_construct(final readonly_list<annotation_construct> annotations, final kind kind, final action_name name, final @Nullable readonly_list<construct> parameters, final readonly_list<construct> body, final origin generated_origin) {
+  public type_declaration_construct(final readonly_list<annotation_construct> annotations, final kind kind, final action_name name, final @Nullable readonly_list<construct> parameters, final list<construct> body, final origin generated_origin) {
     super(generated_origin);
     assert annotations != null;
     this.annotations = annotations;

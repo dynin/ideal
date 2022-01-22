@@ -30,6 +30,7 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
   private final action_name the_name;
   private final @Nullable readonly_list<construct> parameters;
   private final origin the_name_origin;
+  private final @Nullable origin the_parameter_origin;
   private final int ordinal;
   private @Nullable parameter_analyzer constructor_call;
   private @Nullable action_parameters the_action_parameters;
@@ -41,19 +42,22 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
       the_name = ((name_construct) the_construct).the_name;
       parameters = null;
       the_name_origin = the_construct;
+      the_parameter_origin = null;
     } else if (the_construct instanceof variable_construct) {
       variable_construct the_variable_construct = (variable_construct) the_construct;
       the_name = the_variable_construct.name;
       parameter_construct the_parameter_construct =
           (parameter_construct) the_variable_construct.init;
       parameters = the_parameter_construct.parameters;
-      the_name_origin = the_parameter_construct;
+      the_name_origin = the_parameter_construct.main;
+      the_parameter_origin = the_parameter_construct;
     } else {
       utilities.panic("Unrecognized enum value declaration: " + the_construct);
-      // Too silence javac
+      // To silence javac
       the_name = null;
       parameters = null;
       the_name_origin = null;
+      the_parameter_origin = null;
     }
     this.ordinal = ordinal;
   }
@@ -132,13 +136,14 @@ public class enum_value_analyzer extends declaration_analyzer implements variabl
     }
 
     if (pass == analysis_pass.BODY_CHECK && parameters != null) {
-      origin pos = this;
+      origin the_origin = this;
       analyzable allocate = new base_analyzable_action(
-          new allocate_action(declared_in_type(), pos));
+          new allocate_action(declared_in_type(), the_origin));
       analyzable ctor_expression = new resolve_analyzer(allocate, special_name.IMPLICIT_CALL,
           the_name_origin);
       readonly_list<analyzable> the_constructor_parameters = make_list(parameters);
-      constructor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters, pos);
+      constructor_call = new parameter_analyzer(ctor_expression, the_constructor_parameters,
+          the_parameter_origin);
       if (!has_analysis_errors(constructor_call, pass)) {
         the_action_parameters = constructor_call.get_parameters();
       }

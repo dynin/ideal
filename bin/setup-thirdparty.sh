@@ -24,7 +24,7 @@ curl -O ${MAVEN2}/com/google/code/findbugs/jsr305/${JSR305_VERSION}/jsr305-${JSR
 echo
 
 echo Fetching ANTLR via https://www.antlr.org/
-ANTLR_VERSION=4.9.2
+ANTLR_VERSION=4.9.3
 ANTLR_JAR=antlr-${ANTLR_VERSION}-complete.jar
 curl -O https://www.antlr.org/download/${ANTLR_JAR}
 echo

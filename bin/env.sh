@@ -5,7 +5,7 @@ ROOTDIR=`dirname $BINDIR`
 
 THIRDPARTY="${ROOTDIR}/thirdparty"
 JDK_DIR="${THIRDPARTY}/jdk"
-ANTLR_JAR="${THIRDPARTY}/antlr-4.9.2-complete.jar"
+ANTLR_JAR="${THIRDPARTY}/antlr-4.9.3-complete.jar"
 CLASSPATH="${ROOTDIR}/build/classes:${THIRDPARTY}/java-cup-11b-runtime.jar:${ANTLR_JAR}"
 JAVA_OPTS="-ea -classpath ${CLASSPATH}"
 JAVA="${JDK_DIR}/bin/java ${JAVA_OPTS}"

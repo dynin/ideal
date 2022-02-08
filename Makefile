@@ -23,7 +23,7 @@ MKDIR = mkdir -p
 
 JSR305_JAR = $(THIRD_PARTY_DIR)/jsr305-3.0.2.jar
 JAVACUP_JAR = $(THIRD_PARTY_DIR)/java-cup-11b.jar
-ANTLR_JAR = $(THIRD_PARTY_DIR)/antlr-4.9.2-complete.jar
+ANTLR_JAR = $(THIRD_PARTY_DIR)/antlr-4.9.3-complete.jar
 
 THIRD_PARTY_JARS = $(JSR305_JAR):$(JAVACUP_JAR):$(ANTLR_JAR)
 
@@ -80,6 +80,8 @@ CIRCLE = $(SHOWCASE_DIR)/circle.i
 HELLO = $(SHOWCASE_DIR)/hello.i
 XREFTEST = $(SHOWCASE_DIR)/xreftest.i
 TESTPARSER = $(SHOWCASE_DIR)/testparser.i
+
+JPARSER_DIR = experimental/jparser
 
 BOOTSTRAPPED_JAVA = \
     $(BOOTSTRAPPED_DIR)/ideal/library/elements/*.java \
@@ -323,6 +325,12 @@ testantlr:
 	$(ANTLR) -o $(GRAMMAR_DIR) experimental/grammars/metagrammar.g4
 	$(JAVAC) $(GRAMMAR_DIR)/experimental/grammars/*.java
 	$(GRUN) metagrammar grammar_declaration -gui < experimental/grammars/markup_grammar.i
+
+jparser:
+	cd $(JPARSER_DIR) ; \
+            ../../$(ANTLR) -o ../../$(GRAMMAR_DIR) JavaLexer.g4 JavaParser.g4
+	$(JAVAC) $(GRAMMAR_DIR)/*.java
+	$(GRUN) Java compilationUnit -gui < $(JPARSER_DIR)/HelloWorld.java
 
 ### Development
 

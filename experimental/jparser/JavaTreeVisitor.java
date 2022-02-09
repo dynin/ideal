@@ -23,7 +23,7 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
 
   @Override
   public Object visitCompilationUnit(CompilationUnitContext ctx) {
-    return "test";
+    return visit(ctx.typeDeclaration(0));
   }
 
   @Override
@@ -38,7 +38,7 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
 
   @Override
   public Object visitTypeDeclaration(TypeDeclarationContext ctx) {
-    return unsupported(ctx);
+    return visit(ctx.classDeclaration());
   }
 
   @Override
@@ -58,7 +58,7 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
 
   @Override
   public Object visitClassDeclaration(ClassDeclarationContext ctx) {
-    return unsupported(ctx);
+    return visit(ctx.identifier());
   }
 
   @Override
@@ -423,7 +423,7 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
 
   @Override
   public Object visitIdentifier(IdentifierContext ctx) {
-    return unsupported(ctx);
+    return ctx.IDENTIFIER().getText();
   }
 
   @Override

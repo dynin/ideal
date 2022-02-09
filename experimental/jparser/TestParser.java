@@ -41,6 +41,8 @@ public class TestParser {
     ParseTree compilationUnit = parser.compilationUnit();
 
     System.out.println(compilationUnit.toStringTree(parser));
-    System.out.println(new JavaTreeVisitor().visit(compilationUnit));
+
+    JavaTreeVisitor treeVisitor = new JavaTreeVisitor(parser);
+    System.out.println(treeVisitor.visit(compilationUnit));
   }
 }

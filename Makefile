@@ -328,9 +328,10 @@ testantlr:
 
 jparser:
 	cd $(JPARSER_DIR) ; \
-            ../../$(ANTLR) -o ../../$(GRAMMAR_DIR) JavaLexer.g4 JavaParser.g4
-	$(JAVAC) $(GRAMMAR_DIR)/*.java
-	$(GRUN) Java compilationUnit -gui < $(JPARSER_DIR)/HelloWorld.java
+            ../../$(ANTLR) -visitor -no-listener -o ../../$(GRAMMAR_DIR) JavaLexer.g4 JavaParser.g4
+	$(JAVAC) $(JPARSER_DIR)/*.java $(GRAMMAR_DIR)/*.java
+	$(JAVA) ideal.development.jparser.TestParser
+#	$(GRUN) ideal.development.jparser.Java compilationUnit -gui < $(JPARSER_DIR)/HelloWorld.java
 
 ### Development
 

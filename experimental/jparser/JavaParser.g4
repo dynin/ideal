@@ -31,6 +31,10 @@
 
 parser grammar JavaParser;
 
+@header {
+  package ideal.development.jparser;
+}
+
 options { tokenVocab=JavaLexer; }
 
 compilationUnit

@@ -31,6 +31,10 @@
 
 lexer grammar JavaLexer;
 
+@header {
+  package ideal.development.jparser;
+}
+
 // Keywords
 
 ABSTRACT:           'abstract';

@@ -58,6 +58,7 @@ LIBRARY_TARGET = $(TARGETS_DIR)/library
 DEVELOPMENT_TARGET = $(TARGETS_DIR)/development
 BASEPARSER_TARGET = $(TARGETS_DIR)/baseparser
 IDEAL_TARGET = $(TARGETS_DIR)/ideal
+JPARSER_TARGET = $(TARGETS_DIR)/jparser
 
 CREATE_MAIN = ideal.development.tools.create
 CREATE = $(JAVA) $(CREATE_MAIN)
@@ -326,12 +327,18 @@ testantlr:
 	$(JAVAC) $(GRAMMAR_DIR)/experimental/grammars/*.java
 	$(GRUN) metagrammar grammar_declaration -gui < experimental/grammars/markup_grammar.i
 
-jparser:
+$(JPARSER_TARGET): build $(LIBRARY_TARGET)
 	cd $(JPARSER_DIR) ; \
             ../../$(ANTLR) -visitor -no-listener -o ../../$(GRAMMAR_DIR) JavaLexer.g4 JavaParser.g4
 	$(JAVAC) $(JPARSER_DIR)/*.java $(GRAMMAR_DIR)/*.java
-	$(JAVA) ideal.development.jparser.TestParser
-#	$(GRUN) ideal.development.jparser.Java compilationUnit -gui < $(JPARSER_DIR)/HelloWorld.java
+	@touch $@
+	@echo === JParser done.
+
+jparser: $(JPARSER_TARGET)
+	$(JAVA) ideal.development.jparser.TestParser $(JPARSER_DIR)/HelloWorld.java
+
+jparsergui: $(JPARSER_TARGET)
+	$(GRUN) ideal.development.jparser.Java compilationUnit -gui < $(JPARSER_DIR)/HelloWorld.java
 
 ### Development
 

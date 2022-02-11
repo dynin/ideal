@@ -8,7 +8,9 @@
 
 package ideal.development.jparser;
 
+import java.util.List;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
@@ -16,26 +18,43 @@ import ideal.development.elements.*;
 import ideal.development.names.*;
 import ideal.development.origins.*;
 import ideal.development.kinds.*;
+import ideal.development.modifiers.*;
 import ideal.development.constructs.*;
 
 import ideal.development.jparser.JavaParser.*;
 
 public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   private final JavaParser java_parser;
-  private final origin the_origin;
+  private final origin default_origin;
 
   public JavaTreeVisitor(JavaParser java_parser) {
     this.java_parser = java_parser;
-    this.the_origin = new special_origin(new base_string("[jparser]"));
+    this.default_origin = new special_origin(new base_string("[jparser]"));
   }
 
-  private origin get_origin(ParseTree tree) {
-    return the_origin;
+  protected origin get_origin(ParseTree tree) {
+    return default_origin;
+  }
+
+  protected readonly_list<construct> to_constructs(List<? extends ParseTree> elements) {
+    list<construct> result = new base_list<construct>();
+    for (ParseTree element : elements) {
+      result.append((construct) visit(element));
+    }
+    return result;
+  }
+
+  protected readonly_list<annotation_construct> to_annotations(List<? extends ParseTree> elements) {
+    list<annotation_construct> result = new base_list<annotation_construct>();
+    for (ParseTree element : elements) {
+      result.append((annotation_construct) visit(element));
+    }
+    return result;
   }
 
   @Override
   public readonly_list<construct> visitCompilationUnit(CompilationUnitContext ctx) {
-    return new base_list<construct>(visitTypeDeclaration(ctx.typeDeclaration(0)));
+    return to_constructs(ctx.typeDeclaration());
   }
 
   @Override
@@ -50,7 +69,17 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
 
   @Override
   public type_declaration_construct visitTypeDeclaration(TypeDeclarationContext ctx) {
-    return visitClassDeclaration(ctx.classDeclaration());
+    readonly_list<annotation_construct> annotations =
+        to_annotations(ctx.classOrInterfaceModifier());
+    type_declaration_construct the_declaration = visitClassDeclaration(ctx.classDeclaration());
+    return new type_declaration_construct(
+        annotations,
+        the_declaration.kind,
+        the_declaration.name,
+        the_declaration.parameters,
+        the_declaration.body,
+        get_origin(ctx)
+    );
   }
 
   @Override
@@ -59,8 +88,24 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitClassOrInterfaceModifier(ClassOrInterfaceModifierContext ctx) {
-    return unsupported(ctx);
+  public annotation_construct visitClassOrInterfaceModifier(ClassOrInterfaceModifierContext ctx) {
+    origin the_origin = get_origin(ctx);
+    switch (((TerminalNode) ctx.getChild(0)).getSymbol().getType()) {
+      case JavaParser.PUBLIC:
+        return new modifier_construct(access_modifier.public_modifier, the_origin);
+      case JavaParser.PROTECTED:
+        return new modifier_construct(access_modifier.protected_modifier, the_origin);
+      case JavaParser.PRIVATE:
+        return new modifier_construct(access_modifier.private_modifier, the_origin);
+      case JavaParser.STATIC:
+        return new modifier_construct(general_modifier.static_modifier, the_origin);
+      case JavaParser.ABSTRACT:
+        return new modifier_construct(general_modifier.abstract_modifier, the_origin);
+      case JavaParser.FINAL:
+        return new modifier_construct(general_modifier.final_modifier, the_origin);
+    }
+    unsupported(ctx);
+    return null;
   }
 
   @Override

@@ -23,11 +23,11 @@ import ideal.development.constructs.*;
 
 import ideal.development.jparser.JavaParser.*;
 
-public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
+public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   private final JavaParser java_parser;
   private final origin default_origin;
 
-  public JavaTreeVisitor(JavaParser java_parser) {
+  public JavaConstructBuilder(JavaParser java_parser) {
     this.java_parser = java_parser;
     this.default_origin = new special_origin(new base_string("[jparser]"));
   }
@@ -36,7 +36,7 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
     return default_origin;
   }
 
-  protected readonly_list<construct> to_constructs(List<? extends ParseTree> elements) {
+  protected list<construct> to_constructs(List<? extends ParseTree> elements) {
     list<construct> result = new base_list<construct>();
     for (ParseTree element : elements) {
       result.append((construct) visit(element));
@@ -104,8 +104,7 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
       case JavaParser.FINAL:
         return new modifier_construct(general_modifier.final_modifier, the_origin);
     }
-    unsupported(ctx);
-    return null;
+    return (annotation_construct) unsupported(ctx);
   }
 
   @Override
@@ -115,12 +114,22 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
 
   @Override
   public type_declaration_construct visitClassDeclaration(ClassDeclarationContext ctx) {
+    if (ctx.typeParameters() != null) {
+      return (type_declaration_construct) unsupported(ctx.typeParameters());
+    }
+    if (ctx.EXTENDS() != null) {
+      return (type_declaration_construct) unsupported(ctx);
+    }
+    if (ctx.IMPLEMENTS() != null) {
+      return (type_declaration_construct) unsupported(ctx);
+    }
+    list<construct> body = visitClassBody(ctx.classBody());
     return new type_declaration_construct(
         new empty<annotation_construct>(),
         type_kinds.class_kind,
         visitIdentifier(ctx.identifier()).the_name,
         null,
-        new base_list<construct>(),
+        body,
         get_origin(ctx)
     );
   }
@@ -166,8 +175,8 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitClassBody(ClassBodyContext ctx) {
-    return unsupported(ctx);
+  public list<construct> visitClassBody(ClassBodyContext ctx) {
+    return to_constructs(ctx.classBodyDeclaration());
   }
 
   @Override
@@ -176,18 +185,28 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitClassBodyDeclaration(ClassBodyDeclarationContext ctx) {
-    return unsupported(ctx);
+  public construct visitClassBodyDeclaration(ClassBodyDeclarationContext ctx) {
+    // TODO: handle block
+    // TODO: handle modifier
+    return visitMemberDeclaration(ctx.memberDeclaration());
   }
 
   @Override
-  public Object visitMemberDeclaration(MemberDeclarationContext ctx) {
-    return unsupported(ctx);
+  public construct visitMemberDeclaration(MemberDeclarationContext ctx) {
+    return (construct) visit(ctx.getChild(0));
   }
 
   @Override
-  public Object visitMethodDeclaration(MethodDeclarationContext ctx) {
-    return unsupported(ctx);
+  public procedure_construct visitMethodDeclaration(MethodDeclarationContext ctx) {
+    return new procedure_construct(
+        new empty<annotation_construct>(),
+        null,
+        visitIdentifier(ctx.identifier()).the_name,
+        new empty<construct>(),
+        new empty<annotation_construct>(),
+        null,
+        get_origin(ctx)
+    );
   }
 
   @Override

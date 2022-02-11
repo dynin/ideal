@@ -54,8 +54,8 @@ public class TestParser {
       System.out.println(compilationUnit.toStringTree(parser));
     }
 
-    JavaTreeVisitor treeVisitor = new JavaTreeVisitor(parser);
-    readonly_list<construct> statements = treeVisitor.visitCompilationUnit(compilationUnit);
+    JavaConstructBuilder constructBuilder = new JavaConstructBuilder(parser);
+    readonly_list<construct> statements = constructBuilder.visitCompilationUnit(compilationUnit);
     output<text_fragment> out = new plain_formatter(standard_channels.stdout);
     out.write(new java_printer(printer_mode.CURLY).print_statements(statements));
   }

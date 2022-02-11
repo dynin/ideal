@@ -10,20 +10,32 @@ package ideal.development.jparser;
 
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import ideal.library.elements.*;
 import ideal.runtime.elements.*;
+import ideal.development.elements.*;
+import ideal.development.names.*;
+import ideal.development.origins.*;
+import ideal.development.kinds.*;
+import ideal.development.constructs.*;
 
 import ideal.development.jparser.JavaParser.*;
 
 public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
-  private final JavaParser javaParser;
+  private final JavaParser java_parser;
+  private final origin the_origin;
 
-  public JavaTreeVisitor(JavaParser javaParser) {
-    this.javaParser = javaParser;
+  public JavaTreeVisitor(JavaParser java_parser) {
+    this.java_parser = java_parser;
+    this.the_origin = new special_origin(new base_string("[jparser]"));
+  }
+
+  private origin get_origin(ParseTree tree) {
+    return the_origin;
   }
 
   @Override
-  public Object visitCompilationUnit(CompilationUnitContext ctx) {
-    return visit(ctx.typeDeclaration(0));
+  public readonly_list<construct> visitCompilationUnit(CompilationUnitContext ctx) {
+    return new base_list<construct>(visitTypeDeclaration(ctx.typeDeclaration(0)));
   }
 
   @Override
@@ -37,8 +49,8 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitTypeDeclaration(TypeDeclarationContext ctx) {
-    return visit(ctx.classDeclaration());
+  public type_declaration_construct visitTypeDeclaration(TypeDeclarationContext ctx) {
+    return visitClassDeclaration(ctx.classDeclaration());
   }
 
   @Override
@@ -57,8 +69,15 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitClassDeclaration(ClassDeclarationContext ctx) {
-    return visit(ctx.identifier());
+  public type_declaration_construct visitClassDeclaration(ClassDeclarationContext ctx) {
+    return new type_declaration_construct(
+        new empty<annotation_construct>(),
+        type_kinds.class_kind,
+        visitIdentifier(ctx.identifier()).the_name,
+        null,
+        new base_list<construct>(),
+        get_origin(ctx)
+    );
   }
 
   @Override
@@ -422,8 +441,9 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitIdentifier(IdentifierContext ctx) {
-    return ctx.IDENTIFIER().getText();
+  public name_construct visitIdentifier(IdentifierContext ctx) {
+    simple_name name = simple_name.make(ctx.IDENTIFIER().getText());
+    return new name_construct(name, get_origin(ctx));
   }
 
   @Override
@@ -642,7 +662,7 @@ public class JavaTreeVisitor extends JavaParserBaseVisitor<Object> {
   }
 
   public Object unsupported(ParseTree parseTree) {
-    utilities.panic("Unsupported " + parseTree.toStringTree(javaParser));
+    utilities.panic("Unsupported " + parseTree.toStringTree(java_parser));
     return null;
   }
 }

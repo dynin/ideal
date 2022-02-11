@@ -327,7 +327,7 @@ testantlr:
 	$(JAVAC) $(GRAMMAR_DIR)/experimental/grammars/*.java
 	$(GRUN) metagrammar grammar_declaration -gui < experimental/grammars/markup_grammar.i
 
-$(JPARSER_TARGET): build $(LIBRARY_TARGET) $(JPARSER_DIR)/*.g4 $(JPARSER_DIR)/*.java
+$(JPARSER_TARGET): $(IDEAL_TARGET) $(JPARSER_DIR)/*.g4 $(JPARSER_DIR)/*.java
 	cd $(JPARSER_DIR) ; \
             ../../$(ANTLR) -visitor -no-listener -o ../../$(GRAMMAR_DIR) JavaLexer.g4 JavaParser.g4
 	$(JAVAC) $(JPARSER_DIR)/*.java $(GRAMMAR_DIR)/*.java

@@ -15,10 +15,20 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
+import ideal.library.elements.*;
+import ideal.library.texts.*;
+import ideal.library.channels.*;
 import ideal.runtime.elements.*;
+import ideal.runtime.texts.*;
+import ideal.machine.channels.standard_channels;
+import ideal.development.elements.*;
+import ideal.development.printers.*;
+
+import ideal.development.jparser.JavaParser.CompilationUnitContext;
 
 public class TestParser {
   private static final String JAVA_SOURCE = "class foo {\n}\n";
+  private static final boolean PRINT_TREE = false;
 
   public static void main(String[] args) {
     CharStream input;
@@ -38,11 +48,15 @@ public class TestParser {
     CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 
     JavaParser parser = new JavaParser(tokenStream);
-    ParseTree compilationUnit = parser.compilationUnit();
+    CompilationUnitContext compilationUnit = parser.compilationUnit();
 
-    System.out.println(compilationUnit.toStringTree(parser));
+    if (PRINT_TREE) {
+      System.out.println(compilationUnit.toStringTree(parser));
+    }
 
     JavaTreeVisitor treeVisitor = new JavaTreeVisitor(parser);
-    System.out.println(treeVisitor.visit(compilationUnit));
+    readonly_list<construct> statements = treeVisitor.visitCompilationUnit(compilationUnit);
+    output<text_fragment> out = new plain_formatter(standard_channels.stdout);
+    out.write(new java_printer(printer_mode.CURLY).print_statements(statements));
   }
 }

@@ -200,9 +200,9 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   public procedure_construct visitMethodDeclaration(MethodDeclarationContext ctx) {
     return new procedure_construct(
         new empty<annotation_construct>(),
-        null,
+        visitTypeTypeOrVoid(ctx.typeTypeOrVoid()),
         visitIdentifier(ctx.identifier()).the_name,
-        new empty<construct>(),
+        visitFormalParameters(ctx.formalParameters()),
         new empty<annotation_construct>(),
         null,
         get_origin(ctx)
@@ -211,12 +211,17 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public Object visitMethodBody(MethodBodyContext ctx) {
-    return unsupported(ctx);
+    return (construct) visit(ctx.getChild(0));
   }
 
   @Override
-  public Object visitTypeTypeOrVoid(TypeTypeOrVoidContext ctx) {
-    return unsupported(ctx);
+  public construct visitTypeTypeOrVoid(TypeTypeOrVoidContext ctx) {
+    if (ctx.typeType() != null) {
+      return visitTypeType(ctx.typeType());
+    } else {
+      assert ctx.VOID() != null;
+      return new name_construct(common_names.void_name, get_origin(ctx));
+    }
   }
 
   @Override
@@ -290,8 +295,9 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitVariableDeclaratorId(VariableDeclaratorIdContext ctx) {
-    return unsupported(ctx);
+  public name_construct visitVariableDeclaratorId(VariableDeclaratorIdContext ctx) {
+    // TODO: handle brackets
+    return visitIdentifier(ctx.identifier());
   }
 
   @Override
@@ -305,8 +311,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitClassOrInterfaceType(ClassOrInterfaceTypeContext ctx) {
-    return unsupported(ctx);
+  public construct visitClassOrInterfaceType(ClassOrInterfaceTypeContext ctx) {
+    // TODO: handle typeArguments, name resolution
+    assert ctx.getChildCount() == 1;
+    return visitIdentifier(ctx.identifier(0));
   }
 
   @Override
@@ -320,8 +328,9 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitFormalParameters(FormalParametersContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitFormalParameters(FormalParametersContext ctx) {
+    assert ctx.formalParameterList() != null;
+    return visitFormalParameterList(ctx.formalParameterList());
   }
 
   @Override
@@ -330,13 +339,20 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitFormalParameterList(FormalParameterListContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitFormalParameterList(FormalParameterListContext ctx) {
+    return to_constructs(ctx.formalParameter());
   }
 
   @Override
-  public Object visitFormalParameter(FormalParameterContext ctx) {
-    return unsupported(ctx);
+  public variable_construct visitFormalParameter(FormalParameterContext ctx) {
+    return new variable_construct(
+        new empty<annotation_construct>(),
+        visitTypeType(ctx.typeType()),
+        visitVariableDeclaratorId(ctx.variableDeclaratorId()).the_name,
+        new empty<annotation_construct>(),
+        null,
+        get_origin(ctx)
+    );
   }
 
   @Override
@@ -696,8 +712,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitTypeType(TypeTypeContext ctx) {
-    return unsupported(ctx);
+  public construct visitTypeType(TypeTypeContext ctx) {
+    // TODO: handle annotations, primitiveTypes, brackets
+    assert ctx.classOrInterfaceType() != null;
+    return visitClassOrInterfaceType(ctx.classOrInterfaceType());
   }
 
   @Override

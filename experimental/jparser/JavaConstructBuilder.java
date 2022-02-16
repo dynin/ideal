@@ -9,8 +9,11 @@
 package ideal.development.jparser;
 
 import java.util.List;
+import javax.annotation.Nullable;
+
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.Tree;
 
 import ideal.library.elements.*;
 import ideal.runtime.elements.*;
@@ -26,14 +29,30 @@ import ideal.development.jparser.JavaParser.*;
 public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   private final JavaParser java_parser;
   private final origin default_origin;
+  private final dictionary<Integer, modifier_kind> modifiers =
+      new hash_dictionary<Integer, modifier_kind>();
 
   public JavaConstructBuilder(JavaParser java_parser) {
     this.java_parser = java_parser;
     this.default_origin = new special_origin(new base_string("[jparser]"));
+
+    modifiers.put(JavaParser.PUBLIC, access_modifier.public_modifier);
+    modifiers.put(JavaParser.PROTECTED, access_modifier.protected_modifier);
+    modifiers.put(JavaParser.PRIVATE, access_modifier.private_modifier);
+    modifiers.put(JavaParser.STATIC, general_modifier.static_modifier);
+    modifiers.put(JavaParser.ABSTRACT, general_modifier.abstract_modifier);
+    modifiers.put(JavaParser.FINAL, general_modifier.final_modifier);
+    // Add support for: NATIVE | SYNCHRONIZED | TRANSIENT | VOLATILE (modifier)
+    // Add support for: STRICTFP | SEALED | NON_SEALED (classOrInterfaceModifier)
+
   }
 
   protected origin get_origin(ParseTree tree) {
     return default_origin;
+  }
+
+  protected int get_symbol_type(Tree tree) {
+    return ((TerminalNode) tree).getSymbol().getType();
   }
 
   protected list<construct> to_constructs(List<? extends ParseTree> elements) {
@@ -52,6 +71,16 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     return result;
   }
 
+  protected construct make_array(construct the_construct, int depth, origin the_origin) {
+    while (depth > 0) {
+      // TODO: based on a switch, generate array<element>.new()
+      the_construct = new parameter_construct(the_construct, new empty<construct>(),
+          grouping_type.BRACKETS, the_origin);
+      depth -= 1;
+    }
+    return the_construct;
+  }
+
   @Override
   public readonly_list<construct> visitCompilationUnit(CompilationUnitContext ctx) {
     return to_constructs(ctx.typeDeclaration());
@@ -67,42 +96,58 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     return unsupported(ctx);
   }
 
-  @Override
-  public type_declaration_construct visitTypeDeclaration(TypeDeclarationContext ctx) {
-    readonly_list<annotation_construct> annotations =
-        to_annotations(ctx.classOrInterfaceModifier());
-    type_declaration_construct the_declaration = visitClassDeclaration(ctx.classDeclaration());
+  protected type_declaration_construct make_type_declaration(
+      readonly_list<annotation_construct> annotations,
+      type_declaration_construct the_declaration,
+      origin the_origin) {
+    assert the_declaration.annotations.is_empty();
     return new type_declaration_construct(
         annotations,
         the_declaration.kind,
         the_declaration.name,
         the_declaration.parameters,
         the_declaration.body,
-        get_origin(ctx)
+        the_origin
+    );
+  }
+
+  protected procedure_construct make_procedure(readonly_list<annotation_construct> annotations,
+      procedure_construct the_declaration,
+      origin the_origin) {
+    assert the_declaration.annotations.is_empty();
+    return new procedure_construct(
+        annotations,
+        the_declaration.ret,
+        the_declaration.name,
+        the_declaration.parameters,
+        the_declaration.post_annotations,
+        the_declaration.body,
+        the_origin
     );
   }
 
   @Override
-  public Object visitModifier(ModifierContext ctx) {
-    return unsupported(ctx);
+  public type_declaration_construct visitTypeDeclaration(TypeDeclarationContext ctx) {
+    readonly_list<annotation_construct> annotations =
+        to_annotations(ctx.classOrInterfaceModifier());
+    type_declaration_construct the_declaration = visitClassDeclaration(ctx.classDeclaration());
+    return make_type_declaration(annotations, the_declaration, get_origin(ctx));
+  }
+
+  @Override
+  public annotation_construct visitModifier(ModifierContext ctx) {
+    // TODO: handle NATIVE | SYNCHRONIZED | TRANSIENT | VOLATILE
+    assert ctx.classOrInterfaceModifier() != null;
+    return visitClassOrInterfaceModifier(ctx.classOrInterfaceModifier());
   }
 
   @Override
   public annotation_construct visitClassOrInterfaceModifier(ClassOrInterfaceModifierContext ctx) {
-    origin the_origin = get_origin(ctx);
-    switch (((TerminalNode) ctx.getChild(0)).getSymbol().getType()) {
-      case JavaParser.PUBLIC:
-        return new modifier_construct(access_modifier.public_modifier, the_origin);
-      case JavaParser.PROTECTED:
-        return new modifier_construct(access_modifier.protected_modifier, the_origin);
-      case JavaParser.PRIVATE:
-        return new modifier_construct(access_modifier.private_modifier, the_origin);
-      case JavaParser.STATIC:
-        return new modifier_construct(general_modifier.static_modifier, the_origin);
-      case JavaParser.ABSTRACT:
-        return new modifier_construct(general_modifier.abstract_modifier, the_origin);
-      case JavaParser.FINAL:
-        return new modifier_construct(general_modifier.final_modifier, the_origin);
+    // TODO: handle annotation
+    int modifier_symbol_type = get_symbol_type(ctx.getChild(0));
+    @Nullable modifier_kind modifier = modifiers.get(modifier_symbol_type);
+    if (modifier != null) {
+      return new modifier_construct(modifier, get_origin(ctx));
     }
     return (annotation_construct) unsupported(ctx);
   }
@@ -187,8 +232,20 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   @Override
   public construct visitClassBodyDeclaration(ClassBodyDeclarationContext ctx) {
     // TODO: handle block
-    // TODO: handle modifier
-    return visitMemberDeclaration(ctx.memberDeclaration());
+    construct member_declaration = visitMemberDeclaration(ctx.memberDeclaration());
+    readonly_list<annotation_construct> annotations = to_annotations(ctx.modifier());
+    if (annotations.is_not_empty()) {
+      if (member_declaration instanceof type_declaration_construct) {
+        member_declaration = make_type_declaration(annotations,
+            (type_declaration_construct) member_declaration, get_origin(ctx));
+      } else if (member_declaration instanceof procedure_construct) {
+        member_declaration = make_procedure(annotations,
+            (procedure_construct) member_declaration, get_origin(ctx));
+      } else {
+        unsupported(ctx);
+      }
+    }
+    return member_declaration;
   }
 
   @Override
@@ -296,7 +353,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public name_construct visitVariableDeclaratorId(VariableDeclaratorIdContext ctx) {
-    // TODO: handle brackets
+    // Brackets after identifier is an obsolete artefact of grammar.  Prohibit it.
+    assert ctx.getChildCount() == 1;
     return visitIdentifier(ctx.identifier());
   }
 
@@ -346,6 +404,7 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   @Override
   public variable_construct visitFormalParameter(FormalParameterContext ctx) {
     return new variable_construct(
+        // TODO: handle variableModifier
         new empty<annotation_construct>(),
         visitTypeType(ctx.typeType()),
         visitVariableDeclaratorId(ctx.variableDeclaratorId()).the_name,
@@ -713,9 +772,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public construct visitTypeType(TypeTypeContext ctx) {
-    // TODO: handle annotations, primitiveTypes, brackets
+    // TODO: handle annotations, primitiveTypes
     assert ctx.classOrInterfaceType() != null;
-    return visitClassOrInterfaceType(ctx.classOrInterfaceType());
+    construct result = visitClassOrInterfaceType(ctx.classOrInterfaceType());
+    return make_array(result, ctx.LBRACK().size(), get_origin(ctx));
   }
 
   @Override

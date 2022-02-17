@@ -22,6 +22,7 @@ import ideal.development.names.*;
 import ideal.development.origins.*;
 import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
+import ideal.development.literals.*;
 import ideal.development.constructs.*;
 
 import ideal.development.jparser.JavaParser.*;
@@ -255,20 +256,25 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public procedure_construct visitMethodDeclaration(MethodDeclarationContext ctx) {
+    // TODO: handle thrown exception
     return new procedure_construct(
         new empty<annotation_construct>(),
         visitTypeTypeOrVoid(ctx.typeTypeOrVoid()),
         visitIdentifier(ctx.identifier()).the_name,
         visitFormalParameters(ctx.formalParameters()),
         new empty<annotation_construct>(),
-        null,
+        visitMethodBody(ctx.methodBody()),
         get_origin(ctx)
     );
   }
 
   @Override
-  public Object visitMethodBody(MethodBodyContext ctx) {
-    return (construct) visit(ctx.getChild(0));
+  public @Nullable construct visitMethodBody(MethodBodyContext ctx) {
+    if (ctx.block() != null) {
+      return visitBlock(ctx.block());
+    } else {
+      return null;
+    }
   }
 
   @Override
@@ -434,9 +440,22 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     return unsupported(ctx);
   }
 
+  protected string strip_quotes(string quoted_string, quote_type quote) {
+    assert quoted_string.first() == quote.quote_character;
+    assert quoted_string.last() == quote.quote_character;
+    return quoted_string.slice(1, quoted_string.size() - 1);
+  }
+
   @Override
-  public Object visitLiteral(LiteralContext ctx) {
-    return unsupported(ctx);
+  public literal_construct visitLiteral(LiteralContext ctx) {
+    // TODO: handle non-string literals
+    if (ctx.STRING_LITERAL() != null) {
+      quote_type quote = punctuation.DOUBLE_QUOTE;
+      string_literal the_string_literal = new string_literal(
+          strip_quotes(new base_string(ctx.STRING_LITERAL().getText()), quote), quote);
+      return new literal_construct(the_string_literal, get_origin(ctx));
+    }
+    return (literal_construct) unsupported(ctx);
   }
 
   @Override
@@ -565,13 +584,13 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitBlock(BlockContext ctx) {
-    return unsupported(ctx);
+  public block_construct visitBlock(BlockContext ctx) {
+    return new block_construct(to_constructs(ctx.blockStatement()), get_origin(ctx));
   }
 
   @Override
-  public Object visitBlockStatement(BlockStatementContext ctx) {
-    return unsupported(ctx);
+  public construct visitBlockStatement(BlockStatementContext ctx) {
+    return (construct) visit(ctx.getChild(0));
   }
 
   @Override
@@ -591,8 +610,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitStatement(StatementContext ctx) {
-    return unsupported(ctx);
+  public construct visitStatement(StatementContext ctx) {
+    // TODO: handle other statements
+    if (ctx.statementExpression != null) {
+      return visitExpression(ctx.statementExpression);
+    }
+    return (construct) unsupported(ctx);
   }
 
   @Override
@@ -656,18 +679,51 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitExpressionList(ExpressionListContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitExpressionList(ExpressionListContext ctx) {
+    return to_constructs(ctx.expression());
   }
 
   @Override
-  public Object visitMethodCall(MethodCallContext ctx) {
-    return unsupported(ctx);
+  public parameter_construct visitMethodCall(MethodCallContext ctx) {
+    name_construct name;
+    if (ctx.identifier() != null) {
+      name = visitIdentifier(ctx.identifier());
+    } else if (ctx.THIS() != null) {
+      name = new name_construct(special_name.THIS, get_origin(ctx));
+    } else if (ctx.SUPER() != null) {
+      name = new name_construct(special_name.SUPER, get_origin(ctx));
+    } else {
+      // Should never happen
+      return (parameter_construct) unsupported(ctx);
+    }
+    return new parameter_construct(name, visitExpressionList(ctx.expressionList()),
+        grouping_type.PARENS, get_origin(ctx));
   }
 
   @Override
-  public Object visitExpression(ExpressionContext ctx) {
-    return unsupported(ctx);
+  public construct visitExpression(ExpressionContext ctx) {
+    // TODO: handle other expressions
+    if (ctx.primary() != null) {
+      return visitPrimary(ctx.primary());
+    } else if (ctx.bop.getType() == JavaParser.DOT) {
+      construct qualifier = visitExpression(ctx.expression(0));
+      if (ctx.identifier() != null) {
+        return new resolve_construct(qualifier, visitIdentifier(ctx.identifier()).the_name,
+            get_origin(ctx));
+      } else if (ctx.methodCall() != null) {
+        parameter_construct method_construct = visitMethodCall(ctx.methodCall());
+        name_construct name = (name_construct) method_construct.main;
+        construct main = new resolve_construct(qualifier, name.the_name, get_origin(ctx));
+        return new parameter_construct(main, method_construct.parameters,
+            grouping_type.PARENS, get_origin(ctx));
+      } else {
+        // TODO: handle THIS, etc.
+        return (construct) unsupported(ctx.getChild(2));
+      }
+    } else if (ctx.methodCall() != null) {
+      return visitMethodCall(ctx.methodCall());
+    }
+    return (construct) unsupported(ctx);
   }
 
   @Override
@@ -691,8 +747,15 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitPrimary(PrimaryContext ctx) {
-    return unsupported(ctx);
+  public construct visitPrimary(PrimaryContext ctx) {
+    // TODO: handle more primaries
+    // TODO: convert to switch
+    if (ctx.identifier() != null) {
+      return visitIdentifier(ctx.identifier());
+    } else if (ctx.literal() != null) {
+      return visitLiteral(ctx.literal());
+    }
+    return (construct) unsupported(ctx);
   }
 
   @Override

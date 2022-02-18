@@ -56,7 +56,7 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     return ((TerminalNode) tree).getSymbol().getType();
   }
 
-  protected list<construct> to_constructs(List<? extends ParseTree> elements) {
+  protected readonly_list<construct> to_constructs(List<? extends ParseTree> elements) {
     list<construct> result = new base_list<construct>();
     for (ParseTree element : elements) {
       result.append((construct) visit(element));
@@ -160,16 +160,27 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public type_declaration_construct visitClassDeclaration(ClassDeclarationContext ctx) {
+    list<construct> body = new base_list<construct>();
     if (ctx.typeParameters() != null) {
       return (type_declaration_construct) unsupported(ctx.typeParameters());
     }
     if (ctx.EXTENDS() != null) {
-      return (type_declaration_construct) unsupported(ctx);
+      body.append(new supertype_construct(
+          new empty<annotation_construct>(),
+          null,
+          subtype_tags.extends_tag,
+          new base_list<construct>(visitTypeType(ctx.typeType())),
+          get_origin(ctx)));
     }
     if (ctx.IMPLEMENTS() != null) {
-      return (type_declaration_construct) unsupported(ctx);
+      body.append(new supertype_construct(
+          new empty<annotation_construct>(),
+          null,
+          subtype_tags.implements_tag,
+          visitTypeList(ctx.typeList(0)),
+          get_origin(ctx)));
     }
-    list<construct> body = visitClassBody(ctx.classBody());
+    body.append_all(visitClassBody(ctx.classBody()));
     return new type_declaration_construct(
         new empty<annotation_construct>(),
         type_kinds.class_kind,
@@ -221,7 +232,7 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public list<construct> visitClassBody(ClassBodyContext ctx) {
+  public readonly_list<construct> visitClassBody(ClassBodyContext ctx) {
     return to_constructs(ctx.classBodyDeclaration());
   }
 
@@ -303,8 +314,23 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitFieldDeclaration(FieldDeclarationContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<variable_construct> visitFieldDeclaration(FieldDeclarationContext ctx) {
+    construct type_type = visitTypeType(ctx.typeType());
+    list<variable_construct> constructs = new base_list<variable_construct>();
+    readonly_list<variable_construct> variables =
+        visitVariableDeclarators(ctx.variableDeclarators());
+    for (int i = 0; i < variables.size(); ++i) {
+      variable_construct the_variable = variables.get(i);
+      constructs.append(new variable_construct(
+          the_variable.annotations,
+          type_type,
+          the_variable.name,
+          the_variable.post_annotations,
+          the_variable.init,
+          get_origin(ctx)
+      ));
+    }
+    return constructs;
   }
 
   @Override
@@ -348,13 +374,26 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitVariableDeclarators(VariableDeclaratorsContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<variable_construct> visitVariableDeclarators(
+      VariableDeclaratorsContext ctx) {
+    list<variable_construct> result = new base_list<variable_construct>();
+    for (ParseTree element : ctx.variableDeclarator()) {
+      result.append((variable_construct) visit(element));
+    }
+    return result;
   }
 
   @Override
-  public Object visitVariableDeclarator(VariableDeclaratorContext ctx) {
-    return unsupported(ctx);
+  public variable_construct visitVariableDeclarator(VariableDeclaratorContext ctx) {
+    return new variable_construct(
+        new empty<annotation_construct>(),
+        null,
+        visitVariableDeclaratorId(ctx.variableDeclaratorId()).the_name,
+        new empty<annotation_construct>(),
+        ctx.variableInitializer() != null ?
+            visitVariableInitializer(ctx.variableInitializer()) : null,
+        get_origin(ctx)
+    );
   }
 
   @Override
@@ -365,8 +404,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitVariableInitializer(VariableInitializerContext ctx) {
-    return unsupported(ctx);
+  public construct visitVariableInitializer(VariableInitializerContext ctx) {
+    return (construct) visit(ctx.getChild(0));
   }
 
   @Override
@@ -829,8 +868,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitTypeList(TypeListContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitTypeList(TypeListContext ctx) {
+    return to_constructs(ctx.typeType());
   }
 
   @Override
@@ -866,8 +905,16 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     return unsupported(ctx);
   }
 
+  protected String to_string(@Nullable ParseTree parseTree) {
+    if (parseTree == null) {
+      return "[null]";
+    }
+
+    return parseTree.toStringTree(java_parser);
+  }
+
   public Object unsupported(ParseTree parseTree) {
-    utilities.panic("Unsupported " + parseTree.toStringTree(java_parser));
+    utilities.panic("Unsupported " + to_string(parseTree));
     return null;
   }
 }

@@ -28,12 +28,14 @@ import ideal.development.constructs.*;
 import ideal.development.jparser.JavaParser.*;
 
 public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
+  private final boolean generate_ideal;
   private final JavaParser java_parser;
   private final origin default_origin;
   private final dictionary<Integer, modifier_kind> modifiers =
       new hash_dictionary<Integer, modifier_kind>();
 
-  public JavaConstructBuilder(JavaParser java_parser) {
+  public JavaConstructBuilder(boolean generate_ideal, JavaParser java_parser) {
+    this.generate_ideal = generate_ideal;
     this.java_parser = java_parser;
     this.default_origin = new special_origin(new base_string("[jparser]"));
 
@@ -74,9 +76,14 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   protected construct make_array(construct the_construct, int depth, origin the_origin) {
     while (depth > 0) {
-      // TODO: based on a switch, generate array<element>.new()
-      the_construct = new parameter_construct(the_construct, new empty<construct>(),
-          grouping_type.BRACKETS, the_origin);
+      if (generate_ideal) {
+        the_construct = new parameter_construct(
+            new name_construct(simple_name.make("array"), the_origin),
+            new base_list<construct>(the_construct), grouping_type.BRACKETS, the_origin);
+      } else {
+        the_construct = new parameter_construct(the_construct, new empty<construct>(),
+            grouping_type.BRACKETS, the_origin);
+      }
       depth -= 1;
     }
     return the_construct;
@@ -262,6 +269,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public construct visitMemberDeclaration(MemberDeclarationContext ctx) {
+    // TODO: handle fieldDeclaration
+    if (! (ctx.getChild(0) instanceof construct)) {
+      unsupported(ctx);
+    }
     return (construct) visit(ctx.getChild(0));
   }
 
@@ -416,13 +427,24 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   @Override
   public construct visitClassOrInterfaceType(ClassOrInterfaceTypeContext ctx) {
     // TODO: handle typeArguments, name resolution
-    assert ctx.getChildCount() == 1;
-    return visitIdentifier(ctx.identifier(0));
+    if (ctx.DOT(0) != null) {
+      unsupported(ctx);
+    }
+    construct result = visitIdentifier(ctx.identifier(0));
+    if (ctx.typeArguments(0) != null) {
+      grouping_type grouping = generate_ideal ?
+          grouping_type.BRACKETS : grouping_type.ANGLE_BRACKETS;
+      result = new parameter_construct(result, visitTypeArguments(ctx.typeArguments(0)),
+          grouping, get_origin(ctx));
+    }
+    return result;
   }
 
   @Override
-  public Object visitTypeArgument(TypeArgumentContext ctx) {
-    return unsupported(ctx);
+  public construct visitTypeArgument(TypeArgumentContext ctx) {
+    // TODO: handle extends/super
+    assert ctx.typeType() != null;
+    return visitTypeType(ctx.typeType());
   }
 
   @Override
@@ -744,24 +766,37 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     // TODO: handle other expressions
     if (ctx.primary() != null) {
       return visitPrimary(ctx.primary());
-    } else if (ctx.bop.getType() == JavaParser.DOT) {
-      construct qualifier = visitExpression(ctx.expression(0));
-      if (ctx.identifier() != null) {
-        return new resolve_construct(qualifier, visitIdentifier(ctx.identifier()).the_name,
-            get_origin(ctx));
-      } else if (ctx.methodCall() != null) {
-        parameter_construct method_construct = visitMethodCall(ctx.methodCall());
-        name_construct name = (name_construct) method_construct.main;
-        construct main = new resolve_construct(qualifier, name.the_name, get_origin(ctx));
-        return new parameter_construct(main, method_construct.parameters,
-            grouping_type.PARENS, get_origin(ctx));
-      } else {
-        // TODO: handle THIS, etc.
-        return (construct) unsupported(ctx.getChild(2));
+    }
+
+    if (ctx.bop != null) {
+      if (ctx.bop.getType() == JavaParser.DOT) {
+        construct qualifier = visitExpression(ctx.expression(0));
+        if (ctx.identifier() != null) {
+          return new resolve_construct(qualifier, visitIdentifier(ctx.identifier()).the_name,
+              get_origin(ctx));
+        } else if (ctx.methodCall() != null) {
+          parameter_construct method_construct = visitMethodCall(ctx.methodCall());
+          name_construct name = (name_construct) method_construct.main;
+          construct main = new resolve_construct(qualifier, name.the_name, get_origin(ctx));
+          return new parameter_construct(main, method_construct.parameters,
+              grouping_type.PARENS, get_origin(ctx));
+        } else {
+          // TODO: handle THIS, etc.
+          return (construct) unsupported(ctx.getChild(2));
+        }
       }
-    } else if (ctx.methodCall() != null) {
+    }
+
+    if (ctx.methodCall() != null) {
       return visitMethodCall(ctx.methodCall());
     }
+
+    if (ctx.NEW() != null) {
+      // TODO: generate different code based on generate_ideal
+      parameter_construct creator = visitCreator(ctx.creator());
+      return new resolve_construct(creator, special_name.NEW, get_origin(ctx));
+    }
+
     return (construct) unsupported(ctx);
   }
 
@@ -823,13 +858,19 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitCreator(CreatorContext ctx) {
-    return unsupported(ctx);
+  public parameter_construct visitCreator(CreatorContext ctx) {
+    // TODO: handle arrayCreatorRest
+    assert ctx.createdName() != null;
+    assert ctx.classCreatorRest() != null;
+    return new parameter_construct(visitCreatedName(ctx.createdName()),
+        visitClassCreatorRest(ctx.classCreatorRest()), grouping_type.PARENS, get_origin(ctx));
   }
 
   @Override
-  public Object visitCreatedName(CreatedNameContext ctx) {
-    return unsupported(ctx);
+  public construct visitCreatedName(CreatedNameContext ctx) {
+    // TODO: handle typeArguments, primitiveType
+    assert ctx.identifier(0) != null;
+    return visitIdentifier(ctx.identifier(0));
   }
 
   @Override
@@ -843,8 +884,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitClassCreatorRest(ClassCreatorRestContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitClassCreatorRest(ClassCreatorRestContext ctx) {
+    // TODO: handle classBody
+    assert ctx.classBody() == null;
+    return visitArguments(ctx.arguments());
   }
 
   @Override
@@ -886,8 +929,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitTypeArguments(TypeArgumentsContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitTypeArguments(TypeArgumentsContext ctx) {
+    return to_constructs(ctx.typeArgument());
   }
 
   @Override
@@ -901,8 +944,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitArguments(ArgumentsContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitArguments(ArgumentsContext ctx) {
+    if (ctx.expressionList() != null) {
+      return visitExpressionList(ctx.expressionList());
+    } else {
+      return new empty<construct>();
+    }
   }
 
   protected String to_string(@Nullable ParseTree parseTree) {

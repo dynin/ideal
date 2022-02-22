@@ -61,7 +61,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   protected readonly_list<construct> to_constructs(List<? extends ParseTree> elements) {
     list<construct> result = new base_list<construct>();
     for (ParseTree element : elements) {
-      result.append((construct) visit(element));
+      Object object_element = visit(element);
+      if (object_element instanceof construct) {
+        result.append((construct) object_element);
+      } else {
+        result.append_all((readonly_list<construct>) object_element);
+      }
     }
     return result;
   }
@@ -134,6 +139,20 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     );
   }
 
+  protected variable_construct make_variable(readonly_list<annotation_construct> annotations,
+      variable_construct the_declaration,
+      origin the_origin) {
+    assert the_declaration.annotations.is_empty();
+    return new variable_construct(
+        annotations,
+        the_declaration.variable_type,
+        the_declaration.name,
+        the_declaration.post_annotations,
+        the_declaration.init,
+        the_origin
+    );
+  }
+
   @Override
   public type_declaration_construct visitTypeDeclaration(TypeDeclarationContext ctx) {
     readonly_list<annotation_construct> annotations =
@@ -151,7 +170,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public annotation_construct visitClassOrInterfaceModifier(ClassOrInterfaceModifierContext ctx) {
-    // TODO: handle annotation
+    if (ctx.annotation() != null) {
+      // TODO: handle annotation
+      unsupported(ctx);
+    }
     int modifier_symbol_type = get_symbol_type(ctx.getChild(0));
     @Nullable modifier_kind modifier = modifiers.get(modifier_symbol_type);
     if (modifier != null) {
@@ -249,10 +271,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public construct visitClassBodyDeclaration(ClassBodyDeclarationContext ctx) {
+  public Object visitClassBodyDeclaration(ClassBodyDeclarationContext ctx) {
     // TODO: handle block
-    construct member_declaration = visitMemberDeclaration(ctx.memberDeclaration());
     readonly_list<annotation_construct> annotations = to_annotations(ctx.modifier());
+    Object member_declaration = visitMemberDeclaration(ctx.memberDeclaration());
     if (annotations.is_not_empty()) {
       if (member_declaration instanceof type_declaration_construct) {
         member_declaration = make_type_declaration(annotations,
@@ -260,6 +282,14 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
       } else if (member_declaration instanceof procedure_construct) {
         member_declaration = make_procedure(annotations,
             (procedure_construct) member_declaration, get_origin(ctx));
+      } else if (member_declaration instanceof readonly_list) {
+        readonly_list<construct> declarations = (readonly_list<construct>) member_declaration;
+        list<construct> result = new base_list<construct>();
+        for (int i = 0; i < declarations.size(); ++i) {
+          result.append(make_variable(annotations,
+              (variable_construct) declarations.get(i), get_origin(ctx)));
+        }
+        return result;
       } else {
         unsupported(ctx);
       }
@@ -268,12 +298,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public construct visitMemberDeclaration(MemberDeclarationContext ctx) {
-    // TODO: handle fieldDeclaration
-    if (! (ctx.getChild(0) instanceof construct)) {
-      unsupported(ctx);
-    }
-    return (construct) visit(ctx.getChild(0));
+  public Object visitMemberDeclaration(MemberDeclarationContext ctx) {
+    return visit(ctx.getChild(0));
   }
 
   @Override
@@ -320,8 +346,17 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitConstructorDeclaration(ConstructorDeclarationContext ctx) {
-    return unsupported(ctx);
+  public procedure_construct visitConstructorDeclaration(ConstructorDeclarationContext ctx) {
+    // TODO: handle thrown exception
+    return new procedure_construct(
+        new empty<annotation_construct>(),
+        null,
+        visitIdentifier(ctx.identifier()).the_name,
+        visitFormalParameters(ctx.formalParameters()),
+        new empty<annotation_construct>(),
+        visitBlock(ctx.block()),
+        get_origin(ctx)
+    );
   }
 
   @Override
@@ -784,6 +819,14 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
           // TODO: handle THIS, etc.
           return (construct) unsupported(ctx.getChild(2));
         }
+      } if (ctx.bop.getType() == JavaParser.ASSIGN) {
+        construct left_expression = visitExpression(ctx.expression(0));
+        construct right_expression = visitExpression(ctx.expression(1));
+        return new operator_construct(operator.ASSIGN, left_expression, right_expression,
+            get_origin(ctx));
+      } else {
+        //System.out.println("BOP " + ctx.bop.getType());
+        return (construct) unsupported(ctx);
       }
     }
 
@@ -824,7 +867,11 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   public construct visitPrimary(PrimaryContext ctx) {
     // TODO: handle more primaries
     // TODO: convert to switch
-    if (ctx.identifier() != null) {
+    if (ctx.THIS() != null) {
+      return new name_construct(special_name.THIS, get_origin(ctx));
+    } else if (ctx.SUPER() != null) {
+      return new name_construct(special_name.SUPER, get_origin(ctx));
+    } else if (ctx.identifier() != null) {
       return visitIdentifier(ctx.identifier());
     } else if (ctx.literal() != null) {
       return visitLiteral(ctx.literal());

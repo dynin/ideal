@@ -16,6 +16,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import org.antlr.v4.runtime.tree.Tree;
 
 import ideal.library.elements.*;
+import ideal.library.characters.*;
 import ideal.runtime.elements.*;
 import ideal.development.elements.*;
 import ideal.development.names.*;
@@ -35,6 +36,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
       new hash_dictionary<Integer, modifier_kind>();
   private final dictionary<string, modifier_kind> annotations =
       new hash_dictionary<string, modifier_kind>();
+  private final dictionary<Integer, operator> operators =
+      new hash_dictionary<Integer, operator>();
 
   public JavaConstructBuilder(boolean generate_ideal, JavaParser java_parser) {
     this.generate_ideal = generate_ideal;
@@ -53,6 +56,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     annotations.put(new base_string("Override"), general_modifier.override_modifier);
     annotations.put(new base_string("Nullable"), general_modifier.nullable_modifier);
     annotations.put(new base_string("dont_display"), general_modifier.dont_display_modifier);
+
+    operators.put(JavaParser.ASSIGN, operator.ASSIGN);
+    operators.put(JavaParser.AND, operator.LOGICAL_AND);
+    operators.put(JavaParser.EQUAL, operator.EQUAL_TO);
+    operators.put(JavaParser.ADD, operator.ADD);
+    operators.put(JavaParser.MUL, operator.MULTIPLY);
   }
 
   protected origin get_origin(ParseTree tree) {
@@ -276,7 +285,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public Object visitClassBodyDeclaration(ClassBodyDeclarationContext ctx) {
-    // TODO: handle block
+    if (ctx.SEMI() != null) {
+      return new empty_construct(get_origin(ctx));
+    } else if (ctx.block() != null) {
+      return visitBlock(ctx.block());
+    }
+
     readonly_list<annotation_construct> annotations = to_annotations(ctx.modifier());
     Object member_declaration = visitMemberDeclaration(ctx.memberDeclaration());
     if (annotations.is_not_empty()) {
@@ -559,13 +573,20 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
       string_literal the_string_literal = new string_literal(
           strip_quotes(new base_string(ctx.STRING_LITERAL().getText()), quote), quote);
       return new literal_construct(the_string_literal, get_origin(ctx));
+    } else if (ctx.integerLiteral() != null) {
+      return new literal_construct(visitIntegerLiteral(ctx.integerLiteral()), get_origin(ctx));
     }
+
     return (literal_construct) unsupported(ctx);
   }
 
   @Override
-  public Object visitIntegerLiteral(IntegerLiteralContext ctx) {
-    return unsupported(ctx);
+  public integer_literal visitIntegerLiteral(IntegerLiteralContext ctx) {
+    // TODO: handle non-decimal integers
+    assert ctx.DECIMAL_LITERAL() != null;
+    String image = ctx.DECIMAL_LITERAL().getText();
+    int value = Integer.parseInt(image);
+    return new integer_literal(value, new base_string(image), radixes.DEFAULT_RADIX);
   }
 
   @Override
@@ -847,14 +868,17 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
           // TODO: handle THIS, etc.
           return (construct) unsupported(ctx.getChild(2));
         }
-      } if (ctx.bop.getType() == JavaParser.ASSIGN) {
-        construct left_expression = visitExpression(ctx.expression(0));
-        construct right_expression = visitExpression(ctx.expression(1));
-        return new operator_construct(operator.ASSIGN, left_expression, right_expression,
-            get_origin(ctx));
       } else {
-        //System.out.println("BOP " + ctx.bop.getType());
-        return (construct) unsupported(ctx);
+        @Nullable operator the_operator = operators.get(ctx.bop.getType());
+        if (the_operator != null) {
+          construct left_expression = visitExpression(ctx.expression(0));
+          construct right_expression = visitExpression(ctx.expression(1));
+          return new operator_construct(the_operator, left_expression, right_expression,
+              get_origin(ctx));
+        } else {
+          System.out.println("BINARY OP " + ctx.bop.getType());
+          return (construct) unsupported(ctx);
+        }
       }
     }
 
@@ -865,7 +889,9 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     if (ctx.NEW() != null) {
       // TODO: generate different code based on generate_ideal
       parameter_construct creator = visitCreator(ctx.creator());
-      return new resolve_construct(creator, special_name.NEW, get_origin(ctx));
+      return new parameter_construct(
+          new resolve_construct(creator.main, special_name.NEW, get_origin(ctx)),
+          creator.parameters, grouping_type.PARENS, get_origin(ctx));
     }
 
     return (construct) unsupported(ctx);
@@ -943,9 +969,15 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public construct visitCreatedName(CreatedNameContext ctx) {
-    // TODO: handle typeArguments, primitiveType
+    // TODO: handle dot-separated identifiers, typeArguments, primitiveType
     assert ctx.identifier(0) != null;
-    return visitIdentifier(ctx.identifier(0));
+    construct result = visitIdentifier(ctx.identifier(0));
+    if (ctx.typeArgumentsOrDiamond(0) != null) {
+      result = new parameter_construct(result,
+          visitTypeArgumentsOrDiamond(ctx.typeArgumentsOrDiamond(0)), grouping_type.BRACKETS,
+          get_origin(ctx));
+    }
+    return result;
   }
 
   @Override
@@ -971,8 +1003,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitTypeArgumentsOrDiamond(TypeArgumentsOrDiamondContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitTypeArgumentsOrDiamond(TypeArgumentsOrDiamondContext ctx) {
+    if (ctx.typeArguments() != null) {
+      return visitTypeArguments(ctx.typeArguments());
+    } else {
+      return new empty<construct>();
+    }
   }
 
   @Override

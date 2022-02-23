@@ -27,6 +27,7 @@ import ideal.development.printers.*;
 import ideal.development.jparser.JavaParser.CompilationUnitContext;
 
 public class TestParser {
+  private static final boolean GENERATE_IDEAL = true;
   private static final String JAVA_SOURCE = "class foo {\n}\n";
   private static final boolean PRINT_TREE = false;
 
@@ -54,9 +55,12 @@ public class TestParser {
       System.out.println(compilationUnit.toStringTree(parser));
     }
 
-    JavaConstructBuilder constructBuilder = new JavaConstructBuilder(true, parser);
+    JavaConstructBuilder constructBuilder = new JavaConstructBuilder(GENERATE_IDEAL, parser);
     readonly_list<construct> statements = constructBuilder.visitCompilationUnit(compilationUnit);
+
     output<text_fragment> out = new plain_formatter(standard_channels.stdout);
-    out.write(new java_printer(printer_mode.CURLY).print_statements(statements));
+    base_printer printer = GENERATE_IDEAL ?  new base_printer(printer_mode.CURLY) :
+        new java_printer(printer_mode.CURLY);
+    out.write(printer.print_statements(statements));
   }
 }

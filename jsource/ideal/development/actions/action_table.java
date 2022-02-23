@@ -46,7 +46,7 @@ public class action_table implements value {
     public Integer hash(action_key the_key) {
       return System.identityHashCode(the_key.from) + 37 * System.identityHashCode(the_key.name);
     }
-  };
+  }
 
   private dictionary<action_key, list<action>> action_dictionary =
       new hash_dictionary<action_key, list<action>>(new action_key_equivalence());

@@ -344,6 +344,9 @@ aparser: $(JPARSER_TARGET)
 	$(JAVA) ideal.development.jparser.TestParser \
             jsource/ideal/development/actions/action_table.java
 
+aaparser: $(JPARSER_TARGET)
+	$(JAVA) ideal.development.jparser.TestParser tmp/action_table.java
+
 ### Development
 
 generate_development gd: $(IDEAL_TARGET)

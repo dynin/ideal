@@ -33,6 +33,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   private final origin default_origin;
   private final dictionary<Integer, modifier_kind> modifiers =
       new hash_dictionary<Integer, modifier_kind>();
+  private final dictionary<string, modifier_kind> annotations =
+      new hash_dictionary<string, modifier_kind>();
 
   public JavaConstructBuilder(boolean generate_ideal, JavaParser java_parser) {
     this.generate_ideal = generate_ideal;
@@ -48,6 +50,9 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     // Add support for: NATIVE | SYNCHRONIZED | TRANSIENT | VOLATILE (modifier)
     // Add support for: STRICTFP | SEALED | NON_SEALED (classOrInterfaceModifier)
 
+    annotations.put(new base_string("Override"), general_modifier.override_modifier);
+    annotations.put(new base_string("Nullable"), general_modifier.nullable_modifier);
+    annotations.put(new base_string("dont_display"), general_modifier.dont_display_modifier);
   }
 
   protected origin get_origin(ParseTree tree) {
@@ -171,8 +176,7 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   @Override
   public annotation_construct visitClassOrInterfaceModifier(ClassOrInterfaceModifierContext ctx) {
     if (ctx.annotation() != null) {
-      // TODO: handle annotation
-      unsupported(ctx);
+      return visitAnnotation(ctx.annotation());
     }
     int modifier_symbol_type = get_symbol_type(ctx.getChild(0));
     @Nullable modifier_kind modifier = modifiers.get(modifier_symbol_type);
@@ -489,8 +493,11 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public readonly_list<construct> visitFormalParameters(FormalParametersContext ctx) {
-    assert ctx.formalParameterList() != null;
-    return visitFormalParameterList(ctx.formalParameterList());
+    if (ctx.formalParameterList() != null) {
+      return visitFormalParameterList(ctx.formalParameterList());
+    } else {
+      return new empty<construct>();
+    }
   }
 
   @Override
@@ -532,8 +539,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitQualifiedName(QualifiedNameContext ctx) {
-    return unsupported(ctx);
+  public name_construct visitQualifiedName(QualifiedNameContext ctx) {
+    // TODO: handle identifiers separated by dots
+    assert ctx.identifier().size() == 1;
+    return visitIdentifier(ctx.identifier(0));
   }
 
   protected string strip_quotes(string quoted_string, quote_type quote) {
@@ -570,8 +579,14 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitAnnotation(AnnotationContext ctx) {
-    return unsupported(ctx);
+  public annotation_construct visitAnnotation(AnnotationContext ctx) {
+    assert ctx.qualifiedName() != null;
+    String annotation_name = visitQualifiedName(ctx.qualifiedName()).the_name.toString();
+    @Nullable modifier_kind annotation = annotations.get(new base_string(annotation_name));
+    if (annotation != null) {
+      return new modifier_construct(annotation, get_origin(ctx));
+    }
+    return (annotation_construct) unsupported(ctx);
   }
 
   @Override
@@ -711,6 +726,14 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     if (ctx.statementExpression != null) {
       return visitExpression(ctx.statementExpression);
     }
+    int statement_type = get_symbol_type(ctx.getChild(0));
+    if (statement_type == JavaParser.RETURN) {
+      @Nullable construct the_expression = null;
+      if (ctx.expression(0) != null) {
+        the_expression = visitExpression(ctx.expression(0));
+      }
+      return new return_construct(the_expression, get_origin(ctx));
+    }
     return (construct) unsupported(ctx);
   }
 
@@ -792,8 +815,13 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
       // Should never happen
       return (parameter_construct) unsupported(ctx);
     }
-    return new parameter_construct(name, visitExpressionList(ctx.expressionList()),
-        grouping_type.PARENS, get_origin(ctx));
+    readonly_list<construct> expressions;
+    if (ctx.expressionList() != null) {
+      expressions = visitExpressionList(ctx.expressionList());
+    } else {
+      expressions = new empty<construct>();
+    }
+    return new parameter_construct(name, expressions, grouping_type.PARENS, get_origin(ctx));
   }
 
   @Override

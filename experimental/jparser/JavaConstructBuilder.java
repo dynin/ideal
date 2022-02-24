@@ -25,6 +25,7 @@ import ideal.development.kinds.*;
 import ideal.development.modifiers.*;
 import ideal.development.literals.*;
 import ideal.development.constructs.*;
+import ideal.development.extensions.*;
 
 import ideal.development.jparser.JavaParser.*;
 
@@ -60,8 +61,10 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     operators.put(JavaParser.ASSIGN, operator.ASSIGN);
     operators.put(JavaParser.AND, operator.LOGICAL_AND);
     operators.put(JavaParser.EQUAL, operator.EQUAL_TO);
+    operators.put(JavaParser.NOTEQUAL, operator.NOT_EQUAL_TO);
     operators.put(JavaParser.ADD, operator.ADD);
     operators.put(JavaParser.MUL, operator.MULTIPLY);
+    operators.put(JavaParser.LT, operator.LESS);
   }
 
   protected origin get_origin(ParseTree tree) {
@@ -169,8 +172,7 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public type_declaration_construct visitTypeDeclaration(TypeDeclarationContext ctx) {
-    readonly_list<annotation_construct> annotations =
-        to_annotations(ctx.classOrInterfaceModifier());
+    var annotations = to_annotations(ctx.classOrInterfaceModifier());
     type_declaration_construct the_declaration = visitClassDeclaration(ctx.classDeclaration());
     return make_type_declaration(annotations, the_declaration, get_origin(ctx));
   }
@@ -196,8 +198,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitVariableModifier(VariableModifierContext ctx) {
-    return unsupported(ctx);
+  public annotation_construct visitVariableModifier(VariableModifierContext ctx) {
+    if (ctx.annotation() != null) {
+      return visitAnnotation(ctx.annotation());
+    }
+    assert ctx.FINAL() != null;
+    return new modifier_construct(general_modifier.final_modifier, get_origin(ctx));
   }
 
   @Override
@@ -379,12 +385,11 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public readonly_list<variable_construct> visitFieldDeclaration(FieldDeclarationContext ctx) {
-    construct type_type = visitTypeType(ctx.typeType());
-    list<variable_construct> constructs = new base_list<variable_construct>();
-    readonly_list<variable_construct> variables =
-        visitVariableDeclarators(ctx.variableDeclarators());
+    var type_type = visitTypeType(ctx.typeType());
+    var constructs = new base_list<variable_construct>();
+    var variables = visitVariableDeclarators(ctx.variableDeclarators());
     for (int i = 0; i < variables.size(); ++i) {
-      variable_construct the_variable = variables.get(i);
+      var the_variable = variables.get(i);
       constructs.append(new variable_construct(
           the_variable.annotations,
           type_type,
@@ -566,7 +571,7 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public literal_construct visitLiteral(LiteralContext ctx) {
+  public construct visitLiteral(LiteralContext ctx) {
     // TODO: handle non-string literals
     if (ctx.STRING_LITERAL() != null) {
       quote_type quote = punctuation.DOUBLE_QUOTE;
@@ -575,9 +580,11 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
       return new literal_construct(the_string_literal, get_origin(ctx));
     } else if (ctx.integerLiteral() != null) {
       return new literal_construct(visitIntegerLiteral(ctx.integerLiteral()), get_origin(ctx));
+    } else if (ctx.NULL_LITERAL() != null) {
+      return new name_construct(common_names.null_name, get_origin(ctx));
     }
 
-    return (literal_construct) unsupported(ctx);
+    return (construct) unsupported(ctx);
   }
 
   @Override
@@ -721,13 +728,41 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public construct visitBlockStatement(BlockStatementContext ctx) {
-    return (construct) visit(ctx.getChild(0));
+  public Object visitBlockStatement(BlockStatementContext ctx) {
+    return visit(ctx.getChild(0));
   }
 
   @Override
-  public Object visitLocalVariableDeclaration(LocalVariableDeclarationContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<variable_construct> visitLocalVariableDeclaration(
+      LocalVariableDeclarationContext ctx) {
+    var annotations = to_annotations(ctx.variableModifier());
+    if (ctx.VAR() == null) {
+      var type_type = visitTypeType(ctx.typeType());
+      var constructs = new base_list<variable_construct>();
+      var variables = visitVariableDeclarators(ctx.variableDeclarators());
+      for (int i = 0; i < variables.size(); ++i) {
+          var the_variable = variables.get(i);
+          assert the_variable.annotations.is_empty();
+          constructs.append(new variable_construct(
+              annotations,
+              type_type,
+              the_variable.name,
+              the_variable.post_annotations,
+              the_variable.init,
+              get_origin(ctx)
+          ));
+      }
+      return constructs;
+    } else {
+      return new base_list<variable_construct>(new variable_construct(
+          annotations,
+          null,
+          visitIdentifier(ctx.identifier()).the_name,
+          new empty<annotation_construct>(),
+          visitExpression(ctx.expression()),
+          get_origin(ctx)
+      ));
+    }
   }
 
   @Override
@@ -743,19 +778,80 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public construct visitStatement(StatementContext ctx) {
-    // TODO: handle other statements
     if (ctx.statementExpression != null) {
       return visitExpression(ctx.statementExpression);
     }
-    int statement_type = get_symbol_type(ctx.getChild(0));
-    if (statement_type == JavaParser.RETURN) {
-      @Nullable construct the_expression = null;
-      if (ctx.expression(0) != null) {
-        the_expression = visitExpression(ctx.expression(0));
-      }
-      return new return_construct(the_expression, get_origin(ctx));
+
+    if (ctx.blockLabel != null) {
+      return visitBlock(ctx.blockLabel);
     }
-    return (construct) unsupported(ctx);
+
+    if (!(ctx.getChild(0) instanceof TerminalNode)) {
+      unsupported(ctx);
+    }
+
+    switch (get_symbol_type(ctx.getChild(0))) {
+      case JavaParser.IF:
+        return visitIf(ctx);
+      case JavaParser.FOR:
+        return visitFor(ctx);
+      case JavaParser.RETURN:
+        return visitReturn(ctx);
+      default:
+        // TODO: handle other statements
+        return (construct) unsupported(ctx);
+    }
+  }
+
+  public construct visitIf(StatementContext ctx) {
+    var cond_expression = visitParExpression(ctx.parExpression());
+    var then_statement = visitStatement(ctx.statement(0));
+    @Nullable construct else_statement = ctx.ELSE() != null ?
+        visitStatement(ctx.statement(1)) : null;;
+    return new conditional_construct(cond_expression, then_statement, else_statement, true,
+        get_origin(ctx));
+  }
+
+  protected construct list_to_construct(readonly_list<construct> constructs, ParseTree ctx) {
+    if (constructs.is_empty()) {
+      return new empty_construct(get_origin(ctx));
+    } else if (constructs.size() == 1) {
+      return constructs.first();
+    } else {
+      return (construct) unsupported(ctx);
+    }
+  }
+
+  public construct visitFor(StatementContext ctx) {
+    ForControlContext for_control = ctx.forControl();
+    // TODO: handle for iteration
+    assert for_control.enhancedForControl() == null;
+
+    construct init = list_to_construct(visitForInit(for_control.forInit()), ctx);
+    construct condition = null;
+    if (for_control.expression() != null) {
+      condition = visitExpression(for_control.expression());
+    } else {
+      condition = new empty_construct(get_origin(ctx));
+    }
+    construct update;
+    if (for_control.forUpdate != null) {
+      update = list_to_construct(visitExpressionList(for_control.forUpdate), ctx);
+    } else {
+      update = new empty_construct(get_origin(ctx));
+    }
+
+    construct body = visitStatement(ctx.statement(0));
+
+    return new for_construct(init, condition, update, body, get_origin(ctx));
+  }
+
+  public construct visitReturn(StatementContext ctx) {
+    @Nullable construct the_expression = null;
+    if (ctx.expression(0) != null) {
+      the_expression = visitExpression(ctx.expression(0));
+    }
+    return new return_construct(the_expression, get_origin(ctx));
   }
 
   @Override
@@ -800,12 +896,18 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public Object visitForControl(ForControlContext ctx) {
-    return unsupported(ctx);
+    return visit(ctx);
   }
 
   @Override
-  public Object visitForInit(ForInitContext ctx) {
-    return unsupported(ctx);
+  public readonly_list<construct> visitForInit(ForInitContext ctx) {
+    if (ctx.localVariableDeclaration() != null) {
+      return (readonly_list<construct>) (readonly_list)
+          visitLocalVariableDeclaration(ctx.localVariableDeclaration());
+    } else {
+      assert ctx.expressionList() != null;
+      return visitExpressionList(ctx.expressionList());
+    }
   }
 
   @Override
@@ -814,8 +916,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   }
 
   @Override
-  public Object visitParExpression(ParExpressionContext ctx) {
-    return unsupported(ctx);
+  public construct visitParExpression(ParExpressionContext ctx) {
+    return visitExpression(ctx.expression());
   }
 
   @Override
@@ -1028,15 +1130,24 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public construct visitTypeType(TypeTypeContext ctx) {
-    // TODO: handle annotations, primitiveTypes
-    assert ctx.classOrInterfaceType() != null;
-    construct result = visitClassOrInterfaceType(ctx.classOrInterfaceType());
+    // TODO: handle annotations
+    construct result;
+    if (ctx.classOrInterfaceType() != null) {
+      result = visitClassOrInterfaceType(ctx.classOrInterfaceType());
+    } else {
+      assert ctx.primitiveType() != null;
+      result = visitPrimitiveType(ctx.primitiveType());
+    }
     return make_array(result, ctx.LBRACK().size(), get_origin(ctx));
   }
 
   @Override
-  public Object visitPrimitiveType(PrimitiveTypeContext ctx) {
-    return unsupported(ctx);
+  public name_construct visitPrimitiveType(PrimitiveTypeContext ctx) {
+    if (ctx.INT() != null) {
+      return new name_construct(simple_name.make("int"), get_origin(ctx));
+    }
+
+    return (name_construct) unsupported(ctx);
   }
 
   @Override

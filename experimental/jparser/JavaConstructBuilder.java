@@ -37,7 +37,9 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
       new hash_dictionary<Integer, modifier_kind>();
   private final dictionary<string, modifier_kind> annotations =
       new hash_dictionary<string, modifier_kind>();
-  private final dictionary<Integer, operator> operators =
+  private final dictionary<Integer, operator> binary_operators =
+      new hash_dictionary<Integer, operator>();
+  private final dictionary<Integer, operator> prefix_operators =
       new hash_dictionary<Integer, operator>();
 
   public JavaConstructBuilder(boolean generate_ideal, JavaParser java_parser) {
@@ -58,13 +60,16 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     annotations.put(new base_string("Nullable"), general_modifier.nullable_modifier);
     annotations.put(new base_string("dont_display"), general_modifier.dont_display_modifier);
 
-    operators.put(JavaParser.ASSIGN, operator.ASSIGN);
-    operators.put(JavaParser.AND, operator.LOGICAL_AND);
-    operators.put(JavaParser.EQUAL, operator.EQUAL_TO);
-    operators.put(JavaParser.NOTEQUAL, operator.NOT_EQUAL_TO);
-    operators.put(JavaParser.ADD, operator.ADD);
-    operators.put(JavaParser.MUL, operator.MULTIPLY);
-    operators.put(JavaParser.LT, operator.LESS);
+    binary_operators.put(JavaParser.ASSIGN, operator.ASSIGN);
+    binary_operators.put(JavaParser.AND, operator.LOGICAL_AND);
+    binary_operators.put(JavaParser.EQUAL, operator.EQUAL_TO);
+    binary_operators.put(JavaParser.NOTEQUAL, operator.NOT_EQUAL_TO);
+    binary_operators.put(JavaParser.ADD, operator.ADD);
+    binary_operators.put(JavaParser.MUL, operator.MULTIPLY);
+    binary_operators.put(JavaParser.LT, operator.LESS);
+
+    prefix_operators.put(JavaParser.INC, operator.PRE_INCREMENT);
+    prefix_operators.put(JavaParser.BANG, operator.LOGICAL_NOT);
   }
 
   protected origin get_origin(ParseTree tree) {
@@ -573,9 +578,14 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   @Override
   public construct visitLiteral(LiteralContext ctx) {
     // TODO: handle non-string literals
-    if (ctx.STRING_LITERAL() != null) {
+    if (ctx.CHAR_LITERAL() != null) {
+      quote_type quote = punctuation.SINGLE_QUOTE;
+      var the_char_literal = new string_literal(
+          strip_quotes(new base_string(ctx.CHAR_LITERAL().getText()), quote), quote);
+      return new literal_construct(the_char_literal, get_origin(ctx));
+    } else if (ctx.STRING_LITERAL() != null) {
       quote_type quote = punctuation.DOUBLE_QUOTE;
-      string_literal the_string_literal = new string_literal(
+      var the_string_literal = new string_literal(
           strip_quotes(new base_string(ctx.STRING_LITERAL().getText()), quote), quote);
       return new literal_construct(the_string_literal, get_origin(ctx));
     } else if (ctx.integerLiteral() != null) {
@@ -767,7 +777,7 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public name_construct visitIdentifier(IdentifierContext ctx) {
-    simple_name name = simple_name.make(ctx.IDENTIFIER().getText());
+    simple_name name = simple_name.make(ctx.getChild(0).getText());
     return new name_construct(name, get_origin(ctx));
   }
 
@@ -791,6 +801,8 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
     }
 
     switch (get_symbol_type(ctx.getChild(0))) {
+      case JavaParser.ASSERT:
+        return visitAssert(ctx);
       case JavaParser.IF:
         return visitIf(ctx);
       case JavaParser.FOR:
@@ -801,6 +813,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
         // TODO: handle other statements
         return (construct) unsupported(ctx);
     }
+  }
+
+  public construct visitAssert(StatementContext ctx) {
+    @Nullable construct the_expression = visitExpression(ctx.expression(0));
+    return new constraint_construct(constraint_category.ASSERT_CONSTRAINT, the_expression,
+        get_origin(ctx));
   }
 
   public construct visitIf(StatementContext ctx) {
@@ -970,8 +988,18 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
           // TODO: handle THIS, etc.
           return (construct) unsupported(ctx.getChild(2));
         }
+      } else if (ctx.bop.getType() == JavaParser.INSTANCEOF) {
+        construct expression = visitExpression(ctx.expression(0));
+        construct type = visitTypeType(ctx.typeType(0));
+        return new operator_construct(operator.IS_OPERATOR, expression, type, get_origin(ctx));
+      } else if (ctx.bop.getType() == JavaParser.QUESTION) {
+        construct cond_expression = visitExpression(ctx.expression(0));
+        construct then_expression = visitExpression(ctx.expression(1));
+        construct else_expression = visitExpression(ctx.expression(2));
+        return new conditional_construct(cond_expression, then_expression, else_expression, false,
+            get_origin(ctx));
       } else {
-        @Nullable operator the_operator = operators.get(ctx.bop.getType());
+        @Nullable operator the_operator = binary_operators.get(ctx.bop.getType());
         if (the_operator != null) {
           construct left_expression = visitExpression(ctx.expression(0));
           construct right_expression = visitExpression(ctx.expression(1));
@@ -981,6 +1009,17 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
           System.out.println("BINARY OP " + ctx.bop.getType());
           return (construct) unsupported(ctx);
         }
+      }
+    }
+
+    if (ctx.prefix != null) {
+      @Nullable operator the_operator = prefix_operators.get(ctx.prefix.getType());
+      if (the_operator != null) {
+        var expression = visitExpression(ctx.expression(0));
+        return new operator_construct(the_operator, expression, get_origin(ctx));
+      } else {
+        System.out.println("PREFIX OP " + ctx.prefix.getType());
+        return (construct) unsupported(ctx);
       }
     }
 
@@ -994,6 +1033,12 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
       return new parameter_construct(
           new resolve_construct(creator.main, special_name.NEW, get_origin(ctx)),
           creator.parameters, grouping_type.PARENS, get_origin(ctx));
+    }
+
+    if (ctx.LPAREN() != null) {
+      var type = visitTypeType(ctx.typeType(0));
+      var expression = visitExpression(ctx.expression(0));
+      return new operator_construct(operator.HARD_CAST, expression, type, get_origin(ctx));
     }
 
     return (construct) unsupported(ctx);
@@ -1023,7 +1068,9 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
   public construct visitPrimary(PrimaryContext ctx) {
     // TODO: handle more primaries
     // TODO: convert to switch
-    if (ctx.THIS() != null) {
+    if (ctx.LPAREN() != null) {
+      return visitExpression(ctx.expression());
+    } else if (ctx.THIS() != null) {
       return new name_construct(special_name.THIS, get_origin(ctx));
     } else if (ctx.SUPER() != null) {
       return new name_construct(special_name.SUPER, get_origin(ctx));
@@ -1143,11 +1190,20 @@ public class JavaConstructBuilder extends JavaParserBaseVisitor<Object> {
 
   @Override
   public name_construct visitPrimitiveType(PrimitiveTypeContext ctx) {
-    if (ctx.INT() != null) {
-      return new name_construct(simple_name.make("int"), get_origin(ctx));
+    simple_name name;
+
+    switch (get_symbol_type(ctx.getChild(0))) {
+      case JavaParser.BOOLEAN:
+        name = simple_name.make("boolean");
+        break;
+      case JavaParser.INT:
+        name = simple_name.make("int");
+        break;
+      default:
+        return (name_construct) unsupported(ctx);
     }
 
-    return (name_construct) unsupported(ctx);
+    return new name_construct(name, get_origin(ctx));
   }
 
   @Override

@@ -340,9 +340,13 @@ jparser: $(JPARSER_TARGET)
 jparsergui: $(JPARSER_TARGET)
 	$(GRUN) ideal.development.jparser.Java compilationUnit -gui < $(JPARSER_DIR)/HelloWorld.java
 
-aparser: $(JPARSER_TARGET)
+aparser0: $(JPARSER_TARGET)
 	$(JAVA) ideal.development.jparser.TestParser \
             jsource/ideal/development/actions/action_table.java
+
+aparser: $(JPARSER_TARGET)
+	$(JAVA) ideal.development.jparser.TestParser \
+            jsource/ideal/development/actions/action_utilities.java
 
 aaparser: $(JPARSER_TARGET)
 	$(JAVA) ideal.development.jparser.TestParser tmp/action_table.java

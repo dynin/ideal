@@ -44,7 +44,8 @@ public class network extends base_readonly_store {
 
   @Override
   public boolean allow_scheme(string scheme) {
-    String s = utilities.s(scheme);
+    // TODO: make scheme an enum
+    String s = utilities.s(scheme).toLowerCase();
     return s.equals("https") || s.equals("http");
   }
 

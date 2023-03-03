@@ -32,7 +32,7 @@ package calendars {
     --- Minimum number of days in the month (31 in January, 28 in February, etc.)
     nonnegative min_days;
     --- Maximum number of days in the month (31 in January, 29 in February, etc.)
-    --- The only difference between |min_days| and |max_days| os for February.
+    --- The only difference between |min_days| and |max_days| is for February.
     nonnegative max_days;
   }
 }

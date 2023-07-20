@@ -27,6 +27,8 @@ application_view build_todo_application(the todo_list) {
 }
 
 view build_todo_body(the todo_list) {
+  -- item_views_list: the_todo_list.items.map(
+  --       (the todo_litem) => build_item_view(the_todo_item, the_todo_list)),
   return scaffold_view.new(
     application_bar: label_view.new(the_todo_list.title),
     body: list_view.new(

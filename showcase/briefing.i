@@ -207,7 +207,12 @@ program briefing {
       day_item_ids : hash_set[item_id].new();
       id_set : read_ids(day);
       if (id_set is null) {
-        break;
+        if (day == last) {
+          break;
+        } else {
+          day = next(day);
+          continue;
+        }
       }
       for (id : id_set.elements) {
         if (!all_item_ids.contains(id)) {

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-cd /home/dynin/ideal
+cd $HOME/Projects/ideal
+#cd /home/dynin/ideal
 
 LOG=../briefing/run.log
 

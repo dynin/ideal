@@ -9,4 +9,5 @@ There several design goals for ideal language and runtime.
  * Targetable to multiple platforms
  * Do not distinguish between builtin and user-defined abstractions
  * Facilitates static checking
+ * Improves security of programs
 

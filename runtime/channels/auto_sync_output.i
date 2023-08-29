@@ -31,4 +31,8 @@ class auto_sync_output[any value value_type] {
   implement close() {
     the_output.close();
   }
+
+  implement teardown() {
+    the_output.teardown();
+  }
 }

@@ -39,6 +39,9 @@ public class string_writer implements output<Character> {
   public void close() {
   }
 
+  public void teardown() {
+  }
+
   public int size() {
     return builder.length();
   }

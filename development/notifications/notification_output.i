@@ -47,4 +47,9 @@ class notification_output {
   override close() {
     the_output.close();
   }
+
+  -- TODO: factor out so this can be reused.
+  override teardown() {
+    the_output.teardown();
+  }
 }

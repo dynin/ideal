@@ -37,6 +37,10 @@ class appender[any value value_type] {
     active = false;
   }
 
+  override teardown() {
+    active = false;
+  }
+
   var immutable list[value_type] elements() {
     return the_list.elements;
   }

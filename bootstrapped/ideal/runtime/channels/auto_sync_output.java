@@ -25,4 +25,7 @@ public class auto_sync_output<value_type> implements output<value_type> {
   public @Override void close() {
     this.the_output.close();
   }
+  public @Override void teardown() {
+    this.the_output.teardown();
+  }
 }

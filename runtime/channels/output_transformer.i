@@ -39,4 +39,8 @@ class output_transformer[any value source_type, any value destination_type] {
   override close() {
     the_output.close();
   }
+
+  override teardown() {
+    the_output.teardown();
+  }
 }

@@ -52,4 +52,7 @@ public class notification_output implements output<notification> {
   public @Override void close() {
     this.the_output.close();
   }
+  public @Override void teardown() {
+    this.the_output.teardown();
+  }
 }

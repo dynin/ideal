@@ -8,15 +8,6 @@
 package channels {
   implicit import ideal.library.elements;
 
-  interface closeable {
-    extends value;
-    not_yet_implemented readonly boolean is_closed;
-    close();
-    -- close(task callback);
-    -- add_on_close(task callback);
-    -- remove_on_close(task callback);
-  }
-
   interface syncable {
     extends value;
     -- extensible enum sync_type {

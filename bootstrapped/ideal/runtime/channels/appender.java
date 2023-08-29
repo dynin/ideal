@@ -28,6 +28,9 @@ public class appender<value_type> implements output<value_type> {
   public @Override void close() {
     this.active = false;
   }
+  public @Override void teardown() {
+    this.active = false;
+  }
   public immutable_list<value_type> elements() {
     return this.the_list.elements();
   }

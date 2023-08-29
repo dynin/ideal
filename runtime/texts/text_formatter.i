@@ -44,6 +44,10 @@ abstract class text_formatter {
     the_output.close();
   }
 
+  override teardown() {
+    the_output.teardown();
+  }
+
   override abstract process_string(string s);
 
   override abstract process_element(text_element element);

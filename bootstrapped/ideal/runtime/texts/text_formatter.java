@@ -40,6 +40,9 @@ public abstract class text_formatter extends text_visitor<Void> implements outpu
   public @Override void close() {
     this.the_output.close();
   }
+  public @Override void teardown() {
+    this.the_output.teardown();
+  }
   public abstract @Override Void process_string(string s);
   public abstract @Override Void process_element(text_element element);
   public abstract @Override Void process_special(special_text t);

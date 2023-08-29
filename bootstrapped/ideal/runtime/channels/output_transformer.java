@@ -33,4 +33,7 @@ public class output_transformer<source_type, destination_type> implements output
   public @Override void close() {
     this.the_output.close();
   }
+  public @Override void teardown() {
+    this.the_output.teardown();
+  }
 }

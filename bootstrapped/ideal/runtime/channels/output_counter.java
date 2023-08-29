@@ -30,4 +30,7 @@ public class output_counter<value_type> implements output<value_type> {
   public @Override void close() {
     this.the_output.close();
   }
+  public @Override void teardown() {
+    this.the_output.teardown();
+  }
 }

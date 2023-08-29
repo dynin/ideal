@@ -69,4 +69,11 @@ public class writer_adapter implements output<Character> {
     } catch (IOException e) {
     }
   }
+
+  public void teardown() {
+    try {
+      out.close();
+    } catch (IOException e) {
+    }
+  }
 }

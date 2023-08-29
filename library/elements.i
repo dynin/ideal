@@ -247,6 +247,26 @@ package elements {
     subtypes function[sign, element, element];
   }
 
+  --- A value that has something associated with it that needs to be disposed of.
+  --- Used to release resources, unregister event listeners, etc.
+  interface closeable {
+    subtypes value;
+
+    --- Gracefully shutdown this object, disposing resources associated with it.
+    --- It is safe to call this method more than once.
+    close();
+
+    --- Abruptly shutdown this object, immediately disposing resources associated with it.
+    --- In case of network connections, data that was buffered but not sent can be dropped.
+    teardown();
+
+    -- TODO: extend the interface
+    -- readonly boolean is_closed;
+    -- close(task callback);
+    -- add_on_close(task callback);
+    -- remove_on_close(task callback);
+  }
+
   --- A finite collection of element values, such as a sequence or a set.
   interface collection[combivariant value element] {
     subtypes composite_value;

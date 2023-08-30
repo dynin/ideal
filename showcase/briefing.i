@@ -71,47 +71,10 @@ program briefing {
       }
       return result;
     }
-  }
 
-  private class item_order {
-    implements order[item];
-
-    implement implicit sign call(item first, item second) {
-      var sign result : second.score <=> first.score;
-      if (result == sign.equal) {
-        result = second.descendants <=> first.descendants;
-      }
-      return result;
-    }
-  }
-
-  -- Hacker News API : https://github.com/HackerNews/API
-  namespace hacker_news {
-    hacker_news_host : "news.ycombinator.com";
-    api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
-    item_page_url_prefix : "https://" ++ hacker_news_host ++ "/item?id=";
-    -- Minimum host length for which the www stripping is performed.
-    www_stripping_threshold : 7;
-    www_prefix_pattern : list_pattern[character].new("www.");
-    slash_pattern : singleton_pattern[character].new('/');
-
-    readonly list[item_id] topstories() {
-      topstories_url : network.url(api_url_prefix ++ "topstories" ++ base_extension.JSON);
-      topstories_content : topstories_url.access_json_data(missing.instance).content;
-      return serializer.read_item_id_list(topstories_content);
-    }
-
-    readonly item get_item(the item_id) {
-      item_url : network.url(api_url_prefix ++ "item/" ++ the_item_id.id ++ base_extension.JSON);
-      content : item_url.access_json_data(missing.instance).content;
-      return parse_item(the_item_id, content !> readonly json_object);
-    }
-
-    string item_page_url(the item_id) {
-      return item_page_url_prefix ++ the_item_id.id;
-    }
-
-    item parse_item(item_id id, readonly json_object item_object) {
+    item read_item(the readonly json_data) {
+      item_object : the_json_data !> json_object;
+      id : read_item_id(item_object.get("id"));
       by : item_object.get("by") !> string;
       var string url;
       if (item_object.contains_key("url")) {
@@ -135,34 +98,27 @@ program briefing {
 
       return item.new(id, by, url, score, title, descendants);
     }
+  }
 
-    string short_origin(the item) {
-      if (!the_item.has_url()) {
-        return hacker_news_host;
-      }
-      -- TODO: handle URL parsing more robustly
-      url : network.url(the_item.url);
-      host : url.host;
-      assert host is string;
+  -- Hacker News API : https://github.com/HackerNews/API
+  namespace hacker_news {
+    hacker_news_host : "news.ycombinator.com";
+    api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
 
-      if (host.size > www_stripping_threshold) {
-        www_prefix : www_prefix_pattern.match_prefix(host);
-        if (www_prefix is_not null) {
-          return host.skip(www_prefix);
-        }
-      }
+    readonly list[item_id] topstories() {
+      topstories_url : network.url(api_url_prefix ++ "topstories" ++ base_extension.JSON);
+      topstories_content : topstories_url.access_json_data(missing.instance).content;
+      return serializer.read_item_id_list(topstories_content);
+    }
 
-      if (host == "twitter.com" || host == "github.com") {
-        -- TODO: instead of this hack, expose path in resource_identifier.
-        url_string : url.to_string;
-        prefix_size : "https://".size + host.size;
-        segment : slash_pattern.find_first(url_string, prefix_size + 1);
-        if (segment is range) {
-          return host ++ url_string.slice(prefix_size, segment.end - 1 !> nonnegative);
-        }
-      }
+    readonly item get_item(the item_id) {
+      item_url : network.url(api_url_prefix ++ "item/" ++ the_item_id.id ++ base_extension.JSON);
+      content : item_url.access_json_data(missing.instance).content;
+      return serializer.read_item(content);
+    }
 
-      return host;
+    string item_page_url(the item_id) {
+      return "https://" ++ hacker_news_host ++ "/item?id=" ++ the_item_id.id;
     }
   }
 
@@ -335,6 +291,54 @@ program briefing {
     all_items_json.content = serializer.write_item_id_list(ids.elements);
   }
 
+  private class item_order {
+    implements order[item];
+
+    implement implicit sign call(item first, item second) {
+      var sign result : second.score <=> first.score;
+      if (result == sign.equal) {
+        result = second.descendants <=> first.descendants;
+      }
+      return result;
+    }
+  }
+
+  -- Minimum host length for which the www stripping is performed.
+  www_stripping_threshold : 7;
+  www_prefix_pattern : list_pattern[character].new("www.");
+  slash_pattern : singleton_pattern[character].new('/');
+
+  string short_origin(the item) {
+    if (!the_item.has_url()) {
+      return hacker_news.hacker_news_host;
+    }
+
+    -- TODO: handle URL parsing more robustly
+    url : network.url(the_item.url);
+    host : url.host;
+    assert host is string;
+
+    if (host.size > www_stripping_threshold) {
+      www_prefix : www_prefix_pattern.match_prefix(host);
+      if (www_prefix is_not null) {
+        return host.skip(www_prefix);
+      }
+    }
+
+    if (host == "twitter.com" || host == "github.com") {
+      -- TODO: instead of this hack, expose path in resource_identifier.
+      url_string : url.to_string;
+      -- TODO: handle http (not https) URLs
+      prefix_size : "https://".size + host.size;
+      segment : slash_pattern.find_first(url_string, prefix_size + 1);
+      if (segment is range) {
+        return host ++ url_string.slice(prefix_size, segment.end - 1 !> nonnegative);
+      }
+    }
+
+    return host;
+  }
+
   text_element render_page(readonly list[item_id] ids, gregorian_day day) {
     body_content : base_list[text_fragment].new();
     body_content.append(make_header(day));
@@ -346,7 +350,7 @@ program briefing {
       item : hacker_news.get_item(item_id);
       if (item.score >= MIN_SCORE_THRESHOLD) {
         items.append(item);
-        log.info(item.title ++ " " ++ hacker_news.short_origin(item) ++
+        log.info(item.title ++ " " ++ short_origin(item) ++
             " (" ++ item.by ++ ", " ++ item.score ++ ")");
       }
     }
@@ -419,7 +423,7 @@ program briefing {
     item_fragments.append(make_html_class_link(the_item.title, url, TITLE_CLASS));
     item_fragments.append(" ");
     item_fragments.append(base_element.new(SPAN, CLASS, ORIGIN_CLASS,
-        "/ " ++ hacker_news.short_origin(the_item)));
+        "/ " ++ short_origin(the_item)));
     item_fragments.append(" ");
     item_fragments.append(make_html_class_link("/ " ++ the_item.descendants, item_page,
         DISCUSSION_CLASS));

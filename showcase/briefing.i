@@ -44,6 +44,34 @@ program briefing {
     override string to_string => "item:" ++ id ++ "," ++ url;
   }
 
+  --- The serializers will be generated.
+  namespace serializer {
+    item_id read_item_id(the readonly json_data) {
+      item_id.new(the_json_data !> nonnegative);
+    }
+
+    readonly json_data write_item_id(the readonly item_id) {
+      return the_item_id.id;
+    }
+
+    readonly list[item_id] read_item_id_list(the readonly json_data) {
+      the json_array : the_json_data !> json_array;
+      result : base_list[item_id].new();
+      for (number_id : the_json_array) {
+        result.append(read_item_id(number_id));
+      }
+      return result;
+    }
+
+    json_data write_item_id_list(readonly list[item_id] item_ids) {
+      result : json_array_impl.new();
+      for (the_id : item_ids) {
+        result.append(write_item_id(the_id));
+      }
+      return result;
+    }
+  }
+
   private class item_order {
     implements order[item];
 
@@ -65,41 +93,23 @@ program briefing {
     www_prefix_pattern : list_pattern[character].new("www.");
     slash_pattern : singleton_pattern[character].new('/');
 
-    readonly list[item_id] id_list(resource_identifier list_resource) {
-      content : list_resource.access_json_data(missing.instance).content;
-      the json_array : content !> json_array;
-      result : base_list[item_id].new();
-      -- TODO: cast is redudnant
-      for (number_id : the_json_array) {
-        result.append(item_id.new(number_id !> nonnegative));
-      }
-      return result;
-    }
-
-    -- TODO: type promotion should handle this.
-    json_array as_json_array(readonly list[item_id] item_ids) {
-      id_numbers : json_array_impl.new();
-      for (the_id : item_ids) {
-        id_numbers.append(the_id.id);
-      }
-      return id_numbers;
-    }
-
     readonly list[item_id] topstories() {
-      return id_list(network.url(api_url_prefix ++ "topstories"++ base_extension.JSON));
+      topstories_url : network.url(api_url_prefix ++ "topstories" ++ base_extension.JSON);
+      topstories_content : topstories_url.access_json_data(missing.instance).content;
+      return serializer.read_item_id_list(topstories_content);
     }
 
-    item get_item(item_id id) {
+    readonly item get_item(item_id id) {
       content : item_url(id).access_json_data(missing.instance).content;
       return parse_item(id, content !> readonly json_object);
     }
 
-    resource_identifier item_url(item_id id) {
-      return network.url(api_url_prefix ++ "item/" ++ id ++ base_extension.JSON);
+    resource_identifier item_url(the item_id) {
+      return network.url(api_url_prefix ++ "item/" ++ the_item_id.id ++ base_extension.JSON);
     }
 
-    resource_identifier item_page_url(item_id id) {
-      return network.url(item_page_url_prefix ++ id);
+    resource_identifier item_page_url(the item_id) {
+      return network.url(item_page_url_prefix ++ the_item_id.id);
     }
 
     item parse_item(item_id id, readonly json_object item_object) {
@@ -238,18 +248,18 @@ program briefing {
 
   private void test_run() {
     log.info("Now: " ++ two_digit(hour) ++ ":" ++ two_digit(minute));
-    id_list : hacker_news.topstories();
-    log.info("Got count " ++ id_list.size);
-    write_page(id_list.slice(0, 50), last);
+    topstories : hacker_news.topstories();
+    log.info("Got count " ++ topstories.size);
+    write_page(topstories.slice(0, 50), last);
   }
 
   private void save_top() {
-    id_list : hacker_news.topstories();
+    top_stories : hacker_news.topstories();
     day_catalog : input_catalog.resolve(day_slashes(today())).access_catalog();
     time_id : day_catalog.resolve(two_digit(hour) ++ "-" ++ two_digit(minute));
     log.info("Writing " ++ time_id);
     time_id.access_json_data(make_catalog_option.instance).content =
-        hacker_news.as_json_array(id_list);
+        serializer.write_item_id_list(top_stories);
   }
 
   string describe_day(gregorian_day day, character separator) {
@@ -279,6 +289,11 @@ program briefing {
         text_utilities.to_markup_string(page);
   }
 
+  readonly list[item_id] read_id_list(resource_identifier list_resource) {
+    content : list_resource.access_json_data(missing.instance).content;
+    return serializer.read_item_id_list(content);
+  }
+
   readonly set[item_id] or null read_ids(gregorian_day day) {
     day_catalog : input_catalog.resolve(day_slashes(day)).access_catalog();
     result : hash_set[item_id].new();
@@ -286,7 +301,7 @@ program briefing {
     all_items_json : day_catalog.resolve(ALL_ITEMS_JSON);
     if (all_items_json.exists) {
       log.info("Reading " ++ all_items_json);
-      all_items : hacker_news.id_list(all_items_json);
+      all_items : read_id_list(all_items_json);
       result.add_all(all_items);
     } else {
       content : day_catalog.content;
@@ -299,7 +314,7 @@ program briefing {
       for (file : files) {
         if (file.key != ALL_ITEMS_JSON) {
           log.info("Reading " ++ file.value);
-          file_content : hacker_news.id_list(file.value);
+          file_content : read_id_list(file.value);
           result.add_all(file_content);
         } else {
           log.info("Skipping " ++ file.value);
@@ -316,7 +331,7 @@ program briefing {
     all_items_json : day_catalog.resolve(ALL_ITEMS_JSON).access_json_data(
         make_catalog_option.instance);
     log.info("Writing " ++ all_items_json);
-    all_items_json.content = hacker_news.as_json_array(ids.elements);
+    all_items_json.content = serializer.write_item_id_list(ids.elements);
   }
 
   text_element render_page(readonly list[item_id] ids, gregorian_day day) {

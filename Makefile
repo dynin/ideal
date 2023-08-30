@@ -243,7 +243,14 @@ generate_showcase: $(IDEAL_TARGET)
                  $(BOOTSTRAPPED_DIR)/ideal/runtime/*/*java \
                  $(SCRATCH_DIR)/ideal/showcase/*java
 
-run_briefing: generate_showcase
+briefing: $(IDEAL_TARGET)
+	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_briefing \
+            -output=$(SCRATCH_DIR)
+	$(JAVAC) $(BOOTSTRAPPED_DIR)/ideal/library/*/*java \
+                 $(BOOTSTRAPPED_DIR)/ideal/runtime/*/*java \
+                 $(SCRATCH_DIR)/ideal/showcase/*java
+
+run_briefing: briefing
 	$(JAVA) ideal.showcase.briefing
 
 testtoken: $(IDEAL_TARGET)

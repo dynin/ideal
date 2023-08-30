@@ -35,13 +35,14 @@ program briefing {
 
     item_id id;
     string by;
-    nonnegative time;
-    resource_identifier url;
+    string url;
     nonnegative score;
     string title;
     nonnegative descendants;
 
-    override string to_string => "item:" ++ id ++ "," ++ url;
+    boolean has_url => url.is_not_empty;
+
+    override string to_string => "item:" ++ id ++ ";" ++ url;
   }
 
   --- The serializers will be generated.
@@ -86,8 +87,9 @@ program briefing {
 
   -- Hacker News API : https://github.com/HackerNews/API
   namespace hacker_news {
+    hacker_news_host : "news.ycombinator.com";
     api_url_prefix : "https://hacker-news.firebaseio.com/v0/";
-    item_page_url_prefix : "https://news.ycombinator.com/item?id=";
+    item_page_url_prefix : "https://" ++ hacker_news_host ++ "/item?id=";
     -- Minimum host length for which the www stripping is performed.
     www_stripping_threshold : 7;
     www_prefix_pattern : list_pattern[character].new("www.");
@@ -99,28 +101,23 @@ program briefing {
       return serializer.read_item_id_list(topstories_content);
     }
 
-    readonly item get_item(item_id id) {
-      content : item_url(id).access_json_data(missing.instance).content;
-      return parse_item(id, content !> readonly json_object);
+    readonly item get_item(the item_id) {
+      item_url : network.url(api_url_prefix ++ "item/" ++ the_item_id.id ++ base_extension.JSON);
+      content : item_url.access_json_data(missing.instance).content;
+      return parse_item(the_item_id, content !> readonly json_object);
     }
 
-    resource_identifier item_url(the item_id) {
-      return network.url(api_url_prefix ++ "item/" ++ the_item_id.id ++ base_extension.JSON);
-    }
-
-    resource_identifier item_page_url(the item_id) {
-      return network.url(item_page_url_prefix ++ the_item_id.id);
+    string item_page_url(the item_id) {
+      return item_page_url_prefix ++ the_item_id.id;
     }
 
     item parse_item(item_id id, readonly json_object item_object) {
       by : item_object.get("by") !> string;
-      time : item_object.get("time") !> nonnegative;
-      url_string : item_object.get("url") !> (string or null);
-      var resource_identifier url;
-      if (url_string is_not null) {
-        url = network.url(url_string);
+      var string url;
+      if (item_object.contains_key("url")) {
+        url = item_object.get("url") !> string;
       } else {
-        url = item_page_url(id);
+        url = "";
       }
       var nonnegative score;
       if (item_object.contains_key("score")) {
@@ -136,11 +133,15 @@ program briefing {
         descendants = 0;
       }
 
-      return item.new(id, by, time, url, score, title, descendants);
+      return item.new(id, by, url, score, title, descendants);
     }
 
     string short_origin(the item) {
-      url : the_item.url;
+      if (!the_item.has_url()) {
+        return hacker_news_host;
+      }
+      -- TODO: handle URL parsing more robustly
+      url : network.url(the_item.url);
       host : url.host;
       assert host is string;
 
@@ -410,17 +411,18 @@ program briefing {
   }
 
   text_element render_html(the item) {
+    item_page : hacker_news.item_page_url(the_item.id);
+    url : the_item.has_url() ? the_item.url : item_page;
     item_fragments : base_list[text_fragment].new();
     item_fragments.append(base_element.new(SPAN, CLASS, SCORE_CLASS, the_item.score.to_string));
     item_fragments.append(" ");
-    item_fragments.append(make_html_class_link(the_item.title, the_item.url.to_string,
-        TITLE_CLASS));
+    item_fragments.append(make_html_class_link(the_item.title, url, TITLE_CLASS));
     item_fragments.append(" ");
     item_fragments.append(base_element.new(SPAN, CLASS, ORIGIN_CLASS,
         "/ " ++ hacker_news.short_origin(the_item)));
     item_fragments.append(" ");
-    item_fragments.append(make_html_class_link("/ " ++ the_item.descendants,
-        hacker_news.item_page_url(the_item.id).to_string, DISCUSSION_CLASS));
+    item_fragments.append(make_html_class_link("/ " ++ the_item.descendants, item_page,
+        DISCUSSION_CLASS));
     item_fragments.append(" ");
     return base_element.new(DIV, text_utilities.join(item_fragments));
   }

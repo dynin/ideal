@@ -267,6 +267,22 @@ package elements {
     -- remove_on_close(task callback);
   }
 
+  --- A value that keeps track of a set of |closeable| resources.
+  --- When a |lifespan| is closed, all |closeable| values associated with it
+  --- are closed as well.
+  --- Lifespans are light-weight objects; it's ok to construct a lifespan for each view.
+  interface lifespan {
+    subtypes closeable;
+
+    --- Register a |closeable| with this |lifespan|.
+    --- All registered values are closed as part of closing this |lifespan|.
+    void register(the closeable);
+
+    --- Construct a sub-lifespan with this |lifespan| as a parent, and register it.
+    --- When this |lifespan| is closed, so are all sub-lifespans.
+    lifespan make_sub_lifespan();
+  }
+
   --- A finite collection of element values, such as a sequence or a set.
   interface collection[combivariant value element] {
     subtypes composite_value;

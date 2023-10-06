@@ -24,6 +24,8 @@ namespace elements {
 
   class base_string;
 
+  class base_lifespan;
+
   class utilities;
 
   class base_dictionary_entry;

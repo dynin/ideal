@@ -111,10 +111,15 @@ program briefing {
       return serializer.read_item_id_list(topstories_content);
     }
 
-    readonly item get_item(the item_id) {
+    readonly item or null get_item(the item_id) {
       item_url : network.url(api_url_prefix ++ "item/" ++ the_item_id.id ++ base_extension.JSON);
       content : item_url.access_json_data(missing.instance).content;
-      return serializer.read_item(content);
+      if (content is null) {
+        -- Malformed response for https://hacker-news.firebaseio.com/v0/item/41050801.json
+        return missing.instance;
+      } else {
+        return serializer.read_item(content);
+      }
     }
 
     string item_page_url(the item_id) {
@@ -348,7 +353,9 @@ program briefing {
 
     for (item_id : ids) {
       item : hacker_news.get_item(item_id);
-      if (item.score >= MIN_SCORE_THRESHOLD) {
+      if (item is null) {
+        log.info("Null item for " ++ item_id);
+      } else if (item.score >= MIN_SCORE_THRESHOLD) {
         items.append(item);
         log.info(item.title ++ " " ++ short_origin(item) ++
             " (" ++ item.by ++ ", " ++ item.score ++ ")");

@@ -251,7 +251,7 @@ briefing: $(IDEAL_TARGET)
                  $(SCRATCH_DIR)/ideal/showcase/*java
 
 run_briefing: briefing
-	$(JAVA) ideal.showcase.briefing
+	$(JAVA) ideal.showcase.briefing | tee tmp/briefing.log
 
 testtoken: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_token \

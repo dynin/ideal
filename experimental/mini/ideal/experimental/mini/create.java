@@ -506,66 +506,6 @@ public class create {
     }
   }
 
-  public static List<token> tokenize(source_text the_source_text) {
-    String content = the_source_text.content();
-    int index = 0;
-    List<token> result = new ArrayList<token>();
-    while (index < content.length()) {
-      int start = index;
-      char prefix = content.charAt(index);
-      index += 1;
-      source position = new text_position_class(the_source_text, start);
-      if (is_identifier_letter(prefix)) {
-        while (index < content.length() && is_identifier_letter(content.charAt(index))) {
-          index += 1;
-        }
-        result.add(new identifier(content.substring(start, index), position));
-      } else if (is_whitespace(prefix)) {
-        while (index < content.length() && is_whitespace(content.charAt(index))) {
-          index += 1;
-        }
-        result.add(new simple_token(core_token_type.WHITESPACE, position));
-      } else if (prefix == '(') {
-        result.add(new simple_token(punctuation.OPEN_PARENTHESIS, position));
-      } else if (prefix == ')') {
-        result.add(new simple_token(punctuation.CLOSE_PARENTHESIS, position));
-      } else if (prefix == '.') {
-        result.add(new operator(operator_type.DOT, position));
-      } else if (prefix == '"') {
-        char quote = prefix;
-        while (index < content.length() &&
-               content.charAt(index) != quote &&
-               content.charAt(index) != '\n') {
-          index += 1;
-        }
-        if (index == content.length()) {
-          report(new error_signal(notification_type.EOF_IN_STRING_LITERAL, position));
-        } else if (content.charAt(index) == '\n') {
-          index += 1;
-          report(new error_signal(notification_type.NEWLINE_IN_STRING_LITERAL, position));
-        } else {
-          assert content.charAt(index) == quote;
-          String value = content.substring(start + 1, index);
-          String with_quotes = content.substring(start, index + 1);
-          index += 1;
-          result.add(new string_literal(value, with_quotes, position));
-        }
-      } else if (prefix == ';') {
-        while (index < content.length() && content.charAt(index) != '\n') {
-          index += 1;
-        }
-        result.add(new simple_token(core_token_type.COMMENT, position));
-      } else {
-        report(new error_signal(notification_type.UNRECOGNIZED_CHARACTER, position));
-      }
-    }
-    return result;
-  }
-
-  public static boolean is_identifier_letter(char c) {
-    return is_letter(c) || c == '_';
-  }
-
   public static void report(error_signal the_error_signal) {
     String message = the_error_signal.message().text();
 
@@ -1947,7 +1887,7 @@ public class create {
   }
 
   public static void create(source_text the_source, boolean analyze) {
-    List<token> tokens = postprocess(tokenize(the_source), init_postprocessor());
+    List<token> tokens = postprocess(tokenizer.tokenize(the_source), init_postprocessor());
     if (DEBUG_TOKENIZER) {
       System.out.println(render_text(describe(tokens)));
     }

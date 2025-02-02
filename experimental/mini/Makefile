@@ -26,6 +26,7 @@ MINI_CREATE_SOURCE = \
     $(MINI_DIR)/bootstrapped.java \
     $(MINI_DIR)/feedback.java \
     $(MINI_DIR)/tokenizer.java \
+    $(MINI_DIR)/parser.java \
     $(MINI_DIR)/printer.java \
     $(MINI_DIR)/create.java
 MINI_CREATE_TARGET = $(TARGETS_DIR)/mini-create

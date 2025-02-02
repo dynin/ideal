@@ -34,8 +34,6 @@ public class create {
     BODY_PASS;
   }
 
-  public static boolean has_errors = false;
-
   public static final String THIS_NAME = "this";
 
   public static final String INSTANCE_NAME = "instance";
@@ -195,7 +193,7 @@ public class create {
               "Can't handle " + describe_type(the_construct) + " in " + pass),
           the_construct);
 
-      report(error_result);
+      feedback.report(error_result);
 
       return error_result;
     }
@@ -234,7 +232,7 @@ public class create {
             new notification_message_class(notification_type.SYMBOL_LOOKUP_FAILED,
                 "Symbol lookup failed for '" + name  + "'"),
             the_identifier);
-        report(error_result);
+        feedback.report(error_result);
         return error_result;
       }
     }
@@ -247,7 +245,7 @@ public class create {
 
       if (!(name instanceof identifier)) {
         error_signal result = new error_signal(notification_type.IDENTIFIER_EXPECTED, name);
-        report(result);
+        feedback.report(result);
         return result;
       }
 
@@ -301,7 +299,7 @@ public class create {
       if (!is_parametrizable(main_action)) {
         error_signal result = new error_signal(notification_type.NOT_PARAMETRIZABLE,
             the_parameter_construct.main());
-        report(result);
+        feedback.report(result);
         return result;
       }
 
@@ -310,7 +308,7 @@ public class create {
       if (parameter_actions.size() != 1) {
         error_signal result = new error_signal(notification_type.WRONG_ARITY,
             the_parameter_construct);
-        report(result);
+        feedback.report(result);
         return result;
       }
 
@@ -318,7 +316,7 @@ public class create {
       if (! (parameter_action instanceof type_action)) {
         error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
             the_parameter_construct.main());
-        report(result);
+        feedback.report(result);
         return result;
       }
 
@@ -372,7 +370,7 @@ public class create {
         if (!(the_type_action instanceof type_action)) {
           error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
               type_construct);
-          report(result);
+          feedback.report(result);
           return result;
         }
         type result_type = ((type_action) the_type_action).the_type();
@@ -417,7 +415,7 @@ public class create {
       if (!(the_type_action instanceof type_action)) {
         error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
             the_dispatch_construct.the_type());
-        report(result);
+        feedback.report(result);
       }
 
       return null;
@@ -433,7 +431,7 @@ public class create {
         action supertype_action = analyze(supertype, parent, pass);
         if (!(supertype_action instanceof type_action)) {
           error_signal result = new error_signal(notification_type.TYPE_EXPECTED, supertype);
-          report(result);
+          feedback.report(result);
           continue;
         }
         type the_supertype = ((type_action) supertype_action).the_type();
@@ -487,7 +485,7 @@ public class create {
               if (main instanceof identifier) {
                 the_identifier = (identifier) main;
               } else {
-                report(new error_signal(notification_type.IDENTIFIER_EXPECTED, main));
+                feedback.report(new error_signal(notification_type.IDENTIFIER_EXPECTED, main));
                 continue;
               }
             }
@@ -504,65 +502,6 @@ public class create {
 
       return the_type_declaration;
     }
-  }
-
-  public static void report(error_signal the_error_signal) {
-    String message = the_error_signal.message().text();
-
-    @Nullable source deep_source = the_error_signal.the_source();
-    while (deep_source != null) {
-      if (deep_source instanceof text_position) {
-        text_position position = (text_position) deep_source;
-        String content = position.the_source().content();
-        int index = position.character_index();
-        int line_number = 1;
-        for (int i = index - 1; i >= 0; --i) {
-          if (content.charAt(i) == '\n') {
-            line_number += 1;
-          }
-        }
-        StringBuilder detailed = new StringBuilder();
-        detailed.append(position.the_source().name()).append(":");
-        detailed.append(line_number).append(": ");
-        detailed.append(message).append('\n');
-
-        int start_of_line = index;
-        while (start_of_line > 0 && content.charAt(start_of_line - 1) != '\n') {
-          start_of_line -= 1;
-        }
-        int spaces;
-        if (index >= content.length() || content.charAt(index) == '\n') {
-          detailed.append(content.substring(start_of_line, index));
-          detailed.append('\n');
-        } else {
-          int end_of_line = index;
-          while (end_of_line < (content.length() - 1) && content.charAt(end_of_line + 1) != '\n') {
-            end_of_line += 1;
-          }
-          detailed.append(content.substring(start_of_line, end_of_line + 1));
-          detailed.append('\n');
-        }
-        for (int i = 0; i < (index - start_of_line); ++i) {
-          detailed.append(' ');
-        }
-        detailed.append('^');
-        // Last newline is added by println().
-        message = detailed.toString();
-        break;
-      }
-      if (deep_source instanceof source_text) {
-        message = ((source_text) deep_source).name() + ": " + message;
-        break;
-      }
-      if (deep_source instanceof builtin_source) {
-        message = "<builtin>: " + message;
-        break;
-      }
-      deep_source = deep_source.the_source();
-    }
-
-    System.err.println(message);
-    has_errors = true;
   }
 
   public interface identifier_processor {
@@ -638,9 +577,10 @@ public class create {
         List<construct> parameters = new ArrayList<construct>();
         int end = parse_sublist(tokens, index, parameters, context);
         if (end >= tokens.size()) {
-          report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
+          feedback.report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
         } else if (tokens.get(end).the_token_type() != punctuation.CLOSE_PARENTHESIS) {
-          report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, tokens.get(end)));
+          feedback.report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND,
+              tokens.get(end)));
         } else {
           end += 1;
         }
@@ -656,7 +596,7 @@ public class create {
               if (parsed != null) {
                 result.add(parsed);
               } else {
-                report(new error_signal(notification_type.PARSE_ERROR, first));
+                feedback.report(new error_signal(notification_type.PARSE_ERROR, first));
               }
             } else {
               result.add(new parameter_construct(first, rest, grouping_type.PARENS, the_token));
@@ -674,7 +614,7 @@ public class create {
       } else if (the_token.the_token_type() == punctuation.CLOSE_PARENTHESIS) {
         return index - 1;
       } else {
-        report(new error_signal(notification_type.PARSE_ERROR, the_token));
+        feedback.report(new error_signal(notification_type.PARSE_ERROR, the_token));
       }
     }
 
@@ -790,7 +730,7 @@ public class create {
   private static List<modifier_construct> parse_modifiers(construct the_construct) {
     // TODO(dynin): implement actual modifier parsing.
     if (!(the_construct instanceof s_expression)) {
-      report(new error_signal(notification_type.PARSE_ERROR, the_construct));
+      feedback.report(new error_signal(notification_type.PARSE_ERROR, the_construct));
     }
 
     List<construct> parameters = ((s_expression) the_construct).parameters();
@@ -799,7 +739,7 @@ public class create {
       if (parameter instanceof modifier_construct) {
         result.add((modifier_construct) parameter);
       } else {
-        report(new error_signal(notification_type.MODIFIER_EXPECTED, parameter));
+        feedback.report(new error_signal(notification_type.MODIFIER_EXPECTED, parameter));
       }
     }
     return result;
@@ -833,7 +773,7 @@ public class create {
     List<construct> result = new ArrayList<construct>();
     int consumed = parse_sublist(tokens, 0, result, context);
     if (consumed < tokens.size()) {
-      report(new error_signal(notification_type.PARSE_ERROR, tokens.get(consumed)));
+      feedback.report(new error_signal(notification_type.PARSE_ERROR, tokens.get(consumed)));
     }
     return result;
   }
@@ -1897,7 +1837,7 @@ public class create {
       System.out.println(render_text(describe(constructs)));
     }
 
-    if (has_errors) {
+    if (feedback.has_errors) {
       return;
     }
 
@@ -1908,7 +1848,7 @@ public class create {
       the_analyzer.analyze_all(constructs, top_type.instance, pass);
     }
 
-    if (has_errors) {
+    if (feedback.has_errors) {
       return;
     }
 

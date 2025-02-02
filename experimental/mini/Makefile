@@ -24,6 +24,7 @@ JAVAC_MINI = $(JDK_DIR)/bin/javac $(JAVAC_SOURCE_OPTS) -Xlint:unchecked \
 MINI_CREATE_SOURCE = \
     $(MINI_DIR)/library.java \
     $(MINI_DIR)/bootstrapped.java \
+    $(MINI_DIR)/feedback.java \
     $(MINI_DIR)/tokenizer.java \
     $(MINI_DIR)/create.java
 MINI_CREATE_TARGET = $(TARGETS_DIR)/mini-create

@@ -49,10 +49,10 @@ public class tokenizer {
           index += 1;
         }
         if (index == content.length()) {
-          create.report(new error_signal(notification_type.EOF_IN_STRING_LITERAL, position));
+          feedback.report(new error_signal(notification_type.EOF_IN_STRING_LITERAL, position));
         } else if (content.charAt(index) == '\n') {
           index += 1;
-          create.report(new error_signal(notification_type.NEWLINE_IN_STRING_LITERAL, position));
+          feedback.report(new error_signal(notification_type.NEWLINE_IN_STRING_LITERAL, position));
         } else {
           assert content.charAt(index) == quote;
           String value = content.substring(start + 1, index);
@@ -66,7 +66,7 @@ public class tokenizer {
         }
         result.add(new simple_token(core_token_type.COMMENT, position));
       } else {
-        create.report(new error_signal(notification_type.UNRECOGNIZED_CHARACTER, position));
+        feedback.report(new error_signal(notification_type.UNRECOGNIZED_CHARACTER, position));
       }
     }
     return result;

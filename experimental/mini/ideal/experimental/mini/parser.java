@@ -82,7 +82,7 @@ class parser {
   }
 
   public static int parse_sublist(List<token> tokens, int start, List<construct> result,
-      parser_context context) {
+      parser_config config) {
     int index = start;
     while (index < tokens.size()) {
       token the_token = tokens.get(index);
@@ -91,7 +91,7 @@ class parser {
         result.add((construct) the_token);
       } else if (the_token.the_token_type() == punctuation.OPEN_PARENTHESIS) {
         List<construct> parameters = new ArrayList<construct>();
-        int end = parse_sublist(tokens, index, parameters, context);
+        int end = parse_sublist(tokens, index, parameters, config);
         if (end >= tokens.size()) {
           feedback.report(new error_signal(notification_type.CLOSE_PAREN_NOT_FOUND, the_token));
         } else if (tokens.get(end).the_token_type() != punctuation.CLOSE_PARENTHESIS) {
@@ -106,7 +106,7 @@ class parser {
           List<construct> rest = parameters.subList(1, parameters.size());
           if (first instanceof identifier) {
             String name = ((identifier) first).name();
-            @Nullable special_parser the_parser = context.get_parser(name);
+            @Nullable special_parser the_parser = config.get_parser(name);
             if (the_parser != null) {
               @Nullable construct parsed = the_parser.parse(rest);
               if (parsed != null) {
@@ -141,7 +141,7 @@ class parser {
     @Nullable construct parse(List<construct> parameters);
   }
 
-  public interface parser_context {
+  public interface parser_config {
     @Nullable special_parser get_parser(String name);
   }
 
@@ -257,6 +257,38 @@ class parser {
       } else {
         feedback.report(new error_signal(notification_type.MODIFIER_EXPECTED, parameter));
       }
+    }
+    return result;
+  }
+
+  public static class common_parser implements parser_config {
+    private Map<String, special_parser> parsers;
+
+    public common_parser() {
+      parsers = new HashMap<String, special_parser>();
+      parsers.put("variable", VARIABLE_PARSER);
+      parsers.put("dispatch", DISPATCH_PARSER);
+    }
+
+    void add_kind(String name, type_kind the_type_kind) {
+      parsers.put(name, new type_parser(the_type_kind));
+    }
+
+    void add_supertype_kind(String name, supertype_kind the_supertype_kind) {
+      parsers.put(name, new supertype_parser(the_supertype_kind));
+    }
+
+    @Override
+    public @Nullable special_parser get_parser(String name) {
+      return parsers.get(name);
+    }
+  }
+
+  public static List<construct> parse(List<token> tokens, parser_config config) {
+    List<construct> result = new ArrayList<construct>();
+    int consumed = parser.parse_sublist(tokens, 0, result, config);
+    if (consumed < tokens.size()) {
+      feedback.report(new error_signal(notification_type.PARSE_ERROR, tokens.get(consumed)));
     }
     return result;
   }

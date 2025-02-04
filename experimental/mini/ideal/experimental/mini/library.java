@@ -29,7 +29,7 @@ public class library {
   }
 
   public static void panic(String message) {
-    throw new Error(message);
+    throw new Error("Panic: " + message);
   }
 
   public static <source_type, target_type> List<target_type> map(

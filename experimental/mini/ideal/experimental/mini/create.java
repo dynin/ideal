@@ -504,39 +504,6 @@ public class create {
     }
   }
 
-  public static class common_context implements parser.parser_context {
-    private Map<String, parser.special_parser> parsers;
-
-    public common_context() {
-      parsers = new HashMap<String, parser.special_parser>();
-      parsers.put("variable", parser.VARIABLE_PARSER);
-      parsers.put("dispatch", parser.DISPATCH_PARSER);
-
-      parsers.put("datatype", new parser.type_parser(type_kind.DATATYPE));
-      parsers.put("interface", new parser.type_parser(type_kind.INTERFACE));
-      parsers.put("enum", new parser.type_parser(type_kind.ENUM));
-      parsers.put("class", new parser.type_parser(type_kind.CLASS));
-      parsers.put("singleton", new parser.type_parser(type_kind.SINGLETON));
-
-      parsers.put("extends", new parser.supertype_parser(supertype_kind.EXTENDS));
-      parsers.put("implements", new parser.supertype_parser(supertype_kind.IMPLEMENTS));
-    }
-
-    @Override
-    public @Nullable parser.special_parser get_parser(String name) {
-      return parsers.get(name);
-    }
-  }
-
-  public static List<construct> parse(List<token> tokens, parser.parser_context context) {
-    List<construct> result = new ArrayList<construct>();
-    int consumed = parser.parse_sublist(tokens, 0, result, context);
-    if (consumed < tokens.size()) {
-      feedback.report(new error_signal(notification_type.PARSE_ERROR, tokens.get(consumed)));
-    }
-    return result;
-  }
-
   public static abstract class base_transform extends construct_dispatch<construct> {
 
     public construct transform(construct the_construct) {
@@ -611,7 +578,7 @@ public class create {
         if (transformed instanceof construct) {
           parameters.add((construct) transformed);
         } else {
-          unexpected("Parameter transform error: " + the_parameter);
+          panic("Parameter transform error: " + the_parameter);
         }
       }
 
@@ -689,7 +656,7 @@ public class create {
       List<construct> transformed = transform_type(the_type_construct);
 
       if (transformed.size() != 1) {
-        unexpected("One transformed type expected");
+        panic("One transformed type expected");
       }
 
       return transformed.get(0);
@@ -819,7 +786,7 @@ public class create {
           implementation_body.add(the_construct);
         } else {
           // TODO: handle other constructs.
-          unexpected("In type declaration: " + the_construct);
+          panic("In type declaration: " + the_construct);
         }
       }
 
@@ -1180,11 +1147,6 @@ public class create {
     }
   }
 
-  private static void unexpected(String message) {
-    System.err.println("Unexpected: " + message);
-    System.exit(1);
-  }
-
   private static final boolean DEBUG_TOKENIZER = false;
 
   private static final boolean DEBUG_PARSER = false;
@@ -1220,13 +1182,28 @@ public class create {
     System.err.println(info + ": " + render_text(describe(the_describable)));
   }
 
+  public static parser.parser_config init_parser() {
+    parser.common_parser the_parser = new parser.common_parser();
+
+    the_parser.add_kind("datatype", type_kind.DATATYPE);
+    the_parser.add_kind("interface", type_kind.INTERFACE);
+    the_parser.add_kind("enum", type_kind.ENUM);
+    the_parser.add_kind("class", type_kind.CLASS);
+    the_parser.add_kind("singleton", type_kind.SINGLETON);
+
+    the_parser.add_supertype_kind("extends", supertype_kind.EXTENDS);
+    the_parser.add_supertype_kind("implements", supertype_kind.IMPLEMENTS);
+
+    return the_parser;
+  }
+
   public static void create(source_text the_source, boolean analyze) {
     List<token> tokens = parser.postprocess(tokenizer.tokenize(the_source), init_postprocessor());
     if (DEBUG_TOKENIZER) {
       System.out.println(render_text(describe(tokens)));
     }
 
-    List<construct> constructs = parse(tokens, new common_context());
+    List<construct> constructs = parser.parse(tokens, init_parser());
     if (DEBUG_PARSER) {
       System.out.println(render_text(describe(constructs)));
     }

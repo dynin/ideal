@@ -378,7 +378,42 @@ public class analysis {
 
     @Override
     public action call_procedure_construct(procedure_construct the_procedure_construct) {
-      return call_construct(the_procedure_construct);
+      if (pass == analysis_pass.TYPE_PASS) {
+        return null;
+      }
+
+      if (pass == analysis_pass.MEMBER_PASS) {
+        @Nullable construct return_type_construct = the_procedure_construct.return_type();
+        if (return_type_construct == null) {
+          error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
+              the_procedure_construct);
+          feedback.report(result);
+          return result;
+        }
+        action return_type_action = analyze(return_type_construct, parent, pass);
+        if (!(return_type_action instanceof type_action)) {
+          error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
+              return_type_construct);
+          feedback.report(result);
+          return result;
+        }
+        type return_type = ((type_action) return_type_action).the_type();
+        String name = the_procedure_construct.name();
+
+        principal_type parameter_frame = new principal_type_class(name, type_kind.BLOCK, parent);
+        List<variable_declaration> parameters = new ArrayList<variable_declaration>();
+        for (variable_construct the_parameter : the_procedure_construct.parameters()) {
+          analyze(the_parameter, parameter_frame, pass);
+        }
+
+        procedure_declaration the_declaration = new procedure_declaration(return_type, name,
+            parameters, parent, the_procedure_construct);
+        // the_analysis_context.add_action(parent, name, the_declaration);
+        return the_declaration;
+      }
+
+      assert pass == analysis_pass.BODY_PASS;
+      return null;
     }
 
     @Override

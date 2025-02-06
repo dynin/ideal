@@ -152,7 +152,6 @@ class parser {
         return null;
       }
 
-
       List<modifier_construct> modifiers;
       int type_index;
       if (parameters.size() == 2) {
@@ -178,13 +177,46 @@ class parser {
     }
   };
 
+  public static final special_parser PROCEDURE_PARSER = new special_parser() {
+    @Override
+    public @Nullable construct parse(List<construct> parameters) {
+      if (parameters.size() < 3 || parameters.size() > 4) {
+        return null;
+      }
+
+      List<modifier_construct> modifiers;
+      int type_index;
+      if (parameters.size() == 3) {
+        modifiers = new ArrayList<modifier_construct>();
+        type_index = 0;
+      } else {
+        modifiers = parse_modifiers(parameters.get(0));
+        type_index = 1;
+      }
+
+      construct return_type = parameters.get(type_index);
+
+      construct name_construct = parameters.get(type_index + 1);
+      if (!(name_construct instanceof identifier)) {
+        return null;
+      }
+      String name = ((identifier) name_construct).name();
+
+      List<variable_construct> procedure_parameters = parse_parameters(
+          parameters.get(type_index + 2));
+      @Nullable construct body = null;
+
+      return new procedure_construct(modifiers, return_type, name, procedure_parameters, body,
+          name_construct);
+    }
+  };
+
   public static final special_parser DISPATCH_PARSER = new special_parser() {
     @Override
     public @Nullable construct parse(List<construct> parameters) {
       if (parameters.size() != 2) {
         return null;
       }
-
 
       construct name_construct = parameters.get(0);
       if (!(name_construct instanceof identifier)) {
@@ -261,12 +293,30 @@ class parser {
     return result;
   }
 
+  private static List<variable_construct> parse_parameters(construct the_construct) {
+    if (!(the_construct instanceof s_expression)) {
+      feedback.report(new error_signal(notification_type.PARSE_ERROR, the_construct));
+    }
+
+    List<construct> parameters = ((s_expression) the_construct).parameters();
+    List<variable_construct> result = new ArrayList<variable_construct>();
+    for (construct parameter : parameters) {
+      if (parameter instanceof variable_construct) {
+        result.add((variable_construct) parameter);
+      } else {
+        feedback.report(new error_signal(notification_type.VARIABLE_EXPECTED, parameter));
+      }
+    }
+    return result;
+  }
+
   public static class common_parser implements parser_config {
     private Map<String, special_parser> parsers;
 
     public common_parser() {
       parsers = new HashMap<String, special_parser>();
       parsers.put("variable", VARIABLE_PARSER);
+      parsers.put("procedure", PROCEDURE_PARSER);
       parsers.put("dispatch", DISPATCH_PARSER);
     }
 

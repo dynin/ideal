@@ -45,3 +45,7 @@
 )
 
 (dispatch source_dispatch source)
+
+(procedure (public) string test (
+  (variable string foo)
+))

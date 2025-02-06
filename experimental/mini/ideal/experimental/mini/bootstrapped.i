@@ -350,6 +350,17 @@
   (variable (override) type result value_type)
 )
 
+(class procedure_declaration
+  (implements action)
+  (variable type return_type)
+  (variable string name)
+  (variable (list variable_declaration) parameters)
+  (variable principal_type declared_in_type)
+  (variable source the_source)
+  ; TODO: return procedure type
+  (variable (override) type result (. core_type VOID))
+)
+
 (enum analysis_pass
   TYPE_PASS
   MEMBER_PASS
@@ -368,6 +379,7 @@
   (PARSE_ERROR "Parse error")
   (CLOSE_PAREN_NOT_FOUND "Close parenthesis not found")
   (MODIFIER_EXPECTED "Modifier expected")
+  (VARIABLE_EXPECTED "Variable expected")
   (ANALYSIS_ERROR "Analysis error")
   (SYMBOL_LOOKUP_FAILED "Symbol lookup failed")
   (TYPE_EXPECTED "Type expected")

@@ -909,6 +909,41 @@ public interface bootstrapped {
       return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("name", name), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  class procedure_declaration implements action {
+    private final type return_type;
+    private final String name;
+    private final List<variable_declaration> parameters;
+    private final principal_type declared_in_type;
+    private final source the_source;
+    public procedure_declaration(type return_type, String name, List<variable_declaration> parameters, principal_type declared_in_type, source the_source) {
+      this.return_type = return_type;
+      this.name = name;
+      this.parameters = parameters;
+      this.declared_in_type = declared_in_type;
+      this.the_source = the_source;
+    }
+    public type return_type() {
+      return return_type;
+    }
+    public String name() {
+      return name;
+    }
+    public List<variable_declaration> parameters() {
+      return parameters;
+    }
+    public principal_type declared_in_type() {
+      return declared_in_type;
+    }
+    public source the_source() {
+      return the_source;
+    }
+    @Override public type result() {
+      return core_type.VOID;
+    }
+    @Override public text description() {
+      return join_fragments("procedure_declaration", START_OBJECT, NEWLINE, indent(field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
+    }
+  }
   enum analysis_pass {
     TYPE_PASS,
     MEMBER_PASS,
@@ -921,6 +956,7 @@ public interface bootstrapped {
     PARSE_ERROR("Parse error"),
     CLOSE_PAREN_NOT_FOUND("Close parenthesis not found"),
     MODIFIER_EXPECTED("Modifier expected"),
+    VARIABLE_EXPECTED("Variable expected"),
     ANALYSIS_ERROR("Analysis error"),
     SYMBOL_LOOKUP_FAILED("Symbol lookup failed"),
     TYPE_EXPECTED("Type expected"),

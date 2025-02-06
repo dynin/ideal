@@ -288,7 +288,7 @@ public class printer {
   public static predicate<construct> is_not_supertype = negate_predicate(is_supertype);
 
   public static predicate<construct> is_not_enum_declaration =
-      negate_predicate(create.is_enum_declaration);
+      negate_predicate(analysis.is_enum_declaration);
 
   public static class java_printer extends base_printer {
 
@@ -359,7 +359,7 @@ public class printer {
 
       List<text> body = new ArrayList<text>();
       if (the_type_construct.the_type_kind() == type_kind.ENUM) {
-        List<construct> enum_declarations = filter(filtered_body, create.is_enum_declaration);
+        List<construct> enum_declarations = filter(filtered_body, analysis.is_enum_declaration);
         assert !enum_declarations.isEmpty();
         for (int i = 0; i < enum_declarations.size(); ++i) {
           body.add(print(enum_declarations.get(i)));

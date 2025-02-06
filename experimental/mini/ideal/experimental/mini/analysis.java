@@ -11,10 +11,6 @@ package ideal.experimental.mini;
 import static ideal.experimental.mini.bootstrapped.*;
 import static ideal.experimental.mini.library.*;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,12 +23,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 public class analysis {
-
-  public enum analysis_pass {
-    TYPE_PASS,
-    MEMBER_PASS,
-    BODY_PASS;
-  }
 
   public static class analysis_context {
     private final Map<type, type_context> type_contexts;

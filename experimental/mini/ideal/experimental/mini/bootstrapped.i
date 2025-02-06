@@ -350,6 +350,12 @@
   (variable (override) type result value_type)
 )
 
+(enum analysis_pass
+  TYPE_PASS
+  MEMBER_PASS
+  BODY_PASS
+)
+
 ; Notifications
 
 (enum notification_type

@@ -909,6 +909,11 @@ public interface bootstrapped {
       return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("name", name), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
+  enum analysis_pass {
+    TYPE_PASS,
+    MEMBER_PASS,
+    BODY_PASS;
+  }
   enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

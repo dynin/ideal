@@ -372,8 +372,8 @@ public class analysis {
     private void add_this_variable(principal_type declared_type, principal_type inner_frame,
         source the_source) {
       variable_declaration this_declaration = new variable_declaration(declared_type,
-          create.THIS_NAME, inner_frame, the_source);
-      the_analysis_context.add_action(inner_frame, create.THIS_NAME, this_declaration);
+          names.THIS_NAME, inner_frame, the_source);
+      the_analysis_context.add_action(inner_frame, names.THIS_NAME, this_declaration);
     }
 
     @Override
@@ -477,7 +477,7 @@ public class analysis {
         if (the_type_kind == type_kind.SINGLETON && pass == analysis_pass.MEMBER_PASS) {
           singleton_literal the_literal = new singleton_literal(declared_type,
               the_type_declaration);
-          the_analysis_context.add_action(declared_type, create.INSTANCE_NAME, the_literal);
+          the_analysis_context.add_action(declared_type, names.INSTANCE_NAME, the_literal);
         }
       } else {
         int enum_ordinal = 0;

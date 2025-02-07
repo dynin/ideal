@@ -25,6 +25,7 @@ MINI_CREATE_SOURCE = \
     $(MINI_DIR)/library.java \
     $(MINI_DIR)/bootstrapped.java \
     $(MINI_DIR)/feedback.java \
+    $(MINI_DIR)/names.java \
     $(MINI_DIR)/tokenizer.java \
     $(MINI_DIR)/parser.java \
     $(MINI_DIR)/analysis.java \

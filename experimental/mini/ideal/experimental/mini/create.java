@@ -31,20 +31,6 @@ import static ideal.experimental.mini.analysis.*;
 
 public class create {
 
-  public static final String THIS_NAME = "this";
-
-  public static final String INSTANCE_NAME = "instance";
-
-  public static final String DESCRIBABLE_NAME = "describable";
-
-  public static final String RESULT_NAME = "result";
-
-  public static final String FUNCTION_NAME = "function";
-
-  public static final String CALL_NAME = "call";
-
-  public static final String THE_NAME = "the";
-
   public static abstract class base_transform extends construct_dispatch<construct> {
 
     public construct transform(construct the_construct) {
@@ -86,7 +72,7 @@ public class create {
       type_mapping.put(core_type.LIST, "List");
 
       action describable_action = the_analysis_context.get_action(top_type.instance,
-          DESCRIBABLE_NAME);
+          names.DESCRIBABLE_NAME);
       if (describable_action instanceof type_action) {
         describable_type = ((type_action) describable_action).the_type();
       } else {
@@ -198,10 +184,6 @@ public class create {
       });
     }
 
-    private static String join_identifier(String first, String second) {
-      return first + '_' + second;
-    }
-
     private static parameter_construct make_operator(operator_type the_operator_type,
         construct first_argument, construct second_argument, source the_source) {
       List<construct> arguments = new ArrayList<construct>();
@@ -246,8 +228,8 @@ public class create {
       source the_source = the_type_construct;
 
       String interface_name = the_type_construct.name();
-      String implementation_name = declare_interface ? join_identifier(interface_name, "class") :
-          interface_name;
+      String implementation_name = declare_interface ?
+          names.join_identifier(interface_name, "class") : interface_name;
 
       List<construct> interface_body = new ArrayList<construct>();
       List<construct> implementation_body = new ArrayList<construct>();
@@ -311,7 +293,7 @@ public class create {
               // Add constructor parameter
               ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_source));
               identifier variable_identifier = new identifier(name, the_source);
-              identifier this_identifier = new identifier(THIS_NAME, the_source);
+              identifier this_identifier = new identifier(names.THIS_NAME, the_source);
               construct this_access = make_operator(operator_type.DOT, this_identifier,
                   variable_identifier, the_source);
               construct assignment = make_operator(operator_type.ASSIGN, this_access,
@@ -387,7 +369,7 @@ public class create {
               new variable_construct(
                   instance_modifiers,
                   new identifier(implementation_name, the_source),
-                  INSTANCE_NAME,
+                  names.INSTANCE_NAME,
                   instance_ctor,
                   the_source);
           implementation_body.add(instance_variable);
@@ -606,12 +588,12 @@ public class create {
 
       List<construct> type_body = new ArrayList<construct>();
 
-      identifier result_identifier = new identifier(RESULT_NAME, the_source);
+      identifier result_identifier = new identifier(names.RESULT_NAME, the_source);
       List<construct> function_parameters = new ArrayList<construct>();
       function_parameters.add(result_identifier);
       function_parameters.add(dispatch_type_construct);
       construct function_type = new parameter_construct(
-          new identifier(FUNCTION_NAME, the_source), function_parameters,
+          new identifier(names.FUNCTION_NAME, the_source), function_parameters,
           grouping_type.ANGLE_BRACKETS, the_source);
 
       type_body.add(new supertype_construct(supertype_kind.IMPLEMENTS,
@@ -622,8 +604,8 @@ public class create {
       type disptach_type = the_type_action.the_type();
       String dispatch_type_name = disptach_type.name();
 
-      String parameter_name = join_identifier(THE_NAME, dispatch_type_name);
-      String call_type_name = join_identifier(CALL_NAME, dispatch_type_name);
+      String parameter_name = names.join_identifier(names.THE_NAME, dispatch_type_name);
+      String call_type_name = names.join_identifier(names.CALL_NAME, dispatch_type_name);
       construct parameter_identifier = new identifier(parameter_name, the_source);
       List<construct> call_body = new ArrayList<construct>();
 
@@ -645,7 +627,7 @@ public class create {
       Set<type> subtypes = the_analysis_context.get_direct_subtypes(disptach_type);
       for (type subtype : subtypes) {
         String subtype_name = subtype.name();
-        String call_subtype_name = join_identifier(CALL_NAME, subtype_name);
+        String call_subtype_name = names.join_identifier(names.CALL_NAME, subtype_name);
         identifier subtype_identifier = new identifier(subtype_name, the_source);
 
         construct subcall_construct = new parameter_construct(
@@ -663,7 +645,7 @@ public class create {
             the_source);
         call_body.add(if_construct);
 
-        String subtype_name_with_the = join_identifier(THE_NAME, subtype_name);
+        String subtype_name_with_the = names.join_identifier(names.THE_NAME, subtype_name);
         construct supercall_construct = new parameter_construct(
             new identifier(call_type_name, the_source),
             Collections.<construct>singletonList(new identifier(subtype_name_with_the, the_source)),
@@ -697,7 +679,7 @@ public class create {
       procedure_construct call_procedure = new procedure_construct(
           make_override_public(the_source),
           result_identifier,
-          CALL_NAME,
+          names.CALL_NAME,
           Collections.singletonList(call_parameter),
           new block_construct(call_body, the_source),
           the_source);

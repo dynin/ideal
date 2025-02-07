@@ -59,6 +59,9 @@ m0: $(MINI_CREATE_TARGET)
 mini: $(MINI_CREATE_TARGET)
 	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/test.i
 
+test: $(MINI_CREATE_TARGET)
+	@$(JAVA_MINI_CREATE) -analyze $(MINI_DIR)/test2.i
+
 minia: $(MINI_CREATE_TARGET)
 	@$(JAVA_MINI_CREATE) -analyze $(MINI_IDEAL_SOURCE)
 

@@ -949,6 +949,9 @@ public interface bootstrapped {
     MEMBER_PASS,
     BODY_PASS;
   }
+  interface analysis_context_x {
+    @Nullable action add_action(type the_type, String name, action the_action);
+  }
   enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),
     EOF_IN_STRING_LITERAL("End of file in string literal"),

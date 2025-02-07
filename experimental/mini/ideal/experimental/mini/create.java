@@ -153,6 +153,33 @@ public class create {
           the_source);
     }
 
+    @Override
+    public procedure_construct call_procedure_construct(
+        procedure_construct the_procedure_construct) {
+      source the_source = the_procedure_construct;
+      List<modifier_construct> modifiers = the_procedure_construct.modifiers();
+
+      assert the_procedure_construct.return_type() != null;
+      construct return_type = transform(the_procedure_construct.return_type());
+      if (is_nullable(return_type)) {
+        return_type = strip_nullable(return_type);
+        modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_source);
+      }
+
+      List<variable_construct> parameters = new ArrayList<variable_construct>();
+      for (variable_construct parameter : the_procedure_construct.parameters()) {
+        parameters.add(call_variable_construct(parameter));
+      }
+
+      @Nullable construct body = the_procedure_construct.body();
+      if (body != null) {
+        body = transform(body);
+      }
+
+      return new procedure_construct(modifiers, return_type, the_procedure_construct.name(),
+          parameters, body, the_source);
+    }
+
     private static List<modifier_construct> prepend_modifier(modifier_kind the_modifier_kind,
         List<modifier_construct> modifiers, source the_source) {
       List<modifier_construct> result = new ArrayList<modifier_construct>();
@@ -317,6 +344,10 @@ public class create {
           }
         } else if (declare_enum && is_enum_declaration.call(the_construct)) {
           implementation_body.add(the_construct);
+        } else if (the_construct instanceof procedure_construct) {
+          procedure_construct the_procedure_construct =
+              call_procedure_construct((procedure_construct) the_construct);
+          interface_body.add(the_procedure_construct);
         } else {
           // TODO: handle other constructs.
           panic("In type declaration: " + the_construct);

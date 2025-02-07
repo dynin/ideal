@@ -49,3 +49,10 @@
 (procedure (public) string test (
   (variable string foo)
 ))
+
+(interface analysis_context_x
+  (variable (nullable string) foo)
+  (procedure (nullable string) add_action (
+    (variable (nullable string) name)
+  ))
+)

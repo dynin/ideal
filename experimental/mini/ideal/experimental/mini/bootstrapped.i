@@ -367,6 +367,14 @@
   BODY_PASS
 )
 
+(interface analysis_context_x
+  (procedure (nullable action) add_action (
+    (variable type the_type)
+    (variable string name)
+    (variable action the_action)
+  ))
+)
+
 ; Notifications
 
 (enum notification_type

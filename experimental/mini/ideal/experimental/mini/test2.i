@@ -4,4 +4,5 @@
   ))
 )
 
-(variable (nullable string) foo)
+(variable string foobar)
+(the string)

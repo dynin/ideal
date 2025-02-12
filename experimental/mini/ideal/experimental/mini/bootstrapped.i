@@ -369,9 +369,9 @@
 
 (interface analysis_context_x
   (procedure (nullable action) add_action (
-    (variable type the_type)
+    (the type)
     (variable string name)
-    (variable action the_action)
+    (the action)
   ))
 )
 

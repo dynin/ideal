@@ -211,6 +211,26 @@ class parser {
     }
   };
 
+  public static final special_parser THE_PARSER = new special_parser() {
+    @Override
+    public @Nullable construct parse(List<construct> parameters) {
+      if (parameters.size() != 1) {
+        return null;
+      }
+
+      List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
+
+      construct type_construct = parameters.get(0);
+      if (!(type_construct instanceof identifier)) {
+        return null;
+      }
+      String type = ((identifier) type_construct).name();
+      String name = names.join_identifier(names.THE_NAME, type);
+
+      return new variable_construct(modifiers, type_construct, name, null, type_construct);
+    }
+  };
+
   public static final special_parser DISPATCH_PARSER = new special_parser() {
     @Override
     public @Nullable construct parse(List<construct> parameters) {
@@ -317,6 +337,7 @@ class parser {
       parsers = new HashMap<String, special_parser>();
       parsers.put("variable", VARIABLE_PARSER);
       parsers.put("procedure", PROCEDURE_PARSER);
+      parsers.put(names.THE_NAME, THE_PARSER);
       parsers.put("dispatch", DISPATCH_PARSER);
     }
 

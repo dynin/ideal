@@ -713,6 +713,7 @@ public class create {
   public static analysis_context init_analysis_context() {
     analysis_context the_context = new analysis_context();
 
+    add_core_type(the_context, core_type.VOID);
     add_core_type(the_context, core_type.INTEGER);
     add_core_type(the_context, core_type.STRING);
     add_core_type(the_context, core_type.LIST);

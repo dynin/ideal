@@ -67,6 +67,10 @@ public class library {
     return Character.isLetter(c);
   }
 
+  public static boolean is_digit(char c) {
+    return Character.isDigit(c);
+  }
+
   public static boolean is_whitespace(char c) {
     return Character.isWhitespace(c);
   }

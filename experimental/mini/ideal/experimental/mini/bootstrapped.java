@@ -949,8 +949,9 @@ public interface bootstrapped {
     MEMBER_PASS,
     BODY_PASS;
   }
-  interface analysis_context_x {
-    @Nullable action add_action(type the_type, String name, action the_action);
+  interface analysis_context0 {
+    void add_action(type the_type, String name, action the_action);
+    @Nullable action get_action(type the_type, String name);
   }
   enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),

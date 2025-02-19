@@ -367,12 +367,9 @@
   BODY_PASS
 )
 
-(interface analysis_context_x
-  (procedure (nullable action) add_action (
-    (the type)
-    (variable string name)
-    (the action)
-  ))
+(interface analysis_context0
+  (procedure void add_action ((the type) (variable string name) (the action)))
+  (procedure (nullable action) get_action ((the type) (variable string name)))
 )
 
 ; Notifications

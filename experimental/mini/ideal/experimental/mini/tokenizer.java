@@ -25,8 +25,8 @@ public class tokenizer {
       char prefix = content.charAt(index);
       index += 1;
       source position = new text_position_class(the_source_text, start);
-      if (is_identifier_letter(prefix)) {
-        while (index < content.length() && is_identifier_letter(content.charAt(index))) {
+      if (is_identifier_start(prefix)) {
+        while (index < content.length() && is_identifier_part(content.charAt(index))) {
           index += 1;
         }
         result.add(new identifier(content.substring(start, index), position));
@@ -72,7 +72,11 @@ public class tokenizer {
     return result;
   }
 
-  public static boolean is_identifier_letter(char c) {
+  public static boolean is_identifier_start(char c) {
     return is_letter(c) || c == '_';
+  }
+
+  public static boolean is_identifier_part(char c) {
+    return is_letter(c) || is_digit(c) || c == '_';
   }
 }

@@ -11,6 +11,7 @@ package ideal.experimental.mini;
 import static ideal.experimental.mini.library.*;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -814,6 +815,7 @@ public interface bootstrapped {
     INTEGER,
     STRING,
     LIST,
+    SET,
     NULL,
     NULLABLE,
     UNREACHABLE,
@@ -952,6 +954,8 @@ public interface bootstrapped {
   interface analysis_context0 {
     void add_action(type the_type, String name, action the_action);
     @Nullable action get_action(type the_type, String name);
+    void add_supertype(type subtype, type supertype);
+    Set<type> get_all_supertypes(type the_type);
   }
   enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),

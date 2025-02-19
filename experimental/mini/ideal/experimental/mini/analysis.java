@@ -307,7 +307,9 @@ public class analysis {
     private static boolean is_parametrizable(action main_action) {
       if (main_action instanceof type_action) {
         type main_type = ((type_action) main_action).the_type();
-        return main_type == core_type.NULLABLE || main_type == core_type.LIST;
+        return main_type == core_type.NULLABLE ||
+               main_type == core_type.LIST ||
+               main_type == core_type.SET;
       } else {
         return false;
       }

@@ -70,6 +70,7 @@ public class create {
       type_mapping.put(core_type.INTEGER, "int");
       type_mapping.put(core_type.STRING, "String");
       type_mapping.put(core_type.LIST, "List");
+      type_mapping.put(core_type.SET, "Set");
 
       action describable_action = the_analysis_context.get_action(top_type.instance,
           names.DESCRIBABLE_NAME);
@@ -103,9 +104,11 @@ public class create {
 
       grouping_type grouping = the_parameter_construct.grouping();
       @Nullable action main_action = get_binding(main);
-      if (main_action instanceof type_action &&
-          ((type_action) main_action).the_type() == core_type.LIST) {
-        grouping = grouping_type.ANGLE_BRACKETS;
+      if (main_action instanceof type_action) {
+        type the_type = ((type_action) main_action).the_type();
+        if (the_type == core_type.LIST || the_type == core_type.SET) {
+          grouping = grouping_type.ANGLE_BRACKETS;
+        }
       }
 
       construct result = new parameter_construct(transformed_main, parameters, grouping,
@@ -717,6 +720,7 @@ public class create {
     add_core_type(the_context, core_type.INTEGER);
     add_core_type(the_context, core_type.STRING);
     add_core_type(the_context, core_type.LIST);
+    add_core_type(the_context, core_type.SET);
     add_core_type(the_context, core_type.NULLABLE);
 
     the_context.add_action(top_type.instance, "null",

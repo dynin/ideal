@@ -317,6 +317,7 @@
   INTEGER
   STRING
   LIST
+  SET
   NULL
   NULLABLE
   UNREACHABLE
@@ -370,6 +371,8 @@
 (interface analysis_context0
   (procedure void add_action ((the type) (variable string name) (the action)))
   (procedure (nullable action) get_action ((the type) (variable string name)))
+  (procedure void add_supertype ((variable type subtype) (variable type supertype)))
+  (procedure (set type) get_all_supertypes ((the type)))
 )
 
 ; Notifications

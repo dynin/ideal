@@ -251,8 +251,12 @@
   (variable string name)
 )
 
-(interface action
+(interface analysis_result
   (extends source)
+)
+
+(interface action
+  (extends analysis_result)
   (variable type result)
 )
 
@@ -335,31 +339,34 @@
 )
 
 (class type_declaration
-  (implements action)
+  (implements analysis_result)
   (variable principal_type declared_type)
   (variable type_kind the_type_kind)
   (variable source the_source)
-  (variable (override) type result declared_type)
 )
 
 (class variable_declaration
-  (implements action)
+  (implements analysis_result)
   (variable type value_type)
   (variable string name)
   (variable principal_type declared_in_type)
   (variable source the_source)
-  (variable (override) type result value_type)
+)
+
+(datatype variable_action
+  (extends action)
+  (variable variable_declaration the_declaration)
+  (variable (override) source the_source the_declaration)
+  (variable (override) type result (. the_declaration value_type))
 )
 
 (class procedure_declaration
-  (implements action)
+  (implements analysis_result)
   (variable type return_type)
   (variable string name)
   (variable (list variable_declaration) parameters)
   (variable principal_type declared_in_type)
   (variable source the_source)
-  ; TODO: return procedure type
-  (variable (override) type result (. core_type VOID))
 )
 
 (enum analysis_pass
@@ -369,10 +376,13 @@
 )
 
 (interface analysis_context0
+  ; action table——the equivalent of symbol table
   (procedure void add_action ((the type) (variable string name) (the action)))
   (procedure (nullable action) get_action ((the type) (variable string name)))
+  ; type relationships
   (procedure void add_supertype ((variable type subtype) (variable type supertype)))
   (procedure (set type) get_all_supertypes ((the type)))
+  (procedure (set type) get_direct_subtypes ((the type)))
 )
 
 ; Notifications

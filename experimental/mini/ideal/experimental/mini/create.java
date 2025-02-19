@@ -81,7 +81,7 @@ public class create {
       }
     }
 
-    protected @Nullable action get_binding(construct the_construct) {
+    protected @Nullable analysis_result get_binding(construct the_construct) {
       return the_analysis_context.get_binding(the_construct);
     }
 
@@ -103,7 +103,7 @@ public class create {
       }
 
       grouping_type grouping = the_parameter_construct.grouping();
-      @Nullable action main_action = get_binding(main);
+      @Nullable analysis_result main_action = get_binding(main);
       if (main_action instanceof type_action) {
         type the_type = ((type_action) main_action).the_type();
         if (the_type == core_type.LIST || the_type == core_type.SET) {
@@ -114,8 +114,8 @@ public class create {
       construct result = new parameter_construct(transformed_main, parameters, grouping,
           the_source);
 
-      @Nullable action the_action = get_binding(the_parameter_construct);
-      if (the_action instanceof variable_declaration) {
+      @Nullable analysis_result the_result = get_binding(the_parameter_construct);
+      if (the_result instanceof variable_action) {
         result = new parameter_construct(result, new ArrayList<construct>(), grouping_type.PARENS,
             the_source);
       }
@@ -538,9 +538,9 @@ public class create {
 
     @Override
     public construct call_identifier(identifier the_identifier) {
-      @Nullable action the_action = get_binding(the_identifier);
-      if (the_action instanceof type_action) {
-        type result = ((type_action) the_action).the_type();
+      @Nullable analysis_result the_analysis_result = get_binding(the_identifier);
+      if (the_analysis_result instanceof type_action) {
+        type result = ((type_action) the_analysis_result).the_type();
         if (result instanceof principal_type) {
           @Nullable String mapping = type_mapping.get((principal_type) result);
           if (mapping != null) {
@@ -554,7 +554,7 @@ public class create {
     private boolean is_nullable(construct the_construct) {
       if (the_construct instanceof parameter_construct) {
         construct main = ((parameter_construct) the_construct).main();
-        @Nullable action main_action = get_binding(main);
+        @Nullable analysis_result main_action = get_binding(main);
         return main_action instanceof type_action &&
             ((type_action) main_action).the_type() == core_type.NULLABLE;
       }

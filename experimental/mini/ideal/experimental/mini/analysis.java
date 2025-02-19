@@ -26,11 +26,11 @@ public class analysis {
 
   public static class analysis_context {
     private final Map<type, type_context> type_contexts;
-    private final Map<construct, action> bindings;
+    private final Map<construct, analysis_result> bindings;
 
     public analysis_context() {
       type_contexts = new HashMap<type, type_context>();
-      bindings = new HashMap<construct, action>();
+      bindings = new HashMap<construct, analysis_result>();
     }
 
     public void add_action(type the_type, String name, action the_action) {
@@ -78,7 +78,7 @@ public class analysis {
     }
 
     // TODO: the recursion can take up a lot of stack space.
-    public void add_supertypes_helper(type the_type, Set<type> result) {
+    private void add_supertypes_helper(type the_type, Set<type> result) {
       @Nullable type_context the_type_context = type_contexts.get(the_type);
       if (the_type_context != null) {
         for (type candidate : the_type_context.supertypes) {
@@ -99,12 +99,12 @@ public class analysis {
       }
     }
 
-    public void add_binding(construct the_construct, action the_action) {
-      action old_action = bindings.put(the_construct, the_action);
-      assert old_action == null;
+    public void add_binding(construct the_construct, analysis_result the_analysis_result) {
+      analysis_result old_analysis_result = bindings.put(the_construct, the_analysis_result);
+      assert old_analysis_result == null;
     }
 
-    public @Nullable action get_binding(construct the_construct) {
+    public @Nullable analysis_result get_binding(construct the_construct) {
       return bindings.get(the_construct);
     }
 
@@ -131,7 +131,7 @@ public class analysis {
     }
   }
 
-  public static class analyzer extends construct_dispatch<action> {
+  public static class analyzer extends construct_dispatch<analysis_result> {
     private final analysis_context the_analysis_context;
     private principal_type parent;
     private analysis_pass pass;
@@ -140,19 +140,33 @@ public class analysis {
       this.the_analysis_context = the_analysis_context;
     }
 
-    public action analyze(construct the_construct, principal_type parent, analysis_pass pass) {
+    public analysis_result analyze(construct the_construct, principal_type parent,
+        analysis_pass pass) {
       principal_type old_parent = this.parent;
       analysis_pass old_pass = this.pass;
 
       this.parent = parent;
       this.pass = pass;
 
-      action result = call(the_construct);
+      analysis_result result = call(the_construct);
 
       this.parent = old_parent;
       this.pass = old_pass;
 
       return result;
+    }
+
+    public action analyze_action(construct the_construct, principal_type parent,
+        analysis_pass pass) {
+      analysis_result result = analyze(the_construct, parent, pass);
+
+      if (!(result instanceof action)) {
+        error_signal error = new error_signal(notification_type.ANALYSIS_ERROR, the_construct);
+        feedback.report(error);
+        return error;
+      }
+
+      return (action) result;
     }
 
     public void analyze_all(List<construct> constructs, principal_type parent, analysis_pass pass) {
@@ -162,7 +176,7 @@ public class analysis {
     }
 
     @Override
-    public action call_construct(construct the_construct) {
+    public analysis_result call_construct(construct the_construct) {
       error_signal error_result =
         new error_signal(
           new notification_message_class(notification_type.ANALYSIS_ERROR,
@@ -175,8 +189,8 @@ public class analysis {
     }
 
     @Override
-    public action call_identifier(identifier the_identifier) {
-      @Nullable action result = the_analysis_context.get_binding(the_identifier);
+    public analysis_result call_identifier(identifier the_identifier) {
+      @Nullable analysis_result result = the_analysis_context.get_binding(the_identifier);
       if (result != null) {
         return result;
       }
@@ -188,12 +202,12 @@ public class analysis {
     }
 
     @Override
-    public action call_operator(operator the_operator) {
+    public analysis_result call_operator(operator the_operator) {
       return call_construct(the_operator);
     }
 
     @Override
-    public action call_string_literal(string_literal the_string_literal) {
+    public analysis_result call_string_literal(string_literal the_string_literal) {
       return the_string_literal;
     }
 
@@ -214,9 +228,9 @@ public class analysis {
     }
 
     public action analyze_resolve(construct qualifier, construct name) {
-      action qualifier_action = analyze(qualifier, parent, pass);
+      action qualifier_action = analyze_action(qualifier, parent, pass);
       if (qualifier_action instanceof error_signal) {
-        return qualifier_action;
+        return (error_signal) qualifier_action;
       }
 
       if (!(name instanceof identifier)) {
@@ -230,8 +244,8 @@ public class analysis {
     }
 
     @Override
-    public action call_parameter_construct(parameter_construct the_parameter_construct) {
-      @Nullable action result = the_analysis_context.get_binding(the_parameter_construct);
+    public analysis_result call_parameter_construct(parameter_construct the_parameter_construct) {
+      @Nullable analysis_result result = the_analysis_context.get_binding(the_parameter_construct);
       if (result != null) {
         return result;
       }
@@ -255,7 +269,7 @@ public class analysis {
         }
       }
 
-      action main_action = analyze(the_parameter_construct.main(), parent, pass);
+      action main_action = analyze_action(the_parameter_construct.main(), parent, pass);
       if (main_action instanceof error_signal) {
         return main_action;
       }
@@ -264,7 +278,7 @@ public class analysis {
       List<action> parameter_actions = new ArrayList<action>();
 
       for (int i = 0; i < parameters.size(); ++i) {
-        action parameter_action = analyze(parameters.get(i), parent, pass);
+        action parameter_action = analyze_action(parameters.get(i), parent, pass);
         // TODO: process more parameters
         if (parameter_action instanceof error_signal) {
           return parameter_action;
@@ -316,27 +330,27 @@ public class analysis {
     }
 
     @Override
-    public action call_modifier_construct(modifier_construct the_modifier_construct) {
+    public analysis_result call_modifier_construct(modifier_construct the_modifier_construct) {
       return call_construct(the_modifier_construct);
     }
 
     @Override
-    public action call_s_expression(s_expression the_s_expression) {
+    public analysis_result call_s_expression(s_expression the_s_expression) {
       return call_construct(the_s_expression);
     }
 
     @Override
-    public action call_block_construct(block_construct the_block_construct) {
+    public analysis_result call_block_construct(block_construct the_block_construct) {
       return call_construct(the_block_construct);
     }
 
     @Override
-    public action call_return_construct(return_construct the_return_construct) {
+    public analysis_result call_return_construct(return_construct the_return_construct) {
       return call_construct(the_return_construct);
     }
 
     @Override
-    public action call_variable_construct(variable_construct the_variable_construct) {
+    public analysis_result call_variable_construct(variable_construct the_variable_construct) {
       if (pass == analysis_pass.TYPE_PASS) {
         return null;
       }
@@ -344,7 +358,7 @@ public class analysis {
       if (pass == analysis_pass.MEMBER_PASS) {
         @Nullable construct type_construct = the_variable_construct.type();
         assert type_construct != null; // TODO: signal error otherwise
-        action the_type_action = analyze(type_construct, parent, pass);
+        action the_type_action = analyze_action(type_construct, parent, pass);
         if (!(the_type_action instanceof type_action)) {
           error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
               type_construct);
@@ -356,7 +370,8 @@ public class analysis {
         variable_declaration the_declaration = new variable_declaration(result_type, name, parent,
             type_construct);
         // TODO: handle readonly flavor.
-        the_analysis_context.add_action(parent, name, the_declaration);
+        the_analysis_context.add_action(parent, name, new variable_action_class(the_declaration));
+        the_analysis_context.add_binding(the_variable_construct, the_declaration);
         return the_declaration;
       }
 
@@ -375,11 +390,12 @@ public class analysis {
         source the_source) {
       variable_declaration this_declaration = new variable_declaration(declared_type,
           names.THIS_NAME, inner_frame, the_source);
-      the_analysis_context.add_action(inner_frame, names.THIS_NAME, this_declaration);
+      the_analysis_context.add_action(inner_frame, names.THIS_NAME,
+          new variable_action_class(this_declaration));
     }
 
     @Override
-    public action call_procedure_construct(procedure_construct the_procedure_construct) {
+    public analysis_result call_procedure_construct(procedure_construct the_procedure_construct) {
       if (pass == analysis_pass.TYPE_PASS) {
         return null;
       }
@@ -392,7 +408,7 @@ public class analysis {
           feedback.report(result);
           return result;
         }
-        action return_type_action = analyze(return_type_construct, parent, pass);
+        action return_type_action = analyze_action(return_type_construct, parent, pass);
         if (!(return_type_action instanceof type_action)) {
           error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
               return_type_construct);
@@ -419,12 +435,12 @@ public class analysis {
     }
 
     @Override
-    public action call_dispatch_construct(dispatch_construct the_dispatch_construct) {
+    public analysis_result call_dispatch_construct(dispatch_construct the_dispatch_construct) {
       if (pass != analysis_pass.MEMBER_PASS) {
         return null;
       }
 
-      action the_type_action = analyze(the_dispatch_construct.the_type(), parent, pass);
+      action the_type_action = analyze_action(the_dispatch_construct.the_type(), parent, pass);
       if (!(the_type_action instanceof type_action)) {
         error_signal result = new error_signal(notification_type.TYPE_EXPECTED,
             the_dispatch_construct.the_type());
@@ -435,13 +451,13 @@ public class analysis {
     }
 
     @Override
-    public action call_supertype_construct(supertype_construct the_supertype_construct) {
+    public analysis_result call_supertype_construct(supertype_construct the_supertype_construct) {
       if (pass != analysis_pass.MEMBER_PASS) {
         return null;
       }
 
       for (construct supertype : the_supertype_construct.supertypes()) {
-        action supertype_action = analyze(supertype, parent, pass);
+        action supertype_action = analyze_action(supertype, parent, pass);
         if (!(supertype_action instanceof type_action)) {
           error_signal result = new error_signal(notification_type.TYPE_EXPECTED, supertype);
           feedback.report(result);
@@ -455,7 +471,7 @@ public class analysis {
     }
 
     @Override
-    public action call_type_construct(type_construct the_type_construct) {
+    public analysis_result call_type_construct(type_construct the_type_construct) {
       principal_type declared_type;
       type_declaration the_type_declaration;
       type_kind the_type_kind = the_type_construct.the_type_kind();

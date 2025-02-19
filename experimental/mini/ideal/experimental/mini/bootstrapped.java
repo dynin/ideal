@@ -637,7 +637,9 @@ public interface bootstrapped {
   interface type extends describable {
     String name();
   }
-  interface action extends source {
+  interface analysis_result extends source {
+  }
+  interface action extends analysis_result {
     type result();
   }
   interface type_action extends action {
@@ -856,7 +858,7 @@ public interface bootstrapped {
       return join_fragments("parametrized_type", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters)), END_OBJECT);
     }
   }
-  class type_declaration implements action {
+  class type_declaration implements analysis_result {
     private final principal_type declared_type;
     private final type_kind the_type_kind;
     private final source the_source;
@@ -874,14 +876,11 @@ public interface bootstrapped {
     public source the_source() {
       return the_source;
     }
-    @Override public type result() {
-      return declared_type;
-    }
     @Override public text description() {
       return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_type_kind", the_type_kind), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class variable_declaration implements action {
+  class variable_declaration implements analysis_result {
     private final type value_type;
     private final String name;
     private final principal_type declared_in_type;
@@ -904,14 +903,34 @@ public interface bootstrapped {
     public source the_source() {
       return the_source;
     }
-    @Override public type result() {
-      return value_type;
-    }
     @Override public text description() {
       return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("name", name), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class procedure_declaration implements action {
+  interface variable_action extends action {
+    variable_declaration the_declaration();
+    source the_source();
+    type result();
+  }
+  class variable_action_class implements variable_action {
+    private final variable_declaration the_declaration;
+    public variable_action_class(variable_declaration the_declaration) {
+      this.the_declaration = the_declaration;
+    }
+    @Override public variable_declaration the_declaration() {
+      return the_declaration;
+    }
+    @Override public source the_source() {
+      return the_declaration;
+    }
+    @Override public type result() {
+      return the_declaration.value_type();
+    }
+    @Override public text description() {
+      return join_fragments("variable_action_class", START_OBJECT, SPACE, describe(the_declaration), SPACE, END_OBJECT);
+    }
+  }
+  class procedure_declaration implements analysis_result {
     private final type return_type;
     private final String name;
     private final List<variable_declaration> parameters;
@@ -939,9 +958,6 @@ public interface bootstrapped {
     public source the_source() {
       return the_source;
     }
-    @Override public type result() {
-      return core_type.VOID;
-    }
     @Override public text description() {
       return join_fragments("procedure_declaration", START_OBJECT, NEWLINE, indent(field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
     }
@@ -956,6 +972,7 @@ public interface bootstrapped {
     @Nullable action get_action(type the_type, String name);
     void add_supertype(type subtype, type supertype);
     Set<type> get_all_supertypes(type the_type);
+    Set<type> get_direct_subtypes(type the_type);
   }
   enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),

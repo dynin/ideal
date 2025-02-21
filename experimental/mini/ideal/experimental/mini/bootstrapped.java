@@ -967,12 +967,14 @@ public interface bootstrapped {
     MEMBER_PASS,
     BODY_PASS;
   }
-  interface analysis_context0 {
+  interface analysis_context {
     void add_action(type the_type, String name, action the_action);
     @Nullable action get_action(type the_type, String name);
     void add_supertype(type subtype, type supertype);
     Set<type> get_all_supertypes(type the_type);
     Set<type> get_direct_subtypes(type the_type);
+    void add_binding(construct the_construct, analysis_result the_analysis_result);
+    @Nullable analysis_result get_binding(construct the_construct);
   }
   enum notification_type implements notification_message {
     UNRECOGNIZED_CHARACTER("Unrecognized character"),

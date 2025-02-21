@@ -375,7 +375,7 @@
   BODY_PASS
 )
 
-(interface analysis_context0
+(interface analysis_context
   ; action table——the equivalent of symbol table
   (procedure void add_action ((the type) (variable string name) (the action)))
   (procedure (nullable action) get_action ((the type) (variable string name)))
@@ -383,6 +383,9 @@
   (procedure void add_supertype ((variable type subtype) (variable type supertype)))
   (procedure (set type) get_all_supertypes ((the type)))
   (procedure (set type) get_direct_subtypes ((the type)))
+  ; analysis binding
+  (procedure void add_binding ((the construct) (the analysis_result)))
+  (procedure (nullable analysis_result) get_binding ((the construct)))
 )
 
 ; Notifications

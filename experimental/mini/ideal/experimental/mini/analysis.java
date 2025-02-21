@@ -24,15 +24,16 @@ import javax.annotation.Nullable;
 
 public class analysis {
 
-  public static class analysis_context {
+  public static class base_analysis_context implements analysis_context {
     private final Map<type, type_context> type_contexts;
     private final Map<construct, analysis_result> bindings;
 
-    public analysis_context() {
+    public base_analysis_context() {
       type_contexts = new HashMap<type, type_context>();
       bindings = new HashMap<construct, analysis_result>();
     }
 
+    @Override
     public void add_action(type the_type, String name, action the_action) {
       type_context the_type_context = get_or_create_context(the_type);
       @Nullable action old_action = the_type_context.action_table.put(name, the_action);
@@ -41,6 +42,7 @@ public class analysis {
       assert old_action == null : "Duplicate action for " + name + " in " + the_type;
     }
 
+    @Override
     public @Nullable action get_action(type the_type, String name) {
       do {
         @Nullable type_context the_type_context = type_contexts.get(the_type);
@@ -60,6 +62,7 @@ public class analysis {
       return null;
     }
 
+    @Override
     public void add_supertype(type subtype, type supertype) {
       type_context the_subtype_context = get_or_create_context(subtype);
       boolean unique_super = the_subtype_context.supertypes.add(supertype);
@@ -71,6 +74,7 @@ public class analysis {
       }
     }
 
+    @Override
     public Set<type> get_all_supertypes(type the_type) {
       Set<type> result = new HashSet<type>();
       add_supertypes_helper(the_type, result);
@@ -90,6 +94,7 @@ public class analysis {
       }
     }
 
+    @Override
     public Set<type> get_direct_subtypes(type the_type) {
       @Nullable type_context the_type_context = type_contexts.get(the_type);
       if (the_type_context != null) {
@@ -99,11 +104,13 @@ public class analysis {
       }
     }
 
+    @Override
     public void add_binding(construct the_construct, analysis_result the_analysis_result) {
       analysis_result old_analysis_result = bindings.put(the_construct, the_analysis_result);
       assert old_analysis_result == null;
     }
 
+    @Override
     public @Nullable analysis_result get_binding(construct the_construct) {
       return bindings.get(the_construct);
     }

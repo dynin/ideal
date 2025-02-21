@@ -485,7 +485,7 @@ public class analysis {
 
       if (pass == analysis_pass.TYPE_PASS) {
         declared_type = new principal_type_class(the_type_construct.name(), the_type_kind, parent);
-        the_type_declaration = new type_declaration(declared_type, the_type_kind,
+        the_type_declaration = new type_declaration(declared_type, the_type_kind, parent,
             the_type_construct);
         the_analysis_context.add_binding(the_type_construct, the_type_declaration);
         the_analysis_context.add_action(parent, the_type_construct.name(),

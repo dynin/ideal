@@ -858,13 +858,18 @@ public interface bootstrapped {
       return join_fragments("parametrized_type", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters)), END_OBJECT);
     }
   }
-  class type_declaration implements analysis_result {
+  interface declaration extends analysis_result, source {
+    principal_type declared_in_type();
+  }
+  class type_declaration implements declaration {
     private final principal_type declared_type;
     private final type_kind the_type_kind;
+    private final principal_type declared_in_type;
     private final source the_source;
-    public type_declaration(principal_type declared_type, type_kind the_type_kind, source the_source) {
+    public type_declaration(principal_type declared_type, type_kind the_type_kind, principal_type declared_in_type, source the_source) {
       this.declared_type = declared_type;
       this.the_type_kind = the_type_kind;
+      this.declared_in_type = declared_in_type;
       this.the_source = the_source;
     }
     public principal_type declared_type() {
@@ -873,14 +878,17 @@ public interface bootstrapped {
     public type_kind the_type_kind() {
       return the_type_kind;
     }
-    public source the_source() {
+    @Override public principal_type declared_in_type() {
+      return declared_in_type;
+    }
+    @Override public source the_source() {
       return the_source;
     }
     @Override public text description() {
-      return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_type_kind", the_type_kind), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_type_kind", the_type_kind), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
     }
   }
-  class variable_declaration implements analysis_result {
+  class variable_declaration implements declaration {
     private final type value_type;
     private final String name;
     private final principal_type declared_in_type;
@@ -897,10 +905,10 @@ public interface bootstrapped {
     public String name() {
       return name;
     }
-    public principal_type declared_in_type() {
+    @Override public principal_type declared_in_type() {
       return declared_in_type;
     }
-    public source the_source() {
+    @Override public source the_source() {
       return the_source;
     }
     @Override public text description() {
@@ -930,7 +938,7 @@ public interface bootstrapped {
       return join_fragments("variable_action_class", START_OBJECT, SPACE, describe(the_declaration), SPACE, END_OBJECT);
     }
   }
-  class procedure_declaration implements analysis_result {
+  class procedure_declaration implements declaration {
     private final type return_type;
     private final String name;
     private final List<variable_declaration> parameters;
@@ -952,10 +960,10 @@ public interface bootstrapped {
     public List<variable_declaration> parameters() {
       return parameters;
     }
-    public principal_type declared_in_type() {
+    @Override public principal_type declared_in_type() {
       return declared_in_type;
     }
-    public source the_source() {
+    @Override public source the_source() {
       return the_source;
     }
     @Override public text description() {

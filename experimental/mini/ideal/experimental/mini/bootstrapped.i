@@ -338,19 +338,25 @@
   (variable (override) principal_type parent (. main parent))
 )
 
+(interface declaration
+  (extends analysis_result source)
+  (variable principal_type declared_in_type)
+)
+
 (class type_declaration
-  (implements analysis_result)
+  (implements declaration)
   (variable principal_type declared_type)
   (variable type_kind the_type_kind)
-  (variable source the_source)
+  (variable (override) principal_type declared_in_type)
+  (variable (override) source the_source)
 )
 
 (class variable_declaration
-  (implements analysis_result)
+  (implements declaration)
   (variable type value_type)
   (variable string name)
-  (variable principal_type declared_in_type)
-  (variable source the_source)
+  (variable (override) principal_type declared_in_type)
+  (variable (override) source the_source)
 )
 
 (datatype variable_action
@@ -361,12 +367,12 @@
 )
 
 (class procedure_declaration
-  (implements analysis_result)
+  (implements declaration)
   (variable type return_type)
   (variable string name)
   (variable (list variable_declaration) parameters)
-  (variable principal_type declared_in_type)
-  (variable source the_source)
+  (variable (override) principal_type declared_in_type)
+  (variable (override) source the_source)
 )
 
 (enum analysis_pass

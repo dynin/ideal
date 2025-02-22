@@ -269,10 +269,10 @@ class parser {
       String name = ((identifier) parameters.get(0)).name();
       // TODO: handle parameters
       List<construct> body = parameters.subList(1, parameters.size());
-      source the_source = parameters.get(0);
+      origin the_origin = parameters.get(0);
 
       return new type_construct(new ArrayList<modifier_construct>(), the_type_kind, name, null,
-          body, the_source);
+          body, the_origin);
     }
   };
 
@@ -290,8 +290,8 @@ class parser {
       }
 
       // TODO: should this be a parameter to parse()?
-      source the_source = parameters.get(0);
-      return new supertype_construct(the_supertype_kind, parameters, the_source);
+      origin the_origin = parameters.get(0);
+      return new supertype_construct(the_supertype_kind, parameters, the_origin);
     }
   };
 

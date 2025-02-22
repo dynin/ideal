@@ -29,28 +29,28 @@
 
 ; Sources
 
-(interface source
+(interface origin
   (extends describable)
-  ; The source of the source: we must go deeper...
-  (variable (nullable source) the_source)
+  ; The origin of the origin: we must go deeper...
+  (variable (nullable origin) the_origin)
 )
 
 (datatype source_text
-  (extends source)
+  (extends origin)
   (variable string name)
   (variable (dont_describe) string content)
-  (variable (override) (nullable source) the_source null)
+  (variable (override) (nullable origin) the_origin null)
 )
 
 (datatype text_position
-  (extends source)
-  (variable source_text the_source)
+  (extends origin)
+  (variable source_text the_origin)
   (variable integer character_index)
 )
 
-(singleton builtin_source
-  (implements source)
-  (variable (override) (nullable source) the_source null)
+(singleton builtin_origin
+  (implements origin)
+  (variable (override) (nullable origin) the_origin null)
 )
 
 ; Tokens
@@ -78,27 +78,27 @@
 )
 
 (interface token
-  (extends source)
+  (extends origin)
   (variable token_type the_token_type)
 )
 
 (class simple_token
   (implements token)
   (variable (override) token_type the_token_type)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 ; Constructs
 
 (interface construct
-  (extends source)
+  (extends origin)
 )
 
 (class identifier
   (implements token construct)
   (variable string name)
   (variable (override) token_type the_token_type (. core_token_type IDENTIFIER))
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (enum operator_type
@@ -114,7 +114,7 @@
   (implements token construct)
   (variable operator_type the_operator_type)
   (variable (override) token_type the_token_type (. core_token_type OPERATOR))
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class string_literal
@@ -123,7 +123,7 @@
   (variable (nullable string) with_quotes)
   (variable (override) token_type the_token_type (. core_token_type LITERAL))
   (variable (override) type result (. core_type STRING))
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (enum grouping_type
@@ -137,7 +137,7 @@
   (variable construct main)
   (variable (list construct) parameters)
   (variable (nullable grouping_type) grouping)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (enum modifier_kind
@@ -155,19 +155,19 @@
   (implements token construct)
   (variable modifier_kind the_modifier_kind)
   (variable (override) token_type the_token_type (. core_token_type MODIFIER))
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class s_expression
   (implements construct)
   (variable (list construct) parameters)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class block_construct
   (implements construct)
   (variable (list construct) statements)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class conditional_construct
@@ -175,13 +175,13 @@
   (variable construct conditional)
   (variable construct then_branch)
   (variable (nullable construct) else_branch)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class return_construct
   (implements construct)
   (variable (nullable construct) expression)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class variable_construct
@@ -190,7 +190,7 @@
   (variable (nullable construct) type)
   (variable string name)
   (variable (nullable construct) initializer)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class procedure_construct
@@ -200,14 +200,14 @@
   (variable string name)
   (variable (list variable_construct) parameters)
   (variable (nullable construct) body)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class dispatch_construct
   (implements construct)
   (variable string name)
   (variable construct the_type)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (enum supertype_kind
@@ -219,7 +219,7 @@
   (implements construct)
   (variable supertype_kind the_supertype_kind)
   (variable (list construct) supertypes)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (enum type_kind
@@ -239,7 +239,7 @@
   (variable string name)
   (variable (nullable (list construct)) parameters)
   (variable (list construct) body)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (dispatch construct_dispatch construct)
@@ -252,7 +252,7 @@
 )
 
 (interface analysis_result
-  (extends source)
+  (extends origin)
 )
 
 (interface action
@@ -263,14 +263,14 @@
 (datatype type_action
   (extends action)
   (variable type the_type)
-  (variable source the_source)
+  (variable origin the_origin)
   (variable (override) type result the_type)
 )
 
 (datatype value_action
   (extends action)
   (variable type result)
-  (variable source the_source)
+  (variable origin the_origin)
 )
 
 (datatype notification_message
@@ -283,19 +283,19 @@
   (variable string name)
   (variable integer ordinal)
   (variable (override) principal_type result)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class singleton_literal
   (implements value_action)
   (variable (override) principal_type result)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class error_signal
   (implements action)
   (variable notification_message message)
-  (variable source the_source)
+  (variable origin the_origin)
   (variable (override) type result (. core_type ERROR))
 )
 
@@ -339,7 +339,7 @@
 )
 
 (interface declaration
-  (extends analysis_result source)
+  (extends analysis_result origin)
   (variable principal_type declared_in_type)
 )
 
@@ -348,7 +348,7 @@
   (variable principal_type declared_type)
   (variable type_kind the_type_kind)
   (variable (override) principal_type declared_in_type)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (class variable_declaration
@@ -356,13 +356,13 @@
   (variable type value_type)
   (variable string name)
   (variable (override) principal_type declared_in_type)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (datatype variable_action
   (extends action)
   (variable variable_declaration the_declaration)
-  (variable (override) source the_source the_declaration)
+  (variable (override) origin the_origin the_declaration)
   (variable (override) type result (. the_declaration value_type))
 )
 
@@ -372,7 +372,7 @@
   (variable string name)
   (variable (list variable_declaration) parameters)
   (variable (override) principal_type declared_in_type)
-  (variable (override) source the_source)
+  (variable (override) origin the_origin)
 )
 
 (enum analysis_pass

@@ -24,7 +24,7 @@ public class tokenizer {
       int start = index;
       char prefix = content.charAt(index);
       index += 1;
-      source position = new text_position_class(the_source_text, start);
+      origin position = new text_position_class(the_source_text, start);
       if (is_identifier_start(prefix)) {
         while (index < content.length() && is_identifier_part(content.charAt(index))) {
           index += 1;

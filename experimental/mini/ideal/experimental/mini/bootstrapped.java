@@ -51,13 +51,13 @@ public interface bootstrapped {
   interface describable {
     text description();
   }
-  interface source extends describable {
-    @Nullable source the_source();
+  interface origin extends describable {
+    @Nullable origin the_origin();
   }
-  interface source_text extends source {
+  interface source_text extends origin {
     String name();
     String content();
-    @Nullable source the_source();
+    @Nullable origin the_origin();
   }
   class source_text_class implements source_text {
     private final String name;
@@ -72,41 +72,41 @@ public interface bootstrapped {
     @Override public String content() {
       return content;
     }
-    @Override public @Nullable source the_source() {
+    @Override public @Nullable origin the_origin() {
       return null;
     }
     @Override public text description() {
       return join_fragments("source_text_class", START_OBJECT, SPACE, describe(name), SPACE, END_OBJECT);
     }
   }
-  interface text_position extends source {
-    source_text the_source();
+  interface text_position extends origin {
+    source_text the_origin();
     int character_index();
   }
   class text_position_class implements text_position {
-    private final source_text the_source;
+    private final source_text the_origin;
     private final int character_index;
-    public text_position_class(source_text the_source, int character_index) {
-      this.the_source = the_source;
+    public text_position_class(source_text the_origin, int character_index) {
+      this.the_origin = the_origin;
       this.character_index = character_index;
     }
-    @Override public source_text the_source() {
-      return the_source;
+    @Override public source_text the_origin() {
+      return the_origin;
     }
     @Override public int character_index() {
       return character_index;
     }
     @Override public text description() {
-      return join_fragments("text_position_class", START_OBJECT, NEWLINE, indent(field_is("the_source", the_source), field_is("character_index", character_index)), END_OBJECT);
+      return join_fragments("text_position_class", START_OBJECT, NEWLINE, indent(field_is("the_origin", the_origin), field_is("character_index", character_index)), END_OBJECT);
     }
   }
-  class builtin_source implements source {
-    public static final builtin_source instance = new builtin_source();
-    @Override public @Nullable source the_source() {
+  class builtin_origin implements origin {
+    public static final builtin_origin instance = new builtin_origin();
+    @Override public @Nullable origin the_origin() {
       return null;
     }
     @Override public text description() {
-      return new text_string("builtin_source");
+      return new text_string("builtin_origin");
     }
   }
   interface token_type extends describable {
@@ -137,34 +137,34 @@ public interface bootstrapped {
       return join_fragments("punctuation", START_OBJECT, SPACE, describe(symbol), SPACE, END_OBJECT);
     }
   }
-  interface token extends source {
+  interface token extends origin {
     token_type the_token_type();
   }
   class simple_token implements token {
     private final token_type the_token_type;
-    private final source the_source;
-    public simple_token(token_type the_token_type, source the_source) {
+    private final origin the_origin;
+    public simple_token(token_type the_token_type, origin the_origin) {
       this.the_token_type = the_token_type;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     @Override public token_type the_token_type() {
       return the_token_type;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("simple_token", START_OBJECT, NEWLINE, indent(field_is("the_token_type", the_token_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("simple_token", START_OBJECT, NEWLINE, indent(field_is("the_token_type", the_token_type), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
-  interface construct extends source {
+  interface construct extends origin {
   }
   class identifier implements token, construct {
     private final String name;
-    private final source the_source;
-    public identifier(String name, source the_source) {
+    private final origin the_origin;
+    public identifier(String name, origin the_origin) {
       this.name = name;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public String name() {
       return name;
@@ -172,11 +172,11 @@ public interface bootstrapped {
     @Override public token_type the_token_type() {
       return core_token_type.IDENTIFIER;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("identifier", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("identifier", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   enum operator_type {
@@ -195,10 +195,10 @@ public interface bootstrapped {
   }
   class operator implements token, construct {
     private final operator_type the_operator_type;
-    private final source the_source;
-    public operator(operator_type the_operator_type, source the_source) {
+    private final origin the_origin;
+    public operator(operator_type the_operator_type, origin the_origin) {
       this.the_operator_type = the_operator_type;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public operator_type the_operator_type() {
       return the_operator_type;
@@ -206,21 +206,21 @@ public interface bootstrapped {
     @Override public token_type the_token_type() {
       return core_token_type.OPERATOR;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("operator", START_OBJECT, NEWLINE, indent(field_is("the_operator_type", the_operator_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("operator", START_OBJECT, NEWLINE, indent(field_is("the_operator_type", the_operator_type), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class string_literal implements token, construct, value_action {
     private final String value;
     private final @Nullable String with_quotes;
-    private final source the_source;
-    public string_literal(String value, @Nullable String with_quotes, source the_source) {
+    private final origin the_origin;
+    public string_literal(String value, @Nullable String with_quotes, origin the_origin) {
       this.value = value;
       this.with_quotes = with_quotes;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public String value() {
       return value;
@@ -234,11 +234,11 @@ public interface bootstrapped {
     @Override public type result() {
       return core_type.STRING;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("string_literal", START_OBJECT, NEWLINE, indent(field_is("value", value), field_is("with_quotes", with_quotes), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("string_literal", START_OBJECT, NEWLINE, indent(field_is("value", value), field_is("with_quotes", with_quotes), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   enum grouping_type {
@@ -250,12 +250,12 @@ public interface bootstrapped {
     private final construct main;
     private final List<construct> parameters;
     private final @Nullable grouping_type grouping;
-    private final source the_source;
-    public parameter_construct(construct main, List<construct> parameters, @Nullable grouping_type grouping, source the_source) {
+    private final origin the_origin;
+    public parameter_construct(construct main, List<construct> parameters, @Nullable grouping_type grouping, origin the_origin) {
       this.main = main;
       this.parameters = parameters;
       this.grouping = grouping;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public construct main() {
       return main;
@@ -266,11 +266,11 @@ public interface bootstrapped {
     public @Nullable grouping_type grouping() {
       return grouping;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("parameter_construct", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters), field_is("grouping", grouping), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("parameter_construct", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters), field_is("grouping", grouping), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   enum modifier_kind {
@@ -285,10 +285,10 @@ public interface bootstrapped {
   }
   class modifier_construct implements token, construct {
     private final modifier_kind the_modifier_kind;
-    private final source the_source;
-    public modifier_construct(modifier_kind the_modifier_kind, source the_source) {
+    private final origin the_origin;
+    public modifier_construct(modifier_kind the_modifier_kind, origin the_origin) {
       this.the_modifier_kind = the_modifier_kind;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public modifier_kind the_modifier_kind() {
       return the_modifier_kind;
@@ -296,57 +296,57 @@ public interface bootstrapped {
     @Override public token_type the_token_type() {
       return core_token_type.MODIFIER;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("modifier_construct", START_OBJECT, NEWLINE, indent(field_is("the_modifier_kind", the_modifier_kind), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("modifier_construct", START_OBJECT, NEWLINE, indent(field_is("the_modifier_kind", the_modifier_kind), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class s_expression implements construct {
     private final List<construct> parameters;
-    private final source the_source;
-    public s_expression(List<construct> parameters, source the_source) {
+    private final origin the_origin;
+    public s_expression(List<construct> parameters, origin the_origin) {
       this.parameters = parameters;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public List<construct> parameters() {
       return parameters;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("s_expression", START_OBJECT, NEWLINE, indent(field_is("parameters", parameters), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("s_expression", START_OBJECT, NEWLINE, indent(field_is("parameters", parameters), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class block_construct implements construct {
     private final List<construct> statements;
-    private final source the_source;
-    public block_construct(List<construct> statements, source the_source) {
+    private final origin the_origin;
+    public block_construct(List<construct> statements, origin the_origin) {
       this.statements = statements;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public List<construct> statements() {
       return statements;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("block_construct", START_OBJECT, NEWLINE, indent(field_is("statements", statements), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("block_construct", START_OBJECT, NEWLINE, indent(field_is("statements", statements), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class conditional_construct implements construct {
     private final construct conditional;
     private final construct then_branch;
     private final @Nullable construct else_branch;
-    private final source the_source;
-    public conditional_construct(construct conditional, construct then_branch, @Nullable construct else_branch, source the_source) {
+    private final origin the_origin;
+    public conditional_construct(construct conditional, construct then_branch, @Nullable construct else_branch, origin the_origin) {
       this.conditional = conditional;
       this.then_branch = then_branch;
       this.else_branch = else_branch;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public construct conditional() {
       return conditional;
@@ -357,28 +357,28 @@ public interface bootstrapped {
     public @Nullable construct else_branch() {
       return else_branch;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("conditional_construct", START_OBJECT, NEWLINE, indent(field_is("conditional", conditional), field_is("then_branch", then_branch), field_is("else_branch", else_branch), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("conditional_construct", START_OBJECT, NEWLINE, indent(field_is("conditional", conditional), field_is("then_branch", then_branch), field_is("else_branch", else_branch), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class return_construct implements construct {
     private final @Nullable construct expression;
-    private final source the_source;
-    public return_construct(@Nullable construct expression, source the_source) {
+    private final origin the_origin;
+    public return_construct(@Nullable construct expression, origin the_origin) {
       this.expression = expression;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public @Nullable construct expression() {
       return expression;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("return_construct", START_OBJECT, NEWLINE, indent(field_is("expression", expression), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("return_construct", START_OBJECT, NEWLINE, indent(field_is("expression", expression), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class variable_construct implements construct {
@@ -386,13 +386,13 @@ public interface bootstrapped {
     private final @Nullable construct type;
     private final String name;
     private final @Nullable construct initializer;
-    private final source the_source;
-    public variable_construct(List<modifier_construct> modifiers, @Nullable construct type, String name, @Nullable construct initializer, source the_source) {
+    private final origin the_origin;
+    public variable_construct(List<modifier_construct> modifiers, @Nullable construct type, String name, @Nullable construct initializer, origin the_origin) {
       this.modifiers = modifiers;
       this.type = type;
       this.name = name;
       this.initializer = initializer;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public List<modifier_construct> modifiers() {
       return modifiers;
@@ -406,11 +406,11 @@ public interface bootstrapped {
     public @Nullable construct initializer() {
       return initializer;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("variable_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("type", type), field_is("name", name), field_is("initializer", initializer), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("variable_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("type", type), field_is("name", name), field_is("initializer", initializer), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class procedure_construct implements construct {
@@ -419,14 +419,14 @@ public interface bootstrapped {
     private final String name;
     private final List<variable_construct> parameters;
     private final @Nullable construct body;
-    private final source the_source;
-    public procedure_construct(List<modifier_construct> modifiers, @Nullable construct return_type, String name, List<variable_construct> parameters, @Nullable construct body, source the_source) {
+    private final origin the_origin;
+    public procedure_construct(List<modifier_construct> modifiers, @Nullable construct return_type, String name, List<variable_construct> parameters, @Nullable construct body, origin the_origin) {
       this.modifiers = modifiers;
       this.return_type = return_type;
       this.name = name;
       this.parameters = parameters;
       this.body = body;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public List<modifier_construct> modifiers() {
       return modifiers;
@@ -443,21 +443,21 @@ public interface bootstrapped {
     public @Nullable construct body() {
       return body;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("procedure_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("procedure_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class dispatch_construct implements construct {
     private final String name;
     private final construct the_type;
-    private final source the_source;
-    public dispatch_construct(String name, construct the_type, source the_source) {
+    private final origin the_origin;
+    public dispatch_construct(String name, construct the_type, origin the_origin) {
       this.name = name;
       this.the_type = the_type;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public String name() {
       return name;
@@ -465,11 +465,11 @@ public interface bootstrapped {
     public construct the_type() {
       return the_type;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("dispatch_construct", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_type", the_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("dispatch_construct", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("the_type", the_type), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   enum supertype_kind {
@@ -479,11 +479,11 @@ public interface bootstrapped {
   class supertype_construct implements construct {
     private final supertype_kind the_supertype_kind;
     private final List<construct> supertypes;
-    private final source the_source;
-    public supertype_construct(supertype_kind the_supertype_kind, List<construct> supertypes, source the_source) {
+    private final origin the_origin;
+    public supertype_construct(supertype_kind the_supertype_kind, List<construct> supertypes, origin the_origin) {
       this.the_supertype_kind = the_supertype_kind;
       this.supertypes = supertypes;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public supertype_kind the_supertype_kind() {
       return the_supertype_kind;
@@ -491,11 +491,11 @@ public interface bootstrapped {
     public List<construct> supertypes() {
       return supertypes;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("supertype_construct", START_OBJECT, NEWLINE, indent(field_is("the_supertype_kind", the_supertype_kind), field_is("supertypes", supertypes), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("supertype_construct", START_OBJECT, NEWLINE, indent(field_is("the_supertype_kind", the_supertype_kind), field_is("supertypes", supertypes), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   enum type_kind {
@@ -513,14 +513,14 @@ public interface bootstrapped {
     private final String name;
     private final @Nullable List<construct> parameters;
     private final List<construct> body;
-    private final source the_source;
-    public type_construct(List<modifier_construct> modifiers, type_kind the_type_kind, String name, @Nullable List<construct> parameters, List<construct> body, source the_source) {
+    private final origin the_origin;
+    public type_construct(List<modifier_construct> modifiers, type_kind the_type_kind, String name, @Nullable List<construct> parameters, List<construct> body, origin the_origin) {
       this.modifiers = modifiers;
       this.the_type_kind = the_type_kind;
       this.name = name;
       this.parameters = parameters;
       this.body = body;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public List<modifier_construct> modifiers() {
       return modifiers;
@@ -537,11 +537,11 @@ public interface bootstrapped {
     public List<construct> body() {
       return body;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("type_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("the_type_kind", the_type_kind), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("type_construct", START_OBJECT, NEWLINE, indent(field_is("modifiers", modifiers), field_is("the_type_kind", the_type_kind), field_is("name", name), field_is("parameters", parameters), field_is("body", body), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   abstract class construct_dispatch<result> implements function<result, construct> {
@@ -637,55 +637,55 @@ public interface bootstrapped {
   interface type extends describable {
     String name();
   }
-  interface analysis_result extends source {
+  interface analysis_result extends origin {
   }
   interface action extends analysis_result {
     type result();
   }
   interface type_action extends action {
     type the_type();
-    source the_source();
+    origin the_origin();
     type result();
   }
   class type_action_class implements type_action {
     private final type the_type;
-    private final source the_source;
-    public type_action_class(type the_type, source the_source) {
+    private final origin the_origin;
+    public type_action_class(type the_type, origin the_origin) {
       this.the_type = the_type;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     @Override public type the_type() {
       return the_type;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public type result() {
       return the_type;
     }
     @Override public text description() {
-      return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("the_type", the_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("type_action_class", START_OBJECT, NEWLINE, indent(field_is("the_type", the_type), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   interface value_action extends action {
     type result();
-    source the_source();
+    origin the_origin();
   }
   class value_action_class implements value_action {
     private final type result;
-    private final source the_source;
-    public value_action_class(type result, source the_source) {
+    private final origin the_origin;
+    public value_action_class(type result, origin the_origin) {
       this.result = result;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     @Override public type result() {
       return result;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("value_action_class", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("value_action_class", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   interface notification_message {
@@ -710,12 +710,12 @@ public interface bootstrapped {
     private final String name;
     private final int ordinal;
     private final principal_type result;
-    private final source the_source;
-    public enum_literal(String name, int ordinal, principal_type result, source the_source) {
+    private final origin the_origin;
+    public enum_literal(String name, int ordinal, principal_type result, origin the_origin) {
       this.name = name;
       this.ordinal = ordinal;
       this.result = result;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public String name() {
       return name;
@@ -726,48 +726,48 @@ public interface bootstrapped {
     @Override public principal_type result() {
       return result;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("enum_literal", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("ordinal", ordinal), field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("enum_literal", START_OBJECT, NEWLINE, indent(field_is("name", name), field_is("ordinal", ordinal), field_is("result", result), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class singleton_literal implements value_action {
     private final principal_type result;
-    private final source the_source;
-    public singleton_literal(principal_type result, source the_source) {
+    private final origin the_origin;
+    public singleton_literal(principal_type result, origin the_origin) {
       this.result = result;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     @Override public principal_type result() {
       return result;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("singleton_literal", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("singleton_literal", START_OBJECT, NEWLINE, indent(field_is("result", result), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class error_signal implements action {
     private final notification_message message;
-    private final source the_source;
-    public error_signal(notification_message message, source the_source) {
+    private final origin the_origin;
+    public error_signal(notification_message message, origin the_origin) {
       this.message = message;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public notification_message message() {
       return message;
     }
-    public source the_source() {
-      return the_source;
+    public origin the_origin() {
+      return the_origin;
     }
     @Override public type result() {
       return core_type.ERROR;
     }
     @Override public text description() {
-      return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("message", message), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("error_signal", START_OBJECT, NEWLINE, indent(field_is("message", message), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   interface principal_type extends type {
@@ -858,19 +858,19 @@ public interface bootstrapped {
       return join_fragments("parametrized_type", START_OBJECT, NEWLINE, indent(field_is("main", main), field_is("parameters", parameters)), END_OBJECT);
     }
   }
-  interface declaration extends analysis_result, source {
+  interface declaration extends analysis_result, origin {
     principal_type declared_in_type();
   }
   class type_declaration implements declaration {
     private final principal_type declared_type;
     private final type_kind the_type_kind;
     private final principal_type declared_in_type;
-    private final source the_source;
-    public type_declaration(principal_type declared_type, type_kind the_type_kind, principal_type declared_in_type, source the_source) {
+    private final origin the_origin;
+    public type_declaration(principal_type declared_type, type_kind the_type_kind, principal_type declared_in_type, origin the_origin) {
       this.declared_type = declared_type;
       this.the_type_kind = the_type_kind;
       this.declared_in_type = declared_in_type;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public principal_type declared_type() {
       return declared_type;
@@ -881,23 +881,23 @@ public interface bootstrapped {
     @Override public principal_type declared_in_type() {
       return declared_in_type;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_type_kind", the_type_kind), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("type_declaration", START_OBJECT, NEWLINE, indent(field_is("declared_type", declared_type), field_is("the_type_kind", the_type_kind), field_is("declared_in_type", declared_in_type), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   class variable_declaration implements declaration {
     private final type value_type;
     private final String name;
     private final principal_type declared_in_type;
-    private final source the_source;
-    public variable_declaration(type value_type, String name, principal_type declared_in_type, source the_source) {
+    private final origin the_origin;
+    public variable_declaration(type value_type, String name, principal_type declared_in_type, origin the_origin) {
       this.value_type = value_type;
       this.name = name;
       this.declared_in_type = declared_in_type;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public type value_type() {
       return value_type;
@@ -908,16 +908,16 @@ public interface bootstrapped {
     @Override public principal_type declared_in_type() {
       return declared_in_type;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("name", name), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("variable_declaration", START_OBJECT, NEWLINE, indent(field_is("value_type", value_type), field_is("name", name), field_is("declared_in_type", declared_in_type), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   interface variable_action extends action {
     variable_declaration the_declaration();
-    source the_source();
+    origin the_origin();
     type result();
   }
   class variable_action_class implements variable_action {
@@ -928,7 +928,7 @@ public interface bootstrapped {
     @Override public variable_declaration the_declaration() {
       return the_declaration;
     }
-    @Override public source the_source() {
+    @Override public origin the_origin() {
       return the_declaration;
     }
     @Override public type result() {
@@ -943,13 +943,13 @@ public interface bootstrapped {
     private final String name;
     private final List<variable_declaration> parameters;
     private final principal_type declared_in_type;
-    private final source the_source;
-    public procedure_declaration(type return_type, String name, List<variable_declaration> parameters, principal_type declared_in_type, source the_source) {
+    private final origin the_origin;
+    public procedure_declaration(type return_type, String name, List<variable_declaration> parameters, principal_type declared_in_type, origin the_origin) {
       this.return_type = return_type;
       this.name = name;
       this.parameters = parameters;
       this.declared_in_type = declared_in_type;
-      this.the_source = the_source;
+      this.the_origin = the_origin;
     }
     public type return_type() {
       return return_type;
@@ -963,11 +963,11 @@ public interface bootstrapped {
     @Override public principal_type declared_in_type() {
       return declared_in_type;
     }
-    @Override public source the_source() {
-      return the_source;
+    @Override public origin the_origin() {
+      return the_origin;
     }
     @Override public text description() {
-      return join_fragments("procedure_declaration", START_OBJECT, NEWLINE, indent(field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("declared_in_type", declared_in_type), field_is("the_source", the_source)), END_OBJECT);
+      return join_fragments("procedure_declaration", START_OBJECT, NEWLINE, indent(field_is("return_type", return_type), field_is("name", name), field_is("parameters", parameters), field_is("declared_in_type", declared_in_type), field_is("the_origin", the_origin)), END_OBJECT);
     }
   }
   enum analysis_pass {

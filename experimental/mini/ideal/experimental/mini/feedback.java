@@ -20,11 +20,11 @@ class feedback {
   public static void report(error_signal the_error_signal) {
     String message = the_error_signal.message().text();
 
-    @Nullable source deep_source = the_error_signal.the_source();
-    while (deep_source != null) {
-      if (deep_source instanceof text_position) {
-        text_position position = (text_position) deep_source;
-        String content = position.the_source().content();
+    @Nullable origin deep_origin = the_error_signal.the_origin();
+    while (deep_origin != null) {
+      if (deep_origin instanceof text_position) {
+        text_position position = (text_position) deep_origin;
+        String content = position.the_origin().content();
         int index = position.character_index();
         int line_number = 1;
         for (int i = index - 1; i >= 0; --i) {
@@ -33,7 +33,7 @@ class feedback {
           }
         }
         StringBuilder detailed = new StringBuilder();
-        detailed.append(position.the_source().name()).append(":");
+        detailed.append(position.the_origin().name()).append(":");
         detailed.append(line_number).append(": ");
         detailed.append(message).append('\n');
 
@@ -61,15 +61,15 @@ class feedback {
         message = detailed.toString();
         break;
       }
-      if (deep_source instanceof source_text) {
-        message = ((source_text) deep_source).name() + ": " + message;
+      if (deep_origin instanceof source_text) {
+        message = ((source_text) deep_origin).name() + ": " + message;
         break;
       }
-      if (deep_source instanceof builtin_source) {
+      if (deep_origin instanceof builtin_origin) {
         message = "<builtin>: " + message;
         break;
       }
-      deep_source = deep_source.the_source();
+      deep_origin = deep_origin.the_origin();
     }
 
     System.err.println(message);

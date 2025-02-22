@@ -394,9 +394,9 @@ public class analysis {
     }
 
     private void add_this_variable(principal_type declared_type, principal_type inner_frame,
-        source the_source) {
+        origin the_origin) {
       variable_declaration this_declaration = new variable_declaration(declared_type,
-          names.THIS_NAME, inner_frame, the_source);
+          names.THIS_NAME, inner_frame, the_origin);
       the_analysis_context.add_action(inner_frame, names.THIS_NAME,
           new variable_action_class(this_declaration));
     }

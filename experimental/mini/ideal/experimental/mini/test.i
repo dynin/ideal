@@ -6,25 +6,25 @@
   (variable text description)
 )
 
-(interface source
-  (variable (nullable source) deeper)
+(interface origin
+  (variable (nullable origin) deeper)
 )
 ; comment...
 
 (datatype source_text
-  (extends source describable)
+  (extends origin describable)
   (variable string name)
   (variable (dont_describe) string content)
   (variable (nullable string) optional)
-  (variable (override) (nullable source) the_source null)
+  (variable (override) (nullable origin) the_origin null)
   (variable (list string) list_test)
   (variable (override) string foo (. operator_type DOT))
 )
 
 (datatype source_text_too
-  (extends source describable)
-  (variable source the_source)
-  (variable (override) (nullable source) deeper (. the_source deeper))
+  (extends origin describable)
+  (variable origin the_origin)
+  (variable (override) (nullable origin) deeper (. the_origin deeper))
 )
 
 (enum test_enum
@@ -44,7 +44,7 @@
   (variable string symbol)
 )
 
-(dispatch source_dispatch source)
+(dispatch origin_dispatch origin)
 
 (procedure (public) string test (
   (variable string foo)

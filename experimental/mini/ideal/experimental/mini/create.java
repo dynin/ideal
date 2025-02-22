@@ -87,7 +87,7 @@ public class create {
 
     @Override
     public construct call_parameter_construct(parameter_construct the_parameter_construct) {
-      source the_source = the_parameter_construct;
+      origin the_origin = the_parameter_construct;
 
       construct main = the_parameter_construct.main();
       construct transformed_main = transform(main);
@@ -112,12 +112,12 @@ public class create {
       }
 
       construct result = new parameter_construct(transformed_main, parameters, grouping,
-          the_source);
+          the_origin);
 
       @Nullable analysis_result the_result = get_binding(the_parameter_construct);
       if (the_result instanceof variable_action) {
         result = new parameter_construct(result, new ArrayList<construct>(), grouping_type.PARENS,
-            the_source);
+            the_origin);
       }
 
       return result;
@@ -126,12 +126,12 @@ public class create {
     @Override
     public variable_construct call_variable_construct(variable_construct the_variable_construct) {
       assert the_variable_construct.type() != null;
-      source the_source = the_variable_construct;
+      origin the_origin = the_variable_construct;
       List<modifier_construct> modifiers = the_variable_construct.modifiers();
       construct type = transform(the_variable_construct.type());
       if (is_nullable(type)) {
         type = strip_nullable(type);
-        modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_source);
+        modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_origin);
       }
       // TODO: add variable_construct.has_initializer
       @Nullable construct initializer = the_variable_construct.initializer();
@@ -139,20 +139,20 @@ public class create {
         initializer = transform(initializer);
       }
       return new variable_construct(modifiers, type, the_variable_construct.name(), initializer,
-          the_source);
+          the_origin);
     }
 
     @Override
     public procedure_construct call_procedure_construct(
         procedure_construct the_procedure_construct) {
-      source the_source = the_procedure_construct;
+      origin the_origin = the_procedure_construct;
       List<modifier_construct> modifiers = the_procedure_construct.modifiers();
 
       assert the_procedure_construct.return_type() != null;
       construct return_type = transform(the_procedure_construct.return_type());
       if (is_nullable(return_type)) {
         return_type = strip_nullable(return_type);
-        modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_source);
+        modifiers = prepend_modifier(modifier_kind.NULLABLE, modifiers, the_origin);
       }
 
       List<variable_construct> parameters = new ArrayList<variable_construct>();
@@ -166,13 +166,13 @@ public class create {
       }
 
       return new procedure_construct(modifiers, return_type, the_procedure_construct.name(),
-          parameters, body, the_source);
+          parameters, body, the_origin);
     }
 
     private static List<modifier_construct> prepend_modifier(modifier_kind the_modifier_kind,
-        List<modifier_construct> modifiers, source the_source) {
+        List<modifier_construct> modifiers, origin the_origin) {
       List<modifier_construct> result = new ArrayList<modifier_construct>();
-      result.add(new modifier_construct(the_modifier_kind, the_source));
+      result.add(new modifier_construct(the_modifier_kind, the_origin));
       result.addAll(modifiers);
       return result;
     }
@@ -188,12 +188,12 @@ public class create {
     }
 
     private static parameter_construct make_operator(operator_type the_operator_type,
-        construct first_argument, construct second_argument, source the_source) {
+        construct first_argument, construct second_argument, origin the_origin) {
       List<construct> arguments = new ArrayList<construct>();
       arguments.add(first_argument);
       arguments.add(second_argument);
-      return new parameter_construct(new operator(the_operator_type, the_source), arguments,
-          grouping_type.OPERATOR, the_source);
+      return new parameter_construct(new operator(the_operator_type, the_origin), arguments,
+          grouping_type.OPERATOR, the_origin);
     }
 
     @Override
@@ -228,7 +228,7 @@ public class create {
 
       boolean declare_singleton = the_type_kind == type_kind.SINGLETON;
 
-      source the_source = the_type_construct;
+      origin the_origin = the_type_construct;
 
       String interface_name = the_type_construct.name();
       String implementation_name = declare_interface ?
@@ -239,9 +239,9 @@ public class create {
 
       if (declare_interface && declare_implementation) {
         List<construct> super_interface = new ArrayList<construct>();
-        super_interface.add(new identifier(interface_name, the_source));
+        super_interface.add(new identifier(interface_name, the_origin));
         implementation_body.add(new supertype_construct(supertype_kind.IMPLEMENTS, super_interface,
-            the_source));
+            the_origin));
       }
       List<variable_construct> ctor_parameters = new ArrayList<variable_construct>();
       List<construct> ctor_statements = new ArrayList<construct>();
@@ -279,7 +279,7 @@ public class create {
           // Add accessor declaration to the interface
           if (declare_interface) {
             interface_body.add(new procedure_construct(modifiers,
-                type, name, new ArrayList<variable_construct>(), null, the_source));
+                type, name, new ArrayList<variable_construct>(), null, the_origin));
           }
 
           if (declare_implementation) {
@@ -289,18 +289,18 @@ public class create {
               // Add instance variable
               List<modifier_construct> instance_variable_modifiers =
                   prepend_modifier(modifier_kind.PRIVATE,
-                      prepend_modifier(modifier_kind.FINAL, modifiers, the_source), the_source);
+                      prepend_modifier(modifier_kind.FINAL, modifiers, the_origin), the_origin);
               implementation_body.add(new variable_construct(instance_variable_modifiers, type,
-                  name, null, the_source));
+                  name, null, the_origin));
 
               // Add constructor parameter
-              ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_source));
-              identifier variable_identifier = new identifier(name, the_source);
-              identifier this_identifier = new identifier(names.THIS_NAME, the_source);
+              ctor_parameters.add(new variable_construct(modifiers, type, name, null, the_origin));
+              identifier variable_identifier = new identifier(name, the_origin);
+              identifier this_identifier = new identifier(names.THIS_NAME, the_origin);
               construct this_access = make_operator(operator_type.DOT, this_identifier,
-                  variable_identifier, the_source);
+                  variable_identifier, the_origin);
               construct assignment = make_operator(operator_type.ASSIGN, this_access,
-                  variable_identifier, the_source);
+                  variable_identifier, the_origin);
               ctor_statements.add(assignment);
 
               // Add field description
@@ -311,20 +311,20 @@ public class create {
 
             // Add accessor function
             List<modifier_construct> accessor_modifiers =
-                prepend_modifier(modifier_kind.PUBLIC, modifiers, the_source);
+                prepend_modifier(modifier_kind.PUBLIC, modifiers, the_origin);
             if (declare_interface || has_override) {
                 accessor_modifiers = prepend_modifier(modifier_kind.OVERRIDE, accessor_modifiers,
-                    the_source);
+                    the_origin);
             }
 
             construct return_expression = has_initializer ? the_variable_construct.initializer() :
-                new identifier(name, the_source);
-            construct accessor_return = new return_construct(return_expression, the_source);
+                new identifier(name, the_origin);
+            construct accessor_return = new return_construct(return_expression, the_origin);
             List<construct> accessor_statements = new ArrayList<construct>();
             accessor_statements.add(accessor_return);
-            construct accessor_body = new block_construct(accessor_statements, the_source);
+            construct accessor_body = new block_construct(accessor_statements, the_origin);
             procedure_construct accessor = new procedure_construct(accessor_modifiers,
-                type, name, new ArrayList<variable_construct>(), accessor_body, the_source);
+                type, name, new ArrayList<variable_construct>(), accessor_body, the_origin);
             accessor_functions.add(accessor);
           }
         } else if (declare_enum && is_enum_declaration.call(the_construct)) {
@@ -348,7 +348,7 @@ public class create {
                 interface_name,
                 null,
                 interface_body,
-                the_source);
+                the_origin);
         result.add(interface_type);
       }
 
@@ -358,32 +358,32 @@ public class create {
           assert ctor_parameters.isEmpty();
 
           List<modifier_construct> instance_modifiers = new ArrayList<modifier_construct>();
-          instance_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
-          instance_modifiers.add(new modifier_construct(modifier_kind.STATIC, the_source));
-          instance_modifiers.add(new modifier_construct(modifier_kind.FINAL, the_source));
+          instance_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_origin));
+          instance_modifiers.add(new modifier_construct(modifier_kind.STATIC, the_origin));
+          instance_modifiers.add(new modifier_construct(modifier_kind.FINAL, the_origin));
 
           construct instance_ctor = new parameter_construct(
-              make_new(implementation_name, the_source),
+              make_new(implementation_name, the_origin),
               new ArrayList<construct>(),
               grouping_type.PARENS,
-              the_source);
+              the_origin);
 
           variable_construct instance_variable =
               new variable_construct(
                   instance_modifiers,
-                  new identifier(implementation_name, the_source),
+                  new identifier(implementation_name, the_origin),
                   names.INSTANCE_NAME,
                   instance_ctor,
-                  the_source);
+                  the_origin);
           implementation_body.add(instance_variable);
         }
 
         if (!ctor_parameters.isEmpty()) {
           List<modifier_construct> ctor_modifiers = new ArrayList<modifier_construct>();
           if (!declare_enum) {
-            ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_source));
+            ctor_modifiers.add(new modifier_construct(modifier_kind.PUBLIC, the_origin));
           }
-          block_construct ctor_body = new block_construct(ctor_statements, the_source);
+          block_construct ctor_body = new block_construct(ctor_statements, the_origin);
           procedure_construct ctor_procedure =
               new procedure_construct(
                   ctor_modifiers,
@@ -391,7 +391,7 @@ public class create {
                   implementation_name,
                   ctor_parameters,
                   ctor_body,
-                  the_source);
+                  the_origin);
           implementation_body.add(ctor_procedure);
         }
 
@@ -399,7 +399,7 @@ public class create {
 
         if (is_describable(the_declaration)) {
           implementation_body.add(generate_description(implementation_name, describe_fields,
-              declare_enum, the_source));
+              declare_enum, the_origin));
         }
 
         type_construct implementation_type =
@@ -408,7 +408,7 @@ public class create {
                 implementation_name,
                 null,
                 implementation_body,
-                the_source);
+                the_origin);
         result.add(implementation_type);
       }
 
@@ -422,118 +422,118 @@ public class create {
     }
 
     private procedure_construct generate_description(String type_name, List<String> fields,
-        boolean declare_enum, final source the_source) {
+        boolean declare_enum, final origin the_origin) {
 
-      construct name_literal = make_literal(type_name, the_source);
+      construct name_literal = make_literal(type_name, the_origin);
       construct return_expression;
 
       if (fields.isEmpty()) {
         construct argument;
         if (declare_enum) {
           argument = new parameter_construct(
-              new identifier("name", the_source),
+              new identifier("name", the_origin),
               new ArrayList<construct>(),
               grouping_type.PARENS,
-              the_source);
+              the_origin);
         } else {
           argument = name_literal;
         }
         List<construct> ctor_parameters = new ArrayList<construct>();
         ctor_parameters.add(argument);
         return_expression = new parameter_construct(
-            make_new("text_string", the_source),
+            make_new("text_string", the_origin),
             ctor_parameters,
             grouping_type.OPERATOR,
-            the_source);
+            the_origin);
       } else {
         List<construct> join_arguments = new ArrayList<construct>();
         join_arguments.add(name_literal);
-        join_arguments.add(new identifier("START_OBJECT", the_source));
+        join_arguments.add(new identifier("START_OBJECT", the_origin));
 
         if (fields.size() != 1) {
           List<construct> field_calls = map(fields, new function<construct, String>() {
             @Override
             public construct call(String name) {
-              construct name_literal = make_literal(name, the_source);
-              construct name_identifier = new identifier(name, the_source);
-              return call_function2("field_is", name_literal, name_identifier, the_source);
+              construct name_literal = make_literal(name, the_origin);
+              construct name_identifier = new identifier(name, the_origin);
+              return call_function2("field_is", name_literal, name_identifier, the_origin);
             }
           });
-          construct indent_call = new parameter_construct(new identifier("indent", the_source),
-              field_calls, grouping_type.PARENS, the_source);
+          construct indent_call = new parameter_construct(new identifier("indent", the_origin),
+              field_calls, grouping_type.PARENS, the_origin);
 
-          join_arguments.add(new identifier("NEWLINE", the_source));
+          join_arguments.add(new identifier("NEWLINE", the_origin));
           join_arguments.add(indent_call);
         } else {
-          construct name_identifier = new identifier(fields.get(0), the_source);
+          construct name_identifier = new identifier(fields.get(0), the_origin);
 
-          join_arguments.add(new identifier("SPACE", the_source));
-          join_arguments.add(call_function1("describe", name_identifier, the_source));
-          join_arguments.add(new identifier("SPACE", the_source));
+          join_arguments.add(new identifier("SPACE", the_origin));
+          join_arguments.add(call_function1("describe", name_identifier, the_origin));
+          join_arguments.add(new identifier("SPACE", the_origin));
         }
 
-        join_arguments.add(new identifier("END_OBJECT", the_source));
+        join_arguments.add(new identifier("END_OBJECT", the_origin));
         return_expression = new parameter_construct(new identifier("join_fragments",
-            the_source), join_arguments, grouping_type.PARENS, the_source);
+            the_origin), join_arguments, grouping_type.PARENS, the_origin);
       }
 
-      construct description_return = new return_construct(return_expression, the_source);
+      construct description_return = new return_construct(return_expression, the_origin);
       List<construct> description_statements = new ArrayList<construct>();
       description_statements.add(description_return);
-      block_construct description_body = new block_construct(description_statements, the_source);
+      block_construct description_body = new block_construct(description_statements, the_origin);
 
       return new procedure_construct(
-          make_override_public(the_source),
-          new identifier("text", the_source),
+          make_override_public(the_origin),
+          new identifier("text", the_origin),
           "description",
           new ArrayList<variable_construct>(),
           description_body,
-          the_source);
+          the_origin);
     }
 
     public static List<modifier_construct> make_modifiers(modifier_kind modifier1,
-        modifier_kind modifier2, source the_source) {
+        modifier_kind modifier2, origin the_origin) {
       List<modifier_construct> modifiers = new ArrayList<modifier_construct>();
 
-      modifiers.add(new modifier_construct(modifier1, the_source));
-      modifiers.add(new modifier_construct(modifier2, the_source));
+      modifiers.add(new modifier_construct(modifier1, the_origin));
+      modifiers.add(new modifier_construct(modifier2, the_origin));
 
       return modifiers;
     }
 
-    public static List<modifier_construct> make_override_public(source the_source) {
-      return make_modifiers(modifier_kind.OVERRIDE, modifier_kind.PUBLIC, the_source);
+    public static List<modifier_construct> make_override_public(origin the_origin) {
+      return make_modifiers(modifier_kind.OVERRIDE, modifier_kind.PUBLIC, the_origin);
     }
 
-    public static construct make_literal(String value, source the_source) {
+    public static construct make_literal(String value, origin the_origin) {
       // TODO: escape properly.
-      return new string_literal(value, "\"" + value + "\"", the_source);
+      return new string_literal(value, "\"" + value + "\"", the_origin);
     }
 
-    public static construct make_new(String type_name, source the_source) {
+    public static construct make_new(String type_name, origin the_origin) {
       List<construct> new_parameters = new ArrayList<construct>();
-      new_parameters.add(new identifier(type_name, the_source));
+      new_parameters.add(new identifier(type_name, the_origin));
       return new parameter_construct(
-          new operator(operator_type.NEW, the_source),
+          new operator(operator_type.NEW, the_origin),
           new_parameters,
           grouping_type.OPERATOR,
-          the_source);
+          the_origin);
     }
 
-    public static construct call_function1(String name, construct argument0, source the_source) {
+    public static construct call_function1(String name, construct argument0, origin the_origin) {
       List<construct> arguments = new ArrayList<construct>();
       arguments.add(argument0);
-      return new parameter_construct(new identifier(name, the_source),
-          arguments, grouping_type.PARENS, the_source);
+      return new parameter_construct(new identifier(name, the_origin),
+          arguments, grouping_type.PARENS, the_origin);
     }
 
     public static construct call_function2(String name, construct argument0, construct argument1,
-        source the_source) {
+        origin the_origin) {
       List<construct> arguments = new ArrayList<construct>();
       arguments.add(argument0);
       arguments.add(argument1);
-      return new parameter_construct(new identifier(name, the_source),
-          arguments, grouping_type.PARENS, the_source);
+      return new parameter_construct(new identifier(name, the_origin),
+          arguments, grouping_type.PARENS, the_origin);
     }
 
     @Override
@@ -582,25 +582,25 @@ public class create {
 
     @Override
     public construct call_dispatch_construct(dispatch_construct the_dispatch_construct) {
-      source the_source = the_dispatch_construct;
+      origin the_origin = the_dispatch_construct;
 
       construct dispatch_type_construct = the_dispatch_construct.the_type();
 
       List<modifier_construct> type_modifiers = new ArrayList<modifier_construct>();
-      type_modifiers.add(new modifier_construct(modifier_kind.ABSTRACT, the_source));
+      type_modifiers.add(new modifier_construct(modifier_kind.ABSTRACT, the_origin));
 
       List<construct> type_body = new ArrayList<construct>();
 
-      identifier result_identifier = new identifier(names.RESULT_NAME, the_source);
+      identifier result_identifier = new identifier(names.RESULT_NAME, the_origin);
       List<construct> function_parameters = new ArrayList<construct>();
       function_parameters.add(result_identifier);
       function_parameters.add(dispatch_type_construct);
       construct function_type = new parameter_construct(
-          new identifier(names.FUNCTION_NAME, the_source), function_parameters,
-          grouping_type.ANGLE_BRACKETS, the_source);
+          new identifier(names.FUNCTION_NAME, the_origin), function_parameters,
+          grouping_type.ANGLE_BRACKETS, the_origin);
 
       type_body.add(new supertype_construct(supertype_kind.IMPLEMENTS,
-          Collections.singletonList(function_type), the_source));
+          Collections.singletonList(function_type), the_origin));
 
       type_action the_type_action = (type_action) get_binding(dispatch_type_construct);
       assert the_type_action != null;
@@ -609,7 +609,7 @@ public class create {
 
       String parameter_name = names.join_identifier(names.THE_NAME, dispatch_type_name);
       String call_type_name = names.join_identifier(names.CALL_NAME, dispatch_type_name);
-      construct parameter_identifier = new identifier(parameter_name, the_source);
+      construct parameter_identifier = new identifier(parameter_name, the_origin);
       List<construct> call_body = new ArrayList<construct>();
 
       variable_construct call_parameter = new variable_construct(
@@ -617,80 +617,80 @@ public class create {
           dispatch_type_construct,
           parameter_name,
           null,
-          the_source);
+          the_origin);
       procedure_construct abstract_call_procedure = new procedure_construct(
-          make_modifiers(modifier_kind.PUBLIC, modifier_kind.ABSTRACT, the_source),
+          make_modifiers(modifier_kind.PUBLIC, modifier_kind.ABSTRACT, the_origin),
           result_identifier,
           call_type_name,
           Collections.singletonList(call_parameter),
           null,
-          the_source);
+          the_origin);
       type_body.add(abstract_call_procedure);
 
       Set<type> subtypes = the_analysis_context.get_direct_subtypes(disptach_type);
       for (type subtype : subtypes) {
         String subtype_name = subtype.name();
         String call_subtype_name = names.join_identifier(names.CALL_NAME, subtype_name);
-        identifier subtype_identifier = new identifier(subtype_name, the_source);
+        identifier subtype_identifier = new identifier(subtype_name, the_origin);
 
         construct subcall_construct = new parameter_construct(
-            new identifier(call_subtype_name, the_source),
+            new identifier(call_subtype_name, the_origin),
             Collections.<construct>singletonList(
                 make_operator(operator_type.AS, parameter_identifier, subtype_identifier,
-                    the_source)),
+                    the_origin)),
             grouping_type.PARENS,
-            the_source);
-        construct subcall_return = new return_construct(subcall_construct, the_source);
+            the_origin);
+        construct subcall_return = new return_construct(subcall_construct, the_origin);
         construct if_construct = new conditional_construct(
-            make_operator(operator_type.IS, parameter_identifier, subtype_identifier, the_source),
-            new block_construct(Collections.singletonList(subcall_return), the_source),
+            make_operator(operator_type.IS, parameter_identifier, subtype_identifier, the_origin),
+            new block_construct(Collections.singletonList(subcall_return), the_origin),
             null,
-            the_source);
+            the_origin);
         call_body.add(if_construct);
 
         String subtype_name_with_the = names.join_identifier(names.THE_NAME, subtype_name);
         construct supercall_construct = new parameter_construct(
-            new identifier(call_type_name, the_source),
-            Collections.<construct>singletonList(new identifier(subtype_name_with_the, the_source)),
+            new identifier(call_type_name, the_origin),
+            Collections.<construct>singletonList(new identifier(subtype_name_with_the, the_origin)),
             grouping_type.PARENS,
-            the_source);
-        construct supercall_return = new return_construct(supercall_construct, the_source);
+            the_origin);
+        construct supercall_return = new return_construct(supercall_construct, the_origin);
         variable_construct subtype_call_parameter = new variable_construct(
             Collections.<modifier_construct>emptyList(),
             subtype_identifier,
             subtype_name_with_the,
             null,
-            the_source);
+            the_origin);
         procedure_construct subcall_procedure = new procedure_construct(
-            Collections.singletonList(new modifier_construct(modifier_kind.PUBLIC, the_source)),
+            Collections.singletonList(new modifier_construct(modifier_kind.PUBLIC, the_origin)),
             result_identifier,
             call_subtype_name,
             Collections.singletonList(subtype_call_parameter),
-            new block_construct(Collections.singletonList(supercall_return), the_source),
-            the_source);
+            new block_construct(Collections.singletonList(supercall_return), the_origin),
+            the_origin);
         type_body.add(subcall_procedure);
       }
 
       construct subcall_construct = new parameter_construct(
-          new identifier(call_type_name, the_source),
-          Collections.<construct>singletonList(new identifier(parameter_name, the_source)),
+          new identifier(call_type_name, the_origin),
+          Collections.<construct>singletonList(new identifier(parameter_name, the_origin)),
           grouping_type.PARENS,
-          the_source);
-      construct subcall_return = new return_construct(subcall_construct, the_source);
+          the_origin);
+      construct subcall_return = new return_construct(subcall_construct, the_origin);
       call_body.add(subcall_return);
 
       procedure_construct call_procedure = new procedure_construct(
-          make_override_public(the_source),
+          make_override_public(the_origin),
           result_identifier,
           names.CALL_NAME,
           Collections.singletonList(call_parameter),
-          new block_construct(call_body, the_source),
-          the_source);
+          new block_construct(call_body, the_origin),
+          the_origin);
       type_body.add(0, call_procedure);
 
       type_construct result = new type_construct(type_modifiers, type_kind.CLASS,
           the_dispatch_construct.name(), Collections.<construct>singletonList(result_identifier),
-          type_body, the_source);
+          type_body, the_origin);
 
       return result;
     }
@@ -710,7 +710,7 @@ public class create {
 
   private static void add_core_type(analysis_context the_context, core_type the_type) {
     the_context.add_action(top_type.instance, to_lower_case(the_type.name()),
-        new type_action_class(the_type, builtin_source.instance));
+        new type_action_class(the_type, builtin_origin.instance));
   }
 
   public static analysis_context init_analysis_context() {
@@ -724,7 +724,7 @@ public class create {
     add_core_type(the_context, core_type.NULLABLE);
 
     the_context.add_action(top_type.instance, "null",
-        new value_action_class(core_type.NULL, builtin_source.instance));
+        new value_action_class(core_type.NULL, builtin_origin.instance));
 
     return the_context;
   }

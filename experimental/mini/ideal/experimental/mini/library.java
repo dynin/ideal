@@ -36,8 +36,8 @@ public class library {
       List<? extends source_type> source_list,
       function<target_type, source_type> transform) {
     List<target_type> result = new ArrayList<target_type>();
-    for (source_type origin_element : source_list) {
-      result.add(transform.call(origin_element));
+    for (source_type source_element : source_list) {
+      result.add(transform.call(source_element));
     }
     return result;
   }
@@ -45,9 +45,9 @@ public class library {
   public static <element_type> List<element_type> filter(List<? extends element_type> source_list,
       predicate<element_type> the_predicate) {
     List<element_type> result = new ArrayList<element_type>();
-    for (element_type origin_element : source_list) {
-      if (the_predicate.call(origin_element)) {
-        result.add(origin_element);
+    for (element_type source_element : source_list) {
+      if (the_predicate.call(source_element)) {
+        result.add(source_element);
       }
     }
     return result;

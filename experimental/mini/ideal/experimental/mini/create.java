@@ -26,9 +26,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-// TODO: refactor analysis
-import static ideal.experimental.mini.analysis.*;
-
 public class create {
 
   public static abstract class base_transform extends construct_dispatch<construct> {
@@ -327,7 +324,7 @@ public class create {
                 type, name, new ArrayList<variable_construct>(), accessor_body, the_origin);
             accessor_functions.add(accessor);
           }
-        } else if (declare_enum && is_enum_declaration.call(the_construct)) {
+        } else if (declare_enum && analysis.is_enum_declaration.call(the_construct)) {
           implementation_body.add(the_construct);
         } else if (the_construct instanceof procedure_construct) {
           procedure_construct the_procedure_construct =
@@ -714,7 +711,7 @@ public class create {
   }
 
   public static analysis_context init_analysis_context() {
-    analysis_context the_context = new base_analysis_context();
+    analysis_context the_context = new analysis.base_analysis_context();
 
     add_core_type(the_context, core_type.VOID);
     add_core_type(the_context, core_type.INTEGER);
@@ -764,7 +761,7 @@ public class create {
     }
 
     analysis_context the_context = init_analysis_context();
-    analyzer the_analyzer = new analyzer(the_context);
+    analysis.analyzer the_analyzer = new analysis.analyzer(the_context);
 
     for (analysis_pass pass : analysis_pass.values()) {
       the_analyzer.analyze_all(constructs, top_type.instance, pass);

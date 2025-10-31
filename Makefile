@@ -430,6 +430,10 @@ runserver: $(IDEAL_TARGET)
 hello: $(IDEAL_TARGET)
 	$(CREATE) $(FLAGS_RUN) -input=$(HELLO)
 
+activity_tracker: $(IDEAL_TARGET)
+	$(CREATE) $(FLAGS_RUN) -input=experimental/tracker/activity_tracker.i
+
+
 diff: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - library/elements.i
 

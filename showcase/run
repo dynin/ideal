@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0`/..
+
+PROGRAM="$1"
+
+if [[ -z "$PROGRAM" ]]; then
+    echo "Usage: $0 <program>"
+    exit 1
+fi
+
+case "$PROGRAM" in
+    *.i) ;;
+    *) PROGRAM="$PROGRAM.i" ;;
+esac
+
+make build/targets/ideal
+CREATE_RUN=`make create_run`
+$CREATE_RUN -input="showcase/$PROGRAM"

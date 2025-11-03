@@ -77,8 +77,6 @@ TEST_STRING = $(TEST_DIR)/string.i
 TEST_LIST = $(TEST_DIR)/list.i
 
 SHOWCASE_DIR = showcase
-CIRCLE = $(SHOWCASE_DIR)/circle.i
-HELLO = $(SHOWCASE_DIR)/hello.i
 XREFTEST = $(SHOWCASE_DIR)/xreftest.i
 TESTPARSER = $(SHOWCASE_DIR)/testparser.i
 
@@ -233,8 +231,8 @@ gt: $(IDEAL_TARGET)
 dir: $(IDEAL_TARGET) $(ONETWO)
 	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(DIRECTORY)
 
-circle: $(IDEAL_TARGET) $(CIRCLE)
-	$(CREATE) $(FLAGS_RUN_PROGRESS) -input=$(CIRCLE)
+circle:
+	showcase/run circle
 
 generate_showcase: $(IDEAL_TARGET)
 	$(CREATE) -debug-progress -input=$(IDEAL_SOURCE) -target=generate_showcase \
@@ -427,11 +425,14 @@ coach: $(IDEAL_TARGET)
 runserver: $(IDEAL_TARGET)
 	make -C experimental/coach runserver
 
-hello: $(IDEAL_TARGET)
-	$(CREATE) $(FLAGS_RUN) -input=$(HELLO)
+create_run:
+	@echo $(CREATE) $(FLAGS_RUN)
 
-activity_tracker: $(IDEAL_TARGET)
-	$(CREATE) $(FLAGS_RUN) -input=experimental/tracker/activity_tracker.i
+hello:
+	showcase/run hello
+
+activity_tracker:
+	showcase/run activity_tracker
 
 
 diff: $(IDEAL_TARGET)

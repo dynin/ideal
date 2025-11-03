@@ -437,6 +437,9 @@ activity_tracker:
 iching_oracle:
 	showcase/run iching_oracle
 
+iching: $(IDEAL_TARGET)
+	$(CREATE) $(FLAGS_RUN) -input=iching_oracle.i
+
 diff: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - library/elements.i
 

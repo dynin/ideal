@@ -27,11 +27,13 @@ import ideal.development.notifications.*;
 public class test_library {
 
   private static simple_name PRINTLN_NAME = simple_name.make(new base_string("println"));
+  private static simple_name RANDOM_NAME = simple_name.make(new base_string("random"));
   private static simple_name PLUS_NAME = simple_name.make(new base_string("plus"));
 
   public static void init(action_context context, type parent) {
     origin the_origin = origin_utilities.builtin_origin;
     context.add(parent, PRINTLN_NAME, new info_fn(PRINTLN_NAME).to_action(the_origin));
+    context.add(parent, RANDOM_NAME, new random_fn(RANDOM_NAME).to_action(the_origin));
     context.add(parent, PLUS_NAME, new add_op().to_action(the_origin));
   }
 }

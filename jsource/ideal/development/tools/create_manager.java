@@ -253,6 +253,7 @@ public class create_manager implements target_manager, type_bootstrapper {
 
     add_operator(new multiply_op());
     add_operator(new multiply_assign_op());
+    add_operator(new modulo_op());
     add_operator(new concatenate_op());
     add_operator(new concatenate_assign_op());
     add_operator(new less_op());
@@ -260,7 +261,6 @@ public class create_manager implements target_manager, type_bootstrapper {
     // TODO: this is not used.
     //add_operator(new escape_fn(context));
 
-    add_operator(operator.MODULO);
     add_operator(operator.SUBTRACT);
     add_operator(operator.NEGATE);
 

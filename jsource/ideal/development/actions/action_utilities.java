@@ -148,7 +148,10 @@ public class action_utilities {
       assert this_argument == null;
     } else {
       assert this_argument != null;
-      assert the_procedure.get_this_declaration() != null;
+      if (the_procedure.get_this_declaration() == null) {
+	utilities.panic("No this declaration for " + the_procedure.to_string());
+	// assert the_procedure.get_this_declaration() != null;
+      }
       new_context.put_var(the_procedure.get_this_declaration(), this_argument);
     }
 

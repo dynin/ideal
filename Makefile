@@ -434,6 +434,8 @@ hello:
 activity_tracker:
 	showcase/run activity_tracker
 
+iching_oracle:
+	showcase/run iching_oracle
 
 diff: $(IDEAL_TARGET)
 	$(CREATE) -input=$(IDEAL_SOURCE) -target=print_elements | diff -B -E - library/elements.i
